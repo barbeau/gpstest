@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.widget.TabHost;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class GpsTestActivity extends TabActivity
     boolean mNavigating;
     boolean mStarted;
     private Location mLastLocation;
+    private int mFixFrequency = 1;
 
     private static GpsTestActivity sInstance;
 
@@ -65,7 +67,7 @@ public class GpsTestActivity extends TabActivity
 
     private void gpsStart() {
         if (!mNavigating) {
-            mService.requestLocationUpdates(mProvider.getName(), 0L, 0.0f, this);
+            mService.requestLocationUpdates(mProvider.getName(), mFixFrequency * 1000, 0.0f, this);
             mStarted = true;
         }
         for (SubActivity activity : mSubActivities) {
@@ -127,6 +129,8 @@ public class GpsTestActivity extends TabActivity
    boolean createOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.gps_menu, menu);
+        SubMenu subMenu = menu.addSubMenu(R.string.set_fix_frequency);
+        inflater.inflate(R.menu.fix_frequency_menu, subMenu);
         return true;
     }
 
@@ -150,6 +154,31 @@ public class GpsTestActivity extends TabActivity
             item.setEnabled(mLastLocation != null);
         }
 
+        item = menu.findItem(R.id.fix_freq_1_second);
+        if (item != null) {
+            item.setChecked(mFixFrequency == 1);
+        }
+
+        item = menu.findItem(R.id.fix_freq_10_seconds);
+        if (item != null) {
+            item.setChecked(mFixFrequency == 10);
+        }
+
+        item = menu.findItem(R.id.fix_freq_1_minute);
+        if (item != null) {
+            item.setChecked(mFixFrequency == 60);
+        }
+
+        item = menu.findItem(R.id.fix_freq_5_minutes);
+        if (item != null) {
+            item.setChecked(mFixFrequency == 5 * 60);
+        }
+
+        item = menu.findItem(R.id.fix_freq_15_minutes);
+        if (item != null) {
+            item.setChecked(mFixFrequency == 15 * 60);
+        }
+
         return true;
     }
 
@@ -170,6 +199,26 @@ public class GpsTestActivity extends TabActivity
             case R.id.send_location:
                 sendLocation();
                 return true;
+
+            case R.id.fix_freq_1_second:
+                setFixFrequency(1);
+                return true;
+
+            case R.id.fix_freq_10_seconds:
+                setFixFrequency(10);
+                return true;
+
+            case R.id.fix_freq_1_minute:
+                setFixFrequency(60);
+            	return true;
+
+            case R.id.fix_freq_5_minutes:
+            	setFixFrequency(5 * 60);
+            	return true;
+
+            case R.id.fix_freq_15_minutes:
+            	setFixFrequency(15 * 60);
+            	return true;
         }
 
         return false;
@@ -230,5 +279,15 @@ public class GpsTestActivity extends TabActivity
             intent.putExtra(Intent.EXTRA_TEXT, location);
             startActivity(intent);
         }
+    }
+
+    private void setFixFrequency(int frequency) {
+    	if (frequency != mFixFrequency) {
+	    	mFixFrequency = frequency;
+	        if (mStarted) {
+	        	gpsStop();
+	        	gpsStart();
+	        }
+    	}
     }
 }
