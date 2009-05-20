@@ -25,4 +25,10 @@
     <item android:id="@+id/send_location"
         android:title="@string/send_location" />
 
+    <item android:id="@+id/force_time_injection"
+        android:title="@string/force_time_injection" />
+
+    <item android:id="@+id/force_xtra_injection"
+        android:title="@string/force_xtra_injection" />
+
 </menu>

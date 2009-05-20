@@ -29,6 +29,8 @@
     <string name="delete_aiding_data">Clear Aiding Data</string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
+    <string name="force_time_injection">Inject Time</string>
+    <string name="force_xtra_injection">Inject XTRA Data</string>
 
   	<string name="fix_freq_1_second">1 Second</string>
   	<string name="fix_freq_10_seconds">10 Seconds</string>

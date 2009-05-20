@@ -85,8 +85,8 @@ public class GpsTestActivity extends TabActivity
         }
     }
 
-    private void deleteAidingData() {
-        mService.sendExtraCommand(LocationManager.GPS_PROVIDER, "delete_aiding_data", null);
+    private void sendExtraCommand(String command) {
+        mService.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     /** Called when the activity is first created. */
@@ -193,11 +193,19 @@ public class GpsTestActivity extends TabActivity
                 return true;
 
             case R.id.delete_aiding_data:
-                deleteAidingData();
+                sendExtraCommand("delete_aiding_data");
                 return true;
 
             case R.id.send_location:
                 sendLocation();
+                return true;
+
+            case R.id.force_time_injection:
+                sendExtraCommand("force_time_injection");
+                return true;
+
+            case R.id.force_xtra_injection:
+                sendExtraCommand("force_xtra_injection");
                 return true;
 
             case R.id.fix_freq_1_second:
