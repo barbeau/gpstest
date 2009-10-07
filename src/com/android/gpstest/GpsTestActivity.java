@@ -43,10 +43,9 @@ public class GpsTestActivity extends TabActivity
     private LocationProvider mProvider;
     private GpsStatus mStatus;
     private ArrayList<SubActivity> mSubActivities = new ArrayList<SubActivity>();
-    boolean mNavigating;
     boolean mStarted;
     private Location mLastLocation;
- 
+
     private static GpsTestActivity sInstance;
 
     interface SubActivity extends LocationListener {
@@ -64,7 +63,7 @@ public class GpsTestActivity extends TabActivity
     }
 
     private void gpsStart() {
-        if (!mNavigating) {
+        if (!mStarted) {
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
         }
@@ -74,7 +73,7 @@ public class GpsTestActivity extends TabActivity
     }
 
     private void gpsStop() {
-        if (mNavigating) {
+        if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
         }
@@ -133,7 +132,7 @@ public class GpsTestActivity extends TabActivity
     boolean prepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.gps_start);
         if (item != null) {
-            if (mNavigating) {
+            if (mStarted) {
                 item.setTitle(R.string.gps_stop);
             } else {
                 item.setTitle(R.string.gps_start);
@@ -142,7 +141,7 @@ public class GpsTestActivity extends TabActivity
 
         item = menu.findItem(R.id.delete_aiding_data);
         if (item != null) {
-            item.setEnabled(!mNavigating);
+            item.setEnabled(!mStarted);
         }
 
         item = menu.findItem(R.id.send_location);
@@ -156,7 +155,7 @@ public class GpsTestActivity extends TabActivity
     boolean optionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.gps_start:
-                if (mNavigating) {
+                if (mStarted) {
                     gpsStop();
                 } else {
                     gpsStart();
@@ -211,18 +210,6 @@ public class GpsTestActivity extends TabActivity
 
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
-        switch (event) {
-            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-            case GpsStatus.GPS_EVENT_FIRST_FIX:
-            case GpsStatus.GPS_EVENT_STARTED:
-                mNavigating = true;
-                break;
-
-            case GpsStatus.GPS_EVENT_STOPPED:
-                mNavigating = false;
-                break;
-        }
-
         for (SubActivity activity : mSubActivities) {
             activity.onGpsStatusChanged(event, mStatus);
         }

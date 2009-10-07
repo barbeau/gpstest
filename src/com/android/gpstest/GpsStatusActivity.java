@@ -233,7 +233,7 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
         GpsTestActivity.getInstance().addSubActivity(this);
     }
 
-    private void setNavigating(boolean navigating) {
+    private void setStarted(boolean navigating) {
         if (navigating != mNavigating) {
             if (navigating) {
 
@@ -267,15 +267,15 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
     public void onResume() {
         super.onResume();
         GpsTestActivity gta = GpsTestActivity.getInstance();
-        setNavigating(gta.mNavigating);
+        setStarted(gta.mStarted);
     }
 
     public void onGpsStarted() {
-        setNavigating(true);
+        setStarted(true);
     }
 
     public void onGpsStopped() {
-        setNavigating(false);
+        setStarted(false);
     }
 
     public void gpsStart() {
@@ -296,11 +296,11 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
     public void onGpsStatusChanged(int event, GpsStatus status) {
         switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
-                setNavigating(true);
+                setStarted(true);
                 break;
 
             case GpsStatus.GPS_EVENT_STOPPED:
-                setNavigating(false);
+                setStarted(false);
                 break;
 
             case GpsStatus.GPS_EVENT_FIRST_FIX:
@@ -321,7 +321,7 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
 
     private void updateStatus(GpsStatus status) {
 
-        setNavigating(true);
+        setStarted(true);
         // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
