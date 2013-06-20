@@ -16,6 +16,7 @@
 
 package com.android.gpstest;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -87,7 +88,7 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
     }
 
     public void onLocationChanged(Location location) {    	    	
-    	if(!mGotFix){
+    	if (!mGotFix) {
     		updateTtff(location);
     		mGotFix = true;
     	}
@@ -285,13 +286,14 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
         setStarted(false);
     }
 
+    @SuppressLint("NewApi")
     public void gpsStart() {
     	//Reset flag for detecting first fix, and capture GPS start time for calculating TTFF later
     	mGotFix = false;
-    	if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
     		//According to Android docs, elapsedRealtimeNanos() is preferred for elapsed time measurements
     		mGpsStartTime = SystemClock.elapsedRealtimeNanos();
-    	}else{
+    	} else {
     		mGpsStartTime = System.currentTimeMillis();
     	}    	
     }
@@ -363,14 +365,15 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
         mAdapter.notifyDataSetChanged();
     }
     
+    @SuppressLint("NewApi")
     private void updateTtff(Location location){
     	long ttff;
     	
-    	if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
     		//According to Android docs, elapsedRealtimeNanos() is preferred for elapsed time measurements
-    		ttff = location.getElapsedRealtimeNanos() - mGpsStartTime; 
-    		ttff = (ttff + 500000000) / 1000000000;  //TTFF in nanoseconds
-    	}else{
+    		ttff = location.getElapsedRealtimeNanos() - mGpsStartTime;  //TTFF in nanoseconds 
+    		ttff = (ttff + 500000000) / 1000000000;
+    	} else {
     		ttff = location.getTime() - mGpsStartTime;  //TTFF in milliseconds
     		ttff = (ttff + 500) / 1000;    		
     	}	            

@@ -51,7 +51,8 @@ public class GpsSkyActivity extends Activity implements GpsTestActivity.SubActiv
         GpsTestActivity.getInstance().addSubActivity(this);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onResume()
     {
         super.onResume();
