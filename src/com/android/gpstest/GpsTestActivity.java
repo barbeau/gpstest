@@ -117,10 +117,10 @@ public class GpsTestActivity extends TabActivity
     }
     
     @Override
-    protected void onPause() {
+    protected void onDestroy() {
     	mService.removeGpsStatusListener(this);
     	mService.removeUpdates(this);        
-    	super.onPause();
+    	super.onDestroy();
     }
 
    boolean createOptionsMenu(Menu menu) {
