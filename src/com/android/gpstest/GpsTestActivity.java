@@ -115,12 +115,12 @@ public class GpsTestActivity extends TabActivity
                 .setIndicator(res.getString(R.string.gps_sky_tab))
                 .setContent(new Intent(this, GpsSkyActivity.class)));
     }
-
+    
     @Override
-    protected void onDestroy() {
-        mService.removeGpsStatusListener(this);
-        mService.removeUpdates(this);
-        super.onDestroy();
+    protected void onPause() {
+    	mService.removeGpsStatusListener(this);
+        mService.removeUpdates(this);        
+    	super.onPause();
     }
 
    boolean createOptionsMenu(Menu menu) {
