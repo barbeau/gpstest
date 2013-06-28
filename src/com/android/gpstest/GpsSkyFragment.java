@@ -16,7 +16,8 @@
 
 package com.android.gpstest;
 
-import android.app.Activity;
+import java.util.Iterator;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,45 +30,47 @@ import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import java.util.Iterator;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class GpsSkyActivity extends Activity implements GpsTestActivity.SubActivity {
+public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
 
     private GpsSkyView mSkyView;
     private SensorManager mSensorManager;
-
+    
     @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        mSkyView = new GpsSkyView(this);
-        setContentView(mSkyView);
-
-        GpsTestActivity.getInstance().addSubActivity(this);
+    public void onCreate(Bundle savedInstanceState) {
+    	super.onCreate(savedInstanceState);
+    	mSensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);   	
     }
 
-    @SuppressWarnings("deprecation")
-	@Override
-    protected void onResume()
-    {
-        super.onResume();
-        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+    	mSkyView = new GpsSkyView(getActivity());        
+        GpsTestActivity.getInstance().addSubActivity(this);
+        
+        return mSkyView;
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         if (sensor != null) {
         	mSensorManager.registerListener(mSkyView, sensor, 
         			SensorManager.SENSOR_DELAY_GAME);
         }
     }
-
+    
     @Override
-    protected void onPause()
-    {
-        mSensorManager.unregisterListener(mSkyView);
-        super.onStop();
+    public void onPause() {
+    	mSensorManager.unregisterListener(mSkyView);
+    	super.onPause();
     }
 
     public void onLocationChanged(Location loc) {
@@ -102,21 +105,6 @@ public class GpsSkyActivity extends Activity implements GpsTestActivity.SubActiv
                 mSkyView.setSats(status);
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().createOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().prepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return GpsTestActivity.getInstance().optionsItemSelected(item);
     }
 
     private static class GpsSkyView extends View implements SensorEventListener {

@@ -16,10 +16,10 @@
 
 package com.android.gpstest;
 
-import android.app.TabActivity;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -27,28 +27,48 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.TabHost;
 
-import java.util.ArrayList;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
-public class GpsTestActivity extends TabActivity
-        implements LocationListener, GpsStatus.Listener {
+public class GpsTestActivity extends SherlockFragmentActivity
+        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
     private static final String TAG = "GpsTestActivity";
 
     private LocationManager mService;
     private LocationProvider mProvider;
     private GpsStatus mStatus;
-    private ArrayList<SubActivity> mSubActivities = new ArrayList<SubActivity>();
+    private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
     boolean mStarted;
     private Location mLastLocation;
 
     private static GpsTestActivity sInstance;
+    
+    /**
+	 * The {@link android.support.v4.view.PagerAdapter} that will provide
+	 * fragments for each of the sections. We use a
+	 * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which
+	 * will keep every loaded fragment in memory. If this becomes too memory
+	 * intensive, it may be best to switch to a
+	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+	 */
+	SectionsPagerAdapter mSectionsPagerAdapter;
+	
+	/**
+	 * The {@link ViewPager} that will host the section contents.
+	 */
+	ViewPager mViewPager;
 
-    interface SubActivity extends LocationListener {
+    interface GpsTestListener extends LocationListener {
         public void gpsStart();
         public void gpsStop();
         public void onGpsStatusChanged(int event, GpsStatus status);
@@ -58,8 +78,8 @@ public class GpsTestActivity extends TabActivity
         return sInstance;
     }
 
-    void addSubActivity(SubActivity activity) {
-        mSubActivities.add(activity);
+    void addSubActivity(GpsTestListener activity) {
+        mGpsTestListeners.add(activity);
     }
 
     private void gpsStart() {
@@ -67,7 +87,7 @@ public class GpsTestActivity extends TabActivity
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
         }
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStart();
         }
     }
@@ -77,7 +97,7 @@ public class GpsTestActivity extends TabActivity
             mService.removeUpdates(this);
             mStarted = false;
         }
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStop();
         }
     }
@@ -88,8 +108,9 @@ public class GpsTestActivity extends TabActivity
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public void onCreate(Bundle savedInstanceState) {
+    	setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
+        super.onCreate(savedInstanceState);
         sInstance = this;
 
         mService = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -99,21 +120,50 @@ public class GpsTestActivity extends TabActivity
             Log.e(TAG, "Unable to get GPS_PROVIDER");
         }
         mService.addGpsStatusListener(this);
+        
+        // Request use of spinner for showing indeterminate progress, to show
+     	// the user something is going on during long-running operations
+     	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+     	setContentView(R.layout.activity_main);
+     	
+     	// Create the adapter that will return a fragment for each of the three
+     	// primary sections of the app.
+     	mSectionsPagerAdapter = new SectionsPagerAdapter(
+     			getSupportFragmentManager());
 
-        final TabHost tabHost = getTabHost();
-        final Resources res = getResources();
+     	// Set up the action bar.
+     	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+     	actionBar
+     			.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
+     	actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
 
-        tabHost.addTab(tabHost.newTabSpec("tab1")
-                .setIndicator(res.getString(R.string.gps_status_tab))
-                .setContent(new Intent(this, GpsStatusActivity.class)));
+     	// Set up the ViewPager with the sections adapter.
+     	mViewPager = (ViewPager) findViewById(R.id.pager);
+     	mViewPager.setAdapter(mSectionsPagerAdapter);
+     	
+   		// When swiping between different sections, select the corresponding
+   		// tab. We can also use ActionBar.Tab#select() to do this if we have a
+   		// reference to the Tab.
+   		mViewPager
+   				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+   					@Override
+   					public void onPageSelected(int position) {
+   						actionBar.setSelectedNavigationItem(position);
+   					}
+   				});
+   		// For each of the sections in the app, add a tab to the action bar.
+   		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+   			// Create a tab with text corresponding to the page title defined by
+   			// the adapter. Also specify this Activity object, which implements
+   			// the TabListener interface, as the listener for when this tab is
+   			// selected.
+   			actionBar.addTab(actionBar.newTab()
+   					.setText(mSectionsPagerAdapter.getPageTitle(i))
+   					.setTabListener(this));
+   		}
 
-        tabHost.addTab(tabHost.newTabSpec("tab2")
-                .setIndicator(res.getString(R.string.gps_map_tab))
-                .setContent(new Intent(this, GpsMapActivity.class)));
-
-        tabHost.addTab(tabHost.newTabSpec("tab3")
-                .setIndicator(res.getString(R.string.gps_sky_tab))
-                .setContent(new Intent(this, GpsSkyActivity.class)));
+   		// Hide the indeterminate progress bar on the activity until we need it
+     	setProgressBarIndeterminateVisibility(Boolean.FALSE);        
     }
     
     @Override
@@ -123,14 +173,15 @@ public class GpsTestActivity extends TabActivity
     	super.onDestroy();
     }
 
-   boolean createOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.gps_menu, menu);
+    @Override
+    public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    	getSupportMenuInflater().inflate(R.menu.gps_menu, menu);
         return true;
     }
-
-    boolean prepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.gps_start);
+    
+    @Override
+    public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    	MenuItem item = menu.findItem(R.id.gps_start);
         if (item != null) {
             if (mStarted) {
                 item.setTitle(R.string.gps_stop);
@@ -151,66 +202,64 @@ public class GpsTestActivity extends TabActivity
 
         return true;
     }
-
-    boolean optionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.gps_start:
-                if (mStarted) {
-                    gpsStop();
-                } else {
-                    gpsStart();
-                }
-                return true;
-
-            case R.id.delete_aiding_data:
-                sendExtraCommand("delete_aiding_data");
-                return true;
-
-            case R.id.send_location:
-                sendLocation();
-                return true;
-
-            case R.id.force_time_injection:
-                sendExtraCommand("force_time_injection");
-                return true;
-
-            case R.id.force_xtra_injection:
-                sendExtraCommand("force_xtra_injection");
-                return true;
-        }
-
-        return false;
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	// Handle menu item selection
+    	switch (item.getItemId()) {
+	        case R.id.gps_start:
+	            if (mStarted) {
+	                gpsStop();
+	            } else {
+	                gpsStart();
+	            }
+	            return true;	
+	        case R.id.delete_aiding_data:
+	            sendExtraCommand("delete_aiding_data");
+	            return true;	
+	        case R.id.send_location:
+	            sendLocation();
+	            return true;	
+	        case R.id.force_time_injection:
+	            sendExtraCommand("force_time_injection");
+	            return true;	
+	        case R.id.force_xtra_injection:
+	            sendExtraCommand("force_xtra_injection");
+	            return true;
+	        default:
+	        	return super.onOptionsItemSelected(item);
+    	}
     }
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.onLocationChanged(location);
         }
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.onStatusChanged(provider, status, extras);
         }
     }
 
     public void onProviderEnabled(String provider) {
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.onProviderEnabled(provider);
         }
     }
 
     public void onProviderDisabled(String provider) {
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.onProviderDisabled(provider);
         }
     }
 
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
-        for (SubActivity activity : mSubActivities) {
+        for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
     }
@@ -226,4 +275,93 @@ public class GpsTestActivity extends TabActivity
             startActivity(intent);
         }
     }
+    
+    @Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		// When the given tab is selected, switch to the corresponding page in
+		// the ViewPager.
+		mViewPager.setCurrentItem(tab.getPosition());
+	}
+
+	@Override
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+	 * one of the primary sections of the app.
+	 */
+	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+		public static final int NUMBER_OF_TABS = 3; // Used to set up
+													// TabListener
+
+		// Constants for the different fragments that will be displayed in tabs, in numeric order
+		public static final int GPS_STATUS_FRAGMENT = 0;
+		public static final int GPS_MAP_FRAGMENT = 1;
+		public static final int GPS_SKY_FRAGMENT = 2;
+		
+		// Maintain handle to Fragments to avoid recreating them if one already
+		// exists
+		Fragment gpsStatus;
+		Fragment gpsMap;
+		Fragment gpsSky;
+
+		public SectionsPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int i) {
+			switch (i) {
+				case GPS_STATUS_FRAGMENT:
+					if (gpsStatus == null) {
+						gpsStatus = new GpsStatusFragment();
+					}
+					return gpsStatus;
+				case GPS_MAP_FRAGMENT:
+					if (gpsMap == null) {
+						gpsMap = new GpsStatusFragment();
+					}
+					return gpsMap;
+				case GPS_SKY_FRAGMENT:
+					if (gpsSky == null) {
+						gpsSky = new GpsSkyFragment();
+					}
+					return gpsSky;
+			}
+			return null; // This should never happen
+		}
+
+		@Override
+		public int getCount() {
+			return NUMBER_OF_TABS;
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case GPS_STATUS_FRAGMENT:
+				return getString(R.string.gps_status_tab);			
+			case GPS_MAP_FRAGMENT:
+				return getString(R.string.gps_map_tab);			
+			case GPS_SKY_FRAGMENT:
+				return getString(R.string.gps_sky_tab);
+			}
+			return null; // This should never happen
+		}
+	}
 }

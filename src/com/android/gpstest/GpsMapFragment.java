@@ -28,8 +28,8 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
-public class GpsMapActivity extends MapActivity
-        implements GpsTestActivity.SubActivity, View.OnClickListener {
+public class GpsMapFragment extends MapActivity
+        implements GpsTestActivity.GpsTestListener, View.OnClickListener {
 
     private MapView mMapView;
     private MyLocationOverlay mMyLocationOverlay;
@@ -130,20 +130,5 @@ public class GpsMapActivity extends MapActivity
    @Override
     protected boolean isRouteDisplayed() {
         return false;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().createOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().prepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return GpsTestActivity.getInstance().optionsItemSelected(item);
     }
 }

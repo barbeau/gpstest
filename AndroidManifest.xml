@@ -28,18 +28,14 @@
 
         <uses-library android:name="com.google.android.maps" />
 
-        <activity android:name=".GpsTestActivity" android:configChanges="keyboard|keyboardHidden|orientation">
+        <activity android:name=".GpsTestActivity" 
+            android:theme="@style/Theme.Sherlock"
+            android:configChanges="keyboard|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- subactivities of GpsTestActivity -->
-        <activity android:name="GpsStatusActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
-        <activity android:name="GpsMapActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
-        <activity android:name="GpsSkyActivity" android:configChanges="keyboard|keyboardHidden|orientation"/>
-
     </application>
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="4" />
 </manifest>

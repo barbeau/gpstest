@@ -16,8 +16,9 @@
 
 package com.android.gpstest;
 
+import java.util.Iterator;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.location.GpsSatellite;
@@ -27,17 +28,17 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import java.util.Iterator;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class GpsStatusActivity extends Activity implements GpsTestActivity.SubActivity {
+
+public class GpsStatusFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
     private final static String TAG = "GpsStatusActivity";
 
     private Resources mRes;
@@ -214,31 +215,34 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
     }
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+	            
         mRes = getResources();
-        setContentView(R.layout.gps_status);
-
-        mLatitudeView = (TextView)findViewById(R.id.latitude);
-        mLongitudeView = (TextView)findViewById(R.id.longitude);
-        mFixTimeView = (TextView)findViewById(R.id.fix_time);
-        mTTFFView = (TextView)findViewById(R.id.ttff);
-        mAltitudeView = (TextView)findViewById(R.id.altitude);
-        mAccuracyView = (TextView)findViewById(R.id.accuracy);
-        mSpeedView = (TextView)findViewById(R.id.speed);
-        mBearingView = (TextView)findViewById(R.id.bearing);
+        View v = inflater.inflate(R.layout.gps_status, container,
+				false);
+        
+        mLatitudeView = (TextView)v.findViewById(R.id.latitude);
+        mLongitudeView = (TextView)v.findViewById(R.id.longitude);
+        mFixTimeView = (TextView)v.findViewById(R.id.fix_time);
+        mTTFFView = (TextView)v.findViewById(R.id.ttff);
+        mAltitudeView = (TextView)v.findViewById(R.id.altitude);
+        mAccuracyView = (TextView)v.findViewById(R.id.accuracy);
+        mSpeedView = (TextView)v.findViewById(R.id.speed);
+        mBearingView = (TextView)v.findViewById(R.id.bearing);
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
 
-        GridView gridView = (GridView)findViewById(R.id.sv_grid);
-        mAdapter = new SvGridAdapter(this);
+        GridView gridView = (GridView)v.findViewById(R.id.sv_grid);
+        mAdapter = new SvGridAdapter(getActivity());
         gridView.setAdapter(mAdapter);
         gridView.setFocusable(false);
         gridView.setFocusableInTouchMode(false);
 
         GpsTestActivity.getInstance().addSubActivity(this);
+        
+        return v;
     }
 
     private void setStarted(boolean navigating) {
@@ -378,20 +382,5 @@ public class GpsStatusActivity extends Activity implements GpsTestActivity.SubAc
     		ttff = (ttff + 500) / 1000;    		
     	}	            
 		mTTFFView.setText(Long.toString(ttff) + " sec");    		
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().createOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return GpsTestActivity.getInstance().prepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return GpsTestActivity.getInstance().optionsItemSelected(item);
     }
 }
