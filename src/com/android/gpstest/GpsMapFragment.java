@@ -19,8 +19,6 @@ package com.android.gpstest;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
