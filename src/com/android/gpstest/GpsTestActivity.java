@@ -349,8 +349,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	private void setupPager() {
 		// Set up the action bar.
      	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
-     	//actionBar
-     	//		.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
+     	actionBar
+     			.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
      	actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
 		
 		//  page adapter contains all the fragment registrations
