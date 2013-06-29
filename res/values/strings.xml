@@ -27,10 +27,16 @@
     <string name="gps_start">Start</string>
     <string name="gps_stop">Stop</string>
     <string name="delete_aiding_data">Clear Aiding Data</string>
+    <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
+    <string name="delete_aiding_data_failure">Platform does not support deleting aiding data.</string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection">Inject Time</string>
+    <string name="force_time_injection_success">Successfully injected time data.</string>
+    <string name="force_time_injection_failure">Platform does not support injecting time data.</string>
     <string name="force_xtra_injection">Inject XTRA Data</string>
+    <string name="force_xtra_injection_success">Successfully injected XTRA data.</string>
+    <string name="force_xtra_injection_failure">Platform does not support injecting XTRA data.</string>
 
   	<string name="fix_freq_1_second">1 Second</string>
   	<string name="fix_freq_10_seconds">10 Seconds</string>

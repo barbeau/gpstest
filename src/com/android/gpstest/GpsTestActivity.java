@@ -34,6 +34,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -101,8 +102,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         }
     }
 
-    private void sendExtraCommand(String command) {
-        mService.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+    private boolean sendExtraCommand(String command) {
+        return mService.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     /** Called when the activity is first created. */
@@ -126,37 +127,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	setContentView(R.layout.activity_main);
      	
      	setupPager();
-
-     	// Set up the action bar.
-     	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
-     	actionBar
-     			.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
-     	actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
-
-     	// Set up the ViewPager with the sections adapter.
-     	mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
-     	mViewPager.setAdapter(mSectionsPagerAdapter);
-     	
-   		// When swiping between different sections, select the corresponding
-   		// tab. We can also use ActionBar.Tab#select() to do this if we have a
-   		// reference to the Tab.
-   		mViewPager
-   				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-   					@Override
-   					public void onPageSelected(int position) {
-   						actionBar.setSelectedNavigationItem(position);
-   					}
-   				});
-   		// For each of the sections in the app, add a tab to the action bar.
-   		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-   			// Create a tab with text corresponding to the page title defined by
-   			// the adapter. Also specify this Activity object, which implements
-   			// the TabListener interface, as the listener for when this tab is
-   			// selected.
-   			actionBar.addTab(actionBar.newTab()
-   					.setText(mSectionsPagerAdapter.getPageTitle(i))
-   					.setTabListener(this));
-   		}
 
    		// Hide the indeterminate progress bar on the activity until we need it
      	setProgressBarIndeterminateVisibility(Boolean.FALSE);        
@@ -201,6 +171,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	boolean success;
     	// Handle menu item selection
     	switch (item.getItemId()) {
 	        case R.id.gps_start:
@@ -211,16 +182,37 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	            }
 	            return true;	
 	        case R.id.delete_aiding_data:
-	            sendExtraCommand("delete_aiding_data");
+	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
+	        	if(success){
+	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
+	    					Toast.LENGTH_SHORT).show();
+	    		}else{	    			
+	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
+	    					Toast.LENGTH_SHORT).show();
+	    		}
 	            return true;	
 	        case R.id.send_location:
 	            sendLocation();
 	            return true;	
 	        case R.id.force_time_injection:
-	            sendExtraCommand("force_time_injection");
+	            success = sendExtraCommand(getString(R.string.force_time_injection_command));
+	            if(success){
+	    			Toast.makeText(this,getString(R.string.force_time_injection_success),
+	    					Toast.LENGTH_SHORT).show();
+	    		}else{	    			
+	    			Toast.makeText(this,getString(R.string.force_time_injection_failure),
+	    					Toast.LENGTH_SHORT).show();
+	    		}
 	            return true;	
 	        case R.id.force_xtra_injection:
-	            sendExtraCommand("force_xtra_injection");
+	            success = sendExtraCommand(getString(R.string.force_time_injection_command));
+	            if(success){
+	    			Toast.makeText(this,getString(R.string.force_xtra_injection_success),
+	    					Toast.LENGTH_SHORT).show();
+	    		}else{	    			
+	    			Toast.makeText(this,getString(R.string.force_xtra_injection_failure),
+	    					Toast.LENGTH_SHORT).show();
+	    		}
 	            return true;
 	        default:
 	        	return super.onOptionsItemSelected(item);
@@ -291,8 +283,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	 */
 	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-		public static final int NUMBER_OF_TABS = 3; // Used to set up
-													// TabListener
+		public static final int NUMBER_OF_TABS = 3; // Used to set up TabListener
 
 		// Constants for the different fragments that will be displayed in tabs, in numeric order
 		public static final int GPS_STATUS_FRAGMENT = 0;
@@ -312,21 +303,22 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		}
 
 		@Override
-		public Fragment getItem(int i) {
-			disableSwipe = false;
+		public Fragment getItem(int i) {			
 			switch (i) {
 				case GPS_STATUS_FRAGMENT:
+					disableSwipe = false;
 					if (gpsStatus == null) {
 						gpsStatus = new GpsStatusFragment();
-					}
+					}					
 					return gpsStatus;
 				case GPS_MAP_FRAGMENT:
+					disableSwipe = true;
 					if (gpsMap == null) {
 						gpsMap = new GpsMapFragment();
 					}
-					disableSwipe = true;
 					return gpsMap;
 				case GPS_SKY_FRAGMENT:
+					disableSwipe = false;
 					if (gpsSky == null) {
 						gpsSky = new GpsSkyFragment();
 					}
@@ -355,18 +347,38 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	}
 	
 	private void setupPager() {
-        //  page adapter contains all the fragment registrations
+		// Set up the action bar.
+     	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+     	//actionBar
+     	//		.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
+     	actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
+		
+		//  page adapter contains all the fragment registrations
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-		mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
-	    // set the contents of the ViewPager
-		mViewPager.setAdapter(mSectionsPagerAdapter);
-		// add a on page change listener to change the actionBar's selected tab # (fragment will then be changed by actionBar's code)
-	    // the change listener is called on swiping
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-				@Override
-				public void onPageSelected(int pos) {
-					getActionBar().setSelectedNavigationItem(pos);
-				}
-		});
+				
+     	// Set up the ViewPager with the sections adapter.
+     	mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
+     	mViewPager.setAdapter(mSectionsPagerAdapter);
+     	
+   		// When swiping between different sections, select the corresponding
+   		// tab. We can also use ActionBar.Tab#select() to do this if we have a
+   		// reference to the Tab.
+   		mViewPager
+   				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+   					@Override
+   					public void onPageSelected(int position) {
+   						actionBar.setSelectedNavigationItem(position);
+   					}
+   				});
+   		// For each of the sections in the app, add a tab to the action bar.
+   		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+   			// Create a tab with text corresponding to the page title defined by
+   			// the adapter. Also specify this Activity object, which implements
+   			// the TabListener interface, as the listener for when this tab is
+   			// selected.
+   			actionBar.addTab(actionBar.newTab()
+   					.setText(mSectionsPagerAdapter.getPageTitle(i))
+   					.setTabListener(this));
+   		}
 	}
 }
