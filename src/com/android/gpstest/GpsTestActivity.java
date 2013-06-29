@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -63,10 +64,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	
-	/**
-	 * The {@link ViewPager} that will host the section contents.
-	 */
-	ViewPager mViewPager;
+    
+	ViewPagerMapNoScroll mViewPager;
 
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
@@ -126,10 +125,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
      	setContentView(R.layout.activity_main);
      	
-     	// Create the adapter that will return a fragment for each of the three
-     	// primary sections of the app.
-     	mSectionsPagerAdapter = new SectionsPagerAdapter(
-     			getSupportFragmentManager());
+     	setupPager();
 
      	// Set up the action bar.
      	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
@@ -138,7 +134,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
 
      	// Set up the ViewPager with the sections adapter.
-     	mViewPager = (ViewPager) findViewById(R.id.pager);
+     	mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
      	mViewPager.setAdapter(mSectionsPagerAdapter);
      	
    		// When swiping between different sections, select the corresponding
@@ -276,11 +272,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
         }
     }
     
-    @Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-	}
-
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		// When the given tab is selected, switch to the corresponding page in
@@ -289,22 +280,16 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	}
 
 	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onTabUnselected(Tab tab, FragmentTransaction ft) {}
 
 	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onTabReselected(Tab tab, FragmentTransaction ft) {}
 	
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the primary sections of the app.
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public static final int NUMBER_OF_TABS = 3; // Used to set up
 													// TabListener
@@ -319,6 +304,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		Fragment gpsStatus;
 		Fragment gpsMap;
 		Fragment gpsSky;
+		
+		public boolean disableSwipe = false; 
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -326,6 +313,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
 		@Override
 		public Fragment getItem(int i) {
+			disableSwipe = false;
 			switch (i) {
 				case GPS_STATUS_FRAGMENT:
 					if (gpsStatus == null) {
@@ -334,8 +322,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 					return gpsStatus;
 				case GPS_MAP_FRAGMENT:
 					if (gpsMap == null) {
-						gpsMap = new GpsStatusFragment();
+						gpsMap = new GpsMapFragment();
 					}
+					disableSwipe = true;
 					return gpsMap;
 				case GPS_SKY_FRAGMENT:
 					if (gpsSky == null) {
@@ -363,5 +352,21 @@ public class GpsTestActivity extends SherlockFragmentActivity
 			}
 			return null; // This should never happen
 		}
+	}
+	
+	private void setupPager() {
+        //  page adapter contains all the fragment registrations
+		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+		mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
+	    // set the contents of the ViewPager
+		mViewPager.setAdapter(mSectionsPagerAdapter);
+		// add a on page change listener to change the actionBar's selected tab # (fragment will then be changed by actionBar's code)
+	    // the change listener is called on swiping
+		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+				@Override
+				public void onPageSelected(int pos) {
+					getActionBar().setSelectedNavigationItem(pos);
+				}
+		});
 	}
 }

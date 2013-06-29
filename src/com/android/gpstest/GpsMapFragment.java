@@ -19,114 +19,120 @@ package com.android.gpstest;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
+import com.actionbarsherlock.app.SherlockMapFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
-public class GpsMapFragment extends MapActivity
-        implements GpsTestActivity.GpsTestListener, View.OnClickListener {
+public class GpsMapFragment extends SherlockMapFragment
+        implements GpsTestActivity.GpsTestListener, View.OnClickListener, LocationSource {
 
-    private MapView mMapView;
-    private MyLocationOverlay mMyLocationOverlay;
-    private Button mZoomInButton;
-    private Button mZoomOutButton;
+	private GoogleMap mMap;
+	private OnLocationChangedListener mListener; //Used to update the map with new location
+	
+	// Constants used to control how the camera animates to a position
+	public static final float CAMERA_INITIAL_ZOOM = 17.0f;
+    public static final float CAMERA_INITIAL_BEARING = 0.0f;
+    public static final float CAMERA_INITIAL_TILT = 45.0f;
+	
     private Button mModeButton;
     private boolean mSatellite = false;
-    private int mZoomLevel;
     private boolean mGotFix;
 
     @Override
-    public void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+	           
+        View v = super.onCreateView(inflater, container, savedInstanceState);
+        mMap = getMap();
+        
+        //Show the location on the map
+        mMap.setMyLocationEnabled(true);
+        //Set location source
+        mMap.setLocationSource(this);
 
-        setContentView(R.layout.gps_map);
-        mMapView = (MapView)findViewById(R.id.map_view);
-        mMyLocationOverlay = new MyLocationOverlay(this, mMapView);
-        mMapView.getOverlays().add(mMyLocationOverlay);
+//        mModeButton = (Button)v.findViewById(R.id.mode);
+//        mModeButton.setOnClickListener(this);
 
-        mZoomInButton = (Button)findViewById(R.id.zoom_in);
-        mZoomInButton.setOnClickListener(this);
-        mZoomOutButton = (Button)findViewById(R.id.zoom_out);
-        mZoomOutButton.setOnClickListener(this);
-        mModeButton = (Button)findViewById(R.id.mode);
-        mModeButton.setOnClickListener(this);
-
-        mZoomLevel = mMapView.getZoomLevel();
-        mSatellite = mMapView.isSatellite();
-        mModeButton.setText(mSatellite ? R.string.mode_map : R.string.mode_satellite);
+//        mSatellite = mMapView.isSatellite();
+//        mModeButton.setText(mSatellite ? R.string.mode_map : R.string.mode_satellite);
 
         GpsTestActivity.getInstance().addSubActivity(this);
+        
+        return v;
     }
 
     public void onClick(View v) {
-        if (v == mZoomInButton) {
-            zoomIn();
-        } else if (v == mZoomOutButton) {
-            zoomOut();
-        } else if (v == mModeButton) {
+        if (v == mModeButton) {
             toggleSatellite();
-        }
-    }
-
-    private void zoomIn() {
-        if (mZoomLevel < mMapView.getMaxZoomLevel()) {
-            mZoomLevel++;
-            mMapView.getController().setZoom(mZoomLevel);
-        }
-    }
-
-    private void zoomOut() {
-        if (mZoomLevel > 0) {
-            mZoomLevel--;
-            mMapView.getController().setZoom(mZoomLevel);
         }
     }
 
     private void toggleSatellite() {
         mSatellite = !mSatellite;
-        mMapView.setSatellite(mSatellite);
+        //mMapView.setSatellite(mSatellite);
         mModeButton.setText(mSatellite ? R.string.mode_map : R.string.mode_satellite);
     }
 
-    public void gpsStart() {
-        mMyLocationOverlay.enableMyLocation();
+    public void gpsStart() {        
         mGotFix = false;
     }
 
     public void gpsStop() {
-        mMyLocationOverlay.disableMyLocation();
     }
 
     public void onLocationChanged(Location loc) {
-        mMyLocationOverlay.enableMyLocation();
-        if (!mGotFix && mMapView.getZoomLevel() < mMapView.getMaxZoomLevel() / 2) {
-            // zoom in if we are backed out too much
-            mZoomLevel = 20;
-            mMapView.getController().setZoom(mZoomLevel);
-        }
-        mGotFix = true;
-        mMyLocationOverlay.runOnFirstFix(new Runnable() { public void run() {
-            mMapView.getController().animateTo(mMyLocationOverlay.getMyLocation());
-        }});
+    	//Update real-time location on map
+		if (mListener != null) {
+	        mListener.onLocationChanged(loc);
+	    }
+		
+		if (mMap != null) {
+			//Get bounds for detection of real-time location within bounds
+	        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
+	        if (!mGotFix && !bounds.contains(new LatLng(loc.getLatitude(), loc.getLongitude()))) {
+	        	CameraPosition cameraPosition = new CameraPosition.Builder()
+		        	.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+	             	.zoom(CAMERA_INITIAL_ZOOM)
+	             	.bearing(CAMERA_INITIAL_BEARING) 
+	             	.tilt(CAMERA_INITIAL_TILT)
+	             	.build(); 
+	        	
+	        	mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));	        	
+	        }
+	        mGotFix = true;
+		}				
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-    public void onProviderEnabled(String provider) {
-    }
+    public void onProviderEnabled(String provider) {}
 
-    public void onProviderDisabled(String provider) {
-    }
+    public void onProviderDisabled(String provider) {}
 
-    public void onGpsStatusChanged(int event, GpsStatus status) {
-    }
+    public void onGpsStatusChanged(int event, GpsStatus status) {}
 
-   @Override
-    protected boolean isRouteDisplayed() {
-        return false;
-    }
+    /**
+     * Maps V2 Location updates
+     */
+	@Override
+	public void activate(OnLocationChangedListener listener) {
+		mListener = listener;		
+	}
+
+	/**
+	 * Maps V2 Location updates
+	 */
+	@Override
+	public void deactivate() {
+		mListener = null;		
+	}
 }
