@@ -16,7 +16,7 @@
 */
 -->
 
-<com.android.gpstest.ViewPagerMapNoScroll 
+<com.android.gpstest.view.ViewPagerMapBevelScroll 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pager"

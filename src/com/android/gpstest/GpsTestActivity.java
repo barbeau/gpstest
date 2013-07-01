@@ -41,10 +41,12 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
+import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
     private static final String TAG = "GpsTestActivity";
+    private static final String LAST_TAB = "tab";
 
     private LocationManager mService;
     private LocationProvider mProvider;
@@ -66,7 +68,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	
     
-	ViewPagerMapNoScroll mViewPager;
+	ViewPagerMapBevelScroll mViewPager;
 
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
@@ -124,12 +126,19 @@ public class GpsTestActivity extends SherlockFragmentActivity
         // Request use of spinner for showing indeterminate progress, to show
      	// the user something is going on during long-running operations
      	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-     	setContentView(R.layout.activity_main);
      	
-     	setupPager();
+     	setContentView(R.layout.activity_main);
+     	     	
+     	initActionBar(savedInstanceState);
 
    		// Hide the indeterminate progress bar on the activity until we need it
-     	setProgressBarIndeterminateVisibility(Boolean.FALSE);        
+     	setProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {        
+        outState.putInt(LAST_TAB, getActionBar().getSelectedNavigationIndex());
+        super.onSaveInstanceState(outState);
     }
     
     @Override
@@ -187,7 +196,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
 	    					Toast.LENGTH_SHORT).show();
 	    		}else{	    			
-	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
+	    			Toast.makeText(this,getString(R.string.delete_aiding_data_failure),
 	    					Toast.LENGTH_SHORT).show();
 	    		}
 	            return true;	
@@ -205,7 +214,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	    		}
 	            return true;	
 	        case R.id.force_xtra_injection:
-	            success = sendExtraCommand(getString(R.string.force_time_injection_command));
+	            success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
 	            if(success){
 	    			Toast.makeText(this,getString(R.string.force_xtra_injection_success),
 	    					Toast.LENGTH_SHORT).show();
@@ -296,7 +305,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		Fragment gpsMap;
 		Fragment gpsSky;
 		
-		public boolean disableSwipe = false; 
+		public boolean mapSelected = false; 
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -306,19 +315,19 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		public Fragment getItem(int i) {			
 			switch (i) {
 				case GPS_STATUS_FRAGMENT:
-					disableSwipe = false;
+					mapSelected = false;
 					if (gpsStatus == null) {
 						gpsStatus = new GpsStatusFragment();
 					}					
 					return gpsStatus;
 				case GPS_MAP_FRAGMENT:
-					disableSwipe = true;
+					mapSelected = true;
 					if (gpsMap == null) {
 						gpsMap = new GpsMapFragment();
 					}
 					return gpsMap;
 				case GPS_SKY_FRAGMENT:
-					disableSwipe = false;
+					mapSelected = false;
 					if (gpsSky == null) {
 						gpsSky = new GpsSkyFragment();
 					}
@@ -346,7 +355,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		}
 	}
 	
-	private void setupPager() {
+	private void initActionBar(Bundle savedInstanceState) {
 		// Set up the action bar.
      	final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
      	actionBar
@@ -357,8 +366,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 				
      	// Set up the ViewPager with the sections adapter.
-     	mViewPager = (ViewPagerMapNoScroll) findViewById(R.id.pager);
+     	mViewPager = (ViewPagerMapBevelScroll) findViewById(R.id.pager);
      	mViewPager.setAdapter(mSectionsPagerAdapter);
+     	mViewPager.setOffscreenPageLimit(2);
      	
    		// When swiping between different sections, select the corresponding
    		// tab. We can also use ActionBar.Tab#select() to do this if we have a
@@ -380,5 +390,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
    					.setText(mSectionsPagerAdapter.getPageTitle(i))
    					.setTabListener(this));
    		}
+   		
+   		//Set the current tab to the tab last used by the user
+   		if (savedInstanceState != null) {
+   			actionBar.setSelectedNavigationItem(savedInstanceState.getInt(LAST_TAB, 0));
+        }
 	}
 }
