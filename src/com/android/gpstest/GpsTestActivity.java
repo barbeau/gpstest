@@ -301,11 +301,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		
 		// Maintain handle to Fragments to avoid recreating them if one already
 		// exists
-		Fragment gpsStatus;
-		Fragment gpsMap;
-		Fragment gpsSky;
-		
-		public boolean mapSelected = false; 
+		Fragment gpsStatus, gpsMap, gpsSky;
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -314,20 +310,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
 		@Override
 		public Fragment getItem(int i) {			
 			switch (i) {
-				case GPS_STATUS_FRAGMENT:
-					mapSelected = false;
+				case GPS_STATUS_FRAGMENT:					
 					if (gpsStatus == null) {
 						gpsStatus = new GpsStatusFragment();
 					}					
 					return gpsStatus;
-				case GPS_MAP_FRAGMENT:
-					mapSelected = true;
+				case GPS_MAP_FRAGMENT:					
 					if (gpsMap == null) {
 						gpsMap = new GpsMapFragment();
 					}
 					return gpsMap;
-				case GPS_SKY_FRAGMENT:
-					mapSelected = false;
+				case GPS_SKY_FRAGMENT:					
 					if (gpsSky == null) {
 						gpsSky = new GpsSkyFragment();
 					}
