@@ -39,7 +39,7 @@ public class GpsMapFragment extends SherlockMapFragment
 	private OnLocationChangedListener mListener; //Used to update the map with new location
 	
 	// Constants used to control how the camera animates to a position
-	public static final float CAMERA_INITIAL_ZOOM = 17.0f;
+	public static final float CAMERA_INITIAL_ZOOM = 18.0f;
     public static final float CAMERA_INITIAL_BEARING = 0.0f;
     public static final float CAMERA_INITIAL_TILT = 45.0f;
 	
