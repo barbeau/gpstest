@@ -20,6 +20,10 @@
 <resources>
     <!-- Strings in this file should NOT be translated -->
     
+    <!-- Preference keys -->
+    <string name="pref_key_map_category">map_category</string>
+    <string name="pref_key_map_type">map_type</string>
+    
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>

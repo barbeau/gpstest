@@ -30,4 +30,9 @@
     
     <item android:id="@+id/delete_aiding_data"
         android:title="@string/delete_aiding_data" />
+    
+    <item android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
 </menu>

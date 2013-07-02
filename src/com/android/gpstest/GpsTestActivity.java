@@ -27,6 +27,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -46,8 +47,7 @@ import com.android.gpstest.view.ViewPagerMapBevelScroll;
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
     private static final String TAG = "GpsTestActivity";
-    private static final String LAST_TAB = "tab";
-
+    
     private LocationManager mService;
     private LocationProvider mProvider;
     private GpsStatus mStatus;
@@ -66,8 +66,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	 * {@link android.support.v4.app.FragmentStatePagerAdapter}.
 	 */
 	SectionsPagerAdapter mSectionsPagerAdapter;
-	
-    
+	    
 	ViewPagerMapBevelScroll mViewPager;
 
     interface GpsTestListener extends LocationListener {
@@ -114,6 +113,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
         super.onCreate(savedInstanceState);
         sInstance = this;
+        
+        // Set the default values from the XML file if this is the first
+     	// execution of the app
+     	PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         mService = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         mProvider = mService.getProvider(LocationManager.GPS_PROVIDER);
@@ -133,12 +136,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
    		// Hide the indeterminate progress bar on the activity until we need it
      	setProgressBarIndeterminateVisibility(Boolean.FALSE);     	
-    }
-    
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {        
-        outState.putInt(LAST_TAB, getActionBar().getSelectedNavigationIndex());
-        super.onSaveInstanceState(outState);
     }
     
     @Override
@@ -223,6 +220,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	    					Toast.LENGTH_SHORT).show();
 	    		}
 	            return true;
+	        case R.id.menu_settings:
+				// Show settings menu
+				startActivity(new Intent(this, Preferences.class));
 	        default:
 	        	return super.onOptionsItemSelected(item);
     	}
@@ -383,10 +383,5 @@ public class GpsTestActivity extends SherlockFragmentActivity
    					.setText(mSectionsPagerAdapter.getPageTitle(i))
    					.setTabListener(this));
    		}
-   		
-   		//Set the current tab to the tab last used by the user
-   		if (savedInstanceState != null) {
-   			actionBar.setSelectedNavigationItem(savedInstanceState.getInt(LAST_TAB, 0));
-        }
 	}
 }

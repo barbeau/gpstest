@@ -16,13 +16,19 @@
 
 package com.android.gpstest;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.location.GpsStatus;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.actionbarsherlock.app.SherlockMapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,8 +49,6 @@ public class GpsMapFragment extends SherlockMapFragment
     public static final float CAMERA_INITIAL_BEARING = 0.0f;
     public static final float CAMERA_INITIAL_TILT = 45.0f;
 	
-    private Button mModeButton;
-    private boolean mSatellite = false;
     private boolean mGotFix;
 
     @Override
@@ -54,33 +58,47 @@ public class GpsMapFragment extends SherlockMapFragment
         View v = super.onCreateView(inflater, container, savedInstanceState);
         mMap = getMap();
         
-        //Show the location on the map
-        mMap.setMyLocationEnabled(true);
-        //Set location source
-        mMap.setLocationSource(this);
+        if(isGoogleMapsInstalled()) {
+        	if (mMap != null) {
+        		//Show the location on the map
+                mMap.setMyLocationEnabled(true);
+                //Set location source
+                mMap.setLocationSource(this);
 
-//        mModeButton = (Button)v.findViewById(R.id.mode);
-//        mModeButton.setOnClickListener(this);
+                GpsTestActivity.getInstance().addSubActivity(this);
+        	}
+        } else {
+        	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(getString(R.string.please_install_google_maps));
+            builder.setCancelable(false);
+            builder.setPositiveButton(getString(R.string.install), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+                    startActivity(intent);
 
-//        mSatellite = mMapView.isSatellite();
-//        mModeButton.setText(mSatellite ? R.string.mode_map : R.string.mode_satellite);
-
-        GpsTestActivity.getInstance().addSubActivity(this);
+                    getActivity().finish();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
         
         return v;
     }
-
-    public void onClick(View v) {
-        if (v == mModeButton) {
-            toggleSatellite();
-        }
+    
+    @Override
+    public void onResume() {
+    	SharedPreferences settings = Application.getPrefs();
+    	if(mMap != null && settings != null){
+    		if (mMap.getMapType() != Integer.valueOf(settings.getString(getString(R.string.pref_key_map_type), String.valueOf(GoogleMap.MAP_TYPE_NORMAL)))) {
+    			mMap.setMapType(Integer.valueOf(settings.getString(getString(R.string.pref_key_map_type), String.valueOf(GoogleMap.MAP_TYPE_NORMAL))));
+    		}    		
+    	}
+    	super.onResume();
     }
 
-    private void toggleSatellite() {
-        mSatellite = !mSatellite;
-        //mMapView.setSatellite(mSatellite);
-        mModeButton.setText(mSatellite ? R.string.mode_map : R.string.mode_satellite);
-    }
+    public void onClick(View v) {}
 
     public void gpsStart() {        
         mGotFix = false;
@@ -134,5 +152,19 @@ public class GpsMapFragment extends SherlockMapFragment
 	@Override
 	public void deactivate() {
 		mListener = null;		
+	}
+	
+	/**
+	 * Returns true if Google Maps is installed, false if it is not
+	 * @return
+	 */
+	@SuppressWarnings("unused")
+	public boolean isGoogleMapsInstalled() {
+	    try {
+	        ApplicationInfo info = getActivity().getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+	        return true;
+	    } catch (PackageManager.NameNotFoundException e) {
+	        return false;
+	    }
 	}
 }
