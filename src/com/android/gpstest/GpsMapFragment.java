@@ -116,7 +116,9 @@ public class GpsMapFragment extends SherlockMapFragment
 		if (mMap != null) {
 			//Get bounds for detection of real-time location within bounds
 	        LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-	        if (!mGotFix && !bounds.contains(new LatLng(loc.getLatitude(), loc.getLongitude()))) {
+	        if (!mGotFix && 
+	        		(!bounds.contains(new LatLng(loc.getLatitude(), loc.getLongitude())) || 
+	        				mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
 	        	CameraPosition cameraPosition = new CameraPosition.Builder()
 		        	.target(new LatLng(loc.getLatitude(), loc.getLongitude()))
 	             	.zoom(CAMERA_INITIAL_ZOOM)
