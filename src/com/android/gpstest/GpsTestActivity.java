@@ -135,7 +135,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	initActionBar(savedInstanceState);
 
    		// Hide the indeterminate progress bar on the activity until we need it
-     	setProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);     	
     }
     
     @Override
