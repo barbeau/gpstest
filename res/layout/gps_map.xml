@@ -27,16 +27,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="tag_fragment_map" />
-    
-    <LinearLayout
-	    android:id="@+id/bottom"
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-        <Button android:id="@+id/mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mode_satellite">
-        </Button>
-    </LinearLayout>
 </LinearLayout>
