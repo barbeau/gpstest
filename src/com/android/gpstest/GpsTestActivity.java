@@ -146,9 +146,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	
     	SharedPreferences settings = Application.getPrefs();
     	
-		if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
-			gpsStart();
-		}
+    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+    		gpsStart();
+    	}
     }
     
     @Override
