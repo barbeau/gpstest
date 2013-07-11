@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -43,6 +44,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
+import com.google.android.gms.maps.GoogleMap;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
@@ -135,7 +137,18 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	initActionBar(savedInstanceState);
 
    		// Hide the indeterminate progress bar on the activity until we need it
-     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);   	
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+    	SharedPreferences settings = Application.getPrefs();
+    	
+		if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+			gpsStart();
+		}
     }
     
     @Override

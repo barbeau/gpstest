@@ -69,8 +69,12 @@
     
     <!-- Preferences -->
     <string name="pref_title">Settings</string>
-    <string name="pref_map_category_title">Map Settings</string>
+    <string name="pref_map_category_title">Map</string>
     <string name="pref_map_type_title">Map Type</string>
     <string name="pref_map_type_summary">Sets the type of map tiles shown</string>
     <string name="pref_map_type_dialog_title">Choose Map Type</string>
+    
+    <string name="pref_gps_category_title">GPS</string>
+    <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
+    <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
 </resources>
