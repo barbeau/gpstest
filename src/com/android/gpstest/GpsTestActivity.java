@@ -44,7 +44,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
-import com.google.android.gms.maps.GoogleMap;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
@@ -56,6 +55,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
     boolean mStarted;
     private Location mLastLocation;
+    String mTtff;
 
     private static GpsTestActivity sInstance;
     
@@ -269,6 +269,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
+        
+        if (event == GpsStatus.GPS_EVENT_FIRST_FIX) {
+        	 int ttff = mStatus.getTimeToFirstFix();
+        	 if (ttff == 0) {
+        		 mTtff = "";
+        	 } else {
+        		 ttff = (ttff + 500) / 1000;
+        		 mTtff = Integer.toString(ttff) + " sec";
+        	 }
+        }
+        
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
