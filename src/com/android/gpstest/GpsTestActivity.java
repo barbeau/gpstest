@@ -92,6 +92,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
             
             // Show the indeterminate progress bar on the action bar until first fix is achieved
          	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStart();
@@ -104,6 +107,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
             mStarted = false;
             // Stop progress bar
          	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStop();
@@ -139,7 +145,13 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	
      	setContentView(R.layout.activity_main);
      	     	
-     	initActionBar(savedInstanceState);   		   	
+     	initActionBar(savedInstanceState);
+     	
+     	SharedPreferences settings = Application.getPrefs();
+    	
+    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
+    		gpsStart();
+    	}
     }
     
     @Override
@@ -147,11 +159,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	super.onResume();
     	
     	SharedPreferences settings = Application.getPrefs();
-    	
-    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
-    		gpsStart();
-    	}
-    	
+    	    	    	
     	if (mViewPager != null) {
     		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
     			mViewPager.setKeepScreenOn(true);
@@ -180,8 +188,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (item != null) {
             if (mStarted) {
                 item.setTitle(R.string.gps_stop);
+                item.setIcon(R.drawable.av_pause);
             } else {
                 item.setTitle(R.string.gps_start);
+                item.setIcon(R.drawable.av_play);
             }
         }
 
@@ -192,7 +202,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
         item = menu.findItem(R.id.send_location);
         if (item != null) {
-            item.setEnabled(mLastLocation != null);
+            item.setVisible(mLastLocation != null);
         }
 
         return true;
@@ -209,6 +219,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	            } else {
 	                gpsStart();
 	            }
+         	
 	            return true;	
 	        case R.id.delete_aiding_data:
 	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
@@ -253,6 +264,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+        
+      	// Reset the options menu to trigger updates to action bar menu items
+      	invalidateOptionsMenu();
 
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onLocationChanged(location);
