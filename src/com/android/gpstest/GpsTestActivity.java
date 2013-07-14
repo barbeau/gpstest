@@ -89,6 +89,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (!mStarted) {
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
+            
+            // Show the indeterminate progress bar on the activity until first fix is achieved
+         	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStart();
@@ -99,6 +102,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
+            // Stop progress bar
+         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStop();
@@ -134,10 +139,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	
      	setContentView(R.layout.activity_main);
      	     	
-     	initActionBar(savedInstanceState);
-
-   		// Hide the indeterminate progress bar on the activity until we need it
-     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);   	
+     	initActionBar(savedInstanceState);   		   	
     }
     
     @Override
@@ -146,7 +148,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	
     	SharedPreferences settings = Application.getPrefs();
     	
-    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
     		gpsStart();
     	}
     }
@@ -278,6 +280,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
         		 ttff = (ttff + 500) / 1000;
         		 mTtff = Integer.toString(ttff) + " sec";
         	 }
+        	 
+        	// Stop progress bar
+          	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
         }
         
         for (GpsTestListener activity : mGpsTestListeners) {
