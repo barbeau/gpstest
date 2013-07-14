@@ -90,7 +90,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
             
-            // Show the indeterminate progress bar on the activity until first fix is achieved
+            // Show the indeterminate progress bar on the action bar until first fix is achieved
          	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
         }
         for (GpsTestListener activity : mGpsTestListeners) {
