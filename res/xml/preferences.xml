@@ -22,4 +22,14 @@
             android:summary="@string/pref_auto_start_gps_summary"
             android:defaultValue="true" />        
     </PreferenceCategory>
+    
+    <PreferenceCategory
+        android:title="@string/pref_display_category_title"
+        android:key="@string/pref_key_display_category">
+        <CheckBoxPreference
+            android:key="@string/pref_key_keep_screen_on"
+            android:title="@string/pref_keep_screen_on_title"
+            android:summary="@string/pref_keep_screen_on_summary"
+            android:defaultValue="true" />        
+    </PreferenceCategory>
 </PreferenceScreen>

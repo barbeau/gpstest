@@ -25,6 +25,8 @@
     <string name="pref_key_map_type">map_type</string>
     <string name="pref_key_gps_category">gps_category</string>
     <string name="pref_key_auto_start_gps">auto_start_gps</string>
+    <string name="pref_key_display_category">display_category</string>
+    <string name="pref_key_keep_screen_on">keep_screen_on</string>
     
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>

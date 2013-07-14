@@ -77,4 +77,8 @@
     <string name="pref_gps_category_title">GPS</string>
     <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
     <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
+    
+    <string name="pref_display_category_title">Display</string>
+    <string name="pref_keep_screen_on_title">Keep Screen On</string>
+    <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>
 </resources>

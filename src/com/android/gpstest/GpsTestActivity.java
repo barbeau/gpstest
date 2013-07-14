@@ -151,6 +151,14 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
     		gpsStart();
     	}
+    	
+    	if (mViewPager != null) {
+    		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+    			mViewPager.setKeepScreenOn(true);
+    		} else {
+    			mViewPager.setKeepScreenOn(false);
+    		}   		    		
+    	}
     }
     
     @Override
