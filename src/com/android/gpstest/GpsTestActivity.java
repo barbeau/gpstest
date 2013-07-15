@@ -90,7 +90,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
             
-            // Show the indeterminate progress bar on the action bar until first fix is achieved
+            // Show the indeterminate progress bar on the action bar until first GPS status is shown
          	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
          	
          	// Reset the options menu to trigger updates to action bar menu items
@@ -294,19 +294,26 @@ public class GpsTestActivity extends SherlockFragmentActivity
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
         
-        if (event == GpsStatus.GPS_EVENT_FIRST_FIX) {
-        	 int ttff = mStatus.getTimeToFirstFix();
-        	 if (ttff == 0) {
-        		 mTtff = "";
-        	 } else {
-        		 ttff = (ttff + 500) / 1000;
-        		 mTtff = Integer.toString(ttff) + " sec";
-        	 }
-        	 
-        	// Stop progress bar
-          	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+        switch (event) {
+        	case GpsStatus.GPS_EVENT_STARTED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_STOPPED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_FIRST_FIX:
+	        	int ttff = mStatus.getTimeToFirstFix();
+	        	if (ttff == 0) {
+	        		mTtff = "";
+	        	} else {
+	        		ttff = (ttff + 500) / 1000;
+	        		mTtff = Integer.toString(ttff) + " sec";
+	        	} 
+	            break;	
+	        case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+	        	// Stop progress bar after the first status information is obtained
+	         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+	            break;
         }
-        
+          
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
