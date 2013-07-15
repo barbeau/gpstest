@@ -348,7 +348,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the primary sections of the app.
 	 */
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public static final int NUMBER_OF_TABS = 3; // Used to set up TabListener
 
