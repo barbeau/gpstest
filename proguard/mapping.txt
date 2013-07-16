@@ -6570,6 +6570,7 @@ com.android.gpstest.GpsTestActivity -> com.android.gpstest.GpsTestActivity:
     void addSubActivity(com.android.gpstest.GpsTestActivity$GpsTestListener) -> a
     boolean sendExtraCommand(java.lang.String) -> a
     void onCreate(android.os.Bundle) -> onCreate
+    void onResume() -> onResume
     void onDestroy() -> onDestroy
     boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu) -> onCreateOptionsMenu
     boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu) -> onPrepareOptionsMenu
