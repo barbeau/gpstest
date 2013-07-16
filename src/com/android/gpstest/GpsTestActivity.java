@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -131,11 +132,27 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
      	
      	setContentView(R.layout.activity_main);
-     	     	
+
      	initActionBar(savedInstanceState);
 
    		// Hide the indeterminate progress bar on the activity until we need it
      	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+    	SharedPreferences settings = Application.getPrefs();
+    	
+    	
+    	if (mViewPager != null) {
+    		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+    			mViewPager.setKeepScreenOn(true);
+    		} else {
+    			mViewPager.setKeepScreenOn(false);
+    		}   		    		
+    	}
     }
     
     @Override
