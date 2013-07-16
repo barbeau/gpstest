@@ -17,8 +17,6 @@
 
 package com.android.gpstest.view;
 
-import com.android.gpstest.GpsTestActivity.SectionsPagerAdapter;
-
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -51,16 +49,9 @@ public class ViewPagerMapBevelScroll extends ViewPager {
 	
 	@Override
 	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		if (v instanceof ViewPagerMapBevelScroll) {
-			switch (getCurrentItem()) {
-				case SectionsPagerAdapter.GPS_STATUS_FRAGMENT:
-					break;
-				case SectionsPagerAdapter.GPS_MAP_FRAGMENT:
-					//If we should allow the map swipe, then return false
-					return !isAllowedMapSwipe(x, dx);
-				case SectionsPagerAdapter.GPS_SKY_FRAGMENT:
-					break;					
-			}			
+		if (v instanceof ViewPagerMapBevelScroll) {	                        
+			//If we should allow the map swipe, then return false
+			return !isAllowedMapSwipe(x, dx);
 		}			
 		return super.canScroll(v, checkV, dx, x, y);
 	}		
