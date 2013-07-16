@@ -143,8 +143,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     protected void onResume() {
     	super.onResume();
     	
-    	SharedPreferences settings = Application.getPrefs();
-    	
+    	SharedPreferences settings = Application.getPrefs();    	
     	
     	if (mViewPager != null) {
     		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
