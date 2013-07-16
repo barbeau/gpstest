@@ -55,6 +55,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
     boolean mStarted;
     private Location mLastLocation;
+    String mTtff;
 
     private static GpsTestActivity sInstance;
     
@@ -88,6 +89,12 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (!mStarted) {
             mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
             mStarted = true;
+            
+            // Show the indeterminate progress bar on the action bar until first GPS status is shown
+         	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStart();
@@ -98,6 +105,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
+            // Stop progress bar
+         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStop();
@@ -132,19 +144,22 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
      	
      	setContentView(R.layout.activity_main);
-
+     	     	
      	initActionBar(savedInstanceState);
-
-   		// Hide the indeterminate progress bar on the activity until we need it
-     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+     	
+     	SharedPreferences settings = Application.getPrefs();
+    	
+    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
+    		gpsStart();
+    	}
     }
     
     @Override
     protected void onResume() {
     	super.onResume();
     	
-    	SharedPreferences settings = Application.getPrefs();    	
-    	
+    	SharedPreferences settings = Application.getPrefs();
+    	    	    	
     	if (mViewPager != null) {
     		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
     			mViewPager.setKeepScreenOn(true);
@@ -173,8 +188,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
         if (item != null) {
             if (mStarted) {
                 item.setTitle(R.string.gps_stop);
+                item.setIcon(R.drawable.av_pause);
             } else {
                 item.setTitle(R.string.gps_start);
+                item.setIcon(R.drawable.av_play);
             }
         }
 
@@ -185,7 +202,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
         item = menu.findItem(R.id.send_location);
         if (item != null) {
-            item.setEnabled(mLastLocation != null);
+            item.setVisible(mLastLocation != null);
         }
 
         return true;
@@ -202,6 +219,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	            } else {
 	                gpsStart();
 	            }
+         	
 	            return true;	
 	        case R.id.delete_aiding_data:
 	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
@@ -246,6 +264,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+        
+      	// Reset the options menu to trigger updates to action bar menu items
+      	invalidateOptionsMenu();
 
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onLocationChanged(location);
@@ -272,6 +293,27 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
+        
+        switch (event) {
+        	case GpsStatus.GPS_EVENT_STARTED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_STOPPED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_FIRST_FIX:
+	        	int ttff = mStatus.getTimeToFirstFix();
+	        	if (ttff == 0) {
+	        		mTtff = "";
+	        	} else {
+	        		ttff = (ttff + 500) / 1000;
+	        		mTtff = Integer.toString(ttff) + " sec";
+	        	} 
+	            break;	
+	        case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+	        	// Stop progress bar after the first status information is obtained
+	         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+	            break;
+        }
+          
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
