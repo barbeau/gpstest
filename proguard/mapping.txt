@@ -6527,8 +6527,7 @@ com.android.gpstest.GpsStatusFragment -> com.android.gpstest.GpsStatusFragment:
     int mUsedInFixMask -> r
     long mFixTime -> s
     boolean mNavigating -> t
-    long mGpsStartTime -> u
-    boolean mGotFix -> v
+    boolean mGotFix -> u
     java.lang.String doubleToString(double,int) -> a
     void onLocationChanged(android.location.Location) -> onLocationChanged
     void onStatusChanged(java.lang.String,int,android.os.Bundle) -> onStatusChanged
@@ -6557,19 +6556,25 @@ com.android.gpstest.GpsStatusFragment$SvGridAdapter -> com.android.gpstest.c:
     long getItemId(int) -> getItemId
     android.view.View getView(int,android.view.View,android.view.ViewGroup) -> getView
 com.android.gpstest.GpsTestActivity -> com.android.gpstest.GpsTestActivity:
-    android.location.LocationManager mService -> d
-    android.location.LocationProvider mProvider -> e
-    android.location.GpsStatus mStatus -> f
-    java.util.ArrayList mGpsTestListeners -> g
+    android.location.LocationManager mService -> g
+    android.location.LocationProvider mProvider -> h
+    android.location.GpsStatus mStatus -> i
+    java.util.ArrayList mGpsTestListeners -> j
     boolean mStarted -> a
-    android.location.Location mLastLocation -> h
-    com.android.gpstest.GpsTestActivity sInstance -> i
-    com.android.gpstest.GpsTestActivity$SectionsPagerAdapter mSectionsPagerAdapter -> b
-    com.android.gpstest.view.ViewPagerMapBevelScroll mViewPager -> c
+    android.location.Location mLastLocation -> k
+    java.lang.String mTtff -> b
+    com.android.gpstest.GpsTestActivity sInstance -> l
+    com.android.gpstest.GpsTestActivity$SectionsPagerAdapter mSectionsPagerAdapter -> c
+    com.android.gpstest.view.ViewPagerMapBevelScroll mViewPager -> d
+    com.github.espiandev.showcaseview.ShowcaseView sv -> e
+    com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions mOptions -> f
     com.android.gpstest.GpsTestActivity getInstance() -> c
     void addSubActivity(com.android.gpstest.GpsTestActivity$GpsTestListener) -> a
+    void gpsStart() -> d
+    void gpsStop() -> e
     boolean sendExtraCommand(java.lang.String) -> a
     void onCreate(android.os.Bundle) -> onCreate
+    void onResume() -> onResume
     void onDestroy() -> onDestroy
     boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu) -> onCreateOptionsMenu
     boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu) -> onPrepareOptionsMenu
@@ -6580,14 +6585,18 @@ com.android.gpstest.GpsTestActivity -> com.android.gpstest.GpsTestActivity:
     void onProviderDisabled(java.lang.String) -> onProviderDisabled
     void onGpsStatusChanged(int) -> onGpsStatusChanged
     void onTabSelected$c8718ff(com.actionbarsherlock.app.ActionBar$Tab) -> a
+    void access$0(com.android.gpstest.GpsTestActivity) -> a
 com.android.gpstest.GpsTestActivity$1 -> com.android.gpstest.d:
+    com.android.gpstest.GpsTestActivity this$0 -> a
+    void run() -> run
+com.android.gpstest.GpsTestActivity$2 -> com.android.gpstest.e:
     com.android.gpstest.GpsTestActivity this$0 -> a
     com.actionbarsherlock.app.ActionBar val$actionBar -> b
     void onPageSelected(int) -> onPageSelected
-com.android.gpstest.GpsTestActivity$GpsTestListener -> com.android.gpstest.e:
+com.android.gpstest.GpsTestActivity$GpsTestListener -> com.android.gpstest.f:
     void gpsStart() -> a
     void onGpsStatusChanged(int,android.location.GpsStatus) -> a
-com.android.gpstest.GpsTestActivity$SectionsPagerAdapter -> com.android.gpstest.f:
+com.android.gpstest.GpsTestActivity$SectionsPagerAdapter -> com.android.gpstest.g:
     android.support.v4.app.Fragment gpsStatus -> a
     android.support.v4.app.Fragment gpsMap -> b
     android.support.v4.app.Fragment gpsSky -> c
@@ -6596,11 +6605,110 @@ com.android.gpstest.GpsTestActivity$SectionsPagerAdapter -> com.android.gpstest.
     int getCount() -> getCount
     java.lang.CharSequence getPageTitle(int) -> getPageTitle
 com.android.gpstest.Preferences -> com.android.gpstest.Preferences:
+    android.preference.Preference showTutorial -> a
     void onCreate(android.os.Bundle) -> onCreate
+com.android.gpstest.Preferences$1 -> com.android.gpstest.h:
+    com.android.gpstest.Preferences this$0 -> a
+    boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
 com.android.gpstest.view.ViewPagerMapBevelScroll -> com.android.gpstest.view.ViewPagerMapBevelScroll:
     int swipeMarginWidth -> a
     void setDefaultSwipeMargin(android.content.Context) -> a
     boolean canScroll(android.view.View,boolean,int,int,int) -> canScroll
+com.github.espiandev.showcaseview.R -> com.github.espiandev.showcaseview.a:
+com.github.espiandev.showcaseview.R$attr -> com.github.espiandev.showcaseview.b:
+    int showcaseViewStyle -> a
+com.github.espiandev.showcaseview.R$drawable -> com.github.espiandev.showcaseview.c:
+    int cling -> a
+com.github.espiandev.showcaseview.R$layout -> com.github.espiandev.showcaseview.d:
+    int showcase_button -> a
+com.github.espiandev.showcaseview.R$string -> com.github.espiandev.showcaseview.e:
+    int ok -> a
+com.github.espiandev.showcaseview.R$style -> com.github.espiandev.showcaseview.f:
+    int ShowcaseView -> a
+com.github.espiandev.showcaseview.R$styleable -> com.github.espiandev.showcaseview.g:
+    int[] CustomTheme -> a
+    int[] ShowcaseView -> b
+com.github.espiandev.showcaseview.ShowcaseView -> com.github.espiandev.showcaseview.ShowcaseView:
+    float showcaseX -> a
+    float showcaseY -> b
+    float showcaseRadius -> c
+    float metricScale -> d
+    float legacyShowcaseX -> e
+    float legacyShowcaseY -> f
+    boolean isRedundant -> g
+    boolean hasCustomClickListener -> h
+    com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions mOptions -> i
+    android.graphics.Paint mPaintTitle -> j
+    android.graphics.Paint mEraser -> k
+    android.text.TextPaint mPaintDetail -> l
+    int backColor -> m
+    android.graphics.drawable.Drawable showcase -> n
+    android.widget.Button mEndButton -> o
+    com.github.espiandev.showcaseview.ShowcaseView$OnShowcaseEventListener mEventListener -> p
+    android.graphics.Rect voidedArea -> q
+    java.lang.String mTitleText -> r
+    java.lang.String mSubText -> s
+    int detailTextColor -> t
+    int titleTextColor -> u
+    android.text.DynamicLayout mDynamicDetailLayout -> v
+    float[] mBestTextPosition -> w
+    boolean mAlteredText -> x
+    java.lang.String buttonText -> y
+    float scaleMultiplier -> z
+    void setShowcaseView(android.view.View) -> a
+    void dispatchDraw(android.graphics.Canvas) -> dispatchDraw
+    void onClick(android.view.View) -> onClick
+    void hide() -> b
+    void show() -> a
+    boolean onTouch(android.view.View,android.view.MotionEvent) -> onTouch
+    com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions getConfigOptions() -> c
+    com.github.espiandev.showcaseview.ShowcaseView insertShowcaseViewWithType$f12e499(android.app.Activity,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions) -> a
+    void access$0(com.github.espiandev.showcaseview.ShowcaseView) -> a
+    com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions access$1(com.github.espiandev.showcaseview.ShowcaseView) -> b
+    void access$2(com.github.espiandev.showcaseview.ShowcaseView,float) -> a
+    void access$3(com.github.espiandev.showcaseview.ShowcaseView,float) -> b
+    void access$4(com.github.espiandev.showcaseview.ShowcaseView,android.view.ViewParent,java.lang.Class) -> a
+    void access$5(com.github.espiandev.showcaseview.ShowcaseView,android.view.ViewParent,java.lang.Class) -> b
+    void access$6(com.github.espiandev.showcaseview.ShowcaseView,android.view.ViewParent,java.lang.Class,int,int) -> a
+com.github.espiandev.showcaseview.ShowcaseView$1 -> com.github.espiandev.showcaseview.h:
+    com.github.espiandev.showcaseview.ShowcaseView this$0 -> a
+    android.view.View val$view -> b
+    void run() -> run
+com.github.espiandev.showcaseview.ShowcaseView$2 -> com.github.espiandev.showcaseview.i:
+    com.github.espiandev.showcaseview.ShowcaseView this$0 -> a
+    android.app.Activity val$activity -> b
+    int val$itemType -> c
+    int val$actionItemId -> d
+    void run() -> run
+com.github.espiandev.showcaseview.ShowcaseView$4 -> com.github.espiandev.showcaseview.j:
+    com.github.espiandev.showcaseview.ShowcaseView this$0 -> a
+    void onAnimationEnd() -> a
+com.github.espiandev.showcaseview.ShowcaseView$5 -> com.github.espiandev.showcaseview.k:
+    com.github.espiandev.showcaseview.ShowcaseView this$0 -> a
+    void onAnimationStart() -> a
+com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions -> com.github.espiandev.showcaseview.l:
+    boolean block -> a
+    boolean noButton -> b
+    int showcaseId -> c
+    int shotType -> d
+    int insert -> e
+    boolean hideOnClickOutside -> f
+com.github.espiandev.showcaseview.ShowcaseView$OnShowcaseEventListener -> com.github.espiandev.showcaseview.m:
+com.github.espiandev.showcaseview.anim.AnimationUtils -> com.github.espiandev.showcaseview.a.a:
+    com.nineoldandroids.animation.ObjectAnimator createFadeInAnimation$737a2d6b(java.lang.Object,com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationStartListener) -> a
+    com.nineoldandroids.animation.ObjectAnimator createFadeOutAnimation$6450ba24(java.lang.Object,com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationEndListener) -> a
+com.github.espiandev.showcaseview.anim.AnimationUtils$1 -> com.github.espiandev.showcaseview.a.b:
+    com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationStartListener val$listener -> a
+    void onAnimationStart$329bd0d2() -> a
+    void onAnimationEnd$329bd0d2() -> b
+com.github.espiandev.showcaseview.anim.AnimationUtils$2 -> com.github.espiandev.showcaseview.a.c:
+    com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationEndListener val$listener -> a
+    void onAnimationStart$329bd0d2() -> a
+    void onAnimationEnd$329bd0d2() -> b
+com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationEndListener -> com.github.espiandev.showcaseview.a.d:
+    void onAnimationEnd() -> a
+com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationStartListener -> com.github.espiandev.showcaseview.a.e:
+    void onAnimationStart() -> a
 com.google.android.gms.R -> com.google.android.gms.a:
 com.google.android.gms.R$color -> com.google.android.gms.b:
     int common_signin_btn_text_dark -> a
@@ -9170,3 +9278,305 @@ com.google.android.gms.plus.model.people.Person$Name -> com.google.android.gms.p
 com.google.android.gms.plus.model.people.Person$Organizations -> com.google.android.gms.plus.a.b.i:
 com.google.android.gms.plus.model.people.Person$PlacesLived -> com.google.android.gms.plus.a.b.j:
 com.google.android.gms.plus.model.people.Person$Urls -> com.google.android.gms.plus.a.b.k:
+com.nineoldandroids.animation.Animator -> com.a.a.a:
+    java.util.ArrayList mListeners -> a
+    void start() -> a
+    void addListener(com.nineoldandroids.animation.Animator$AnimatorListener) -> a
+    com.nineoldandroids.animation.Animator clone() -> b
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.Animator$AnimatorListener -> com.a.a.b:
+    void onAnimationStart$329bd0d2() -> a
+    void onAnimationEnd$329bd0d2() -> b
+com.nineoldandroids.animation.FloatEvaluator -> com.a.a.c:
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.FloatKeyframeSet -> com.a.a.d:
+    float firstValue -> g
+    float lastValue -> h
+    float deltaValue -> i
+    boolean firstTime -> j
+    java.lang.Object getValue(float) -> a
+    com.nineoldandroids.animation.FloatKeyframeSet clone() -> b
+    float getFloatValue(float) -> b
+    com.nineoldandroids.animation.KeyframeSet clone() -> a
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.IntEvaluator -> com.a.a.e:
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.Keyframe -> com.a.a.f:
+    float mFraction -> a
+    java.lang.Class mValueType -> b
+    android.view.animation.Interpolator mInterpolator -> d
+    boolean mHasValue -> c
+    com.nineoldandroids.animation.Keyframe ofFloat(float,float) -> a
+    java.lang.Object getValue() -> a
+    void setValue(java.lang.Object) -> a
+    float getFraction() -> b
+    android.view.animation.Interpolator getInterpolator() -> c
+    void setInterpolator(android.view.animation.Interpolator) -> a
+    com.nineoldandroids.animation.Keyframe clone() -> d
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.Keyframe$FloatKeyframe -> com.a.a.g:
+    float mValue -> d
+    float getFloatValue() -> e
+    java.lang.Object getValue() -> a
+    void setValue(java.lang.Object) -> a
+    com.nineoldandroids.animation.Keyframe$FloatKeyframe clone() -> f
+    com.nineoldandroids.animation.Keyframe clone() -> d
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.KeyframeSet -> com.a.a.h:
+    int mNumKeyframes -> a
+    com.nineoldandroids.animation.Keyframe mFirstKeyframe -> b
+    com.nineoldandroids.animation.Keyframe mLastKeyframe -> c
+    android.view.animation.Interpolator mInterpolator -> d
+    java.util.ArrayList mKeyframes -> e
+    com.nineoldandroids.animation.TypeEvaluator mEvaluator -> f
+    com.nineoldandroids.animation.KeyframeSet clone() -> a
+    java.lang.Object getValue(float) -> a
+    java.lang.String toString() -> toString
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.ObjectAnimator -> com.a.a.i:
+    java.util.Map PROXY_PROPERTIES -> h
+    java.lang.Object mTarget -> i
+    java.lang.String mPropertyName -> j
+    com.nineoldandroids.util.Property mProperty -> k
+    com.nineoldandroids.animation.ObjectAnimator ofFloat(java.lang.Object,java.lang.String,float[]) -> a
+    void setFloatValues(float[]) -> a
+    void start() -> a
+    void initAnimation() -> c
+    com.nineoldandroids.animation.ObjectAnimator setDuration$c8c7cc1() -> d
+    void animateValue(float) -> a
+    java.lang.String toString() -> toString
+    com.nineoldandroids.animation.ValueAnimator clone() -> e
+    com.nineoldandroids.animation.ValueAnimator setDuration(long) -> a
+    com.nineoldandroids.animation.Animator clone() -> b
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.PreHoneycombCompat -> com.a.a.j:
+    com.nineoldandroids.util.Property ALPHA -> a
+    com.nineoldandroids.util.Property PIVOT_X -> b
+    com.nineoldandroids.util.Property PIVOT_Y -> c
+    com.nineoldandroids.util.Property TRANSLATION_X -> d
+    com.nineoldandroids.util.Property TRANSLATION_Y -> e
+    com.nineoldandroids.util.Property ROTATION -> f
+    com.nineoldandroids.util.Property ROTATION_X -> g
+    com.nineoldandroids.util.Property ROTATION_Y -> h
+    com.nineoldandroids.util.Property SCALE_X -> i
+    com.nineoldandroids.util.Property SCALE_Y -> j
+    com.nineoldandroids.util.Property SCROLL_X -> k
+    com.nineoldandroids.util.Property SCROLL_Y -> l
+    com.nineoldandroids.util.Property X -> m
+    com.nineoldandroids.util.Property Y -> n
+com.nineoldandroids.animation.PreHoneycombCompat$1 -> com.a.a.k:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$10 -> com.a.a.l:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$11 -> com.a.a.m:
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$12 -> com.a.a.n:
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$13 -> com.a.a.o:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$14 -> com.a.a.p:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$2 -> com.a.a.q:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$3 -> com.a.a.r:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$4 -> com.a.a.s:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$5 -> com.a.a.t:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$6 -> com.a.a.u:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$7 -> com.a.a.v:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$8 -> com.a.a.w:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PreHoneycombCompat$9 -> com.a.a.x:
+    void setValue(java.lang.Object,float) -> a
+    java.lang.Object get(java.lang.Object) -> a
+com.nineoldandroids.animation.PropertyValuesHolder -> com.a.a.y:
+    java.lang.String mPropertyName -> a
+    com.nineoldandroids.util.Property mProperty -> b
+    java.lang.reflect.Method mSetter -> c
+    java.lang.reflect.Method mGetter -> h
+    java.lang.Class mValueType -> d
+    com.nineoldandroids.animation.KeyframeSet mKeyframeSet -> e
+    com.nineoldandroids.animation.TypeEvaluator sIntEvaluator -> i
+    com.nineoldandroids.animation.TypeEvaluator sFloatEvaluator -> j
+    java.lang.Class[] FLOAT_VARIANTS -> k
+    java.lang.Class[] INTEGER_VARIANTS -> l
+    java.lang.Class[] DOUBLE_VARIANTS -> m
+    java.util.HashMap sSetterPropertyMap -> n
+    java.util.HashMap sGetterPropertyMap -> o
+    java.util.concurrent.locks.ReentrantReadWriteLock mPropertyMapLock -> f
+    java.lang.Object[] mTmpValueArray -> g
+    com.nineoldandroids.animation.TypeEvaluator mEvaluator -> p
+    java.lang.Object mAnimatedValue -> q
+    com.nineoldandroids.animation.PropertyValuesHolder ofFloat(java.lang.String,float[]) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder ofFloat(com.nineoldandroids.util.Property,float[]) -> a
+    void setFloatValues(float[]) -> a
+    java.lang.reflect.Method getPropertyFunction(java.lang.Class,java.lang.String,java.lang.Class) -> a
+    java.lang.reflect.Method setupSetterOrGetter(java.lang.Class,java.util.HashMap,java.lang.String,java.lang.Class) -> a
+    void setupSetter(java.lang.Class) -> a
+    void setupSetterAndGetter(java.lang.Object) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder clone() -> a
+    void setAnimatedValue(java.lang.Object) -> b
+    void init() -> b
+    void calculateValue(float) -> a
+    void setPropertyName(java.lang.String) -> a
+    void setProperty(com.nineoldandroids.util.Property) -> a
+    java.lang.String getPropertyName() -> c
+    java.lang.Object getAnimatedValue() -> d
+    java.lang.String toString() -> toString
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder -> com.a.a.z:
+    com.nineoldandroids.util.FloatProperty mFloatProperty -> j
+    com.nineoldandroids.animation.FloatKeyframeSet mFloatKeyframeSet -> h
+    float mFloatAnimatedValue -> i
+    void setFloatValues(float[]) -> a
+    void calculateValue(float) -> a
+    java.lang.Object getAnimatedValue() -> d
+    com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder clone() -> e
+    void setAnimatedValue(java.lang.Object) -> b
+    void setupSetter(java.lang.Class) -> a
+    com.nineoldandroids.animation.PropertyValuesHolder clone() -> a
+    java.lang.Object clone() -> clone
+com.nineoldandroids.animation.TypeEvaluator -> com.a.a.aa:
+    java.lang.Object evaluate(float,java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.animation.ValueAnimator -> com.a.a.ab:
+    long mStartTime -> b
+    long mSeekTime -> c
+    java.lang.ThreadLocal sAnimationHandler -> h
+    java.lang.ThreadLocal sAnimations -> i
+    java.lang.ThreadLocal sPendingAnimations -> j
+    java.lang.ThreadLocal sDelayedAnims -> k
+    java.lang.ThreadLocal sEndingAnims -> l
+    java.lang.ThreadLocal sReadyAnims -> m
+    android.view.animation.Interpolator sDefaultInterpolator -> n
+    com.nineoldandroids.animation.TypeEvaluator sIntEvaluator -> o
+    com.nineoldandroids.animation.TypeEvaluator sFloatEvaluator -> p
+    boolean mPlayingBackwards -> q
+    int mCurrentIteration -> r
+    float mCurrentFraction -> s
+    boolean mStartedDelay -> t
+    long mDelayStartTime -> u
+    int mPlayingState -> d
+    boolean mRunning -> v
+    boolean mStarted -> w
+    boolean mInitialized -> e
+    long mDuration -> x
+    long mStartDelay -> y
+    long sFrameDelay -> z
+    int mRepeatCount -> A
+    int mRepeatMode -> B
+    android.view.animation.Interpolator mInterpolator -> C
+    java.util.ArrayList mUpdateListeners -> D
+    com.nineoldandroids.animation.PropertyValuesHolder[] mValues -> f
+    java.util.HashMap mValuesMap -> g
+    void setFloatValues(float[]) -> a
+    void setValues(com.nineoldandroids.animation.PropertyValuesHolder[]) -> a
+    void initAnimation() -> c
+    com.nineoldandroids.animation.ValueAnimator setDuration(long) -> a
+    void setCurrentPlayTime(long) -> c
+    void start() -> a
+    boolean animationFrame(long) -> b
+    void animateValue(float) -> a
+    com.nineoldandroids.animation.ValueAnimator clone() -> e
+    java.lang.String toString() -> toString
+    com.nineoldandroids.animation.Animator clone() -> b
+    java.lang.Object clone() -> clone
+    java.lang.ThreadLocal access$000() -> f
+    java.lang.ThreadLocal access$100() -> g
+    java.lang.ThreadLocal access$200() -> h
+    long access$300(com.nineoldandroids.animation.ValueAnimator) -> a
+    void access$400(com.nineoldandroids.animation.ValueAnimator) -> b
+    java.lang.ThreadLocal access$500() -> i
+    java.lang.ThreadLocal access$600() -> j
+    boolean access$700(com.nineoldandroids.animation.ValueAnimator,long) -> a
+    boolean access$802$15bf748b(com.nineoldandroids.animation.ValueAnimator) -> c
+    void access$900(com.nineoldandroids.animation.ValueAnimator) -> d
+    long access$1000() -> k
+com.nineoldandroids.animation.ValueAnimator$1 -> com.a.a.ac:
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$2 -> com.a.a.ad:
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$3 -> com.a.a.ae:
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$4 -> com.a.a.af:
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$5 -> com.a.a.ag:
+    java.lang.Object initialValue() -> initialValue
+com.nineoldandroids.animation.ValueAnimator$AnimationHandler -> com.a.a.ah:
+    void handleMessage(android.os.Message) -> handleMessage
+com.nineoldandroids.util.FloatProperty -> com.a.b.a:
+    void setValue(java.lang.Object,float) -> a
+    void set(java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.util.IntProperty -> com.a.b.b:
+    void set(java.lang.Object,java.lang.Object) -> a
+com.nineoldandroids.util.Property -> com.a.b.c:
+    java.lang.String mName -> a
+    java.lang.Class mType -> b
+    void set(java.lang.Object,java.lang.Object) -> a
+    java.lang.Object get(java.lang.Object) -> a
+    java.lang.String getName() -> a
+com.nineoldandroids.view.animation.AnimatorProxy -> com.a.c.a.a:
+    boolean NEEDS_PROXY -> a
+    java.util.WeakHashMap PROXIES -> b
+    java.lang.ref.WeakReference mView -> c
+    android.graphics.Camera mCamera -> d
+    boolean mHasPivot -> e
+    float mAlpha -> f
+    float mPivotX -> g
+    float mPivotY -> h
+    float mRotationX -> i
+    float mRotationY -> j
+    float mRotationZ -> k
+    float mScaleX -> l
+    float mScaleY -> m
+    float mTranslationX -> n
+    float mTranslationY -> o
+    android.graphics.RectF mBefore -> p
+    android.graphics.RectF mAfter -> q
+    android.graphics.Matrix mTempMatrix -> r
+    com.nineoldandroids.view.animation.AnimatorProxy wrap(android.view.View) -> a
+    float getAlpha() -> a
+    void setAlpha(float) -> a
+    float getPivotX() -> b
+    void setPivotX(float) -> b
+    float getPivotY() -> c
+    void setPivotY(float) -> c
+    float getRotation() -> d
+    void setRotation(float) -> d
+    float getRotationX() -> e
+    void setRotationX(float) -> e
+    float getRotationY() -> f
+    void setRotationY(float) -> f
+    float getScaleX() -> g
+    void setScaleX(float) -> g
+    float getScaleY() -> h
+    void setScaleY(float) -> h
+    int getScrollX() -> i
+    int getScrollY() -> j
+    float getTranslationX() -> k
+    void setTranslationX(float) -> i
+    float getTranslationY() -> l
+    void setTranslationY(float) -> j
+    float getX() -> m
+    void setX(float) -> k
+    float getY() -> n
+    void setY(float) -> l
+    void prepareForUpdate() -> o
+    void invalidateAfterUpdate() -> p
+    void computeRect(android.graphics.RectF,android.view.View) -> a
+    void transformMatrix(android.graphics.Matrix,android.view.View) -> a
+    void applyTransformation(float,android.view.animation.Transformation) -> applyTransformation

@@ -28,6 +28,9 @@
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>
     
+    <string name="pref_key_about_category">about_category</string>
+    <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
+    
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>

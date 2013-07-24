@@ -4526,6 +4526,10 @@ com.android.gpstest.Preferences: Preferences()
 com.android.gpstest.view.ViewPagerMapBevelScroll
 com.android.gpstest.view.ViewPagerMapBevelScroll: ViewPagerMapBevelScroll(android.content.Context)
 com.android.gpstest.view.ViewPagerMapBevelScroll: ViewPagerMapBevelScroll(android.content.Context,android.util.AttributeSet)
+com.github.espiandev.showcaseview.ShowcaseView
+com.github.espiandev.showcaseview.ShowcaseView: ShowcaseView(android.content.Context)
+com.github.espiandev.showcaseview.ShowcaseView: ShowcaseView(android.content.Context,android.util.AttributeSet)
+com.github.espiandev.showcaseview.ShowcaseView: ShowcaseView(android.content.Context,android.util.AttributeSet,int)
 com.google.android.gms.common.SignInButton
 com.google.android.gms.common.SignInButton: SignInButton(android.content.Context,android.util.AttributeSet)
 com.google.android.gms.common.SignInButton: SignInButton(android.content.Context,android.util.AttributeSet,int)

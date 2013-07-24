@@ -1439,8 +1439,8 @@ com.android.gpstest.GpsStatusFragment:
     private static final int FLAGS_COLUMN
     private static final int COLUMN_COUNT
     private static final java.lang.String EMPTY_LAT_LONG
-    286:287:public void onGpsStarted()
-    290:291:public void onGpsStopped()
+    284:285:public void onGpsStarted()
+    288:289:public void onGpsStopped()
 com.android.gpstest.GpsTestActivity:
     private static final java.lang.String TAG
 com.android.gpstest.GpsTestActivity$SectionsPagerAdapter:
@@ -1467,6 +1467,106 @@ com.android.gpstest.R$styleable
 com.android.gpstest.R$xml
 com.android.gpstest.view.ViewPagerMapBevelScroll:
     private static final int DEFAULT_SWIPE_MARGIN_WIDTH_DIP
+com.github.espiandev.showcaseview.R:
+    9:9:public R()
+com.github.espiandev.showcaseview.R$attr:
+    public static final int sv_backgroundColor
+    public static final int sv_buttonBackgroundColor
+    public static final int sv_buttonForegroundColor
+    public static final int sv_buttonText
+    public static final int sv_detailTextColor
+    public static final int sv_titleTextColor
+    10:10:public R$attr()
+com.github.espiandev.showcaseview.R$drawable:
+    public static final int btn_cling_normal
+    public static final int btn_cling_pressed
+    public static final int cling_button_bg
+    public static final int hand
+    public static final int ic_launcher
+    19:19:public R$drawable()
+com.github.espiandev.showcaseview.R$id
+com.github.espiandev.showcaseview.R$layout:
+    public static final int handy
+    32:32:public R$layout()
+com.github.espiandev.showcaseview.R$string:
+    36:36:public R$string()
+com.github.espiandev.showcaseview.R$style:
+    public static final int ShowcaseButton
+    public static final int ShowcaseText
+    public static final int ShowcaseTitleText
+    public static final int ShowcaseView_Light
+    39:39:public R$style()
+com.github.espiandev.showcaseview.R$styleable:
+    public static final int CustomTheme_showcaseViewStyle
+    public static final int ShowcaseView_sv_backgroundColor
+    public static final int ShowcaseView_sv_buttonBackgroundColor
+    public static final int ShowcaseView_sv_buttonForegroundColor
+    public static final int ShowcaseView_sv_buttonText
+    public static final int ShowcaseView_sv_detailTextColor
+    public static final int ShowcaseView_sv_titleTextColor
+    46:46:public R$styleable()
+com.github.espiandev.showcaseview.ShowcaseView:
+    public static final int TYPE_NO_LIMIT
+    public static final int TYPE_ONE_SHOT
+    public static final int INSERT_TO_DECOR
+    public static final int INSERT_TO_VIEW
+    public static final int ITEM_ACTION_HOME
+    public static final int ITEM_TITLE
+    public static final int ITEM_SPINNER
+    public static final int ITEM_ACTION_ITEM
+    public static final int ITEM_ACTION_OVERFLOW
+    private static final java.lang.String PREFS_SHOWCASE_INTERNAL
+    public static final int INNER_CIRCLE_RADIUS
+    private android.view.View mHandy
+    private android.text.DynamicLayout mDynamicTitleLayout
+    188:195:public void setShowcasePosition(float,float)
+    334:337:public void setShotType(int)
+    347:348:public void blockNonShowcasedTouches(boolean)
+    356:363:public void overrideButtonClick(android.view.View$OnClickListener)
+    366:367:public void setOnShowcaseEventListener(com.github.espiandev.showcaseview.ShowcaseView$OnShowcaseEventListener)
+    483:491:public void animateGesture(float,float,float,float)
+    494:498:private void moveHand(float,float,float,float,com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationEndListener)
+    570:571:public void setShowcaseIndicatorScale(float)
+    582:591:public com.github.espiandev.showcaseview.ShowcaseView setTextColors(int,int)
+    613:617:public android.view.View getHand()
+    626:629:public void pointTo(android.view.View)
+    638:639:public void pointTo(float,float)
+    663:673:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(android.view.View,android.app.Activity,java.lang.String,java.lang.String,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    688:698:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(android.view.View,android.app.Activity,int,int,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    703:707:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(int,android.app.Activity,java.lang.String,java.lang.String,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    712:716:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(int,android.app.Activity,int,int,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    721:731:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(float,float,android.app.Activity,java.lang.String,java.lang.String,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    736:746:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(float,float,android.app.Activity,int,int,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    750:750:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(android.view.View,android.app.Activity)
+    765:775:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseViewWithType(int,int,android.app.Activity,java.lang.String,java.lang.String,com.github.espiandev.showcaseview.ShowcaseView$ConfigOptions)
+    804:804:public static com.github.espiandev.showcaseview.ShowcaseView insertShowcaseView(float,float,android.app.Activity)
+    60:60:static synthetic android.view.View access$7(com.github.espiandev.showcaseview.ShowcaseView)
+com.github.espiandev.showcaseview.ShowcaseView$3
+com.github.espiandev.showcaseview.ShowcaseViewBuilder
+com.github.espiandev.showcaseview.ShowcaseViews
+com.github.espiandev.showcaseview.ShowcaseViews$1
+com.github.espiandev.showcaseview.ShowcaseViews$2
+com.github.espiandev.showcaseview.ShowcaseViews$ItemViewProperties
+com.github.espiandev.showcaseview.ShowcaseViews$OnShowcaseAcknowledged
+com.github.espiandev.showcaseview.anim.AnimationUtils:
+    private static final int DEFAULT_DURATION
+    private static final java.lang.String ALPHA
+    private static final float INVISIBLE
+    private static final float VISIBLE
+    private static final java.lang.String COORD_X
+    private static final java.lang.String COORD_Y
+    private static final int INSTANT
+    11:11:public AnimationUtils()
+    30:30:public static float getX(android.view.View)
+    34:34:public static float getY(android.view.View)
+    38:39:public static void hide(android.view.View)
+    99:126:public static com.nineoldandroids.animation.AnimatorSet createMovementAnimation(android.view.View,float,float,float,float,float,float,com.github.espiandev.showcaseview.anim.AnimationUtils$AnimationEndListener)
+    130:137:public static com.nineoldandroids.animation.AnimatorSet createMovementAnimation(android.view.View,float,float)
+com.github.espiandev.showcaseview.anim.AnimationUtils$1:
+    59:59:public void onAnimationCancel(com.nineoldandroids.animation.Animator)
+com.github.espiandev.showcaseview.anim.AnimationUtils$2:
+    86:86:public void onAnimationCancel(com.nineoldandroids.animation.Animator)
+com.github.espiandev.showcaseview.anim.AnimationUtils$3
 com.google.android.gms.R:
     9:9:public R()
 com.google.android.gms.R$attr
@@ -2864,3 +2964,159 @@ com.google.android.gms.plus.model.people.Person$Urls:
     public abstract boolean hasValue()
 com.google.android.gms.plus.model.people.Person$Urls$Type
 com.google.android.gms.plus.model.people.PersonBuffer
+com.nineoldandroids.animation.Animator:
+    61:61:public void cancel()
+    72:72:public void end()
+    public abstract long getStartDelay()
+    public abstract void setStartDelay(long)
+    public abstract com.nineoldandroids.animation.Animator setDuration(long)
+    public abstract long getDuration()
+    public abstract void setInterpolator(android.view.animation.Interpolator)
+    public abstract boolean isRunning()
+    135:135:public boolean isStarted()
+    158:165:public void removeListener(com.nineoldandroids.animation.Animator$AnimatorListener)
+    174:174:public java.util.ArrayList getListeners()
+    183:187:public void removeAllListeners()
+    217:217:public void setupStartValues()
+    229:229:public void setupEndValues()
+    240:240:public void setTarget(java.lang.Object)
+com.nineoldandroids.animation.Animator$AnimatorListener:
+    public abstract void onAnimationCancel(com.nineoldandroids.animation.Animator)
+com.nineoldandroids.animation.AnimatorInflater
+com.nineoldandroids.animation.AnimatorListenerAdapter
+com.nineoldandroids.animation.AnimatorSet
+com.nineoldandroids.animation.AnimatorSet$1
+com.nineoldandroids.animation.AnimatorSet$AnimatorSetListener
+com.nineoldandroids.animation.AnimatorSet$Builder
+com.nineoldandroids.animation.AnimatorSet$Dependency
+com.nineoldandroids.animation.AnimatorSet$DependencyListener
+com.nineoldandroids.animation.AnimatorSet$Node
+com.nineoldandroids.animation.ArgbEvaluator
+com.nineoldandroids.animation.IntKeyframeSet
+com.nineoldandroids.animation.Keyframe:
+    76:76:public static com.nineoldandroids.animation.Keyframe ofInt(float,int)
+    92:92:public static com.nineoldandroids.animation.Keyframe ofInt(float)
+    140:140:public static com.nineoldandroids.animation.Keyframe ofObject(float,java.lang.Object)
+    156:156:public static com.nineoldandroids.animation.Keyframe ofObject(float)
+    201:202:public void setFraction(float)
+    232:232:public java.lang.Class getType()
+com.nineoldandroids.animation.Keyframe$IntKeyframe
+com.nineoldandroids.animation.Keyframe$ObjectKeyframe
+com.nineoldandroids.animation.KeyframeSet:
+    54:65:public static varargs com.nineoldandroids.animation.KeyframeSet ofInt(int[])
+    85:111:public static varargs com.nineoldandroids.animation.KeyframeSet ofKeyframe(com.nineoldandroids.animation.Keyframe[])
+    116:127:public static varargs com.nineoldandroids.animation.KeyframeSet ofObject(java.lang.Object[])
+com.nineoldandroids.animation.ObjectAnimator:
+    private static final boolean DBG
+    142:142:public java.lang.String getPropertyName()
+    173:176:private ObjectAnimator(java.lang.Object,com.nineoldandroids.util.Property)
+    193:195:public static varargs com.nineoldandroids.animation.ObjectAnimator ofInt(java.lang.Object,java.lang.String,int[])
+    211:213:public static varargs com.nineoldandroids.animation.ObjectAnimator ofInt(java.lang.Object,com.nineoldandroids.util.Property,int[])
+    250:252:public static varargs com.nineoldandroids.animation.ObjectAnimator ofFloat(java.lang.Object,com.nineoldandroids.util.Property,float[])
+    274:277:public static varargs com.nineoldandroids.animation.ObjectAnimator ofObject(java.lang.Object,java.lang.String,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    297:300:public static varargs com.nineoldandroids.animation.ObjectAnimator ofObject(java.lang.Object,com.nineoldandroids.util.Property,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    322:325:public static varargs com.nineoldandroids.animation.ObjectAnimator ofPropertyValuesHolder(java.lang.Object,com.nineoldandroids.animation.PropertyValuesHolder[])
+    330:341:public varargs void setIntValues(int[])
+    360:371:public varargs void setObjectValues(java.lang.Object[])
+    438:438:public java.lang.Object getTarget()
+    448:457:public void setTarget(java.lang.Object)
+    461:466:public void setupStartValues()
+    470:475:public void setupEndValues()
+    39:39:public bridge synthetic com.nineoldandroids.animation.Animator setDuration(long)
+com.nineoldandroids.animation.PreHoneycombCompat:
+    167:167:private PreHoneycombCompat()
+com.nineoldandroids.animation.PreHoneycombCompat$11:
+    123:124:public void setValue(android.view.View,int)
+    120:120:public bridge synthetic void setValue(java.lang.Object,int)
+com.nineoldandroids.animation.PreHoneycombCompat$12:
+    134:135:public void setValue(android.view.View,int)
+    131:131:public bridge synthetic void setValue(java.lang.Object,int)
+com.nineoldandroids.animation.PropertyValuesHolder:
+    154:154:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofInt(java.lang.String,int[])
+    165:165:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofInt(com.nineoldandroids.util.Property,int[])
+    204:207:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofObject(java.lang.String,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    224:227:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofObject(com.nineoldandroids.util.Property,com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    250:260:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofKeyframe(java.lang.String,com.nineoldandroids.animation.Keyframe[])
+    281:291:public static varargs com.nineoldandroids.animation.PropertyValuesHolder ofKeyframe(com.nineoldandroids.util.Property,com.nineoldandroids.animation.Keyframe[])
+    309:311:public varargs void setIntValues(int[])
+    337:344:public varargs void setKeyframes(com.nineoldandroids.animation.Keyframe[])
+    360:362:public varargs void setObjectValues(java.lang.Object[])
+    551:565:private void setupValue(java.lang.Object,com.nineoldandroids.animation.Keyframe)
+    576:577:void setupStartValue(java.lang.Object)
+    588:589:void setupEndValue(java.lang.Object)
+    659:661:public void setEvaluator(com.nineoldandroids.animation.TypeEvaluator)
+com.nineoldandroids.animation.PropertyValuesHolder$FloatPropertyValuesHolder:
+    901:905:public PropertyValuesHolder$FloatPropertyValuesHolder(java.lang.String,com.nineoldandroids.animation.FloatKeyframeSet)
+    908:915:public PropertyValuesHolder$FloatPropertyValuesHolder(com.nineoldandroids.util.Property,com.nineoldandroids.animation.FloatKeyframeSet)
+com.nineoldandroids.animation.PropertyValuesHolder$IntPropertyValuesHolder
+com.nineoldandroids.animation.TimeAnimator
+com.nineoldandroids.animation.TimeAnimator$TimeListener
+com.nineoldandroids.animation.ValueAnimator:
+    private static final long DEFAULT_FRAME_DELAY
+    static final int ANIMATION_START
+    static final int ANIMATION_FRAME
+    static final int STOPPED
+    static final int RUNNING
+    static final int SEEKED
+    public static final int RESTART
+    public static final int REVERSE
+    public static final int INFINITE
+    298:300:public static varargs com.nineoldandroids.animation.ValueAnimator ofInt(int[])
+    315:317:public static varargs com.nineoldandroids.animation.ValueAnimator ofFloat(float[])
+    329:331:public static varargs com.nineoldandroids.animation.ValueAnimator ofPropertyValuesHolder(com.nineoldandroids.animation.PropertyValuesHolder[])
+    352:355:public static varargs com.nineoldandroids.animation.ValueAnimator ofObject(com.nineoldandroids.animation.TypeEvaluator,java.lang.Object[])
+    373:384:public varargs void setIntValues(int[])
+    433:445:public varargs void setObjectValues(java.lang.Object[])
+    476:476:public com.nineoldandroids.animation.PropertyValuesHolder[] getValues()
+    524:524:public long getDuration()
+    692:692:public long getStartDelay()
+    702:703:public void setStartDelay(long)
+    715:715:public static long getFrameDelay()
+    728:729:public static void setFrameDelay(long)
+    744:748:public java.lang.Object getAnimatedValue()
+    762:767:public java.lang.Object getAnimatedValue(java.lang.String)
+    780:781:public void setRepeatCount(int)
+    789:789:public int getRepeatCount()
+    800:801:public void setRepeatMode(int)
+    809:809:public int getRepeatMode()
+    820:824:public void addUpdateListener(com.nineoldandroids.animation.ValueAnimator$AnimatorUpdateListener)
+    830:835:public void removeAllUpdateListeners()
+    844:851:public void removeUpdateListener(com.nineoldandroids.animation.ValueAnimator$AnimatorUpdateListener)
+    865:870:public void setInterpolator(android.view.animation.Interpolator)
+    878:878:public android.view.animation.Interpolator getInterpolator()
+    898:901:public void setEvaluator(com.nineoldandroids.animation.TypeEvaluator)
+    958:970:public void cancel()
+    974:989:public void end()
+    993:993:public boolean isRunning()
+    998:998:public boolean isStarted()
+    1009:1018:public void reverse()
+    1153:1153:public float getAnimatedFraction()
+    1239:1239:public static int getCurrentAnimationsCount()
+    1249:1252:public static void clearAllAnimations()
+    43:43:public bridge synthetic com.nineoldandroids.animation.Animator setDuration(long)
+com.nineoldandroids.util.IntProperty:
+    public abstract void setValue(java.lang.Object,int)
+com.nineoldandroids.util.NoSuchPropertyException
+com.nineoldandroids.util.Property:
+    55:55:public static com.nineoldandroids.util.Property of(java.lang.Class,java.lang.Class,java.lang.String)
+    76:76:public boolean isReadOnly()
+    104:104:public java.lang.Class getType()
+com.nineoldandroids.util.ReflectiveProperty
+com.nineoldandroids.view.ViewHelper
+com.nineoldandroids.view.ViewHelper$Honeycomb
+com.nineoldandroids.view.ViewPropertyAnimator
+com.nineoldandroids.view.ViewPropertyAnimatorHC
+com.nineoldandroids.view.ViewPropertyAnimatorHC$1
+com.nineoldandroids.view.ViewPropertyAnimatorHC$AnimatorEventListener
+com.nineoldandroids.view.ViewPropertyAnimatorHC$NameValuesHolder
+com.nineoldandroids.view.ViewPropertyAnimatorHC$PropertyBundle
+com.nineoldandroids.view.ViewPropertyAnimatorICS
+com.nineoldandroids.view.ViewPropertyAnimatorICS$1
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$1
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$AnimatorEventListener
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$NameValuesHolder
+com.nineoldandroids.view.ViewPropertyAnimatorPreHC$PropertyBundle
+com.nineoldandroids.view.animation.AnimatorProxy:
+    163:167:public void setScrollX(int)
+    176:180:public void setScrollY(int)

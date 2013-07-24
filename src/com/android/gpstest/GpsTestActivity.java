@@ -28,6 +28,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -35,6 +36,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
+import com.github.espiandev.showcaseview.ShowcaseView;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
@@ -70,7 +73,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	    
 	ViewPagerMapBevelScroll mViewPager;
-
+	
+	ShowcaseView sv;
+    ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+	
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
         public void gpsStop();
@@ -167,6 +173,39 @@ public class GpsTestActivity extends SherlockFragmentActivity
     			mViewPager.setKeepScreenOn(false);
     		}   		    		
     	}
+    	
+    	if (!settings.getBoolean(getString(R.string.pref_key_showed_v2_tutorial), false)) {
+    		// If GPS is started, stop to clear the screen (we will start it again at the end of this method)
+    	    boolean lastStartState = mStarted;
+    		if (mStarted) {
+    	    	gpsStop();    	    	
+    	    }
+    		
+    		// Show the user a tutorial on using the ActionBar button to start/stop GPS,
+    		// either on first execution or when the user choose the option in the Preferences
+        	mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
+        	mOptions.block = false;
+        	mOptions.hideOnClickOutside = true;
+        	mOptions.noButton = true;
+        	sv = ShowcaseView.insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_start, this,
+        			R.string.showcase_gps_on_off_title, R.string.showcase_gps_on_off_message, mOptions);
+        	sv.show();
+    		
+    		SharedPreferences.Editor editor = Application.getPrefs().edit();
+    	    editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), true);
+    	    editor.commit();
+    	    
+    	    if (lastStartState) {
+    	    	Handler h = new Handler();
+    	    	// Restart the GPS, if it was previously started, with a slight delay to allow the UI to clear
+    	    	// and allow the tutorial to be clearly visible
+    	    	h.postDelayed(new Runnable() {
+    	            public void run() {
+    	                gpsStart();
+    	            }
+    	        }, 500);
+    	    }    	    
+    	}
     }
     
     @Override
@@ -187,7 +226,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	MenuItem item = menu.findItem(R.id.gps_start);
         if (item != null) {
             if (mStarted) {
-                item.setTitle(R.string.gps_stop);
+                item.setTitle(R.string.gps_pause);
                 item.setIcon(R.drawable.av_pause);
             } else {
                 item.setTitle(R.string.gps_start);
@@ -313,7 +352,12 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 	            break;
         }
-          
+        
+        // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
+        if (sv != null && sv.isShown()) {
+        	return;
+        }
+        
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
