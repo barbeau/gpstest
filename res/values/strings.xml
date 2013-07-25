@@ -39,13 +39,7 @@
     <string name="force_xtra_injection_success">Successfully injected XTRA data.</string>
     <string name="force_xtra_injection_failure">Platform does not support injecting XTRA data.</string>
 
-  	<string name="fix_freq_1_second">1 Second</string>
-  	<string name="fix_freq_10_seconds">10 Seconds</string>
-  	<string name="fix_freq_1_minute">1 Minute</string>
-  	<string name="fix_freq_5_minutes">5 Minutes</string>
-  	<string name="fix_freq_15_minutes">15 Minutes</string>
-
-    <string name="zoom_in">Zoom In</string>
+  	<string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
     <string name="mode_map">Map</string>
     <string name="mode_satellite">Satellite</string>
@@ -66,6 +60,7 @@
     <string name="gps_flags_column_label">Flags</string>
     <string name="install">Install</string>
     <string name="please_install_google_maps">Please install Google Maps</string>
+    <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist = %2$sm</string>
     
     <!-- User tutorial -->
     <string name="showcase_gps_on_off_title">New GPS controls!</string>
@@ -81,6 +76,16 @@
     <string name="pref_gps_category_title">GPS</string>
     <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
     <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
+        
+    <string name="pref_gps_min_time_title">Interval</string>
+    <string name="pref_gps_min_time_summary">Time between GPS fixes, in seconds</string>
+    <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
+    <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
+    
+    <string name="pref_gps_min_distance_title">Min. Distance</string>
+    <string name="pref_gps_min_distance_summary">Minimum distance between location fixes, in meters</string>    
+    <string name="pref_gps_min_distance_dialog_title">Enter a min. distance, in meters</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
     
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>

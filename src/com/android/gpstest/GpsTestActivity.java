@@ -58,6 +58,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
     boolean mStarted;
     private Location mLastLocation;
     String mTtff;
+    
+    private long minTime; // Min Time between location updates, in milliseconds
+    private static final int SECONDS_TO_MILLISECONDS = 1000;
+    private float minDistance; // Min Distance between location updates
 
     private static GpsTestActivity sInstance;
     
@@ -92,8 +96,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     private void gpsStart() {
         if (!mStarted) {
-            mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
+            mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
+            
+            Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+            		String.valueOf((double)minTime/SECONDS_TO_MILLISECONDS),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
             
             // Show the indeterminate progress bar on the action bar until first GPS status is shown
          	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
@@ -153,7 +160,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	initActionBar(savedInstanceState);
      	
      	SharedPreferences settings = Application.getPrefs();
-    	
+     	
+     	double tempMinTime = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
+     	minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
+     	minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
+     	    	
     	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
     		gpsStart();
     	}
@@ -173,6 +184,28 @@ public class GpsTestActivity extends SherlockFragmentActivity
     		}   		    		
     	}
     	
+    	checkTimeAndDistance(settings);
+    	
+    	checkTutorial(settings);
+    }
+    
+    private void checkTimeAndDistance(SharedPreferences settings){
+    	double tempMinTimeDouble = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));     	   	
+    	long minTimeLong = (long) (tempMinTimeDouble * SECONDS_TO_MILLISECONDS);
+     	
+    	if (minTime != minTimeLong || 
+    			minDistance != Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"))) {
+    		// User changed preference values, get the new ones    		
+    		minTime = minTimeLong;
+    		minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
+    		// If the GPS is started, reset the location listener with the new values
+    		mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+			Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+					String.valueOf(tempMinTimeDouble),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+     	}    	
+    }
+    
+    private void checkTutorial(SharedPreferences settings){
     	if (!settings.getBoolean(getString(R.string.pref_key_showed_v2_tutorial), false)) {
     		// If GPS is started, stop to clear the screen (we will start it again at the end of this method)
     	    boolean lastStartState = mStarted;
