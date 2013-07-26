@@ -26,13 +26,13 @@
             android:title="@string/pref_gps_min_time_title"
             android:summary="@string/pref_gps_min_time_summary"
             android:dialogTitle="@string/pref_gps_min_time_dialog_title"            
-            android:defaultValue="1" /> 
+            android:defaultValue="@string/pref_gps_min_time_default_sec" /> 
         <EditTextPreference
             android:key="@string/pref_key_gps_min_distance"
             android:title="@string/pref_gps_min_distance_title"
             android:summary="@string/pref_gps_min_distance_summary"
             android:dialogTitle="@string/pref_gps_min_distance_dialog_title"            
-            android:defaultValue="0" />
+            android:defaultValue="@string/pref_gps_min_distance_default_meters" />
     </PreferenceCategory>
     
     <PreferenceCategory

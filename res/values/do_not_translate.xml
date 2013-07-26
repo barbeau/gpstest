@@ -35,6 +35,10 @@
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
     
+    <!-- Default preference values -->
+    <string name="pref_gps_min_time_default_sec">1</string>
+    <string name="pref_gps_min_distance_default_meters">0</string>
+    
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>

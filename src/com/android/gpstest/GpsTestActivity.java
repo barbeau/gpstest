@@ -99,8 +99,12 @@ public class GpsTestActivity extends SherlockFragmentActivity
             mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
             
-            Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-            		String.valueOf((double)minTime/SECONDS_TO_MILLISECONDS),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+            // Show Toast only if the user has set minTime or minDistance to something other than default values
+            if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec)) * SECONDS_TO_MILLISECONDS) ||
+            		minDistance != Float.valueOf(getString(R.string.pref_gps_min_distance_default_meters))) {
+            	Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+            		String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+            }
             
             // Show the indeterminate progress bar on the action bar until first GPS status is shown
          	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
@@ -161,9 +165,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	
      	SharedPreferences settings = Application.getPrefs();
      	
-     	double tempMinTime = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
+     	double tempMinTime = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), getString(R.string.pref_gps_min_time_default_sec)));
      	minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
-     	minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
+     	minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), getString(R.string.pref_gps_min_distance_default_meters)));
      	    	
     	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
     		gpsStart();
