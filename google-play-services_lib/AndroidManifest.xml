@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.android.gms"
-    android:versionCode="3136110"
-    android:versionName="3.1.36 (673201-10)" >
+    android:versionCode="3159130"
+    android:versionName="3.1.59 (744626-30)" >
 
     <uses-sdk android:minSdkVersion="8"/>
 

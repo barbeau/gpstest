@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"更新"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"登入"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"使用 Google 帳戶登入"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"應用程式嘗試使用的 Google Play 服務版本有誤。"</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"應用程式需要啟用 Google Play 服務。"</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"應用程式需要安裝 Google Play 服務。"</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"應用程式需要更新 Google Play 服務。"</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Google Play 服務錯誤"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"提出要求的應用程式：<xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Uppdatera"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Logga in"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Logga in med Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"En olämplig version av Google Play Tjänster anropades av en app."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Google Play Tjänster måste aktiveras för en att app ska fungera."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Google Play Tjänster måste installeras för att en app ska fungera."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Google Play Tjänster måste uppdateras för en app ska fungera."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Fel på Google Play Tjänster"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Begärdes av <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Абнавіць"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Увайсцi"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Увайсці ў Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Прыкладанне паспрабавала скарыстацца сапсаванай версіяй службаў Google Play."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Прыкладанне патрабуе ўключэння службаў Google Play."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Прыкладанне патрабуе ўсталявання службаў Google Play."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Прыкладанне патрабуе абнаўлення службаў Google Play."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Памылка службаў Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Запытана прыкладаннем <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

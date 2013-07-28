@@ -56,9 +56,29 @@
     <!-- Long form sign-in button text [CHAR LIMIT=30] -->
     <string name="common_signin_button_text_long">Sign in with Google</string>
 
+
   <!-- Auth client code resources (prefix with auth_client --><skip />
-  <!--  Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=70] -->
-  <string name="auth_client_availability_notification_title">Install/Update/Enable Google Play services</string>
+  <!--  Title for notification shown when a bad version of GooglePlayServices
+        has been installed and needs correction for an application to work.
+        [CHAR LIMIT=70] -->
+  <string name="auth_client_using_bad_version_title">
+      An application attempted to use a bad version of Google Play Services.
+  </string>
+  <!--  Title for notification shown when GooglePlayServices needs to be
+        enabled for a application to work. [CHAR LIMIT=70] -->
+  <string name="auth_client_needs_enabling_title">
+      An application requires Google Play Services to be enabled.
+  </string>
+  <!--  Title for notification shown when GooglePlayServices needs to be
+        installed for a application to work. [CHAR LIMIT=70] -->
+  <string name="auth_client_needs_installation_title">
+      An application requires installation of Google Play Services.
+  </string>
+  <!--  Title for notification shown when GooglePlayServices needs to be
+        udpated for a application to work. [CHAR LIMIT=70] -->
+  <string name="auth_client_needs_update_title">
+      An application requires an update for Google Play Services.
+  </string>
 
   <!--  Title for notification shown when GooglePlayServices is unavailable [CHAR LIMIT=42] -->
   <string name="auth_client_play_services_err_notification_msg">Google Play services error</string>
@@ -69,20 +89,7 @@
 
     <!-- Location client code resources (prefix with location_client) -->
 
-    <!--
-        Begin strings for location.reporting
-    -->
-
-    <!--
-        Some InactiveReason names.  See more in OneUp/package/location/res/values/strings.xml
-    -->
-    <string name="location_client_ulr_inactive_age_under_13" translatable="false">
-        AgeUnder13
-    </string>
-    <string name="location_client_ulr_inactive_age_unknown" translatable="false">AgeUnknown</string>
-    <string name="location_client_ulr_inactive_unknown_restriction" translatable="false">
-        UnknownRestriction
-    </string>
+    <!-- Lots of packages seem to assume this file will exist, easier to just leave it for now. -->
 
     <!-- End location client resources -->
 </resources>

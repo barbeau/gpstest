@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Cập nhật"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Đăng nhập"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Đăng nhập bằng Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Ứng dụng đã cố sử dụng phiên bản không đúng của Dịch vụ của Google Play."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Ứng dụng yêu cầu Dịch vụ của Google Play phải được bật."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Ứng dụng yêu cầu cài đặt Dịch vụ của Google Play."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Ứng dụng yêu cầu cập nhật dành cho Dịch vụ Google Play."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Lỗi dịch vụ của Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Được yêu cầu bởi <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

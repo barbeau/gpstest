@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Actualizaţi"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Conectați"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Conectați-vă cu Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Aplicația a încercat să utilizeze o vers. Servicii Google Play greșită"</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"O aplicație necesită activarea Serviciilor Google Play."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"O aplicație necesită instalarea Serviciilor Google Play."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"O aplicație necesită o actualizare pentru Servicii Google Play."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Eroare Servicii Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Solicitată de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Güncelle"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Oturum aç"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Google\'da oturum aç"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Bir uygulama, Google Play Hizmetleri\'nin bozuk bir sürümünü kullanmayı denedi."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Bir uygulama, Google Play Hizmetleri\'nin etkin olmasını gerektiriyor."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Bir uygulama, Google Play Hizmetleri\'nin yüklenmesini gerektiriyor."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Bir uygulama, Google Play Hizmetleri için bir güncelleme gerektiriyor."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Google Play hizmetleri hatası"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"İstekte bulunan: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

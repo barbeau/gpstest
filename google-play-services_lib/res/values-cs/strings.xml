@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Aktualizovat"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Přihlásit se"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Přihlásit se účtem Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Aplikace se pokusila použít nesprávnou verzi Služeb Google Play."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Aplikace vyžaduje aktivované Služby Google Play."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Aplikace vyžaduje instalaci Služeb Google Play."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Aplikace vyžaduje aktualizaci Služeb Google Play."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Chyba služeb Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Požadováno aplikací <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

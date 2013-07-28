@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Sasisha"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Ingia"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Ingia ukitumia Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Programu ilijaribu kutumia toleo baya la Huduma za Google Play."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Programu inahitaji Huduma za Google Play ili kuwashwa."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Programu inahitaji usakinishaji wa Huduma za Google Play."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Programu inahitaji sasisho la Huduma za Google Play."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Hitilafu kwenye Huduma za Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Imeombwa na <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

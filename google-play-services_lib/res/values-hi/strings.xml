@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"अपडेट करें"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"साइन इन करें"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Google से साइन इन करें"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"एप्लि. ने Google Play सेवाओं के खराब संस्करण के उपयोग का प्रयास किया."</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"एप्लिकेशन के लिए Google Play सेवाओं को सक्षम किए जाने की आवश्यकता है."</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"एप्लिकेशन के लिए Google Play सेवाओं के इंस्टॉलेशन की आवश्यकता है."</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"एप्लिकेशन के लिए Google Play सेवाओं में अपडेट की आवश्यकता है."</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Google Play सेवाएं त्रुटि"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"<xliff:g id="APP_NAME">%1$s</xliff:g> द्वारा अनुरोधित"</string>
 </resources>

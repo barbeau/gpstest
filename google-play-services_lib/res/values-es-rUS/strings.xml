@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Actualizar"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Acceder"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Acceder con Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Una aplic. intentó usar una versión no válida de Google Play Services"</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Una aplicación requiere que se active Google Play Services"</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Una aplicación requiere que se instale Google Play Services"</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Una aplicación requiere que se actualice Google Play Services"</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Error de Google Play Services"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Solicitada por <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
 </resources>

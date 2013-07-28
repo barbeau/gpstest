@@ -16,4 +16,11 @@
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Обновить"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Войти"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Войти в аккаунт Google"</string>
+
+    <string name="auth_client_using_bad_version_title" msgid="2534454398764507874">"Версия сервисов Google Play неисправна"</string>
+    <string name="auth_client_needs_enabling_title" msgid="3983201110833868073">"Для работы приложения требуется включить сервисы Google Play"</string>
+    <string name="auth_client_needs_installation_title" msgid="7999585836145154206">"Для работы приложения требуется установить сервисы Google Play"</string>
+    <string name="auth_client_needs_update_title" msgid="6488605506794595966">"Для работы приложения требуется обновить сервисы Google Play"</string>
+    <string name="auth_client_play_services_err_notification_msg" msgid="3635065018897986478">"Ошибка сервисов Google Play"</string>
+    <string name="auth_client_requested_by_msg" msgid="6304135633531965756">"Запрос от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
 </resources>
