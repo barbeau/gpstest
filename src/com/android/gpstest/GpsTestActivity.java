@@ -61,7 +61,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     
     private long minTime; // Min Time between location updates, in milliseconds
     private static final int SECONDS_TO_MILLISECONDS = 1000;
-    private float minDistance; // Min Distance between location updates
+    private float minDistance; // Min Distance between location updates, in meters
 
     private static GpsTestActivity sInstance;
     
