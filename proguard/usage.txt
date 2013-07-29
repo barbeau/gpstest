@@ -1443,6 +1443,7 @@ com.android.gpstest.GpsStatusFragment:
     288:289:public void onGpsStopped()
 com.android.gpstest.GpsTestActivity:
     private static final java.lang.String TAG
+    private static final int SECONDS_TO_MILLISECONDS
 com.android.gpstest.GpsTestActivity$SectionsPagerAdapter:
     public static final int NUMBER_OF_TABS
     public static final int GPS_STATUS_FRAGMENT
@@ -1606,16 +1607,16 @@ com.google.android.gms.R$drawable:
     40:40:public R$drawable()
 com.google.android.gms.R$id
 com.google.android.gms.R$string:
-    public static final int auth_client_availability_notification_title
+    public static final int auth_client_needs_enabling_title
+    public static final int auth_client_needs_installation_title
+    public static final int auth_client_needs_update_title
     public static final int auth_client_play_services_err_notification_msg
     public static final int auth_client_requested_by_msg
+    public static final int auth_client_using_bad_version_title
     public static final int common_google_play_services_enable_title
     public static final int common_google_play_services_install_title
     public static final int common_google_play_services_unsupported_title
     public static final int common_google_play_services_update_title
-    public static final int location_client_ulr_inactive_age_under_13
-    public static final int location_client_ulr_inactive_age_unknown
-    public static final int location_client_ulr_inactive_unknown_restriction
     73:73:public R$string()
 com.google.android.gms.R$styleable:
     public static final int MapAttrs_cameraBearing
@@ -1717,25 +1718,25 @@ com.google.android.gms.common.images.ImageManager:
     public void loadImage(android.widget.ImageView,android.net.Uri,int)
     public void loadImage(com.google.android.gms.common.images.ImageManager$OnImageLoadedListener,android.net.Uri)
     public void loadImage(com.google.android.gms.common.images.ImageManager$OnImageLoadedListener,android.net.Uri,int)
-    private void a(com.google.android.gms.common.images.ImageManager$ListenerHolder,android.net.Uri)
+    private void a(com.google.android.gms.common.images.ImageManager$d,android.net.Uri)
     static synthetic java.util.Map d(com.google.android.gms.common.images.ImageManager)
 com.google.android.gms.common.images.ImageManager$1
-com.google.android.gms.common.images.ImageManager$ImageReceiver:
-    ImageManager$ImageReceiver(com.google.android.gms.common.images.ImageManager,android.net.Uri)
-    public void addOnImageLoadedListenerHolder(com.google.android.gms.common.images.ImageManager$ListenerHolder)
-    public void removeOnImageLoadedListenerHolder(com.google.android.gms.common.images.ImageManager$ListenerHolder)
-    public android.net.Uri getUri()
-com.google.android.gms.common.images.ImageManager$ListenerHolder:
-    protected final int mDefaultResId
-    final synthetic com.google.android.gms.common.images.ImageManager an
-    private ImageManager$ListenerHolder(com.google.android.gms.common.images.ImageManager,int,int)
-    public abstract void handleCachedDrawable(android.net.Uri,android.graphics.drawable.Drawable)
-    public abstract boolean shouldLoadImage(android.net.Uri)
-    synthetic ImageManager$ListenerHolder(com.google.android.gms.common.images.ImageManager,int,int,com.google.android.gms.common.images.ImageManager$1)
 com.google.android.gms.common.images.ImageManager$OnImageLoadedListener
 com.google.android.gms.common.images.ImageManager$a
-com.google.android.gms.common.images.ImageManager$b
+com.google.android.gms.common.images.ImageManager$b:
+    ImageManager$b(com.google.android.gms.common.images.ImageManager,android.net.Uri)
+    public void a(com.google.android.gms.common.images.ImageManager$d)
+    public void b(com.google.android.gms.common.images.ImageManager$d)
+    public android.net.Uri getUri()
 com.google.android.gms.common.images.ImageManager$c
+com.google.android.gms.common.images.ImageManager$d:
+    protected final int ar
+    final synthetic com.google.android.gms.common.images.ImageManager an
+    private ImageManager$d(com.google.android.gms.common.images.ImageManager,int,int)
+    public abstract void a(android.net.Uri,android.graphics.drawable.Drawable)
+    public abstract boolean a(android.net.Uri)
+    synthetic ImageManager$d(com.google.android.gms.common.images.ImageManager,int,int,com.google.android.gms.common.images.ImageManager$1)
+com.google.android.gms.common.images.ImageManager$e
 com.google.android.gms.games.Game:
     public abstract void getDisplayName(android.database.CharArrayBuffer)
     public abstract void getDescription(android.database.CharArrayBuffer)
@@ -1749,7 +1750,6 @@ com.google.android.gms.games.GamesActivityResultCodes
 com.google.android.gms.games.GamesClient
 com.google.android.gms.games.GamesClient$1
 com.google.android.gms.games.GamesClient$Builder
-com.google.android.gms.games.GamesClientSettings
 com.google.android.gms.games.OnGamesLoadedListener
 com.google.android.gms.games.OnPlayersLoadedListener
 com.google.android.gms.games.OnSignOutCompleteListener
@@ -1810,14 +1810,14 @@ com.google.android.gms.games.multiplayer.realtime.Room:
     public abstract java.util.ArrayList getParticipantIds()
     public abstract java.lang.String getParticipantId(java.lang.String)
 com.google.android.gms.games.multiplayer.realtime.RoomConfig:
-    private final com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener dU
-    private final com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener dV
-    private final com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener dW
-    private final java.lang.String dF
-    private final int dX
-    private final java.lang.String[] dY
-    private final android.os.Bundle dZ
-    private final boolean ea
+    private final com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener dY
+    private final com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener dZ
+    private final com.google.android.gms.games.multiplayer.realtime.RealTimeMessageReceivedListener ea
+    private final java.lang.String dJ
+    private final int eb
+    private final java.lang.String[] ec
+    private final android.os.Bundle ed
+    private final boolean ee
     private RoomConfig(com.google.android.gms.games.multiplayer.realtime.RoomConfig$Builder)
     public com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener getRoomUpdateListener()
     public java.lang.String getInvitationId()
@@ -1844,7 +1844,7 @@ com.google.android.gms.internal.a
 com.google.android.gms.internal.a$a
 com.google.android.gms.internal.a$a$a
 com.google.android.gms.internal.af:
-    private int be
+    private int bh
     public af(int)
     public final java.lang.Object get(java.lang.Object)
     protected java.lang.Object create(java.lang.Object)
@@ -2023,10 +2023,10 @@ com.google.android.gms.internal.dt:
 com.google.android.gms.internal.dt$a
 com.google.android.gms.internal.du:
     public du(android.os.Bundle)
-    public boolean bd()
-    public java.lang.String be()
-    public java.lang.String[] bf()
-    public android.net.Uri[] bg()
+    public boolean be()
+    public java.lang.String bf()
+    public java.lang.String[] bg()
+    public android.net.Uri[] bh()
 com.google.android.gms.internal.dw$a:
     public static com.google.android.gms.internal.dw U(android.os.IBinder)
 com.google.android.gms.internal.dw$a$a
@@ -2055,16 +2055,19 @@ com.google.android.gms.internal.dx:
     public abstract void f(com.google.android.gms.internal.dw,java.lang.String)
     public abstract void a(com.google.android.gms.internal.dw,java.lang.String,com.google.android.gms.internal.eb)
     public abstract void g(com.google.android.gms.internal.dw,java.lang.String)
+    public abstract void a(com.google.android.gms.internal.dw,java.lang.String,boolean,java.lang.String)
 com.google.android.gms.internal.dx$a
 com.google.android.gms.internal.dx$a$a
 com.google.android.gms.internal.dy:
-    private final java.lang.String ha
-    private final java.lang.String hb
+    private final java.lang.String hf
+    private final java.lang.String hg
     private final java.lang.String g
-    private com.google.android.gms.plus.model.people.Person hc
-    private final java.lang.String[] hd
-    private final java.lang.String[] gN
-    public dy(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.google.android.gms.common.GooglePlayServicesClient$ConnectionCallbacks,com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener,java.lang.String[],java.lang.String[],java.lang.String[])
+    private final java.lang.String gU
+    private com.google.android.gms.plus.model.people.Person hh
+    private com.google.android.gms.internal.dy$i hi
+    private final java.lang.String[] hj
+    private final java.lang.String[] gR
+    public dy(android.content.Context,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.google.android.gms.common.GooglePlayServicesClient$ConnectionCallbacks,com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener,java.lang.String[],java.lang.String[],java.lang.String[])
     public java.lang.String getAccountName()
     public void a(com.google.android.gms.plus.PlusClient$b,java.lang.String)
     public void writeMoment(com.google.android.gms.plus.model.moments.Moment)
@@ -2079,6 +2082,7 @@ com.google.android.gms.internal.dy:
     protected java.lang.String c()
     protected java.lang.String b()
     protected void a(com.google.android.gms.internal.u,com.google.android.gms.internal.p$d)
+    public void disconnect()
     protected synthetic android.os.IInterface c(android.os.IBinder)
     static synthetic com.google.android.gms.plus.model.people.Person a(com.google.android.gms.internal.dy,com.google.android.gms.plus.model.people.Person)
 com.google.android.gms.internal.dy$a
@@ -2097,9 +2101,9 @@ com.google.android.gms.internal.dy$k
 com.google.android.gms.internal.dy$l
 com.google.android.gms.internal.dy$m
 com.google.android.gms.internal.dz:
-    private java.lang.String[] hC
-    private java.lang.String[] hD
-    protected java.lang.String hE
+    private java.lang.String[] hJ
+    private java.lang.String[] hK
+    protected java.lang.String hL
     public void initialize(com.google.android.gms.plus.PlusClient,java.lang.String,int)
     public void onConnected(android.os.Bundle)
     public void onConnectionFailed(com.google.android.gms.common.ConnectionResult)
@@ -2109,10 +2113,10 @@ com.google.android.gms.internal.dz:
     private void e(java.lang.String[])
     public void setAnnotation(int)
     public void setSize(int)
-    public void bl()
-    protected void bn()
-    protected void bc()
-    private void bp()
+    public void bm()
+    protected void bo()
+    protected void bd()
+    private void bq()
 com.google.android.gms.internal.dz$b:
     public void a(com.google.android.gms.common.ConnectionResult,com.google.android.gms.internal.du)
 com.google.android.gms.internal.e
@@ -2324,11 +2328,11 @@ com.google.android.gms.internal.n:
 com.google.android.gms.internal.o
 com.google.android.gms.internal.p:
     private final android.content.Context mContext
-    private com.google.android.gms.internal.p$e aA
+    private com.google.android.gms.internal.p$e aC
     private final java.lang.String[] f
-    boolean aB
-    boolean aC
-    private final java.lang.Object aD
+    boolean aD
+    boolean aE
+    private final java.lang.Object aF
     protected varargs p(android.content.Context,com.google.android.gms.common.GooglePlayServicesClient$ConnectionCallbacks,com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener,java.lang.String[])
     protected varargs void a(java.lang.String[])
     protected abstract java.lang.String b()
@@ -2348,6 +2352,7 @@ com.google.android.gms.internal.p:
     static synthetic android.os.IInterface a(com.google.android.gms.internal.p,android.os.IInterface)
     static synthetic java.lang.Object a(com.google.android.gms.internal.p)
     static synthetic java.util.ArrayList b(com.google.android.gms.internal.p)
+    static synthetic java.util.ArrayList c(com.google.android.gms.internal.p)
     static synthetic android.os.IInterface d(com.google.android.gms.internal.p)
     static synthetic com.google.android.gms.internal.p$e e(com.google.android.gms.internal.p)
     static synthetic android.content.Context f(com.google.android.gms.internal.p)
@@ -2356,6 +2361,7 @@ com.google.android.gms.internal.p$a
 com.google.android.gms.internal.p$b:
     protected abstract void a(java.lang.Object)
     public void p()
+    public void unregister()
     public void q()
 com.google.android.gms.internal.p$c
 com.google.android.gms.internal.p$d
@@ -2423,7 +2429,7 @@ com.google.android.gms.location.LocationRequest:
     public com.google.android.gms.location.LocationRequest setSmallestDisplacement(float)
     public float getSmallestDisplacement()
     private static void c(long)
-    private static void H(int)
+    private static void I(int)
     private static void a(float)
 com.google.android.gms.location.LocationRequestCreator:
     public static final int CONTENT_DESCRIPTION
@@ -2446,7 +2452,7 @@ com.google.android.gms.maps.GoogleMap:
     public static final int MAP_TYPE_SATELLITE
     public static final int MAP_TYPE_TERRAIN
     public static final int MAP_TYPE_HYBRID
-    private com.google.android.gms.maps.UiSettings eU
+    private com.google.android.gms.maps.UiSettings eY
     public final float getMinZoomLevel()
     public final void moveCamera(com.google.android.gms.maps.CameraUpdate)
     public final void animateCamera(com.google.android.gms.maps.CameraUpdate,com.google.android.gms.maps.GoogleMap$CancelableCallback)
@@ -2507,7 +2513,7 @@ com.google.android.gms.maps.MapFragment
 com.google.android.gms.maps.MapFragment$a
 com.google.android.gms.maps.MapFragment$b
 com.google.android.gms.maps.MapView:
-    private com.google.android.gms.maps.GoogleMap ft
+    private com.google.android.gms.maps.GoogleMap fx
     public MapView(android.content.Context)
     public MapView(android.content.Context,com.google.android.gms.maps.GoogleMapOptions)
     public final com.google.android.gms.maps.GoogleMap getMap()
@@ -2518,7 +2524,7 @@ com.google.android.gms.maps.MapView:
     public final void onLowMemory()
     public final void onSaveInstanceState(android.os.Bundle)
 com.google.android.gms.maps.MapView$a:
-    public com.google.android.gms.maps.internal.IMapViewDelegate aQ()
+    public com.google.android.gms.maps.internal.IMapViewDelegate aR()
 com.google.android.gms.maps.MapsInitializer:
     private MapsInitializer()
 com.google.android.gms.maps.Projection:
@@ -2540,7 +2546,7 @@ com.google.android.gms.maps.model.BitmapDescriptorFactory:
     public static final float HUE_MAGENTA
     public static final float HUE_ROSE
     private BitmapDescriptorFactory()
-    private static com.google.android.gms.internal.dj aW()
+    private static com.google.android.gms.internal.dj aX()
     public static com.google.android.gms.maps.model.BitmapDescriptor fromResource(int)
     public static com.google.android.gms.maps.model.BitmapDescriptor fromAsset(java.lang.String)
     public static com.google.android.gms.maps.model.BitmapDescriptor fromFile(java.lang.String)
@@ -2660,7 +2666,7 @@ com.google.android.gms.panorama.PanoramaClient$a
 com.google.android.gms.plus.GooglePlusUtil
 com.google.android.gms.plus.PlusClient:
     public static final java.lang.String KEY_REQUEST_VISIBLE_ACTIVITIES
-    PlusClient(android.content.Context,java.lang.String,java.lang.String,java.lang.String,com.google.android.gms.common.GooglePlayServicesClient$ConnectionCallbacks,com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener,java.lang.String[],java.lang.String[],java.lang.String[])
+    PlusClient(android.content.Context,java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.google.android.gms.common.GooglePlayServicesClient$ConnectionCallbacks,com.google.android.gms.common.GooglePlayServicesClient$OnConnectionFailedListener,java.lang.String[],java.lang.String[],java.lang.String[])
     public java.lang.String getAccountName()
     public boolean A(java.lang.String)
     public void a(com.google.android.gms.plus.PlusClient$b,java.lang.String)

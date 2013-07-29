@@ -1,6 +1,17 @@
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl IMPL
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int CAPABILITY_CAN_RETRIEVE_WINDOW_CONTENT
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int CAPABILITY_CAN_REQUEST_TOUCH_EXPLORATION
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int CAPABILITY_CAN_REQUEST_ENHANCED_WEB_ACCESSIBILITY
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int CAPABILITY_CAN_FILTER_KEY_EVENTS
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FEEDBACK_BRAILLE
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FEEDBACK_ALL_MASK
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int DEFAULT
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FLAG_INCLUDE_NOT_IMPORTANT_VIEWS
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FLAG_REQUEST_TOUCH_EXPLORATION_MODE
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FLAG_REPORT_VIEW_IDS
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int FLAG_REQUEST_FILTER_KEY_EVENTS
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: AccessibilityServiceInfoCompat()
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: java.lang.String getId(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: android.content.pm.ResolveInfo getResolveInfo(android.accessibilityservice.AccessibilityServiceInfo)
@@ -9,6 +20,8 @@ android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: boolean 
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: java.lang.String getDescription(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: java.lang.String feedbackTypeToString(int)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: java.lang.String flagToString(int)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: java.lang.String capabilityToString(int)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat: void <clinit>()
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl: AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl()
@@ -17,6 +30,10 @@ android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$Accessibi
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl: java.lang.String getId(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl: android.content.pm.ResolveInfo getResolveInfo(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl: java.lang.String getSettingsActivityName(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoIcsImpl: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoJellyBeanMr2
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoJellyBeanMr2: AccessibilityServiceInfoCompat$AccessibilityServiceInfoJellyBeanMr2()
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoJellyBeanMr2: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl()
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: boolean getCanRetrieveWindowContent(android.accessibilityservice.AccessibilityServiceInfo)
@@ -24,12 +41,14 @@ android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$Accessibi
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: java.lang.String getId(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: android.content.pm.ResolveInfo getResolveInfo(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: java.lang.String getSettingsActivityName(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoStubImpl: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: java.lang.String getId(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: android.content.pm.ResolveInfo getResolveInfo(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: boolean getCanRetrieveWindowContent(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: java.lang.String getDescription(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: java.lang.String getSettingsActivityName(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompat$AccessibilityServiceInfoVersionImpl: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: AccessibilityServiceInfoCompatIcs()
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: boolean getCanRetrieveWindowContent(android.accessibilityservice.AccessibilityServiceInfo)
@@ -37,10 +56,14 @@ android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: java.
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: java.lang.String getId(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: android.content.pm.ResolveInfo getResolveInfo(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatIcs: java.lang.String getSettingsActivityName(android.accessibilityservice.AccessibilityServiceInfo)
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatJellyBeanMr2
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatJellyBeanMr2: AccessibilityServiceInfoCompatJellyBeanMr2()
+android.support.v4.accessibilityservice.AccessibilityServiceInfoCompatJellyBeanMr2: int getCapabilities(android.accessibilityservice.AccessibilityServiceInfo)
 android.support.v4.app.ActionBarDrawerToggle
 android.support.v4.app.ActionBarDrawerToggle: android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImpl IMPL
 android.support.v4.app.ActionBarDrawerToggle: int ID_HOME
 android.support.v4.app.ActionBarDrawerToggle: android.app.Activity mActivity
+android.support.v4.app.ActionBarDrawerToggle: android.support.v4.app.ActionBarDrawerToggle$Delegate mActivityImpl
 android.support.v4.app.ActionBarDrawerToggle: android.support.v4.widget.DrawerLayout mDrawerLayout
 android.support.v4.app.ActionBarDrawerToggle: boolean mDrawerIndicatorEnabled
 android.support.v4.app.ActionBarDrawerToggle: android.graphics.drawable.Drawable mThemeImage
@@ -60,6 +83,9 @@ android.support.v4.app.ActionBarDrawerToggle: void onDrawerSlide(android.view.Vi
 android.support.v4.app.ActionBarDrawerToggle: void onDrawerOpened(android.view.View)
 android.support.v4.app.ActionBarDrawerToggle: void onDrawerClosed(android.view.View)
 android.support.v4.app.ActionBarDrawerToggle: void onDrawerStateChanged(int)
+android.support.v4.app.ActionBarDrawerToggle: android.graphics.drawable.Drawable getThemeUpIndicator()
+android.support.v4.app.ActionBarDrawerToggle: void setActionBarUpIndicator(android.graphics.drawable.Drawable,int)
+android.support.v4.app.ActionBarDrawerToggle: void setActionBarDescription(int)
 android.support.v4.app.ActionBarDrawerToggle: void <clinit>()
 android.support.v4.app.ActionBarDrawerToggle$1
 android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImpl
@@ -78,6 +104,12 @@ android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplHC: androi
 android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplHC: java.lang.Object setActionBarUpIndicator(java.lang.Object,android.app.Activity,android.graphics.drawable.Drawable,int)
 android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplHC: java.lang.Object setActionBarDescription(java.lang.Object,android.app.Activity,int)
 android.support.v4.app.ActionBarDrawerToggle$ActionBarDrawerToggleImplHC: ActionBarDrawerToggle$ActionBarDrawerToggleImplHC(android.support.v4.app.ActionBarDrawerToggle$1)
+android.support.v4.app.ActionBarDrawerToggle$Delegate
+android.support.v4.app.ActionBarDrawerToggle$Delegate: android.graphics.drawable.Drawable getThemeUpIndicator()
+android.support.v4.app.ActionBarDrawerToggle$Delegate: void setActionBarUpIndicator(android.graphics.drawable.Drawable,int)
+android.support.v4.app.ActionBarDrawerToggle$Delegate: void setActionBarDescription(int)
+android.support.v4.app.ActionBarDrawerToggle$DelegateProvider
+android.support.v4.app.ActionBarDrawerToggle$DelegateProvider: android.support.v4.app.ActionBarDrawerToggle$Delegate getDrawerToggleDelegate()
 android.support.v4.app.ActionBarDrawerToggle$SlideDrawable
 android.support.v4.app.ActionBarDrawerToggle$SlideDrawable: android.graphics.drawable.Drawable mWrapped
 android.support.v4.app.ActionBarDrawerToggle$SlideDrawable: float mOffset
@@ -132,6 +164,7 @@ android.support.v4.app.ActivityCompat: ActivityCompat()
 android.support.v4.app.ActivityCompat: boolean invalidateOptionsMenu(android.app.Activity)
 android.support.v4.app.ActivityCompat: void startActivity(android.app.Activity,android.content.Intent,android.os.Bundle)
 android.support.v4.app.ActivityCompat: void startActivityForResult(android.app.Activity,android.content.Intent,int,android.os.Bundle)
+android.support.v4.app.ActivityCompat: void finishAffinity(android.app.Activity)
 android.support.v4.app.ActivityCompatHoneycomb
 android.support.v4.app.ActivityCompatHoneycomb: ActivityCompatHoneycomb()
 android.support.v4.app.ActivityCompatHoneycomb: void invalidateOptionsMenu(android.app.Activity)
@@ -140,6 +173,7 @@ android.support.v4.app.ActivityCompatJB
 android.support.v4.app.ActivityCompatJB: ActivityCompatJB()
 android.support.v4.app.ActivityCompatJB: void startActivity(android.content.Context,android.content.Intent,android.os.Bundle)
 android.support.v4.app.ActivityCompatJB: void startActivityForResult(android.app.Activity,android.content.Intent,int,android.os.Bundle)
+android.support.v4.app.ActivityCompatJB: void finishAffinity(android.app.Activity)
 android.support.v4.app.ActivityOptionsCompat
 android.support.v4.app.ActivityOptionsCompat: android.support.v4.app.ActivityOptionsCompat makeCustomAnimation(android.content.Context,int,int)
 android.support.v4.app.ActivityOptionsCompat: android.support.v4.app.ActivityOptionsCompat makeScaleUpAnimation(android.view.View,int,int,int,int)
@@ -391,6 +425,8 @@ android.support.v4.app.Fragment: boolean isInLayout()
 android.support.v4.app.Fragment: boolean isResumed()
 android.support.v4.app.Fragment: boolean isVisible()
 android.support.v4.app.Fragment: boolean isHidden()
+android.support.v4.app.Fragment: boolean hasOptionsMenu()
+android.support.v4.app.Fragment: boolean isMenuVisible()
 android.support.v4.app.Fragment: void onHiddenChanged(boolean)
 android.support.v4.app.Fragment: void setRetainInstance(boolean)
 android.support.v4.app.Fragment: boolean getRetainInstance()
@@ -574,6 +610,7 @@ android.support.v4.app.FragmentManager: void addOnBackStackChangedListener(andro
 android.support.v4.app.FragmentManager: void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
 android.support.v4.app.FragmentManager: void putFragment(android.os.Bundle,java.lang.String,android.support.v4.app.Fragment)
 android.support.v4.app.FragmentManager: android.support.v4.app.Fragment getFragment(android.os.Bundle,java.lang.String)
+android.support.v4.app.FragmentManager: java.util.List getFragments()
 android.support.v4.app.FragmentManager: android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment)
 android.support.v4.app.FragmentManager: void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])
 android.support.v4.app.FragmentManager: void enableDebugLogging(boolean)
@@ -644,6 +681,7 @@ android.support.v4.app.FragmentManagerImpl: void addOnBackStackChangedListener(a
 android.support.v4.app.FragmentManagerImpl: void removeOnBackStackChangedListener(android.support.v4.app.FragmentManager$OnBackStackChangedListener)
 android.support.v4.app.FragmentManagerImpl: void putFragment(android.os.Bundle,java.lang.String,android.support.v4.app.Fragment)
 android.support.v4.app.FragmentManagerImpl: android.support.v4.app.Fragment getFragment(android.os.Bundle,java.lang.String)
+android.support.v4.app.FragmentManagerImpl: java.util.List getFragments()
 android.support.v4.app.FragmentManagerImpl: android.support.v4.app.Fragment$SavedState saveFragmentInstanceState(android.support.v4.app.Fragment)
 android.support.v4.app.FragmentManagerImpl: java.lang.String toString()
 android.support.v4.app.FragmentManagerImpl: void dump(java.lang.String,java.io.FileDescriptor,java.io.PrintWriter,java.lang.String[])
@@ -1296,6 +1334,8 @@ android.support.v4.app.TaskStackBuilder: android.app.PendingIntent getPendingInt
 android.support.v4.app.TaskStackBuilder: android.app.PendingIntent getPendingIntent(int,int,android.os.Bundle)
 android.support.v4.app.TaskStackBuilder: android.content.Intent[] getIntents()
 android.support.v4.app.TaskStackBuilder: void <clinit>()
+android.support.v4.app.TaskStackBuilder$SupportParentable
+android.support.v4.app.TaskStackBuilder$SupportParentable: android.content.Intent getSupportParentActivityIntent()
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderImpl: android.app.PendingIntent getPendingIntent(android.content.Context,android.content.Intent[],int,int,android.os.Bundle)
 android.support.v4.app.TaskStackBuilder$TaskStackBuilderImplBase
@@ -1381,7 +1421,6 @@ android.support.v4.content.CursorLoader: java.lang.String[] mSelectionArgs
 android.support.v4.content.CursorLoader: java.lang.String mSortOrder
 android.support.v4.content.CursorLoader: android.database.Cursor mCursor
 android.support.v4.content.CursorLoader: android.database.Cursor loadInBackground()
-android.support.v4.content.CursorLoader: void registerContentObserver(android.database.Cursor,android.database.ContentObserver)
 android.support.v4.content.CursorLoader: void deliverResult(android.database.Cursor)
 android.support.v4.content.CursorLoader: CursorLoader(android.content.Context)
 android.support.v4.content.CursorLoader: CursorLoader(android.content.Context,android.net.Uri,java.lang.String[],java.lang.String,java.lang.String[],java.lang.String)
@@ -1487,6 +1526,7 @@ android.support.v4.content.Loader: boolean mStarted
 android.support.v4.content.Loader: boolean mAbandoned
 android.support.v4.content.Loader: boolean mReset
 android.support.v4.content.Loader: boolean mContentChanged
+android.support.v4.content.Loader: boolean mProcessingChange
 android.support.v4.content.Loader: Loader(android.content.Context)
 android.support.v4.content.Loader: void deliverResult(java.lang.Object)
 android.support.v4.content.Loader: android.content.Context getContext()
@@ -1507,6 +1547,8 @@ android.support.v4.content.Loader: void onAbandon()
 android.support.v4.content.Loader: void reset()
 android.support.v4.content.Loader: void onReset()
 android.support.v4.content.Loader: boolean takeContentChanged()
+android.support.v4.content.Loader: void commitContentChanged()
+android.support.v4.content.Loader: void rollbackContentChanged()
 android.support.v4.content.Loader: void onContentChanged()
 android.support.v4.content.Loader: java.lang.String dataToString(java.lang.Object)
 android.support.v4.content.Loader: java.lang.String toString()
@@ -1630,6 +1672,14 @@ android.support.v4.content.ModernAsyncTask$WorkerRunnable
 android.support.v4.content.ModernAsyncTask$WorkerRunnable: java.lang.Object[] mParams
 android.support.v4.content.ModernAsyncTask$WorkerRunnable: ModernAsyncTask$WorkerRunnable()
 android.support.v4.content.ModernAsyncTask$WorkerRunnable: ModernAsyncTask$WorkerRunnable(android.support.v4.content.ModernAsyncTask$1)
+android.support.v4.content.WakefulBroadcastReceiver
+android.support.v4.content.WakefulBroadcastReceiver: java.lang.String EXTRA_WAKE_LOCK_ID
+android.support.v4.content.WakefulBroadcastReceiver: android.util.SparseArray mActiveWakeLocks
+android.support.v4.content.WakefulBroadcastReceiver: int mNextId
+android.support.v4.content.WakefulBroadcastReceiver: WakefulBroadcastReceiver()
+android.support.v4.content.WakefulBroadcastReceiver: android.content.ComponentName startWakefulService(android.content.Context,android.content.Intent)
+android.support.v4.content.WakefulBroadcastReceiver: boolean completeWakefulIntent(android.content.Intent)
+android.support.v4.content.WakefulBroadcastReceiver: void <clinit>()
 android.support.v4.content.pm.ActivityInfoCompat
 android.support.v4.content.pm.ActivityInfoCompat: int CONFIG_UI_MODE
 android.support.v4.content.pm.ActivityInfoCompat: ActivityInfoCompat()
@@ -1637,6 +1687,221 @@ android.support.v4.database.DatabaseUtilsCompat
 android.support.v4.database.DatabaseUtilsCompat: DatabaseUtilsCompat()
 android.support.v4.database.DatabaseUtilsCompat: java.lang.String concatenateWhere(java.lang.String,java.lang.String)
 android.support.v4.database.DatabaseUtilsCompat: java.lang.String[] appendSelectionArgs(java.lang.String[],java.lang.String[])
+android.support.v4.graphics.drawable.DrawableCompat
+android.support.v4.graphics.drawable.DrawableCompat: android.support.v4.graphics.drawable.DrawableCompat$DrawableImpl IMPL
+android.support.v4.graphics.drawable.DrawableCompat: DrawableCompat()
+android.support.v4.graphics.drawable.DrawableCompat: void jumpToCurrentState(android.graphics.drawable.Drawable)
+android.support.v4.graphics.drawable.DrawableCompat: void <clinit>()
+android.support.v4.graphics.drawable.DrawableCompat$BaseDrawableImpl
+android.support.v4.graphics.drawable.DrawableCompat$BaseDrawableImpl: DrawableCompat$BaseDrawableImpl()
+android.support.v4.graphics.drawable.DrawableCompat$BaseDrawableImpl: void jumpToCurrentState(android.graphics.drawable.Drawable)
+android.support.v4.graphics.drawable.DrawableCompat$DrawableImpl
+android.support.v4.graphics.drawable.DrawableCompat$DrawableImpl: void jumpToCurrentState(android.graphics.drawable.Drawable)
+android.support.v4.graphics.drawable.DrawableCompat$HoneycombDrawableImpl
+android.support.v4.graphics.drawable.DrawableCompat$HoneycombDrawableImpl: DrawableCompat$HoneycombDrawableImpl()
+android.support.v4.graphics.drawable.DrawableCompat$HoneycombDrawableImpl: void jumpToCurrentState(android.graphics.drawable.Drawable)
+android.support.v4.graphics.drawable.DrawableCompatHoneycomb
+android.support.v4.graphics.drawable.DrawableCompatHoneycomb: DrawableCompatHoneycomb()
+android.support.v4.graphics.drawable.DrawableCompatHoneycomb: void jumpToCurrentState(android.graphics.drawable.Drawable)
+android.support.v4.hardware.display.DisplayManagerCompat
+android.support.v4.hardware.display.DisplayManagerCompat: java.util.WeakHashMap sInstances
+android.support.v4.hardware.display.DisplayManagerCompat: java.lang.String DISPLAY_CATEGORY_PRESENTATION
+android.support.v4.hardware.display.DisplayManagerCompat: DisplayManagerCompat()
+android.support.v4.hardware.display.DisplayManagerCompat: android.support.v4.hardware.display.DisplayManagerCompat getInstance(android.content.Context)
+android.support.v4.hardware.display.DisplayManagerCompat: android.view.Display getDisplay(int)
+android.support.v4.hardware.display.DisplayManagerCompat: android.view.Display[] getDisplays()
+android.support.v4.hardware.display.DisplayManagerCompat: android.view.Display[] getDisplays(java.lang.String)
+android.support.v4.hardware.display.DisplayManagerCompat: void <clinit>()
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl: java.lang.Object mDisplayManagerObj
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl: DisplayManagerCompat$JellybeanMr1Impl(android.content.Context)
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl: android.view.Display getDisplay(int)
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl: android.view.Display[] getDisplays()
+android.support.v4.hardware.display.DisplayManagerCompat$JellybeanMr1Impl: android.view.Display[] getDisplays(java.lang.String)
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl: android.view.WindowManager mWindowManager
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl: DisplayManagerCompat$LegacyImpl(android.content.Context)
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl: android.view.Display getDisplay(int)
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl: android.view.Display[] getDisplays()
+android.support.v4.hardware.display.DisplayManagerCompat$LegacyImpl: android.view.Display[] getDisplays(java.lang.String)
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1: DisplayManagerJellybeanMr1()
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1: java.lang.Object getDisplayManager(android.content.Context)
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1: android.view.Display getDisplay(java.lang.Object,int)
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1: android.view.Display[] getDisplays(java.lang.Object)
+android.support.v4.hardware.display.DisplayManagerJellybeanMr1: android.view.Display[] getDisplays(java.lang.Object,java.lang.String)
+android.support.v4.internal.view.SupportMenu
+android.support.v4.internal.view.SupportMenu: int USER_MASK
+android.support.v4.internal.view.SupportMenu: int USER_SHIFT
+android.support.v4.internal.view.SupportMenu: int CATEGORY_MASK
+android.support.v4.internal.view.SupportMenu: int CATEGORY_SHIFT
+android.support.v4.internal.view.SupportMenuItem
+android.support.v4.internal.view.SupportMenuItem: int SHOW_AS_ACTION_NEVER
+android.support.v4.internal.view.SupportMenuItem: int SHOW_AS_ACTION_IF_ROOM
+android.support.v4.internal.view.SupportMenuItem: int SHOW_AS_ACTION_ALWAYS
+android.support.v4.internal.view.SupportMenuItem: int SHOW_AS_ACTION_WITH_TEXT
+android.support.v4.internal.view.SupportMenuItem: int SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
+android.support.v4.internal.view.SupportMenuItem: void setShowAsAction(int)
+android.support.v4.internal.view.SupportMenuItem: android.view.MenuItem setShowAsActionFlags(int)
+android.support.v4.internal.view.SupportMenuItem: android.view.MenuItem setActionView(android.view.View)
+android.support.v4.internal.view.SupportMenuItem: android.view.MenuItem setActionView(int)
+android.support.v4.internal.view.SupportMenuItem: android.view.View getActionView()
+android.support.v4.internal.view.SupportMenuItem: android.support.v4.internal.view.SupportMenuItem setSupportActionProvider(android.support.v4.view.ActionProvider)
+android.support.v4.internal.view.SupportMenuItem: android.support.v4.view.ActionProvider getSupportActionProvider()
+android.support.v4.internal.view.SupportMenuItem: boolean expandActionView()
+android.support.v4.internal.view.SupportMenuItem: boolean collapseActionView()
+android.support.v4.internal.view.SupportMenuItem: boolean isActionViewExpanded()
+android.support.v4.internal.view.SupportMenuItem: android.support.v4.internal.view.SupportMenuItem setSupportOnActionExpandListener(android.support.v4.view.MenuItemCompat$OnActionExpandListener)
+android.support.v4.internal.view.SupportSubMenu
+android.support.v4.media.TransportController
+android.support.v4.media.TransportController: TransportController()
+android.support.v4.media.TransportController: void registerStateListener(android.support.v4.media.TransportStateListener)
+android.support.v4.media.TransportController: void unregisterStateListener(android.support.v4.media.TransportStateListener)
+android.support.v4.media.TransportController: void startPlaying()
+android.support.v4.media.TransportController: void pausePlaying()
+android.support.v4.media.TransportController: void stopPlaying()
+android.support.v4.media.TransportController: long getDuration()
+android.support.v4.media.TransportController: long getCurrentPosition()
+android.support.v4.media.TransportController: void seekTo(long)
+android.support.v4.media.TransportController: boolean isPlaying()
+android.support.v4.media.TransportController: int getBufferPercentage()
+android.support.v4.media.TransportController: int getTransportControlFlags()
+android.support.v4.media.TransportMediator
+android.support.v4.media.TransportMediator: android.content.Context mContext
+android.support.v4.media.TransportMediator: android.support.v4.media.TransportPerformer mCallbacks
+android.support.v4.media.TransportMediator: android.media.AudioManager mAudioManager
+android.support.v4.media.TransportMediator: android.view.View mView
+android.support.v4.media.TransportMediator: java.lang.Object mDispatcherState
+android.support.v4.media.TransportMediator: android.support.v4.media.TransportMediatorJellybeanMR2 mController
+android.support.v4.media.TransportMediator: java.util.ArrayList mListeners
+android.support.v4.media.TransportMediator: android.support.v4.media.TransportMediatorCallback mTransportKeyCallback
+android.support.v4.media.TransportMediator: int KEYCODE_MEDIA_PLAY
+android.support.v4.media.TransportMediator: int KEYCODE_MEDIA_PAUSE
+android.support.v4.media.TransportMediator: int KEYCODE_MEDIA_RECORD
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_PREVIOUS
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_REWIND
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_PLAY
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_PLAY_PAUSE
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_PAUSE
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_STOP
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_FAST_FORWARD
+android.support.v4.media.TransportMediator: int FLAG_KEY_MEDIA_NEXT
+android.support.v4.media.TransportMediator: android.view.KeyEvent$Callback mKeyEventCallback
+android.support.v4.media.TransportMediator: boolean isMediaKey(int)
+android.support.v4.media.TransportMediator: TransportMediator(android.app.Activity,android.support.v4.media.TransportPerformer)
+android.support.v4.media.TransportMediator: TransportMediator(android.view.View,android.support.v4.media.TransportPerformer)
+android.support.v4.media.TransportMediator: TransportMediator(android.app.Activity,android.view.View,android.support.v4.media.TransportPerformer)
+android.support.v4.media.TransportMediator: java.lang.Object getRemoteControlClient()
+android.support.v4.media.TransportMediator: boolean dispatchKeyEvent(android.view.KeyEvent)
+android.support.v4.media.TransportMediator: void registerStateListener(android.support.v4.media.TransportStateListener)
+android.support.v4.media.TransportMediator: void unregisterStateListener(android.support.v4.media.TransportStateListener)
+android.support.v4.media.TransportMediator: android.support.v4.media.TransportStateListener[] getListeners()
+android.support.v4.media.TransportMediator: void reportPlayingChanged()
+android.support.v4.media.TransportMediator: void reportTransportControlsChanged()
+android.support.v4.media.TransportMediator: void pushControllerState()
+android.support.v4.media.TransportMediator: void refreshState()
+android.support.v4.media.TransportMediator: void startPlaying()
+android.support.v4.media.TransportMediator: void pausePlaying()
+android.support.v4.media.TransportMediator: void stopPlaying()
+android.support.v4.media.TransportMediator: long getDuration()
+android.support.v4.media.TransportMediator: long getCurrentPosition()
+android.support.v4.media.TransportMediator: void seekTo(long)
+android.support.v4.media.TransportMediator: boolean isPlaying()
+android.support.v4.media.TransportMediator: int getBufferPercentage()
+android.support.v4.media.TransportMediator: int getTransportControlFlags()
+android.support.v4.media.TransportMediator: void destroy()
+android.support.v4.media.TransportMediator$1
+android.support.v4.media.TransportMediator$1: android.support.v4.media.TransportMediator this$0
+android.support.v4.media.TransportMediator$1: TransportMediator$1(android.support.v4.media.TransportMediator)
+android.support.v4.media.TransportMediator$1: void handleKey(android.view.KeyEvent)
+android.support.v4.media.TransportMediator$1: void handleAudioFocusChange(int)
+android.support.v4.media.TransportMediator$1: long getPlaybackPosition()
+android.support.v4.media.TransportMediator$1: void playbackPositionUpdate(long)
+android.support.v4.media.TransportMediator$2
+android.support.v4.media.TransportMediator$2: android.support.v4.media.TransportMediator this$0
+android.support.v4.media.TransportMediator$2: TransportMediator$2(android.support.v4.media.TransportMediator)
+android.support.v4.media.TransportMediator$2: boolean onKeyDown(int,android.view.KeyEvent)
+android.support.v4.media.TransportMediator$2: boolean onKeyLongPress(int,android.view.KeyEvent)
+android.support.v4.media.TransportMediator$2: boolean onKeyUp(int,android.view.KeyEvent)
+android.support.v4.media.TransportMediator$2: boolean onKeyMultiple(int,int,android.view.KeyEvent)
+android.support.v4.media.TransportMediatorCallback
+android.support.v4.media.TransportMediatorCallback: void handleKey(android.view.KeyEvent)
+android.support.v4.media.TransportMediatorCallback: void handleAudioFocusChange(int)
+android.support.v4.media.TransportMediatorCallback: long getPlaybackPosition()
+android.support.v4.media.TransportMediatorCallback: void playbackPositionUpdate(long)
+android.support.v4.media.TransportMediatorJellybeanMR2
+android.support.v4.media.TransportMediatorJellybeanMR2: android.content.Context mContext
+android.support.v4.media.TransportMediatorJellybeanMR2: android.media.AudioManager mAudioManager
+android.support.v4.media.TransportMediatorJellybeanMR2: android.view.View mTargetView
+android.support.v4.media.TransportMediatorJellybeanMR2: android.support.v4.media.TransportMediatorCallback mTransportCallback
+android.support.v4.media.TransportMediatorJellybeanMR2: java.lang.String mReceiverAction
+android.support.v4.media.TransportMediatorJellybeanMR2: android.content.IntentFilter mReceiverFilter
+android.support.v4.media.TransportMediatorJellybeanMR2: android.content.Intent mIntent
+android.support.v4.media.TransportMediatorJellybeanMR2: android.view.ViewTreeObserver$OnWindowAttachListener mWindowAttachListener
+android.support.v4.media.TransportMediatorJellybeanMR2: android.view.ViewTreeObserver$OnWindowFocusChangeListener mWindowFocusListener
+android.support.v4.media.TransportMediatorJellybeanMR2: android.content.BroadcastReceiver mMediaButtonReceiver
+android.support.v4.media.TransportMediatorJellybeanMR2: android.media.AudioManager$OnAudioFocusChangeListener mAudioFocusChangeListener
+android.support.v4.media.TransportMediatorJellybeanMR2: android.app.PendingIntent mPendingIntent
+android.support.v4.media.TransportMediatorJellybeanMR2: android.media.RemoteControlClient mRemoteControl
+android.support.v4.media.TransportMediatorJellybeanMR2: boolean mFocused
+android.support.v4.media.TransportMediatorJellybeanMR2: int mPlayState
+android.support.v4.media.TransportMediatorJellybeanMR2: boolean mAudioFocused
+android.support.v4.media.TransportMediatorJellybeanMR2: TransportMediatorJellybeanMR2(android.content.Context,android.media.AudioManager,android.view.View,android.support.v4.media.TransportMediatorCallback)
+android.support.v4.media.TransportMediatorJellybeanMR2: java.lang.Object getRemoteControlClient()
+android.support.v4.media.TransportMediatorJellybeanMR2: void destroy()
+android.support.v4.media.TransportMediatorJellybeanMR2: void windowAttached()
+android.support.v4.media.TransportMediatorJellybeanMR2: void gainFocus()
+android.support.v4.media.TransportMediatorJellybeanMR2: void takeAudioFocus()
+android.support.v4.media.TransportMediatorJellybeanMR2: void startPlaying()
+android.support.v4.media.TransportMediatorJellybeanMR2: long onGetPlaybackPosition()
+android.support.v4.media.TransportMediatorJellybeanMR2: void onPlaybackPositionUpdate(long)
+android.support.v4.media.TransportMediatorJellybeanMR2: void refreshState(boolean,long,int)
+android.support.v4.media.TransportMediatorJellybeanMR2: void pausePlaying()
+android.support.v4.media.TransportMediatorJellybeanMR2: void stopPlaying()
+android.support.v4.media.TransportMediatorJellybeanMR2: void dropAudioFocus()
+android.support.v4.media.TransportMediatorJellybeanMR2: void loseFocus()
+android.support.v4.media.TransportMediatorJellybeanMR2: void windowDetached()
+android.support.v4.media.TransportMediatorJellybeanMR2$1
+android.support.v4.media.TransportMediatorJellybeanMR2$1: android.support.v4.media.TransportMediatorJellybeanMR2 this$0
+android.support.v4.media.TransportMediatorJellybeanMR2$1: TransportMediatorJellybeanMR2$1(android.support.v4.media.TransportMediatorJellybeanMR2)
+android.support.v4.media.TransportMediatorJellybeanMR2$1: void onWindowAttached()
+android.support.v4.media.TransportMediatorJellybeanMR2$1: void onWindowDetached()
+android.support.v4.media.TransportMediatorJellybeanMR2$2
+android.support.v4.media.TransportMediatorJellybeanMR2$2: android.support.v4.media.TransportMediatorJellybeanMR2 this$0
+android.support.v4.media.TransportMediatorJellybeanMR2$2: TransportMediatorJellybeanMR2$2(android.support.v4.media.TransportMediatorJellybeanMR2)
+android.support.v4.media.TransportMediatorJellybeanMR2$2: void onWindowFocusChanged(boolean)
+android.support.v4.media.TransportMediatorJellybeanMR2$3
+android.support.v4.media.TransportMediatorJellybeanMR2$3: android.support.v4.media.TransportMediatorJellybeanMR2 this$0
+android.support.v4.media.TransportMediatorJellybeanMR2$3: TransportMediatorJellybeanMR2$3(android.support.v4.media.TransportMediatorJellybeanMR2)
+android.support.v4.media.TransportMediatorJellybeanMR2$3: void onReceive(android.content.Context,android.content.Intent)
+android.support.v4.media.TransportMediatorJellybeanMR2$4
+android.support.v4.media.TransportMediatorJellybeanMR2$4: android.support.v4.media.TransportMediatorJellybeanMR2 this$0
+android.support.v4.media.TransportMediatorJellybeanMR2$4: TransportMediatorJellybeanMR2$4(android.support.v4.media.TransportMediatorJellybeanMR2)
+android.support.v4.media.TransportMediatorJellybeanMR2$4: void onAudioFocusChange(int)
+android.support.v4.media.TransportPerformer
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_GAIN
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_GAIN_TRANSIENT
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_LOSS
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_LOSS_TRANSIENT
+android.support.v4.media.TransportPerformer: int AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK
+android.support.v4.media.TransportPerformer: TransportPerformer()
+android.support.v4.media.TransportPerformer: void onStart()
+android.support.v4.media.TransportPerformer: void onPause()
+android.support.v4.media.TransportPerformer: void onStop()
+android.support.v4.media.TransportPerformer: long onGetDuration()
+android.support.v4.media.TransportPerformer: long onGetCurrentPosition()
+android.support.v4.media.TransportPerformer: void onSeekTo(long)
+android.support.v4.media.TransportPerformer: boolean onIsPlaying()
+android.support.v4.media.TransportPerformer: int onGetBufferPercentage()
+android.support.v4.media.TransportPerformer: int onGetTransportControlFlags()
+android.support.v4.media.TransportPerformer: boolean onMediaButtonDown(int,android.view.KeyEvent)
+android.support.v4.media.TransportPerformer: boolean onMediaButtonUp(int,android.view.KeyEvent)
+android.support.v4.media.TransportPerformer: void onAudioFocusChange(int)
+android.support.v4.media.TransportStateListener
+android.support.v4.media.TransportStateListener: TransportStateListener()
+android.support.v4.media.TransportStateListener: void onPlayingChanged(android.support.v4.media.TransportController)
+android.support.v4.media.TransportStateListener: void onTransportControlsChanged(android.support.v4.media.TransportController)
 android.support.v4.net.ConnectivityManagerCompat
 android.support.v4.net.ConnectivityManagerCompat: android.support.v4.net.ConnectivityManagerCompat$ConnectivityManagerCompatImpl IMPL
 android.support.v4.net.ConnectivityManagerCompat: ConnectivityManagerCompat()
@@ -1743,6 +2008,165 @@ android.support.v4.os.ParcelableCompatCreatorHoneycombMR2: java.lang.Object[] ne
 android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub
 android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub: ParcelableCompatCreatorHoneycombMR2Stub()
 android.support.v4.os.ParcelableCompatCreatorHoneycombMR2Stub: android.os.Parcelable$Creator instantiate(android.support.v4.os.ParcelableCompatCreatorCallbacks)
+android.support.v4.text.BidiFormatter
+android.support.v4.text.BidiFormatter: android.support.v4.text.TextDirectionHeuristicCompat DEFAULT_TEXT_DIRECTION_HEURISTIC
+android.support.v4.text.BidiFormatter: char LRE
+android.support.v4.text.BidiFormatter: char RLE
+android.support.v4.text.BidiFormatter: char PDF
+android.support.v4.text.BidiFormatter: char LRM
+android.support.v4.text.BidiFormatter: char RLM
+android.support.v4.text.BidiFormatter: java.lang.String LRM_STRING
+android.support.v4.text.BidiFormatter: java.lang.String RLM_STRING
+android.support.v4.text.BidiFormatter: java.lang.String EMPTY_STRING
+android.support.v4.text.BidiFormatter: int FLAG_STEREO_RESET
+android.support.v4.text.BidiFormatter: int DEFAULT_FLAGS
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter DEFAULT_LTR_INSTANCE
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter DEFAULT_RTL_INSTANCE
+android.support.v4.text.BidiFormatter: boolean mIsRtlContext
+android.support.v4.text.BidiFormatter: int mFlags
+android.support.v4.text.BidiFormatter: android.support.v4.text.TextDirectionHeuristicCompat mDefaultTextDirectionHeuristicCompat
+android.support.v4.text.BidiFormatter: int DIR_LTR
+android.support.v4.text.BidiFormatter: int DIR_UNKNOWN
+android.support.v4.text.BidiFormatter: int DIR_RTL
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter getInstance()
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter getInstance(boolean)
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter getInstance(java.util.Locale)
+android.support.v4.text.BidiFormatter: BidiFormatter(boolean,int,android.support.v4.text.TextDirectionHeuristicCompat)
+android.support.v4.text.BidiFormatter: boolean isRtlContext()
+android.support.v4.text.BidiFormatter: boolean getStereoReset()
+android.support.v4.text.BidiFormatter: java.lang.String markAfter(java.lang.String,android.support.v4.text.TextDirectionHeuristicCompat)
+android.support.v4.text.BidiFormatter: java.lang.String markBefore(java.lang.String,android.support.v4.text.TextDirectionHeuristicCompat)
+android.support.v4.text.BidiFormatter: boolean isRtl(java.lang.String)
+android.support.v4.text.BidiFormatter: java.lang.String unicodeWrap(java.lang.String,android.support.v4.text.TextDirectionHeuristicCompat,boolean)
+android.support.v4.text.BidiFormatter: java.lang.String unicodeWrap(java.lang.String,android.support.v4.text.TextDirectionHeuristicCompat)
+android.support.v4.text.BidiFormatter: java.lang.String unicodeWrap(java.lang.String,boolean)
+android.support.v4.text.BidiFormatter: java.lang.String unicodeWrap(java.lang.String)
+android.support.v4.text.BidiFormatter: boolean isRtlLocale(java.util.Locale)
+android.support.v4.text.BidiFormatter: int getExitDir(java.lang.String)
+android.support.v4.text.BidiFormatter: int getEntryDir(java.lang.String)
+android.support.v4.text.BidiFormatter: boolean access$000(java.util.Locale)
+android.support.v4.text.BidiFormatter: android.support.v4.text.TextDirectionHeuristicCompat access$100()
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter access$200()
+android.support.v4.text.BidiFormatter: android.support.v4.text.BidiFormatter access$300()
+android.support.v4.text.BidiFormatter: BidiFormatter(boolean,int,android.support.v4.text.TextDirectionHeuristicCompat,android.support.v4.text.BidiFormatter$1)
+android.support.v4.text.BidiFormatter: void <clinit>()
+android.support.v4.text.BidiFormatter$1
+android.support.v4.text.BidiFormatter$Builder
+android.support.v4.text.BidiFormatter$Builder: boolean mIsRtlContext
+android.support.v4.text.BidiFormatter$Builder: int mFlags
+android.support.v4.text.BidiFormatter$Builder: android.support.v4.text.TextDirectionHeuristicCompat mTextDirectionHeuristicCompat
+android.support.v4.text.BidiFormatter$Builder: BidiFormatter$Builder()
+android.support.v4.text.BidiFormatter$Builder: BidiFormatter$Builder(boolean)
+android.support.v4.text.BidiFormatter$Builder: BidiFormatter$Builder(java.util.Locale)
+android.support.v4.text.BidiFormatter$Builder: void initialize(boolean)
+android.support.v4.text.BidiFormatter$Builder: android.support.v4.text.BidiFormatter$Builder stereoReset(boolean)
+android.support.v4.text.BidiFormatter$Builder: android.support.v4.text.BidiFormatter$Builder setTextDirectionHeuristic(android.support.v4.text.TextDirectionHeuristicCompat)
+android.support.v4.text.BidiFormatter$Builder: android.support.v4.text.BidiFormatter getDefaultInstanceFromContext(boolean)
+android.support.v4.text.BidiFormatter$Builder: android.support.v4.text.BidiFormatter build()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: int DIR_TYPE_CACHE_SIZE
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte[] DIR_TYPE_CACHE
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: java.lang.String text
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: boolean isHtml
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: int length
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: int charIndex
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: char lastChar
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: BidiFormatter$DirectionalityEstimator(java.lang.String,boolean)
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: int getEntryDir()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: int getExitDir()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte getCachedDirectionality(char)
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte dirTypeForward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte dirTypeBackward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte skipTagForward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte skipTagBackward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte skipEntityForward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: byte skipEntityBackward()
+android.support.v4.text.BidiFormatter$DirectionalityEstimator: void <clinit>()
+android.support.v4.text.ICUCompat
+android.support.v4.text.ICUCompat: android.support.v4.text.ICUCompat$ICUCompatImpl IMPL
+android.support.v4.text.ICUCompat: ICUCompat()
+android.support.v4.text.ICUCompat: java.lang.String getScript(java.lang.String)
+android.support.v4.text.ICUCompat: java.lang.String addLikelySubtags(java.lang.String)
+android.support.v4.text.ICUCompat: void <clinit>()
+android.support.v4.text.ICUCompat$ICUCompatImpl
+android.support.v4.text.ICUCompat$ICUCompatImpl: java.lang.String getScript(java.lang.String)
+android.support.v4.text.ICUCompat$ICUCompatImpl: java.lang.String addLikelySubtags(java.lang.String)
+android.support.v4.text.ICUCompat$ICUCompatImplBase
+android.support.v4.text.ICUCompat$ICUCompatImplBase: ICUCompat$ICUCompatImplBase()
+android.support.v4.text.ICUCompat$ICUCompatImplBase: java.lang.String getScript(java.lang.String)
+android.support.v4.text.ICUCompat$ICUCompatImplBase: java.lang.String addLikelySubtags(java.lang.String)
+android.support.v4.text.ICUCompat$ICUCompatImplIcs
+android.support.v4.text.ICUCompat$ICUCompatImplIcs: ICUCompat$ICUCompatImplIcs()
+android.support.v4.text.ICUCompat$ICUCompatImplIcs: java.lang.String getScript(java.lang.String)
+android.support.v4.text.ICUCompat$ICUCompatImplIcs: java.lang.String addLikelySubtags(java.lang.String)
+android.support.v4.text.ICUCompatIcs
+android.support.v4.text.ICUCompatIcs: java.lang.String TAG
+android.support.v4.text.ICUCompatIcs: java.lang.reflect.Method sGetScriptMethod
+android.support.v4.text.ICUCompatIcs: java.lang.reflect.Method sAddLikelySubtagsMethod
+android.support.v4.text.ICUCompatIcs: ICUCompatIcs()
+android.support.v4.text.ICUCompatIcs: java.lang.String getScript(java.lang.String)
+android.support.v4.text.ICUCompatIcs: java.lang.String addLikelySubtags(java.lang.String)
+android.support.v4.text.ICUCompatIcs: void <clinit>()
+android.support.v4.text.TextDirectionHeuristicCompat
+android.support.v4.text.TextDirectionHeuristicCompat: boolean isRtl(char[],int,int)
+android.support.v4.text.TextDirectionHeuristicCompat: boolean isRtl(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat LTR
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat RTL
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat FIRSTSTRONG_LTR
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat FIRSTSTRONG_RTL
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat ANYRTL_LTR
+android.support.v4.text.TextDirectionHeuristicsCompat: android.support.v4.text.TextDirectionHeuristicCompat LOCALE
+android.support.v4.text.TextDirectionHeuristicsCompat: int STATE_TRUE
+android.support.v4.text.TextDirectionHeuristicsCompat: int STATE_FALSE
+android.support.v4.text.TextDirectionHeuristicsCompat: int STATE_UNKNOWN
+android.support.v4.text.TextDirectionHeuristicsCompat: TextDirectionHeuristicsCompat()
+android.support.v4.text.TextDirectionHeuristicsCompat: int isRtlText(int)
+android.support.v4.text.TextDirectionHeuristicsCompat: int isRtlTextOrFormat(int)
+android.support.v4.text.TextDirectionHeuristicsCompat: int access$100(int)
+android.support.v4.text.TextDirectionHeuristicsCompat: int access$200(int)
+android.support.v4.text.TextDirectionHeuristicsCompat: void <clinit>()
+android.support.v4.text.TextDirectionHeuristicsCompat$1
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: boolean mLookForRtl
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong INSTANCE_RTL
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong INSTANCE_LTR
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: int checkRtl(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: TextDirectionHeuristicsCompat$AnyStrong(boolean)
+android.support.v4.text.TextDirectionHeuristicsCompat$AnyStrong: void <clinit>()
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong: android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong INSTANCE
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong: int checkRtl(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong: TextDirectionHeuristicsCompat$FirstStrong()
+android.support.v4.text.TextDirectionHeuristicsCompat$FirstStrong: void <clinit>()
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm: int checkRtl(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm mAlgorithm
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl(android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: boolean defaultIsRtl()
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: boolean isRtl(char[],int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: boolean isRtl(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicImpl: boolean doCheck(java.lang.CharSequence,int,int)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal: boolean mDefaultIsRtl
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal: TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal(android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm,boolean)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal: boolean defaultIsRtl()
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal: TextDirectionHeuristicsCompat$TextDirectionHeuristicInternal(android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionAlgorithm,boolean,android.support.v4.text.TextDirectionHeuristicsCompat$1)
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale: android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale INSTANCE
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale: TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale()
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale: boolean defaultIsRtl()
+android.support.v4.text.TextDirectionHeuristicsCompat$TextDirectionHeuristicLocale: void <clinit>()
+android.support.v4.text.TextUtilsCompat
+android.support.v4.text.TextUtilsCompat: java.util.Locale ROOT
+android.support.v4.text.TextUtilsCompat: java.lang.String ARAB_SCRIPT_SUBTAG
+android.support.v4.text.TextUtilsCompat: java.lang.String HEBR_SCRIPT_SUBTAG
+android.support.v4.text.TextUtilsCompat: TextUtilsCompat()
+android.support.v4.text.TextUtilsCompat: java.lang.String htmlEncode(java.lang.String)
+android.support.v4.text.TextUtilsCompat: int getLayoutDirectionFromLocale(java.util.Locale)
+android.support.v4.text.TextUtilsCompat: int getLayoutDirectionFromFirstChar(java.util.Locale)
+android.support.v4.text.TextUtilsCompat: void <clinit>()
 android.support.v4.util.AtomicFile
 android.support.v4.util.AtomicFile: java.io.File mBaseName
 android.support.v4.util.AtomicFile: java.io.File mBackupName
@@ -2004,6 +2428,28 @@ android.support.v4.view.AccessibilityDelegateCompatJellyBean$AccessibilityDelega
 android.support.v4.view.AccessibilityDelegateCompatJellyBean$AccessibilityDelegateBridgeJellyBean: void sendAccessibilityEventUnchecked(android.view.View,android.view.accessibility.AccessibilityEvent)
 android.support.v4.view.AccessibilityDelegateCompatJellyBean$AccessibilityDelegateBridgeJellyBean: java.lang.Object getAccessibilityNodeProvider(android.view.View)
 android.support.v4.view.AccessibilityDelegateCompatJellyBean$AccessibilityDelegateBridgeJellyBean: boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+android.support.v4.view.ActionProvider
+android.support.v4.view.ActionProvider: java.lang.String TAG
+android.support.v4.view.ActionProvider: android.content.Context mContext
+android.support.v4.view.ActionProvider: android.support.v4.view.ActionProvider$SubUiVisibilityListener mSubUiVisibilityListener
+android.support.v4.view.ActionProvider: android.support.v4.view.ActionProvider$VisibilityListener mVisibilityListener
+android.support.v4.view.ActionProvider: ActionProvider(android.content.Context)
+android.support.v4.view.ActionProvider: android.content.Context getContext()
+android.support.v4.view.ActionProvider: android.view.View onCreateActionView()
+android.support.v4.view.ActionProvider: android.view.View onCreateActionView(android.view.MenuItem)
+android.support.v4.view.ActionProvider: boolean overridesItemVisibility()
+android.support.v4.view.ActionProvider: boolean isVisible()
+android.support.v4.view.ActionProvider: void refreshVisibility()
+android.support.v4.view.ActionProvider: boolean onPerformDefaultAction()
+android.support.v4.view.ActionProvider: boolean hasSubMenu()
+android.support.v4.view.ActionProvider: void onPrepareSubMenu(android.view.SubMenu)
+android.support.v4.view.ActionProvider: void subUiVisibilityChanged(boolean)
+android.support.v4.view.ActionProvider: void setSubUiVisibilityListener(android.support.v4.view.ActionProvider$SubUiVisibilityListener)
+android.support.v4.view.ActionProvider: void setVisibilityListener(android.support.v4.view.ActionProvider$VisibilityListener)
+android.support.v4.view.ActionProvider$SubUiVisibilityListener
+android.support.v4.view.ActionProvider$SubUiVisibilityListener: void onSubUiVisibilityChanged(boolean)
+android.support.v4.view.ActionProvider$VisibilityListener
+android.support.v4.view.ActionProvider$VisibilityListener: void onActionProviderVisibilityChanged(boolean)
 android.support.v4.view.GestureDetectorCompat
 android.support.v4.view.GestureDetectorCompat: android.support.v4.view.GestureDetectorCompat$GestureDetectorCompatImpl mImpl
 android.support.v4.view.GestureDetectorCompat: GestureDetectorCompat(android.content.Context,android.view.GestureDetector$OnGestureListener)
@@ -2119,6 +2565,8 @@ android.support.v4.view.KeyEventCompat: boolean hasModifiers(android.view.KeyEve
 android.support.v4.view.KeyEventCompat: boolean hasNoModifiers(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompat: void startTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompat: boolean isTracking(android.view.KeyEvent)
+android.support.v4.view.KeyEventCompat: java.lang.Object getKeyDispatcherState(android.view.View)
+android.support.v4.view.KeyEventCompat: boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
 android.support.v4.view.KeyEventCompat: void <clinit>()
 android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl
 android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: int META_MODIFIER_MASK
@@ -2130,10 +2578,14 @@ android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: boolean metaStat
 android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: boolean metaStateHasNoModifiers(int)
 android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: void startTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: boolean isTracking(android.view.KeyEvent)
+android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: java.lang.Object getKeyDispatcherState(android.view.View)
+android.support.v4.view.KeyEventCompat$BaseKeyEventVersionImpl: boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
 android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl
 android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl: KeyEventCompat$EclairKeyEventVersionImpl()
 android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl: void startTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl: boolean isTracking(android.view.KeyEvent)
+android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl: java.lang.Object getKeyDispatcherState(android.view.View)
+android.support.v4.view.KeyEventCompat$EclairKeyEventVersionImpl: boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
 android.support.v4.view.KeyEventCompat$HoneycombKeyEventVersionImpl
 android.support.v4.view.KeyEventCompat$HoneycombKeyEventVersionImpl: KeyEventCompat$HoneycombKeyEventVersionImpl()
 android.support.v4.view.KeyEventCompat$HoneycombKeyEventVersionImpl: int normalizeMetaState(int)
@@ -2145,8 +2597,12 @@ android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: boolean metaStateHas
 android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: boolean metaStateHasNoModifiers(int)
 android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: void startTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: boolean isTracking(android.view.KeyEvent)
+android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: java.lang.Object getKeyDispatcherState(android.view.View)
+android.support.v4.view.KeyEventCompat$KeyEventVersionImpl: boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
 android.support.v4.view.KeyEventCompatEclair
 android.support.v4.view.KeyEventCompatEclair: KeyEventCompatEclair()
+android.support.v4.view.KeyEventCompatEclair: java.lang.Object getKeyDispatcherState(android.view.View)
+android.support.v4.view.KeyEventCompatEclair: boolean dispatch(android.view.KeyEvent,android.view.KeyEvent$Callback,java.lang.Object,java.lang.Object)
 android.support.v4.view.KeyEventCompatEclair: void startTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompatEclair: boolean isTracking(android.view.KeyEvent)
 android.support.v4.view.KeyEventCompatHoneycomb
@@ -2154,20 +2610,62 @@ android.support.v4.view.KeyEventCompatHoneycomb: KeyEventCompatHoneycomb()
 android.support.v4.view.KeyEventCompatHoneycomb: int normalizeMetaState(int)
 android.support.v4.view.KeyEventCompatHoneycomb: boolean metaStateHasModifiers(int,int)
 android.support.v4.view.KeyEventCompatHoneycomb: boolean metaStateHasNoModifiers(int)
+android.support.v4.view.MarginLayoutParamsCompat
+android.support.v4.view.MarginLayoutParamsCompat: android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl IMPL
+android.support.v4.view.MarginLayoutParamsCompat: MarginLayoutParamsCompat()
+android.support.v4.view.MarginLayoutParamsCompat: int getMarginStart(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat: int getMarginEnd(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat: void setMarginStart(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat: void setMarginEnd(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat: boolean isMarginRelative(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat: int getLayoutDirection(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat: void setLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat: void resolveLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat: void <clinit>()
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: int getMarginStart(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: int getMarginEnd(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: void setMarginStart(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: void setMarginEnd(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: boolean isMarginRelative(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: int getLayoutDirection(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: void setLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImpl: void resolveLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase()
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: int getMarginStart(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: int getMarginEnd(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: void setMarginStart(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: void setMarginEnd(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: boolean isMarginRelative(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: int getLayoutDirection(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: void setLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplBase: void resolveLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1()
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: int getMarginStart(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: int getMarginEnd(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: void setMarginStart(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: void setMarginEnd(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: boolean isMarginRelative(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: int getLayoutDirection(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: void setLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompat$MarginLayoutParamsCompatImplJbMr1: void resolveLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: MarginLayoutParamsCompatJellybeanMr1()
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: int getMarginStart(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: int getMarginEnd(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: void setMarginStart(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: void setMarginEnd(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: boolean isMarginRelative(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: int getLayoutDirection(android.view.ViewGroup$MarginLayoutParams)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: void setLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
+android.support.v4.view.MarginLayoutParamsCompatJellybeanMr1: void resolveLayoutDirection(android.view.ViewGroup$MarginLayoutParams,int)
 android.support.v4.view.MenuCompat
-android.support.v4.view.MenuCompat: android.support.v4.view.MenuCompat$MenuVersionImpl IMPL
 android.support.v4.view.MenuCompat: MenuCompat()
-android.support.v4.view.MenuCompat: boolean setShowAsAction(android.view.MenuItem,int)
-android.support.v4.view.MenuCompat: void <clinit>()
-android.support.v4.view.MenuCompat$BaseMenuVersionImpl
-android.support.v4.view.MenuCompat$BaseMenuVersionImpl: MenuCompat$BaseMenuVersionImpl()
-android.support.v4.view.MenuCompat$BaseMenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
-android.support.v4.view.MenuCompat$HoneycombMenuVersionImpl
-android.support.v4.view.MenuCompat$HoneycombMenuVersionImpl: MenuCompat$HoneycombMenuVersionImpl()
-android.support.v4.view.MenuCompat$HoneycombMenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
-android.support.v4.view.MenuCompat$MenuVersionImpl
-android.support.v4.view.MenuCompat$MenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
+android.support.v4.view.MenuCompat: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompat
+android.support.v4.view.MenuItemCompat: java.lang.String TAG
 android.support.v4.view.MenuItemCompat: int SHOW_AS_ACTION_NEVER
 android.support.v4.view.MenuItemCompat: int SHOW_AS_ACTION_IF_ROOM
 android.support.v4.view.MenuItemCompat: int SHOW_AS_ACTION_ALWAYS
@@ -2175,24 +2673,81 @@ android.support.v4.view.MenuItemCompat: int SHOW_AS_ACTION_WITH_TEXT
 android.support.v4.view.MenuItemCompat: int SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
 android.support.v4.view.MenuItemCompat: android.support.v4.view.MenuItemCompat$MenuVersionImpl IMPL
 android.support.v4.view.MenuItemCompat: MenuItemCompat()
-android.support.v4.view.MenuItemCompat: boolean setShowAsAction(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompat: android.view.MenuItem setActionView(android.view.MenuItem,android.view.View)
+android.support.v4.view.MenuItemCompat: android.view.MenuItem setActionView(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat: android.view.View getActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat: android.view.MenuItem setActionProvider(android.view.MenuItem,android.support.v4.view.ActionProvider)
+android.support.v4.view.MenuItemCompat: android.support.v4.view.ActionProvider getActionProvider(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
 android.support.v4.view.MenuItemCompat: void <clinit>()
 android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl
 android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: MenuItemCompat$BaseMenuVersionImpl()
-android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,android.view.View)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: android.view.View getActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$BaseMenuVersionImpl: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
 android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl
 android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: MenuItemCompat$HoneycombMenuVersionImpl()
-android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,android.view.View)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: android.view.View getActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$HoneycombMenuVersionImpl: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl: MenuItemCompat$IcsMenuVersionImpl()
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1: android.support.v4.view.MenuItemCompat$OnActionExpandListener val$listener
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1: android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl this$0
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1: MenuItemCompat$IcsMenuVersionImpl$1(android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1: boolean onMenuItemActionExpand(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$IcsMenuVersionImpl$1: boolean onMenuItemActionCollapse(android.view.MenuItem)
 android.support.v4.view.MenuItemCompat$MenuVersionImpl
-android.support.v4.view.MenuItemCompat$MenuVersionImpl: boolean setShowAsAction(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompat$MenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,android.view.View)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: android.view.MenuItem setActionView(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: android.view.View getActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$MenuVersionImpl: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompat$OnActionExpandListener)
+android.support.v4.view.MenuItemCompat$OnActionExpandListener
+android.support.v4.view.MenuItemCompat$OnActionExpandListener: boolean onMenuItemActionExpand(android.view.MenuItem)
+android.support.v4.view.MenuItemCompat$OnActionExpandListener: boolean onMenuItemActionCollapse(android.view.MenuItem)
 android.support.v4.view.MenuItemCompatHoneycomb
 android.support.v4.view.MenuItemCompatHoneycomb: MenuItemCompatHoneycomb()
 android.support.v4.view.MenuItemCompatHoneycomb: void setShowAsAction(android.view.MenuItem,int)
 android.support.v4.view.MenuItemCompatHoneycomb: android.view.MenuItem setActionView(android.view.MenuItem,android.view.View)
+android.support.v4.view.MenuItemCompatHoneycomb: android.view.MenuItem setActionView(android.view.MenuItem,int)
+android.support.v4.view.MenuItemCompatHoneycomb: android.view.View getActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs
+android.support.v4.view.MenuItemCompatIcs: MenuItemCompatIcs()
+android.support.v4.view.MenuItemCompatIcs: boolean expandActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs: boolean collapseActionView(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs: boolean isActionViewExpanded(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs: android.view.MenuItem setOnActionExpandListener(android.view.MenuItem,android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy)
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper: android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy mWrapped
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper: MenuItemCompatIcs$OnActionExpandListenerWrapper(android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy)
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper: boolean onMenuItemActionExpand(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs$OnActionExpandListenerWrapper: boolean onMenuItemActionCollapse(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy
+android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy: boolean onMenuItemActionExpand(android.view.MenuItem)
+android.support.v4.view.MenuItemCompatIcs$SupportActionExpandProxy: boolean onMenuItemActionCollapse(android.view.MenuItem)
 android.support.v4.view.MotionEventCompat
 android.support.v4.view.MotionEventCompat: android.support.v4.view.MotionEventCompat$MotionEventVersionImpl IMPL
 android.support.v4.view.MotionEventCompat: int ACTION_MASK
@@ -2438,6 +2993,7 @@ android.support.v4.view.ViewCompat: int getImportantForAccessibility(android.vie
 android.support.v4.view.ViewCompat: void setImportantForAccessibility(android.view.View,int)
 android.support.v4.view.ViewCompat: boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
 android.support.v4.view.ViewCompat: android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat: float getAlpha(android.view.View)
 android.support.v4.view.ViewCompat: void setLayerType(android.view.View,int,android.graphics.Paint)
 android.support.v4.view.ViewCompat: int getLayerType(android.view.View)
 android.support.v4.view.ViewCompat: int getLabelFor(android.view.View)
@@ -2446,6 +3002,7 @@ android.support.v4.view.ViewCompat: void setLayerPaint(android.view.View,android
 android.support.v4.view.ViewCompat: int getLayoutDirection(android.view.View)
 android.support.v4.view.ViewCompat: void setLayoutDirection(android.view.View,int)
 android.support.v4.view.ViewCompat: android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat: boolean isOpaque(android.view.View)
 android.support.v4.view.ViewCompat: void <clinit>()
 android.support.v4.view.ViewCompat$BaseViewCompatImpl
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: ViewCompat$BaseViewCompatImpl()
@@ -2468,6 +3025,7 @@ android.support.v4.view.ViewCompat$BaseViewCompatImpl: int getImportantForAccess
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: void setImportantForAccessibility(android.view.View,int)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat$BaseViewCompatImpl: float getAlpha(android.view.View)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: void setLayerType(android.view.View,int,android.graphics.Paint)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: int getLayerType(android.view.View)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: int getLabelFor(android.view.View)
@@ -2476,6 +3034,10 @@ android.support.v4.view.ViewCompat$BaseViewCompatImpl: void setLayerPaint(androi
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: int getLayoutDirection(android.view.View)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: void setLayoutDirection(android.view.View,int)
 android.support.v4.view.ViewCompat$BaseViewCompatImpl: android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat$BaseViewCompatImpl: boolean isOpaque(android.view.View)
+android.support.v4.view.ViewCompat$EclairMr1ViewCompatImpl
+android.support.v4.view.ViewCompat$EclairMr1ViewCompatImpl: ViewCompat$EclairMr1ViewCompatImpl()
+android.support.v4.view.ViewCompat$EclairMr1ViewCompatImpl: boolean isOpaque(android.view.View)
 android.support.v4.view.ViewCompat$GBViewCompatImpl
 android.support.v4.view.ViewCompat$GBViewCompatImpl: ViewCompat$GBViewCompatImpl()
 android.support.v4.view.ViewCompat$GBViewCompatImpl: int getOverScrollMode(android.view.View)
@@ -2483,6 +3045,7 @@ android.support.v4.view.ViewCompat$GBViewCompatImpl: void setOverScrollMode(andr
 android.support.v4.view.ViewCompat$HCViewCompatImpl
 android.support.v4.view.ViewCompat$HCViewCompatImpl: ViewCompat$HCViewCompatImpl()
 android.support.v4.view.ViewCompat$HCViewCompatImpl: long getFrameTime()
+android.support.v4.view.ViewCompat$HCViewCompatImpl: float getAlpha(android.view.View)
 android.support.v4.view.ViewCompat$HCViewCompatImpl: void setLayerType(android.view.View,int,android.graphics.Paint)
 android.support.v4.view.ViewCompat$HCViewCompatImpl: int getLayerType(android.view.View)
 android.support.v4.view.ViewCompat$HCViewCompatImpl: void setLayerPaint(android.view.View,android.graphics.Paint)
@@ -2533,6 +3096,7 @@ android.support.v4.view.ViewCompat$ViewCompatImpl: int getImportantForAccessibil
 android.support.v4.view.ViewCompat$ViewCompatImpl: void setImportantForAccessibility(android.view.View,int)
 android.support.v4.view.ViewCompat$ViewCompatImpl: boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
 android.support.v4.view.ViewCompat$ViewCompatImpl: android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.view.ViewCompat$ViewCompatImpl: float getAlpha(android.view.View)
 android.support.v4.view.ViewCompat$ViewCompatImpl: void setLayerType(android.view.View,int,android.graphics.Paint)
 android.support.v4.view.ViewCompat$ViewCompatImpl: int getLayerType(android.view.View)
 android.support.v4.view.ViewCompat$ViewCompatImpl: int getLabelFor(android.view.View)
@@ -2541,6 +3105,10 @@ android.support.v4.view.ViewCompat$ViewCompatImpl: void setLayerPaint(android.vi
 android.support.v4.view.ViewCompat$ViewCompatImpl: int getLayoutDirection(android.view.View)
 android.support.v4.view.ViewCompat$ViewCompatImpl: void setLayoutDirection(android.view.View,int)
 android.support.v4.view.ViewCompat$ViewCompatImpl: android.view.ViewParent getParentForAccessibility(android.view.View)
+android.support.v4.view.ViewCompat$ViewCompatImpl: boolean isOpaque(android.view.View)
+android.support.v4.view.ViewCompatEclairMr1
+android.support.v4.view.ViewCompatEclairMr1: ViewCompatEclairMr1()
+android.support.v4.view.ViewCompatEclairMr1: boolean isOpaque(android.view.View)
 android.support.v4.view.ViewCompatGingerbread
 android.support.v4.view.ViewCompatGingerbread: ViewCompatGingerbread()
 android.support.v4.view.ViewCompatGingerbread: int getOverScrollMode(android.view.View)
@@ -2548,6 +3116,7 @@ android.support.v4.view.ViewCompatGingerbread: void setOverScrollMode(android.vi
 android.support.v4.view.ViewCompatHC
 android.support.v4.view.ViewCompatHC: ViewCompatHC()
 android.support.v4.view.ViewCompatHC: long getFrameTime()
+android.support.v4.view.ViewCompatHC: float getAlpha(android.view.View)
 android.support.v4.view.ViewCompatHC: void setLayerType(android.view.View,int,android.graphics.Paint)
 android.support.v4.view.ViewCompatHC: int getLayerType(android.view.View)
 android.support.v4.view.ViewCompatICS
@@ -2766,6 +3335,7 @@ android.support.v4.view.ViewPager: boolean isFakeDragging()
 android.support.v4.view.ViewPager: void onSecondaryPointerUp(android.view.MotionEvent)
 android.support.v4.view.ViewPager: void endDrag()
 android.support.v4.view.ViewPager: void setScrollingCacheEnabled(boolean)
+android.support.v4.view.ViewPager: boolean canScrollHorizontally(int)
 android.support.v4.view.ViewPager: boolean canScroll(android.view.View,boolean,int,int,int)
 android.support.v4.view.ViewPager: boolean dispatchKeyEvent(android.view.KeyEvent)
 android.support.v4.view.ViewPager: boolean executeKeyEvent(android.view.KeyEvent)
@@ -2820,6 +3390,7 @@ android.support.v4.view.ViewPager$MyAccessibilityDelegate: ViewPager$MyAccessibi
 android.support.v4.view.ViewPager$MyAccessibilityDelegate: void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
 android.support.v4.view.ViewPager$MyAccessibilityDelegate: void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
 android.support.v4.view.ViewPager$MyAccessibilityDelegate: boolean performAccessibilityAction(android.view.View,int,android.os.Bundle)
+android.support.v4.view.ViewPager$MyAccessibilityDelegate: boolean canScroll()
 android.support.v4.view.ViewPager$OnAdapterChangeListener
 android.support.v4.view.ViewPager$OnAdapterChangeListener: void onAdapterChanged(android.support.v4.view.PagerAdapter,android.support.v4.view.PagerAdapter)
 android.support.v4.view.ViewPager$OnPageChangeListener
@@ -2859,6 +3430,27 @@ android.support.v4.view.ViewPager$ViewPositionComparator
 android.support.v4.view.ViewPager$ViewPositionComparator: ViewPager$ViewPositionComparator()
 android.support.v4.view.ViewPager$ViewPositionComparator: int compare(android.view.View,android.view.View)
 android.support.v4.view.ViewPager$ViewPositionComparator: int compare(java.lang.Object,java.lang.Object)
+android.support.v4.view.ViewParentCompat
+android.support.v4.view.ViewParentCompat: android.support.v4.view.ViewParentCompat$ViewParentCompatImpl IMPL
+android.support.v4.view.ViewParentCompat: ViewParentCompat()
+android.support.v4.view.ViewParentCompat: boolean requestSendAccessibilityEvent(android.view.ViewParent,android.view.View,android.view.accessibility.AccessibilityEvent)
+android.support.v4.view.ViewParentCompat: void <clinit>()
+android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl
+android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl: ViewParentCompat$ViewParentCompatICSImpl()
+android.support.v4.view.ViewParentCompat$ViewParentCompatICSImpl: boolean requestSendAccessibilityEvent(android.view.ViewParent,android.view.View,android.view.accessibility.AccessibilityEvent)
+android.support.v4.view.ViewParentCompat$ViewParentCompatImpl
+android.support.v4.view.ViewParentCompat$ViewParentCompatImpl: boolean requestSendAccessibilityEvent(android.view.ViewParent,android.view.View,android.view.accessibility.AccessibilityEvent)
+android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl
+android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl: ViewParentCompat$ViewParentCompatStubImpl()
+android.support.v4.view.ViewParentCompat$ViewParentCompatStubImpl: boolean requestSendAccessibilityEvent(android.view.ViewParent,android.view.View,android.view.accessibility.AccessibilityEvent)
+android.support.v4.view.ViewParentCompatICS
+android.support.v4.view.ViewParentCompatICS: ViewParentCompatICS()
+android.support.v4.view.ViewParentCompatICS: boolean requestSendAccessibilityEvent(android.view.ViewParent,android.view.View,android.view.accessibility.AccessibilityEvent)
+android.support.v4.view.WindowCompat
+android.support.v4.view.WindowCompat: int FEATURE_ACTION_BAR
+android.support.v4.view.WindowCompat: int FEATURE_ACTION_BAR_OVERLAY
+android.support.v4.view.WindowCompat: int FEATURE_ACTION_MODE_OVERLAY
+android.support.v4.view.WindowCompat: WindowCompat()
 android.support.v4.view.accessibility.AccessibilityEventCompat
 android.support.v4.view.accessibility.AccessibilityEventCompat: android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventVersionImpl IMPL
 android.support.v4.view.accessibility.AccessibilityEventCompat: int TYPE_VIEW_HOVER_ENTER
@@ -2881,6 +3473,7 @@ android.support.v4.view.accessibility.AccessibilityEventCompat: AccessibilityEve
 android.support.v4.view.accessibility.AccessibilityEventCompat: int getRecordCount(android.view.accessibility.AccessibilityEvent)
 android.support.v4.view.accessibility.AccessibilityEventCompat: void appendRecord(android.view.accessibility.AccessibilityEvent,android.support.v4.view.accessibility.AccessibilityRecordCompat)
 android.support.v4.view.accessibility.AccessibilityEventCompat: android.support.v4.view.accessibility.AccessibilityRecordCompat getRecord(android.view.accessibility.AccessibilityEvent,int)
+android.support.v4.view.accessibility.AccessibilityEventCompat: android.support.v4.view.accessibility.AccessibilityRecordCompat asRecord(android.view.accessibility.AccessibilityEvent)
 android.support.v4.view.accessibility.AccessibilityEventCompat: void <clinit>()
 android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl
 android.support.v4.view.accessibility.AccessibilityEventCompat$AccessibilityEventIcsImpl: AccessibilityEventCompat$AccessibilityEventIcsImpl()
@@ -2974,8 +3567,15 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_NE
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_PREVIOUS_HTML_ELEMENT
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_SCROLL_FORWARD
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_SCROLL_BACKWARD
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_COPY
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_PASTE
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_CUT
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int ACTION_SET_SELECTION
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String ACTION_ARGUMENT_MOVEMENT_GRANULARITY_INT
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String ACTION_ARGUMENT_HTML_ELEMENT_STRING
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String ACTION_ARGUMENT_EXTEND_SELECTION_BOOLEAN
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String ACTION_ARGUMENT_SELECTION_START_INT
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String ACTION_ARGUMENT_SELECTION_END_INT
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int FOCUS_INPUT
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int FOCUS_ACCESSIBILITY
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int MOVEMENT_GRANULARITY_CHARACTER
@@ -3046,8 +3646,12 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: void setText(
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.CharSequence getContentDescription()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: void setContentDescription(java.lang.CharSequence)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: void recycle()
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: void setViewIdResourceName(java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String getViewIdResourceName()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: int hashCode()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: boolean equals(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String toString()
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: java.lang.String getActionSymbolicName(int)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat: void <clinit>()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoIcsImpl
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoIcsImpl: AccessibilityNodeInfoCompat$AccessibilityNodeInfoIcsImpl()
@@ -3159,6 +3763,8 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityN
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl: java.lang.CharSequence getContentDescription(java.lang.Object)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl: void setContentDescription(java.lang.Object,java.lang.CharSequence)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl: void recycle(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl: java.lang.String getViewIdResourceName(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoImpl: void setViewIdResourceName(java.lang.Object,java.lang.String)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl: AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl: java.lang.Object obtain(android.view.View,int)
@@ -3174,6 +3780,10 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityN
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl: void setMovementGranularities(java.lang.Object,int)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl: int getMovementGranularities(java.lang.Object)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanImpl: void setParent(java.lang.Object,android.view.View,int)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl: AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl()
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl: java.lang.String getViewIdResourceName(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoJellybeanMr2Impl: void setViewIdResourceName(java.lang.Object,java.lang.String)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: java.lang.Object obtain()
@@ -3236,6 +3846,8 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityN
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: void setText(java.lang.Object,java.lang.CharSequence)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: void recycle(java.lang.Object)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: void setParent(java.lang.Object,android.view.View,int)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: java.lang.String getViewIdResourceName(java.lang.Object)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompat$AccessibilityNodeInfoStubImpl: void setViewIdResourceName(java.lang.Object,java.lang.String)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatIcs
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatIcs: AccessibilityNodeInfoCompatIcs()
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatIcs: java.lang.Object obtain()
@@ -3300,6 +3912,10 @@ android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean: java
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean: void setParent(java.lang.Object,android.view.View,int)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean: boolean isAccessibilityFocused(java.lang.Object)
 android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellyBean: void setAccesibilityFocused(java.lang.Object,boolean)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2: AccessibilityNodeInfoCompatJellybeanMr2()
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2: void setViewIdResourceName(java.lang.Object,java.lang.String)
+android.support.v4.view.accessibility.AccessibilityNodeInfoCompatJellybeanMr2: java.lang.String getViewIdResourceName(java.lang.Object)
 android.support.v4.view.accessibility.AccessibilityNodeProviderCompat
 android.support.v4.view.accessibility.AccessibilityNodeProviderCompat: android.support.v4.view.accessibility.AccessibilityNodeProviderCompat$AccessibilityNodeProviderImpl IMPL
 android.support.v4.view.accessibility.AccessibilityNodeProviderCompat: java.lang.Object mProvider
@@ -3662,6 +4278,8 @@ android.support.v4.widget.DrawerLayout: int DEFAULT_SCRIM_COLOR
 android.support.v4.widget.DrawerLayout: int PEEK_DELAY
 android.support.v4.widget.DrawerLayout: int MIN_FLING_VELOCITY
 android.support.v4.widget.DrawerLayout: boolean ALLOW_EDGE_LOCK
+android.support.v4.widget.DrawerLayout: boolean CHILDREN_DISALLOW_INTERCEPT
+android.support.v4.widget.DrawerLayout: float TOUCH_SLOP_SENSITIVITY
 android.support.v4.widget.DrawerLayout: int[] LAYOUT_ATTRS
 android.support.v4.widget.DrawerLayout: int mMinDrawerMargin
 android.support.v4.widget.DrawerLayout: int mScrimColor
@@ -3866,6 +4484,55 @@ android.support.v4.widget.EdgeEffectCompatIcs: boolean onPull(java.lang.Object,f
 android.support.v4.widget.EdgeEffectCompatIcs: boolean onRelease(java.lang.Object)
 android.support.v4.widget.EdgeEffectCompatIcs: boolean onAbsorb(java.lang.Object,int)
 android.support.v4.widget.EdgeEffectCompatIcs: boolean draw(java.lang.Object,android.graphics.Canvas)
+android.support.v4.widget.ExploreByTouchHelper
+android.support.v4.widget.ExploreByTouchHelper: int INVALID_ID
+android.support.v4.widget.ExploreByTouchHelper: java.lang.String DEFAULT_CLASS_NAME
+android.support.v4.widget.ExploreByTouchHelper: android.graphics.Rect mTempScreenRect
+android.support.v4.widget.ExploreByTouchHelper: android.graphics.Rect mTempParentRect
+android.support.v4.widget.ExploreByTouchHelper: android.graphics.Rect mTempVisibleRect
+android.support.v4.widget.ExploreByTouchHelper: int[] mTempGlobalRect
+android.support.v4.widget.ExploreByTouchHelper: android.view.accessibility.AccessibilityManager mManager
+android.support.v4.widget.ExploreByTouchHelper: android.view.View mView
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider mNodeProvider
+android.support.v4.widget.ExploreByTouchHelper: int mFocusedVirtualViewId
+android.support.v4.widget.ExploreByTouchHelper: int mHoveredVirtualViewId
+android.support.v4.widget.ExploreByTouchHelper: ExploreByTouchHelper(android.view.View)
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.view.accessibility.AccessibilityNodeProviderCompat getAccessibilityNodeProvider(android.view.View)
+android.support.v4.widget.ExploreByTouchHelper: boolean dispatchHoverEvent(android.view.MotionEvent)
+android.support.v4.widget.ExploreByTouchHelper: boolean sendEventForVirtualView(int,int)
+android.support.v4.widget.ExploreByTouchHelper: void invalidateRoot()
+android.support.v4.widget.ExploreByTouchHelper: void invalidateVirtualView(int)
+android.support.v4.widget.ExploreByTouchHelper: int getFocusedVirtualView()
+android.support.v4.widget.ExploreByTouchHelper: void updateHoveredVirtualView(int)
+android.support.v4.widget.ExploreByTouchHelper: android.view.accessibility.AccessibilityEvent createEvent(int,int)
+android.support.v4.widget.ExploreByTouchHelper: android.view.accessibility.AccessibilityEvent createEventForHost(int)
+android.support.v4.widget.ExploreByTouchHelper: android.view.accessibility.AccessibilityEvent createEventForChild(int,int)
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.view.accessibility.AccessibilityNodeInfoCompat createNode(int)
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.view.accessibility.AccessibilityNodeInfoCompat createNodeForHost()
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.view.accessibility.AccessibilityNodeInfoCompat createNodeForChild(int)
+android.support.v4.widget.ExploreByTouchHelper: boolean performAction(int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: boolean performActionForHost(int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: boolean performActionForChild(int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: boolean manageFocusForChild(int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: boolean intersectVisibleToUser(android.graphics.Rect)
+android.support.v4.widget.ExploreByTouchHelper: boolean isAccessibilityFocused(int)
+android.support.v4.widget.ExploreByTouchHelper: boolean requestAccessibilityFocus(int)
+android.support.v4.widget.ExploreByTouchHelper: boolean clearAccessibilityFocus(int)
+android.support.v4.widget.ExploreByTouchHelper: int getVirtualViewAt(float,float)
+android.support.v4.widget.ExploreByTouchHelper: void getVisibleVirtualViews(java.util.List)
+android.support.v4.widget.ExploreByTouchHelper: void onPopulateEventForVirtualView(int,android.view.accessibility.AccessibilityEvent)
+android.support.v4.widget.ExploreByTouchHelper: void onPopulateNodeForVirtualView(int,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+android.support.v4.widget.ExploreByTouchHelper: boolean onPerformActionForVirtualView(int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: android.support.v4.view.accessibility.AccessibilityNodeInfoCompat access$100(android.support.v4.widget.ExploreByTouchHelper,int)
+android.support.v4.widget.ExploreByTouchHelper: boolean access$200(android.support.v4.widget.ExploreByTouchHelper,int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper: void <clinit>()
+android.support.v4.widget.ExploreByTouchHelper$1
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider: android.support.v4.widget.ExploreByTouchHelper this$0
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider: ExploreByTouchHelper$ExploreByTouchNodeProvider(android.support.v4.widget.ExploreByTouchHelper)
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider: android.support.v4.view.accessibility.AccessibilityNodeInfoCompat createAccessibilityNodeInfo(int)
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider: boolean performAction(int,int,android.os.Bundle)
+android.support.v4.widget.ExploreByTouchHelper$ExploreByTouchNodeProvider: ExploreByTouchHelper$ExploreByTouchNodeProvider(android.support.v4.widget.ExploreByTouchHelper,android.support.v4.widget.ExploreByTouchHelper$1)
 android.support.v4.widget.ResourceCursorAdapter
 android.support.v4.widget.ResourceCursorAdapter: int mLayout
 android.support.v4.widget.ResourceCursorAdapter: int mDropDownLayout
@@ -4184,7 +4851,7 @@ android.support.v4.widget.SlidingPaneLayout: void dispatchOnPanelOpened(android.
 android.support.v4.widget.SlidingPaneLayout: void dispatchOnPanelClosed(android.view.View)
 android.support.v4.widget.SlidingPaneLayout: void updateObscuredViewsVisibility(android.view.View)
 android.support.v4.widget.SlidingPaneLayout: void setAllChildrenVisible()
-android.support.v4.widget.SlidingPaneLayout: boolean hasOpaqueBackground(android.view.View)
+android.support.v4.widget.SlidingPaneLayout: boolean viewIsOpaque(android.view.View)
 android.support.v4.widget.SlidingPaneLayout: void onAttachedToWindow()
 android.support.v4.widget.SlidingPaneLayout: void onDetachedFromWindow()
 android.support.v4.widget.SlidingPaneLayout: void onMeasure(int,int)
@@ -4236,6 +4903,7 @@ android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: android.graph
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: android.support.v4.widget.SlidingPaneLayout this$0
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: SlidingPaneLayout$AccessibilityDelegate(android.support.v4.widget.SlidingPaneLayout)
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: void onInitializeAccessibilityNodeInfo(android.view.View,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
+android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: void onInitializeAccessibilityEvent(android.view.View,android.view.accessibility.AccessibilityEvent)
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: boolean onRequestSendAccessibilityEvent(android.view.ViewGroup,android.view.View,android.view.accessibility.AccessibilityEvent)
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: boolean filter(android.view.View)
 android.support.v4.widget.SlidingPaneLayout$AccessibilityDelegate: void copyNodeInfoNoChildren(android.support.v4.view.accessibility.AccessibilityNodeInfoCompat,android.support.v4.view.accessibility.AccessibilityNodeInfoCompat)
@@ -4533,7 +5201,7 @@ com.github.espiandev.showcaseview.ShowcaseView: ShowcaseView(android.content.Con
 com.google.android.gms.common.SignInButton
 com.google.android.gms.common.SignInButton: SignInButton(android.content.Context,android.util.AttributeSet)
 com.google.android.gms.common.SignInButton: SignInButton(android.content.Context,android.util.AttributeSet,int)
-com.google.android.gms.common.images.ImageManager$ImageReceiver
+com.google.android.gms.common.images.ImageManager$b
 com.google.android.gms.games.Game
 com.google.android.gms.games.GameEntity
 com.google.android.gms.games.GameEntity: android.os.Parcelable$Creator CREATOR
