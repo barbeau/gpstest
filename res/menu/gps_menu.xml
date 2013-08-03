@@ -21,11 +21,16 @@
         android:icon="@drawable/social_share"
         android:showAsAction="ifRoom|withText" />
 
-    <item android:id="@+id/gps_start"
+    <!-- <item android:id="@+id/gps_start"
         android:title="@string/gps_start"
         android:icon="@drawable/av_play"
-        android:showAsAction="ifRoom|withText" />
+        android:showAsAction="ifRoom|withText"
+        android:actionLayout="@layout/gps_switch" />  -->
     
+    <item android:id="@+id/gps_switch"
+        android:showAsAction="ifRoom|withText"
+        android:actionLayout="@layout/gps_switch" />    
+        
     <item android:id="@+id/force_time_injection"
         android:title="@string/force_time_injection" />
 

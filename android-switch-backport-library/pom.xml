@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Needed to deploy to Maven Central. -->
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+
+    <!-- Informational stuff. -->
+
+    <groupId>org.jraf</groupId>
+    <artifactId>android-switch-backport</artifactId>
+    <version>1.1-SNAPSHOT</version>
+    <packaging>apklib</packaging>
+    <name>Android Switch Backport</name>
+    <description>
+        A backport of the Switch widget (http://developer.android.com/reference/android/widget/Switch.html)
+        that was introduced on Android 4.
+        This port works on Android 2.1+.
+    </description>
+    <url>https://github.com/BoD/android-switch-backport</url>
+
+    <licenses>
+        <license>
+            <name>Apache 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>git@github.com:BoD/android-switch-backport.git</url>
+        <connection>scm:git:git@github.com:BoD/android-switch-backport.git</connection>
+        <developerConnection>scm:git:git@github.com:BoD/android-switch-backport.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <url>https://github.com/BoD/android-switch-backport/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <developers>
+        <developer>
+            <id>BoD</id>
+            <name>Benoit 'BoD' Lubek</name>
+            <email>BoD@JRAF.org</email>
+            <url>http://JRAF.org</url>
+            <organization>JRAF.org</organization>
+            <organizationUrl>http://JRAF.org</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+            <properties>
+                <picUrl>https://en.gravatar.com/userimage/4833932/c2a1aef7adad2526e299518b325c2787.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
+
+    <!-- Actually useful stuff. -->
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+            <version>2.1.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

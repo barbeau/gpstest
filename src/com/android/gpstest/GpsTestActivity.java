@@ -225,7 +225,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
         	mOptions.block = false;
         	mOptions.hideOnClickOutside = true;
         	mOptions.noButton = true;
-        	sv = ShowcaseView.insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_start, this,
+        	sv = ShowcaseView.insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch, this,
         			R.string.showcase_gps_on_off_title, R.string.showcase_gps_on_off_message, mOptions);
         	sv.show();
     		
@@ -261,16 +261,13 @@ public class GpsTestActivity extends SherlockFragmentActivity
     
     @Override
     public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-    	MenuItem item = menu.findItem(R.id.gps_start);
-        if (item != null) {
-            if (mStarted) {
-                item.setTitle(R.string.gps_pause);
-                item.setIcon(R.drawable.av_pause);
-            } else {
-                item.setTitle(R.string.gps_start);
-                item.setIcon(R.drawable.av_play);
-            }
-        }
+    	MenuItem item = menu.findItem(R.id.gps_switch);
+    	if (item != null) {
+    		org.jraf.android.backport.switchwidget.Switch sw = (org.jraf.android.backport.switchwidget.Switch)item.getActionView(); 
+//            if (sw != null) {
+//            	sw.setChecked(mStarted);
+//            }
+    	}
 
         item = menu.findItem(R.id.delete_aiding_data);
         if (item != null) {
@@ -290,7 +287,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	boolean success;
     	// Handle menu item selection
     	switch (item.getItemId()) {
-	        case R.id.gps_start:
+	        case R.id.gps_switch:
 	            if (mStarted) {
 	                gpsStop();
 	            } else {
