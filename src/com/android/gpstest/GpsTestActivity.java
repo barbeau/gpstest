@@ -37,6 +37,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -64,6 +65,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     private float minDistance; // Min Distance between location updates, in meters
 
     private static GpsTestActivity sInstance;
+    org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
     
     /**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -168,7 +170,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	double tempMinTime = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), getString(R.string.pref_gps_min_time_default_sec)));
      	minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
      	minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), getString(R.string.pref_gps_min_distance_default_meters)));
-     	    	
+
     	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
     		gpsStart();
     	}
@@ -255,19 +257,40 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-    	getSupportMenuInflater().inflate(R.menu.gps_menu, menu);
+    	getSupportMenuInflater().inflate(R.menu.gps_menu, menu);    	    	
+    	initGpsSwitch(menu);    	
         return true;
+    }
+    
+    private void initGpsSwitch(com.actionbarsherlock.view.Menu menu) {
+    	MenuItem item = menu.findItem(R.id.gps_switch);
+    	if (item != null) {    		
+    		mSwitch = (org.jraf.android.backport.switchwidget.Switch) item.getActionView();    		
+    		if (mSwitch != null) {
+    			// Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
+    			mSwitch.setChecked(mStarted);    			
+    			
+    			// Set up listener for GPS on/off switch, since custom menu items on Action Bar don't play 
+    	    	// well with ABS and we can't handle in onOptionsItemSelected()
+	    		mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+	    		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	    		    	// Turn GPS on or off
+	    	            if (!isChecked && mStarted) {
+	    	                gpsStop();
+	    	            } else {
+	    	            	if (isChecked && !mStarted) {
+	    	            		gpsStart();
+	    	            	}	    	                
+	    	            }
+	    		    }
+	    		});
+    		}
+    	}
     }
     
     @Override
     public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-    	MenuItem item = menu.findItem(R.id.gps_switch);
-    	if (item != null) {
-    		org.jraf.android.backport.switchwidget.Switch sw = (org.jraf.android.backport.switchwidget.Switch)item.getActionView(); 
-//            if (sw != null) {
-//            	sw.setChecked(mStarted);
-//            }
-    	}
+    	MenuItem item;    	
 
         item = menu.findItem(R.id.delete_aiding_data);
         if (item != null) {
@@ -288,12 +311,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	// Handle menu item selection
     	switch (item.getItemId()) {
 	        case R.id.gps_switch:
-	            if (mStarted) {
-	                gpsStop();
-	            } else {
-	                gpsStart();
-	            }
-         	
+	        	// Do nothing - this is handled by a separate listener added in onCreateOptionsMenu()        	
 	            return true;	
 	        case R.id.delete_aiding_data:
 	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
