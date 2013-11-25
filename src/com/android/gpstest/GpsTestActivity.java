@@ -96,7 +96,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
         mGpsTestListeners.add(activity);
     }
 
-    private void gpsStart() {
+    private synchronized void gpsStart() {
         if (!mStarted) {
             mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
@@ -119,7 +119,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
         }
     }
 
-    private void gpsStop() {
+    private synchronized void gpsStop() {
         if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
@@ -292,11 +292,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
     public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
     	MenuItem item;    	
 
-        item = menu.findItem(R.id.delete_aiding_data);
-        if (item != null) {
-            item.setEnabled(!mStarted);
-        }
-
         item = menu.findItem(R.id.send_location);
         if (item != null) {
             item.setVisible(mLastLocation != null);
@@ -314,6 +309,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	        	// Do nothing - this is handled by a separate listener added in onCreateOptionsMenu()        	
 	            return true;	
 	        case R.id.delete_aiding_data:
+	        	// If GPS is currently running, stop it
+	        	boolean lastStartState = mStarted;
+	        	if (mStarted) {
+	    	    	gpsStop();    	    	
+	    	    }
 	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
 	        	if(success){
 	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
@@ -322,6 +322,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	    			Toast.makeText(this,getString(R.string.delete_aiding_data_failure),
 	    					Toast.LENGTH_SHORT).show();
 	    		}
+	        	
+	        	if (lastStartState) {
+	    	    	Handler h = new Handler();
+	    	    	// Restart the GPS, if it was previously started, with a slight delay,
+	    	    	// to refresh the assistance data
+	    	    	h.postDelayed(new Runnable() {
+	    	            public void run() {
+	    	                gpsStart();
+	    	            }
+	    	        }, 500);
+	    	    }
 	            return true;	
 	        case R.id.send_location:
 	            sendLocation();
