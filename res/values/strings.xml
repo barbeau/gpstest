@@ -63,8 +63,8 @@
     <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm</string>
     
     <!-- User tutorial -->
-    <string name="showcase_gps_on_off_title">New GPS controls!</string>
-    <string name="showcase_gps_on_off_message">&#8226;  GPS will automatically start (change in \"Settings\")\n&#8226;  The \"Pause/Play\" button stops/starts GPS\n&#8226;  The \"Share\" button sends a location, after getting a GPS fix\n\n<i>(tap to dismiss)</i></string>
+    <string name="showcase_gps_on_off_title">New controls!</string>
+    <string name="showcase_gps_on_off_message">&#8226;  GPS automatically starts on startup (change in \"Settings\")\n&#8226;  The switch stops/starts GPS\n&#8226;  The \"Share\" button sends a location, after getting a GPS fix\n\n<i>(tap to dismiss)</i></string>
     
     <!-- Preferences -->
     <string name="pref_title">Settings</string>
