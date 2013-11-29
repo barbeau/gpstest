@@ -10,9 +10,14 @@
     <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Ativar serviços do Google Play"</string>
     <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Atualizar serviços do Google Play"</string>
     <string name="common_google_play_services_update_text" msgid="448354684997260580">"Esta aplicação não será executada enquanto não atualizar os serviços do Google Play."</string>
+    <string name="common_google_play_services_network_error_title" msgid="3827284619958211114">"Erro de Rede"</string>
+    <string name="common_google_play_services_network_error_text" msgid="9038847255613537209">"É necessária uma ligação de dados para se ligar aos Serviços do Google Play."</string>
+    <string name="common_google_play_services_invalid_account_title" msgid="1066672360770936753">"Conta Inválida"</string>
+    <string name="common_google_play_services_invalid_account_text" msgid="4983316348021735578">"A conta especificada não existe neste dispositivo. Escolha uma conta diferente."</string>
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Problema desconhecido nos serviços do Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Serviços do Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Os serviços do Google Play, dos quais dependem algumas das suas aplicações, não são suportados pelo seu dispositivo. Contacte o fabricante para obter assistência."</string>
+    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"A data no dispositivo parece estar incorreta. Verifique a data no dispositivo."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Atualizar"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Inic. ses."</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Inic. sessão com o Google"</string>

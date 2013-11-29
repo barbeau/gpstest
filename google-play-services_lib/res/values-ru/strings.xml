@@ -10,9 +10,14 @@
     <string name="common_google_play_services_enable_button" msgid="4181637455539816337">"Включить"</string>
     <string name="common_google_play_services_update_title" msgid="6006316683626838685">"Обновите Сервисы Google Play"</string>
     <string name="common_google_play_services_update_text" msgid="448354684997260580">"Для работы этого приложения требуется обновить Сервисы Google Play."</string>
+    <string name="common_google_play_services_network_error_title" msgid="3827284619958211114">"Ошибка сети"</string>
+    <string name="common_google_play_services_network_error_text" msgid="9038847255613537209">"Для работы с Google Play требуется подключение к сети."</string>
+    <string name="common_google_play_services_invalid_account_title" msgid="1066672360770936753">"Недействительный аккаунт"</string>
+    <string name="common_google_play_services_invalid_account_text" msgid="4983316348021735578">"Этого аккаунта нет на устройстве. Выберите другой."</string>
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Неизвестная ошибка с Сервисами Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Сервисы Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Сервисы Google Play, необходимые для работы некоторых приложений, не поддерживаются на вашем устройстве. Обратитесь к производителю."</string>
+    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Проверьте правильность даты, указанной на устройстве."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Обновить"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Войти"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Войти в аккаунт Google"</string>

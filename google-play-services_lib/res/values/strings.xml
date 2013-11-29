@@ -37,6 +37,18 @@
         Google Play services (from Play Store) [CHAR LIMIT=NONE] -->
     <string name="common_google_play_services_update_text" msgid="9053896323427875356">This app won\'t run unless you update Google Play services.</string>
 
+    <!-- Title of confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=40] -->
+    <string name="common_google_play_services_network_error_title">Network Error</string>
+
+    <!-- Message in confirmation dialog informing the user that a network error occurred. [CHAR LIMIT=NONE] -->
+    <string name="common_google_play_services_network_error_text">A data connection is required to connect to Google Play services.</string>
+
+    <!-- Title of confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=40] -->
+    <string name="common_google_play_services_invalid_account_title">Invalid Account</string>
+
+    <!-- Message in confirmation dialog informing the user that they provided an invalid account. [CHAR LIMIT=NONE] -->
+    <string name="common_google_play_services_invalid_account_text">The specified account does not exist on this device. Please choose a different account.</string>
+
     <!-- Message in confirmation dialog informing user there is an unknown issue in Google Play
         services [CHAR LIMIT=NONE] -->
     <string name="common_google_play_services_unknown_issue">Unknown issue with Google Play services.</string>
@@ -46,6 +58,10 @@
 
     <!-- Message in confirmation dialog informing user that Google Play services is not supported on their device [CHAR LIMIT=NONE] -->
     <string name="common_google_play_services_unsupported_text">Google Play services, which some of your applications rely on, is not supported by your device. Please contact the manufacturer for assistance.</string>
+
+    <!-- Message in confirmation dialog informing user that date on the device is not correct,
+    causing certificate checks to fail. [CHAR LIMIT=NONE] -->
+    <string name="common_google_play_services_unsupported_date_text">The date on the device appears to be incorrect. Please check the date on the device.</string>
 
     <!-- Button in confirmation dialog for updating Google Play services [CHAR LIMIT=40] -->
     <string name="common_google_play_services_update_button" msgid="6556509956452265614">Update</string>
