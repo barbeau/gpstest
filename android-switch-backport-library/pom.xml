@@ -2,20 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Needed to deploy to Maven Central. -->
-
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
-
     <!-- Informational stuff. -->
 
     <groupId>org.jraf</groupId>
-    <artifactId>android-switch-backport</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <artifactId>android-switch-backport-apklib</artifactId>
+    <version>1.1</version>
     <packaging>apklib</packaging>
     <name>Android Switch Backport</name>
     <description>
@@ -69,43 +60,66 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <prerequisites>
+        <maven>3.3.1</maven>
+    </prerequisites>
+
+    <distributionManagement>
+        <repository>
+            <id>local</id>
+            <name>Local Repository</name>
+            <!-- Deploy to a local repository (obviously, adjust this path to your preferred destination) -->
+            <url>file:///Users/bod/Tmp/maven/</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.google.android</groupId>
             <artifactId>android</artifactId>
-            <version>2.1.2</version>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>annotations</artifactId>
+            <version>4.1.1.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
 
+    <!-- Use mvn -Dandroid.sdk.path=/Users/bod/Dev/android-sdk-macosx/ deploy to deploy the jar to
+    a local repository -->
     <build>
         <sourceDirectory>src</sourceDirectory>
         <plugins>
+            <!-- Use mvn versions:display-dependency-updates to show new versions of dependencies,
+            or mvn versions:use-latest-versions to update the pom. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.1</version>
+            </plugin>
+
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.8.0</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <sdk>
+                        <platform>19</platform>
+                    </sdk>
+                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.1</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
     </build>
 </project>

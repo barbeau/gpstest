@@ -28,7 +28,7 @@
     <style name="Widget.Holo.CompoundButton.Switch" parent="android:Widget.CompoundButton">
         <item name="track">@drawable/switch_track_holo_dark</item>
         <item name="thumb">@drawable/switch_inner_holo_dark</item>
-        <item name="switchTextAppearance">@android:style/TextAppearance.Small</item>
+        <item name="switchTextAppearance">@style/TextAppearance.Holo.Widget.Switch</item>
         <item name="textOn">@string/switch_on</item>
         <item name="textOff">@string/switch_off</item>
         <item name="thumbTextPadding">12dip</item>
@@ -39,7 +39,7 @@
     <style name="Widget.Holo.Light.CompoundButton.Switch" parent="android:Widget.CompoundButton">
         <item name="track">@drawable/switch_track_holo_light</item>
         <item name="thumb">@drawable/switch_inner_holo_light</item>
-        <item name="switchTextAppearance">@android:style/TextAppearance.Small</item>
+        <item name="switchTextAppearance">@style/TextAppearance.Holo.Light.Widget.Switch</item>
         <item name="textOn">@string/switch_on</item>
         <item name="textOff">@string/switch_off</item>
         <item name="thumbTextPadding">12dip</item>
@@ -52,6 +52,16 @@
         <item name="android:widgetLayout">@layout/preference_widget_switch</item>
         <item name="switchTextOn">@string/switch_on</item>
         <item name="switchTextOff">@string/switch_off</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.Switch" parent="android:TextAppearance.Small">
+        <!-- Switch thumb asset presents a dark background. -->
+        <item name="android:textColor">@color/secondary_text_holo_dark</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Widget.Switch" parent="android:TextAppearance.Small">
+        <!-- Switch thumb asset presents a dark background. -->
+        <item name="android:textColor">@color/secondary_text_holo_dark</item>
     </style>
 
 </resources>

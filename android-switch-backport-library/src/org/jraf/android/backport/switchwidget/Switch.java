@@ -24,6 +24,7 @@
  */
 package org.jraf.android.backport.switchwidget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -33,6 +34,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -294,13 +296,8 @@ public class Switch extends CompoundButton {
     }
 
     @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-
-
         if (mOnLayout == null) {
             mOnLayout = makeLayout(mTextOn);
         }
@@ -315,42 +312,18 @@ public class Switch extends CompoundButton {
 
         mThumbWidth = maxTextWidth + mThumbTextPadding * 2;
 
-        switch (widthMode) {
-            case MeasureSpec.AT_MOST:
-                widthSize = Math.min(widthSize, switchWidth);
-                break;
-
-            case MeasureSpec.UNSPECIFIED:
-                widthSize = switchWidth;
-                break;
-
-            case MeasureSpec.EXACTLY:
-                // Just use what we were given
-                break;
-        }
-
-        switch (heightMode) {
-            case MeasureSpec.AT_MOST:
-                heightSize = Math.min(heightSize, switchHeight);
-                break;
-
-            case MeasureSpec.UNSPECIFIED:
-                heightSize = switchHeight;
-                break;
-
-            case MeasureSpec.EXACTLY:
-                // Just use what we were given
-                break;
-        }
-
         mSwitchWidth = switchWidth;
         mSwitchHeight = switchHeight;
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int measuredHeight = getMeasuredHeight();
         if (measuredHeight < switchHeight) {
-            //            setMeasuredDimension(getMeasuredWidthAndState(), switchHeight);
-            setMeasuredDimension(getMeasuredWidth(), switchHeight);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                setMeasuredDimension(getMeasuredWidth(), switchHeight);
+            }
+            else {
+                setMeasuredDimension(getMeasuredWidthAndState(), switchHeight);
+            }
         }
     }
 
@@ -392,9 +365,13 @@ public class Switch extends CompoundButton {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         mVelocityTracker.addMovement(ev);
-        // final int action = ev.getActionMasked();
-        // XXX Replaced by getAction() (getActionMasked() doesn't exist in 2.1). -- BoD
-        final int action = ev.getAction();
+
+        final int action;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO)
+            action = ev.getAction();
+        else
+            action = ev.getActionMasked();
+
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 final float x = ev.getX();

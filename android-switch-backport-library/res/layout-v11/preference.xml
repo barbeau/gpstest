@@ -38,7 +38,7 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:id="@+android:id/icon"
+            android:id="@android:id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -56,7 +56,7 @@
         android:paddingTop="6dip" >
 
         <TextView
-            android:id="@+android:id/title"
+            android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -65,7 +65,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+android:id/summary"
+            android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@android:id/title"
@@ -78,7 +78,7 @@
     <!-- Preference should place its actual preference widget here. -->
 
     <LinearLayout
-        android:id="@+android:id/widget_frame"
+        android:id="@android:id/widget_frame"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:gravity="center"
