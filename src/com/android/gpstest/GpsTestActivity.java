@@ -46,7 +46,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
-import com.github.espiandev.showcaseview.ShowcaseView;
+import com.espian.showcaseview.ShowcaseView;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
