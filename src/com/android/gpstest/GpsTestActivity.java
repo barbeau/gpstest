@@ -18,6 +18,7 @@ package com.android.gpstest;
 
 import java.util.ArrayList;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -37,6 +39,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -46,10 +49,12 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
+import com.espian.showcaseview.OnShowcaseEventListener;
 import com.espian.showcaseview.ShowcaseView;
+import com.espian.showcaseview.targets.ActionItemTarget;
 
 public class GpsTestActivity extends SherlockFragmentActivity
-        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
+        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener, OnShowcaseEventListener {
     private static final String TAG = "GpsTestActivity";
     
     private LocationManager mService;
@@ -81,6 +86,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	
 	ShowcaseView sv;
     ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+    private static final float ALPHA_DIM_VALUE = 0.1f;
 	
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
@@ -224,11 +230,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
     		// Show the user a tutorial on using the ActionBar button to start/stop GPS,
     		// either on first execution or when the user choose the option in the Preferences
         	mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
-        	mOptions.block = false;
+        	mOptions.block = true;
         	mOptions.hideOnClickOutside = true;
         	mOptions.noButton = true;
-        	sv = ShowcaseView.insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch, this,
-        			R.string.showcase_gps_on_off_title, R.string.showcase_gps_on_off_message, mOptions);
+        	ActionItemTarget target = new ActionItemTarget(this, R.id.gps_switch);
+        	sv = ShowcaseView.insertShowcaseView(target, this, R.string.showcase_gps_on_off_title, R.string.showcase_gps_on_off_message, mOptions);
         	sv.show();
     		
     		SharedPreferences.Editor editor = Application.getPrefs().edit();
@@ -550,4 +556,32 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
    					.setTabListener(this));
    		}
 	}
+
+	@Override
+	public void onShowcaseViewHide(ShowcaseView showcaseView) {
+		// TODO Auto-generated method stub		
+	}
+
+	@Override
+	public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onShowcaseViewShow(ShowcaseView showcaseView) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void dimView(View view) {
+        if (isHoneycombOrAbove()) {
+            view.setAlpha(ALPHA_DIM_VALUE);
+        }
+    }
+    
+    public static boolean isHoneycombOrAbove() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
 }
