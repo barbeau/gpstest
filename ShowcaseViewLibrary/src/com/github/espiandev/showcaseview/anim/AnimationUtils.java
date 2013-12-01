@@ -1,4 +1,4 @@
-package com.espian.showcaseview.anim;
+package com.github.espiandev.showcaseview.anim;
 
 import android.os.Handler;
 import android.view.View;
@@ -10,8 +10,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 public class AnimationUtils {
 
-    public static final int DEFAULT_DURATION = 300;
-
+    private static final int DEFAULT_DURATION = 300;
     private static final String ALPHA = "alpha";
     private static final float INVISIBLE = 0f;
     private static final float VISIBLE = 1f;
@@ -44,7 +43,7 @@ public class AnimationUtils {
     }
 
     public static ObjectAnimator createFadeInAnimation(Object target, int duration, final AnimationStartListener listener) {
-        ObjectAnimator oa = ObjectAnimator.ofFloat(target, ALPHA, INVISIBLE, VISIBLE);
+        ObjectAnimator oa = ObjectAnimator.ofFloat(target, ALPHA, VISIBLE);
         oa.setDuration(duration).addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {

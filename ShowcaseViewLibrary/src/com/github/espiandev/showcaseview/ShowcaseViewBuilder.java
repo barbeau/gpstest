@@ -1,4 +1,4 @@
-package com.espian.showcaseview;
+package com.github.espiandev.showcaseview;
 
 import android.app.Activity;
 import android.view.View;
@@ -19,17 +19,12 @@ public class ShowcaseViewBuilder {
         this.showcaseView = (ShowcaseView) activity.getLayoutInflater().inflate(showcaseLayoutViewId, null);
     }
 
-    public ShowcaseViewBuilder setShowcaseNoView() {
-        showcaseView.setShowcaseNoView();
-        return this;
-    }
-
     public ShowcaseViewBuilder setShowcaseView(View view) {
         showcaseView.setShowcaseView(view);
         return this;
     }
 
-    public ShowcaseViewBuilder setShowcasePosition(int x, int y) {
+    public ShowcaseViewBuilder setShowcasePosition(float x, float y) {
         showcaseView.setShowcasePosition(x, y);
         return this;
     }
@@ -54,10 +49,10 @@ public class ShowcaseViewBuilder {
         return this;
     }
 
-//    public ShowcaseViewBuilder setTextColors(int titleTextColor, int detailTextColor) {
-//        showcaseView.setTextColors(titleTextColor, detailTextColor);
-//        return this;
-//    }
+    public ShowcaseViewBuilder setTextColors(int titleTextColor, int detailTextColor) {
+        showcaseView.setTextColors(titleTextColor, detailTextColor);
+        return this;
+    }
 
     public ShowcaseViewBuilder setText(String titleText, String subText) {
         showcaseView.setText(titleText, subText);
@@ -76,11 +71,6 @@ public class ShowcaseViewBuilder {
 
     public ShowcaseViewBuilder pointTo(float x, float y) {
         showcaseView.pointTo(x, y);
-        return this;
-    }
-
-    public ShowcaseViewBuilder setConfigOptions(ShowcaseView.ConfigOptions configOptions) {
-        showcaseView.setConfigOptions(configOptions);
         return this;
     }
 
