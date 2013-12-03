@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Error desconegut relacionat amb els serveis de Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Serveis de Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"El teu dispositiu no és compatible amb els serveis de Google Play, en què es basen les teves aplicacions. Per obtenir assistència, contacta amb el fabricant."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Sembla que la data del dispositiu no és correcta. Comprova-la."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Actualitza"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Inicia sessió"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Inicia sessió amb Google"</string>

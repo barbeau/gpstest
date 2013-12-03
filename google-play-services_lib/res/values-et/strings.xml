@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play teenuste tundmatu probleem."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play teenused"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Teie seade ei toeta Google Play teenuseid, millele mõni teie rakendustest toetub. Abi saamiseks võtke ühendust tootjaga."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Seadme kuupäev paistab olevat vale. Kontrollige seadme kuupäeva."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Värskenda"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Logi sisse"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Logi sisse Google\'iga"</string>

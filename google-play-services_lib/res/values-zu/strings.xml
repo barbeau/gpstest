@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Indaba engaziwa yamasevisi we-Google Play"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Amasevisi we-Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Amasevisi we-Google Play, okungukuthi ezinye izinhlelo zakho zithembele kuwo, awasekelwe yidivayisi yakho. Sicela uxhumane nomkhiqizi ukuze uthole usizo."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Idethi kudivayisi ibonakala ingalungile. Sicela uhlole idethi kudivayisi."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Isibuyekezo"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Ngena ngemvume"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Ngena ngemvume nge-Google"</string>

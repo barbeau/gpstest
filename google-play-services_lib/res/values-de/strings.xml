@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Unbekanntes Problem mit Google Play-Diensten"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play-Dienste"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Google Play-Dienste, auf denen einige Ihrer Apps basieren, werden von diesem Gerät nicht unterstützt. Wenden Sie sich für weitere Informationen an den Hersteller."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Das Datum auf dem Gerät scheint falsch zu sein. Bitte überprüfen Sie das Datum auf dem Gerät."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Aktualisieren"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Anmelden"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Über Google anmelden"</string>

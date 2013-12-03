@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Nežinoma „Google Play“ paslaugų problema."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"„Google Play“ paslaugos"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Jūsų įrenginys nepalaiko „Google Play“ paslaugų, kuriomis remiasi kai kurios programos. Jei reikia pagalbos, susisiekite su gamintoju."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Įrenginyje nurodyta data neteisinga. Patikrinkite įrenginyje nurodytą datą."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Atnaujinti"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Prisij."</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Prisij. naud. „Google“"</string>

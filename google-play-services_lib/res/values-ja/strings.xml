@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play開発者サービスで原因不明の問題が発生しました。"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play開発者サービス"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"一部のアプリが使用しているGoogle Play開発者サービスは、お使いの端末ではサポートされていません。詳しくは、端末メーカーまでお問い合わせください。"</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"端末上の日付が正しくないようです。端末上の日付をご確認ください。"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"更新"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"ログイン"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Googleでログイン"</string>

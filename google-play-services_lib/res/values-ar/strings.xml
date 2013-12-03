@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"حدثت مشكلة غير معروفة في خدمات Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"خدمات Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"خدمات Google Play التي تستجيب لها بعض تطبيقاتك لا تعمل على جهازك. يُرجى الاتصال بجهة التصنيع للحصول على المساعدة."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"يبدو أن التاريخ على الجهاز غير صحيح. الرجاء التحقق من التاريخ على الجهاز."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"تحديث"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"تسجيل الدخول"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"تسجيل الدخول باستخدام Google"</string>

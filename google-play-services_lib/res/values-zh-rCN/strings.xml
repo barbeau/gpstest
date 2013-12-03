@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play 服务出现未知问题。"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play 服务"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"您的设备不支持部分应用所依赖的 Google Play 服务。请与设备制造商联系，以寻求帮助。"</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"设备上的日期似乎不正确，请在设备上检查日期。"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"更新"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"登录"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"使用 Google 帐户登录"</string>

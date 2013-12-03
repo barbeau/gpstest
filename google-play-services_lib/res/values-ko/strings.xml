@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play 서비스에 알 수 없는 문제가 발생했습니다."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play 서비스"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"일부 사용자 애플리케이션에 필요한 Google Play 서비스가 사용자 기기에서 지원되지 않습니다. 기기 제조업체에 문의하시기 바랍니다."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"기기의 날짜가 잘못된 것 같습니다. 기기의 날짜를 확인해 주세요."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"업데이트"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"로그인"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Google 계정으로 로그인"</string>

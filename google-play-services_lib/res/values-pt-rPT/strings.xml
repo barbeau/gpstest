@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Problema desconhecido nos serviços do Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Serviços do Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Os serviços do Google Play, dos quais dependem algumas das suas aplicações, não são suportados pelo seu dispositivo. Contacte o fabricante para obter assistência."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"A data no dispositivo parece estar incorreta. Verifique a data no dispositivo."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Atualizar"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Inic. ses."</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Inic. sessão com o Google"</string>

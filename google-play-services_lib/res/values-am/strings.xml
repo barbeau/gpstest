@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"በGoogle Play አገልግሎቶች ላይ ያልታወቀ ችግር።"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play አገልግሎቶች"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"የGoogle Play አገልግሎቶች፣ አንዳንድ መተግበሪያዎችዎ በእሱ ላይ ጥገኛ የሆኑት፣ በመሣሪያዎ አይደገፍም። እባክዎ ለእርዳታ አምራቹን ያግኙ።"</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"በመሣሪያው ላይ ያለው ቀን ትክክል አይመስልም። እባክዎ በመሣሪያው ላይ ያለውን ቀን ያረጋግጡ።"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"ያዘምኑ"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"ግባ"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"በGoogle ይግቡ"</string>

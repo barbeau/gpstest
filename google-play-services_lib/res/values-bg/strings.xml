@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Неизвестен проблем с услугите за Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Услуги за Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Услугите за Google Play, на които разчитат някои от приложенията ви, не се поддържат от устройството ви. Моля, свържете се с производителя за помощ."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Изглежда, че датата на устройството е неправилна. Моля, проверете я."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Актуализиране"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Вход"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Вход с Google"</string>

@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play 服務發生不明問題。"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play 服務"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"您的裝置不支援部分應用程式所需的 Google Play 服務。如需協助，請與您的裝置製造商聯絡。"</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"裝置上的日期似乎不正確，請檢查裝置上的日期。"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"更新"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"登入"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"使用 Google 帳戶登入"</string>

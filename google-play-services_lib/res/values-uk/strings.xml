@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Google Play Послуги – невідома проблема."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Сервіси Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Ваш пристрій не підтримує Сервіси Google Play, від яких залежить робота деяких програм. Зверніться по допомогу до виробника."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Схоже, на пристрої вказано неправильну дату. Перевірте її."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Оновити"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Увійти"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Увійти в обл.запис Google"</string>

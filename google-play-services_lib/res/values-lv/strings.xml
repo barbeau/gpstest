@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Nezināma problēma ar Google Play pakalpojumiem."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play pakalpojumi"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Jūsu ierīce neatbalsta Google Play pakalpojumus, kuri nepieciešami dažu jūsu lietojumprogrammu darbībai. Lūdzu, sazinieties ar ražotāju, lai saņemtu palīdzību."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Šķiet, ka ierīcē ir iestatīts nepareizs datums. Lūdzu, pārbaudiet ierīces datumu."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Atjaunināt"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Pierakst."</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Pierakstīties Google"</string>

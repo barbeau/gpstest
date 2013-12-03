@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Nastal neznámý problém se službami Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Služby Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Některé vaše aplikace vyžadují služby Google Play, které ve vašem zařízení nejsou podporovány. S žádostí o pomoc se prosím obraťte na výrobce."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Datum v zařízení není správně nastaveno. Zkontrolujte prosím datum."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Aktualizovat"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Přihlásit se"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Přihlásit se účtem Google"</string>

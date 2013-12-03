@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Problème inconnu avec les services Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Services Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Les services Google Play, dont dépendent certaines de vos applications, ne sont pas compatibles avec votre appareil. Veuillez contacter le fabricant pour obtenir de l\'aide."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"La date sur l\'appareil semble incorrecte. Veuillez la vérifier."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Mettre à jour"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Connexion"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Se connecter avec Google"</string>

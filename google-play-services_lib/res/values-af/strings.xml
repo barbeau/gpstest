@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Onbekende probleem met Google Play-dienste."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play-dienste"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Google Play-dienste, waarop sommige van jou programme staatmaak, werk nie met jou toestel nie. Kontak asseblief die vervaardiger vir bystand."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Dit lyk of die datum op die toestel verkeerd is. Gaan asseblief die datum op die toestel na."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Dateer op"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Meld aan"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Meld aan met Google"</string>

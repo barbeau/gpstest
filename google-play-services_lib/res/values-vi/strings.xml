@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Sự cố không xác định với dịch vụ của Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Dịch vụ của Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Các dịch vụ của Google Play mà một số ứng dụng của bạn dựa vào không được thiết bị của bạn hỗ trợ. Vui lòng liên hệ với nhà sản xuất để được hỗ trợ."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Ngày trên thiết bị có vẻ không chính xác. Vui lòng kiểm tra ngày trên thiết bị."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Cập nhật"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Đăng nhập"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Đăng nhập bằng Google"</string>

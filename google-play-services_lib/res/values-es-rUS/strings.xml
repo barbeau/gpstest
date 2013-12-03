@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Error desconocido relacionado con Google Play Services"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play Services"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Google Play Services, del cual dependen algunas de tus aplicaciones, no es compatible con tu dispositivo. Comunícate con el fabricante para obtener ayuda."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Parece que la fecha del dispositivo es incorrecta. ¿Puedes revisarla?"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Actualizar"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Acceder"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Acceder con Google"</string>

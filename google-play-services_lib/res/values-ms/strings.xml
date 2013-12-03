@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Isu tidak diketahui dengan perkhidmatan Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Perkhidmatan Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Peranti anda tidak menyokong perkhidmatan Google Play, sedangkan sesetengah aplikasi anda memerlukannya. Sila hubungi pengilang untuk bantuan."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Tarikh pada peranti kelihatan tidak betul. Sila semak tarikh pada peranti."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Kemas kini"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Log masuk"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Log masuk dengan Google"</string>

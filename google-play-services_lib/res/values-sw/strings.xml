@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Suala lisilojulikana na huduma za Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Huduma za Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Huduma za Google Play, ambazo baadhi ya programu zako zinategemea, si linganifu na kifaa chako. Tafadhali wasiliana na mtengenezaji kwa usaidizi."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Inaeonekana tarehe ya kifaa sio sahihi. Tafadhali angalia tarehe ya kifaa."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Sasisha"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Ingia"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Ingia ukitumia Google"</string>

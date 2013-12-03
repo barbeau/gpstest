@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Okänt problem med Google Play Tjänster"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play-tjänster"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Några av dina appar använder Google Play-tjänster som inte stöds av din enhet. Kontakta tillverkaren om du vill ha hjälp."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Datumet på enheten verkar inte vara rätt. Kontrollera datumet på enheten."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Uppdatera"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Logga in"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Logga in med Google"</string>

@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Ismeretlen hiba a Google Play Szolgáltatásokban."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Google Play Szolgáltatások"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"A Google Play Szolgáltatásokat, amelyre egyes alkalmazások támaszkodnak, nem támogatja az eszköz. Segítségért forduljon az eszköz gyártójához."</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"Az eszközön beállított dátum helytelen. Kérjük, ellenőrizze azt."</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Frissítés"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Belépés"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Google-bejelentkezés"</string>

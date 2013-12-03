@@ -21,8 +21,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"Невядомая праблема са службамі Google Play."</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"Службы Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"Службы Google Play, да якiх прывязаны некаторыя прыкладаннi, не падтрымлiваюцца на вашай прыладзе. Па дапамогу звярнiцеся да вытворцы."</string>
-    <!-- no translation found for common_google_play_services_unsupported_date_text (4725396522367789365) -->
-    <skip />
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"Абнавіць"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"Увайсцi"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"Увайсці ў Google"</string>

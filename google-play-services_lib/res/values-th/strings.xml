@@ -17,7 +17,6 @@
     <string name="common_google_play_services_unknown_issue" msgid="4762332809710093730">"ปัญหาที่ไม่รู้จักของบริการ Google Play"</string>
     <string name="common_google_play_services_unsupported_title" msgid="6334768798839376943">"บริการ Google Play"</string>
     <string name="common_google_play_services_unsupported_text" msgid="3542578567569488671">"บริการ Google Play ซึ่งใช้งานในบางแอปพลิเคชัน ไม่ได้รับการสนับสนุนโดยอุปกรณ์ของคุณ โปรดติดต่อผู้ผลิตเพื่อขอรับความช่วยเหลือ"</string>
-    <string name="common_google_play_services_unsupported_date_text" msgid="4725396522367789365">"วันที่บนอุปกรณ์ไม่ถูกต้อง โปรดตรวจสอบวันที่บนอุปกรณ์"</string>
     <string name="common_google_play_services_update_button" msgid="8932944190611227642">"อัปเดต"</string>
     <string name="common_signin_button_text" msgid="9071884888741449141">"ลงชื่อใช้"</string>
     <string name="common_signin_button_text_long" msgid="2429381841831957106">"ลงชื่อเข้าใช้ด้วย Google"</string>
