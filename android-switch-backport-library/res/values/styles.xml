@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     This source is part of the
+          _____  ___   ____
+      __ / / _ \/ _ | / __/___  _______ _
+     / // / , _/ __ |/ _/_/ _ \/ __/ _ `/
+     \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
+                                  /___/
+     repository.
+
+     Copyright (C) 2012 Benoit 'BoD' Lubek (BoD@JRAF.org)
+     Copyright (C) 2006 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <style name="Widget.Holo.CompoundButton.Switch" parent="android:Widget.CompoundButton">
+        <item name="track">@drawable/switch_track_holo_dark</item>
+        <item name="thumb">@drawable/switch_inner_holo_dark</item>
+        <item name="switchTextAppearance">@style/TextAppearance.Holo.Widget.Switch</item>
+        <item name="textOn">@string/switch_on</item>
+        <item name="textOff">@string/switch_off</item>
+        <item name="thumbTextPadding">12dip</item>
+        <item name="switchMinWidth">96dip</item>
+        <item name="switchPadding">16dip</item>
+    </style>
+
+    <style name="Widget.Holo.Light.CompoundButton.Switch" parent="android:Widget.CompoundButton">
+        <item name="track">@drawable/switch_track_holo_light</item>
+        <item name="thumb">@drawable/switch_inner_holo_light</item>
+        <item name="switchTextAppearance">@style/TextAppearance.Holo.Light.Widget.Switch</item>
+        <item name="textOn">@string/switch_on</item>
+        <item name="textOff">@string/switch_off</item>
+        <item name="thumbTextPadding">12dip</item>
+        <item name="switchMinWidth">96dip</item>
+        <item name="switchPadding">16dip</item>
+    </style>
+
+    <style name="Preference.SwitchPreference" parent="">
+        <item name="android:layout">@layout/preference</item>
+        <item name="android:widgetLayout">@layout/preference_widget_switch</item>
+        <item name="switchTextOn">@string/switch_on</item>
+        <item name="switchTextOff">@string/switch_off</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Widget.Switch" parent="android:TextAppearance.Small">
+        <!-- Switch thumb asset presents a dark background. -->
+        <item name="android:textColor">@color/secondary_text_holo_dark</item>
+    </style>
+
+    <style name="TextAppearance.Holo.Light.Widget.Switch" parent="android:TextAppearance.Small">
+        <!-- Switch thumb asset presents a dark background. -->
+        <item name="android:textColor">@color/secondary_text_holo_dark</item>
+    </style>
+
+</resources>

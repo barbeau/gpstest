@@ -25,7 +25,6 @@ import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +62,6 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     private int mUsedInFixMask;
     private long mFixTime;
     private boolean mNavigating;
-    private long mGpsStartTime;
     private boolean mGotFix;
 
     private static final int PRN_COLUMN = 0;
@@ -90,7 +88,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     public void onLocationChanged(Location location) {    	    	
     	if (!mGotFix) {
-    		updateTtff(location);
+    		mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
     		mGotFix = true;
     	}
         mLatitudeView.setText(doubleToString(location.getLatitude(), 7) + " ");
@@ -292,14 +290,8 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     @SuppressLint("NewApi")
     public void gpsStart() {
-    	//Reset flag for detecting first fix, and capture GPS start time for calculating TTFF later
+    	//Reset flag for detecting first fix
     	mGotFix = false;
-    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-    		//According to Android docs, elapsedRealtimeNanos() is preferred for elapsed time measurements
-    		mGpsStartTime = SystemClock.elapsedRealtimeNanos();
-    	} else {
-    		mGpsStartTime = System.currentTimeMillis();
-    	}    	
     }
 
     public void gpsStop() {
@@ -315,9 +307,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                 setStarted(false);
                 break;
 
-            case GpsStatus.GPS_EVENT_FIRST_FIX:
-                //status.getTimeToFirstFix() doesn't return a reliable value (see Issue #3),
-            	//so we're manually calculating TTFF instead in onLocationChanged()                
+            case GpsStatus.GPS_EVENT_FIRST_FIX:                                
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
@@ -367,20 +357,5 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         }
 
         mAdapter.notifyDataSetChanged();
-    }
-    
-    @SuppressLint("NewApi")
-    private void updateTtff(Location location){
-    	long ttff;
-    	
-    	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-    		//According to Android docs, elapsedRealtimeNanos() is preferred for elapsed time measurements
-    		ttff = location.getElapsedRealtimeNanos() - mGpsStartTime;  //TTFF in nanoseconds 
-    		ttff = (ttff + 500000000) / 1000000000;
-    	} else {
-    		ttff = location.getTime() - mGpsStartTime;  //TTFF in milliseconds
-    		ttff = (ttff + 500) / 1000;    		
-    	}	            
-		mTTFFView.setText(Long.toString(ttff) + " sec");    		
     }
 }

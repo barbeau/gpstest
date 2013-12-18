@@ -31,7 +31,7 @@ import android.view.View;
  */
 public class ViewPagerMapBevelScroll extends ViewPager {
 	
-	private static final int DEFAULT_SWIPE_MARGIN_WIDTH_DIP = 16;
+	private static final int DEFAULT_SWIPE_MARGIN_WIDTH_DIP = 20;
 	private int swipeMarginWidth;
 	
 	public ViewPagerMapBevelScroll(Context context) {

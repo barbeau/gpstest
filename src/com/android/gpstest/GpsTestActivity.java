@@ -28,6 +28,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +37,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -44,6 +46,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
+import com.github.espiandev.showcaseview.ShowcaseView;
 
 public class GpsTestActivity extends SherlockFragmentActivity
         implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
@@ -55,8 +58,14 @@ public class GpsTestActivity extends SherlockFragmentActivity
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
     boolean mStarted;
     private Location mLastLocation;
+    String mTtff;
+    
+    private long minTime; // Min Time between location updates, in milliseconds
+    private static final int SECONDS_TO_MILLISECONDS = 1000;
+    private float minDistance; // Min Distance between location updates, in meters
 
     private static GpsTestActivity sInstance;
+    org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
     
     /**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -69,7 +78,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	    
 	ViewPagerMapBevelScroll mViewPager;
-
+	
+	ShowcaseView sv;
+    ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+	
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
         public void gpsStop();
@@ -84,20 +96,38 @@ public class GpsTestActivity extends SherlockFragmentActivity
         mGpsTestListeners.add(activity);
     }
 
-    private void gpsStart() {
+    private synchronized void gpsStart() {
         if (!mStarted) {
-            mService.requestLocationUpdates(mProvider.getName(), 1000, 0.0f, this);
+            mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
+            
+            // Show Toast only if the user has set minTime or minDistance to something other than default values
+            if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec)) * SECONDS_TO_MILLISECONDS) ||
+            		minDistance != Float.valueOf(getString(R.string.pref_gps_min_distance_default_meters))) {
+            	Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+            		String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+            }
+            
+            // Show the indeterminate progress bar on the action bar until first GPS status is shown
+         	setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStart();
         }
     }
 
-    private void gpsStop() {
+    private synchronized void gpsStop() {
         if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
+            // Stop progress bar
+         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+         	
+         	// Reset the options menu to trigger updates to action bar menu items
+          	invalidateOptionsMenu();
         }
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.gpsStop();
@@ -132,25 +162,89 @@ public class GpsTestActivity extends SherlockFragmentActivity
      	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
      	
      	setContentView(R.layout.activity_main);
-
+     	     	
      	initActionBar(savedInstanceState);
+     	
+     	SharedPreferences settings = Application.getPrefs();
+     	
+     	double tempMinTime = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), getString(R.string.pref_gps_min_time_default_sec)));
+     	minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
+     	minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), getString(R.string.pref_gps_min_distance_default_meters)));
 
-   		// Hide the indeterminate progress bar on the activity until we need it
-     	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);     	
+    	if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {    		
+    		gpsStart();
+    	}
     }
     
     @Override
     protected void onResume() {
     	super.onResume();
     	
-    	SharedPreferences settings = Application.getPrefs();    	
-    	
+    	SharedPreferences settings = Application.getPrefs();
+    	    	    	
     	if (mViewPager != null) {
     		if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
     			mViewPager.setKeepScreenOn(true);
     		} else {
     			mViewPager.setKeepScreenOn(false);
     		}   		    		
+    	}
+    	
+    	checkTimeAndDistance(settings);
+    	
+    	checkTutorial(settings);
+    }
+    
+    private void checkTimeAndDistance(SharedPreferences settings){
+    	double tempMinTimeDouble = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));     	   	
+    	long minTimeLong = (long) (tempMinTimeDouble * SECONDS_TO_MILLISECONDS);
+     	
+    	if (minTime != minTimeLong || 
+    			minDistance != Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"))) {
+    		// User changed preference values, get the new ones    		
+    		minTime = minTimeLong;
+    		minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
+    		// If the GPS is started, reset the location listener with the new values
+    		if(mStarted){
+	    		mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+				Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+						String.valueOf(tempMinTimeDouble),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+    		}
+     	}    	
+    }
+    
+    private void checkTutorial(SharedPreferences settings){
+    	if (!settings.getBoolean(getString(R.string.pref_key_showed_v2_tutorial), false)) {
+    		// If GPS is started, stop to clear the screen (we will start it again at the end of this method)
+    	    boolean lastStartState = mStarted;
+    		if (mStarted) {
+    	    	gpsStop();    	    	
+    	    }
+    		
+    		// Show the user a tutorial on using the ActionBar button to start/stop GPS,
+    		// either on first execution or when the user choose the option in the Preferences
+        	mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
+        	mOptions.block = false;
+        	mOptions.hideOnClickOutside = true;
+        	mOptions.noButton = true;
+        	sv = ShowcaseView.insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch, this,
+        			R.string.showcase_gps_on_off_title, R.string.showcase_gps_on_off_message, mOptions);
+        	sv.show();
+    		
+    		SharedPreferences.Editor editor = Application.getPrefs().edit();
+    	    editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), true);
+    	    editor.commit();
+    	    
+    	    if (lastStartState) {
+    	    	Handler h = new Handler();
+    	    	// Restart the GPS, if it was previously started, with a slight delay to allow the UI to clear
+    	    	// and allow the tutorial to be clearly visible
+    	    	h.postDelayed(new Runnable() {
+    	            public void run() {
+    	                gpsStart();
+    	            }
+    	        }, 500);
+    	    }    	    
     	}
     }
     
@@ -163,29 +257,44 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     @Override
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-    	getSupportMenuInflater().inflate(R.menu.gps_menu, menu);
+    	getSupportMenuInflater().inflate(R.menu.gps_menu, menu);    	    	
+    	initGpsSwitch(menu);    	
         return true;
+    }
+    
+    private void initGpsSwitch(com.actionbarsherlock.view.Menu menu) {
+    	MenuItem item = menu.findItem(R.id.gps_switch);
+    	if (item != null) {    		
+    		mSwitch = (org.jraf.android.backport.switchwidget.Switch) item.getActionView();    		
+    		if (mSwitch != null) {
+    			// Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
+    			mSwitch.setChecked(mStarted);    			
+    			
+    			// Set up listener for GPS on/off switch, since custom menu items on Action Bar don't play 
+    	    	// well with ABS and we can't handle in onOptionsItemSelected()
+	    		mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+	    		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+	    		    	// Turn GPS on or off
+	    	            if (!isChecked && mStarted) {
+	    	                gpsStop();
+	    	            } else {
+	    	            	if (isChecked && !mStarted) {
+	    	            		gpsStart();
+	    	            	}	    	                
+	    	            }
+	    		    }
+	    		});
+    		}
+    	}
     }
     
     @Override
     public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-    	MenuItem item = menu.findItem(R.id.gps_start);
-        if (item != null) {
-            if (mStarted) {
-                item.setTitle(R.string.gps_stop);
-            } else {
-                item.setTitle(R.string.gps_start);
-            }
-        }
-
-        item = menu.findItem(R.id.delete_aiding_data);
-        if (item != null) {
-            item.setEnabled(!mStarted);
-        }
+    	MenuItem item;    	
 
         item = menu.findItem(R.id.send_location);
         if (item != null) {
-            item.setEnabled(mLastLocation != null);
+            item.setVisible(mLastLocation != null);
         }
 
         return true;
@@ -196,14 +305,15 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	boolean success;
     	// Handle menu item selection
     	switch (item.getItemId()) {
-	        case R.id.gps_start:
-	            if (mStarted) {
-	                gpsStop();
-	            } else {
-	                gpsStart();
-	            }
+	        case R.id.gps_switch:
+	        	// Do nothing - this is handled by a separate listener added in onCreateOptionsMenu()        	
 	            return true;	
 	        case R.id.delete_aiding_data:
+	        	// If GPS is currently running, stop it
+	        	boolean lastStartState = mStarted;
+	        	if (mStarted) {
+	    	    	gpsStop();    	    	
+	    	    }
 	        	success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
 	        	if(success){
 	    			Toast.makeText(this,getString(R.string.delete_aiding_data_success),
@@ -212,6 +322,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	    			Toast.makeText(this,getString(R.string.delete_aiding_data_failure),
 	    					Toast.LENGTH_SHORT).show();
 	    		}
+	        	
+	        	if (lastStartState) {
+	    	    	Handler h = new Handler();
+	    	    	// Restart the GPS, if it was previously started, with a slight delay,
+	    	    	// to refresh the assistance data
+	    	    	h.postDelayed(new Runnable() {
+	    	            public void run() {
+	    	                gpsStart();
+	    	            }
+	    	        }, 500);
+	    	    }
 	            return true;	
 	        case R.id.send_location:
 	            sendLocation();
@@ -246,6 +367,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+        
+      	// Reset the options menu to trigger updates to action bar menu items
+      	invalidateOptionsMenu();
 
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onLocationChanged(location);
@@ -272,6 +396,32 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onGpsStatusChanged(int event) {
         mStatus = mService.getGpsStatus(mStatus);
+        
+        switch (event) {
+        	case GpsStatus.GPS_EVENT_STARTED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_STOPPED:	            
+	            break;	
+	        case GpsStatus.GPS_EVENT_FIRST_FIX:
+	        	int ttff = mStatus.getTimeToFirstFix();
+	        	if (ttff == 0) {
+	        		mTtff = "";
+	        	} else {
+	        		ttff = (ttff + 500) / 1000;
+	        		mTtff = Integer.toString(ttff) + " sec";
+	        	} 
+	            break;	
+	        case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+	        	// Stop progress bar after the first status information is obtained
+	         	setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+	            break;
+        }
+        
+        // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
+        if (sv != null && sv.isShown()) {
+        	return;
+        }
+        
         for (GpsTestListener activity : mGpsTestListeners) {
             activity.onGpsStatusChanged(event, mStatus);
         }
@@ -306,7 +456,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the primary sections of the app.
 	 */
-	public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
+public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
 		public static final int NUMBER_OF_TABS = 3; // Used to set up TabListener
 

@@ -25,7 +25,7 @@
     <string name="gps_sky_tab">Sky</string>
 
     <string name="gps_start">Start</string>
-    <string name="gps_stop">Stop</string>
+    <string name="gps_pause">Pause</string>
     <string name="menu_settings">Settings</string>
     <string name="delete_aiding_data">Clear Aiding Data</string>
     <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
@@ -39,13 +39,7 @@
     <string name="force_xtra_injection_success">Successfully injected XTRA data.</string>
     <string name="force_xtra_injection_failure">Platform does not support injecting XTRA data.</string>
 
-  	<string name="fix_freq_1_second">1 Second</string>
-  	<string name="fix_freq_10_seconds">10 Seconds</string>
-  	<string name="fix_freq_1_minute">1 Minute</string>
-  	<string name="fix_freq_5_minutes">5 Minutes</string>
-  	<string name="fix_freq_15_minutes">15 Minutes</string>
-
-    <string name="zoom_in">Zoom In</string>
+  	<string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
     <string name="mode_map">Map</string>
     <string name="mode_satellite">Satellite</string>
@@ -66,10 +60,15 @@
     <string name="gps_flags_column_label">Flags</string>
     <string name="install">Install</string>
     <string name="please_install_google_maps">Please install Google Maps</string>
+    <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm</string>
+    
+    <!-- User tutorial -->
+    <string name="showcase_gps_on_off_title">New controls!</string>
+    <string name="showcase_gps_on_off_message">&#8226;  The On/Off switch starts/stops GPS\n&#8226;  The \"Share\" button sends a location (shown after getting a GPS fix)\n\n<i>(tap to dismiss)</i></string>
     
     <!-- Preferences -->
     <string name="pref_title">Settings</string>
-    <string name="pref_map_category_title">Map Settings</string>
+    <string name="pref_map_category_title">Map</string>
     <string name="pref_map_type_title">Map Type</string>
     <string name="pref_map_type_summary">Sets the type of map tiles shown</string>
     <string name="pref_map_type_dialog_title">Choose Map Type</string>
@@ -77,8 +76,22 @@
     <string name="pref_gps_category_title">GPS</string>
     <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
     <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
+        
+    <string name="pref_gps_min_time_title">Interval</string>
+    <string name="pref_gps_min_time_summary">Time between GPS fixes, in seconds</string>
+    <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
+    <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
+    
+    <string name="pref_gps_min_distance_title">Min. Distance</string>
+    <string name="pref_gps_min_distance_summary">Minimum distance between GPS fixes, in meters</string>    
+    <string name="pref_gps_min_distance_dialog_title">Enter a min. distance, in meters</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
     
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>
     <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>
+    
+    <string name="pref_about_category_title">About</string>    
+    <string name="pref_show_tutorial_title">Show tutorial</string>
+    <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
 </resources>
