@@ -1444,8 +1444,8 @@ com.android.gpstest.GpsStatusFragment:
     private static final int FLAGS_COLUMN
     private static final int COLUMN_COUNT
     private static final java.lang.String EMPTY_LAT_LONG
-    284:285:public void onGpsStarted()
-    288:289:public void onGpsStopped()
+    285:286:public void onGpsStarted()
+    289:290:public void onGpsStopped()
 com.android.gpstest.GpsTestActivity:
     private static final java.lang.String TAG
     private static final int SECONDS_TO_MILLISECONDS
