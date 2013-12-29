@@ -1,0 +1,72 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+
+    if (project.hasProperty("secure.properties")
+            && new File(project.property("secure.properties")).exists()) {
+
+        Properties props = new Properties()
+        props.load(new FileInputStream(file(project.property("secure.properties"))))
+
+        signingConfigs {
+            debug {
+                // Nothing here
+            }
+
+            release {
+                runProguard true
+                proguardFiles 'proguard.cfg'
+                storeFile file(props['key.store'])
+                keyAlias props['key.alias']
+                storePassword "askmelater"
+                keyPassword "askmelater"
+            }
+        }
+    } else {
+        signingConfigs {
+            debug {
+                storeFile file("gpstest.debug.keystore")
+            }
+
+            release {
+                // Nothing here
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+task askForPasswords << {
+    // Must create String because System.readPassword() returns char[]
+    // (and assigning that below fails silently)
+    def storePw = new String(System.console().readPassword("\nKeystore password: "))
+    def keyPw  = new String(System.console().readPassword("Key password: "))
+
+    android.signingConfigs.release.storePassword = storePw
+    android.signingConfigs.release.keyPassword = keyPw
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.equals("packageRelease")) {
+        theTask.dependsOn "askForPasswords"
+    }
+}
+
+dependencies {
+    compile project(':ShowcaseViewLibrary')
+    compile 'com.google.android.gms:play-services:3.2.65'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'org.jraf:android-switch-backport:1.2'
+}
