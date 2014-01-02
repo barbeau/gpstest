@@ -32,6 +32,7 @@ import android.hardware.SensorManager;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,10 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     private GpsSkyView mSkyView;
     private SensorManager mSensorManager;
+
+    // Holds sensor data
+    private static float[] mRotationMatrix = new float[16];
+    private static float[] mValues = new float[3];
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +68,18 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
     @Override
     public void onResume() {
     	super.onResume();
-    	Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        if (sensor != null) {
-        	mSensorManager.registerListener(mSkyView, sensor, 
-        			SensorManager.SENSOR_DELAY_GAME);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            // Use the modern rotation vector sensors
+            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener(mSkyView, vectorSensor, 16000); // ~60hz
+        } else {
+            // Use the legacy orientation sensors
+            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+            if (sensor != null) {
+                mSensorManager.registerListener(mSkyView, sensor,
+                        SensorManager.SENSOR_DELAY_GAME);
+            }
         }
     }
     
@@ -115,7 +128,8 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                       mGridStrokePaint,
                       mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint, mPrnIdPaint;
 
-        private float mOrientation = 0.0f;
+        private double mOrientation = 0.0;
+        private double mTilt = 0.0;
         private boolean mStarted;
         private float mSnrs[], mElevs[], mAzims[];
         private int mPrns[];
@@ -369,7 +383,17 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         }
 
         public void onSensorChanged(SensorEvent event) {
-            mOrientation = event.values[0];
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                // Modern rotation vector sensors
+                SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+                SensorManager.getOrientation(mRotationMatrix, mValues);
+                mOrientation = Math.toDegrees(mValues[0]);  // azimuth
+                mTilt = Math.toDegrees(mValues[1]);
+            } else {
+                // Legacy orientation sensors
+                mOrientation = event.values[0];
+            }
+
             invalidate();
         }
 
