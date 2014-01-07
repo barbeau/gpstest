@@ -22,7 +22,9 @@ import java.util.Iterator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -111,17 +113,19 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
     private static class GpsSkyView extends View implements SensorEventListener {
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                       mGridStrokePaint,
-                      mSatelliteFillPaint, mSatelliteStrokePaint;
+                      mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint, mPrnIdPaint;
 
         private float mOrientation = 0.0f;
         private boolean mStarted;
         private float mSnrs[], mElevs[], mAzims[];
+        private int mPrns[];
         private int mSvCount;
 
         private final float mSnrThresholds[];
         private final int mSnrColors[];
 
-        private static final int SAT_RADIUS = 5;
+        private static final int SAT_RADIUS = 10;
+        private static final float PRN_TEXT_SCALE = 2.5f;
 
         public GpsSkyView(Context context) {
             super(context);
@@ -129,31 +133,56 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             mHorizonActiveFillPaint = new Paint();
             mHorizonActiveFillPaint.setColor(Color.WHITE);
             mHorizonActiveFillPaint.setStyle(Paint.Style.FILL);
+            mHorizonActiveFillPaint.setAntiAlias(true);
 
             mHorizonInactiveFillPaint = new Paint();
             mHorizonInactiveFillPaint.setColor(Color.LTGRAY);
             mHorizonInactiveFillPaint.setStyle(Paint.Style.FILL);
+            mHorizonInactiveFillPaint.setAntiAlias(true);
 
             mHorizonStrokePaint = new Paint();
             mHorizonStrokePaint.setColor(Color.BLACK);
             mHorizonStrokePaint.setStyle(Paint.Style.STROKE);
             mHorizonStrokePaint.setStrokeWidth(2.0f);
+            mHorizonStrokePaint.setAntiAlias(true);
 
             mGridStrokePaint = new Paint();
             mGridStrokePaint.setColor(Color.GRAY);
             mGridStrokePaint.setStyle(Paint.Style.STROKE);
+            mGridStrokePaint.setAntiAlias(true);
 
             mSatelliteFillPaint = new Paint();
             mSatelliteFillPaint.setColor(Color.YELLOW);
             mSatelliteFillPaint.setStyle(Paint.Style.FILL);
+            mSatelliteFillPaint.setAntiAlias(true);
 
             mSatelliteStrokePaint = new Paint();
             mSatelliteStrokePaint.setColor(Color.BLACK);
             mSatelliteStrokePaint.setStyle(Paint.Style.STROKE);
             mSatelliteStrokePaint.setStrokeWidth(2.0f);
+            mSatelliteStrokePaint.setAntiAlias(true);
 
             mSnrThresholds = new float[] { 0.0f,       10.0f,     20.0f,        30.0f       };
             mSnrColors     = new int[]   { Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN };
+
+            mNorthPaint = new Paint();
+            mNorthPaint.setColor(Color.BLACK);
+            mNorthPaint.setStyle(Paint.Style.STROKE);
+            mNorthPaint.setStrokeWidth(4.0f);
+            mNorthPaint.setAntiAlias(true);
+
+            mNorthFillPaint = new Paint();
+            mNorthFillPaint.setColor(Color.GRAY);
+            mNorthFillPaint.setStyle(Paint.Style.FILL);
+            mNorthFillPaint.setStrokeWidth(4.0f);
+            mNorthFillPaint.setAntiAlias(true);
+
+            mPrnIdPaint = new Paint();
+            mPrnIdPaint.setColor(Color.BLACK);
+            mPrnIdPaint.setStyle(Paint.Style.STROKE);
+            mNorthPaint.setStrokeWidth(4.0f);
+            mPrnIdPaint.setTextSize(SAT_RADIUS * PRN_TEXT_SCALE);
+            mPrnIdPaint.setAntiAlias(true);
 
             setFocusable(true);
         }
@@ -177,6 +206,7 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                 mSnrs = new float[length];
                 mElevs = new float[length];
                 mAzims = new float[length];
+                mPrns = new int[length];
             }
 
             mSvCount = 0;
@@ -185,6 +215,7 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                 mSnrs[mSvCount] = satellite.getSnr();
                 mElevs[mSvCount] = satellite.getElevation();
                 mAzims[mSvCount] = satellite.getAzimuth();
+                mPrns[mSvCount] = satellite.getPrn();
                 mSvCount++;
             }
 
@@ -225,10 +256,46 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             c.drawCircle(radius, radius, radius, mHorizonStrokePaint);
         }
 
-        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr) {
+        private void drawNorthIndicator(Canvas c, int s) {
+            float radius = s / 2;
+            double angle = Math.toRadians(-mOrientation);
+            final float ARROW_HEIGHT_SCALE = 0.05f;
+            final float ARROW_WIDTH_SCALE = 0.1f;
+
+            float x1, y1;  // Tip of arrow
+            x1 = radius;
+            y1 = elevationToRadius(s, 90.0f);
+
+            float x2, y2;
+            x2 = x1 + radius * ARROW_HEIGHT_SCALE;
+            y2 = y1 + radius * ARROW_WIDTH_SCALE;
+
+            float x3, y3;
+            x3 = x1 - radius * ARROW_HEIGHT_SCALE;
+            y3 = y1 + radius * ARROW_WIDTH_SCALE;
+
+            Path path = new Path();
+            path.setFillType(Path.FillType.EVEN_ODD);
+            path.moveTo(x1, y1);
+            path.lineTo(x2,y2);
+            path.lineTo(x3,y3);
+            path.lineTo(x1,y1);
+            path.close();
+
+            // Rotate arrow around center point
+            Matrix matrix = new Matrix();
+            matrix.postRotate((float)-mOrientation, radius, radius);
+            path.transform(matrix);
+
+            c.drawPath(path, mNorthPaint);
+            c.drawPath(path, mNorthFillPaint);
+        }
+
+        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn) {
             double radius, angle;
             float x, y;
             Paint thisPaint;
+            final double PRN_Y_SCALE = 3.5;
 
             thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
 
@@ -241,6 +308,7 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
             c.drawCircle(x, y, SAT_RADIUS, thisPaint);
             c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
+            c.drawText(String.valueOf(prn), x - SAT_RADIUS, y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
         }
 
         private float elevationToRadius(int s, float elev) {
@@ -318,12 +386,14 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
             drawHorizon(canvas, s);
 
+            drawNorthIndicator(canvas, s);
+
             if (mElevs != null) {
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
                     if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f))
-                        drawSatellite(canvas, s, mElevs[i], mAzims[i], mSnrs[i]);
+                        drawSatellite(canvas, s, mElevs[i], mAzims[i], mSnrs[i], mPrns[i]);
                 }
             }
         }
