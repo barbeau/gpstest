@@ -17,7 +17,7 @@ android {
 
         signingConfigs {
             debug {
-                // Nothing here
+                storeFile file("gpstest.debug.keystore")
             }
 
             release {
