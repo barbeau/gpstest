@@ -21,8 +21,6 @@ android {
             }
 
             release {
-                runProguard true
-                proguardFiles 'proguard.cfg'
                 storeFile file(props['key.store'])
                 keyAlias props['key.alias']
                 storePassword "askmelater"
@@ -43,6 +41,8 @@ android {
 
     buildTypes {
         release {
+            runProguard true
+            proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
         }
     }
