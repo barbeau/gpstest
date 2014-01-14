@@ -185,6 +185,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                     case FLAG_IMAGE_COLUMN:
                         if (imageView == null) {
                             imageView = new ImageView(mContext);
+                            imageView.setScaleType(ImageView.ScaleType.FIT_START);
                         }
                         GnssType type = GpsTestUtil.getGnssType(mPrns[row]);
                         switch (type) {
@@ -195,7 +196,6 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                                 imageView.setImageDrawable(flagRussia);
                                 break;
                         }
-                        imageView.setScaleType(ImageView.ScaleType.FIT_START);
                         return imageView;
                     case SNR_COLUMN:
                         text = Float.toString(mSnrs[row]);
