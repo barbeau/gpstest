@@ -47,30 +47,17 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     private Resources mRes;
 
-    private TextView mLatitudeView;
-    private TextView mLongitudeView;
-    private TextView mFixTimeView;
-    private TextView mTTFFView;
-    private TextView mAltitudeView;
-    private TextView mAccuracyView;
-    private TextView mSpeedView;
-    private TextView mBearingView;
+    private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
+            mAccuracyView, mSpeedView, mBearingView;
     private SvGridAdapter mAdapter;
 
-    private int mSvCount;
-    private int mPrns[];
-    private float mSnrs[];
-    private float mSvElevations[];
-    private float mSvAzimuths[];
-    private int mEphemerisMask;
-    private int mAlmanacMask;
-    private int mUsedInFixMask;
+    private int mSvCount, mPrns[];
+    private float mSnrs[], mSvElevations[], mSvAzimuths[];
+    private int mEphemerisMask, mAlmanacMask, mUsedInFixMask;
     private long mFixTime;
-    private boolean mNavigating;
-    private boolean mGotFix;
+    private boolean mNavigating, mGotFix;
 
-    private Drawable flagUsa;
-    private Drawable flagRussia;
+    private Drawable flagUsa, flagRussia;
 
     private static final int PRN_COLUMN = 0;
     private static final int FLAG_IMAGE_COLUMN = 1;
@@ -81,6 +68,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     private static final int COLUMN_COUNT = 6;
 
     private static final String EMPTY_LAT_LONG = "             ";
+
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
         // truncate to specified number of decimal places
@@ -122,21 +110,14 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         } else {
             mBearingView.setText("");
         }
-
         updateFixTime();
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        // ignore
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-    public void onProviderEnabled(String provider) {
-        // ignore
-    }
+    public void onProviderEnabled(String provider) {}
 
-    public void onProviderDisabled(String provider) {
-        // ignore
-    }
+    public void onProviderDisabled(String provider) {}
 
     private class SvGridAdapter extends BaseAdapter {
         public SvGridAdapter(Context c) {
