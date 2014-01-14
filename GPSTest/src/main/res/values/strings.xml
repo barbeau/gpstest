@@ -54,6 +54,7 @@
     <string name="gps_bearing_label">Bearing: </string>
 
     <string name="gps_prn_column_label">PRN</string>
+    <string name="gps_flag_image_label">GNSS</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_azimuth_column_label">Azim</string>

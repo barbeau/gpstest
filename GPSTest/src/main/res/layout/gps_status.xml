@@ -118,7 +118,7 @@
         android:padding="4dp"
         android:verticalSpacing="1dp"
         android:horizontalSpacing="2dp"
-        android:numColumns="5"
+        android:numColumns="6"
         android:rowHeight="16dp"
         android:columnWidth="50dp"
         android:stretchMode="columnWidth"

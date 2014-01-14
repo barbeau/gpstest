@@ -34,7 +34,6 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -42,6 +41,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
 
 public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
 
@@ -319,8 +320,10 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn) {
             double radius, angle;
             float x, y;
-            Paint thisPaint;
+            // Place PRN text slightly below drawn satellite
+            final double PRN_X_SCALE = 1.4;
             final double PRN_Y_SCALE = 3.5;
+            Paint thisPaint;
 
             thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
 
@@ -331,9 +334,20 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             x = (float)((s / 2) + (radius * Math.sin(angle)));
             y = (float)((s / 2) - (radius * Math.cos(angle)));
 
-            c.drawCircle(x, y, SAT_RADIUS, thisPaint);
-            c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
-            c.drawText(String.valueOf(prn), x - SAT_RADIUS, y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
+            // Change shape based on satellite operator
+            GnssType operator = GpsTestUtil.getGnssType(prn);
+            switch (operator) {
+                case NAVSTAR:
+                    c.drawCircle(x, y, SAT_RADIUS, thisPaint);
+                    c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
+                    break;
+                case GLONASS:
+                    c.drawRect(x-SAT_RADIUS, y+SAT_RADIUS, x+SAT_RADIUS, y-SAT_RADIUS, thisPaint);
+                    c.drawRect(x-SAT_RADIUS, y+SAT_RADIUS, x+SAT_RADIUS, y-SAT_RADIUS, mSatelliteStrokePaint);
+                    break;
+            }
+
+            c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE), y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
         }
 
         private float elevationToRadius(int s, float elev) {

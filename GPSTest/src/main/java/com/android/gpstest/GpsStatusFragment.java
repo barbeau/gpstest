@@ -22,6 +22,7 @@ import java.util.Iterator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -33,9 +34,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.GnssType;
 
 
 public class GpsStatusFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
@@ -65,15 +69,18 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     private boolean mNavigating;
     private boolean mGotFix;
 
+    private Drawable flagUsa;
+    private Drawable flagRussia;
+
     private static final int PRN_COLUMN = 0;
-    private static final int SNR_COLUMN = 1;
-    private static final int ELEVATION_COLUMN = 2;
-    private static final int AZIMUTH_COLUMN = 3;
-    private static final int FLAGS_COLUMN = 4;
-    private static final int COLUMN_COUNT = 5;
+    private static final int FLAG_IMAGE_COLUMN = 1;
+    private static final int SNR_COLUMN = 2;
+    private static final int ELEVATION_COLUMN = 3;
+    private static final int AZIMUTH_COLUMN = 4;
+    private static final int FLAGS_COLUMN = 5;
+    private static final int COLUMN_COUNT = 6;
 
     private static final String EMPTY_LAT_LONG = "             ";
-
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
         // truncate to specified number of decimal places
@@ -151,21 +158,29 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView;
-            if (convertView == null) {
-                textView = new TextView(mContext);
-            } else {
-                textView = (TextView) convertView;
-            }
+            TextView textView = null;
+            ImageView imageView = null;
 
             int row = position / COLUMN_COUNT;
             int column = position % COLUMN_COUNT;
+
+            if (convertView != null) {
+                if (convertView instanceof ImageView) {
+                    imageView = (ImageView) convertView;
+                } else if (convertView instanceof TextView) {
+                    textView = (TextView) convertView;
+                }
+            }
+
             CharSequence text = null;
 
             if (row == 0) {
                 switch (column) {
                     case PRN_COLUMN:
                         text = mRes.getString(R.string.gps_prn_column_label);
+                        break;
+                    case FLAG_IMAGE_COLUMN:
+                        text = mRes.getString(R.string.gps_flag_image_label);
                         break;
                     case SNR_COLUMN:
                         text = mRes.getString(R.string.gps_snr_column_label);
@@ -186,6 +201,21 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                     case PRN_COLUMN:
                         text = Integer.toString(mPrns[row]);
                         break;
+                    case FLAG_IMAGE_COLUMN:
+                        if (imageView == null) {
+                            imageView = new ImageView(mContext);
+                        }
+                        GnssType type = GpsTestUtil.getGnssType(mPrns[row]);
+                        switch (type) {
+                            case NAVSTAR:
+                                imageView.setImageDrawable(flagUsa);
+                                break;
+                            case GLONASS:
+                                imageView.setImageDrawable(flagRussia);
+                                break;
+                        }
+                        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+                        return imageView;
                     case SNR_COLUMN:
                         text = Float.toString(mSnrs[row]);
                         break;
@@ -205,9 +235,12 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                 }
            }
 
-           textView.setText(text);
+           if (textView == null) {
+               textView = new TextView(mContext);
+           }
 
-            return textView;
+           textView.setText(text);
+           return textView;
         }
 
         private Context mContext;
@@ -232,6 +265,9 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
+
+        flagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
+        flagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
 
         GridView gridView = (GridView)v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
