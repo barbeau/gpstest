@@ -19,6 +19,7 @@ package com.android.gpstest;
 
 import java.util.Iterator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -38,6 +39,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -50,12 +52,39 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     private GpsSkyView mSkyView;
 
+    // View dimensions, to draw the compass with the correct width and height
+    public static int mHeight;
+    public static int mWidth;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
     	mSkyView = new GpsSkyView(getActivity());        
         GpsTestActivity.getInstance().addSubActivity(this);
+
+        // Get the proper height and width of this view, to ensure the compass draws onscreen
+        mSkyView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @SuppressWarnings("deprecation")
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onGlobalLayout() {
+                        final View v = getView();
+                        mHeight = v.getHeight();
+                        mWidth = v.getWidth();
+
+                        if (v.getViewTreeObserver().isAlive()) {
+                            // remove this layout listener
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                v.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                v.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+                        }
+                    }
+                });
         
         return mSkyView;
     }
@@ -368,22 +397,20 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
         @Override
         protected void onDraw(Canvas canvas) {
-            int w, h, s;
+            int minScreenDimen;
 
-            w = canvas.getWidth();
-            h = canvas.getHeight();
-            s = (w < h) ? w : h;
+            minScreenDimen = (GpsSkyFragment.mWidth < GpsSkyFragment.mHeight) ? GpsSkyFragment.mWidth : GpsSkyFragment.mHeight;
 
-            drawHorizon(canvas, s);
+            drawHorizon(canvas, minScreenDimen);
 
-            drawNorthIndicator(canvas, s);
+            drawNorthIndicator(canvas, minScreenDimen);
 
             if (mElevs != null) {
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
                     if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f))
-                        drawSatellite(canvas, s, mElevs[i], mAzims[i], mSnrs[i], mPrns[i]);
+                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i], mPrns[i]);
                 }
             }
         }
