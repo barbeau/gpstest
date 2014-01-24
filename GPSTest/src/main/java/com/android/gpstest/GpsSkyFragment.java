@@ -49,18 +49,6 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
     private final static String TAG = "GpsSkyFragment";
 
     private GpsSkyView mSkyView;
-    private SensorManager mSensorManager;
-
-    // Holds sensor data
-    private static float[] mRotationMatrix = new float[16];
-    private static float[] mRemappedMatrix = new float[16];
-    private static float[] mValues = new float[3];
-    
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	mSensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);   	
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,48 +59,13 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         
         return mSkyView;
     }
-    
-    @Override
-    public void onResume() {
-    	super.onResume();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            // Use the modern rotation vector sensors
-            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener(mSkyView, vectorSensor, 16000); // ~60hz
-        } else {
-            // Use the legacy orientation sensors
-            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-            if (sensor != null) {
-                mSensorManager.registerListener(mSkyView, sensor,
-                        SensorManager.SENSOR_DELAY_GAME);
-            }
-        }
-    }
-    
-    @Override
-    public void onPause() {
-    	mSensorManager.unregisterListener(mSkyView);
-    	super.onPause();
-    }
-
-    public void onLocationChanged(Location loc) {
-    }
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
-
-    public void gpsStart() {
-    }
-
-    public void gpsStop() {
-    }
+    public void onLocationChanged(Location loc) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onProviderEnabled(String provider) {}
+    public void onProviderDisabled(String provider) {}
+    public void gpsStart() {}
+    public void gpsStop() {}
 
     public void onGpsStatusChanged(int event, GpsStatus status) {
         switch (event) {
@@ -130,7 +83,14 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         }
     }
 
-    private static class GpsSkyView extends View implements SensorEventListener {
+    @Override
+    public void onOrientationChanged(double orientation, double tilt) {
+        if (mSkyView != null) {
+            mSkyView.onOrientationChanged(orientation, tilt);
+        }
+    }
+
+    private static class GpsSkyView extends View implements  GpsTestActivity.GpsTestListener {
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                       mGridStrokePaint,
                       mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint, mPrnIdPaint;
@@ -138,7 +98,6 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         Context mContext;
         WindowManager mWindowManager;
         private double mOrientation = 0.0;
-        private double mTilt = 0.0;
         private boolean mStarted;
         private float mSnrs[], mElevs[], mAzims[];
         private int mPrns[];
@@ -407,53 +366,6 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             return newPaint;
         }
 
-        public void onSensorChanged(SensorEvent event) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-                // Modern rotation vector sensors
-                SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
-                int orientation = mWindowManager.getDefaultDisplay().getRotation();
-                switch (orientation) {
-                    case Surface.ROTATION_0:
-                        // No orientation change, use default coordinate system
-                        SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(TAG, "Rotation-0");
-                        break;
-                    case Surface.ROTATION_90:
-                        // Log.d(TAG, "Rotation-90");
-                        SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
-                                SensorManager.AXIS_MINUS_X, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    case Surface.ROTATION_180:
-                        // Log.d(TAG, "Rotation-180");
-                        SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
-                                SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    case Surface.ROTATION_270:
-                        // Log.d(TAG, "Rotation-270");
-                        SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
-                                SensorManager.AXIS_X, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    default:
-                        // This shouldn't happen - assume default orientation
-                        SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(TAG, "Rotation-Unknown");
-                        break;
-                }
-                mOrientation = Math.toDegrees(mValues[0]);  // azimuth
-                mTilt = Math.toDegrees(mValues[1]);
-            } else {
-                // Legacy orientation sensors
-                mOrientation = event.values[0];
-            }
-            invalidate();
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-
         @Override
         protected void onDraw(Canvas canvas) {
             int w, h, s;
@@ -475,5 +387,26 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                 }
             }
         }
+
+        @Override
+        public void onOrientationChanged(double orientation, double tilt) {
+            mOrientation = orientation;
+            invalidate();
+        }
+
+        @Override
+        public void gpsStart() {}
+        @Override
+        public void gpsStop() {}
+        @Override
+        public void onGpsStatusChanged(int event, GpsStatus status) {}
+        @Override
+        public void onLocationChanged(Location location) {}
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        @Override
+        public void onProviderEnabled(String provider) {}
+        @Override
+        public void onProviderDisabled(String provider) {}
     }
 }

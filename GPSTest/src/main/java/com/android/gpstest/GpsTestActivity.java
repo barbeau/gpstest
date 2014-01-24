@@ -22,12 +22,17 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -38,6 +43,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Surface;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -50,7 +56,7 @@ import com.android.gpstest.view.ViewPagerMapBevelScroll;
 import com.github.espiandev.showcaseview.ShowcaseView;
 
 public class GpsTestActivity extends SherlockFragmentActivity
-        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener {
+        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener, SensorEventListener {
     private static final String TAG = "GpsTestActivity";
     
     private LocationManager mService;
@@ -82,11 +88,19 @@ public class GpsTestActivity extends SherlockFragmentActivity
 	
 	ShowcaseView sv;
     ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
-	
+
+    private SensorManager mSensorManager;
+
+    // Holds sensor data
+    private static float[] mRotationMatrix = new float[16];
+    private static float[] mRemappedMatrix = new float[16];
+    private static float[] mValues = new float[3];
+
     interface GpsTestListener extends LocationListener {
         public void gpsStart();
         public void gpsStop();
         public void onGpsStatusChanged(int event, GpsStatus status);
+        public void onOrientationChanged(double orientation, double tilt);
     }
 
     static GpsTestActivity getInstance() {
@@ -157,6 +171,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
             Log.e(TAG, "Unable to get GPS_PROVIDER");
         }
         mService.addGpsStatusListener(this);
+
+        mSensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         
         // Request use of spinner for showing indeterminate progress, to show
      	// the user something is going on during long-running operations
@@ -180,6 +196,19 @@ public class GpsTestActivity extends SherlockFragmentActivity
     @Override
     protected void onResume() {
     	super.onResume();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            // Use the modern rotation vector sensors
+            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz
+        } else {
+            // Use the legacy orientation sensors
+            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+            if (sensor != null) {
+                mSensorManager.registerListener(this, sensor,
+                        SensorManager.SENSOR_DELAY_GAME);
+            }
+        }
     	
     	SharedPreferences settings = Application.getPrefs();
     	    	    	
@@ -195,7 +224,13 @@ public class GpsTestActivity extends SherlockFragmentActivity
     	
     	checkTutorial(settings);
     }
-    
+
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
     private void checkTimeAndDistance(SharedPreferences settings){
     	double tempMinTimeDouble = Double.valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));     	   	
     	long minTimeLong = (long) (tempMinTimeDouble * SECONDS_TO_MILLISECONDS);
@@ -427,6 +462,58 @@ public class GpsTestActivity extends SherlockFragmentActivity
             activity.onGpsStatusChanged(event, mStatus);
         }
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        double orientation = Double.NaN;
+        double tilt = Double.NaN;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+            // Modern rotation vector sensors
+            SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+            int rot = getWindowManager().getDefaultDisplay().getRotation();
+            switch (rot) {
+                case Surface.ROTATION_0:
+                    // No orientation change, use default coordinate system
+                    SensorManager.getOrientation(mRotationMatrix, mValues);
+                    // Log.d(TAG, "Rotation-0");
+                    break;
+                case Surface.ROTATION_90:
+                    // Log.d(TAG, "Rotation-90");
+                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
+                            SensorManager.AXIS_MINUS_X, mRemappedMatrix);
+                    SensorManager.getOrientation(mRemappedMatrix, mValues);
+                    break;
+                case Surface.ROTATION_180:
+                    // Log.d(TAG, "Rotation-180");
+                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
+                            SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
+                    SensorManager.getOrientation(mRemappedMatrix, mValues);
+                    break;
+                case Surface.ROTATION_270:
+                    // Log.d(TAG, "Rotation-270");
+                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
+                            SensorManager.AXIS_X, mRemappedMatrix);
+                    SensorManager.getOrientation(mRemappedMatrix, mValues);
+                    break;
+                default:
+                    // This shouldn't happen - assume default orientation
+                    SensorManager.getOrientation(mRotationMatrix, mValues);
+                    // Log.d(TAG, "Rotation-Unknown");
+                    break;
+            }
+            orientation = Math.toDegrees(mValues[0]);  // azimuth
+            tilt = Math.toDegrees(mValues[1]);
+        } else {
+            // Legacy orientation sensors
+            orientation = event.values[0];
+        }
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onOrientationChanged(orientation, tilt);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void sendLocation() {
         if (mLastLocation != null) {

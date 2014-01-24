@@ -23,6 +23,8 @@
     <!-- Preference keys -->
     <string name="pref_key_map_category">map_category</string>
     <string name="pref_key_map_type">map_type</string>
+    <string name="pref_key_tilt_map_with_sensors">tilt_map</string>
+    <string name="pref_key_rotate_map_with_compass">rotate_map</string>
     
     <string name="pref_key_gps_category">gps_category</string>
     <string name="pref_key_auto_start_gps">auto_start_gps</string>

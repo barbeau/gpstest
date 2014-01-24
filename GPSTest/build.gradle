@@ -69,4 +69,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:3.2.65'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'org.jraf:android-switch-backport:1.2'
+    compile 'com.google.maps.android:android-maps-utils:0.2.1'
 }

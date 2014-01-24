@@ -334,6 +334,9 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         }
     }
 
+    @Override
+    public void onOrientationChanged(double orientation, double tilt) {}
+
     private void updateStatus(GpsStatus status) {
 
         setStarted(true);
