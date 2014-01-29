@@ -18,13 +18,16 @@ package com.android.gpstest;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.text.InputType;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.android.gpstest.util.GpsTestUtil;
 
 public class Preferences extends SherlockPreferenceActivity {
 	
@@ -92,6 +95,14 @@ public class Preferences extends SherlockPreferenceActivity {
 				}
 			}
 		});
+
+        // Remove preferences that shouldn't be shown based on this device
+        if (!GpsTestUtil.isRotationVectorSensorSupported()) {
+            // We don't have tilt info, so remove this preference
+            CheckBoxPreference mCheckBoxTiltMap = (CheckBoxPreference) findPreference(getString(R.string.pref_key_tilt_map_with_sensors));
+            PreferenceCategory mMapCategory = (PreferenceCategory) findPreference(getString(R.string.pref_key_map_category));
+            mMapCategory.removePreference(mCheckBoxTiltMap);
+        }
 	}
 	
 	/**
