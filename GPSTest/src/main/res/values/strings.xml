@@ -93,6 +93,9 @@
     <string name="pref_gps_min_distance_summary">Minimum distance between GPS fixes, in meters</string>    
     <string name="pref_gps_min_distance_dialog_title">Enter a min. distance, in meters</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
+
+    <string name="pref_analyze_gps_accuracy_title">Analyze GPS Accuracy</string>
+    <string name="pref_analyze_gps_accuracy_summary">Use GPS Benchmark to measure GPS error</string>
     
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>

@@ -40,6 +40,8 @@
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>
     <string name="pref_gps_min_distance_default_meters">0</string>
+
+    <string name="gps_benchmark_url">http://play.google.com/store/apps/details?id=com.gpsbenchmark.android</string>
     
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
