@@ -61,6 +61,9 @@
     <string name="gps_flags_column_label">Flags</string>
     <string name="install">Install</string>
     <string name="please_install_google_maps">Please install Google Maps</string>
+    <string name="enable_gps_message">GPS is disabled. Enable it now?</string>
+    <string name="enable_gps_positive_button">Enable GPS</string>
+    <string name="enable_gps_negative_button">No</string>
     <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm</string>
     
     <!-- User tutorial -->

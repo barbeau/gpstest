@@ -17,7 +17,9 @@
 
 package com.android.gpstest;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
@@ -34,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -220,6 +223,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
             }
         }
 
+        if (!mService.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            promptEnableGps();
+        }
+
         /**
          * Check preferences to see how they should be initialized
          */
@@ -236,6 +243,26 @@ public class GpsTestActivity extends SherlockFragmentActivity
     protected void onPause() {
         mSensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    /**
+     * Ask the user if they want to enable GPS
+     */
+    private void promptEnableGps() {
+        new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.enable_gps_message))
+                .setPositiveButton(getString(R.string.enable_gps_positive_button), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(getString(R.string.enable_gps_negative_button), new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {}
+                })
+                .show();
     }
 
     private void checkTimeAndDistance(SharedPreferences settings) {
