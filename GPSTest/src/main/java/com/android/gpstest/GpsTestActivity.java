@@ -114,8 +114,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         return sInstance;
     }
 
-    void addSubActivity(GpsTestListener activity) {
-        mGpsTestListeners.add(activity);
+    void addSubActivity(GpsTestListener listener) {
+        mGpsTestListeners.add(listener);
     }
 
     private synchronized void gpsStart() {
@@ -136,8 +136,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
          	// Reset the options menu to trigger updates to action bar menu items
           	invalidateOptionsMenu();
         }
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.gpsStart();
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.gpsStart();
         }
     }
 
@@ -151,8 +151,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
          	// Reset the options menu to trigger updates to action bar menu items
           	invalidateOptionsMenu();
         }
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.gpsStop();
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.gpsStop();
         }
     }
 
@@ -460,26 +460,26 @@ public class GpsTestActivity extends SherlockFragmentActivity
       	// Reset the options menu to trigger updates to action bar menu items
       	invalidateOptionsMenu();
 
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.onLocationChanged(location);
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onLocationChanged(location);
         }
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.onStatusChanged(provider, status, extras);
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onStatusChanged(provider, status, extras);
         }
     }
 
     public void onProviderEnabled(String provider) {
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.onProviderEnabled(provider);
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onProviderEnabled(provider);
         }
     }
 
     public void onProviderDisabled(String provider) {
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.onProviderDisabled(provider);
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onProviderDisabled(provider);
         }
     }
 
@@ -511,8 +511,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         	return;
         }
         
-        for (GpsTestListener activity : mGpsTestListeners) {
-            activity.onGpsStatusChanged(event, mStatus);
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.onGpsStatusChanged(event, mStatus);
         }
     }
 
