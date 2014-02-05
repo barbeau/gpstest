@@ -175,6 +175,11 @@ public class GpsMapFragment extends SherlockMapFragment
 
     @Override
     public void onOrientationChanged(double orientation, double tilt) {
+        // For performance reasons, only proceed if this fragment is visible
+        if (!getUserVisibleHint()) {
+            return;
+        }
+
         /*
         If we have a location fix, and we have a preference to rotate the map based on sensors,
         and the user hasn't touched the map lately, then do the map camera reposition

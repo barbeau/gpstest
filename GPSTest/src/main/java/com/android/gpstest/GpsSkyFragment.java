@@ -17,8 +17,6 @@
 
 package com.android.gpstest;
 
-import java.util.Iterator;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -26,17 +24,12 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -45,6 +38,8 @@ import android.view.WindowManager;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
+
+import java.util.Iterator;
 
 public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
 
@@ -114,6 +109,11 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     @Override
     public void onOrientationChanged(double orientation, double tilt) {
+        // For performance reasons, only proceed if this fragment is visible
+        if (!getUserVisibleHint()) {
+            return;
+        }
+
         if (mSkyView != null) {
             mSkyView.onOrientationChanged(orientation, tilt);
         }
