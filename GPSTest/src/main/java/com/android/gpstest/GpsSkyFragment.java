@@ -56,7 +56,7 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 			Bundle savedInstanceState) {
 
     	mSkyView = new GpsSkyView(getActivity());        
-        GpsTestActivity.getInstance().addSubActivity(this);
+        GpsTestActivity.getInstance().addListener(this);
 
         // Get the proper height and width of this view, to ensure the compass draws onscreen
         mSkyView.getViewTreeObserver().addOnGlobalLayoutListener(

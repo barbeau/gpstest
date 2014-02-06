@@ -17,8 +17,6 @@
 
 package com.android.gpstest;
 
-import java.util.Iterator;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -38,8 +36,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
+
+import java.util.Iterator;
 
 
 public class GpsStatusFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
@@ -256,7 +256,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         gridView.setFocusable(false);
         gridView.setFocusableInTouchMode(false);
 
-        GpsTestActivity.getInstance().addSubActivity(this);
+        GpsTestActivity.getInstance().addListener(this);
         
         return v;
     }

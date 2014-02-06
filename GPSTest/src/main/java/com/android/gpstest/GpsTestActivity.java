@@ -114,7 +114,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
         return sInstance;
     }
 
-    void addSubActivity(GpsTestListener listener) {
+    void addListener(GpsTestListener listener) {
         mGpsTestListeners.add(listener);
     }
 

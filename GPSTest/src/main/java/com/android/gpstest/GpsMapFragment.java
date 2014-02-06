@@ -93,7 +93,7 @@ public class GpsMapFragment extends SherlockMapFragment
                 mMap.setOnMapLongClickListener(this);
                 mMap.setOnMyLocationButtonClickListener(this);
 
-                GpsTestActivity.getInstance().addSubActivity(this);
+                GpsTestActivity.getInstance().addListener(this);
         	}
         } else {
         	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
