@@ -174,8 +174,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
         mService = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         mProvider = mService.getProvider(LocationManager.GPS_PROVIDER);
         if (mProvider == null) {
-            // FIXME - fail gracefully here
             Log.e(TAG, "Unable to get GPS_PROVIDER");
+            Toast.makeText(this, getString(R.string.gps_not_supported),
+                    Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
         mService.addGpsStatusListener(this);
 
