@@ -278,7 +278,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     		minTime = minTimeLong;
     		minDistance = Float.valueOf(settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
     		// If the GPS is started, reset the location listener with the new values
-    		if(mStarted){
+    		if (mStarted) {
 	    		mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
 				Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
 						String.valueOf(tempMinTimeDouble),String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();

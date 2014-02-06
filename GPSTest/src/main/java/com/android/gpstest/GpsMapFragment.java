@@ -80,7 +80,7 @@ public class GpsMapFragment extends SherlockMapFragment
         View v = super.onCreateView(inflater, container, savedInstanceState);
         mMap = getMap();
         
-        if(isGoogleMapsInstalled()) {
+        if (isGoogleMapsInstalled()) {
         	if (mMap != null) {
         		//Show the location on the map
                 mMap.setMyLocationEnabled(true);
@@ -118,7 +118,7 @@ public class GpsMapFragment extends SherlockMapFragment
     @Override
     public void onResume() {
     	SharedPreferences settings = Application.getPrefs();
-    	if(mMap != null && settings != null){
+    	if (mMap != null && settings != null) {
     		if (mMap.getMapType() != Integer.valueOf(settings.getString(getString(R.string.pref_key_map_type), String.valueOf(GoogleMap.MAP_TYPE_NORMAL)))) {
     			mMap.setMapType(Integer.valueOf(settings.getString(getString(R.string.pref_key_map_type), String.valueOf(GoogleMap.MAP_TYPE_NORMAL))));
     		}
