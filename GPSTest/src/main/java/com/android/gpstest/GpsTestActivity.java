@@ -523,8 +523,13 @@ public class GpsTestActivity extends SherlockFragmentActivity
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() != Sensor.TYPE_ROTATION_VECTOR) {
+            return;
+        }
+
         double orientation = Double.NaN;
         double tilt = Double.NaN;
+
         if (GpsTestUtil.isRotationVectorSensorSupported()) {
             // Modern rotation vector sensors
             SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
