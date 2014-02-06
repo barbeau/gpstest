@@ -17,6 +17,7 @@
 
 package com.android.gpstest;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -519,11 +520,12 @@ public class GpsTestActivity extends SherlockFragmentActivity
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
         double orientation = Double.NaN;
         double tilt = Double.NaN;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        if (GpsTestUtil.isRotationVectorSensorSupported()) {
             // Modern rotation vector sensors
             SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
             int rot = getWindowManager().getDefaultDisplay().getRotation();
