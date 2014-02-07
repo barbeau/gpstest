@@ -101,6 +101,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
     private static float[] mRotationMatrix = new float[16];
     private static float[] mRemappedMatrix = new float[16];
     private static float[] mValues = new float[3];
+    private static float[] mTruncatedRotationVector = new float[4];
+    private static boolean mTruncateVector = false;
 
     static boolean mIsLargeScreen = false;
 
@@ -532,7 +534,22 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
         if (GpsTestUtil.isRotationVectorSensorSupported()) {
             // Modern rotation vector sensors
-            SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+
+            if (!mTruncateVector) {
+                try {
+                    SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+                } catch (IllegalArgumentException e) {
+                    // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
+                    // Truncate the array, since we can deal with only the first four values
+                    mTruncateVector = true;
+                    // Do the truncation here the first time the exception occurs
+                    getRotationMatrixFromTruncatedVector(event.values);
+                }
+            } else {
+                // Truncate the array to avoid the exception on some devices (see #39)
+                getRotationMatrixFromTruncatedVector(event.values);
+            }
+
             int rot = getWindowManager().getDefaultDisplay().getRotation();
             switch (rot) {
                 case Surface.ROTATION_0:
@@ -573,6 +590,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onOrientationChanged(orientation, tilt);
         }
+    }
+
+    private void getRotationMatrixFromTruncatedVector(float[] vector) {
+        System.arraycopy(vector, 0, mTruncatedRotationVector, 0, 4);
+        SensorManager.getRotationMatrixFromVector(mRotationMatrix, mTruncatedRotationVector);
     }
 
     @Override
