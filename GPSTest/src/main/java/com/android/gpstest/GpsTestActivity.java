@@ -592,6 +592,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     private void getRotationMatrixFromTruncatedVector(float[] vector) {
         System.arraycopy(vector, 0, mTruncatedRotationVector, 0, 4);
         SensorManager.getRotationMatrixFromVector(mRotationMatrix, mTruncatedRotationVector);
