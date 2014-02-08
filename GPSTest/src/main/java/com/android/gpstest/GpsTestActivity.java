@@ -541,6 +541,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
                 } catch (IllegalArgumentException e) {
                     // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
                     // Truncate the array, since we can deal with only the first four values
+                    Log.e(TAG, "Samsung device error? Will truncate vectors - " + e);
                     mTruncateVector = true;
                     // Do the truncation here the first time the exception occurs
                     getRotationMatrixFromTruncatedVector(event.values);
