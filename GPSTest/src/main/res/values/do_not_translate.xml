@@ -36,15 +36,17 @@
     
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
-    
+    <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
+
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>
     <string name="pref_gps_min_distance_default_meters">0</string>
 
-    <string name="gps_benchmark_url">http://play.google.com/store/apps/details?id=com.gpsbenchmark.android</string>
-    
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>
     <string name="force_xtra_injection_command">force_xtra_injection</string>
+
+    <string name="gps_benchmark_package_name">com.gpsbenchmark.android</string>
+    <string name="gps_benchmark_url">http://play.google.com/store/apps/details?id=com.gpsbenchmark.android</string>
 </resources>

@@ -64,11 +64,9 @@
             android:title="@string/pref_show_tutorial_title"
             android:summary="@string/pref_show_tutorial_summary" />
        <Preference
+            android:key="@string/pref_key_analyze_gps_accuracy"
             android:title="@string/pref_analyze_gps_accuracy_title"
             android:summary="@string/pref_analyze_gps_accuracy_summary" >
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/gps_benchmark_url" />
        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

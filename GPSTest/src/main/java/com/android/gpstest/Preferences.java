@@ -16,7 +16,9 @@
 
 package com.android.gpstest;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -32,6 +34,7 @@ import com.android.gpstest.util.GpsTestUtil;
 public class Preferences extends SherlockPreferenceActivity {
 	
 	Preference prefShowTutorial;
+    Preference prefAnalyzeGpsAccuracy;
 	EditTextPreference txtMinTime;
 	EditTextPreference txtMinDistance;
 	
@@ -55,6 +58,28 @@ public class Preferences extends SherlockPreferenceActivity {
 				return false;
 			}						
 		});
+
+        prefAnalyzeGpsAccuracy = this.findPreference(getString(R.string.pref_key_analyze_gps_accuracy));
+
+        prefAnalyzeGpsAccuracy.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference pref) {
+                // Check to see if GPS Benchmark is already installed
+                Intent intent = getPackageManager().getLaunchIntentForPackage(getString(R.string.gps_benchmark_package_name));
+                if (intent != null) {
+                    // Start GPS Benchmark
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    // Go to Google Play
+                    intent = new Intent(Intent.ACTION_VIEW);
+                    // Use http:// scheme here instead of market:// so it doesn't crash on devices without Google Play
+                    intent.setData(Uri.parse(getString(R.string.gps_benchmark_url)));
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
 		
 		txtMinTime = (EditTextPreference) this.findPreference(getString(R.string.pref_key_gps_min_time));
 		txtMinTime.getEditText().setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
