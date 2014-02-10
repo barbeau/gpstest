@@ -73,6 +73,7 @@ public class Preferences extends SherlockPreferenceActivity {
                 } else {
                     // Go to Google Play
                     intent = new Intent(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     // Use http:// scheme here instead of market:// so it doesn't crash on devices without Google Play
                     intent.setData(Uri.parse(getString(R.string.gps_benchmark_url)));
                     startActivity(intent);

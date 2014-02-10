@@ -44,6 +44,11 @@
             android:summary="@string/pref_gps_min_distance_summary"
             android:dialogTitle="@string/pref_gps_min_distance_dialog_title"
             android:defaultValue="@string/pref_gps_min_distance_default_meters" />
+        <Preference
+            android:key="@string/pref_key_analyze_gps_accuracy"
+            android:title="@string/pref_analyze_gps_accuracy_title"
+            android:summary="@string/pref_analyze_gps_accuracy_summary" >
+        </Preference>
     </PreferenceCategory>
     
     <PreferenceCategory
@@ -63,10 +68,5 @@
             android:key="@string/pref_key_showed_v2_tutorial"
             android:title="@string/pref_show_tutorial_title"
             android:summary="@string/pref_show_tutorial_summary" />
-       <Preference
-            android:key="@string/pref_key_analyze_gps_accuracy"
-            android:title="@string/pref_analyze_gps_accuracy_title"
-            android:summary="@string/pref_analyze_gps_accuracy_summary" >
-       </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
