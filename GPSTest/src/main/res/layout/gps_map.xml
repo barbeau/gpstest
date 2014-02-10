@@ -17,14 +17,14 @@
 */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
 
     <fragment
-        android:id="@+id/fragment_map"
-        android:name=".GpsMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:tag="tag_fragment_map" />
+            android:id="@+id/fragment_map"
+            android:name=".GpsMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:tag="tag_fragment_map"/>
 </LinearLayout>

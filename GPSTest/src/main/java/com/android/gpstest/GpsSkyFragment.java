@@ -17,6 +17,10 @@
 
 package com.android.gpstest;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -35,10 +39,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.android.gpstest.util.GnssType;
-import com.android.gpstest.util.GpsTestUtil;
-
 import java.util.Iterator;
 
 public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
@@ -49,13 +49,14 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     // View dimensions, to draw the compass with the correct width and height
     public static int mHeight;
+
     public static int mWidth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
-    	mSkyView = new GpsSkyView(getActivity());        
+        mSkyView = new GpsSkyView(getActivity());
         GpsTestActivity.getInstance().addListener(this);
 
         // Get the proper height and width of this view, to ensure the compass draws onscreen
@@ -80,16 +81,27 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                         }
                     }
                 });
-        
+
         return mSkyView;
     }
 
-    public void onLocationChanged(Location loc) {}
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
-    public void onProviderEnabled(String provider) {}
-    public void onProviderDisabled(String provider) {}
-    public void gpsStart() {}
-    public void gpsStop() {}
+    public void onLocationChanged(Location loc) {
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    public void onProviderEnabled(String provider) {
+    }
+
+    public void onProviderDisabled(String provider) {
+    }
+
+    public void gpsStart() {
+    }
+
+    public void gpsStop() {
+    }
 
     public void onGpsStatusChanged(int event, GpsStatus status) {
         switch (event) {
@@ -119,23 +131,33 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         }
     }
 
-    private static class GpsSkyView extends View implements  GpsTestActivity.GpsTestListener {
+    private static class GpsSkyView extends View implements GpsTestActivity.GpsTestListener {
+
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
-                      mGridStrokePaint,
-                      mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint, mPrnIdPaint;
+                mGridStrokePaint,
+                mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint,
+                mPrnIdPaint;
 
         Context mContext;
+
         WindowManager mWindowManager;
+
         private double mOrientation = 0.0;
+
         private boolean mStarted;
+
         private float mSnrs[], mElevs[], mAzims[];
+
         private int mPrns[];
+
         private int mSvCount;
 
         private final float mSnrThresholds[];
+
         private final int mSnrColors[];
 
         private static final int SAT_RADIUS = 10;
+
         private static final float PRN_TEXT_SCALE = 2.5f;
 
         public GpsSkyView(Context context) {
@@ -176,8 +198,8 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             mSatelliteStrokePaint.setStrokeWidth(2.0f);
             mSatelliteStrokePaint.setAntiAlias(true);
 
-            mSnrThresholds = new float[] { 0.0f,       10.0f,     20.0f,        30.0f       };
-            mSnrColors     = new int[]   { Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN };
+            mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
+            mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
 
             mNorthPaint = new Paint();
             mNorthPaint.setColor(Color.BLACK);
@@ -240,8 +262,8 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         private void drawLine(Canvas c, float x1, float y1, float x2, float y2) {
             // rotate the line based on orientation
             double angle = Math.toRadians(-mOrientation);
-            float cos = (float)Math.cos(angle);
-            float sin = (float)Math.sin(angle);
+            float cos = (float) Math.cos(angle);
+            float sin = (float) Math.sin(angle);
 
             float centerX = (x1 + x2) / 2.0f;
             float centerY = (y1 + y2) / 2.0f;
@@ -261,12 +283,13 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         private void drawHorizon(Canvas c, int s) {
             float radius = s / 2;
 
-            c.drawCircle(radius, radius, radius, mStarted ? mHorizonActiveFillPaint : mHorizonInactiveFillPaint);
+            c.drawCircle(radius, radius, radius,
+                    mStarted ? mHorizonActiveFillPaint : mHorizonInactiveFillPaint);
             drawLine(c, 0, radius, 2 * radius, radius);
             drawLine(c, radius, 0, radius, 2 * radius);
             c.drawCircle(radius, radius, elevationToRadius(s, 60.0f), mGridStrokePaint);
             c.drawCircle(radius, radius, elevationToRadius(s, 30.0f), mGridStrokePaint);
-            c.drawCircle(radius, radius, elevationToRadius(s,  0.0f), mGridStrokePaint);
+            c.drawCircle(radius, radius, elevationToRadius(s, 0.0f), mGridStrokePaint);
             c.drawCircle(radius, radius, radius, mHorizonStrokePaint);
         }
 
@@ -291,14 +314,14 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             Path path = new Path();
             path.setFillType(Path.FillType.EVEN_ODD);
             path.moveTo(x1, y1);
-            path.lineTo(x2,y2);
-            path.lineTo(x3,y3);
-            path.lineTo(x1,y1);
+            path.lineTo(x2, y2);
+            path.lineTo(x3, y3);
+            path.lineTo(x1, y1);
             path.close();
 
             // Rotate arrow around center point
             Matrix matrix = new Matrix();
-            matrix.postRotate((float)-mOrientation, radius, radius);
+            matrix.postRotate((float) -mOrientation, radius, radius);
             path.transform(matrix);
 
             c.drawPath(path, mNorthPaint);
@@ -317,10 +340,10 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
             radius = elevationToRadius(s, elev);
             azim -= mOrientation;
-            angle = (float)Math.toRadians(azim);
+            angle = (float) Math.toRadians(azim);
 
-            x = (float)((s / 2) + (radius * Math.sin(angle)));
-            y = (float)((s / 2) - (radius * Math.cos(angle)));
+            x = (float) ((s / 2) + (radius * Math.sin(angle)));
+            y = (float) ((s / 2) - (radius * Math.cos(angle)));
 
             // Change shape based on satellite operator
             GnssType operator = GpsTestUtil.getGnssType(prn);
@@ -330,12 +353,15 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                     c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
                     break;
                 case GLONASS:
-                    c.drawRect(x-SAT_RADIUS, y+SAT_RADIUS, x+SAT_RADIUS, y-SAT_RADIUS, thisPaint);
-                    c.drawRect(x-SAT_RADIUS, y+SAT_RADIUS, x+SAT_RADIUS, y-SAT_RADIUS, mSatelliteStrokePaint);
+                    c.drawRect(x - SAT_RADIUS, y + SAT_RADIUS, x + SAT_RADIUS, y - SAT_RADIUS,
+                            thisPaint);
+                    c.drawRect(x - SAT_RADIUS, y + SAT_RADIUS, x + SAT_RADIUS, y - SAT_RADIUS,
+                            mSatelliteStrokePaint);
                     break;
             }
 
-            c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE), y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
+            c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
+                    y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
         }
 
         private float elevationToRadius(int s, float elev) {
@@ -379,9 +405,9 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
                     f = (snr - threshold) / (nextThreshold - threshold);
 
-                    r3 = (int)(r2 * f + r1 * (1.0f - f));
-                    g3 = (int)(g2 * f + g1 * (1.0f - f));
-                    b3 = (int)(b2 * f + b1 * (1.0f - f));
+                    r3 = (int) (r2 * f + r1 * (1.0f - f));
+                    g3 = (int) (g2 * f + g1 * (1.0f - f));
+                    b3 = (int) (b2 * f + b1 * (1.0f - f));
                     c3 = Color.rgb(r3, g3, b3);
 
                     newPaint.setColor(c3);
@@ -399,7 +425,8 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         protected void onDraw(Canvas canvas) {
             int minScreenDimen;
 
-            minScreenDimen = (GpsSkyFragment.mWidth < GpsSkyFragment.mHeight) ? GpsSkyFragment.mWidth : GpsSkyFragment.mHeight;
+            minScreenDimen = (GpsSkyFragment.mWidth < GpsSkyFragment.mHeight)
+                    ? GpsSkyFragment.mWidth : GpsSkyFragment.mHeight;
 
             drawHorizon(canvas, minScreenDimen);
 
@@ -409,8 +436,10 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
-                    if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f))
-                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i], mPrns[i]);
+                    if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
+                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i],
+                                mPrns[i]);
+                    }
                 }
             }
         }
@@ -422,18 +451,31 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         }
 
         @Override
-        public void gpsStart() {}
+        public void gpsStart() {
+        }
+
         @Override
-        public void gpsStop() {}
+        public void gpsStop() {
+        }
+
         @Override
-        public void onGpsStatusChanged(int event, GpsStatus status) {}
+        public void onGpsStatusChanged(int event, GpsStatus status) {
+        }
+
         @Override
-        public void onLocationChanged(Location location) {}
+        public void onLocationChanged(Location location) {
+        }
+
         @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
         @Override
-        public void onProviderEnabled(String provider) {}
+        public void onProviderEnabled(String provider) {
+        }
+
         @Override
-        public void onProviderDisabled(String provider) {}
+        public void onProviderDisabled(String provider) {
+        }
     }
 }

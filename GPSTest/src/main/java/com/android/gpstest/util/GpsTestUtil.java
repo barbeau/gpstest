@@ -24,6 +24,7 @@ public class GpsTestUtil {
 
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN
+     *
      * @param prn PRN value provided by the GpsSatellite.getPrn() method
      * @return GnssType for the given PRN
      */
@@ -38,8 +39,11 @@ public class GpsTestUtil {
     }
 
     /**
-     * Returns true if this device supports the Sensor.TYPE_ROTATION_VECTOR sensor, false if it doesn't
-     * @return true if this device supports the Sensor.TYPE_ROTATION_VECTOR sensor, false if it doesn't
+     * Returns true if this device supports the Sensor.TYPE_ROTATION_VECTOR sensor, false if it
+     * doesn't
+     *
+     * @return true if this device supports the Sensor.TYPE_ROTATION_VECTOR sensor, false if it
+     * doesn't
      */
     public static boolean isRotationVectorSensorSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
@@ -47,10 +51,11 @@ public class GpsTestUtil {
 
     /**
      * Returns true if the app is running on a large screen device, false if it is not
-     * @param context
+     *
      * @return true if the app is running on a large screen device, false if it is not
      */
     public static boolean isLargeScreen(Context context) {
-        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

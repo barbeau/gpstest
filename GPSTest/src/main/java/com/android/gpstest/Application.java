@@ -21,33 +21,34 @@ import android.preference.PreferenceManager;
 
 /**
  * Holds application-wide state
- * 
+ *
  * @author Sean J. Barbeau
  */
 public class Application extends android.app.Application {
-	private SharedPreferences mPrefs;
 
-	private static Application mApp;
+    private SharedPreferences mPrefs;
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    private static Application mApp;
 
-		mApp = this;
-		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-	}
-	
-	@Override
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        mApp = this;
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    @Override
     public void onTerminate() {
         super.onTerminate();
         mApp = null;
     }
 
-	public static Application get() {
-		return mApp;
-	}
+    public static Application get() {
+        return mApp;
+    }
 
-	public static SharedPreferences getPrefs() {
-		return get().mPrefs;
-	}
+    public static SharedPreferences getPrefs() {
+        return get().mPrefs;
+    }
 }

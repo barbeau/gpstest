@@ -52,7 +52,7 @@ task askForPasswords << {
     // Must create String because System.readPassword() returns char[]
     // (and assigning that below fails silently)
     def storePw = new String(System.console().readPassword("\nKeystore password: "))
-    def keyPw  = new String(System.console().readPassword("Key password: "))
+    def keyPw = new String(System.console().readPassword("Key password: "))
 
     android.signingConfigs.release.storePassword = storePw
     android.signingConfigs.release.keyPassword = keyPw

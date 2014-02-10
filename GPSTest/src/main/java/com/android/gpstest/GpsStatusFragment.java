@@ -17,6 +17,10 @@
 
 package com.android.gpstest;
 
+import com.actionbarsherlock.app.SherlockFragment;
+import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -35,36 +39,44 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.android.gpstest.util.GnssType;
-import com.android.gpstest.util.GpsTestUtil;
-
 import java.util.Iterator;
 
 
 public class GpsStatusFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
+
     private final static String TAG = "GpsStatusActivity";
 
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
             mAccuracyView, mSpeedView, mBearingView;
+
     private SvGridAdapter mAdapter;
 
     private int mSvCount, mPrns[];
+
     private float mSnrs[], mSvElevations[], mSvAzimuths[];
+
     private int mEphemerisMask, mAlmanacMask, mUsedInFixMask;
+
     private long mFixTime;
+
     private boolean mNavigating, mGotFix;
 
     private Drawable flagUsa, flagRussia;
 
     private static final int PRN_COLUMN = 0;
+
     private static final int FLAG_IMAGE_COLUMN = 1;
+
     private static final int SNR_COLUMN = 2;
+
     private static final int ELEVATION_COLUMN = 3;
+
     private static final int AZIMUTH_COLUMN = 4;
+
     private static final int FLAGS_COLUMN = 5;
+
     private static final int COLUMN_COUNT = 6;
 
     private static final String EMPTY_LAT_LONG = "             ";
@@ -82,11 +94,11 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         return result;
     }
 
-    public void onLocationChanged(Location location) {    	    	
-    	if (!mGotFix) {
-    		mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
-    		mGotFix = true;
-    	}
+    public void onLocationChanged(Location location) {
+        if (!mGotFix) {
+            mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
+            mGotFix = true;
+        }
         mLatitudeView.setText(doubleToString(location.getLatitude(), 7) + " ");
         mLongitudeView.setText(doubleToString(location.getLongitude(), 7) + " ");
         mFixTime = location.getTime();
@@ -113,13 +125,17 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         updateFixTime();
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 
-    public void onProviderEnabled(String provider) {}
+    public void onProviderEnabled(String provider) {
+    }
 
-    public void onProviderDisabled(String provider) {}
+    public void onProviderDisabled(String provider) {
+    }
 
     private class SvGridAdapter extends BaseAdapter {
+
         public SvGridAdapter(Context c) {
             mContext = c;
         }
@@ -214,35 +230,35 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                         text = new String(flags);
                         break;
                 }
-           }
+            }
 
-           if (textView == null) {
-               textView = new TextView(mContext);
-           }
+            if (textView == null) {
+                textView = new TextView(mContext);
+            }
 
-           textView.setText(text);
-           return textView;
+            textView.setText(text);
+            return textView;
         }
 
         private Context mContext;
     }
 
     @Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-	            
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+
         mRes = getResources();
         View v = inflater.inflate(R.layout.gps_status, container,
-				false);
-        
-        mLatitudeView = (TextView)v.findViewById(R.id.latitude);
-        mLongitudeView = (TextView)v.findViewById(R.id.longitude);
-        mFixTimeView = (TextView)v.findViewById(R.id.fix_time);
-        mTTFFView = (TextView)v.findViewById(R.id.ttff);
-        mAltitudeView = (TextView)v.findViewById(R.id.altitude);
-        mAccuracyView = (TextView)v.findViewById(R.id.accuracy);
-        mSpeedView = (TextView)v.findViewById(R.id.speed);
-        mBearingView = (TextView)v.findViewById(R.id.bearing);
+                false);
+
+        mLatitudeView = (TextView) v.findViewById(R.id.latitude);
+        mLongitudeView = (TextView) v.findViewById(R.id.longitude);
+        mFixTimeView = (TextView) v.findViewById(R.id.fix_time);
+        mTTFFView = (TextView) v.findViewById(R.id.ttff);
+        mAltitudeView = (TextView) v.findViewById(R.id.altitude);
+        mAccuracyView = (TextView) v.findViewById(R.id.accuracy);
+        mSpeedView = (TextView) v.findViewById(R.id.speed);
+        mBearingView = (TextView) v.findViewById(R.id.bearing);
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
@@ -250,14 +266,14 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         flagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
         flagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
 
-        GridView gridView = (GridView)v.findViewById(R.id.sv_grid);
+        GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
         gridView.setAdapter(mAdapter);
         gridView.setFocusable(false);
         gridView.setFocusableInTouchMode(false);
 
         GpsTestActivity.getInstance().addListener(this);
-        
+
         return v;
     }
 
@@ -284,10 +300,10 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     private void updateFixTime() {
         if (mFixTime == 0 || !GpsTestActivity.getInstance().mStarted) {
-             mFixTimeView.setText("");
+            mFixTimeView.setText("");
         } else {
             mFixTimeView.setText(DateUtils.getRelativeTimeSpanString(
-                mFixTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS));
+                    mFixTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS));
         }
     }
 
@@ -308,8 +324,8 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     @SuppressLint("NewApi")
     public void gpsStart() {
-    	//Reset flag for detecting first fix
-    	mGotFix = false;
+        //Reset flag for detecting first fix
+        mGotFix = false;
     }
 
     public void gpsStop() {
@@ -325,7 +341,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                 setStarted(false);
                 break;
 
-            case GpsStatus.GPS_EVENT_FIRST_FIX:                                
+            case GpsStatus.GPS_EVENT_FIRST_FIX:
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
@@ -335,7 +351,8 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     }
 
     @Override
-    public void onOrientationChanged(double orientation, double tilt) {}
+    public void onOrientationChanged(double orientation, double tilt) {
+    }
 
     private void updateStatus(GpsStatus status) {
 

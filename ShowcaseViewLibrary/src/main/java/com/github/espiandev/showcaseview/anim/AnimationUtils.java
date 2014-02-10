@@ -1,28 +1,36 @@
 package com.github.espiandev.showcaseview.anim;
 
-import android.os.Handler;
-import android.view.View;
-
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 
+import android.os.Handler;
+import android.view.View;
+
 public class AnimationUtils {
 
     private static final int DEFAULT_DURATION = 300;
+
     private static final String ALPHA = "alpha";
+
     private static final float INVISIBLE = 0f;
+
     private static final float VISIBLE = 1f;
+
     private static final String COORD_X = "x";
+
     private static final String COORD_Y = "y";
+
     private static final int INSTANT = 0;
 
     public interface AnimationStartListener {
+
         void onAnimationStart();
     }
 
     public interface AnimationEndListener {
+
         void onAnimationEnd();
     }
 
@@ -38,11 +46,13 @@ public class AnimationUtils {
         ViewHelper.setAlpha(view, INVISIBLE);
     }
 
-    public static ObjectAnimator createFadeInAnimation(Object target, final AnimationStartListener listener) {
+    public static ObjectAnimator createFadeInAnimation(Object target,
+            final AnimationStartListener listener) {
         return createFadeInAnimation(target, DEFAULT_DURATION, listener);
     }
 
-    public static ObjectAnimator createFadeInAnimation(Object target, int duration, final AnimationStartListener listener) {
+    public static ObjectAnimator createFadeInAnimation(Object target, int duration,
+            final AnimationStartListener listener) {
         ObjectAnimator oa = ObjectAnimator.ofFloat(target, ALPHA, VISIBLE);
         oa.setDuration(duration).addListener(new Animator.AnimatorListener() {
             @Override
@@ -65,11 +75,13 @@ public class AnimationUtils {
         return oa;
     }
 
-    public static ObjectAnimator createFadeOutAnimation(Object target, final AnimationEndListener listener) {
+    public static ObjectAnimator createFadeOutAnimation(Object target,
+            final AnimationEndListener listener) {
         return createFadeOutAnimation(target, DEFAULT_DURATION, listener);
     }
 
-    public static ObjectAnimator createFadeOutAnimation(Object target, int duration, final AnimationEndListener listener) {
+    public static ObjectAnimator createFadeOutAnimation(Object target, int duration,
+            final AnimationEndListener listener) {
         ObjectAnimator oa = ObjectAnimator.ofFloat(target, ALPHA, INVISIBLE);
         oa.setDuration(duration).addListener(new Animator.AnimatorListener() {
             @Override
@@ -93,18 +105,23 @@ public class AnimationUtils {
     }
 
     public static AnimatorSet createMovementAnimation(View view, float canvasX, float canvasY,
-                                                      float offsetStartX, float offsetStartY,
-                                                      float offsetEndX, float offsetEndY,
-                                                      final AnimationEndListener listener) {
+            float offsetStartX, float offsetStartY,
+            float offsetEndX, float offsetEndY,
+            final AnimationEndListener listener) {
         ViewHelper.setAlpha(view, INVISIBLE);
 
-        ObjectAnimator alphaIn = ObjectAnimator.ofFloat(view, ALPHA, INVISIBLE, VISIBLE).setDuration(500);
+        ObjectAnimator alphaIn = ObjectAnimator.ofFloat(view, ALPHA, INVISIBLE, VISIBLE)
+                .setDuration(500);
 
-        ObjectAnimator setUpX = ObjectAnimator.ofFloat(view, COORD_X, canvasX + offsetStartX).setDuration(INSTANT);
-        ObjectAnimator setUpY = ObjectAnimator.ofFloat(view, COORD_Y, canvasY + offsetStartY).setDuration(INSTANT);
+        ObjectAnimator setUpX = ObjectAnimator.ofFloat(view, COORD_X, canvasX + offsetStartX)
+                .setDuration(INSTANT);
+        ObjectAnimator setUpY = ObjectAnimator.ofFloat(view, COORD_Y, canvasY + offsetStartY)
+                .setDuration(INSTANT);
 
-        ObjectAnimator moveX = ObjectAnimator.ofFloat(view, COORD_X, canvasX + offsetEndX).setDuration(1000);
-        ObjectAnimator moveY = ObjectAnimator.ofFloat(view, COORD_Y, canvasY + offsetEndY).setDuration(1000);
+        ObjectAnimator moveX = ObjectAnimator.ofFloat(view, COORD_X, canvasX + offsetEndX)
+                .setDuration(1000);
+        ObjectAnimator moveY = ObjectAnimator.ofFloat(view, COORD_Y, canvasY + offsetEndY)
+                .setDuration(1000);
         moveX.setStartDelay(1000);
         moveY.setStartDelay(1000);
 
@@ -127,7 +144,8 @@ public class AnimationUtils {
     }
 
     public static AnimatorSet createMovementAnimation(View view, float x, float y) {
-        ObjectAnimator alphaIn = ObjectAnimator.ofFloat(view, ALPHA, INVISIBLE, VISIBLE).setDuration(500);
+        ObjectAnimator alphaIn = ObjectAnimator.ofFloat(view, ALPHA, INVISIBLE, VISIBLE)
+                .setDuration(500);
 
         ObjectAnimator setUpX = ObjectAnimator.ofFloat(view, COORD_X, x).setDuration(INSTANT);
         ObjectAnimator setUpY = ObjectAnimator.ofFloat(view, COORD_Y, y).setDuration(INSTANT);

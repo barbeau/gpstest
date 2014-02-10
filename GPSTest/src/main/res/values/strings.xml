@@ -29,29 +29,32 @@
     <string name="menu_settings">Settings</string>
     <string name="delete_aiding_data">Clear Aiding Data</string>
     <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
-    <string name="delete_aiding_data_failure">Platform does not support deleting aiding data.</string>
+    <string name="delete_aiding_data_failure">Platform does not support deleting aiding data.
+    </string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection">Inject Time</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
-    <string name="force_time_injection_failure">Platform does not support injecting time data.</string>
+    <string name="force_time_injection_failure">Platform does not support injecting time data.
+    </string>
     <string name="force_xtra_injection">Inject XTRA Data</string>
     <string name="force_xtra_injection_success">Successfully injected XTRA data.</string>
-    <string name="force_xtra_injection_failure">Platform does not support injecting XTRA data.</string>
+    <string name="force_xtra_injection_failure">Platform does not support injecting XTRA data.
+    </string>
 
-  	<string name="zoom_in">Zoom In</string>
+    <string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
     <string name="mode_map">Map</string>
     <string name="mode_satellite">Satellite</string>
 
-    <string name="gps_latitude_label">Lat: </string>
-    <string name="gps_longitude_label">Long: </string>
-    <string name="gps_fix_time_label">Time: </string>
-    <string name="gps_ttff_label">TTFF: </string>
-    <string name="gps_altitude_label">Alt: </string>
-    <string name="gps_accuracy_label">Acc: </string>
-    <string name="gps_speed_label">Speed: </string>
-    <string name="gps_bearing_label">Bearing: </string>
+    <string name="gps_latitude_label">Lat:</string>
+    <string name="gps_longitude_label">Long:</string>
+    <string name="gps_fix_time_label">Time:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Alt:</string>
+    <string name="gps_accuracy_label">Acc:</string>
+    <string name="gps_speed_label">Speed:</string>
+    <string name="gps_bearing_label">Bearing:</string>
 
     <string name="gps_prn_column_label">PRN</string>
     <string name="gps_flag_image_label">GNSS</string>
@@ -59,18 +62,22 @@
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_azimuth_column_label">Azim</string>
     <string name="gps_flags_column_label">Flags</string>
-    <string name="gps_not_supported">GPS not supported.  Exiting app...</string>
+    <string name="gps_not_supported">GPS not supported. Exiting app...</string>
     <string name="install">Install</string>
     <string name="please_install_google_maps">Please install Google Maps</string>
     <string name="enable_gps_message">GPS is disabled. Enable it now?</string>
     <string name="enable_gps_positive_button">Enable GPS</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm</string>
-    
+    <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm
+    </string>
+
     <!-- User tutorial -->
     <string name="showcase_gps_on_off_title">New controls!</string>
-    <string name="showcase_gps_on_off_message">&#8226;  The On/Off switch starts/stops GPS\n&#8226;  The \"Share\" button sends a location (shown after getting a GPS fix)\n\n<i>(tap to dismiss)</i></string>
-    
+    <string name="showcase_gps_on_off_message">&#8226; The On/Off switch starts/stops GPS\n&#8226;
+        The \"Share\" button sends a location (shown after getting a GPS fix)\n\n
+        <i>(tap to dismiss)</i>
+    </string>
+
     <!-- Preferences -->
     <string name="pref_title">Settings</string>
     <string name="pref_map_category_title">Map</string>
@@ -79,33 +86,38 @@
     <string name="pref_map_type_dialog_title">Choose Map Type</string>
 
     <string name="pref_rotate_map_with_compass_title">Rotate Map with Compass</string>
-    <string name="pref_rotate_map_with_compass_summary">Change the map orientation based on your direction</string>
+    <string name="pref_rotate_map_with_compass_summary">Change the map orientation based on your
+        direction
+    </string>
 
     <string name="pref_tilt_map_with_sensors_title">First-person View</string>
-    <string name="pref_tilt_map_with_sensors_summary">Change to a first-person view when you hold up the device</string>
-    
+    <string name="pref_tilt_map_with_sensors_summary">Change to a first-person view when you hold up
+        the device
+    </string>
+
     <string name="pref_gps_category_title">GPS</string>
     <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
     <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
-        
+
     <string name="pref_gps_min_time_title">Interval</string>
     <string name="pref_gps_min_time_summary">Time between GPS fixes, in seconds</string>
     <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
     <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
-    
+
     <string name="pref_gps_min_distance_title">Min. Distance</string>
-    <string name="pref_gps_min_distance_summary">Minimum distance between GPS fixes, in meters</string>    
+    <string name="pref_gps_min_distance_summary">Minimum distance between GPS fixes, in meters
+    </string>
     <string name="pref_gps_min_distance_dialog_title">Enter a min. distance, in meters</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
 
     <string name="pref_analyze_gps_accuracy_title">Analyze GPS Accuracy</string>
     <string name="pref_analyze_gps_accuracy_summary">Use GPS Benchmark to measure GPS error</string>
-    
+
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>
     <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>
-    
-    <string name="pref_about_category_title">About</string>    
+
+    <string name="pref_about_category_title">About</string>
     <string name="pref_show_tutorial_title">Show tutorial</string>
     <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
 </resources>

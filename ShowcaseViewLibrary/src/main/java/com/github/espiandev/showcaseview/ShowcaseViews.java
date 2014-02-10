@@ -10,8 +10,11 @@ import java.util.List;
 public class ShowcaseViews {
 
     private final List<ShowcaseView> views = new ArrayList<ShowcaseView>();
+
     private final Activity activity;
+
     private final int showcaseTemplateId;
+
     private OnShowcaseAcknowledged showcaseAcknowledgedListener = new OnShowcaseAcknowledged() {
         @Override
         public void onShowCaseAcknowledged(ShowcaseView showcaseView) {
@@ -20,6 +23,7 @@ public class ShowcaseViews {
     };
 
     public interface OnShowcaseAcknowledged {
+
         void onShowCaseAcknowledged(ShowcaseView showcaseView);
     }
 
@@ -28,13 +32,15 @@ public class ShowcaseViews {
         this.showcaseTemplateId = showcaseTemplateLayout;
     }
 
-    public ShowcaseViews(Activity activity, int showcaseTemplateLayout, OnShowcaseAcknowledged acknowledgedListener) {
+    public ShowcaseViews(Activity activity, int showcaseTemplateLayout,
+            OnShowcaseAcknowledged acknowledgedListener) {
         this(activity, showcaseTemplateLayout);
         this.showcaseAcknowledgedListener = acknowledgedListener;
     }
 
     public void addView(ItemViewProperties properties) {
-        ShowcaseView showcaseView = new ShowcaseViewBuilder(activity, showcaseTemplateId).setShowcaseItem(properties.itemType, properties.id, activity)
+        ShowcaseView showcaseView = new ShowcaseViewBuilder(activity, showcaseTemplateId)
+                .setShowcaseItem(properties.itemType, properties.id, activity)
                 .setText(properties.titleResId, properties.messageResId)
                 .setShowcaseIndicatorScale(properties.scale)
                 .build();
@@ -42,7 +48,8 @@ public class ShowcaseViews {
         views.add(showcaseView);
     }
 
-    private View.OnClickListener createShowcaseViewDismissListener(final ShowcaseView showcaseView) {
+    private View.OnClickListener createShowcaseViewDismissListener(
+            final ShowcaseView showcaseView) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,27 +72,36 @@ public class ShowcaseViews {
         views.remove(0);
     }
 
-    public boolean hasViews(){
+    public boolean hasViews() {
         return !views.isEmpty();
     }
 
     public static class ItemViewProperties {
+
         public static final int ID_SPINNER = 0;
+
         public static final int ID_TITLE = 1;
+
         public static final int ID_OVERFLOW = 2;
+
         private static final float DEFAULT_SCALE = 1f;
 
         protected final int titleResId;
+
         protected final int messageResId;
+
         protected final int id;
+
         protected final int itemType;
+
         protected final float scale;
 
         public ItemViewProperties(int id, int titleResId, int messageResId, int itemType) {
             this(id, titleResId, messageResId, itemType, DEFAULT_SCALE);
         }
 
-        public ItemViewProperties(int id, int titleResId, int messageResId, int itemType, float scale) {
+        public ItemViewProperties(int id, int titleResId, int messageResId, int itemType,
+                float scale) {
             this.id = id;
             this.titleResId = titleResId;
             this.messageResId = messageResId;

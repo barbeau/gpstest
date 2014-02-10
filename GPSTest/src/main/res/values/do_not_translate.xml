@@ -19,21 +19,21 @@
 -->
 <resources>
     <!-- Strings in this file should NOT be translated -->
-    
+
     <!-- Preference keys -->
     <string name="pref_key_map_category">map_category</string>
     <string name="pref_key_map_type">map_type</string>
     <string name="pref_key_tilt_map_with_sensors">tilt_map</string>
     <string name="pref_key_rotate_map_with_compass">rotate_map</string>
-    
+
     <string name="pref_key_gps_category">gps_category</string>
     <string name="pref_key_auto_start_gps">auto_start_gps</string>
     <string name="pref_key_gps_min_time">gps_min_time</string>
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
-    
+
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>
-    
+
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
     <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
@@ -48,5 +48,7 @@
     <string name="force_xtra_injection_command">force_xtra_injection</string>
 
     <string name="gps_benchmark_package_name">com.gpsbenchmark.android</string>
-    <string name="gps_benchmark_url">http://play.google.com/store/apps/details?id=com.gpsbenchmark.android</string>
+    <string name="gps_benchmark_url">
+        http://play.google.com/store/apps/details?id=com.gpsbenchmark.android
+    </string>
 </resources>
