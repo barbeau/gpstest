@@ -50,6 +50,10 @@ key.alias=<key_alias_name>
 
 Note that the paths in these files always use the Unix path separator  `/`, even on Windows. If you use the Windows path separator `\` you will get the error `No value has been specified for property 'signingConfig.keyAlias'.`
 
+### Contributing
+
+We welcome contributions to the project!  Please see our [Contributing Guide](https://github.com/barbeau/gpstest/blob/master/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
+
 ## Troubleshooting
 
 ### When importing to Android Studio, I get an error "You are using an old, unsupported version of Gradle..."
