@@ -90,9 +90,9 @@
         direction
     </string>
 
-    <string name="pref_tilt_map_with_sensors_title">First-person View</string>
-    <string name="pref_tilt_map_with_sensors_summary">Change to a first-person view when you hold up
-        the device
+    <string name="pref_tilt_map_with_sensors_title">Tilt Map with Device</string>
+    <string name="pref_tilt_map_with_sensors_summary">Change to a first-person map view when you
+        hold up the device
     </string>
 
     <string name="pref_gps_category_title">GPS</string>
