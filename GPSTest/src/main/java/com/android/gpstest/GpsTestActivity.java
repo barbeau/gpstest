@@ -563,7 +563,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() != Sensor.TYPE_ROTATION_VECTOR) {
+        if (event.sensor.getType() != Sensor.TYPE_ROTATION_VECTOR &&
+                event.sensor.getType() != Sensor.TYPE_ORIENTATION) {
             return;
         }
 
