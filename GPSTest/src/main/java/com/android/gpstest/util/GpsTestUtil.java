@@ -18,6 +18,8 @@ package com.android.gpstest.util;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Build;
 
 public class GpsTestUtil {
@@ -45,8 +47,11 @@ public class GpsTestUtil {
      * @return true if this device supports the Sensor.TYPE_ROTATION_VECTOR sensor, false if it
      * doesn't
      */
-    public static boolean isRotationVectorSensorSupported() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD;
+    public static boolean isRotationVectorSensorSupported(Context context) {
+        SensorManager sensorManager = (SensorManager) context
+                .getSystemService(Context.SENSOR_SERVICE);
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD &&
+                sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null;
     }
 
     /**

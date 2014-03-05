@@ -243,7 +243,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     protected void onResume() {
         super.onResume();
 
-        if (GpsTestUtil.isRotationVectorSensorSupported()) {
+        if (GpsTestUtil.isRotationVectorSensorSupported(this)) {
             // Use the modern rotation vector sensors
             Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
             mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz

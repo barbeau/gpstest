@@ -132,7 +132,7 @@ public class Preferences extends SherlockPreferenceActivity {
         });
 
         // Remove preferences that shouldn't be shown based on this device
-        if (!GpsTestUtil.isRotationVectorSensorSupported()) {
+        if (!GpsTestUtil.isRotationVectorSensorSupported(this)) {
             // We don't have tilt info, so remove this preference
             CheckBoxPreference mCheckBoxTiltMap = (CheckBoxPreference) findPreference(
                     getString(R.string.pref_key_tilt_map_with_sensors));
