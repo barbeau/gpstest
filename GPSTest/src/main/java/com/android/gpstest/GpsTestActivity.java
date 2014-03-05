@@ -563,70 +563,74 @@ public class GpsTestActivity extends SherlockFragmentActivity
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() != Sensor.TYPE_ROTATION_VECTOR &&
-                event.sensor.getType() != Sensor.TYPE_ORIENTATION) {
-            return;
-        }
 
         double orientation = Double.NaN;
         double tilt = Double.NaN;
 
-        if (GpsTestUtil.isRotationVectorSensorSupported()) {
-            // Modern rotation vector sensors
-
-            if (!mTruncateVector) {
-                try {
-                    SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
-                } catch (IllegalArgumentException e) {
-                    // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
-                    // Truncate the array, since we can deal with only the first four values
-                    Log.e(TAG, "Samsung device error? Will truncate vectors - " + e);
-                    mTruncateVector = true;
-                    // Do the truncation here the first time the exception occurs
+        switch (event.sensor.getType()) {
+            case Sensor.TYPE_ROTATION_VECTOR:
+                // Modern rotation vector sensors
+                if (!mTruncateVector) {
+                    try {
+                        SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
+                    } catch (IllegalArgumentException e) {
+                        // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
+                        // Truncate the array, since we can deal with only the first four values
+                        Log.e(TAG, "Samsung device error? Will truncate vectors - " + e);
+                        mTruncateVector = true;
+                        // Do the truncation here the first time the exception occurs
+                        getRotationMatrixFromTruncatedVector(event.values);
+                    }
+                } else {
+                    // Truncate the array to avoid the exception on some devices (see #39)
                     getRotationMatrixFromTruncatedVector(event.values);
                 }
-            } else {
-                // Truncate the array to avoid the exception on some devices (see #39)
-                getRotationMatrixFromTruncatedVector(event.values);
-            }
 
-            int rot = getWindowManager().getDefaultDisplay().getRotation();
-            switch (rot) {
-                case Surface.ROTATION_0:
-                    // No orientation change, use default coordinate system
-                    SensorManager.getOrientation(mRotationMatrix, mValues);
-                    // Log.d(TAG, "Rotation-0");
-                    break;
-                case Surface.ROTATION_90:
-                    // Log.d(TAG, "Rotation-90");
-                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
-                            SensorManager.AXIS_MINUS_X, mRemappedMatrix);
-                    SensorManager.getOrientation(mRemappedMatrix, mValues);
-                    break;
-                case Surface.ROTATION_180:
-                    // Log.d(TAG, "Rotation-180");
-                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
-                            SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
-                    SensorManager.getOrientation(mRemappedMatrix, mValues);
-                    break;
-                case Surface.ROTATION_270:
-                    // Log.d(TAG, "Rotation-270");
-                    SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
-                            SensorManager.AXIS_X, mRemappedMatrix);
-                    SensorManager.getOrientation(mRemappedMatrix, mValues);
-                    break;
-                default:
-                    // This shouldn't happen - assume default orientation
-                    SensorManager.getOrientation(mRotationMatrix, mValues);
-                    // Log.d(TAG, "Rotation-Unknown");
-                    break;
-            }
-            orientation = Math.toDegrees(mValues[0]);  // azimuth
-            tilt = Math.toDegrees(mValues[1]);
-        } else {
-            // Legacy orientation sensors
-            orientation = event.values[0];
+                int rot = getWindowManager().getDefaultDisplay().getRotation();
+                switch (rot) {
+                    case Surface.ROTATION_0:
+                        // No orientation change, use default coordinate system
+                        SensorManager.getOrientation(mRotationMatrix, mValues);
+                        // Log.d(TAG, "Rotation-0");
+                        break;
+                    case Surface.ROTATION_90:
+                        // Log.d(TAG, "Rotation-90");
+                        SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
+                                SensorManager.AXIS_MINUS_X, mRemappedMatrix);
+                        SensorManager.getOrientation(mRemappedMatrix, mValues);
+                        break;
+                    case Surface.ROTATION_180:
+                        // Log.d(TAG, "Rotation-180");
+                        SensorManager
+                                .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
+                                        SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
+                        SensorManager.getOrientation(mRemappedMatrix, mValues);
+                        break;
+                    case Surface.ROTATION_270:
+                        // Log.d(TAG, "Rotation-270");
+                        SensorManager
+                                .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
+                                        SensorManager.AXIS_X, mRemappedMatrix);
+                        SensorManager.getOrientation(mRemappedMatrix, mValues);
+                        break;
+                    default:
+                        // This shouldn't happen - assume default orientation
+                        SensorManager.getOrientation(mRotationMatrix, mValues);
+                        // Log.d(TAG, "Rotation-Unknown");
+                        break;
+                }
+                orientation = Math.toDegrees(mValues[0]);  // azimuth
+                tilt = Math.toDegrees(mValues[1]);
+                break;
+            case Sensor.TYPE_ORIENTATION:
+                // Legacy orientation sensors
+                orientation = event.values[0];
+                break;
+            default:
+                // A sensor we're not using, so return
+                return;
         }
+
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onOrientationChanged(orientation, tilt);
         }
