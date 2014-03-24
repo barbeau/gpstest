@@ -116,6 +116,9 @@
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>
     <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>
+    <string name="pref_true_north_title">Point Compass to True North</string>
+    <string name="pref_true_north_summary">Compass will face true north instead of magnetic north
+    </string>
 
     <string name="pref_about_category_title">About</string>
     <string name="pref_show_tutorial_title">Show tutorial</string>

@@ -59,6 +59,11 @@
                 android:title="@string/pref_keep_screen_on_title"
                 android:summary="@string/pref_keep_screen_on_summary"
                 android:defaultValue="true"/>
+        <CheckBoxPreference
+                android:key="@string/pref_key_true_north"
+                android:title="@string/pref_true_north_title"
+                android:summary="@string/pref_true_north_summary"
+                android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

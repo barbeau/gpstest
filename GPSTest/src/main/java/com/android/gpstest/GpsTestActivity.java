@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -78,6 +79,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
     boolean mStarted;
 
     private Location mLastLocation;
+
+    private GeomagneticField mGeomagneticField;
+
+    boolean mFaceTrueNorth;
 
     String mTtff;
 
@@ -270,6 +275,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         checkTimeAndDistance(settings);
 
         checkTutorial(settings);
+
+        checkTrueNorth(settings);
     }
 
     @Override
@@ -379,6 +386,10 @@ public class GpsTestActivity extends SherlockFragmentActivity
                 }
             }
         }
+    }
+
+    private void checkTrueNorth(SharedPreferences settings) {
+        mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
     }
 
     @Override
@@ -500,6 +511,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+
+        updateGeomagneticField();
 
         // Reset the options menu to trigger updates to action bar menu items
         invalidateOptionsMenu();
@@ -631,6 +644,11 @@ public class GpsTestActivity extends SherlockFragmentActivity
                 return;
         }
 
+        // Correct for true north, if preference is set
+        if (mFaceTrueNorth && mGeomagneticField != null) {
+            orientation += mGeomagneticField.getDeclination();
+        }
+
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onOrientationChanged(orientation, tilt);
         }
@@ -644,6 +662,12 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    private void updateGeomagneticField() {
+        mGeomagneticField = new GeomagneticField((float) mLastLocation.getLatitude(),
+                (float) mLastLocation.getLongitude(), (float) mLastLocation.getAltitude(),
+                mLastLocation.getTime());
     }
 
     private void sendLocation() {
