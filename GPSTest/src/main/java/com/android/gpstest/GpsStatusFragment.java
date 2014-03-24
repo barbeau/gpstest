@@ -46,6 +46,22 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     private final static String TAG = "GpsStatusActivity";
 
+    private static final int PRN_COLUMN = 0;
+
+    private static final int FLAG_IMAGE_COLUMN = 1;
+
+    private static final int SNR_COLUMN = 2;
+
+    private static final int ELEVATION_COLUMN = 3;
+
+    private static final int AZIMUTH_COLUMN = 4;
+
+    private static final int FLAGS_COLUMN = 5;
+
+    private static final int COLUMN_COUNT = 6;
+
+    private static final String EMPTY_LAT_LONG = "             ";
+
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
@@ -64,22 +80,6 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     private boolean mNavigating, mGotFix;
 
     private Drawable flagUsa, flagRussia;
-
-    private static final int PRN_COLUMN = 0;
-
-    private static final int FLAG_IMAGE_COLUMN = 1;
-
-    private static final int SNR_COLUMN = 2;
-
-    private static final int ELEVATION_COLUMN = 3;
-
-    private static final int AZIMUTH_COLUMN = 4;
-
-    private static final int FLAGS_COLUMN = 5;
-
-    private static final int COLUMN_COUNT = 6;
-
-    private static final String EMPTY_LAT_LONG = "             ";
 
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
@@ -132,115 +132,6 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
     }
 
     public void onProviderDisabled(String provider) {
-    }
-
-    private class SvGridAdapter extends BaseAdapter {
-
-        public SvGridAdapter(Context c) {
-            mContext = c;
-        }
-
-        public int getCount() {
-            // add 1 for header row
-            return (mSvCount + 1) * COLUMN_COUNT;
-        }
-
-        public Object getItem(int position) {
-            Log.d(TAG, "getItem(" + position + ")");
-            return "foo";
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = null;
-            ImageView imageView = null;
-
-            int row = position / COLUMN_COUNT;
-            int column = position % COLUMN_COUNT;
-
-            if (convertView != null) {
-                if (convertView instanceof ImageView) {
-                    imageView = (ImageView) convertView;
-                } else if (convertView instanceof TextView) {
-                    textView = (TextView) convertView;
-                }
-            }
-
-            CharSequence text = null;
-
-            if (row == 0) {
-                switch (column) {
-                    case PRN_COLUMN:
-                        text = mRes.getString(R.string.gps_prn_column_label);
-                        break;
-                    case FLAG_IMAGE_COLUMN:
-                        text = mRes.getString(R.string.gps_flag_image_label);
-                        break;
-                    case SNR_COLUMN:
-                        text = mRes.getString(R.string.gps_snr_column_label);
-                        break;
-                    case ELEVATION_COLUMN:
-                        text = mRes.getString(R.string.gps_elevation_column_label);
-                        break;
-                    case AZIMUTH_COLUMN:
-                        text = mRes.getString(R.string.gps_azimuth_column_label);
-                        break;
-                    case FLAGS_COLUMN:
-                        text = mRes.getString(R.string.gps_flags_column_label);
-                        break;
-                }
-            } else {
-                row--;
-                switch (column) {
-                    case PRN_COLUMN:
-                        text = Integer.toString(mPrns[row]);
-                        break;
-                    case FLAG_IMAGE_COLUMN:
-                        if (imageView == null) {
-                            imageView = new ImageView(mContext);
-                            imageView.setScaleType(ImageView.ScaleType.FIT_START);
-                        }
-                        GnssType type = GpsTestUtil.getGnssType(mPrns[row]);
-                        switch (type) {
-                            case NAVSTAR:
-                                imageView.setImageDrawable(flagUsa);
-                                break;
-                            case GLONASS:
-                                imageView.setImageDrawable(flagRussia);
-                                break;
-                        }
-                        return imageView;
-                    case SNR_COLUMN:
-                        text = Float.toString(mSnrs[row]);
-                        break;
-                    case ELEVATION_COLUMN:
-                        text = Float.toString(mSvElevations[row]);
-                        break;
-                    case AZIMUTH_COLUMN:
-                        text = Float.toString(mSvAzimuths[row]);
-                        break;
-                    case FLAGS_COLUMN:
-                        char[] flags = new char[3];
-                        flags[0] = ((mEphemerisMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'E');
-                        flags[1] = ((mAlmanacMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'A');
-                        flags[2] = ((mUsedInFixMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'U');
-                        text = new String(flags);
-                        break;
-                }
-            }
-
-            if (textView == null) {
-                textView = new TextView(mContext);
-            }
-
-            textView.setText(text);
-            return textView;
-        }
-
-        private Context mContext;
     }
 
     @Override
@@ -395,5 +286,114 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
         }
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private class SvGridAdapter extends BaseAdapter {
+
+        private Context mContext;
+
+        public SvGridAdapter(Context c) {
+            mContext = c;
+        }
+
+        public int getCount() {
+            // add 1 for header row
+            return (mSvCount + 1) * COLUMN_COUNT;
+        }
+
+        public Object getItem(int position) {
+            Log.d(TAG, "getItem(" + position + ")");
+            return "foo";
+        }
+
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView textView = null;
+            ImageView imageView = null;
+
+            int row = position / COLUMN_COUNT;
+            int column = position % COLUMN_COUNT;
+
+            if (convertView != null) {
+                if (convertView instanceof ImageView) {
+                    imageView = (ImageView) convertView;
+                } else if (convertView instanceof TextView) {
+                    textView = (TextView) convertView;
+                }
+            }
+
+            CharSequence text = null;
+
+            if (row == 0) {
+                switch (column) {
+                    case PRN_COLUMN:
+                        text = mRes.getString(R.string.gps_prn_column_label);
+                        break;
+                    case FLAG_IMAGE_COLUMN:
+                        text = mRes.getString(R.string.gps_flag_image_label);
+                        break;
+                    case SNR_COLUMN:
+                        text = mRes.getString(R.string.gps_snr_column_label);
+                        break;
+                    case ELEVATION_COLUMN:
+                        text = mRes.getString(R.string.gps_elevation_column_label);
+                        break;
+                    case AZIMUTH_COLUMN:
+                        text = mRes.getString(R.string.gps_azimuth_column_label);
+                        break;
+                    case FLAGS_COLUMN:
+                        text = mRes.getString(R.string.gps_flags_column_label);
+                        break;
+                }
+            } else {
+                row--;
+                switch (column) {
+                    case PRN_COLUMN:
+                        text = Integer.toString(mPrns[row]);
+                        break;
+                    case FLAG_IMAGE_COLUMN:
+                        if (imageView == null) {
+                            imageView = new ImageView(mContext);
+                            imageView.setScaleType(ImageView.ScaleType.FIT_START);
+                        }
+                        GnssType type = GpsTestUtil.getGnssType(mPrns[row]);
+                        switch (type) {
+                            case NAVSTAR:
+                                imageView.setImageDrawable(flagUsa);
+                                break;
+                            case GLONASS:
+                                imageView.setImageDrawable(flagRussia);
+                                break;
+                        }
+                        return imageView;
+                    case SNR_COLUMN:
+                        text = Float.toString(mSnrs[row]);
+                        break;
+                    case ELEVATION_COLUMN:
+                        text = Float.toString(mSvElevations[row]);
+                        break;
+                    case AZIMUTH_COLUMN:
+                        text = Float.toString(mSvAzimuths[row]);
+                        break;
+                    case FLAGS_COLUMN:
+                        char[] flags = new char[3];
+                        flags[0] = ((mEphemerisMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'E');
+                        flags[1] = ((mAlmanacMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'A');
+                        flags[2] = ((mUsedInFixMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'U');
+                        text = new String(flags);
+                        break;
+                }
+            }
+
+            if (textView == null) {
+                textView = new TextView(mContext);
+            }
+
+            textView.setText(text);
+            return textView;
+        }
     }
 }

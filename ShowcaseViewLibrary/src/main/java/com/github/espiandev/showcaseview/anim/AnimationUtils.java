@@ -24,16 +24,6 @@ public class AnimationUtils {
 
     private static final int INSTANT = 0;
 
-    public interface AnimationStartListener {
-
-        void onAnimationStart();
-    }
-
-    public interface AnimationEndListener {
-
-        void onAnimationEnd();
-    }
-
     public static float getX(View view) {
         return ViewHelper.getX(view);
     }
@@ -153,5 +143,15 @@ public class AnimationUtils {
         AnimatorSet as = new AnimatorSet();
         as.play(setUpX).with(setUpY).before(alphaIn);
         return as;
+    }
+
+    public interface AnimationStartListener {
+
+        void onAnimationStart();
+    }
+
+    public interface AnimationEndListener {
+
+        void onAnimationEnd();
     }
 }

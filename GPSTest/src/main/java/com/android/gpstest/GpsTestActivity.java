@@ -68,31 +68,28 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     private static final String TAG = "GpsTestActivity";
 
-    private LocationManager mService;
+    private static final int SECONDS_TO_MILLISECONDS = 1000;
 
-    private LocationProvider mProvider;
+    static boolean mIsLargeScreen = false;
 
-    private GpsStatus mStatus;
+    private static GpsTestActivity sInstance;
 
-    private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
+    // Holds sensor data
+    private static float[] mRotationMatrix = new float[16];
+
+    private static float[] mRemappedMatrix = new float[16];
+
+    private static float[] mValues = new float[3];
+
+    private static float[] mTruncatedRotationVector = new float[4];
+
+    private static boolean mTruncateVector = false;
 
     boolean mStarted;
-
-    private Location mLastLocation;
-
-    private GeomagneticField mGeomagneticField;
 
     boolean mFaceTrueNorth;
 
     String mTtff;
-
-    private long minTime; // Min Time between location updates, in milliseconds
-
-    private static final int SECONDS_TO_MILLISECONDS = 1000;
-
-    private float minDistance; // Min Distance between location updates, in meters
-
-    private static GpsTestActivity sInstance;
 
     org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
 
@@ -112,31 +109,23 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
     ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
+    private LocationManager mService;
+
+    private LocationProvider mProvider;
+
+    private GpsStatus mStatus;
+
+    private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
+
+    private Location mLastLocation;
+
+    private GeomagneticField mGeomagneticField;
+
+    private long minTime; // Min Time between location updates, in milliseconds
+
+    private float minDistance; // Min Distance between location updates, in meters
+
     private SensorManager mSensorManager;
-
-    // Holds sensor data
-    private static float[] mRotationMatrix = new float[16];
-
-    private static float[] mRemappedMatrix = new float[16];
-
-    private static float[] mValues = new float[3];
-
-    private static float[] mTruncatedRotationVector = new float[4];
-
-    private static boolean mTruncateVector = false;
-
-    static boolean mIsLargeScreen = false;
-
-    interface GpsTestListener extends LocationListener {
-
-        public void gpsStart();
-
-        public void gpsStop();
-
-        public void onGpsStatusChanged(int event, GpsStatus status);
-
-        public void onOrientationChanged(double orientation, double tilt);
-    }
 
     static GpsTestActivity getInstance() {
         return sInstance;
@@ -233,11 +222,13 @@ public class GpsTestActivity extends SherlockFragmentActivity
 
         double tempMinTime = Double.valueOf(
                 settings.getString(getString(R.string.pref_key_gps_min_time),
-                        getString(R.string.pref_gps_min_time_default_sec)));
+                        getString(R.string.pref_gps_min_time_default_sec))
+        );
         minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
         minDistance = Float.valueOf(
                 settings.getString(getString(R.string.pref_key_gps_min_distance),
-                        getString(R.string.pref_gps_min_distance_default_meters)));
+                        getString(R.string.pref_gps_min_distance_default_meters))
+        );
 
         if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
             gpsStart();
@@ -299,13 +290,15 @@ public class GpsTestActivity extends SherlockFragmentActivity
                                         Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 startActivity(intent);
                             }
-                        })
+                        }
+                )
                 .setNegativeButton(getString(R.string.enable_gps_negative_button),
                         new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int which) {
                             }
-                        })
+                        }
+                )
                 .show();
     }
 
@@ -325,8 +318,9 @@ public class GpsTestActivity extends SherlockFragmentActivity
             if (mStarted) {
                 mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                        String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
-                        Toast.LENGTH_SHORT).show();
+                                String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         }
     }
@@ -699,6 +693,55 @@ public class GpsTestActivity extends SherlockFragmentActivity
     public void onTabReselected(Tab tab, FragmentTransaction ft) {
     }
 
+    private void initActionBar(Bundle savedInstanceState) {
+        // Set up the action bar.
+        final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
+
+        // If we don't have a large screen, set up the tabs using the ViewPager
+        if (!mIsLargeScreen) {
+            //  page adapter contains all the fragment registrations
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = (ViewPagerMapBevelScroll) findViewById(R.id.pager);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+            mViewPager.setOffscreenPageLimit(2);
+
+            // When swiping between different sections, select the corresponding
+            // tab. We can also use ActionBar.Tab#select() to do this if we have a
+            // reference to the Tab.
+            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    actionBar.setSelectedNavigationItem(position);
+                }
+            });
+            // For each of the sections in the app, add a tab to the action bar.
+            for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
+                // Create a tab with text corresponding to the page title defined by
+                // the adapter. Also specify this Activity object, which implements
+                // the TabListener interface, as the listener for when this tab is
+                // selected.
+                actionBar.addTab(actionBar.newTab()
+                        .setText(mSectionsPagerAdapter.getPageTitle(i))
+                        .setTabListener(this));
+            }
+        }
+    }
+
+    interface GpsTestListener extends LocationListener {
+
+        public void gpsStart();
+
+        public void gpsStop();
+
+        public void onGpsStatusChanged(int event, GpsStatus status);
+
+        public void onOrientationChanged(double orientation, double tilt);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the primary sections of the app.
@@ -760,44 +803,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
                     return getString(R.string.gps_sky_tab);
             }
             return null; // This should never happen
-        }
-    }
-
-    private void initActionBar(Bundle savedInstanceState) {
-        // Set up the action bar.
-        final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
-
-        // If we don't have a large screen, set up the tabs using the ViewPager
-        if (!mIsLargeScreen) {
-            //  page adapter contains all the fragment registrations
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = (ViewPagerMapBevelScroll) findViewById(R.id.pager);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            mViewPager.setOffscreenPageLimit(2);
-
-            // When swiping between different sections, select the corresponding
-            // tab. We can also use ActionBar.Tab#select() to do this if we have a
-            // reference to the Tab.
-            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    actionBar.setSelectedNavigationItem(position);
-                }
-            });
-            // For each of the sections in the app, add a tab to the action bar.
-            for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-                // Create a tab with text corresponding to the page title defined by
-                // the adapter. Also specify this Activity object, which implements
-                // the TabListener interface, as the listener for when this tab is
-                // selected.
-                actionBar.addTab(actionBar.newTab()
-                        .setText(mSectionsPagerAdapter.getPageTitle(i))
-                        .setTabListener(this));
-            }
         }
     }
 }

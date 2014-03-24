@@ -26,9 +26,17 @@ import android.preference.PreferenceManager;
  */
 public class Application extends android.app.Application {
 
+    private static Application mApp;
+
     private SharedPreferences mPrefs;
 
-    private static Application mApp;
+    public static Application get() {
+        return mApp;
+    }
+
+    public static SharedPreferences getPrefs() {
+        return get().mPrefs;
+    }
 
     @Override
     public void onCreate() {
@@ -42,13 +50,5 @@ public class Application extends android.app.Application {
     public void onTerminate() {
         super.onTerminate();
         mApp = null;
-    }
-
-    public static Application get() {
-        return mApp;
-    }
-
-    public static SharedPreferences getPrefs() {
-        return get().mPrefs;
     }
 }

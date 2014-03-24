@@ -45,12 +45,12 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     private final static String TAG = "GpsSkyFragment";
 
-    private GpsSkyView mSkyView;
-
     // View dimensions, to draw the compass with the correct width and height
     public static int mHeight;
 
     public static int mWidth;
+
+    private GpsSkyView mSkyView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +80,8 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                             }
                         }
                     }
-                });
+                }
+        );
 
         return mSkyView;
     }
@@ -133,14 +134,22 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
     private static class GpsSkyView extends View implements GpsTestActivity.GpsTestListener {
 
-        private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
-                mGridStrokePaint,
-                mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint,
-                mPrnIdPaint;
+        private static final int SAT_RADIUS = 10;
+
+        private static final float PRN_TEXT_SCALE = 2.5f;
+
+        private final float mSnrThresholds[];
+
+        private final int mSnrColors[];
 
         Context mContext;
 
         WindowManager mWindowManager;
+
+        private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
+                mGridStrokePaint,
+                mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint,
+                mPrnIdPaint;
 
         private double mOrientation = 0.0;
 
@@ -151,14 +160,6 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
         private int mPrns[];
 
         private int mSvCount;
-
-        private final float mSnrThresholds[];
-
-        private final int mSnrColors[];
-
-        private static final int SAT_RADIUS = 10;
-
-        private static final float PRN_TEXT_SCALE = 2.5f;
 
         public GpsSkyView(Context context) {
             super(context);

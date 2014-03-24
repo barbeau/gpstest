@@ -47,19 +47,6 @@ public class GpsMapFragment extends SherlockMapFragment
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMyLocationButtonClickListener {
 
-    private final static String TAG = "GpsStatusActivity";
-
-    private GoogleMap mMap;
-
-    private LatLng mLatLng;
-
-    private OnLocationChangedListener mListener; //Used to update the map with new location
-
-    // Camera control
-    private long mLastMapTouchTime = 0;
-
-    private CameraPosition mlastCameraPosition;
-
     // Constants used to control how the camera animates to a position
     public static final float CAMERA_INITIAL_ZOOM = 18.0f;
 
@@ -78,12 +65,44 @@ public class GpsMapFragment extends SherlockMapFragment
     // Amount of time the user must not touch the map for the automatic camera movements to kick in
     public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
 
+    private final static String TAG = "GpsStatusActivity";
+
+    private GoogleMap mMap;
+
+    private LatLng mLatLng;
+
+    private OnLocationChangedListener mListener; //Used to update the map with new location
+
+    // Camera control
+    private long mLastMapTouchTime = 0;
+
+    private CameraPosition mlastCameraPosition;
+
     private boolean mGotFix;
 
     // User preferences for map rotation and tilt based on sensors
     private boolean mRotate;
 
     private boolean mTilt;
+
+    /**
+     * Clamps a value between the given positive min and max.  If abs(value) is less than
+     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
+     * If abs(value) is between min and max, then abs(value) is returned.
+     *
+     * @param min   minimum allowed value
+     * @param value value to be evaluated
+     * @param max   maximum allowed value
+     * @return clamped value between the min and max
+     */
+    private static double clamp(double min, double value, double max) {
+        value = Math.abs(value);
+        if (value >= min && value <= max) {
+            return value;
+        } else {
+            return (value < min ? value : max);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +140,8 @@ public class GpsMapFragment extends SherlockMapFragment
 
                             getActivity().finish();
                         }
-                    });
+                    }
+            );
             AlertDialog dialog = builder.create();
             dialog.show();
         }
@@ -135,10 +155,12 @@ public class GpsMapFragment extends SherlockMapFragment
         if (mMap != null && settings != null) {
             if (mMap.getMapType() != Integer.valueOf(
                     settings.getString(getString(R.string.pref_key_map_type),
-                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL)))) {
+                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+            )) {
                 mMap.setMapType(Integer.valueOf(
                         settings.getString(getString(R.string.pref_key_map_type),
-                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))));
+                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+                ));
             }
 
             mRotate = settings
@@ -228,25 +250,6 @@ public class GpsMapFragment extends SherlockMapFragment
                             : mLatLng).
                     build();
             mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
-    }
-
-    /**
-     * Clamps a value between the given positive min and max.  If abs(value) is less than
-     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
-     * If abs(value) is between min and max, then abs(value) is returned.
-     *
-     * @param min   minimum allowed value
-     * @param value value to be evaluated
-     * @param max   maximum allowed value
-     * @return clamped value between the min and max
-     */
-    private static double clamp(double min, double value, double max) {
-        value = Math.abs(value);
-        if (value >= min && value <= max) {
-            return value;
-        } else {
-            return (value < min ? value : max);
         }
     }
 

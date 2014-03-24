@@ -22,11 +22,6 @@ public class ShowcaseViews {
         }
     };
 
-    public interface OnShowcaseAcknowledged {
-
-        void onShowCaseAcknowledged(ShowcaseView showcaseView);
-    }
-
     public ShowcaseViews(Activity activity, int showcaseTemplateLayout) {
         this.activity = activity;
         this.showcaseTemplateId = showcaseTemplateLayout;
@@ -74,6 +69,11 @@ public class ShowcaseViews {
 
     public boolean hasViews() {
         return !views.isEmpty();
+    }
+
+    public interface OnShowcaseAcknowledged {
+
+        void onShowCaseAcknowledged(ShowcaseView showcaseView);
     }
 
     public static class ItemViewProperties {
