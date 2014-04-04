@@ -83,5 +83,3 @@ make sure you "Android SDK Location" is the correct location of your Android SDK
 
 Also, make sure you've set the "ANDROID_HOME" environmental variable to your Android SDK location and
 the "JAVA_HOME" environmental variables to point to your JDK folder.
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/barbeau/gpstest/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
