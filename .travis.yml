@@ -5,7 +5,7 @@ before_install:
     - chmod +x gradlew
     - ANDROID_API_LEVEL=19
     - ANDROID_SDK_TOOLS_VERSION=22.0.5
-    - ANDROID_BUILD_TOOLS_VERSION=19.0.0
+    - ANDROID_BUILD_TOOLS_VERSION=19.0.1
     - ANDROID_OS_VERSION=4.4.2
 
     # Install Android SDK
