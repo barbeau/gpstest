@@ -1,4 +1,4 @@
-GPSTest
+GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest)
 =======
 
 Android GPS test program
