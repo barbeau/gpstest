@@ -32,7 +32,7 @@ public class GpsTestUtil {
      */
     public static GnssType getGnssType(int prn) {
         // See Issue #26 for details
-        if (prn >= 65 && prn <= 88) {
+        if (prn >= 65 && prn <= 96) {
             return GnssType.GLONASS;
         } else {
             // Assume US NAVSTAR for now, since we don't have any other info on sat-to-PRN mappings
