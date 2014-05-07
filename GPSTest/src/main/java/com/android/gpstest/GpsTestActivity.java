@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
 import com.github.espiandev.showcaseview.ShowcaseView;
 
@@ -632,6 +633,8 @@ public class GpsTestActivity extends SherlockFragmentActivity
         // Correct for true north, if preference is set
         if (mFaceTrueNorth && mGeomagneticField != null) {
             orientation += mGeomagneticField.getDeclination();
+            // Make sure value is between 0-360
+            orientation = MathUtils.mod((float) orientation, 360.0f);
         }
 
         for (GpsTestListener listener : mGpsTestListeners) {
