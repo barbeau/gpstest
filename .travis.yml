@@ -11,4 +11,4 @@ install:
 
 script:
   # Use `TERM=dumb` to simplify console output
-  - TERM=dumb ./gradlew assembleDebug -PdisablePreDex
+  - TERM=dumb ./gradlew assembleDebug
