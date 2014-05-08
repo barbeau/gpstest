@@ -10,5 +10,6 @@ install:
   - true
 
 script:
+  - git update-index --chmod=+x gradlew
   # Use `TERM=dumb` to simplify console output
   - TERM=dumb ./gradlew assembleDebug
