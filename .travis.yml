@@ -3,12 +3,7 @@ jdk: oraclejdk7
 
 android:
   components:
-    - build-tools-19.0.1
-
-install:
-  # Prevent `gradle assemble` from being invoked by overriding with no-op
-  - true
+    - build-tools-19.1.0
 
 script:
-  # Use `TERM=dumb` to simplify console output
-  - TERM=dumb ./gradlew assembleDebug -PdisablePreDex
+  - ./gradlew assembleDebug -PdisablePreDex
