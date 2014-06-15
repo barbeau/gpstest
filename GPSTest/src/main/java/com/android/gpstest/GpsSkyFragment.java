@@ -354,9 +354,9 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                     c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
                     break;
                 case GLONASS:
-                    c.drawRect(x - SAT_RADIUS, y + SAT_RADIUS, x + SAT_RADIUS, y - SAT_RADIUS,
+                    c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
                             thisPaint);
-                    c.drawRect(x - SAT_RADIUS, y + SAT_RADIUS, x + SAT_RADIUS, y - SAT_RADIUS,
+                    c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
                             mSatelliteStrokePaint);
                     break;
             }
