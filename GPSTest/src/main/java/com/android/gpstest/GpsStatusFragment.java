@@ -79,7 +79,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
     private boolean mNavigating, mGotFix;
 
-    private Drawable flagUsa, flagRussia;
+    private Drawable flagUsa, flagRussia, flagJapan;
 
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
@@ -156,6 +156,7 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
 
         flagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
         flagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
+        flagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
 
         GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
@@ -366,6 +367,9 @@ public class GpsStatusFragment extends SherlockFragment implements GpsTestActivi
                                 break;
                             case GLONASS:
                                 imageView.setImageDrawable(flagRussia);
+                                break;
+                            case QZSS:
+                                imageView.setImageDrawable(flagJapan);
                                 break;
                         }
                         return imageView;
