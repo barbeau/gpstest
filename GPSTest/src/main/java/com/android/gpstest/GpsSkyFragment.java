@@ -359,6 +359,9 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                     c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
                             mSatelliteStrokePaint);
                     break;
+                case QZSS:
+                    drawTriangle(c, x, y, thisPaint);
+                    break;
             }
 
             c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
@@ -367,6 +370,31 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
 
         private float elevationToRadius(int s, float elev) {
             return ((s / 2) - SAT_RADIUS) * (1.0f - (elev / 90.0f));
+        }
+
+        private void drawTriangle(Canvas c, float x, float y, Paint fillPaint) {
+            float x1, y1;  // Top
+            x1 = x;
+            y1 = y - SAT_RADIUS;
+
+            float x2, y2; // Lower left
+            x2 = x - SAT_RADIUS;
+            y2 = y + SAT_RADIUS;
+
+            float x3, y3; // Lower right
+            x3 = x + SAT_RADIUS;
+            y3 = y + SAT_RADIUS;
+
+            Path path = new Path();
+            path.setFillType(Path.FillType.EVEN_ODD);
+            path.moveTo(x1, y1);
+            path.lineTo(x2, y2);
+            path.lineTo(x3, y3);
+            path.lineTo(x1, y1);
+            path.close();
+
+            c.drawPath(path, fillPaint);
+            c.drawPath(path, mSatelliteStrokePaint);
         }
 
         private Paint getSatellitePaint(Paint base, float snr) {

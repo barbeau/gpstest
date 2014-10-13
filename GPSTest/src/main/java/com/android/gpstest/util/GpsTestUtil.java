@@ -31,9 +31,12 @@ public class GpsTestUtil {
      * @return GnssType for the given PRN
      */
     public static GnssType getGnssType(int prn) {
-        // See Issue #26 for details
         if (prn >= 65 && prn <= 96) {
+            // See Issue #26 for details
             return GnssType.GLONASS;
+        } else if (prn >= 193 && prn <= 202) {
+            // See Issue #52 for details
+            return GnssType.QZSS;
         } else {
             // Assume US NAVSTAR for now, since we don't have any other info on sat-to-PRN mappings
             return GnssType.NAVSTAR;
