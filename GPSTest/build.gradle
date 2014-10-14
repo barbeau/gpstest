@@ -7,6 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 19
+        versionCode 13
+        versionName "2.1.1"
     }
 
     if (project.hasProperty("secure.properties")
