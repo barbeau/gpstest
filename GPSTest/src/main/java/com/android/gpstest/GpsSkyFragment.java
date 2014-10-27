@@ -362,6 +362,9 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
                 case QZSS:
                     drawTriangle(c, x, y, thisPaint);
                     break;
+                case BEIDOU:
+                    drawPentagon(c, x, y, thisPaint);
+                    break;
             }
 
             c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
@@ -391,6 +394,19 @@ public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.
             path.lineTo(x2, y2);
             path.lineTo(x3, y3);
             path.lineTo(x1, y1);
+            path.close();
+
+            c.drawPath(path, fillPaint);
+            c.drawPath(path, mSatelliteStrokePaint);
+        }
+
+        private void drawPentagon(Canvas c, float x, float y, Paint fillPaint) {
+            Path path = new Path();
+            path.moveTo(x, y - SAT_RADIUS);
+            path.lineTo(x - SAT_RADIUS, y - (SAT_RADIUS / 3));
+            path.lineTo(x - 2 * (SAT_RADIUS / 3), y + SAT_RADIUS);
+            path.lineTo(x + 2 * (SAT_RADIUS / 3), y + SAT_RADIUS);
+            path.lineTo(x + SAT_RADIUS, y - (SAT_RADIUS / 3));
             path.close();
 
             c.drawPath(path, fillPaint);
