@@ -17,17 +17,13 @@
 
 package com.android.gpstest;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
 import com.github.espiandev.showcaseview.ShowcaseView;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,17 +49,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
+import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GpsTestActivity extends SherlockFragmentActivity
-        implements LocationListener, GpsStatus.Listener, ActionBar.TabListener,
+public class GpsTestActivity extends ActionBarActivity
+        implements LocationListener, GpsStatus.Listener,
+        android.support.v7.app.ActionBar.TabListener,
         SensorEventListener {
 
     private static final String TAG = "GpsTestActivity";
@@ -175,7 +177,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(com.actionbarsherlock.R.style.Theme_Sherlock);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         sInstance = this;
 
@@ -195,10 +197,6 @@ public class GpsTestActivity extends SherlockFragmentActivity
         mService.addGpsStatusListener(this);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        // Request use of spinner for showing indeterminate progress, to show
-        // the user something is going on during long-running operations
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         // If we have a large screen, show all the fragments in one layout
         if (GpsTestUtil.isLargeScreen(this)) {
@@ -386,16 +384,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.gps_menu, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.gps_menu, menu);
         initGpsSwitch(menu);
         return true;
     }
 
-    private void initGpsSwitch(com.actionbarsherlock.view.Menu menu) {
+    private void initGpsSwitch(Menu menu) {
         MenuItem item = menu.findItem(R.id.gps_switch);
         if (item != null) {
-            mSwitch = (org.jraf.android.backport.switchwidget.Switch) item.getActionView();
+            mSwitch = (org.jraf.android.backport.switchwidget.Switch) MenuItemCompat
+                    .getActionView(item);
             if (mSwitch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
                 mSwitch.setChecked(mStarted);
@@ -419,7 +418,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
 
         item = menu.findItem(R.id.send_location);
@@ -671,7 +670,7 @@ public class GpsTestActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         if (mViewPager != null) {
@@ -680,17 +679,17 @@ public class GpsTestActivity extends SherlockFragmentActivity
     }
 
     @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
+    public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     private void initActionBar(Bundle savedInstanceState) {
         // Set up the action bar.
-        final com.actionbarsherlock.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(com.actionbarsherlock.app.ActionBar.NAVIGATION_MODE_TABS);
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
 
         // If we don't have a large screen, set up the tabs using the ViewPager

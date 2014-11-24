@@ -16,7 +16,6 @@
 
 package com.android.gpstest;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.android.gpstest.util.GpsTestUtil;
 
 import android.content.Intent;
@@ -27,11 +26,12 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.text.InputType;
 import android.widget.Toast;
 
-public class Preferences extends SherlockPreferenceActivity {
+public class Preferences extends PreferenceActivity {
 
     Preference prefShowTutorial;
 

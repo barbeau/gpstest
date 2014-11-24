@@ -4,16 +4,14 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.0'
+        classpath 'com.android.tools.build:gradle:0.13.2'
     }
 }
 
 allprojects {
     repositories {
         mavenCentral()
-        maven {
-            url "http://JRAF.org/static/maven/2"
-        }
+        jcenter()
     }
 }
 

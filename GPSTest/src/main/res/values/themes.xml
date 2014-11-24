@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="GpsSwitchTheme" parent="@style/Theme.Sherlock">
-        <item name="switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+    <style name="GpsSwitchTheme" parent="@style/Theme.AppCompat">
+        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
     </style>
 </resources>

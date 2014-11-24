@@ -14,12 +14,13 @@
      limitations under the License.
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/send_location"
           android:title="@string/send_location"
           android:icon="@drawable/social_share"
-          android:showAsAction="ifRoom|withText"/>
+          app:showAsAction="ifRoom|withText"/>
 
     <!-- <item android:id="@+id/gps_start"
         android:title="@string/gps_start"
@@ -28,8 +29,8 @@
         android:actionLayout="@layout/gps_switch" />  -->
 
     <item android:id="@+id/gps_switch"
-          android:showAsAction="ifRoom|withText"
-          android:actionLayout="@layout/gps_switch"/>
+          app:showAsAction="ifRoom|withText"
+          app:actionLayout="@layout/gps_switch"/>
 
     <item android:id="@+id/force_time_injection"
           android:title="@string/force_time_injection"/>
@@ -43,5 +44,5 @@
     <item android:id="@+id/menu_settings"
           android:title="@string/menu_settings"
           android:orderInCategory="100"
-          android:showAsAction="never"/>
+          app:showAsAction="never"/>
 </menu>

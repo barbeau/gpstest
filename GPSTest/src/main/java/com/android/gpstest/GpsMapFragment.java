@@ -20,12 +20,11 @@ package com.android.gpstest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.maps.android.SphericalUtil;
-
-import com.actionbarsherlock.app.SherlockMapFragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -41,7 +40,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class GpsMapFragment extends SherlockMapFragment
+public class GpsMapFragment extends SupportMapFragment
         implements GpsTestActivity.GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,

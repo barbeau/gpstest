@@ -17,7 +17,6 @@
 
 package com.android.gpstest;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
 
@@ -33,6 +32,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +41,7 @@ import android.view.WindowManager;
 
 import java.util.Iterator;
 
-public class GpsSkyFragment extends SherlockFragment implements GpsTestActivity.GpsTestListener {
+public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestListener {
 
     private final static String TAG = "GpsSkyFragment";
 
