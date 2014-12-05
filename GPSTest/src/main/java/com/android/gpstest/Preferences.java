@@ -28,10 +28,17 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class Preferences extends PreferenceActivity {
+
+    private Toolbar mActionBar;
 
     Preference prefShowTutorial;
 
@@ -46,6 +53,8 @@ public class Preferences extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+
+        mActionBar.setTitle(getTitle());
 
         prefShowTutorial = this.findPreference(getString(R.string.pref_key_showed_v2_tutorial));
 
@@ -155,5 +164,24 @@ public class Preferences extends PreferenceActivity {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        ViewGroup contentView = (ViewGroup) LayoutInflater.from(this).inflate(
+                R.layout.settings_activity, new LinearLayout(this), false);
+
+        mActionBar = (Toolbar) contentView.findViewById(R.id.action_bar);
+        mActionBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        ViewGroup contentWrapper = (ViewGroup) contentView.findViewById(R.id.content_wrapper);
+        LayoutInflater.from(this).inflate(layoutResID, contentWrapper, true);
+
+        getWindow().setContentView(contentView);
     }
 }
