@@ -43,7 +43,7 @@ android {
 
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
         }
