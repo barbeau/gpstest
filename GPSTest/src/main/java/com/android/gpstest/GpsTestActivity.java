@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -45,6 +46,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -130,6 +132,10 @@ public class GpsTestActivity extends ActionBarActivity
     }
 
     private synchronized void gpsStart() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         if (!mStarted) {
             mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
@@ -156,6 +162,10 @@ public class GpsTestActivity extends ActionBarActivity
     }
 
     private synchronized void gpsStop() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         if (mStarted) {
             mService.removeUpdates(this);
             mStarted = false;
@@ -186,13 +196,22 @@ public class GpsTestActivity extends ActionBarActivity
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         mService = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mProvider = mService.getProvider(LocationManager.GPS_PROVIDER);
-        if (mProvider == null) {
-            Log.e(TAG, "Unable to get GPS_PROVIDER");
-            Toast.makeText(this, getString(R.string.gps_not_supported),
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission Denied
+            Toast.makeText(this, getString(R.string.permission_denied),
                     Toast.LENGTH_SHORT).show();
             finish();
             return;
+        } else {
+            mProvider = mService.getProvider(LocationManager.GPS_PROVIDER);
+            if (mProvider == null) {
+                Log.e(TAG, "Unable to get GPS_PROVIDER");
+                Toast.makeText(this, getString(R.string.gps_not_supported),
+                        Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
         }
         mService.addGpsStatusListener(this);
 
@@ -305,7 +324,9 @@ public class GpsTestActivity extends ActionBarActivity
             minDistance = Float.valueOf(
                     settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
             // If the GPS is started, reset the location listener with the new values
-            if (mStarted) {
+            if (mStarted
+                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
                                 String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
@@ -329,12 +350,24 @@ public class GpsTestActivity extends ActionBarActivity
             mOptions.block = false;
             mOptions.hideOnClickOutside = true;
             mOptions.noButton = true;
-            sv = ShowcaseView
-                    .insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch,
-                            this,
-                            R.string.showcase_gps_on_off_title,
-                            R.string.showcase_gps_on_off_message, mOptions);
-            sv.show();
+
+            // TODO
+            View homeButton = findViewById(android.R.id.home);
+            if (homeButton == null) {
+                int homeId = getResources()
+                        .getIdentifier("abs__home", "id", getPackageName());
+                if (homeId != 0) {
+                    homeButton = findViewById(homeId);
+                }
+            }
+            if (homeButton != null) {
+                sv = ShowcaseView
+                        .insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch,
+                                this,
+                                R.string.showcase_gps_on_off_title,
+                                R.string.showcase_gps_on_off_message, mOptions);
+                sv.show();
+            }
 
             SharedPreferences.Editor editor = Application.getPrefs().edit();
             editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), true);
@@ -379,7 +412,10 @@ public class GpsTestActivity extends ActionBarActivity
     @Override
     protected void onDestroy() {
         mService.removeGpsStatusListener(this);
-        mService.removeUpdates(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mService.removeUpdates(this);
+        }
         super.onDestroy();
     }
 
