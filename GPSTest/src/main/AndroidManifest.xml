@@ -44,19 +44,24 @@
 
         <uses-library android:name="com.google.android.maps"/>
 
-        <activity android:name=".GpsTestActivity"
-                  android:theme="@style/GpsSwitchTheme"
-                  android:configChanges="keyboard|keyboardHidden|orientation">
+        <activity android:name=".StartActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".GpsTestActivity"
+                  android:theme="@style/GpsSwitchTheme"
+                  android:configChanges="keyboard|keyboardHidden|orientation"/>
+
         <activity
                 android:name=".Preferences"
                 android:label="@string/pref_title"
                 android:theme="@style/Theme.AppCompat">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -65,5 +70,4 @@
                 android:name="com.google.android.maps.v2.API_KEY"
                 android:value="AIzaSyDQ74tuldesS1VnK84CgeSq0v6FVe5Od-M"/>
     </application>
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
 </manifest>

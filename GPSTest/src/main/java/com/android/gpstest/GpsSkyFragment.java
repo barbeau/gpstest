@@ -24,20 +24,23 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 
 import java.util.Iterator;
 
@@ -142,16 +145,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         private final int mSnrColors[];
 
-        Context mContext;
-
-        WindowManager mWindowManager;
-
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                 mGridStrokePaint,
                 mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint,
-                mPrnIdPaint;
+                mPrnIdPaint, mSnrFillPaint, mSnrValuePaint;
 
-        private double mOrientation = 0.0;
+        private double mOrientation = Double.MIN_VALUE;
 
         private boolean mStarted;
 
@@ -163,9 +162,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         public GpsSkyView(Context context) {
             super(context);
-
-            mContext = context;
-            mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 
             mHorizonActiveFillPaint = new Paint();
             mHorizonActiveFillPaint.setColor(Color.WHITE);
@@ -220,6 +216,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             mNorthPaint.setStrokeWidth(4.0f);
             mPrnIdPaint.setTextSize(SAT_RADIUS * PRN_TEXT_SCALE);
             mPrnIdPaint.setAntiAlias(true);
+
+            mSnrFillPaint = new Paint();
+            mSnrFillPaint.setStyle(Paint.Style.FILL);
+            mSnrFillPaint.setAntiAlias(true);
+
+            mSnrValuePaint = new Paint(mHorizonActiveFillPaint);
 
             setFocusable(true);
         }
@@ -281,95 +283,253 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             c.drawLine(X1, Y1, X2, Y2, mGridStrokePaint);
         }
 
-        private void drawHorizon(Canvas c, int s) {
-            float radius = s / 2;
+        private void drawHorizon(Canvas c, int width, int height) {
+            float centerX = width / 2;
+            float centerY = height / 2;
+            float radius = width > height ? centerY : centerX;
 
-            c.drawCircle(radius, radius, radius,
+            c.drawCircle(centerX, centerY, radius,
                     mStarted ? mHorizonActiveFillPaint : mHorizonInactiveFillPaint);
-            drawLine(c, 0, radius, 2 * radius, radius);
-            drawLine(c, radius, 0, radius, 2 * radius);
-            c.drawCircle(radius, radius, elevationToRadius(s, 60.0f), mGridStrokePaint);
-            c.drawCircle(radius, radius, elevationToRadius(s, 30.0f), mGridStrokePaint);
-            c.drawCircle(radius, radius, elevationToRadius(s, 0.0f), mGridStrokePaint);
-            c.drawCircle(radius, radius, radius, mHorizonStrokePaint);
-        }
-
-        private void drawNorthIndicator(Canvas c, int s) {
-            float radius = s / 2;
-            double angle = Math.toRadians(-mOrientation);
-            final float ARROW_HEIGHT_SCALE = 0.05f;
-            final float ARROW_WIDTH_SCALE = 0.1f;
-
-            float x1, y1;  // Tip of arrow
-            x1 = radius;
-            y1 = elevationToRadius(s, 90.0f);
-
-            float x2, y2;
-            x2 = x1 + radius * ARROW_HEIGHT_SCALE;
-            y2 = y1 + radius * ARROW_WIDTH_SCALE;
-
-            float x3, y3;
-            x3 = x1 - radius * ARROW_HEIGHT_SCALE;
-            y3 = y1 + radius * ARROW_WIDTH_SCALE;
-
-            Path path = new Path();
-            path.setFillType(Path.FillType.EVEN_ODD);
-            path.moveTo(x1, y1);
-            path.lineTo(x2, y2);
-            path.lineTo(x3, y3);
-            path.lineTo(x1, y1);
-            path.close();
-
-            // Rotate arrow around center point
-            Matrix matrix = new Matrix();
-            matrix.postRotate((float) -mOrientation, radius, radius);
-            path.transform(matrix);
-
-            c.drawPath(path, mNorthPaint);
-            c.drawPath(path, mNorthFillPaint);
-        }
-
-        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn) {
-            double radius, angle;
-            float x, y;
-            // Place PRN text slightly below drawn satellite
-            final double PRN_X_SCALE = 1.4;
-            final double PRN_Y_SCALE = 3.5;
-            Paint thisPaint;
-
-            thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
-
-            radius = elevationToRadius(s, elev);
-            azim -= mOrientation;
-            angle = (float) Math.toRadians(azim);
-
-            x = (float) ((s / 2) + (radius * Math.sin(angle)));
-            y = (float) ((s / 2) - (radius * Math.cos(angle)));
-
-            // Change shape based on satellite operator
-            GnssType operator = GpsTestUtil.getGnssType(prn);
-            switch (operator) {
-                case NAVSTAR:
-                    c.drawCircle(x, y, SAT_RADIUS, thisPaint);
-                    c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
-                    break;
-                case GLONASS:
-                    c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
-                            thisPaint);
-                    c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
-                            mSatelliteStrokePaint);
-                    break;
-                case QZSS:
-                    drawTriangle(c, x, y, thisPaint);
-                    break;
-                case BEIDOU:
-                    drawPentagon(c, x, y, thisPaint);
-                    break;
+            if (mOrientation != Double.MIN_VALUE) {
+                    drawLine(c, centerX - radius, centerY, centerX + radius, centerY);
+                    drawLine(c, centerX, centerY - radius, centerX, centerY + radius);
             }
-
-            c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
-                    y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
+            c.drawCircle(centerX, centerY, elevationToRadius((int) (radius * 2), 60.0f), mGridStrokePaint);
+            c.drawCircle(centerX, centerY, elevationToRadius((int) (radius * 2), 30.0f), mGridStrokePaint);
+            c.drawCircle(centerX, centerY, elevationToRadius((int) (radius * 2), 0.0f), mGridStrokePaint);
+            c.drawCircle(centerX, centerY, radius - mHorizonStrokePaint.getStrokeWidth(), mHorizonStrokePaint);
         }
+
+        private void drawNorthIndicator(Canvas c, int width, int height) {
+            if (mOrientation != Double.MIN_VALUE) {
+                float centerX = width / 2;
+                float centerY = height / 2;
+                float radius = width > height ? centerY : centerX;
+                int minScreenDimen = width > height ? height : width;
+                // double angle = Math.toRadians(-mOrientation);
+                final float ARROW_HEIGHT_SCALE = 0.05f;
+                final float ARROW_WIDTH_SCALE = 0.1f;
+
+                float x1, y1;  // Tip of arrow
+                x1 = centerX;
+                y1 = elevationToRadius(minScreenDimen, 90.0f) + (centerY - radius) + mNorthPaint.getStrokeWidth();
+
+                float x2, y2;
+                x2 = x1 + radius * ARROW_HEIGHT_SCALE;
+                y2 = y1 + radius * ARROW_WIDTH_SCALE;
+
+                float x3, y3;
+                x3 = x1 - radius * ARROW_HEIGHT_SCALE;
+                y3 = y1 + radius * ARROW_WIDTH_SCALE;
+
+                Path path = new Path();
+                path.setFillType(Path.FillType.EVEN_ODD);
+                path.moveTo(x1, y1);
+                path.lineTo(x2, y2);
+                path.lineTo(x3, y3);
+                path.lineTo(x1, y1);
+                path.close();
+
+                // Rotate arrow around center point
+                Matrix matrix = new Matrix();
+                matrix.postRotate((float) -mOrientation, centerX, centerY);
+                path.transform(matrix);
+
+                c.drawPath(path, mNorthPaint);
+                c.drawPath(path, mNorthFillPaint);
+            }
+        }
+
+        private void drawSatellite(Canvas c, int width, int height, float elev, float azim, float snr, int prn) {
+            if (mOrientation != Double.MIN_VALUE) {
+                float centerX = width / 2;
+                float centerY = height / 2;
+                int minScreenDimen = width > height ? height : width;
+
+                double radius, angle;
+                float x, y;
+                // Place PRN text slightly below drawn satellite
+                final double PRN_X_SCALE = 1.4;
+                final double PRN_Y_SCALE = 3.5;
+                Paint thisPaint;
+
+                thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
+
+                radius = elevationToRadius(minScreenDimen, elev);
+                azim -= mOrientation;
+                angle = (float) Math.toRadians(azim);
+
+                x = (float) (centerX + (radius * Math.sin(angle)));
+                y = (float) (centerY - (radius * Math.cos(angle)));
+
+                // Change shape based on satellite operator
+                GnssType operator = GpsTestUtil.getGnssType(prn);
+                switch (operator) {
+                    case NAVSTAR:
+                        c.drawCircle(x, y, SAT_RADIUS, thisPaint);
+                        c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
+                        break;
+                    case GLONASS:
+                        c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
+                                thisPaint);
+                        c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
+                                mSatelliteStrokePaint);
+                        break;
+                    case QZSS:
+                        drawTriangle(c, x, y, thisPaint);
+                        break;
+                    case BEIDOU:
+                        drawPentagon(c, x, y, thisPaint);
+                        break;
+                }
+
+                c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
+                        y + (int) (SAT_RADIUS * PRN_Y_SCALE), mPrnIdPaint);
+            }
+        }
+
+    private int drawDisplayHelp(Canvas c, int width, int height) {
+        int result;
+        float centerX = width / 2;
+        float centerY = height / 2;
+        float radius = width > height ? centerY : centerX;
+        float x, y;
+        if (width > height) {
+            x = (centerX - radius) / 2;
+            y = 4 * SAT_RADIUS;
+            c.drawCircle(x, y, SAT_RADIUS, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_usa);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x = (centerX - radius) / 2;
+            y += 4 * SAT_RADIUS + drawable.getIntrinsicHeight();
+            c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
+                    mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_russia);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x = (centerX - radius) / 2;
+            y += 4 * SAT_RADIUS + drawable.getIntrinsicHeight();
+            drawTriangle(c, x, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_japan);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x = (centerX - radius) / 2;
+            y += 4 * SAT_RADIUS + drawable.getIntrinsicHeight();
+            drawPentagon(c, x, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_china);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x = centerX + (centerX - (x + drawable.getIntrinsicWidth()));
+            y += drawable.getIntrinsicHeight() / 2;
+            int length = (int) ((y + drawable.getIntrinsicHeight()) - 4 * SAT_RADIUS * 2);
+            if (mSnrFillPaint.getShader() == null) {
+                mSnrFillPaint.setShader(new LinearGradient(x, y, x + SAT_RADIUS, y - length,
+                        mSnrColors, null, Shader.TileMode.REPEAT));
+            }
+            c.drawRect(x, y - length, x + SAT_RADIUS, y,
+                    mSnrFillPaint);
+
+            x += 2 * SAT_RADIUS;
+            String text = getContext().getString(R.string.gps_snr_column_label) + " = " + mSnrThresholds[0] + " " + getContext().getString(R.string.unit_db);
+            c.drawText(text, x, y, mSnrValuePaint);
+
+            text = getContext().getString(R.string.gps_snr_column_label) + " = " + mSnrThresholds[mSnrThresholds.length - 1] + " " + getContext().getString(R.string.unit_db);
+            c.drawText(String.valueOf(text), x, y - length + mSnrValuePaint.getTextSize(), mSnrValuePaint);
+
+            result = 0;
+        } else {
+            x = 2 * SAT_RADIUS;
+            y = centerY + radius + 3 * SAT_RADIUS;
+            c.drawCircle(x, y, SAT_RADIUS, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_usa);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x += 5 * SAT_RADIUS + drawable.getIntrinsicWidth();
+            c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
+                    mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_russia);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x += 5 * SAT_RADIUS + drawable.getIntrinsicWidth();
+            drawTriangle(c, x, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_japan);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            x += 5 * SAT_RADIUS + drawable.getIntrinsicWidth();
+            drawPentagon(c, x, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            c.drawLine(x, y, x + SAT_RADIUS, y, mSnrValuePaint);
+
+            x += 2 * SAT_RADIUS;
+            drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_flag_china);
+            drawable.setBounds((int) x, (int) (y - drawable.getIntrinsicHeight() / 2), (int) (x + drawable.getIntrinsicWidth()), (int) (y + drawable.getIntrinsicHeight() / 2));
+            drawable.draw(c);
+
+            int length = (int) ((x + drawable.getIntrinsicWidth()) - SAT_RADIUS);
+            x = SAT_RADIUS;
+            y += 3 * SAT_RADIUS;
+            if (mSnrFillPaint.getShader() == null) {
+                mSnrFillPaint.setShader(new LinearGradient(x, y, x + length, y + SAT_RADIUS,
+                        mSnrColors, null, Shader.TileMode.REPEAT));
+            }
+            c.drawRect(x, y, x + length, y + SAT_RADIUS,
+                    mSnrFillPaint);
+
+            y += 3 * SAT_RADIUS;
+            String text = getContext().getString(R.string.gps_snr_column_label) + " = " + mSnrThresholds[0] + " " + getContext().getString(R.string.unit_db);
+            c.drawText(text, x, y, mSnrValuePaint);
+
+            text = getContext().getString(R.string.gps_snr_column_label) + " = " + mSnrThresholds[mSnrThresholds.length - 1] + " " + getContext().getString(R.string.unit_db);
+            c.drawText(String.valueOf(text), x + length - mSnrValuePaint.measureText(text), y, mSnrValuePaint);
+
+            result = (int) ((y + mSnrValuePaint.getTextSize()) - (centerY + radius + 4 * SAT_RADIUS));
+        }
+        return result;
+    }
 
         private float elevationToRadius(int s, float elev) {
             return ((s / 2) - SAT_RADIUS) * (1.0f - (elev / 90.0f));
@@ -468,25 +628,31 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         @Override
         protected void onDraw(Canvas canvas) {
-            int minScreenDimen;
+        int width = getWidth();
+        int height = getHeight();
+        if (width == 0 || height == 0) {
+        } else {
+            int dy = drawDisplayHelp(canvas, width, height);
+            canvas.save();
+            canvas.translate(0, -dy / 2);
 
-            minScreenDimen = (GpsSkyFragment.mWidth < GpsSkyFragment.mHeight)
-                    ? GpsSkyFragment.mWidth : GpsSkyFragment.mHeight;
+            drawHorizon(canvas, width, height);
 
-            drawHorizon(canvas, minScreenDimen);
+            drawNorthIndicator(canvas, width, height);
 
-            drawNorthIndicator(canvas, minScreenDimen);
-
-            if (mElevs != null) {
+            if (mSnrs != null && mPrns != null && mElevs != null && mAzims != null) {
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
-                    if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
-                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i],
+                    if (/*mSnrs[i] > 0.0f && */((mElevs[i] > 0.0f && mElevs[i] < 90.0f) && (mAzims[i] > 0.0f && mAzims[i] < 360.0f))) {
+                        drawSatellite(canvas, width, height, mElevs[i], mAzims[i], mSnrs[i],
                                 mPrns[i]);
                     }
                 }
             }
+
+            canvas.restore();
+        }
         }
 
         @Override
