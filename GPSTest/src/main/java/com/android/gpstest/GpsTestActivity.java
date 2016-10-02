@@ -103,7 +103,7 @@ public class GpsTestActivity extends ActionBarActivity
 
     ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
-    private LocationManager mService;
+    private LocationManager mLocationManager;
 
     private LocationProvider mProvider;
 
@@ -131,7 +131,8 @@ public class GpsTestActivity extends ActionBarActivity
 
     private synchronized void gpsStart() {
         if (!mStarted) {
-            mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+            mLocationManager
+                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
 
             // Show Toast only if the user has set minTime or minDistance to something other than default values
@@ -157,7 +158,7 @@ public class GpsTestActivity extends ActionBarActivity
 
     private synchronized void gpsStop() {
         if (mStarted) {
-            mService.removeUpdates(this);
+            mLocationManager.removeUpdates(this);
             mStarted = false;
             // Stop progress bar
             setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
@@ -171,7 +172,7 @@ public class GpsTestActivity extends ActionBarActivity
     }
 
     private boolean sendExtraCommand(String command) {
-        return mService.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+        return mLocationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     /** Called when the activity is first created. */
@@ -185,8 +186,8 @@ public class GpsTestActivity extends ActionBarActivity
         // execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        mService = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mProvider = mService.getProvider(LocationManager.GPS_PROVIDER);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
         if (mProvider == null) {
             Log.e(TAG, "Unable to get GPS_PROVIDER");
             Toast.makeText(this, getString(R.string.gps_not_supported),
@@ -194,7 +195,7 @@ public class GpsTestActivity extends ActionBarActivity
             finish();
             return;
         }
-        mService.addGpsStatusListener(this);
+        mLocationManager.addGpsStatusListener(this);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -242,7 +243,7 @@ public class GpsTestActivity extends ActionBarActivity
             }
         }
 
-        if (!mService.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
 
@@ -306,7 +307,8 @@ public class GpsTestActivity extends ActionBarActivity
                     settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
             // If the GPS is started, reset the location listener with the new values
             if (mStarted) {
-                mService.requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+                mLocationManager
+                        .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
                                 String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
                         Toast.LENGTH_SHORT
@@ -378,8 +380,8 @@ public class GpsTestActivity extends ActionBarActivity
 
     @Override
     protected void onDestroy() {
-        mService.removeGpsStatusListener(this);
-        mService.removeUpdates(this);
+        mLocationManager.removeGpsStatusListener(this);
+        mLocationManager.removeUpdates(this);
         super.onDestroy();
     }
 
@@ -526,7 +528,7 @@ public class GpsTestActivity extends ActionBarActivity
     }
 
     public void onGpsStatusChanged(int event) {
-        mStatus = mService.getGpsStatus(mStatus);
+        mStatus = mLocationManager.getGpsStatus(mStatus);
 
         switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
