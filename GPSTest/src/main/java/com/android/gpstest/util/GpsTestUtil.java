@@ -69,4 +69,18 @@ public class GpsTestUtil {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
+
+    /**
+     * Converts screen dimension units from dp to pixels, based on algorithm defined in
+     * http://developer.android.com/guide/practices/screens_support.html#dips-pels
+     *
+     * @param dp value in dp
+     * @return value in pixels
+     */
+    public static int dpToPixels(Context context, float dp) {
+        // Get the screen's density scale
+        final float scale = context.getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return (int) (dp * scale + 0.5f);
+    }
 }

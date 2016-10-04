@@ -134,9 +134,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
     private static class GpsSkyView extends View implements GpsTestActivity.GpsTestListener {
 
-        private static final int SAT_RADIUS = 10;
+        private static int SAT_RADIUS;
 
-        private static final float PRN_TEXT_SCALE = 2.5f;
+        private static final float PRN_TEXT_SCALE = 0.7f;
 
         private final float mSnrThresholds[];
 
@@ -166,6 +166,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
             mContext = context;
             mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            SAT_RADIUS = GpsTestUtil.dpToPixels(context, 5);
 
             mHorizonActiveFillPaint = new Paint();
             mHorizonActiveFillPaint.setColor(Color.WHITE);
@@ -218,7 +219,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             mPrnIdPaint.setColor(Color.BLACK);
             mPrnIdPaint.setStyle(Paint.Style.STROKE);
             mNorthPaint.setStrokeWidth(4.0f);
-            mPrnIdPaint.setTextSize(SAT_RADIUS * PRN_TEXT_SCALE);
+            mPrnIdPaint
+                    .setTextSize(GpsTestUtil.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
             mPrnIdPaint.setAntiAlias(true);
 
             setFocusable(true);
@@ -334,7 +336,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             float x, y;
             // Place PRN text slightly below drawn satellite
             final double PRN_X_SCALE = 1.4;
-            final double PRN_Y_SCALE = 3.5;
+            final double PRN_Y_SCALE = 3.8;
             Paint thisPaint;
 
             thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
