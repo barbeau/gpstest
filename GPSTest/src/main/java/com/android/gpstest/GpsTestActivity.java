@@ -331,12 +331,12 @@ public class GpsTestActivity extends ActionBarActivity
             mOptions.block = false;
             mOptions.hideOnClickOutside = true;
             mOptions.noButton = true;
-            sv = ShowcaseView
-                    .insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch,
-                            this,
-                            R.string.showcase_gps_on_off_title,
-                            R.string.showcase_gps_on_off_message, mOptions);
-            sv.show();
+//            sv = ShowcaseView
+//                    .insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch,
+//                            this,
+//                            R.string.showcase_gps_on_off_title,
+//                            R.string.showcase_gps_on_off_message, mOptions);
+//            sv.show();
 
             SharedPreferences.Editor editor = Application.getPrefs().edit();
             editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), true);
