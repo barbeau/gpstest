@@ -87,7 +87,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
      */
     HashMap<String, Double> mSnrsForSats;
 
-    private int mEphemerisMask, mAlmanacMask, mUsedInFixMask;
+    private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
     private long mFixTime;
 
@@ -329,29 +329,23 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             mSvElevations = new float[length];
             mSvAzimuths = new float[length];
             mConstellationType = new int[length];
+            mHasEphemeris = new boolean[length];
+            mHasAlmanac = new boolean[length];
+            mUsedInFix = new boolean[length];
         }
 
         mSvCount = 0;
-        mEphemerisMask = 0;
-        mAlmanacMask = 0;
-        mUsedInFixMask = 0;
         while (mSvCount < length) {
             int prn = status.getSvid(mSvCount);
-            int prnBit = (1 << (prn - 1));
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
             mSnrs[mSvCount] = 0.0f; // This is replaced later by GnssMeasurement.getSnrInDb()
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
             mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
-            if (status.hasEphemerisData(mSvCount)) {
-                mEphemerisMask |= prnBit;
-            }
-            if (status.hasAlmanacData(mSvCount)) {
-                mAlmanacMask |= prnBit;
-            }
-            if (status.usedInFix(mSvCount)) {
-                mUsedInFixMask |= prnBit;
-            }
+            mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
+            mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
+            mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
+
             mSvCount++;
         }
 
@@ -374,13 +368,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             mSvAzimuths = new float[length];
             // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
             mConstellationType = new int[length];
-
+            mHasEphemeris = new boolean[length];
+            mHasAlmanac = new boolean[length];
+            mUsedInFix = new boolean[length];
         }
 
         mSvCount = 0;
-        mEphemerisMask = 0;
-        mAlmanacMask = 0;
-        mUsedInFixMask = 0;
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
             int prn = satellite.getPrn();
@@ -389,15 +382,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             mSnrs[mSvCount] = satellite.getSnr();
             mSvElevations[mSvCount] = satellite.getElevation();
             mSvAzimuths[mSvCount] = satellite.getAzimuth();
-            if (satellite.hasEphemeris()) {
-                mEphemerisMask |= prnBit;
-            }
-            if (satellite.hasAlmanac()) {
-                mAlmanacMask |= prnBit;
-            }
-            if (satellite.usedInFix()) {
-                mUsedInFixMask |= prnBit;
-            }
+            mHasEphemeris[mSvCount] = satellite.hasEphemeris();
+            mHasAlmanac[mSvCount] = satellite.hasAlmanac();
+            mUsedInFix[mSvCount] = satellite.usedInFix();
             mSvCount++;
         }
 
@@ -514,9 +501,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                         break;
                     case FLAGS_COLUMN:
                         char[] flags = new char[3];
-                        flags[0] = ((mEphemerisMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'E');
-                        flags[1] = ((mAlmanacMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'A');
-                        flags[2] = ((mUsedInFixMask & (1 << (mPrns[row] - 1))) == 0 ? ' ' : 'U');
+                        flags[0] = !mHasEphemeris[row] ? ' ' : 'E';
+                        flags[1] = !mHasAlmanac[row] ? ' ' : 'A';
+                        flags[2] = !mUsedInFix[row] ? ' ' : 'U';
                         text = new String(flags);
                         break;
                 }
