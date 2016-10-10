@@ -23,7 +23,6 @@ import com.android.gpstest.view.ViewPagerMapBevelScroll;
 import com.github.espiandev.showcaseview.ShowcaseView;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +33,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssStatus;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -45,6 +46,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -64,8 +66,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class GpsTestActivity extends ActionBarActivity
-        implements LocationListener, GpsStatus.Listener,
-        android.support.v7.app.ActionBar.TabListener,
+        implements LocationListener, android.support.v7.app.ActionBar.TabListener,
         SensorEventListener {
 
     private static final String TAG = "GpsTestActivity";
@@ -107,7 +108,24 @@ public class GpsTestActivity extends ActionBarActivity
 
     private LocationProvider mProvider;
 
-    private GpsStatus mStatus;
+    /**
+     * Android M (6.0.1) and below status and listener
+     */
+    private GpsStatus mLegacyStatus;
+
+    private GpsStatus.Listener mLegacyStatusListener;
+
+    /**
+     * Android N (7.0) and above status and listener
+     */
+    private GnssStatus mGnssStatus;
+
+    private GnssStatus.Callback mGnssStatusListener;
+
+    /**
+     * Android N (7.0) GnssMeasurements - for SNR
+     */
+    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener;
 
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
 
@@ -195,7 +213,8 @@ public class GpsTestActivity extends ActionBarActivity
             finish();
             return;
         }
-        mLocationManager.addGpsStatusListener(this);
+
+        addStatusListener();
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -265,6 +284,147 @@ public class GpsTestActivity extends ActionBarActivity
     protected void onPause() {
         mSensorManager.unregisterListener(this);
         super.onPause();
+    }
+
+    private void addStatusListener() {
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            addGnssStatusListener();
+            addGnssMeasurementsListener();
+        } else {
+            addLegacyStatusListener();
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private void addGnssStatusListener() {
+        mGnssStatusListener = new GnssStatus.Callback() {
+            @Override
+            public void onStarted() {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGnssStarted();
+                }
+            }
+
+            @Override
+            public void onStopped() {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGnssStopped();
+                }
+            }
+
+            @Override
+            public void onFirstFix(int ttffMillis) {
+                if (ttffMillis == 0) {
+                    mTtff = "";
+                } else {
+                    ttffMillis = (ttffMillis + 500) / 1000;
+                    mTtff = Integer.toString(ttffMillis) + " sec";
+                }
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGnssFirstFix(ttffMillis);
+                }
+            }
+
+            @Override
+            public void onSatelliteStatusChanged(GnssStatus status) {
+                mGnssStatus = status;
+
+                // Stop progress bar after the first status information is obtained
+                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+                // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
+                if (sv != null && sv.isShown()) {
+                    return;
+                }
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onSatelliteStatusChanged(mGnssStatus);
+                }
+            }
+        };
+        mLocationManager.registerGnssStatusCallback(mGnssStatusListener);
+    }
+
+    /**
+     * For SNR
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void addGnssMeasurementsListener() {
+        mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
+            @Override
+            public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGnssMeasurementsReceived(event);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(int status) {
+
+            }
+        };
+        mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+    }
+
+    private void addLegacyStatusListener() {
+        mLegacyStatusListener = new GpsStatus.Listener() {
+            @Override
+            public void onGpsStatusChanged(int event) {
+                mLegacyStatus = mLocationManager.getGpsStatus(mLegacyStatus);
+
+                switch (event) {
+                    case GpsStatus.GPS_EVENT_STARTED:
+                        break;
+                    case GpsStatus.GPS_EVENT_STOPPED:
+                        break;
+                    case GpsStatus.GPS_EVENT_FIRST_FIX:
+                        int ttff = mLegacyStatus.getTimeToFirstFix();
+                        if (ttff == 0) {
+                            mTtff = "";
+                        } else {
+                            ttff = (ttff + 500) / 1000;
+                            mTtff = Integer.toString(ttff) + " sec";
+                        }
+                        break;
+                    case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
+                        // Stop progress bar after the first status information is obtained
+                        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                        break;
+                }
+
+                // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
+                if (sv != null && sv.isShown()) {
+                    return;
+                }
+
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGpsStatusChanged(event, mLegacyStatus);
+                }
+            }
+        };
+        mLocationManager.addGpsStatusListener(mLegacyStatusListener);
+    }
+
+    private void removeStatusListener() {
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            removeGnssStatusListener();
+            removeGnssMeasurementsListener();
+        } else {
+            removeLegacyStatusListener();
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private void removeGnssStatusListener() {
+        mLocationManager.unregisterGnssStatusCallback(mGnssStatusListener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void removeGnssMeasurementsListener() {
+        mLocationManager.unregisterGnssMeasurementsCallback(mGnssMeasurementsListener);
+    }
+
+    private void removeLegacyStatusListener() {
+        mLocationManager.removeGpsStatusListener(mLegacyStatusListener);
     }
 
     /**
@@ -380,7 +540,7 @@ public class GpsTestActivity extends ActionBarActivity
 
     @Override
     protected void onDestroy() {
-        mLocationManager.removeGpsStatusListener(this);
+        removeStatusListener();
         mLocationManager.removeUpdates(this);
         super.onDestroy();
     }
@@ -527,39 +687,6 @@ public class GpsTestActivity extends ActionBarActivity
         }
     }
 
-    public void onGpsStatusChanged(int event) {
-        mStatus = mLocationManager.getGpsStatus(mStatus);
-
-        switch (event) {
-            case GpsStatus.GPS_EVENT_STARTED:
-                break;
-            case GpsStatus.GPS_EVENT_STOPPED:
-                break;
-            case GpsStatus.GPS_EVENT_FIRST_FIX:
-                int ttff = mStatus.getTimeToFirstFix();
-                if (ttff == 0) {
-                    mTtff = "";
-                } else {
-                    ttff = (ttff + 500) / 1000;
-                    mTtff = Integer.toString(ttff) + " sec";
-                }
-                break;
-            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                // Stop progress bar after the first status information is obtained
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-                break;
-        }
-
-        // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
-        if (sv != null && sv.isShown()) {
-            return;
-        }
-
-        for (GpsTestListener listener : mGpsTestListeners) {
-            listener.onGpsStatusChanged(event, mStatus);
-        }
-    }
-
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -691,7 +818,7 @@ public class GpsTestActivity extends ActionBarActivity
     private void initActionBar(Bundle savedInstanceState) {
         // Set up the action bar.
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
 
         // If we don't have a large screen, set up the tabs using the ViewPager
@@ -728,13 +855,24 @@ public class GpsTestActivity extends ActionBarActivity
 
     interface GpsTestListener extends LocationListener {
 
-        public void gpsStart();
+        void gpsStart();
 
-        public void gpsStop();
+        void gpsStop();
 
-        public void onGpsStatusChanged(int event, GpsStatus status);
+        @Deprecated
+        void onGpsStatusChanged(int event, GpsStatus status);
 
-        public void onOrientationChanged(double orientation, double tilt);
+        void onGnssFirstFix(int ttffMillis);
+
+        void onSatelliteStatusChanged(GnssStatus status);
+
+        void onGnssStarted();
+
+        void onGnssStopped();
+
+        void onGnssMeasurementsReceived(GnssMeasurementsEvent event);
+
+        void onOrientationChanged(double orientation, double tilt);
     }
 
     /**

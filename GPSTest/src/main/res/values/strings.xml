@@ -56,7 +56,7 @@
     <string name="gps_speed_label">Speed:</string>
     <string name="gps_bearing_label">Bearing:</string>
 
-    <string name="gps_prn_column_label">PRN</string>
+    <string name="gps_prn_column_label">ID</string>
     <string name="gps_flag_image_label">GNSS</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_elevation_column_label">Elev</string>

@@ -24,10 +24,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.location.GnssMeasurement;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssStatus;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -39,6 +44,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -69,9 +76,16 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private SvGridAdapter mAdapter;
 
-    private int mSvCount, mPrns[];
+    private int mSvCount, mPrns[], mConstellationType[];
 
     private float mSnrs[], mSvElevations[], mSvAzimuths[];
+
+    /**
+     * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
+     * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
+     * GnssStatus events.
+     */
+    HashMap<String, Double> mSnrsForSats;
 
     private int mEphemerisMask, mAlmanacMask, mUsedInFixMask;
 
@@ -79,7 +93,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private boolean mNavigating, mGotFix;
 
-    private Drawable flagUsa, flagRussia, flagJapan, flagChina;
+    private Drawable flagUsa, flagRussia, flagJapan, flagChina, flagGalileo;
 
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
@@ -158,6 +172,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         flagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
         flagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
         flagChina = getResources().getDrawable(R.drawable.ic_flag_china);
+        flagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
 
         GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
@@ -224,6 +239,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
     public void gpsStop() {
     }
 
+    @Deprecated
     public void onGpsStatusChanged(int event, GpsStatus status) {
         switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
@@ -238,17 +254,112 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                updateStatus(status);
+                updateLegacyStatus(status);
                 break;
         }
+    }
+
+    @Override
+    public void onGnssFirstFix(int ttffMillis) {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSatelliteStatusChanged(GnssStatus status) {
+        updateGnssStatus(status);
+    }
+
+    @Override
+    public void onGnssStarted() {
+        setStarted(true);
+    }
+
+    @Override
+    public void onGnssStopped() {
+        setStarted(false);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+        if (mPrns == null) {
+            // We don't have any satellites to store PRNs for yet (no GnssStatus updates) - no op;
+            return;
+        }
+        if (mSnrs == null) {
+            mSnrs = new float[mPrns.length];
+        }
+        if (mSnrsForSats == null) {
+            mSnrsForSats = new HashMap<>(mPrns.length);
+        }
+        mSnrsForSats.clear();
+
+        Collection<GnssMeasurement> measurements = event.getMeasurements();
+
+        // Write all SNRs for svid/constellation types to HashMap for easy retrieval
+        for (GnssMeasurement m : measurements) {
+            String key = GpsTestUtil.createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
+            mSnrsForSats.put(key, m.getSnrInDb());
+        }
+
+        // Write correct SNR value for the given satellite/constellation to correct value in array
+        for (int i = 0; i < mPrns.length; i++) {
+            String key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
+            mSnrs[i] = mSnrsForSats.get(key).floatValue();
+        }
+
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onOrientationChanged(double orientation, double tilt) {
     }
 
-    private void updateStatus(GpsStatus status) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void updateGnssStatus(GnssStatus status) {
+        setStarted(true);
+        // update the fix time regularly, since it is displaying relative time
+        updateFixTime();
 
+        int length = status.getSatelliteCount();
+        if (mPrns == null) {
+            mPrns = new int[length];
+            mSnrs = new float[length];
+            mSvElevations = new float[length];
+            mSvAzimuths = new float[length];
+            mConstellationType = new int[length];
+        }
+
+        mSvCount = 0;
+        mEphemerisMask = 0;
+        mAlmanacMask = 0;
+        mUsedInFixMask = 0;
+        while (mSvCount < length) {
+            int prn = status.getSvid(mSvCount);
+            int prnBit = (1 << (prn - 1));
+            mPrns[mSvCount] = prn;
+            mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+            mSnrs[mSvCount] = 0.0f; // This is replaced later by GnssMeasurement.getSnrInDb()
+            mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
+            mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
+            if (status.hasEphemerisData(mSvCount)) {
+                mEphemerisMask |= prnBit;
+            }
+            if (status.hasAlmanacData(mSvCount)) {
+                mAlmanacMask |= prnBit;
+            }
+            if (status.usedInFix(mSvCount)) {
+                mUsedInFixMask |= prnBit;
+            }
+            mSvCount++;
+        }
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Deprecated
+    private void updateLegacyStatus(GpsStatus status) {
         setStarted(true);
         // update the fix time regularly, since it is displaying relative time
         updateFixTime();
@@ -261,6 +372,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             mSnrs = new float[length];
             mSvElevations = new float[length];
             mSvAzimuths = new float[length];
+            // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
+            mConstellationType = new int[length];
+
         }
 
         mSvCount = 0;
@@ -361,7 +475,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                             imageView = new ImageView(mContext);
                             imageView.setScaleType(ImageView.ScaleType.FIT_START);
                         }
-                        GnssType type = GpsTestUtil.getGnssType(mPrns[row]);
+                        GnssType type;
+                        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+                            type = GpsTestUtil.getGnssConstellationType(mConstellationType[row]);
+                        } else {
+                            type = GpsTestUtil.getGnssType(mPrns[row]);
+                        }
                         switch (type) {
                             case NAVSTAR:
                                 imageView.setImageDrawable(flagUsa);
@@ -375,10 +494,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                             case BEIDOU:
                                 imageView.setImageDrawable(flagChina);
                                 break;
+                            case GALILEO:
+                                imageView.setImageDrawable(flagGalileo);
+                                break;
                         }
                         return imageView;
                     case SNR_COLUMN:
-                        text = Float.toString(mSnrs[row]);
+                        if (mSnrs[row] != 0.0f) {
+                            text = Float.toString(mSnrs[row]);
+                        } else {
+                            text = "";
+                        }
                         break;
                     case ELEVATION_COLUMN:
                         text = Float.toString(mSvElevations[row]);

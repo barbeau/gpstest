@@ -20,16 +20,19 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.GnssStatus;
 import android.os.Build;
 
 public class GpsTestUtil {
 
     /**
-     * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN
+     * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
+     * Android 6.0.1 (API Level 23) and lower.  Android 7.0 and higher should use
      *
      * @param prn PRN value provided by the GpsSatellite.getPrn() method
      * @return GnssType for the given PRN
      */
+    @Deprecated
     public static GnssType getGnssType(int prn) {
         if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
@@ -40,9 +43,39 @@ public class GpsTestUtil {
         } else if (prn >= 201 && prn <= 235) {
             // See Issue #54 for details
             return GnssType.BEIDOU;
+        } else if (prn >= 301 && prn <= 330) {
+            // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
+            return GnssType.GALILEO;
         } else {
             // Assume US NAVSTAR for now, since we don't have any other info on sat-to-PRN mappings
             return GnssType.NAVSTAR;
+        }
+    }
+
+    /**
+     * Returns the Global Navigation Satellite System (GNSS) for a satellite given the GnssStatus
+     * constellation type.  For Android 7.0 and higher.  This is basically a translation to our
+     * own GnssType enumeration that we use for Android 6.0.1 and lower.
+     *
+     * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
+     *                              method
+     * @return GnssType for the given GnssStatus constellation type
+     */
+    public static GnssType getGnssConstellationType(int gnssConstellationType) {
+        switch (gnssConstellationType) {
+            case GnssStatus.CONSTELLATION_GPS:
+                return GnssType.NAVSTAR;
+            case GnssStatus.CONSTELLATION_GLONASS:
+                return GnssType.GLONASS;
+            case GnssStatus.CONSTELLATION_BEIDOU:
+                return GnssType.BEIDOU;
+            case GnssStatus.CONSTELLATION_QZSS:
+                return GnssType.QZSS;
+            case GnssStatus.CONSTELLATION_GALILEO:
+                return GnssType.GALILEO;
+            default:
+                // For now assume GPS NAVSTAR for any other systems we don't directly support
+                return GnssType.NAVSTAR;
         }
     }
 
@@ -68,6 +101,26 @@ public class GpsTestUtil {
     public static boolean isLargeScreen(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Returns true if the device supports the Gnss status listener, false if it does not
+     *
+     * @return true if the device supports the Gnss status listener, false if it does not
+     */
+    public static boolean isGnssStatusListenerSupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
+    /**
+     * Creates a unique key to identify this satellite using a combination of both the svid and
+     * constellation type
+     *
+     * @return a unique key to identify this satellite using a combination of both the svid and
+     * constellation type
+     */
+    public static String createGnssSatelliteKey(int svid, int constellationType) {
+        return String.valueOf(svid) + " " + String.valueOf(constellationType);
     }
 
     /**

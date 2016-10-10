@@ -32,10 +32,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssStatus;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,7 +219,31 @@ public class GpsMapFragment extends SupportMapFragment
     public void onProviderDisabled(String provider) {
     }
 
+    @Deprecated
     public void onGpsStatusChanged(int event, GpsStatus status) {
+    }
+
+    @Override
+    public void onGnssFirstFix(int ttffMillis) {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSatelliteStatusChanged(GnssStatus status) {
+    }
+
+    @Override
+    public void onGnssStarted() {
+    }
+
+    @Override
+    public void onGnssStopped() {
+    }
+
+    @Override
+    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+
     }
 
     @Override

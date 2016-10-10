@@ -27,11 +27,15 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.location.GnssMeasurement;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssStatus;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +43,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestListener {
@@ -104,6 +110,34 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
     public void gpsStop() {
     }
 
+    @Override
+    public void onGnssFirstFix(int ttffMillis) {
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSatelliteStatusChanged(GnssStatus status) {
+        mSkyView.setGnssStatus(status);
+    }
+
+    @Override
+    public void onGnssStarted() {
+        mSkyView.setStarted();
+    }
+
+    @Override
+    public void onGnssStopped() {
+        mSkyView.setStopped();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+        mSkyView.setGnssMeasurementEvent(event);
+    }
+
+    @Deprecated
     public void onGpsStatusChanged(int event, GpsStatus status) {
         switch (event) {
             case GpsStatus.GPS_EVENT_STARTED:
@@ -157,7 +191,14 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         private float mSnrs[], mElevs[], mAzims[];
 
-        private int mPrns[];
+        /**
+         * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
+         * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
+         * GnssStatus events.
+         */
+        HashMap<String, Double> mSnrsForSats;
+
+        private int mPrns[], mConstellationType[];
 
         private int mSvCount;
 
@@ -237,6 +278,65 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             invalidate();
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void setGnssStatus(GnssStatus status) {
+            int length = status.getSatelliteCount();
+
+            if (mPrns == null) {
+                mSnrs = new float[length];
+                mElevs = new float[length];
+                mAzims = new float[length];
+                mPrns = new int[length];
+                mConstellationType = new int[length];
+            }
+
+            mSvCount = 0;
+            while (mSvCount < length) {
+                mSnrs[mSvCount] = 0.0f;  // This is replaced later by GnssMeasurement.getSnrInDb()
+                mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
+                mAzims[mSvCount] = status.getAzimuthDegrees(mSvCount);
+                mPrns[mSvCount] = status.getSvid(mSvCount);
+                mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+                mSvCount++;
+            }
+
+            mStarted = true;
+            invalidate();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public void setGnssMeasurementEvent(GnssMeasurementsEvent event) {
+            if (mPrns == null) {
+                // We don't have any satellites to store PRNs for yet (no GnssStatus updates) - no op;
+                return;
+            }
+            if (mSnrs == null) {
+                mSnrs = new float[mPrns.length];
+            }
+            if (mSnrsForSats == null) {
+                mSnrsForSats = new HashMap<>(mPrns.length);
+            }
+            mSnrsForSats.clear();
+
+            Collection<GnssMeasurement> measurements = event.getMeasurements();
+
+            // Write all SNRs for svid/constellation types to HashMap for easy retrieval
+            for (GnssMeasurement m : measurements) {
+                String key = GpsTestUtil
+                        .createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
+                mSnrsForSats.put(key, m.getSnrInDb());
+            }
+
+            // Write correct SNR value for the given satellite/constellation to correct value in array
+            for (int i = 0; i < mPrns.length; i++) {
+                String key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
+                mSnrs[i] = mSnrsForSats.get(key).floatValue();
+            }
+
+            invalidate();
+        }
+
+        @Deprecated
         public void setSats(GpsStatus status) {
             Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
@@ -246,6 +346,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                 mElevs = new float[length];
                 mAzims = new float[length];
                 mPrns = new int[length];
+                // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
+                mConstellationType = new int[length];
             }
 
             mSvCount = 0;
@@ -331,7 +433,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             c.drawPath(path, mNorthFillPaint);
         }
 
-        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn) {
+        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn,
+                int constellationType) {
             double radius, angle;
             float x, y;
             // Place PRN text slightly below drawn satellite
@@ -349,7 +452,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             y = (float) ((s / 2) - (radius * Math.cos(angle)));
 
             // Change shape based on satellite operator
-            GnssType operator = GpsTestUtil.getGnssType(prn);
+            GnssType operator;
+            if (GpsTestUtil.isGnssStatusListenerSupported()) {
+                operator = GpsTestUtil.getGnssConstellationType(constellationType);
+            } else {
+                operator = GpsTestUtil.getGnssType(prn);
+            }
             switch (operator) {
                 case NAVSTAR:
                     c.drawCircle(x, y, SAT_RADIUS, thisPaint);
@@ -366,6 +474,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                     break;
                 case BEIDOU:
                     drawPentagon(c, x, y, thisPaint);
+                    break;
+                case GALILEO:
+                    // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
+                    drawTriangle(c, x, y, thisPaint);
                     break;
             }
 
@@ -485,7 +597,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                 for (int i = 0; i < numSats; i++) {
                     if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
                         drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i],
-                                mPrns[i]);
+                                mPrns[i], mConstellationType[i]);
                     }
                 }
             }
@@ -505,6 +617,31 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
         public void gpsStop() {
         }
 
+        @Override
+        public void onGnssFirstFix(int ttffMillis) {
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onSatelliteStatusChanged(GnssStatus status) {
+        }
+
+        @Override
+        public void onGnssStarted() {
+        }
+
+        @Override
+        public void onGnssStopped() {
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+
+        }
+
+        @Deprecated
         @Override
         public void onGpsStatusChanged(int event, GpsStatus status) {
         }
