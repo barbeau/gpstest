@@ -44,6 +44,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.release
         }
