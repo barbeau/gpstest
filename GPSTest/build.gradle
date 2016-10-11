@@ -11,6 +11,12 @@ android {
         versionName "2.1.4"
     }
 
+    // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     if (project.hasProperty("secure.properties")
             && new File(project.property("secure.properties")).exists()) {
 
@@ -45,7 +51,7 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFile 'proguard.cfg'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
         }
     }
