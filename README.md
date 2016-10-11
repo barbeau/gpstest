@@ -1,5 +1,4 @@
-GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Join the GPSTest chat](https://gpstest-android.herokuapp.com/badge.svg)](https://gpstest-android.herokuapp.com/)
-=======
+# GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Join the GPSTest chat](https://gpstest-android.herokuapp.com/badge.svg)](https://gpstest-android.herokuapp.com/)
 
 The most popular open-source global navigation satellite system (GNSS) testing app
 
