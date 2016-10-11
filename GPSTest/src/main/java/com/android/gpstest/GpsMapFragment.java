@@ -20,6 +20,7 @@ package com.android.gpstest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,7 +49,7 @@ public class GpsMapFragment extends SupportMapFragment
         implements GpsTestActivity.GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMyLocationButtonClickListener {
+        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
     // Constants used to control how the camera animates to a position
     public static final float CAMERA_INITIAL_ZOOM = 18.0f;
@@ -71,6 +72,8 @@ public class GpsMapFragment extends SupportMapFragment
     private final static String TAG = "GpsStatusActivity";
 
     private GoogleMap mMap;
+
+    Bundle mSavedInstanceState;
 
     private LatLng mLatLng;
 
@@ -112,27 +115,15 @@ public class GpsMapFragment extends SupportMapFragment
             Bundle savedInstanceState) {
 
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        mMap = getMap();
 
         if (isGoogleMapsInstalled()) {
-            if (mMap != null) {
-                //Show the location on the map
-                mMap.setMyLocationEnabled(true);
-                //Set location source
-                mMap.setLocationSource(this);
-                // Listener for camera changes
-                mMap.setOnCameraChangeListener(this);
-                // Listener for map / My Location button clicks, to disengage map camera control
-                mMap.setOnMapClickListener(this);
-                mMap.setOnMapLongClickListener(this);
-                mMap.setOnMyLocationButtonClickListener(this);
-
-                GpsTestActivity.getInstance().addListener(this);
-            }
+            // Save the savedInstanceState
+            mSavedInstanceState = savedInstanceState;
+            // Register for an async callback when the map is ready
+            getMapAsync(this);
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(getString(R.string.please_install_google_maps));
-            builder.setCancelable(false);
             builder.setPositiveButton(getString(R.string.install),
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -140,8 +131,14 @@ public class GpsMapFragment extends SupportMapFragment
                             Intent intent = new Intent(Intent.ACTION_VIEW,
                                     Uri.parse("market://details?id=com.google.android.apps.maps"));
                             startActivity(intent);
+                        }
+                    }
+            );
+            builder.setNegativeButton(getString(R.string.no_thanks),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-                            getActivity().finish();
                         }
                     }
             );
@@ -252,6 +249,10 @@ public class GpsMapFragment extends SupportMapFragment
         if (!getUserVisibleHint()) {
             return;
         }
+        // Only proceed if map is not null
+        if (mMap == null) {
+            return;
+        }
 
         /*
         If we have a location fix, and we have a preference to rotate the map based on sensors,
@@ -337,5 +338,23 @@ public class GpsMapFragment extends SupportMapFragment
         mLastMapTouchTime = System.currentTimeMillis();
         // Return false, so button still functions as normal
         return false;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        //Show the location on the map
+        mMap.setMyLocationEnabled(true);
+        //Set location source
+        mMap.setLocationSource(this);
+        // Listener for camera changes
+        mMap.setOnCameraChangeListener(this);
+        // Listener for map / My Location button clicks, to disengage map camera control
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+        mMap.setOnMyLocationButtonClickListener(this);
+
+        GpsTestActivity.getInstance().addListener(this);
     }
 }

@@ -64,7 +64,8 @@
     <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">GPS not supported. Exiting app&#8230;</string>
     <string name="install">Install</string>
-    <string name="please_install_google_maps">Please install Google Maps</string>
+    <string name="no_thanks">No thanks</string>
+    <string name="please_install_google_maps">The Map tab requires Google Maps</string>
     <string name="enable_gps_message">GPS is disabled. Enable it now?</string>
     <string name="enable_gps_positive_button">Enable GPS</string>
     <string name="enable_gps_negative_button">No</string>

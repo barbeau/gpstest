@@ -42,8 +42,6 @@
             android:label="@string/app_name"
             android:icon="@drawable/gpstest_icon">
 
-        <uses-library android:name="com.google.android.maps"/>
-
         <activity android:name=".GpsTestActivity"
                   android:theme="@style/GpsSwitchTheme"
                   android:configChanges="keyboard|keyboardHidden|orientation">
