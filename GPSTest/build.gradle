@@ -67,7 +67,6 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    compile project(':ShowcaseViewLibrary')
     compile 'com.google.android.gms:play-services:3.2.65'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'org.jraf:android-switch-backport:1.4.0'

@@ -20,7 +20,6 @@ package com.android.gpstest;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
-import com.github.espiandev.showcaseview.ShowcaseView;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -99,10 +98,6 @@ public class GpsTestActivity extends ActionBarActivity
     SectionsPagerAdapter mSectionsPagerAdapter;
 
     ViewPagerMapBevelScroll mViewPager;
-
-    ShowcaseView sv;
-
-    ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
     private LocationManager mLocationManager;
 
@@ -275,8 +270,6 @@ public class GpsTestActivity extends ActionBarActivity
 
         checkTimeAndDistance(settings);
 
-        checkTutorial(settings);
-
         checkTrueNorth(settings);
     }
 
@@ -332,10 +325,6 @@ public class GpsTestActivity extends ActionBarActivity
                 // Stop progress bar after the first status information is obtained
                 setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-                // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
-                if (sv != null && sv.isShown()) {
-                    return;
-                }
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onSatelliteStatusChanged(mGnssStatus);
                 }
@@ -389,11 +378,6 @@ public class GpsTestActivity extends ActionBarActivity
                         // Stop progress bar after the first status information is obtained
                         setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
                         break;
-                }
-
-                // If the user is viewing the tutorial, we don't want to clutter the status screen, so return
-                if (sv != null && sv.isShown()) {
-                    return;
                 }
 
                 for (GpsTestListener listener : mGpsTestListeners) {
@@ -473,44 +457,6 @@ public class GpsTestActivity extends ActionBarActivity
                                 String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
                         Toast.LENGTH_SHORT
                 ).show();
-            }
-        }
-    }
-
-    private void checkTutorial(SharedPreferences settings) {
-        if (!settings.getBoolean(getString(R.string.pref_key_showed_v2_tutorial), false)) {
-            // If GPS is started, stop to clear the screen (we will start it again at the end of this method)
-            boolean lastStartState = mStarted;
-            if (mStarted) {
-                gpsStop();
-            }
-
-            // Show the user a tutorial on using the ActionBar button to start/stop GPS,
-            // either on first execution or when the user choose the option in the Preferences
-            mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
-            mOptions.block = false;
-            mOptions.hideOnClickOutside = true;
-            mOptions.noButton = true;
-//            sv = ShowcaseView
-//                    .insertShowcaseViewWithType(ShowcaseView.ITEM_ACTION_ITEM, R.id.gps_switch,
-//                            this,
-//                            R.string.showcase_gps_on_off_title,
-//                            R.string.showcase_gps_on_off_message, mOptions);
-//            sv.show();
-
-            SharedPreferences.Editor editor = Application.getPrefs().edit();
-            editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), true);
-            editor.commit();
-
-            if (lastStartState) {
-                Handler h = new Handler();
-                // Restart the GPS, if it was previously started, with a slight delay to allow the UI to clear
-                // and allow the tutorial to be clearly visible
-                h.postDelayed(new Runnable() {
-                    public void run() {
-                        gpsStart();
-                    }
-                }, 500);
             }
         }
     }
