@@ -1,13 +1,25 @@
-GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest)
+GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Join the GPSTest chat](https://gpstest-android.herokuapp.com/badge.svg)](https://gpstest-android.herokuapp.com/)
 =======
 
-Android GPS test program
+The most popular open-source global navigation satellite system (GNSS) testing app
 
-Available on Google Play at https://play.google.com/store/apps/details?id=com.android.gpstest
+[![Google Play logo](http://www.android.com/images/brand/android_app_on_play_logo_large.png)](https://play.google.com/store/apps/details?id=com.android.gpstest)
 
-For a Developer's Guide and more details, see https://github.com/barbeau/gpstest/wiki
+It supports the following satellite systems:
+
+* GPS (USA Navstar)
+* GLONASS (Russia)
+* QZSS (Japan)
+* BeiDou/COMPASS (China)
+* Galileo (European Union)
+
+## Beta Testing
+
+Get early access to new GPSTest versions, and help us squash bugs! See our [Testing Guide](BETA_TESTING.md) for details.
 
 ## Build Setup
+
+The below steps will help you build and run the project.  For a Developer's Guide and more details, see https://github.com/barbeau/gpstest/wiki
 
 ### Prerequisites for both Android Studio and Gradle
 
