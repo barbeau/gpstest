@@ -1,4 +1,4 @@
-# GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Join the GPSTest chat](https://gpstest-android.herokuapp.com/badge.svg)](https://gpstest-android.herokuapp.com/)
+# GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest)
 
 The most popular open-source global navigation satellite system (GNSS) testing app
 
@@ -11,6 +11,8 @@ It supports the following satellite systems:
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
+
+Questions?  Check out our [Slack group](https://gpstest-android.herokuapp.com/) and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 
 ## Beta Testing
 
