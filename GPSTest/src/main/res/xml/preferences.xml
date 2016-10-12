@@ -65,13 +65,4 @@
                 android:summary="@string/pref_true_north_summary"
                 android:defaultValue="true"/>
     </PreferenceCategory>
-
-    <PreferenceCategory
-            android:title="@string/pref_about_category_title"
-            android:key="@string/pref_key_about_category">
-        <Preference
-                android:key="@string/pref_key_showed_v2_tutorial"
-                android:title="@string/pref_show_tutorial_title"
-                android:summary="@string/pref_show_tutorial_summary"/>
-    </PreferenceCategory>
 </PreferenceScreen>
