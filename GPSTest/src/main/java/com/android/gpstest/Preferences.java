@@ -19,7 +19,6 @@ package com.android.gpstest;
 import com.android.gpstest.util.GpsTestUtil;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -40,8 +39,6 @@ public class Preferences extends PreferenceActivity {
 
     private Toolbar mActionBar;
 
-    Preference prefShowTutorial;
-
     Preference prefAnalyzeGpsAccuracy;
 
     EditTextPreference txtMinTime;
@@ -55,21 +52,6 @@ public class Preferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         mActionBar.setTitle(getTitle());
-
-        prefShowTutorial = this.findPreference(getString(R.string.pref_key_showed_v2_tutorial));
-
-        prefShowTutorial.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference pref) {
-                // If the user taps on the tutorial preference, reset the flag to false
-                // and finish to go back to the GpsTestActivity
-                SharedPreferences.Editor editor = Application.getPrefs().edit();
-                editor.putBoolean(getString(R.string.pref_key_showed_v2_tutorial), false);
-                editor.commit();
-                finish();
-                return false;
-            }
-        });
 
         prefAnalyzeGpsAccuracy = this
                 .findPreference(getString(R.string.pref_key_analyze_gps_accuracy));
