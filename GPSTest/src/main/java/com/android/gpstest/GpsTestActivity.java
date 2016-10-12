@@ -32,13 +32,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
+import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.location.OnNmeaMessageListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -63,6 +66,10 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
+import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
+import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
 public class GpsTestActivity extends ActionBarActivity
         implements LocationListener, android.support.v7.app.ActionBar.TabListener,
@@ -91,6 +98,10 @@ public class GpsTestActivity extends ActionBarActivity
 
     boolean mFaceTrueNorth;
 
+    boolean mWriteGnssMeasurementToLog;
+
+    boolean mWriteNmeaTimestampToLog;
+
     String mTtff;
 
     org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
@@ -110,18 +121,22 @@ public class GpsTestActivity extends ActionBarActivity
 
     private GpsStatus.Listener mLegacyStatusListener;
 
+    private GpsStatus.NmeaListener mLegacyNmeaListener;
+
     /**
-     * Android N (7.0) and above status and listener
+     * Android N (7.0) and above status and listeners
      */
     private GnssStatus mGnssStatus;
 
     private GnssStatus.Callback mGnssStatusListener;
 
-    /**
-     * Android N (7.0) GnssMeasurements - for SNR
-     */
-    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener;
+    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener; // For SNRs
 
+    private OnNmeaMessageListener mOnNmeaMessageListener;
+
+    private GnssNavigationMessage.Callback mGnssNavMessageListener;
+
+    // Listeners for Fragments
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
 
     private Location mLastLocation;
@@ -262,7 +277,7 @@ public class GpsTestActivity extends ActionBarActivity
         }
 
         /**
-         * Check preferences to see how they should be initialized
+         * Check preferences to see how these componenets should be initialized
          */
         SharedPreferences settings = Application.getPrefs();
 
@@ -271,6 +286,14 @@ public class GpsTestActivity extends ActionBarActivity
         checkTimeAndDistance(settings);
 
         checkTrueNorth(settings);
+
+        checkNmeaOutput(settings);
+
+        checkGnssMeasurementOutput(settings);
+
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            checkNavMessageOutput(settings);
+        }
     }
 
     @Override
@@ -344,6 +367,11 @@ public class GpsTestActivity extends ActionBarActivity
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssMeasurementsReceived(event);
                 }
+                if (mWriteGnssMeasurementToLog) {
+                    for (GnssMeasurement m : event.getMeasurements()) {
+                        writeGnssMeasurementToLog(m);
+                    }
+                }
             }
 
             @Override
@@ -409,6 +437,70 @@ public class GpsTestActivity extends ActionBarActivity
 
     private void removeLegacyStatusListener() {
         mLocationManager.removeGpsStatusListener(mLegacyStatusListener);
+    }
+
+    private void addNmeaListener() {
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            addNmeaListenerAndroidN();
+        } else {
+            addLegacyNmeaListener();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void addNmeaListenerAndroidN() {
+        if (mOnNmeaMessageListener == null) {
+            mOnNmeaMessageListener = new OnNmeaMessageListener() {
+                @Override
+                public void onNmeaMessage(String message, long timestamp) {
+                    writeNmeaToLog(message, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                }
+            };
+        }
+        mLocationManager.addNmeaListener(mOnNmeaMessageListener);
+    }
+
+    private void addLegacyNmeaListener() {
+        if (mLegacyNmeaListener == null) {
+            mLegacyNmeaListener = new GpsStatus.NmeaListener() {
+                @Override
+                public void onNmeaReceived(long timestamp, String nmea) {
+                    writeNmeaToLog(nmea, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                }
+            };
+        }
+        mLocationManager.addNmeaListener(mLegacyNmeaListener);
+    }
+
+    private void removeNmeaListener() {
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
+        } else {
+            mLocationManager.removeNmeaListener(mLegacyNmeaListener);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void addNavMessageListener() {
+        if (mGnssNavMessageListener == null) {
+            mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
+                @Override
+                public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                    writeNavMessageToLog(event);
+                }
+
+                @Override
+                public void onStatusChanged(int status) {
+
+                }
+            };
+        }
+        mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void removeNavMessageListener() {
+        mLocationManager.unregisterGnssNavigationMessageCallback(mGnssNavMessageListener);
     }
 
     /**
@@ -482,6 +574,35 @@ public class GpsTestActivity extends ActionBarActivity
 
     private void checkTrueNorth(SharedPreferences settings) {
         mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
+    }
+
+    private void checkGnssMeasurementOutput(SharedPreferences settings) {
+        mWriteGnssMeasurementToLog = settings
+                .getBoolean(getString(R.string.pref_key_measurement_output), false);
+    }
+
+    private void checkNmeaOutput(SharedPreferences settings) {
+        boolean logNmea = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
+        mWriteNmeaTimestampToLog = settings
+                .getBoolean(getString(R.string.pref_key_nmea_timestamp_output), true);
+
+        if (logNmea) {
+            addNmeaListener();
+        } else {
+            removeNmeaListener();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void checkNavMessageOutput(SharedPreferences settings) {
+        boolean logNavMessage = settings
+                .getBoolean(getString(R.string.pref_key_navigation_message_output), false);
+
+        if (logNavMessage) {
+            addNavMessageListener();
+        } else {
+            removeNavMessageListener();
+        }
     }
 
     @Override

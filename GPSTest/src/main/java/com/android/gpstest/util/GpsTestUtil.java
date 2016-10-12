@@ -20,10 +20,22 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.GnssMeasurement;
+import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 public class GpsTestUtil {
+
+    private static final String NMEA_OUTPUT_TAG = "GpsOutputNmea";
+
+    private static final String MEASURE_OUTPUT_TAG = "GpsOutputMeasure";
+
+    private static final String NM_OUTPUT_TAG = "GpsOutputNm";
+
+    private static StringBuilder mNmeaOutput = new StringBuilder();
 
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
@@ -135,5 +147,37 @@ public class GpsTestUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return (int) (dp * scale + 0.5f);
+    }
+
+    /**
+     * Outputs the provided nmea message and timestamp to log
+     *
+     * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp to
+     *                  log
+     */
+    public static void writeNmeaToLog(String nmea, long timestamp) {
+        mNmeaOutput.setLength(0);
+        if (timestamp != Long.MIN_VALUE) {
+            mNmeaOutput.append(timestamp);
+            mNmeaOutput.append(",");
+        }
+        mNmeaOutput.append(nmea);
+        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString());
+    }
+
+    /**
+     * Outputs the provided GNSS navigation message to log
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void writeNavMessageToLog(GnssNavigationMessage message) {
+        Log.d(NM_OUTPUT_TAG, message.toString());
+    }
+
+    /**
+     * Outputs the provided GNSS measurement to log
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void writeGnssMeasurementToLog(GnssMeasurement measurement) {
+        Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
     }
 }

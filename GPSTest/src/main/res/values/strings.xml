@@ -74,8 +74,8 @@
 
     <!-- User tutorial -->
     <string name="showcase_gps_on_off_title">Controls</string>
-    <string name="showcase_gps_on_off_message">&#8226; The On/Off switch starts/stops GPS\n&#8226;
-        The \"Share\" button sends a location (shown after getting a GPS fix)\n\n
+    <string name="showcase_gps_on_off_message">&#8226; The On/Off switch starts/stops GNSS\n&#8226;
+        The \"Share\" button sends a location (shown after getting a GNSS fix)\n\n
         <i>(tap to dismiss)</i>
     </string>
 
@@ -96,29 +96,44 @@
         hold up the device
     </string>
 
-    <string name="pref_gps_category_title">GPS</string>
-    <string name="pref_auto_start_gps_title">Auto-Start GPS</string>
-    <string name="pref_auto_start_gps_summary">Start GPS when the app starts</string>
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">Auto-Start GNSS</string>
+    <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
 
     <string name="pref_gps_min_time_title">Interval</string>
-    <string name="pref_gps_min_time_summary">Time between GPS fixes, in seconds</string>
+    <string name="pref_gps_min_time_summary">Time between GNSS fixes, in seconds</string>
     <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
     <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
 
     <string name="pref_gps_min_distance_title">Min. Distance</string>
-    <string name="pref_gps_min_distance_summary">Minimum distance between GPS fixes, in meters
+    <string name="pref_gps_min_distance_summary">Minimum distance between GNSS fixes, in meters
     </string>
     <string name="pref_gps_min_distance_dialog_title">Enter a min. distance, in meters</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analyze GPS Accuracy</string>
-    <string name="pref_analyze_gps_accuracy_summary">Use GPS Benchmark to measure GPS error</string>
+    <string name="pref_analyze_gps_accuracy_title">Analyze GNSS Accuracy</string>
+    <string name="pref_analyze_gps_accuracy_summary">Use GPS Benchmark to measure GNSS error
+    </string>
 
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>
     <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>
     <string name="pref_true_north_title">Point Compass to True North</string>
     <string name="pref_true_north_summary">Compass will face true north instead of magnetic north
+    </string>
+
+    <string name="pref_output_category_title">Android Monitor Output</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_nmea_output_summary">Logs NMEA sentences to Android Studio</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
+    <string name="pref_nmea_timestamp_output_summary">Include NMEA timestamp in output</string>
+    <string name="pref_measurement_output_title">Measurements</string>
+    <string name="pref_measurement_output_summary">Logs GNSS measurements to Android Studio (Android
+        7.0 and up)
+    </string>
+    <string name="pref_navigation_message_output_title">Navigation Messages</string>
+    <string name="pref_navigation_message_output_summary">Logs GNSS navigation messages to Android
+        Studio (Android 7.0 and up)
     </string>
 
     <string name="pref_about_category_title">About</string>
