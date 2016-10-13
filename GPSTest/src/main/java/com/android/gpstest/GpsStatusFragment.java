@@ -297,16 +297,25 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
         Collection<GnssMeasurement> measurements = event.getMeasurements();
 
+        String key;
+
         // Write all SNRs for svid/constellation types to HashMap for easy retrieval
         for (GnssMeasurement m : measurements) {
-            String key = GpsTestUtil.createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
-            mSnrsForSats.put(key, m.getSnrInDb());
+            if (m.hasSnrInDb()) {
+                key = GpsTestUtil.createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
+                mSnrsForSats.put(key, m.getSnrInDb());
+            }
         }
 
         // Write correct SNR value for the given satellite/constellation to correct value in array
         for (int i = 0; i < mPrns.length; i++) {
-            String key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
-            mSnrs[i] = mSnrsForSats.get(key).floatValue();
+            key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
+            Double snr = mSnrsForSats.get(key);
+            if (snr != null) {
+                mSnrs[i] = snr.floatValue();
+            } else {
+                mSnrs[i] = 0.0f;
+            }
         }
 
         mAdapter.notifyDataSetChanged();
