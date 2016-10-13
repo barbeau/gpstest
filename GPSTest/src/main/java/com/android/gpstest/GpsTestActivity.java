@@ -474,9 +474,13 @@ public class GpsTestActivity extends ActionBarActivity
 
     private void removeNmeaListener() {
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
-            mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
+            if (mLocationManager != null && mOnNmeaMessageListener != null) {
+                mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
+            }
         } else {
-            mLocationManager.removeNmeaListener(mLegacyNmeaListener);
+            if (mLocationManager != null && mLegacyNmeaListener != null) {
+                mLocationManager.removeNmeaListener(mLegacyNmeaListener);
+            }
         }
     }
 
@@ -500,7 +504,9 @@ public class GpsTestActivity extends ActionBarActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void removeNavMessageListener() {
-        mLocationManager.unregisterGnssNavigationMessageCallback(mGnssNavMessageListener);
+        if (mLocationManager != null && mGnssNavMessageListener != null) {
+            mLocationManager.unregisterGnssNavigationMessageCallback(mGnssNavMessageListener);
+        }
     }
 
     /**
@@ -607,7 +613,12 @@ public class GpsTestActivity extends ActionBarActivity
 
     @Override
     protected void onDestroy() {
+        // Remove all listeners
         removeStatusListener();
+        removeNmeaListener();
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            removeNavMessageListener();
+        }
         mLocationManager.removeUpdates(this);
         super.onDestroy();
     }
