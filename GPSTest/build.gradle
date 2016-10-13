@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 21
-        versionCode 17
-        versionName "2.1.5"
+        versionCode 18
+        versionName "2.1.6"
     }
 
     // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
