@@ -134,7 +134,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             mSpeedView.setText("");
         }
         if (location.hasBearing()) {
-            mBearingView.setText(doubleToString(location.getBearing(), 1) + " deg");
+            mBearingView.setText(getString(R.string.gps_elevation_column_value,
+                    doubleToString(location.getBearing(), 1)));
         } else {
             mBearingView.setText("");
         }
