@@ -508,10 +508,20 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                         }
                         break;
                     case ELEVATION_COLUMN:
-                        text = Float.toString(mSvElevations[row]);
+                        if (mSvElevations[row] != 0.0f) {
+                            text = getString(R.string.gps_elevation_column_value,
+                                    Float.toString(mSvElevations[row]));
+                        } else {
+                            text = "";
+                        }
                         break;
                     case AZIMUTH_COLUMN:
-                        text = Float.toString(mSvAzimuths[row]);
+                        if (mSvAzimuths[row] != 0.0f) {
+                            text = getString(R.string.gps_azimuth_column_value,
+                                    Float.toString(mSvAzimuths[row]));
+                        } else {
+                            text = "";
+                        }
                         break;
                     case FLAGS_COLUMN:
                         char[] flags = new char[3];

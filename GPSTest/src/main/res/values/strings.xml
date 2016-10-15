@@ -60,7 +60,9 @@
     <string name="gps_flag_image_label">GNSS</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_elevation_column_label">Elev</string>
+    <string name="gps_elevation_column_value">%1$s\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
+    <string name="gps_azimuth_column_value">%1$s\u00B0</string>
     <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">GPS not supported. Exiting app&#8230;</string>
     <string name="install">Install</string>
