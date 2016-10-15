@@ -34,7 +34,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +43,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -94,6 +94,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
     private boolean mNavigating, mGotFix;
 
     private Drawable flagUsa, flagRussia, flagJapan, flagChina, flagGalileo;
+
+    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
 
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);
@@ -210,8 +212,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         if (mFixTime == 0 || !GpsTestActivity.getInstance().mStarted) {
             mFixTimeView.setText("");
         } else {
-            mFixTimeView.setText(DateUtils.getRelativeTimeSpanString(
-                    mFixTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS));
+            mFixTimeView.setText(mDateFormat.format(mFixTime));
         }
     }
 
