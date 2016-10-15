@@ -331,18 +331,24 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
-        int length = status.getSatelliteCount();
         if (mPrns == null) {
-            mPrns = new int[length];
-            mSnrs = new float[length];
-            mSvElevations = new float[length];
-            mSvAzimuths = new float[length];
-            mConstellationType = new int[length];
-            mHasEphemeris = new boolean[length];
-            mHasAlmanac = new boolean[length];
-            mUsedInFix = new boolean[length];
+            /**
+             * We need to allocate arrays big enough so we don't overflow them.  Per
+             * https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
+             * 255 should be enough to contain all known satellites world-wide.
+             */
+            final int MAX_LENGTH = 255;
+            mPrns = new int[MAX_LENGTH];
+            mSnrs = new float[MAX_LENGTH];
+            mSvElevations = new float[MAX_LENGTH];
+            mSvAzimuths = new float[MAX_LENGTH];
+            mConstellationType = new int[MAX_LENGTH];
+            mHasEphemeris = new boolean[MAX_LENGTH];
+            mHasAlmanac = new boolean[MAX_LENGTH];
+            mUsedInFix = new boolean[MAX_LENGTH];
         }
 
+        final int length = status.getSatelliteCount();
         mSvCount = 0;
         while (mSvCount < length) {
             int prn = status.getSvid(mSvCount);
@@ -386,7 +392,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
             int prn = satellite.getPrn();
-            int prnBit = (1 << (prn - 1));
             mPrns[mSvCount] = prn;
             mSnrs[mSvCount] = satellite.getSnr();
             mSvElevations[mSvCount] = satellite.getElevation();

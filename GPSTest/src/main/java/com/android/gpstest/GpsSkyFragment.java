@@ -341,7 +341,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                 }
             }
 
-            invalidate();
+            postInvalidate();
         }
 
         @Deprecated
