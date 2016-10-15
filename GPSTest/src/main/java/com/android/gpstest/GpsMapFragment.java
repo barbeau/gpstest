@@ -152,7 +152,7 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onResume() {
         SharedPreferences settings = Application.getPrefs();
-        if (mMap != null && settings != null) {
+        if (mMap != null) {
             if (mMap.getMapType() != Integer.valueOf(
                     settings.getString(getString(R.string.pref_key_map_type),
                             String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
@@ -162,11 +162,11 @@ public class GpsMapFragment extends SupportMapFragment
                                 String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
                 ));
             }
-
-            mRotate = settings
-                    .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
-            mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
         }
+        mRotate = settings
+                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
+        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+
         super.onResume();
     }
 
