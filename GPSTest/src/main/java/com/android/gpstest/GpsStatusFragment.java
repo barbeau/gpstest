@@ -93,7 +93,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private boolean mNavigating, mGotFix;
 
-    private Drawable flagUsa, flagRussia, flagJapan, flagChina, flagGalileo;
+    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
 
     SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
 
@@ -170,11 +170,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
 
-        flagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
-        flagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
-        flagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
-        flagChina = getResources().getDrawable(R.drawable.ic_flag_china);
-        flagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
+        mFlagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
+        mFlagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
+        mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
+        mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
+        mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
 
         GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
@@ -485,19 +485,19 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                         }
                         switch (type) {
                             case NAVSTAR:
-                                imageView.setImageDrawable(flagUsa);
+                                imageView.setImageDrawable(mFlagUsa);
                                 break;
                             case GLONASS:
-                                imageView.setImageDrawable(flagRussia);
+                                imageView.setImageDrawable(mFlagRussia);
                                 break;
                             case QZSS:
-                                imageView.setImageDrawable(flagJapan);
+                                imageView.setImageDrawable(mFlagJapan);
                                 break;
                             case BEIDOU:
-                                imageView.setImageDrawable(flagChina);
+                                imageView.setImageDrawable(mFlagChina);
                                 break;
                             case GALILEO:
-                                imageView.setImageDrawable(flagGalileo);
+                                imageView.setImageDrawable(mFlagGalileo);
                                 break;
                         }
                         return imageView;
