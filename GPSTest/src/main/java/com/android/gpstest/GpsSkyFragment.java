@@ -280,16 +280,22 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void setGnssStatus(GnssStatus status) {
-            int length = status.getSatelliteCount();
 
             if (mPrns == null) {
-                mSnrs = new float[length];
-                mElevs = new float[length];
-                mAzims = new float[length];
-                mPrns = new int[length];
-                mConstellationType = new int[length];
+                /**
+                 * We need to allocate arrays big enough so we don't overflow them.  Per
+                 * https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
+                 * 255 should be enough to contain all known satellites world-wide.
+                 */
+                final int MAX_LENGTH = 255;
+                mPrns = new int[MAX_LENGTH];
+                mSnrs = new float[MAX_LENGTH];
+                mElevs = new float[MAX_LENGTH];
+                mAzims = new float[MAX_LENGTH];
+                mConstellationType = new int[MAX_LENGTH];
             }
 
+            int length = status.getSatelliteCount();
             mSvCount = 0;
             while (mSvCount < length) {
                 mSnrs[mSvCount] = 0.0f;  // This is replaced later by GnssMeasurement.getSnrInDb()
