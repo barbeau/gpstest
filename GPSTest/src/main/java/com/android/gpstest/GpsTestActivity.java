@@ -149,60 +149,6 @@ public class GpsTestActivity extends ActionBarActivity
 
     private SensorManager mSensorManager;
 
-    static GpsTestActivity getInstance() {
-        return sInstance;
-    }
-
-    void addListener(GpsTestListener listener) {
-        mGpsTestListeners.add(listener);
-    }
-
-    private synchronized void gpsStart() {
-        if (!mStarted) {
-            mLocationManager
-                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
-            mStarted = true;
-
-            // Show Toast only if the user has set minTime or minDistance to something other than default values
-            if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec))
-                    * SECONDS_TO_MILLISECONDS) ||
-                    minDistance != Float
-                            .valueOf(getString(R.string.pref_gps_min_distance_default_meters))) {
-                Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                        String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),
-                        String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
-            }
-
-            // Show the indeterminate progress bar on the action bar until first GPS status is shown
-            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-
-            // Reset the options menu to trigger updates to action bar menu items
-            invalidateOptionsMenu();
-        }
-        for (GpsTestListener listener : mGpsTestListeners) {
-            listener.gpsStart();
-        }
-    }
-
-    private synchronized void gpsStop() {
-        if (mStarted) {
-            mLocationManager.removeUpdates(this);
-            mStarted = false;
-            // Stop progress bar
-            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
-
-            // Reset the options menu to trigger updates to action bar menu items
-            invalidateOptionsMenu();
-        }
-        for (GpsTestListener listener : mGpsTestListeners) {
-            listener.gpsStop();
-        }
-    }
-
-    private boolean sendExtraCommand(String command) {
-        return mLocationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
-    }
-
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,6 +242,60 @@ public class GpsTestActivity extends ActionBarActivity
             removeNavMessageListener();
         }
         super.onPause();
+    }
+
+    static GpsTestActivity getInstance() {
+        return sInstance;
+    }
+
+    void addListener(GpsTestListener listener) {
+        mGpsTestListeners.add(listener);
+    }
+
+    private synchronized void gpsStart() {
+        if (!mStarted) {
+            mLocationManager
+                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+            mStarted = true;
+
+            // Show Toast only if the user has set minTime or minDistance to something other than default values
+            if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec))
+                    * SECONDS_TO_MILLISECONDS) ||
+                    minDistance != Float
+                            .valueOf(getString(R.string.pref_gps_min_distance_default_meters))) {
+                Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
+                        String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),
+                        String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
+            }
+
+            // Show the indeterminate progress bar on the action bar until first GPS status is shown
+            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
+
+            // Reset the options menu to trigger updates to action bar menu items
+            invalidateOptionsMenu();
+        }
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.gpsStart();
+        }
+    }
+
+    private synchronized void gpsStop() {
+        if (mStarted) {
+            mLocationManager.removeUpdates(this);
+            mStarted = false;
+            // Stop progress bar
+            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+            // Reset the options menu to trigger updates to action bar menu items
+            invalidateOptionsMenu();
+        }
+        for (GpsTestListener listener : mGpsTestListeners) {
+            listener.gpsStop();
+        }
+    }
+
+    private boolean sendExtraCommand(String command) {
+        return mLocationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     private void addOrientationSensorListener() {
