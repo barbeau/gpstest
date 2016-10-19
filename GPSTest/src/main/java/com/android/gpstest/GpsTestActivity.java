@@ -259,18 +259,7 @@ public class GpsTestActivity extends ActionBarActivity
 
         addStatusListener();
 
-        if (GpsTestUtil.isRotationVectorSensorSupported(this)) {
-            // Use the modern rotation vector sensors
-            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz
-        } else {
-            // Use the legacy orientation sensors
-            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-            if (sensor != null) {
-                mSensorManager.registerListener(this, sensor,
-                        SensorManager.SENSOR_DELAY_GAME);
-            }
-        }
+        addOrientationSensorListener();
 
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
@@ -307,6 +296,21 @@ public class GpsTestActivity extends ActionBarActivity
             removeNavMessageListener();
         }
         super.onPause();
+    }
+
+    private void addOrientationSensorListener() {
+        if (GpsTestUtil.isRotationVectorSensorSupported(this)) {
+            // Use the modern rotation vector sensors
+            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+            mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz
+        } else {
+            // Use the legacy orientation sensors
+            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+            if (sensor != null) {
+                mSensorManager.registerListener(this, sensor,
+                        SensorManager.SENSOR_DELAY_GAME);
+            }
+        }
     }
 
     private void addStatusListener() {
