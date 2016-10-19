@@ -44,6 +44,11 @@
                 android:summary="@string/pref_gps_min_distance_summary"
                 android:dialogTitle="@string/pref_gps_min_distance_dialog_title"
                 android:defaultValue="@string/pref_gps_min_distance_default_meters"/>
+        <CheckBoxPreference
+                android:key="@string/pref_key_use_gnss_apis"
+                android:title="@string/pref_use_gnss_apis_title"
+                android:summary="@string/pref_use_gnss_apis_summary"
+                android:defaultValue="true"/>
         <Preference
                 android:key="@string/pref_key_analyze_gps_accuracy"
                 android:title="@string/pref_analyze_gps_accuracy_title"

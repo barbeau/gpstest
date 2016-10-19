@@ -224,8 +224,6 @@ public class GpsTestActivity extends ActionBarActivity
             return;
         }
 
-        addStatusListener();
-
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // If we have a large screen, show all the fragments in one layout
@@ -258,6 +256,8 @@ public class GpsTestActivity extends ActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        addStatusListener();
 
         if (GpsTestUtil.isRotationVectorSensorSupported(this)) {
             // Use the modern rotation vector sensors
@@ -299,11 +299,21 @@ public class GpsTestActivity extends ActionBarActivity
     @Override
     protected void onPause() {
         mSensorManager.unregisterListener(this);
+
+        // Remove status listeners
+        removeStatusListener();
+        removeNmeaListener();
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            removeNavMessageListener();
+        }
         super.onPause();
     }
 
     private void addStatusListener() {
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        SharedPreferences settings = Application.getPrefs();
+        boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
+
+        if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
             addGnssStatusListener();
             addGnssMeasurementsListener();
         } else {
@@ -417,7 +427,10 @@ public class GpsTestActivity extends ActionBarActivity
     }
 
     private void removeStatusListener() {
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        SharedPreferences settings = Application.getPrefs();
+        boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
+
+        if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
             removeGnssStatusListener();
             removeGnssMeasurementsListener();
         } else {
@@ -613,12 +626,6 @@ public class GpsTestActivity extends ActionBarActivity
 
     @Override
     protected void onDestroy() {
-        // Remove all listeners
-        removeStatusListener();
-        removeNmeaListener();
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
-            removeNavMessageListener();
-        }
         mLocationManager.removeUpdates(this);
         super.onDestroy();
     }

@@ -107,6 +107,11 @@
     <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
     <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
 
+    <string name="pref_use_gnss_apis_title">Use GNSS APIs</string>
+    <string name="pref_use_gnss_apis_summary">Available on Android 7.0 and higher. If unchecked,
+        will use the legacy GPSStatus.Listener.
+    </string>
+
     <string name="pref_gps_min_distance_title">Min. Distance</string>
     <string name="pref_gps_min_distance_summary">Minimum distance between GNSS fixes, in meters
     </string>
