@@ -51,7 +51,7 @@ import java.util.Iterator;
 
 public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTestListener {
 
-    private final static String TAG = "GpsStatusActivity";
+    private final static String TAG = "GpsStatusFragment";
 
     private static final int PRN_COLUMN = 0;
 

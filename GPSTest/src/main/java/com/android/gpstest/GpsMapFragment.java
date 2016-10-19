@@ -69,7 +69,7 @@ public class GpsMapFragment extends SupportMapFragment
     // Amount of time the user must not touch the map for the automatic camera movements to kick in
     public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
 
-    private final static String TAG = "GpsStatusActivity";
+    private final static String TAG = "GpsMapFragment";
 
     Bundle mSavedInstanceState;
 
