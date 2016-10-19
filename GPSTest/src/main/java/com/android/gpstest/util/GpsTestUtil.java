@@ -152,7 +152,8 @@ public class GpsTestUtil {
     /**
      * Outputs the provided nmea message and timestamp to log
      *
-     * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp to
+     * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp
+     *                  to
      *                  log
      */
     public static void writeNmeaToLog(String nmea, long timestamp) {

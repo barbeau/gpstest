@@ -71,9 +71,9 @@ public class GpsMapFragment extends SupportMapFragment
 
     private final static String TAG = "GpsStatusActivity";
 
-    private GoogleMap mMap;
-
     Bundle mSavedInstanceState;
+
+    private GoogleMap mMap;
 
     private LatLng mLatLng;
 

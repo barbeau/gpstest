@@ -69,6 +69,15 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private static final String EMPTY_LAT_LONG = "             ";
 
+    /**
+     * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
+     * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
+     * GnssStatus events.
+     */
+    HashMap<String, Double> mSnrsForSats;
+
+    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
+
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
@@ -80,13 +89,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private float mSnrs[], mSvElevations[], mSvAzimuths[];
 
-    /**
-     * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
-     * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
-     * GnssStatus events.
-     */
-    HashMap<String, Double> mSnrsForSats;
-
     private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
     private long mFixTime;
@@ -94,8 +96,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
     private boolean mNavigating, mGotFix;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
-
-    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
 
     private static String doubleToString(double value, int decimals) {
         String result = Double.toString(value);

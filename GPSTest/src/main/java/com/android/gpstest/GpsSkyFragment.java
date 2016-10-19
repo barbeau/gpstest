@@ -168,9 +168,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
     private static class GpsSkyView extends View implements GpsTestActivity.GpsTestListener {
 
-        private static int SAT_RADIUS;
-
         private static final float PRN_TEXT_SCALE = 0.7f;
+
+        private static int SAT_RADIUS;
 
         private final float mSnrThresholds[];
 
@@ -179,6 +179,13 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
         Context mContext;
 
         WindowManager mWindowManager;
+
+        /**
+         * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
+         * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
+         * GnssStatus events.
+         */
+        HashMap<String, Double> mSnrsForSats;
 
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                 mGridStrokePaint,
@@ -190,13 +197,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
         private boolean mStarted;
 
         private float mSnrs[], mElevs[], mAzims[];
-
-        /**
-         * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
-         * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
-         * GnssStatus events.
-         */
-        HashMap<String, Double> mSnrsForSats;
 
         private int mPrns[], mConstellationType[];
 

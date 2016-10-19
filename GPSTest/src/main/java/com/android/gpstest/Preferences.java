@@ -37,13 +37,13 @@ import android.widget.Toast;
 
 public class Preferences extends PreferenceActivity {
 
-    private Toolbar mActionBar;
-
     Preference prefAnalyzeGpsAccuracy;
 
     EditTextPreference txtMinTime;
 
     EditTextPreference txtMinDistance;
+
+    private Toolbar mActionBar;
 
     @SuppressWarnings("deprecation")
     @Override

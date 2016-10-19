@@ -569,7 +569,7 @@ public class GpsTestActivity extends ActionBarActivity
                 mLocationManager
                         .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                                String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
+                        String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
                         Toast.LENGTH_SHORT
                 ).show();
             }
