@@ -224,7 +224,9 @@ public class GpsTestActivity extends ActionBarActivity
 
         checkNmeaOutput(settings);
 
-        checkGnssMeasurementOutput(settings);
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            checkGnssMeasurementOutput(settings);
+        }
 
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkNavMessageOutput(settings);
@@ -240,6 +242,9 @@ public class GpsTestActivity extends ActionBarActivity
         removeNmeaListener();
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             removeNavMessageListener();
+        }
+        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            removeGnssMeasurementsListener();
         }
         super.onPause();
     }
@@ -319,7 +324,6 @@ public class GpsTestActivity extends ActionBarActivity
 
         if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
             addGnssStatusListener();
-            addGnssMeasurementsListener();
         } else {
             addLegacyStatusListener();
         }
@@ -370,9 +374,6 @@ public class GpsTestActivity extends ActionBarActivity
         mLocationManager.registerGnssStatusCallback(mGnssStatusListener);
     }
 
-    /**
-     * For SNR
-     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addGnssMeasurementsListener() {
         mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
@@ -436,7 +437,6 @@ public class GpsTestActivity extends ActionBarActivity
 
         if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
             removeGnssStatusListener();
-            removeGnssMeasurementsListener();
         } else {
             removeLegacyStatusListener();
         }
@@ -449,11 +449,15 @@ public class GpsTestActivity extends ActionBarActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void removeGnssMeasurementsListener() {
-        mLocationManager.unregisterGnssMeasurementsCallback(mGnssMeasurementsListener);
+        if (mLocationManager != null && mGnssMeasurementsListener != null) {
+            mLocationManager.unregisterGnssMeasurementsCallback(mGnssMeasurementsListener);
+        }
     }
 
     private void removeLegacyStatusListener() {
-        mLocationManager.removeGpsStatusListener(mLegacyStatusListener);
+        if (mLocationManager != null && mLegacyStatusListener != null) {
+            mLocationManager.removeGpsStatusListener(mLegacyStatusListener);
+        }
     }
 
     private void addNmeaListener() {
@@ -599,9 +603,14 @@ public class GpsTestActivity extends ActionBarActivity
         mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
         mWriteGnssMeasurementToLog = settings
                 .getBoolean(getString(R.string.pref_key_measurement_output), false);
+
+        if (mWriteGnssMeasurementToLog) {
+            addGnssMeasurementsListener();
+        }
     }
 
     private void checkNmeaOutput(SharedPreferences settings) {

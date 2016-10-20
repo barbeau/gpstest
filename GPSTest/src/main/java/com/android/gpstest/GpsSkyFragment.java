@@ -27,7 +27,6 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsSatellite;
@@ -43,8 +42,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 
 public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestListener {
@@ -176,16 +173,15 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         private final int mSnrColors[];
 
+        private final float mCn0Thresholds[];
+
+        private final int mCn0Colors[];
+
+        private boolean mUseSnr = false;
+
         Context mContext;
 
         WindowManager mWindowManager;
-
-        /**
-         * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
-         * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
-         * GnssStatus events.
-         */
-        HashMap<String, Double> mSnrsForSats;
 
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                 mGridStrokePaint,
@@ -196,7 +192,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         private boolean mStarted;
 
-        private float mSnrs[], mElevs[], mAzims[];
+        private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
 
         private int mPrns[], mConstellationType[];
 
@@ -244,6 +240,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
             mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
 
+            mCn0Thresholds = new float[]{0.0f, 16.6f, 33.3f, 50.0f};
+            mCn0Colors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
+
             mNorthPaint = new Paint();
             mNorthPaint.setColor(Color.BLACK);
             mNorthPaint.setStyle(Paint.Style.STROKE);
@@ -280,6 +279,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void setGnssStatus(GnssStatus status) {
+            // Use C/N0 instead of SNR - see #65
+            mUseSnr = false;
 
             if (mPrns == null) {
                 /**
@@ -289,7 +290,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                  */
                 final int MAX_LENGTH = 255;
                 mPrns = new int[MAX_LENGTH];
-                mSnrs = new float[MAX_LENGTH];
+                mSnrCn0s = new float[MAX_LENGTH];
                 mElevs = new float[MAX_LENGTH];
                 mAzims = new float[MAX_LENGTH];
                 mConstellationType = new int[MAX_LENGTH];
@@ -298,7 +299,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             int length = status.getSatelliteCount();
             mSvCount = 0;
             while (mSvCount < length) {
-                mSnrs[mSvCount] = 0.0f;  // This is replaced later by GnssMeasurement.getSnrInDb()
+                mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
                 mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
                 mAzims[mSvCount] = status.getAzimuthDegrees(mSvCount);
                 mPrns[mSvCount] = status.getSvid(mSvCount);
@@ -312,51 +313,19 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void setGnssMeasurementEvent(GnssMeasurementsEvent event) {
-            if (mPrns == null) {
-                // We don't have any satellites to store PRNs for yet (no GnssStatus updates) - no op;
-                return;
-            }
-            if (mSnrs == null) {
-                mSnrs = new float[mPrns.length];
-            }
-            if (mSnrsForSats == null) {
-                mSnrsForSats = new HashMap<>(mPrns.length);
-            }
-            mSnrsForSats.clear();
-
-            Collection<GnssMeasurement> measurements = event.getMeasurements();
-
-            String key;
-
-            // Write all SNRs for svid/constellation types to HashMap for easy retrieval
-            for (GnssMeasurement m : measurements) {
-                if (m.hasSnrInDb()) {
-                    key = GpsTestUtil.createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
-                    mSnrsForSats.put(key, m.getSnrInDb());
-                }
-            }
-
-            // Write correct SNR value for the given satellite/constellation to correct value in array
-            for (int i = 0; i < mPrns.length; i++) {
-                key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
-                Double snr = mSnrsForSats.get(key);
-                if (snr != null) {
-                    mSnrs[i] = snr.floatValue();
-                } else {
-                    mSnrs[i] = 0.0f;
-                }
-            }
-
-            postInvalidate();
+            // No-op
         }
 
         @Deprecated
         public void setSats(GpsStatus status) {
+            // Use SNR instead of C/N0 - see #65
+            mUseSnr = true;
+
             Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
-            if (mSnrs == null) {
+            if (mSnrCn0s == null) {
                 int length = status.getMaxSatellites();
-                mSnrs = new float[length];
+                mSnrCn0s = new float[length];
                 mElevs = new float[length];
                 mAzims = new float[length];
                 mPrns = new int[length];
@@ -367,7 +336,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             mSvCount = 0;
             while (satellites.hasNext()) {
                 GpsSatellite satellite = satellites.next();
-                mSnrs[mSvCount] = satellite.getSnr();
+                mSnrCn0s[mSvCount] = satellite.getSnr();
                 mElevs[mSvCount] = satellite.getElevation();
                 mAzims[mSvCount] = satellite.getAzimuth();
                 mPrns[mSvCount] = satellite.getPrn();
@@ -447,7 +416,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             c.drawPath(path, mNorthFillPaint);
         }
 
-        private void drawSatellite(Canvas c, int s, float elev, float azim, float snr, int prn,
+        private void drawSatellite(Canvas c, int s, float elev, float azim, float snrCn0, int prn,
                 int constellationType) {
             double radius, angle;
             float x, y;
@@ -456,7 +425,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             final double PRN_Y_SCALE = 3.8;
             Paint thisPaint;
 
-            thisPaint = getSatellitePaint(mSatelliteFillPaint, snr);
+            thisPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
 
             radius = elevationToRadius(s, elev);
             azim -= mOrientation;
@@ -541,42 +510,63 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
             c.drawPath(path, mSatelliteStrokePaint);
         }
 
-        private Paint getSatellitePaint(Paint base, float snr) {
-            int numSteps;
+        /**
+         * Gets the paint color for a satellite based on provided SNR or C/N0
+         *
+         * @param base   the base paint color to be changed
+         * @param snrCn0 the SNR to use (if mUseSnr is true) or the C/N0 to use (if mUseSnr is
+         *               false)
+         *               to generate the satellite color based on signal quality
+         * @return the paint color for a satellite based on provided SNR or C/N0
+         */
+        private Paint getSatellitePaint(Paint base, float snrCn0) {
             Paint newPaint;
-
             newPaint = new Paint(base);
 
-            numSteps = mSnrThresholds.length;
+            int numSteps;
+            final float thresholds[];
+            final int colors[];
 
-            if (snr <= mSnrThresholds[0]) {
-                newPaint.setColor(mSnrColors[0]);
+            if (mUseSnr) {
+                // Use SNR
+                numSteps = mSnrThresholds.length;
+                thresholds = mSnrThresholds;
+                colors = mSnrColors;
+            } else {
+                // Use C/N0
+                numSteps = mCn0Thresholds.length;
+                thresholds = mCn0Thresholds;
+                colors = mCn0Colors;
+            }
+
+            if (snrCn0 <= thresholds[0]) {
+                newPaint.setColor(colors[0]);
                 return newPaint;
             }
 
-            if (snr >= mSnrThresholds[numSteps - 1]) {
-                newPaint.setColor(mSnrColors[numSteps - 1]);
+            if (snrCn0 >= thresholds[numSteps - 1]) {
+                newPaint.setColor(colors[numSteps - 1]);
                 return newPaint;
             }
 
             for (int i = 0; i < numSteps - 1; i++) {
-                float threshold = mSnrThresholds[i];
-                float nextThreshold = mSnrThresholds[i + 1];
-                if (snr >= threshold && snr <= nextThreshold) {
+                float threshold = thresholds[i];
+                float nextThreshold = thresholds[i + 1];
+                if (snrCn0 >= threshold && snrCn0 <= nextThreshold) {
                     int c1, r1, g1, b1, c2, r2, g2, b2, c3, r3, g3, b3;
                     float f;
 
-                    c1 = mSnrColors[i];
+                    c1 = colors[i];
                     r1 = Color.red(c1);
                     g1 = Color.green(c1);
                     b1 = Color.blue(c1);
 
-                    c2 = mSnrColors[i + 1];
+                    c2 = colors[i + 1];
                     r2 = Color.red(c2);
                     g2 = Color.green(c2);
                     b2 = Color.blue(c2);
 
-                    f = (snr - threshold) / (nextThreshold - threshold);
+                    f = (snrCn0 - threshold) / (nextThreshold - threshold);
 
                     r3 = (int) (r2 * f + r1 * (1.0f - f));
                     g3 = (int) (g2 * f + g1 * (1.0f - f));
@@ -609,8 +599,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
-                    if (mSnrs[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
-                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrs[i],
+                    if (mSnrCn0s[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
+                        drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrCn0s[i],
                                 mPrns[i], mConstellationType[i]);
                     }
                 }

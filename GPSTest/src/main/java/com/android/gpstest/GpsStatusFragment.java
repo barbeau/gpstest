@@ -24,7 +24,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsSatellite;
@@ -44,8 +43,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 
 
@@ -69,13 +66,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private static final String EMPTY_LAT_LONG = "             ";
 
-    /**
-     * Key is combination of sat ID and constellation type (GpsTestUtil.createGnssSatelliteKey()),
-     * and value is the SNR for that satellite.  Needed to match GnssMeasurement events up with
-     * GnssStatus events.
-     */
-    HashMap<String, Double> mSnrsForSats;
-
     SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
 
     private Resources mRes;
@@ -87,7 +77,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
 
     private int mSvCount, mPrns[], mConstellationType[];
 
-    private float mSnrs[], mSvElevations[], mSvAzimuths[];
+    private float mSnrCn0s[], mSvElevations[], mSvAzimuths[];
+
+    private String mSnrCn0Title;
 
     private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
@@ -285,42 +277,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-        if (mPrns == null) {
-            // We don't have any satellites to store PRNs for yet (no GnssStatus updates) - no op;
-            return;
-        }
-        if (mSnrs == null) {
-            mSnrs = new float[mPrns.length];
-        }
-        if (mSnrsForSats == null) {
-            mSnrsForSats = new HashMap<>(mPrns.length);
-        }
-        mSnrsForSats.clear();
-
-        Collection<GnssMeasurement> measurements = event.getMeasurements();
-
-        String key;
-
-        // Write all SNRs for svid/constellation types to HashMap for easy retrieval
-        for (GnssMeasurement m : measurements) {
-            if (m.hasSnrInDb()) {
-                key = GpsTestUtil.createGnssSatelliteKey(m.getSvid(), m.getConstellationType());
-                mSnrsForSats.put(key, m.getSnrInDb());
-            }
-        }
-
-        // Write correct SNR value for the given satellite/constellation to correct value in array
-        for (int i = 0; i < mPrns.length; i++) {
-            key = GpsTestUtil.createGnssSatelliteKey(mPrns[i], mConstellationType[i]);
-            Double snr = mSnrsForSats.get(key);
-            if (snr != null) {
-                mSnrs[i] = snr.floatValue();
-            } else {
-                mSnrs[i] = 0.0f;
-            }
-        }
-
-        mAdapter.notifyDataSetChanged();
+        // No-op
     }
 
     @Override
@@ -333,6 +290,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
+        mSnrCn0Title = mRes.getString(R.string.gps_cn0_column_label);
+
         if (mPrns == null) {
             /**
              * We need to allocate arrays big enough so we don't overflow them.  Per
@@ -341,7 +300,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
              */
             final int MAX_LENGTH = 255;
             mPrns = new int[MAX_LENGTH];
-            mSnrs = new float[MAX_LENGTH];
+            mSnrCn0s = new float[MAX_LENGTH];
             mSvElevations = new float[MAX_LENGTH];
             mSvAzimuths = new float[MAX_LENGTH];
             mConstellationType = new int[MAX_LENGTH];
@@ -356,7 +315,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
-            mSnrs[mSvCount] = 0.0f; // This is replaced later by GnssMeasurement.getSnrInDb()
+            mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
             mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
             mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
@@ -375,12 +334,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
         // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
+        mSnrCn0Title = mRes.getString(R.string.gps_snr_column_label);
+
         Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
         if (mPrns == null) {
             int length = status.getMaxSatellites();
             mPrns = new int[length];
-            mSnrs = new float[length];
+            mSnrCn0s = new float[length];
             mSvElevations = new float[length];
             mSvAzimuths = new float[length];
             // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
@@ -395,7 +356,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
             GpsSatellite satellite = satellites.next();
             int prn = satellite.getPrn();
             mPrns[mSvCount] = prn;
-            mSnrs[mSvCount] = satellite.getSnr();
+            mSnrCn0s[mSvCount] = satellite.getSnr();
             mSvElevations[mSvCount] = satellite.getElevation();
             mSvAzimuths[mSvCount] = satellite.getAzimuth();
             mHasEphemeris[mSvCount] = satellite.hasEphemeris();
@@ -455,7 +416,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                         text = mRes.getString(R.string.gps_flag_image_label);
                         break;
                     case SNR_COLUMN:
-                        text = mRes.getString(R.string.gps_snr_column_label);
+                        text = mSnrCn0Title;
                         break;
                     case ELEVATION_COLUMN:
                         text = mRes.getString(R.string.gps_elevation_column_label);
@@ -503,8 +464,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTe
                         }
                         return imageView;
                     case SNR_COLUMN:
-                        if (mSnrs[row] != 0.0f) {
-                            text = Float.toString(mSnrs[row]);
+                        if (mSnrCn0s[row] != 0.0f) {
+                            text = Float.toString(mSnrCn0s[row]);
                         } else {
                             text = "";
                         }
