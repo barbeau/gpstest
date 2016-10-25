@@ -12,11 +12,15 @@ It supports the following satellite systems:
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
 
-Questions?  Check out our [Slack group](https://gpstest-android.herokuapp.com/) and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
+Questions?  Check out the [FAQ](FAQ.md), our [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 
 ## Beta Testing
 
 Get early access to new GPSTest versions, and help us squash bugs! See our [Testing Guide](BETA_TESTING.md) for details.
+
+## Data Output and Logging
+
+Want to know how to output GNSS data to the system log for further analysis?  Check out our [Data Output and Logging](LOGGING.md) page.
 
 ## Build Setup
 

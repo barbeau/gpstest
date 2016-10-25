@@ -33,7 +33,7 @@ public class GpsTestUtil {
 
     private static final String MEASURE_OUTPUT_TAG = "GpsOutputMeasure";
 
-    private static final String NM_OUTPUT_TAG = "GpsOutputNm";
+    private static final String NM_OUTPUT_TAG = "GpsOutputNav";
 
     private static StringBuilder mNmeaOutput = new StringBuilder();
 
