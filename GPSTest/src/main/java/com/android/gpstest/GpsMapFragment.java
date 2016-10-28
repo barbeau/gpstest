@@ -69,6 +69,8 @@ public class GpsMapFragment extends SupportMapFragment
     // Amount of time the user must not touch the map for the automatic camera movements to kick in
     public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
 
+    private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
+
     private final static String TAG = "GpsMapFragment";
 
     Bundle mSavedInstanceState;
@@ -122,28 +124,33 @@ public class GpsMapFragment extends SupportMapFragment
             // Register for an async callback when the map is ready
             getMapAsync(this);
         } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(getString(R.string.please_install_google_maps));
-            builder.setPositiveButton(getString(R.string.install),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("market://details?id=com.google.android.apps.maps"));
-                            startActivity(intent);
+            final SharedPreferences sp = Application.getPrefs();
+            if (!sp.getBoolean(PREFERENCE_SHOWED_DIALOG, false)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(getString(R.string.please_install_google_maps));
+                builder.setPositiveButton(getString(R.string.install),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sp.edit().putBoolean(PREFERENCE_SHOWED_DIALOG, true).commit();
+                                Intent intent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse(
+                                                "market://details?id=com.google.android.apps.maps"));
+                                startActivity(intent);
+                            }
                         }
-                    }
-            );
-            builder.setNegativeButton(getString(R.string.no_thanks),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
+                );
+                builder.setNegativeButton(getString(R.string.no_thanks),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sp.edit().putBoolean(PREFERENCE_SHOWED_DIALOG, true).commit();
+                            }
                         }
-                    }
-            );
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                );
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
 
         return v;
