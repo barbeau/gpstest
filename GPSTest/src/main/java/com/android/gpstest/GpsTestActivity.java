@@ -19,14 +19,18 @@ package com.android.gpstest;
 
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -55,7 +59,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,6 +67,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -71,11 +76,15 @@ import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
-public class GpsTestActivity extends ActionBarActivity
+public class GpsTestActivity extends AppCompatActivity
         implements LocationListener, android.support.v7.app.ActionBar.TabListener,
         SensorEventListener {
 
     private static final String TAG = "GpsTestActivity";
+
+    private static final int WHATSNEW_DIALOG = 1;
+
+    private static final String WHATS_NEW_VER = "whatsNewVer";
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
@@ -197,6 +206,8 @@ public class GpsTestActivity extends ActionBarActivity
         if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
             gpsStart();
         }
+
+        autoShowWhatsNew();
     }
 
     @Override
@@ -949,6 +960,62 @@ public class GpsTestActivity extends ActionBarActivity
                         .setTabListener(this));
             }
         }
+    }
+
+    /**
+     * Show the "What's New" message if a new version was just installed
+     */
+    @SuppressWarnings("deprecation")
+    private void autoShowWhatsNew() {
+        SharedPreferences settings = Application.getPrefs();
+
+        // Get the current app version.
+        PackageManager pm = getPackageManager();
+        PackageInfo appInfo = null;
+        try {
+            appInfo = pm.getPackageInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            // Do nothing
+            return;
+        }
+
+        final int oldVer = settings.getInt(WHATS_NEW_VER, 0);
+        final int newVer = appInfo.versionCode;
+
+        if (oldVer < newVer) {
+            showDialog(WHATSNEW_DIALOG);
+            PreferenceUtils.saveInt(WHATS_NEW_VER, appInfo.versionCode);
+        }
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case WHATSNEW_DIALOG:
+                return createWhatsNewDialog();
+        }
+        return super.onCreateDialog(id);
+    }
+
+    @SuppressWarnings("deprecation")
+    private Dialog createWhatsNewDialog() {
+        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.whats_new_dialog, null);
+        textView.setText(R.string.main_help_whatsnew);
+
+        android.support.v7.app.AlertDialog.Builder builder
+                = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(R.string.main_help_whatsnew_title);
+        builder.setIcon(R.drawable.gpstest_icon);
+        builder.setView(textView);
+        builder.setNeutralButton(R.string.main_help_close,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismissDialog(WHATSNEW_DIALOG);
+                    }
+                }
+        );
+        return builder.create();
     }
 
     interface GpsTestListener extends LocationListener {

@@ -75,12 +75,19 @@
     <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm
     </string>
 
-    <!-- User tutorial -->
-    <string name="showcase_gps_on_off_title">Controls</string>
-    <string name="showcase_gps_on_off_message">&#8226; The On/Off switch starts/stops GNSS\n&#8226;
-        The \"Share\" button sends a location (shown after getting a GNSS fix)\n\n
-        <i>(tap to dismiss)</i>
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">What\'s New?</string>
+    <!-- Try to only show trip planning in What's New for regions that support it -->
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Galileo support</b>
+        - The last major GNSS!\n&#8226;\u0020
+        <b>Android Monitor Output</b>
+        - See NMEA log, raw measurements, and nav messages via Android Studio
+        (http://bit.ly/gpstest-am-logging)\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - See http://bit.ly/gpstest-releases
     </string>
+    <string name="main_help_close">Close</string>
 
     <!-- Preferences -->
     <string name="pref_title">Settings</string>
