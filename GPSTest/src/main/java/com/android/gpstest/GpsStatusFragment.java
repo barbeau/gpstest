@@ -46,7 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 
-public class GpsStatusFragment extends Fragment implements GpsTestActivity.GpsTestListener {
+public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private final static String TAG = "GpsStatusFragment";
 

@@ -44,7 +44,7 @@ import android.view.WindowManager;
 
 import java.util.Iterator;
 
-public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestListener {
+public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private final static String TAG = "GpsSkyFragment";
 
@@ -163,7 +163,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestActivity.GpsTestL
         }
     }
 
-    private static class GpsSkyView extends View implements GpsTestActivity.GpsTestListener {
+    private static class GpsSkyView extends View implements GpsTestListener {
 
         private static final float PRN_TEXT_SCALE = 0.7f;
 

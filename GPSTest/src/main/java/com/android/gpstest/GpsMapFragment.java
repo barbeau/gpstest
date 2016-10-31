@@ -46,7 +46,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class GpsMapFragment extends SupportMapFragment
-        implements GpsTestActivity.GpsTestListener, View.OnClickListener, LocationSource,
+        implements GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {

@@ -17,7 +17,7 @@
 
 package com.android.gpstest.view;
 
-import com.android.gpstest.GpsTestActivity.SectionsPagerAdapter;
+import com.android.gpstest.SectionsPagerAdapter;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
