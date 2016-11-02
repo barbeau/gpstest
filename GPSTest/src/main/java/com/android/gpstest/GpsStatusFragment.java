@@ -71,11 +71,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
-            mAccuracyView, mSpeedView, mBearingView;
+            mAccuracyView, mSpeedView, mBearingView, mNumSats;
 
     private SvGridAdapter mAdapter;
 
-    private int mSvCount, mPrns[], mConstellationType[];
+    private int mSvCount, mPrns[], mConstellationType[], mUsedInFixCount;
 
     private float mSnrCn0s[], mSvElevations[], mSvAzimuths[];
 
@@ -159,6 +159,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mAccuracyView = (TextView) v.findViewById(R.id.accuracy);
         mSpeedView = (TextView) v.findViewById(R.id.speed);
         mBearingView = (TextView) v.findViewById(R.id.bearing);
+        mNumSats = (TextView) v.findViewById(R.id.num_sats);
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
@@ -287,7 +288,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void updateGnssStatus(GnssStatus status) {
         setStarted(true);
-        // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
         mSnrCn0Title = mRes.getString(R.string.gps_cn0_column_label);
@@ -311,6 +311,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         final int length = status.getSatelliteCount();
         mSvCount = 0;
+        mUsedInFixCount = 0;
         while (mSvCount < length) {
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
@@ -321,9 +322,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
             mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
             mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
+            if (status.usedInFix(mSvCount)) {
+                mUsedInFixCount++;
+            }
 
             mSvCount++;
         }
+
+        mNumSats.setText(getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         mAdapter.notifyDataSetChanged();
     }
@@ -331,7 +337,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     @Deprecated
     private void updateLegacyStatus(GpsStatus status) {
         setStarted(true);
-        // update the fix time regularly, since it is displaying relative time
         updateFixTime();
 
         mSnrCn0Title = mRes.getString(R.string.gps_snr_column_label);
@@ -352,6 +357,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
 
         mSvCount = 0;
+        mUsedInFixCount = 0;
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
             int prn = satellite.getPrn();
@@ -362,8 +368,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mHasEphemeris[mSvCount] = satellite.hasEphemeris();
             mHasAlmanac[mSvCount] = satellite.hasAlmanac();
             mUsedInFix[mSvCount] = satellite.usedInFix();
+            if (satellite.usedInFix()) {
+                mUsedInFixCount++;
+            }
             mSvCount++;
         }
+
+        mNumSats.setText(getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         mAdapter.notifyDataSetChanged();
     }
