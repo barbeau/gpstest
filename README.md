@@ -1,6 +1,6 @@
 # GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest)
 
-The most popular open-source global navigation satellite system (GNSS) testing app
+The #1 open-source global navigation satellite system (GNSS) testing app
 
 [![Google Play logo](http://www.android.com/images/brand/android_app_on_play_logo_large.png)](https://play.google.com/store/apps/details?id=com.android.gpstest)
 
