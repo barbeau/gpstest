@@ -21,6 +21,7 @@ import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.view.ViewPagerMapBevelScroll;
+import com.barbeaudev.geotools.referencing.operation.transform.EarthGravitationalModel;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -155,12 +156,22 @@ public class GpsTestActivity extends AppCompatActivity
 
     private SensorManager mSensorManager;
 
+    private EarthGravitationalModel mEgm;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         sInstance = this;
+
+        mEgm = new EarthGravitationalModel();
+        try {
+            mEgm.load("/egm180.nor");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         // Set the default values from the XML file if this is the first
         // execution of the app
@@ -764,6 +775,20 @@ public class GpsTestActivity extends AppCompatActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+
+        double offset = Double.NaN;
+        try {
+            offset = mEgm.heightOffset(location.getLatitude(), location.getLongitude(),
+                    location.getAltitude());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        double altitudeMsl = location.getAltitude() + offset;
+
+        Log.d(TAG, "lat=" + location.getLatitude() + ", lon=" + location.getLongitude() +
+                ", altitude=" + location.getAltitude() + ", offset = " + offset +
+                ", altitudeMsl=" + altitudeMsl);
 
         updateGeomagneticField();
 
