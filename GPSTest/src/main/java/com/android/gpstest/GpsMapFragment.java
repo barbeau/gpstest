@@ -251,6 +251,10 @@ public class GpsMapFragment extends SupportMapFragment
     }
 
     @Override
+    public void onNmeaMessage(String message, long timestamp) {
+    }
+
+    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         // For performance reasons, only proceed if this fragment is visible
         if (!getUserVisibleHint()) {

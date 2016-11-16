@@ -28,4 +28,6 @@ public interface GpsTestListener extends LocationListener {
     void onGnssMeasurementsReceived(GnssMeasurementsEvent event);
 
     void onOrientationChanged(double orientation, double tilt);
+
+    void onNmeaMessage(String message, long timestamp);
 }

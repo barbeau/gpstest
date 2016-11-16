@@ -71,7 +71,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
-            mAccuracyView, mSpeedView, mBearingView, mNumSats;
+            mAltitudeMslView, mAccuracyView, mSpeedView, mBearingView, mNumSats;
 
     private SvGridAdapter mAdapter;
 
@@ -156,6 +156,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFixTimeView = (TextView) v.findViewById(R.id.fix_time);
         mTTFFView = (TextView) v.findViewById(R.id.ttff);
         mAltitudeView = (TextView) v.findViewById(R.id.altitude);
+        mAltitudeMslView = (TextView) v.findViewById(R.id.altitude_msl);
         mAccuracyView = (TextView) v.findViewById(R.id.accuracy);
         mSpeedView = (TextView) v.findViewById(R.id.speed);
         mBearingView = (TextView) v.findViewById(R.id.bearing);
@@ -192,6 +193,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 updateFixTime();
                 mTTFFView.setText("");
                 mAltitudeView.setText("");
+                mAltitudeMslView.setText("");
                 mAccuracyView.setText("");
                 mSpeedView.setText("");
                 mBearingView.setText("");
@@ -283,6 +285,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onOrientationChanged(double orientation, double tilt) {
+    }
+
+    @Override
+    public void onNmeaMessage(String message, long timestamp) {
+        if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS")) {
+            Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
+            if (altitudeMsl != null && mNavigating) {
+                mAltitudeMslView.setText(
+                        getString(R.string.gps_altitude_msl_value, String.valueOf(altitudeMsl)));
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

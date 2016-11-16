@@ -25,9 +25,12 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class GpsTestUtil {
+
+    private static final String TAG = "GpsTestUtil";
 
     private static final String NMEA_OUTPUT_TAG = "GpsOutputNmea";
 
@@ -180,5 +183,40 @@ public class GpsTestUtil {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void writeGnssMeasurementToLog(GnssMeasurement measurement) {
         Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
+    }
+
+    /**
+     * Given a $GPGGA or $GNGNS NMEA sentence, return the altitude above mean sea level (geoid
+     * altitude),
+     * or null if the altitude can't be parsed.
+     *
+     * Example inputs are:
+     * $GPGGA,032739.0,2804.732835,N,08224.639709,W,1,08,0.8,19.2,M,-24.0,M,,*5B
+     * $GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,78.9,-24.0,,*23
+     *
+     * Example outputs would be:
+     * 19.2
+     * 78.9
+     *
+     * @param nmeaSentence a $GPGGA or $GNGNS NMEA sentence
+     * @return the altitude above mean sea level (geoid altitude), or null if altitude can't be
+     * parsed
+     */
+    public static Double getAltitudeMeanSeaLevel(String nmeaSentence) {
+        final int ALTITUDE_INDEX = 9;
+        String[] tokens = nmeaSentence.split(",");
+
+        if (nmeaSentence.startsWith("$GPGGA") || nmeaSentence.startsWith("$GNGNS")) {
+            String altitude = tokens[ALTITUDE_INDEX];
+            if (!TextUtils.isEmpty(altitude)) {
+                return Double.parseDouble(altitude);
+            } else {
+                Log.w(TAG, "Couldn't parse geoid altitude from NMEA: " + nmeaSentence);
+                return null;
+            }
+        } else {
+            Log.w(TAG, "Input must be a $GPGGA or $GNGNS NMEA: " + nmeaSentence);
+            return null;
+        }
     }
 }

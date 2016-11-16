@@ -163,6 +163,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
     }
 
+    @Override
+    public void onNmeaMessage(String message, long timestamp) {
+    }
+
     private static class GpsSkyView extends View implements GpsTestListener {
 
         private static final float PRN_TEXT_SCALE = 0.7f;
@@ -643,6 +647,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         @Override
         public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
 
+        }
+
+        @Override
+        public void onNmeaMessage(String message, long timestamp) {
         }
 
         @Deprecated

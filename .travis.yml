@@ -46,4 +46,4 @@ before_script:
   - android-wait-for-emulator
 
 script:
-  - ./gradlew assembleDebug -PdisablePreDex
+  - ./gradlew assembleDebug test -PdisablePreDex

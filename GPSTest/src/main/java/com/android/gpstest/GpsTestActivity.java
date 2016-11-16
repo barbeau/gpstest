@@ -106,6 +106,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteGnssMeasurementToLog;
 
+    boolean mLogNmea;
+
     boolean mWriteNmeaTimestampToLog;
 
     String mTtff;
@@ -230,7 +232,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkTrueNorth(settings);
 
-        checkNmeaOutput(settings);
+        checkNmea(settings);
 
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
@@ -482,7 +484,13 @@ public class GpsTestActivity extends AppCompatActivity
             mOnNmeaMessageListener = new OnNmeaMessageListener() {
                 @Override
                 public void onNmeaMessage(String message, long timestamp) {
-                    writeNmeaToLog(message, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                    for (GpsTestListener listener : mGpsTestListeners) {
+                        listener.onNmeaMessage(message, timestamp);
+                    }
+                    if (mLogNmea) {
+                        writeNmeaToLog(message,
+                                mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                    }
                 }
             };
         }
@@ -494,7 +502,12 @@ public class GpsTestActivity extends AppCompatActivity
             mLegacyNmeaListener = new GpsStatus.NmeaListener() {
                 @Override
                 public void onNmeaReceived(long timestamp, String nmea) {
-                    writeNmeaToLog(nmea, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                    for (GpsTestListener listener : mGpsTestListeners) {
+                        listener.onNmeaMessage(nmea, timestamp);
+                    }
+                    if (mLogNmea) {
+                        writeNmeaToLog(nmea, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                    }
                 }
             };
         }
@@ -621,16 +634,12 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    private void checkNmeaOutput(SharedPreferences settings) {
-        boolean logNmea = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
+    private void checkNmea(SharedPreferences settings) {
+        mLogNmea = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
         mWriteNmeaTimestampToLog = settings
                 .getBoolean(getString(R.string.pref_key_nmea_timestamp_output), true);
 
-        if (logNmea) {
-            addNmeaListener();
-        } else {
-            removeNmeaListener();
-        }
+        addNmeaListener();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

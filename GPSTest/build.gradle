@@ -78,4 +78,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'org.jraf:android-switch-backport:1.4.0'
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
+    // Unit tests that don't rely on Android framework
+    testCompile 'junit:junit:4.12'
 }

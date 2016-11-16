@@ -90,6 +90,15 @@
             </TableRow>
 
             <TableRow>
+                <TextView android:id="@+id/altitude_msl_label"
+                          android:text="@string/gps_altitude_msl_label"
+                          android:layout_gravity="right"
+                          android:layout_marginRight="8dip"
+                          style="@style/info_label"/>
+
+                <TextView android:id="@+id/altitude_msl"
+                          style="@style/info_value"/>
+
                 <TextView android:id="@+id/speed_label"
                           android:text="@string/gps_speed_label"
                           android:layout_gravity="right"
@@ -99,14 +108,6 @@
                 <TextView android:id="@+id/speed"
                           style="@style/info_value"/>
 
-                <TextView android:id="@+id/bearing_label"
-                          android:text="@string/gps_bearing_label"
-                          android:layout_gravity="right"
-                          android:layout_marginRight="8dip"
-                          style="@style/info_label"/>
-
-                <TextView android:id="@+id/bearing"
-                          style="@style/info_value"/>
             </TableRow>
             <TableRow>
                 <TextView android:id="@+id/num_sats_label"
@@ -116,6 +117,15 @@
                           style="@style/info_label"/>
 
                 <TextView android:id="@+id/num_sats"
+                          style="@style/info_value"/>
+
+                <TextView android:id="@+id/bearing_label"
+                          android:text="@string/gps_bearing_label"
+                          android:layout_gravity="right"
+                          android:layout_marginRight="8dip"
+                          style="@style/info_label"/>
+
+                <TextView android:id="@+id/bearing"
                           style="@style/info_value"/>
             </TableRow>
 
