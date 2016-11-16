@@ -189,14 +189,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                 mGridStrokePaint,
-                mSatelliteFillPaint, mSatelliteStrokePaint, mNorthPaint, mNorthFillPaint,
-                mPrnIdPaint;
+                mSatelliteFillPaint, mSatelliteStrokePaint, mSatelliteUsedStrokePaint,
+                mNorthPaint, mNorthFillPaint, mPrnIdPaint;
 
         private double mOrientation = 0.0;
 
         private boolean mStarted;
 
         private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
+
+        private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
         private int mPrns[], mConstellationType[];
 
@@ -240,6 +242,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mSatelliteStrokePaint.setStyle(Paint.Style.STROKE);
             mSatelliteStrokePaint.setStrokeWidth(2.0f);
             mSatelliteStrokePaint.setAntiAlias(true);
+
+            mSatelliteUsedStrokePaint = new Paint();
+            mSatelliteUsedStrokePaint.setColor(Color.BLACK);
+            mSatelliteUsedStrokePaint.setStyle(Paint.Style.STROKE);
+            mSatelliteUsedStrokePaint.setStrokeWidth(8.0f);
+            mSatelliteUsedStrokePaint.setAntiAlias(true);
 
             mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
             mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
@@ -298,6 +306,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 mElevs = new float[MAX_LENGTH];
                 mAzims = new float[MAX_LENGTH];
                 mConstellationType = new int[MAX_LENGTH];
+                mHasEphemeris = new boolean[MAX_LENGTH];
+                mHasAlmanac = new boolean[MAX_LENGTH];
+                mUsedInFix = new boolean[MAX_LENGTH];
             }
 
             int length = status.getSatelliteCount();
@@ -308,6 +319,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 mAzims[mSvCount] = status.getAzimuthDegrees(mSvCount);
                 mPrns[mSvCount] = status.getSvid(mSvCount);
                 mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+                mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
+                mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
+                mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
                 mSvCount++;
             }
 
@@ -333,6 +347,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 mElevs = new float[length];
                 mAzims = new float[length];
                 mPrns = new int[length];
+                mHasEphemeris = new boolean[length];
+                mHasAlmanac = new boolean[length];
+                mUsedInFix = new boolean[length];
                 // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
                 mConstellationType = new int[length];
             }
@@ -344,6 +361,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 mElevs[mSvCount] = satellite.getElevation();
                 mAzims[mSvCount] = satellite.getAzimuth();
                 mPrns[mSvCount] = satellite.getPrn();
+                mHasEphemeris[mSvCount] = satellite.hasEphemeris();
+                mHasAlmanac[mSvCount] = satellite.hasAlmanac();
+                mUsedInFix[mSvCount] = satellite.usedInFix();
                 mSvCount++;
             }
 
@@ -421,15 +441,22 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
 
         private void drawSatellite(Canvas c, int s, float elev, float azim, float snrCn0, int prn,
-                int constellationType) {
+                int constellationType, boolean usedInFix) {
             double radius, angle;
             float x, y;
             // Place PRN text slightly below drawn satellite
             final double PRN_X_SCALE = 1.4;
             final double PRN_Y_SCALE = 3.8;
-            Paint thisPaint;
 
-            thisPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
+            Paint fillPaint;
+            fillPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
+
+            Paint strokePaint;
+            if (usedInFix) {
+                strokePaint = mSatelliteUsedStrokePaint;
+            } else {
+                strokePaint = mSatelliteStrokePaint;
+            }
 
             radius = elevationToRadius(s, elev);
             azim -= mOrientation;
@@ -447,24 +474,24 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             }
             switch (operator) {
                 case NAVSTAR:
-                    c.drawCircle(x, y, SAT_RADIUS, thisPaint);
-                    c.drawCircle(x, y, SAT_RADIUS, mSatelliteStrokePaint);
+                    c.drawCircle(x, y, SAT_RADIUS, fillPaint);
+                    c.drawCircle(x, y, SAT_RADIUS, strokePaint);
                     break;
                 case GLONASS:
                     c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
-                            thisPaint);
+                            fillPaint);
                     c.drawRect(x - SAT_RADIUS, y - SAT_RADIUS, x + SAT_RADIUS, y + SAT_RADIUS,
-                            mSatelliteStrokePaint);
+                            strokePaint);
                     break;
                 case QZSS:
-                    drawTriangle(c, x, y, thisPaint);
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
                 case BEIDOU:
-                    drawPentagon(c, x, y, thisPaint);
+                    drawPentagon(c, x, y, fillPaint, strokePaint);
                     break;
                 case GALILEO:
                     // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
-                    drawTriangle(c, x, y, thisPaint);
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
             }
 
@@ -476,7 +503,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             return ((s / 2) - SAT_RADIUS) * (1.0f - (elev / 90.0f));
         }
 
-        private void drawTriangle(Canvas c, float x, float y, Paint fillPaint) {
+        private void drawTriangle(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
             float x1, y1;  // Top
             x1 = x;
             y1 = y - SAT_RADIUS;
@@ -498,10 +525,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             path.close();
 
             c.drawPath(path, fillPaint);
-            c.drawPath(path, mSatelliteStrokePaint);
+            c.drawPath(path, strokePaint);
         }
 
-        private void drawPentagon(Canvas c, float x, float y, Paint fillPaint) {
+        private void drawPentagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
             Path path = new Path();
             path.moveTo(x, y - SAT_RADIUS);
             path.lineTo(x - SAT_RADIUS, y - (SAT_RADIUS / 3));
@@ -511,7 +538,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             path.close();
 
             c.drawPath(path, fillPaint);
-            c.drawPath(path, mSatelliteStrokePaint);
+            c.drawPath(path, strokePaint);
         }
 
         /**
@@ -605,7 +632,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 for (int i = 0; i < numSats; i++) {
                     if (mSnrCn0s[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
                         drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrCn0s[i],
-                                mPrns[i], mConstellationType[i]);
+                                mPrns[i], mConstellationType[i], mUsedInFix[i]);
                     }
                 }
             }
