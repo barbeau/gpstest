@@ -197,6 +197,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mAccuracyView.setText("");
                 mSpeedView.setText("");
                 mBearingView.setText("");
+                mNumSats.setText("");
                 mSvCount = 0;
                 mAdapter.notifyDataSetChanged();
             }
