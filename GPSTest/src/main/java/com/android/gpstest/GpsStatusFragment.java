@@ -127,8 +127,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSpeedView.setText("");
         }
         if (location.hasBearing()) {
-            mBearingView.setText(getString(R.string.gps_elevation_column_value,
-                    doubleToString(location.getBearing(), 1)));
+            mBearingView.setText(getString(R.string.gps_bearing_value, location.getBearing()));
         } else {
             mBearingView.setText("");
         }
