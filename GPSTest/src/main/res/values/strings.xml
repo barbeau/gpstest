@@ -56,7 +56,7 @@
     <string name="gps_altitude_label">Alt:</string>
     <string name="gps_altitude_value">%1$.1f m</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_altitude_msl_value">%1$s m</string>
+    <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_accuracy_value">%1$.1f m</string>
     <string name="gps_speed_label">Speed:</string>
