@@ -90,39 +90,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
 
-    private static String doubleToString(double value, int decimals) {
-        String result = Double.toString(value);
-        // truncate to specified number of decimal places
-        int dot = result.indexOf('.');
-        if (dot > 0) {
-            int end = dot + decimals + 1;
-            if (end < result.length()) {
-                result = result.substring(0, end);
-            }
-        }
-        return result;
-    }
-
     public void onLocationChanged(Location location) {
         if (!mGotFix) {
             mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
             mGotFix = true;
         }
-        mLatitudeView.setText(doubleToString(location.getLatitude(), 7) + " ");
-        mLongitudeView.setText(doubleToString(location.getLongitude(), 7) + " ");
+        mLatitudeView.setText(getString(R.string.gps_latitude_value, location.getLatitude()));
+        mLongitudeView.setText(getString(R.string.gps_longitude_value, location.getLongitude()));
         mFixTime = location.getTime();
         if (location.hasAltitude()) {
-            mAltitudeView.setText(doubleToString(location.getAltitude(), 1) + " m");
+            mAltitudeView.setText(getString(R.string.gps_altitude_value, location.getAltitude()));
         } else {
             mAltitudeView.setText("");
         }
         if (location.hasAccuracy()) {
-            mAccuracyView.setText(doubleToString(location.getAccuracy(), 1) + " m");
+            mAccuracyView.setText(getString(R.string.gps_accuracy_value, location.getAccuracy()));
         } else {
             mAccuracyView.setText("");
         }
         if (location.hasSpeed()) {
-            mSpeedView.setText(doubleToString(location.getSpeed(), 1) + " m/sec");
+            mSpeedView.setText(getString(R.string.gps_speed_value, location.getSpeed()));
         } else {
             mSpeedView.setText("");
         }
