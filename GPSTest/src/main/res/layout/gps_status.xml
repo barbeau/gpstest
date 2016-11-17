@@ -128,6 +128,29 @@
                 <TextView android:id="@+id/bearing"
                           style="@style/info_value"/>
             </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/pdop_label"
+                          android:text="@string/pdop_label"
+                          android:layout_gravity="right"
+                          android:layout_marginRight="8dip"
+                          style="@style/info_label"
+                          android:visibility="gone"/>
+
+                <TextView android:id="@+id/pdop"
+                          style="@style/info_value"
+                          android:visibility="gone"/>
+
+                <TextView android:id="@+id/hvdop_label"
+                          android:text="@string/hvdop_label"
+                          android:layout_gravity="right"
+                          android:layout_marginRight="8dip"
+                          style="@style/info_label"
+                          android:visibility="gone"/>
+
+                <TextView android:id="@+id/hvdop"
+                          style="@style/info_value"
+                          android:visibility="gone"/>
+            </TableRow>
 
         </TableLayout>
     </LinearLayout>

@@ -40,4 +40,19 @@ public class GpsTestUtilTest {
         altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gnssSentence);
         assertEquals(78.9d, altitude);
     }
+
+    /**
+     * Test getting DOP from NMEA sentences
+     */
+    @Test
+    public void testGetDopFromNmea() {
+        DilutionOfPrecision dop;
+        final String sentence = "$GNGSA,A,2,67,68,69,79,84,,,,,,,,1.3,1.0,0.8,2*3A";
+
+        dop = GpsTestUtil.getDop(sentence);
+
+        assertEquals(1.3d, dop.getPositionDop());
+        assertEquals(1.0d, dop.getHorizontalDop());
+        assertEquals(0.8d, dop.getVerticalDop());
+    }
 }

@@ -16,6 +16,8 @@
 
 package com.android.gpstest.util;
 
+import com.android.gpstest.DilutionOfPrecision;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -216,6 +218,42 @@ public class GpsTestUtil {
             }
         } else {
             Log.w(TAG, "Input must be a $GPGGA or $GNGNS NMEA: " + nmeaSentence);
+            return null;
+        }
+    }
+
+    /**
+     * Given a $GPGSA NMEA sentence, return the dilution of precision, or null if dilution of
+     * precision can't be parsed.
+     *
+     * Example inputs are:
+     * $GNGSA,A,2,67,68,69,79,84,,,,,,,,1.3,1.0,0.8,2*3A
+     *
+     * Example outputs would be:
+     * PDOP is 1.3, HDOP is 1.0, and VDOP is 0.8
+     *
+     * @param nmeaSentence a $GNGSA NMEA sentence
+     * @return the dilution of precision, or null if dilution of precision can't be parsed
+     */
+    public static DilutionOfPrecision getDop(String nmeaSentence) {
+        final int PDOP_INDEX = 15;
+        final int HDOP_INDEX = 16;
+        final int VDOP_INDEX = 17;
+        String[] tokens = nmeaSentence.split(",");
+
+        if (nmeaSentence.startsWith("$GNGSA")) {
+            String pdop = tokens[PDOP_INDEX];
+            String hdop = tokens[HDOP_INDEX];
+            String vdop = tokens[VDOP_INDEX];
+            if (!TextUtils.isEmpty(pdop) && !TextUtils.isEmpty(hdop) && !TextUtils.isEmpty(vdop)) {
+                return new DilutionOfPrecision(Double.valueOf(pdop), Double.valueOf(hdop),
+                        Double.valueOf(vdop));
+            } else {
+                Log.w(TAG, "Couldn't parse DOP from NMEA: " + nmeaSentence);
+                return null;
+            }
+        } else {
+            Log.w(TAG, "Input must be a $GNGSA NMEA: " + nmeaSentence);
             return null;
         }
     }

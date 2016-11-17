@@ -71,7 +71,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
-            mAltitudeMslView, mAccuracyView, mSpeedView, mBearingView, mNumSats;
+            mAltitudeMslView, mAccuracyView, mSpeedView, mBearingView, mNumSats,
+            mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView;
 
     private SvGridAdapter mAdapter;
 
@@ -161,6 +162,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mSpeedView = (TextView) v.findViewById(R.id.speed);
         mBearingView = (TextView) v.findViewById(R.id.bearing);
         mNumSats = (TextView) v.findViewById(R.id.num_sats);
+        mPdopLabelView = (TextView) v.findViewById(R.id.pdop_label);
+        mPdopView = (TextView) v.findViewById(R.id.pdop);
+        mHvdopLabelView = (TextView) v.findViewById(R.id.hvdop_label);
+        mHvdopView = (TextView) v.findViewById(R.id.hvdop);
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
@@ -198,6 +203,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mSpeedView.setText("");
                 mBearingView.setText("");
                 mNumSats.setText("");
+                mPdopView.setText("");
+                mHvdopView.setText("");
+
                 mSvCount = 0;
                 mAdapter.notifyDataSetChanged();
             }
@@ -297,6 +305,23 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         getString(R.string.gps_altitude_msl_value, String.valueOf(altitudeMsl)));
             }
         }
+        if (message.startsWith("$GNGSA")) {
+            DilutionOfPrecision dop = GpsTestUtil.getDop(message);
+            if (dop != null && mNavigating) {
+                showDopViews();
+                mPdopView.setText(String.valueOf(dop.getPositionDop()));
+                mHvdopView.setText(
+                        getString(R.string.hvdop_value, dop.getHorizontalDop(),
+                                dop.getVerticalDop()));
+            }
+        }
+    }
+
+    private void showDopViews() {
+        mPdopLabelView.setVisibility(View.VISIBLE);
+        mPdopView.setVisibility(View.VISIBLE);
+        mHvdopLabelView.setVisibility(View.VISIBLE);
+        mHvdopView.setVisibility(View.VISIBLE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
