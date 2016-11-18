@@ -36,6 +36,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -190,7 +191,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         private Paint mHorizonActiveFillPaint, mHorizonInactiveFillPaint, mHorizonStrokePaint,
                 mGridStrokePaint,
                 mSatelliteFillPaint, mSatelliteStrokePaint, mSatelliteUsedStrokePaint,
-                mNorthPaint, mNorthFillPaint, mPrnIdPaint;
+                mNorthPaint, mNorthFillPaint, mPrnIdPaint, mNotInViewPaint;
 
         private double mOrientation = 0.0;
 
@@ -274,6 +275,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mPrnIdPaint
                     .setTextSize(GpsTestUtil.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
             mPrnIdPaint.setAntiAlias(true);
+
+            mNotInViewPaint = new Paint();
+            mNotInViewPaint.setColor(ContextCompat.getColor(context, R.color.not_in_view_sat));
+            mNotInViewPaint.setStyle(Paint.Style.FILL);
+            mNotInViewPaint.setStrokeWidth(4.0f);
+            mNotInViewPaint.setAntiAlias(true);
 
             setFocusable(true);
         }
@@ -449,7 +456,13 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             final double PRN_Y_SCALE = 3.8;
 
             Paint fillPaint;
-            fillPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
+            if (snrCn0 == 0.0f) {
+                // Satellite can't be seen
+                fillPaint = mNotInViewPaint;
+            } else {
+                // Calculate fill color based on signal strength
+                fillPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
+            }
 
             Paint strokePaint;
             if (usedInFix) {
@@ -630,7 +643,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 int numSats = mSvCount;
 
                 for (int i = 0; i < numSats; i++) {
-                    if (mSnrCn0s[i] > 0.0f && (mElevs[i] != 0.0f || mAzims[i] != 0.0f)) {
+                    if (mElevs[i] != 0.0f || mAzims[i] != 0.0f) {
                         drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrCn0s[i],
                                 mPrns[i], mConstellationType[i], mUsedInFix[i]);
                     }
