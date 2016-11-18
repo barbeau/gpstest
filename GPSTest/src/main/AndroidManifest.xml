@@ -40,7 +40,8 @@
     <application
             android:name=".Application"
             android:label="@string/app_name"
-            android:icon="@drawable/gpstest_icon">
+            android:icon="@drawable/gpstest_icon"
+            android:theme="@style/Theme.AppCompat">
 
         <activity android:name=".GpsTestActivity"
                   android:theme="@style/GpsSwitchTheme"
