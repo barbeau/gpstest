@@ -271,7 +271,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mPrnIdPaint = new Paint();
             mPrnIdPaint.setColor(Color.BLACK);
             mPrnIdPaint.setStyle(Paint.Style.STROKE);
-            mNorthPaint.setStrokeWidth(4.0f);
             mPrnIdPaint
                     .setTextSize(GpsTestUtil.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
             mPrnIdPaint.setAntiAlias(true);
