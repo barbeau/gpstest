@@ -45,4 +45,9 @@
           android:title="@string/menu_settings"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+
+    <item android:id="@+id/menu_help"
+          android:title="@string/title_activity_help"
+          android:orderInCategory="101"
+          app:showAsAction="never"/>
 </menu>

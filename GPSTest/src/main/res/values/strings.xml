@@ -167,4 +167,51 @@
     <string name="pref_about_category_title">About</string>
     <string name="pref_show_tutorial_title">Show tutorial</string>
     <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
+
+    <!-- Help -->
+    <string name="title_activity_help">Help</string>
+
+    <string name="help_text">
+        "Find out more about the OneBusAway open-source project at http://onebusaway.org.\n\n"
+
+        "*** Code ***\n\n"
+
+        "We'd like to thank the following who have contributed code to OneBusAway Android:\n\n"
+
+        "* Paul Watts\n"
+        "* Brian Ferris\n"
+        "* Daniel Welsh\n"
+        "* Arno Hart\n"
+        "* Sean Barbeau\n"
+        "* York Region Transit\n"
+        "* Ben Du\n"
+        "* Cagri Cetin\n"
+        "* Mike Karabushin\n"
+        "* Aziz Batihk\n"
+        "* Charles Bond\n\n"
+
+        "Want to contribute to this app? Check it out on Github at
+        https://github.com/OneBusAway/onebusaway-android.\n\n"
+
+        "*** Translations ***\n\n"
+
+        "We'd like to thank those who have contributed translations to OneBusAway Android:\n\n"
+
+        "* Ari Rusakko\n"
+        "* Edgar Andrés Moncada Taborda\n\n"
+
+        "*** Images ***\n\n"
+
+        "Thanks to the designers who created images used in the vehicle icons, which were uploaded "
+        "to the Noun Project under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/us/):\n\n"
+
+        "* Arrow by Zlatko Najdenovski, MK\n"
+        "* Map Marker by Housin Aziz, SE\n"
+        "* Incognito by Christopher Schreiner\n"
+        "* Flag Triangle by Austin Andrews\n\n"
+
+        "Thanks to Google for the material design icons
+        (https://github.com/google/material-design-icons), "
+        "licensed under CC BY 4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
+    </string>
 </resources>
