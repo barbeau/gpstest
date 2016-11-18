@@ -217,6 +217,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         addOrientationSensorListener();
 
+        addNmeaListener();
+
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
@@ -232,7 +234,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkTrueNorth(settings);
 
-        checkNmea(settings);
+        checkNmeaLog(settings);
 
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
@@ -634,12 +636,10 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    private void checkNmea(SharedPreferences settings) {
+    private void checkNmeaLog(SharedPreferences settings) {
         mLogNmea = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
         mWriteNmeaTimestampToLog = settings
                 .getBoolean(getString(R.string.pref_key_nmea_timestamp_output), true);
-
-        addNmeaListener();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
