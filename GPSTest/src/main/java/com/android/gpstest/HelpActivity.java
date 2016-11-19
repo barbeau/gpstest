@@ -19,7 +19,6 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -30,9 +29,7 @@ public class HelpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView tv = (TextView) findViewById(R.id.help_text);
         String versionString = "";
