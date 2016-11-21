@@ -15,8 +15,6 @@
  */
 package com.android.gpstest;
 
-import com.google.android.gms.common.GoogleApiAvailability;
-
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -31,7 +29,9 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView tv = (TextView) findViewById(R.id.help_text);
+        TextView versionView = (TextView) findViewById(R.id.app_version);
+        TextView helpView = (TextView) findViewById(R.id.help_text);
+
         String versionString = "";
         int versionCode = 0;
         try {
@@ -42,31 +42,30 @@ public class HelpActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        StringBuilder builder = new StringBuilder();
+        StringBuilder version = new StringBuilder();
         // Version info
-        builder.append("v")
+        version.append("v")
                 .append(versionString)
                 .append(" (")
                 .append(versionCode)
-                .append(")\n\n");
+                .append(")\n");
 
-        // Majority of content from string resource
-        builder.append(getString(R.string.help_text));
-        String googleOssLicense = null;
+        versionView.setText(version.toString());
 
-        // License info for Google Play Services, if available
-        try {
-            GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
-            googleOssLicense = gaa.getOpenSourceSoftwareLicenseInfo(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (googleOssLicense != null) {
-            builder.append(googleOssLicense);
-        }
+        // FIXME - fix performance issue with loading text from Play Services
+//        String googleOssLicense = null;
+//
+//        // License info for Google Play Services, if available
+//        try {
+//            GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
+//            googleOssLicense = gaa.getOpenSourceSoftwareLicenseInfo(this);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        if (googleOssLicense != null) {
+//            builder.append(googleOssLicense);
+//        }
 
-        builder.append("\n\n");
-
-        tv.setText(builder.toString());
+        helpView.setText(R.string.help_text);
     }
 }

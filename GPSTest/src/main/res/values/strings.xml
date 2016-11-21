@@ -172,46 +172,56 @@
     <string name="title_activity_help">Help</string>
 
     <string name="help_text">
-        "Find out more about the OneBusAway open-source project at http://onebusaway.org.\n\n"
+        "<b>*** Status View ***</b>\n\n&#8226;\u0020
+        <b>Latitude</b>
+        - In decimal degrees (WGS 84)\n&#8226;\u0020
+        <b>Longitude</b>
+        - In decimal degrees (WGS 84)\n&#8226;\u0020
+        <b>Altitude</b>
+        - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
+        <b>Altitude (MSL)</b>
+        - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
+        <b># Sats</b>
+        - # satellites used in fix / # satellites in view\n&#8226;\u0020
+        <b>PDOP</b>
+        - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
+        <b>H/V DOP</b>
+        - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Time to first fix\n&#8226;\u0020
+        <b>Acc</b>
+        - Estimated accuracy (radius in meters of 68% confidence)\n&#8226;\u0020
+        <b>ID or PRN</b>
+        - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
+        <b>SNR</b>
+        - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Flags</b>
+        - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
+        for the satellite, (U) if the satellite was used in the latest fix\n\n
 
-        "*** Code ***\n\n"
+        "<b>*** Sky View ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
+        - Circles\n&#8226;\u0020
+        <b>GLONASS (Russia)</b>
+        - Squares\n&#8226;\u0020
+        <b>Galileo (European Union)</b>
+        - Triangles\n&#8226;\u0020
+        <b>QZSS (Japan)</b>
+        - Triangles\n&#8226;\u0020
+        <b>BeiDou/COMPASS (China)</b>
+        - Pentagons\n\n
 
-        "We'd like to thank the following who have contributed code to OneBusAway Android:\n\n"
+        "Find out more about the GPSTest open-source project at
+        https://github.com/barbeau/gpstest/blob/master/FAQ.md.\n\n"
 
-        "* Paul Watts\n"
-        "* Brian Ferris\n"
-        "* Daniel Welsh\n"
-        "* Arno Hart\n"
-        "* Sean Barbeau\n"
-        "* York Region Transit\n"
-        "* Ben Du\n"
-        "* Cagri Cetin\n"
-        "* Mike Karabushin\n"
-        "* Aziz Batihk\n"
-        "* Charles Bond\n\n"
-
-        "Want to contribute to this app? Check it out on Github at
-        https://github.com/OneBusAway/onebusaway-android.\n\n"
-
-        "*** Translations ***\n\n"
-
-        "We'd like to thank those who have contributed translations to OneBusAway Android:\n\n"
-
-        "* Ari Rusakko\n"
-        "* Edgar Andrés Moncada Taborda\n\n"
-
-        "*** Images ***\n\n"
-
-        "Thanks to the designers who created images used in the vehicle icons, which were uploaded "
-        "to the Noun Project under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/us/):\n\n"
-
-        "* Arrow by Zlatko Najdenovski, MK\n"
-        "* Map Marker by Housin Aziz, SE\n"
-        "* Incognito by Christopher Schreiner\n"
-        "* Flag Triangle by Austin Andrews\n\n"
-
-        "Thanks to Google for the material design icons
-        (https://github.com/google/material-design-icons), "
-        "licensed under CC BY 4.0 (http://creativecommons.org/licenses/by/4.0/).\n\n"
+        "*** Acknowledgments ***\n\n&#8226;\u0020
+        <b>Mike Lockwood</b>
+        - original developer for v1.x\n&#8226;\u0020
+        <b>Sean Barbeau</b>
+        - developer for v2.x and higher\n&#8226;\u0020
+        <b>android-switch-backport</b>
+        - https://github.com/BoD/android-switch-backport\n
     </string>
 </resources>
