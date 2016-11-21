@@ -172,7 +172,10 @@
     <string name="title_activity_help">Help</string>
 
     <string name="help_text">
-        "<b>*** Status View ***</b>\n\n&#8226;\u0020
+        "
+        <b>Frequently Asked Questions (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n"
+        <b>*** Status View ***</b>\n\n&#8226;\u0020
         <b>Latitude</b>
         - In decimal degrees (WGS 84)\n&#8226;\u0020
         <b>Longitude</b>
@@ -213,15 +216,12 @@
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n\n
 
-        "Find out more about the GPSTest open-source project at
-        https://github.com/barbeau/gpstest/blob/master/FAQ.md.\n\n"
-
         "<b>*** Acknowledgments ***</b>\n\n&#8226;\u0020
         <b>Mike Lockwood</b>
         - original developer for v1.x\n&#8226;\u0020
         <b>Sean Barbeau</b>
         - developer for v2.x and higher\n&#8226;\u0020
         <b>android-switch-backport</b>
-        - https://github.com/BoD/android-switch-backport\n
+        - https://github.com/BoD/android-switch-backport
     </string>
 </resources>
