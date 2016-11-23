@@ -95,8 +95,14 @@
         <b>Galileo support</b>
         - The last major GNSS!\n&#8226;\u0020
         <b>Android Monitor Output</b>
-        - See NMEA log, raw measurements, and nav messages via Android Studio
+        - See NMEA, raw measurements, and nav messages via Android Studio
         (http://bit.ly/gpstest-am-logging)\n&#8226;\u0020
+        <b>New data</b>
+        - Altitude (MSL), DOP, # Sats\n&#8226;\u0020
+        <b>Help</b>
+        - Check out new field definitions via the menu\n&#8226;\u0020
+        <b>Google Maps/Play Services not required</b>
+        - Uninstall it at will\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
