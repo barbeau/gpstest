@@ -178,7 +178,6 @@
     <string name="title_activity_help">Help</string>
 
     <string name="help_text">
-        "
         <b>Frequently Asked Questions (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n"
         <b>*** Status View ***</b>\n\n&#8226;\u0020
@@ -221,6 +220,13 @@
         - Triangles\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n\n
+
+        &#8226;\u0020 Transparent satellites - Not in view\n
+        &#8226;\u0020 Thin outline - In view but not used in fix\n
+        &#8226;\u0020 Bold outline - Used in fix\n\n
+
+        Expected SNR range is 10 dB (red) to 30 dB (green)\n
+        Expected C/N0 range is 10 dB-Hz (red) to 50 dB-Hz (green)\n\n
 
         "<b>*** Acknowledgments ***</b>\n\n&#8226;\u0020
         <b>Mike Lockwood</b>
