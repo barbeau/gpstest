@@ -290,7 +290,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mAltitudeMslView.setText(getString(R.string.gps_altitude_msl_value, altitudeMsl));
             }
         }
-        if (message.startsWith("$GNGSA")) {
+        if (message.startsWith("$GNGSA") || message.startsWith("$GPGSA")) {
             DilutionOfPrecision dop = GpsTestUtil.getDop(message);
             if (dop != null && mNavigating) {
                 showDopViews();

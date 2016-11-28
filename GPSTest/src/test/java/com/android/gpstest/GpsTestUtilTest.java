@@ -47,12 +47,55 @@ public class GpsTestUtilTest {
     @Test
     public void testGetDopFromNmea() {
         DilutionOfPrecision dop;
-        final String sentence = "$GNGSA,A,2,67,68,69,79,84,,,,,,,,1.3,1.0,0.8,2*3A";
 
-        dop = GpsTestUtil.getDop(sentence);
+        // LG G5 w/ Android 6.0.1
+        final String s1 = "$GNGSA,A,2,67,68,69,79,84,,,,,,,,1.3,1.0,0.8,2*3A";
+
+        // LG G5 w/ Android 7.0
+        final String s2 = "$GPGSA,A,3,03,14,16,22,23,26,,,,,,,3.6,1.8,3.1*38";
+        final String s3 = "$GNGSA,A,3,03,14,16,22,23,26,,,,,,,3.6,1.8,3.1,1*3B";
+
+        // From http://aprs.gids.nl/nmea/#gsa
+        final String s4 = "$GPGSA,A,3,,,,,,16,18,,22,24,,,3.6,2.1,2.2*3C";
+        final String s5 = "$GPGSA,A,3,19,28,14,18,27,22,31,39,,,,,1.7,1.0,1.3*35";
+
+        // From http://www.gpsinformation.org/dale/nmea.htm#GSA
+        final String s6 = "$GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39";
+
+        dop = GpsTestUtil.getDop(s1);
 
         assertEquals(1.3d, dop.getPositionDop());
         assertEquals(1.0d, dop.getHorizontalDop());
         assertEquals(0.8d, dop.getVerticalDop());
+
+        dop = GpsTestUtil.getDop(s2);
+
+        assertEquals(3.6d, dop.getPositionDop());
+        assertEquals(1.8d, dop.getHorizontalDop());
+        assertEquals(3.1d, dop.getVerticalDop());
+
+        dop = GpsTestUtil.getDop(s3);
+
+        assertEquals(3.6d, dop.getPositionDop());
+        assertEquals(1.8d, dop.getHorizontalDop());
+        assertEquals(3.1d, dop.getVerticalDop());
+
+        dop = GpsTestUtil.getDop(s4);
+
+        assertEquals(3.6d, dop.getPositionDop());
+        assertEquals(2.1d, dop.getHorizontalDop());
+        assertEquals(2.2d, dop.getVerticalDop());
+
+        dop = GpsTestUtil.getDop(s5);
+
+        assertEquals(1.7d, dop.getPositionDop());
+        assertEquals(1.0d, dop.getHorizontalDop());
+        assertEquals(1.3d, dop.getVerticalDop());
+
+        dop = GpsTestUtil.getDop(s6);
+
+        assertEquals(2.5d, dop.getPositionDop());
+        assertEquals(1.3d, dop.getHorizontalDop());
+        assertEquals(2.1d, dop.getVerticalDop());
     }
 }

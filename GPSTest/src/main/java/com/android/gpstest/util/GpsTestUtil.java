@@ -223,16 +223,17 @@ public class GpsTestUtil {
     }
 
     /**
-     * Given a $GPGSA NMEA sentence, return the dilution of precision, or null if dilution of
+     * Given a $GNGSA or $GPGSA NMEA sentence, return the dilution of precision, or null if dilution of
      * precision can't be parsed.
      *
      * Example inputs are:
-     * $GNGSA,A,2,67,68,69,79,84,,,,,,,,1.3,1.0,0.8,2*3A
+     * $GPGSA,A,3,03,14,16,22,23,26,,,,,,,3.6,1.8,3.1*38
+     * $GNGSA,A,3,03,14,16,22,23,26,,,,,,,3.6,1.8,3.1,1*3B
      *
-     * Example outputs would be:
-     * PDOP is 1.3, HDOP is 1.0, and VDOP is 0.8
+     * Example output is:
+     * PDOP is 3.6, HDOP is 1.8, and VDOP is 3.1
      *
-     * @param nmeaSentence a $GNGSA NMEA sentence
+     * @param nmeaSentence a $GNGSA or $GPGSA NMEA sentence
      * @return the dilution of precision, or null if dilution of precision can't be parsed
      */
     public static DilutionOfPrecision getDop(String nmeaSentence) {
@@ -241,15 +242,28 @@ public class GpsTestUtil {
         final int VDOP_INDEX = 17;
         String[] tokens = nmeaSentence.split(",");
 
-        if (nmeaSentence.startsWith("$GNGSA")) {
+        if (nmeaSentence.startsWith("$GNGSA") || nmeaSentence.startsWith("$GPGSA")) {
             String pdop = tokens[PDOP_INDEX];
             String hdop = tokens[HDOP_INDEX];
             String vdop = tokens[VDOP_INDEX];
+
+            // See https://github.com/barbeau/gpstest/issues/71#issuecomment-263169174
+            if (vdop.contains("*")) {
+                vdop = vdop.split("\\*")[0];
+            }
+
             if (!TextUtils.isEmpty(pdop) && !TextUtils.isEmpty(hdop) && !TextUtils.isEmpty(vdop)) {
-                return new DilutionOfPrecision(Double.valueOf(pdop), Double.valueOf(hdop),
-                        Double.valueOf(vdop));
+                DilutionOfPrecision dop = null;
+                try {
+                    dop = new DilutionOfPrecision(Double.valueOf(pdop), Double.valueOf(hdop),
+                            Double.valueOf(vdop));
+                } catch (NumberFormatException e) {
+                    // See https://github.com/barbeau/gpstest/issues/71#issuecomment-263169174
+                    Log.e(TAG, "Invalid DOP values in NMEA: " + nmeaSentence);
+                }
+                return dop;
             } else {
-                Log.w(TAG, "Couldn't parse DOP from NMEA: " + nmeaSentence);
+                Log.w(TAG, "Empty DOP values in NMEA: " + nmeaSentence);
                 return null;
             }
         } else {
