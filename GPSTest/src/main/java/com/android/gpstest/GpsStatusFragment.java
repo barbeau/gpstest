@@ -284,6 +284,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onNmeaMessage(String message, long timestamp) {
+        if (!isAdded()) {
+            // Do nothing if the Fragment isn't added
+            return;
+        }
         if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS")) {
             Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
             if (altitudeMsl != null && mNavigating) {
