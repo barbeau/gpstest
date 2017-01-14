@@ -14,6 +14,11 @@ The purpose of GPSTest is to give application developers and platform implemente
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
 
+Galileo support has been confirmed on the following devices:
+
+* [BQ Aquaris X5 Plus](https://groups.google.com/forum/m/#!topic/gpstest_android/SbvcUyGU67U)
+* [Huawei Mate 9](http://www.startlr.com/we-tried-galileo-huawei-mate-9-already-sees-the-european-satellites/)
+
 ## What Android devices does GPSTest run on?
 
 <img src="https://dl.dropboxusercontent.com/u/46443835/GPSTest/GPSTestDeviceMenu.png" width="287" height="498" align=right />
