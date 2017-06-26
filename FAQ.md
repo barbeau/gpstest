@@ -48,7 +48,7 @@ Android 1.5 and up, in its simplest form.  More advanced versions with an update
   * Azimuth (in degrees)
   * Flags - "E"-flag is shown if the GNSS engine has the ephemeris data for the satellite, the "A"-flag is shown if the GPS engine has almanac data for the satellite, and the "U"-flag is shown if the satellite was used by the GPS engine when calculating the most recent GPS fix
 
-See the Android [GpsSatellite documentation](http://developer.android.com/reference/android/location/GpsSatellite.html) for more information on each field shown for each satellite.
+See the Android [`GpsSatellite` documentation](http://developer.android.com/reference/android/location/GpsSatellite.html) for more information on each field shown for each satellite for Android 6.0 and lower, and [`GnssStatus`](https://developer.android.com/reference/android/location/GnssStatus.html) for Android 7.0 and higher.
 
 ## What's the difference between SNR and C/N0?
 
