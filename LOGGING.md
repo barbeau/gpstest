@@ -24,3 +24,7 @@ Android 7.0 and higher:
 
 * **GNSS Measurements** - Raw GNSS satellite measurements observed by the GNSS subsystem.  Disabled by default.  To show only this output in Android Monitor, use the search box text `GpsOutputMeasure`.
 * **GNSS Navigation Message** - Navigation messages observed by the GNSS subsystem.  Disabled by default.  To show only this output in Android Monitor, use the search box text `GpsOutputNav`.
+
+## What devices support pseudorange measurements and navigation messages?
+
+Check out the [FAQ](https://github.com/barbeau/gpstest/blob/master/FAQ.md#what-android-70-devices-support-logging-raw-pseudorange-and-navigation-messages) for known device information.
