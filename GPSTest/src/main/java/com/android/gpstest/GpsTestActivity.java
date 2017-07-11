@@ -17,11 +17,6 @@
 
 package com.android.gpstest;
 
-import com.android.gpstest.util.GpsTestUtil;
-import com.android.gpstest.util.MathUtils;
-import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.view.ViewPagerMapBevelScroll;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -66,6 +61,11 @@ import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 import java.util.ArrayList;
 
@@ -403,7 +403,29 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onStatusChanged(int status) {
-
+                final String statusMessage;
+                switch (status) {
+                    case STATUS_LOCATION_DISABLED:
+                        statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
+                        break;
+                    case STATUS_NOT_SUPPORTED:
+                        statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+                        break;
+                    case STATUS_READY:
+                        statusMessage = getString(R.string.gnss_measurement_status_ready);
+                        break;
+                    default:
+                        statusMessage = getString(R.string.gnss_status_unknown);
+                }
+                Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
+                if (GpsTestUtil.canManageDialog(GpsTestActivity.this)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         };
         mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
@@ -539,7 +561,29 @@ public class GpsTestActivity extends AppCompatActivity
 
                 @Override
                 public void onStatusChanged(int status) {
-
+                    final String statusMessage;
+                    switch (status) {
+                        case STATUS_LOCATION_DISABLED:
+                            statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
+                            break;
+                        case STATUS_NOT_SUPPORTED:
+                            statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+                            break;
+                        case STATUS_READY:
+                            statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+                            break;
+                        default:
+                            statusMessage = getString(R.string.gnss_status_unknown);
+                    }
+                    Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
+                    if (GpsTestUtil.canManageDialog(GpsTestActivity.this)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             };
         }

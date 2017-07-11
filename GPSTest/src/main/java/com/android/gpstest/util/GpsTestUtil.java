@@ -16,8 +16,7 @@
 
 package com.android.gpstest.util;
 
-import com.android.gpstest.DilutionOfPrecision;
-
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -29,6 +28,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.android.gpstest.DilutionOfPrecision;
 
 public class GpsTestUtil {
 
@@ -152,6 +153,26 @@ public class GpsTestUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         // Convert the dps to pixels, based on density scale
         return (int) (dp * scale + 0.5f);
+    }
+
+    /**
+     * Returns true if the activity is still active and dialogs can be managed (i.e., displayed
+     * or dismissed), or false if it is not
+     *
+     * @param activity Activity to check for displaying/dismissing a dialog
+     * @return true if the activity is still active and dialogs can be managed, or false if it is
+     * not
+     */
+    public static boolean canManageDialog(Activity activity) {
+        if (activity == null) {
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            return !activity.isFinishing() && !activity.isDestroyed();
+        } else {
+            return !activity.isFinishing();
+        }
     }
 
     /**
