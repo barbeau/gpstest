@@ -64,9 +64,10 @@ public class GpsTestUtil {
         } else if (prn >= 301 && prn <= 330) {
             // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
             return GnssType.GALILEO;
-        } else {
-            // Assume US NAVSTAR for now, since we don't have any other info on sat-to-PRN mappings
+        } else if (prn >= 1 && prn <= 32) {
             return GnssType.NAVSTAR;
+        } else {
+            return GnssType.UNKNOWN;
         }
     }
 
@@ -91,9 +92,10 @@ public class GpsTestUtil {
                 return GnssType.QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GnssType.GALILEO;
+            case GnssStatus.CONSTELLATION_UNKNOWN:
+                return GnssType.UNKNOWN;
             default:
-                // For now assume GPS NAVSTAR for any other systems we don't directly support
-                return GnssType.NAVSTAR;
+                return GnssType.UNKNOWN;
         }
     }
 

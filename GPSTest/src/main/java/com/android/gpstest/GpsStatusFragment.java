@@ -490,19 +490,27 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         }
                         switch (type) {
                             case NAVSTAR:
+                                imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagUsa);
                                 break;
                             case GLONASS:
+                                imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagRussia);
                                 break;
                             case QZSS:
+                                imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagJapan);
                                 break;
                             case BEIDOU:
+                                imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagChina);
                                 break;
                             case GALILEO:
+                                imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagGalileo);
+                                break;
+                            case UNKNOWN:
+                                imageView.setVisibility(View.INVISIBLE);
                                 break;
                         }
                         return imageView;
