@@ -17,9 +17,6 @@
 
 package com.android.gpstest;
 
-import com.android.gpstest.util.GnssType;
-import com.android.gpstest.util.GpsTestUtil;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
@@ -41,6 +38,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -89,6 +89,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private boolean mNavigating, mGotFix;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
+
+    private boolean mUseLegacyGnssApi = false;
 
     public void onLocationChanged(Location location) {
         if (!mGotFix) {
@@ -315,6 +317,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void updateGnssStatus(GnssStatus status) {
+        mUseLegacyGnssApi = false;
         setStarted(true);
         updateFixTime();
 
@@ -364,6 +367,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @Deprecated
     private void updateLegacyStatus(GpsStatus status) {
+        mUseLegacyGnssApi = true;
         setStarted(true);
         updateFixTime();
 
@@ -479,7 +483,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                             imageView.setScaleType(ImageView.ScaleType.FIT_START);
                         }
                         GnssType type;
-                        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+                        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
                             type = GpsTestUtil.getGnssConstellationType(mConstellationType[row]);
                         } else {
                             type = GpsTestUtil.getGnssType(mPrns[row]);
