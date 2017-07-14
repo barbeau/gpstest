@@ -17,9 +17,6 @@
 
 package com.android.gpstest;
 
-import com.android.gpstest.util.GnssType;
-import com.android.gpstest.util.GpsTestUtil;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -42,6 +39,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+
+import com.android.gpstest.util.GnssType;
+import com.android.gpstest.util.GpsTestUtil;
 
 import java.util.Iterator;
 
@@ -182,8 +182,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         private final int mCn0Colors[];
 
-        private boolean mUseSnr = false;
-
         Context mContext;
 
         WindowManager mWindowManager;
@@ -253,7 +251,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
             mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
 
-            mCn0Thresholds = new float[]{0.0f, 16.6f, 33.3f, 50.0f};
+            mCn0Thresholds = new float[]{10.0f, 16.6f, 33.3f, 45.0f};
             mCn0Colors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
 
             mNorthPaint = new Paint();
@@ -297,9 +295,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void setGnssStatus(GnssStatus status) {
-            // Use C/N0 instead of SNR - see #65
-            mUseSnr = false;
-
             if (mPrns == null) {
                 /**
                  * We need to allocate arrays big enough so we don't overflow them.  Per
@@ -320,7 +315,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             int length = status.getSatelliteCount();
             mSvCount = 0;
             while (mSvCount < length) {
-                mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
+                mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
                 mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
                 mAzims[mSvCount] = status.getAzimuthDegrees(mSvCount);
                 mPrns[mSvCount] = status.getSvid(mSvCount);
@@ -342,9 +337,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         @Deprecated
         public void setSats(GpsStatus status) {
-            // Use SNR instead of C/N0 - see #65
-            mUseSnr = true;
-
             Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
             if (mSnrCn0s == null) {
@@ -363,7 +355,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mSvCount = 0;
             while (satellites.hasNext()) {
                 GpsSatellite satellite = satellites.next();
-                mSnrCn0s[mSvCount] = satellite.getSnr();
+                mSnrCn0s[mSvCount] = satellite.getSnr(); // Store SNR values (see #65)
                 mElevs[mSvCount] = satellite.getElevation();
                 mAzims[mSvCount] = satellite.getAzimuth();
                 mPrns[mSvCount] = satellite.getPrn();
@@ -557,8 +549,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
          * Gets the paint color for a satellite based on provided SNR or C/N0
          *
          * @param base   the base paint color to be changed
-         * @param snrCn0 the SNR to use (if mUseSnr is true) or the C/N0 to use (if mUseSnr is
-         *               false)
+         * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
+         *               GnssStatus)
          *               to generate the satellite color based on signal quality
          * @return the paint color for a satellite based on provided SNR or C/N0
          */
@@ -570,16 +562,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             final float thresholds[];
             final int colors[];
 
-            if (mUseSnr) {
-                // Use SNR
-                numSteps = mSnrThresholds.length;
-                thresholds = mSnrThresholds;
-                colors = mSnrColors;
-            } else {
-                // Use C/N0
+            if (GpsTestUtil.isGnssStatusListenerSupported()) {
+                // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
                 numSteps = mCn0Thresholds.length;
                 thresholds = mCn0Thresholds;
                 colors = mCn0Colors;
+            } else {
+                // Use legacy SNR ranges/colors for Android versions less than Android 7.0 (see #76)
+                numSteps = mSnrThresholds.length;
+                thresholds = mSnrThresholds;
+                colors = mSnrColors;
             }
 
             if (snrCn0 <= thresholds[0]) {
