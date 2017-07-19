@@ -26,6 +26,7 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -175,6 +176,16 @@ public class GpsTestUtil {
         } else {
             return !activity.isFinishing();
         }
+    }
+
+    /**
+     * Returns true if the fragment is attached to the activity, or false if it is not attached
+     *
+     * @param f fragment to be tested
+     * @return true if the fragment is attached to the activity, or false if it is not attached
+     */
+    public static boolean isFragmentAttached(Fragment f) {
+        return f.getActivity() != null && f.isAdded();
     }
 
     /**

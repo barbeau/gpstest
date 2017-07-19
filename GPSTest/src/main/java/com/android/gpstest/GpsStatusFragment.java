@@ -45,6 +45,8 @@ import com.android.gpstest.util.GpsTestUtil;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
+import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
+
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
@@ -93,30 +95,35 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private boolean mUseLegacyGnssApi = false;
 
     public void onLocationChanged(Location location) {
+        if (!isFragmentAttached(this)) {
+            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
+            return;
+        }
+
         if (!mGotFix) {
             mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
             mGotFix = true;
         }
-        mLatitudeView.setText(getString(R.string.gps_latitude_value, location.getLatitude()));
-        mLongitudeView.setText(getString(R.string.gps_longitude_value, location.getLongitude()));
+        mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
+        mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
         mFixTime = location.getTime();
         if (location.hasAltitude()) {
-            mAltitudeView.setText(getString(R.string.gps_altitude_value, location.getAltitude()));
+            mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value, location.getAltitude()));
         } else {
             mAltitudeView.setText("");
         }
         if (location.hasAccuracy()) {
-            mAccuracyView.setText(getString(R.string.gps_accuracy_value, location.getAccuracy()));
+            mAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value, location.getAccuracy()));
         } else {
             mAccuracyView.setText("");
         }
         if (location.hasSpeed()) {
-            mSpeedView.setText(getString(R.string.gps_speed_value, location.getSpeed()));
+            mSpeedView.setText(mRes.getString(R.string.gps_speed_value, location.getSpeed()));
         } else {
             mSpeedView.setText("");
         }
         if (location.hasBearing()) {
-            mBearingView.setText(getString(R.string.gps_bearing_value, location.getBearing()));
+            mBearingView.setText(mRes.getString(R.string.gps_bearing_value, location.getBearing()));
         } else {
             mBearingView.setText("");
         }
@@ -202,7 +209,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     private void updateFixTime() {
-        if (mFixTime == 0 || !GpsTestActivity.getInstance().mStarted) {
+        if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
             mFixTimeView.setText("");
         } else {
             mFixTimeView.setText(mDateFormat.format(mFixTime));
@@ -293,7 +300,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS")) {
             Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
             if (altitudeMsl != null && mNavigating) {
-                mAltitudeMslView.setText(getString(R.string.gps_altitude_msl_value, altitudeMsl));
+                mAltitudeMslView.setText(mRes.getString(R.string.gps_altitude_msl_value, altitudeMsl));
             }
         }
         if (message.startsWith("$GNGSA") || message.startsWith("$GPGSA")) {
@@ -302,7 +309,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 showDopViews();
                 mPdopView.setText(String.valueOf(dop.getPositionDop()));
                 mHvdopView.setText(
-                        getString(R.string.hvdop_value, dop.getHorizontalDop(),
+                        mRes.getString(R.string.hvdop_value, dop.getHorizontalDop(),
                                 dop.getVerticalDop()));
             }
         }
@@ -320,6 +327,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mUseLegacyGnssApi = false;
         setStarted(true);
         updateFixTime();
+
+        if (!isFragmentAttached(this)) {
+            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
+            return;
+        }
 
         mSnrCn0Title = mRes.getString(R.string.gps_cn0_column_label);
 
@@ -360,7 +372,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSvCount++;
         }
 
-        mNumSats.setText(getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
+        mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         mAdapter.notifyDataSetChanged();
     }
@@ -370,6 +382,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mUseLegacyGnssApi = true;
         setStarted(true);
         updateFixTime();
+
+        if (!isFragmentAttached(this)) {
+            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
+            return;
+        }
 
         mSnrCn0Title = mRes.getString(R.string.gps_snr_column_label);
 
@@ -406,7 +423,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSvCount++;
         }
 
-        mNumSats.setText(getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
+        mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         mAdapter.notifyDataSetChanged();
     }
@@ -523,7 +540,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         break;
                     case ELEVATION_COLUMN:
                         if (mSvElevations[row] != 0.0f) {
-                            text = getString(R.string.gps_elevation_column_value,
+                            text = mRes.getString(R.string.gps_elevation_column_value,
                                     Float.toString(mSvElevations[row]));
                         } else {
                             text = "";
@@ -531,7 +548,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         break;
                     case AZIMUTH_COLUMN:
                         if (mSvAzimuths[row] != 0.0f) {
-                            text = getString(R.string.gps_azimuth_column_value,
+                            text = mRes.getString(R.string.gps_azimuth_column_value,
                                     Float.toString(mSvAzimuths[row]));
                         } else {
                             text = "";
