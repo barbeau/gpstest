@@ -203,6 +203,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         private int mSvCount;
 
+        private boolean mUseLegacyGnssApi = false;
+
         public GpsSkyView(Context context) {
             super(context);
 
@@ -295,6 +297,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void setGnssStatus(GnssStatus status) {
+            mUseLegacyGnssApi = false;
             if (mPrns == null) {
                 /**
                  * We need to allocate arrays big enough so we don't overflow them.  Per
@@ -337,6 +340,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         @Deprecated
         public void setSats(GpsStatus status) {
+            mUseLegacyGnssApi = true;
             Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
             if (mSnrCn0s == null) {
@@ -471,7 +475,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             // Change shape based on satellite operator
             GnssType operator;
-            if (GpsTestUtil.isGnssStatusListenerSupported()) {
+            if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
                 operator = GpsTestUtil.getGnssConstellationType(constellationType);
             } else {
                 operator = GpsTestUtil.getGnssType(prn);
