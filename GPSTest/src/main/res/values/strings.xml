@@ -105,6 +105,8 @@
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Indicate when device doesn\'t support logging</b>
         - Display popup if navigation message or pseudorange measurement logging isn\'t supported\n&#8226;\u0020
+        <b>Allow location sharing to other destinations</b>
+        - Including clipboard!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
