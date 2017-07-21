@@ -41,7 +41,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.location.OnNmeaMessageListener;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,6 +68,7 @@ import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 import java.util.ArrayList;
 
+import static android.content.Intent.createChooser;
 import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
@@ -937,13 +937,13 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void sendLocation() {
         if (mLastLocation != null) {
-            Intent intent = new Intent(Intent.ACTION_SENDTO,
-                    Uri.fromParts("mailto", "", null));
-            String location = "http://maps.google.com/maps?geocode=&q=" +
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            String url = "http://maps.google.com/maps?geocode=&q=" +
                     Double.toString(mLastLocation.getLatitude()) + "," +
                     Double.toString(mLastLocation.getLongitude());
-            intent.putExtra(Intent.EXTRA_TEXT, location);
-            startActivity(intent);
+            intent.putExtra(Intent.EXTRA_TEXT, url);
+            intent.setType("text/plain");
+            startActivity(createChooser(intent, getString(R.string.send_location)));
         }
     }
 
