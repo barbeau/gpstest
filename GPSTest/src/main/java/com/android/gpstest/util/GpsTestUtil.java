@@ -32,6 +32,8 @@ import android.util.Log;
 
 import com.android.gpstest.DilutionOfPrecision;
 
+import java.util.concurrent.TimeUnit;
+
 public class GpsTestUtil {
 
     private static final String TAG = "GpsTestUtil";
@@ -186,6 +188,20 @@ public class GpsTestUtil {
      */
     public static boolean isFragmentAttached(Fragment f) {
         return f.getActivity() != null && f.isAdded();
+    }
+
+    /**
+     * Returns a human-readable description of the time-to-first-fix, such as "38 sec"
+     *
+     * @param ttff time-to-first fix, in milliseconds
+     * @return a human-readable description of the time-to-first-fix, such as "38 sec"
+     */
+    public static String getTtffString(int ttff) {
+        if (ttff == 0) {
+            return "";
+        } else {
+            return TimeUnit.MILLISECONDS.toSeconds(ttff) + " sec";
+        }
     }
 
     /**

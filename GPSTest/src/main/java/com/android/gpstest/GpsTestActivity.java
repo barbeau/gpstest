@@ -110,8 +110,6 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteNmeaTimestampToLog;
 
-    String mTtff;
-
     org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
 
     SectionsPagerAdapter mSectionsPagerAdapter;
@@ -360,12 +358,6 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onFirstFix(int ttffMillis) {
-                if (ttffMillis == 0) {
-                    mTtff = "";
-                } else {
-                    ttffMillis = (ttffMillis + 500) / 1000;
-                    mTtff = Integer.toString(ttffMillis) + " sec";
-                }
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFirstFix(ttffMillis);
                 }
@@ -443,13 +435,6 @@ public class GpsTestActivity extends AppCompatActivity
                     case GpsStatus.GPS_EVENT_STOPPED:
                         break;
                     case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        int ttff = mLegacyStatus.getTimeToFirstFix();
-                        if (ttff == 0) {
-                            mTtff = "";
-                        } else {
-                            ttff = (ttff + 500) / 1000;
-                            mTtff = Integer.toString(ttff) + " sec";
-                        }
                         break;
                     case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                         // Stop progress bar after the first status information is obtained

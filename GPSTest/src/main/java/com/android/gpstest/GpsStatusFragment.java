@@ -88,11 +88,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private long mFixTime;
 
-    private boolean mNavigating, mGotFix;
+    private boolean mNavigating;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
 
     private boolean mUseLegacyGnssApi = false;
+
+    private String mTtff = "";
 
     public void onLocationChanged(Location location) {
         if (!isFragmentAttached(this)) {
@@ -100,10 +102,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             return;
         }
 
-        if (!mGotFix) {
-            mTTFFView.setText(GpsTestActivity.getInstance().mTtff);
-            mGotFix = true;
-        }
+        // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
+        mTTFFView.setText(mTtff);
+
         mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
         mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
         mFixTime = location.getTime();
@@ -233,8 +234,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @SuppressLint("NewApi")
     public void gpsStart() {
-        //Reset flag for detecting first fix
-        mGotFix = false;
     }
 
     public void gpsStop() {
@@ -252,6 +251,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 break;
 
             case GpsStatus.GPS_EVENT_FIRST_FIX:
+                mTtff = GpsTestUtil.getTtffString(status.getTimeToFirstFix());
+                if (mTTFFView != null) {
+                    mTTFFView.setText(mTtff);
+                }
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
@@ -262,7 +265,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onGnssFirstFix(int ttffMillis) {
-
+        mTtff = GpsTestUtil.getTtffString(ttffMillis);
+        if (mTTFFView != null) {
+            mTTFFView.setText(mTtff);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
