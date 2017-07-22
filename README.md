@@ -47,9 +47,9 @@ The below steps will help you build and run the project.  For a Developer's Guid
 
 ### Release builds
 
-To build a release build, you need to create a "gradle.properties" file that points to a "secure.properties" file, and a "secure.properties" file that points to your keystore and alias. The `gradlew assembleRelease` command will prompt for your keystore passphrase.
+To build a release build, you first need to create a `gradle.properties` file that points to a `secure.properties` file, and a `secure.properties` file that points to your keystore and alias. 
 
-The "gradle.properties" file is located in the `\GPSTest` directory and has the contents:
+The `gradle.properties` file is located in the `\GPSTest` directory and has the contents:
 
 ```
 secure.properties=<full_path_to_secure_properties_file>
@@ -66,6 +66,14 @@ key.alias=<key_alias_name>
 ```
 
 Note that the paths in these files always use the Unix path separator  `/`, even on Windows. If you use the Windows path separator `\` you will get the error `No value has been specified for property 'signingConfig.keyAlias'.`
+
+To build the release build, run:
+
+`gradlew assembleRelease`
+
+If Gradle is running as a daemon, you'll be prompted for the keystore/key password via a popup dialog box. If you're not running Gradle as a daemon, command will prompt for your passwords (See https://github.com/barbeau/gpstest/issues/87).
+
+If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease -Dorg.gradle.daemon=false`.
 
 ### Contributing
 
