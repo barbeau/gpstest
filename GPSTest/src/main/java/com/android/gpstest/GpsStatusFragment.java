@@ -90,7 +90,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private boolean mNavigating;
 
-    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo;
+    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagGagan;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -171,6 +171,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
         mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
+        mFlagGagan = getResources().getDrawable(R.drawable.ic_flag_gagan);
 
         GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
         mAdapter = new SvGridAdapter(getActivity());
@@ -507,7 +508,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         }
                         GnssType type;
                         if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-                            type = GpsTestUtil.getGnssConstellationType(mConstellationType[row]);
+                            type = GpsTestUtil.getGnssConstellationType(mConstellationType[row], mPrns[row]);
                         } else {
                             type = GpsTestUtil.getGnssType(mPrns[row]);
                         }
@@ -531,6 +532,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                             case GALILEO:
                                 imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagGalileo);
+                                break;
+                            case GAGAN:
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setImageDrawable(mFlagGagan);
                                 break;
                             case UNKNOWN:
                                 imageView.setVisibility(View.INVISIBLE);

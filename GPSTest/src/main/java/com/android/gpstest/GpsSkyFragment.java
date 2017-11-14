@@ -476,7 +476,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             // Change shape based on satellite operator
             GnssType operator;
             if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-                operator = GpsTestUtil.getGnssConstellationType(constellationType);
+                operator = GpsTestUtil.getGnssConstellationType(constellationType, prn);
             } else {
                 operator = GpsTestUtil.getGnssType(prn);
             }
@@ -499,6 +499,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     break;
                 case GALILEO:
                     // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
+                case GAGAN:
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
             }

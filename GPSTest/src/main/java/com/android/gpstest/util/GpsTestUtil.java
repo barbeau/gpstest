@@ -48,14 +48,17 @@ public class GpsTestUtil {
 
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
-     * Android 6.0.1 (API Level 23) and lower.  Android 7.0 and higher should use
+     * Android 6.0.1 (API Level 23) and lower.  Android 7.0 and higher should use getGnssConstellationType()
      *
      * @param prn PRN value provided by the GpsSatellite.getPrn() method
      * @return GnssType for the given PRN
      */
     @Deprecated
     public static GnssType getGnssType(int prn) {
-        if (prn >= 65 && prn <= 96) {
+        if (prn >= 40 && prn <= 41) {
+            // See Issue #92
+            return GnssType.GAGAN;
+        } else if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
             return GnssType.GLONASS;
         } else if (prn >= 193 && prn <= 200) {
@@ -81,9 +84,10 @@ public class GpsTestUtil {
      *
      * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
      *                              method
+     * @param svid identification number provided by the GnssStatus.getSvid() method
      * @return GnssType for the given GnssStatus constellation type
      */
-    public static GnssType getGnssConstellationType(int gnssConstellationType) {
+    public static GnssType getGnssConstellationType(int gnssConstellationType, int svid) {
         switch (gnssConstellationType) {
             case GnssStatus.CONSTELLATION_GPS:
                 return GnssType.NAVSTAR;
@@ -95,6 +99,11 @@ public class GpsTestUtil {
                 return GnssType.QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GnssType.GALILEO;
+            case GnssStatus.CONSTELLATION_SBAS:
+                if (svid == 127 || svid == 128 || svid == 139) {
+                    return GnssType.GAGAN;
+                }
+                return GnssType.UNKNOWN;
             case GnssStatus.CONSTELLATION_UNKNOWN:
                 return GnssType.UNKNOWN;
             default:
