@@ -104,7 +104,11 @@
     <!-- Try to only show trip planning in What's New for regions that support it -->
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Add support for GAGAN satellites</b>
-        - Indian SBAS constellation
+        - Indian SBAS constellation\n&#8226;\u0020
+        <b>Add support for Anik satellites</b>
+        - Canadian SBAS constellation\n&#8226;\u0020
+        <b>Add support for Galaxy 15</b>
+        - American SBAS satellite
     </string>
     <string name="main_help_close">Close</string>
 
