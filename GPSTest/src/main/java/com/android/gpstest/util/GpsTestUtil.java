@@ -102,6 +102,8 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_SBAS:
                 if (svid == 127 || svid == 128 || svid == 139) {
                     return GnssType.GAGAN;
+                } else if (svid == 138) {
+                    return GnssType.ANIK;
                 }
                 return GnssType.UNKNOWN;
             case GnssStatus.CONSTELLATION_UNKNOWN:

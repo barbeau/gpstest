@@ -501,7 +501,11 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                 case GAGAN:
-                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
+                    break;
+                case ANIK:
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
             }
