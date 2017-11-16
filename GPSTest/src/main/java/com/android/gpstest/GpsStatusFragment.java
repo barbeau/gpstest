@@ -90,7 +90,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private boolean mNavigating;
 
-    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagGagan, mFlagCanada;
+    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia, mFlagCanada;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -171,7 +171,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
         mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
-        mFlagGagan = getResources().getDrawable(R.drawable.ic_flag_gagan);
+        mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
         mFlagCanada = getResources().getDrawable(R.drawable.ic_flag_canada);
 
         GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
@@ -536,7 +536,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                                 break;
                             case GAGAN:
                                 imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagGagan);
+                                imageView.setImageDrawable(mFlagIndia);
                                 break;
                             case ANIK:
                                 imageView.setVisibility(View.VISIBLE);
