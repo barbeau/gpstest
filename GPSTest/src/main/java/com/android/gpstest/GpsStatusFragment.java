@@ -542,6 +542,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                                 imageView.setVisibility(View.VISIBLE);
                                 imageView.setImageDrawable(mFlagCanada);
                                 break;
+                            case GALAXY_15:
+                                imageView.setVisibility(View.VISIBLE);
+                                imageView.setImageDrawable(mFlagUsa);
+                                break;
                             case UNKNOWN:
                                 imageView.setVisibility(View.INVISIBLE);
                                 break;

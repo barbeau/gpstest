@@ -508,6 +508,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
+                case GALAXY_15:
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
+                    break;
             }
 
             c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
