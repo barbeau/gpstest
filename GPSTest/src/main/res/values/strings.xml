@@ -223,7 +223,9 @@
         <b>QZSS (Japan)</b>
         - Triangles\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
-        - Pentagons\n\n
+        - Pentagons\n&#8226;\u0020
+        <b>SBAS (GAGAN, Anik, Galaxy 15)</b>
+        - Triangles\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
         &#8226;\u0020 Thin outline - In view but not used in fix\n
