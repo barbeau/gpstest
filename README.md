@@ -22,6 +22,10 @@ Get early access to new GPSTest versions, and help us squash bugs! See our [Test
 
 Want to know how to output GNSS data to the system log for further analysis?  Check out our [Data Output and Logging](LOGGING.md) page.
 
+## License
+
+GPSTest is licensed under [Apache v2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
 ## Build Setup
 
 The below steps will help you build and run the project.  For a Developer's Guide and more details, see https://github.com/barbeau/gpstest/wiki
