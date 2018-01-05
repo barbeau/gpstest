@@ -81,7 +81,7 @@ If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease
 
 ### Contributing
 
-We welcome contributions to the project!  Please see our [Contributing Guide](https://github.com/barbeau/gpstest/blob/master/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
+We welcome contributions to the project!  Please see our [Contributing Guide](.github/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
 
 ## Troubleshooting
 
