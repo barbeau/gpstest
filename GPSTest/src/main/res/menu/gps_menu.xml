@@ -46,8 +46,14 @@
           android:orderInCategory="100"
           app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menu_whats_new"
+        android:title="@string/main_help_whatsnew_title"
+        android:orderInCategory="101"
+        app:showAsAction="never" />
+
     <item android:id="@+id/menu_help"
           android:title="@string/title_activity_help"
-          android:orderInCategory="101"
+        android:orderInCategory="102"
           app:showAsAction="never"/>
 </menu>

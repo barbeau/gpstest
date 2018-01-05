@@ -796,6 +796,10 @@ public class GpsTestActivity extends AppCompatActivity
                 // Show settings menu
                 startActivity(new Intent(this, Preferences.class));
                 return true;
+            case R.id.menu_whats_new:
+                // Show "What's New?"
+                showDialog(WHATSNEW_DIALOG);
+                return true;
             case R.id.menu_help:
                 // Show help
                 startActivity(new Intent(this, HelpActivity.class));
