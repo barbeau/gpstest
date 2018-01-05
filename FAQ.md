@@ -60,23 +60,15 @@ You can view the data output from GPSTest, including NMEA (Android 2.3 and highe
 
 ## What Android 7.0 devices support logging raw pseudorange and navigation messages?
 
-See the below table from [the team](https://github.com/google/gps-measurement-tools/pull/1#issuecomment-255582974) that worked on the [google/gps-measurement-tools](https://github.com/google/gps-measurement-tools) project.  The GPS World article ["Innovation: Precise positioning using raw GPS measurements from Android smartphones"](http://gpsworld.com/innovation-precise-positioning-using-raw-gps-measurements-from-android-smartphones/) also includes some useful information on this topic.
+Google is keeping a list on the [Raw GNSS Measurements page](https://developer.android.com/guide/topics/sensors/gnss.html#supported_devices).
 
-
-|  **Model** | **OS** | **Pseudorange and Pseudorange Rate** | **Nav data** | **Accumulated Delta Range or Carrier** | **HW clock** | **Raw** | **Meas.** | **Notes** |
-|  ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-|  Nexus 9 (Non cellular version) | N | -7.1 | yes | yes | yes | yes | GPS+ GLONASS | Raw measurements are always available. No duty cycling. |
-|  Nexus 5x | N | yes | no | no | no | Only GPS | Raw measurements are provided only when a fix available |  |
-|  Nexus 6P | N | yes | no | no | no | Only GPS | Raw measurements are provided only when a fix available |  |
-|  Pixel | N | yes | no | no | yes | Only GPS | Raw measurements are always available |  |
-|  Pixel XL | N | yes | no | no | yes | Only GPS | Raw measurements are always available |  |
-
-My own observations:
+Observations from users of the GPSTest app (which aren't on the above page):
 
 
 |  **Model** | **OS** | **Pseudorange and Pseudorange Rate** | **Nav data** | **Accumulated Delta Range or Carrier** | **HW clock** | **Raw** | **Meas.** | **Notes** |
 |  ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 |  LG G5 | N | 7.0 | no | |  | no | no |  |
+|  BQ Aquaris X5 Plus with Android | 7.1.1 |  | | |  | no | |  |
 
 ## Does GPSTest collect any personal information about me?
 
