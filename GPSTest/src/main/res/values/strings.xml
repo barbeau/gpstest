@@ -18,7 +18,7 @@
 */
 -->
 <resources>
-    <string name="app_name">GPS Test</string>
+    <string name="app_name">GPSTest</string>
 
     <string name="gps_status_tab">Status</string>
     <string name="gps_map_tab">Map</string>
