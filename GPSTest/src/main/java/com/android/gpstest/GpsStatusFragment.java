@@ -571,7 +571,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         return imageView;
                     case CARRIER_COLUMN:
                         if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-                            text = Float.toString(mCarrierFreqsHz[row]);
+                            if (mCarrierFreqsHz[row] != 0.0f) {
+                                // Convert Hz to MHz
+                                text = Float.toString(mCarrierFreqsHz[row] / 1000000.00f);
+                            }
                         }
                         break;
                     case SNR_COLUMN:
