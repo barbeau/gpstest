@@ -58,7 +58,6 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -698,22 +697,22 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void initGpsSwitch(Menu menu) {
-        MenuItem item = menu.findItem(R.id.gps_switch);
+        MenuItem item = menu.findItem(R.id.gps_switch_item);
         if (item != null) {
-            mSwitch = (SwitchCompat) MenuItemCompat.getActionView(item);
+            mSwitch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch);
             if (mSwitch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
                 mSwitch.setChecked(mStarted);
 
-                // Set up listener for GPS on/off switch, since custom menu items on Action Bar don't play
-                // well with ABS and we can't handle in onOptionsItemSelected()
-                mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Set up listener for GPS on/off switch
+                mSwitch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
                         // Turn GPS on or off
-                        if (!isChecked && mStarted) {
+                        if (!mSwitch.isChecked() && mStarted) {
                             gpsStop();
                         } else {
-                            if (isChecked && !mStarted) {
+                            if (mSwitch.isChecked() && !mStarted) {
                                 gpsStart();
                             }
                         }
@@ -741,7 +740,7 @@ public class GpsTestActivity extends AppCompatActivity
         // Handle menu item selection
         switch (item.getItemId()) {
             case R.id.gps_switch:
-                // Do nothing - this is handled by a separate listener added in onCreateOptionsMenu()
+
                 return true;
             case R.id.delete_aiding_data:
                 // If GPS is currently running, stop it

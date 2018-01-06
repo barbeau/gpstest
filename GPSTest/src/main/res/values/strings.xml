@@ -31,7 +31,7 @@
     <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
     <string name="delete_aiding_data_failure">Device does not support deleting aiding data.
     </string>
-    <string name="gps_switch">Switch</string>
+    <string name="gps_switch">Off/On</string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection">Inject Time</string>
