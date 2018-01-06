@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2008-2013 The Android Open Source Project,
- * Sean J. Barbeau
+ * Copyright (C) 2008-2018 The Android Open Source Project,
+ * Sean J. Barbeau (sjbarbeau@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
@@ -56,15 +57,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private static final int FLAG_IMAGE_COLUMN = 1;
 
-    private static final int SNR_COLUMN = 2;
+    private static final int CARRIER_COLUMN = 2;
 
-    private static final int ELEVATION_COLUMN = 3;
+    private static final int SNR_COLUMN = 3;
 
-    private static final int AZIMUTH_COLUMN = 4;
+    private static final int ELEVATION_COLUMN = 4;
 
-    private static final int FLAGS_COLUMN = 5;
+    private static final int AZIMUTH_COLUMN = 5;
 
-    private static final int COLUMN_COUNT = 6;
+    private static final int FLAGS_COLUMN = 6;
+
+    private static final int COLUMN_COUNT = 7;
 
     private static final String EMPTY_LAT_LONG = "             ";
 
@@ -80,7 +83,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private int mSvCount, mPrns[], mConstellationType[], mUsedInFixCount;
 
-    private float mSnrCn0s[], mSvElevations[], mSvAzimuths[];
+    private float mCarrierFreqsHz[], mSnrCn0s[], mSvElevations[], mSvAzimuths[];
 
     private String mSnrCn0Title;
 
@@ -147,6 +150,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mRes = getResources();
         View v = inflater.inflate(R.layout.gps_status, container,
                 false);
+
+        // If this device can't provide signal carrier frequencies (O and higher), then hide the column
+        TableLayout tableLayout = v.findViewById(R.id.lat_long_table);
+        tableLayout.setColumnCollapsed(CARRIER_COLUMN, !GpsTestUtil.isGnssCarrierFrequenciesSupported());
 
         mLatitudeView = (TextView) v.findViewById(R.id.latitude);
         mLongitudeView = (TextView) v.findViewById(R.id.longitude);
@@ -351,6 +358,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
              */
             final int MAX_LENGTH = 255;
             mPrns = new int[MAX_LENGTH];
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                mCarrierFreqsHz = new float[MAX_LENGTH];
+            }
             mSnrCn0s = new float[MAX_LENGTH];
             mSvElevations = new float[MAX_LENGTH];
             mSvAzimuths = new float[MAX_LENGTH];
@@ -367,6 +377,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
+            }
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
             mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
@@ -483,6 +496,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     case FLAG_IMAGE_COLUMN:
                         text = mRes.getString(R.string.gps_flag_image_label);
                         break;
+                    case CARRIER_COLUMN:
+                        if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                            text = mRes.getString(R.string.gps_carrier_column_label);
+                        }
+                        break;
                     case SNR_COLUMN:
                         text = mSnrCn0Title;
                         break;
@@ -551,6 +569,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                                 break;
                         }
                         return imageView;
+                    case CARRIER_COLUMN:
+                        if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                            text = Float.toString(mCarrierFreqsHz[row]);
+                        }
+                        break;
                     case SNR_COLUMN:
                         if (mSnrCn0s[row] != 0.0f) {
                             text = Float.toString(mSnrCn0s[row]);

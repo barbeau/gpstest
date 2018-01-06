@@ -149,6 +149,15 @@ public class GpsTestUtil {
     }
 
     /**
+     * Returns true if the platform supports providing carrier frequencies for each satellite, false if it does not
+     *
+     * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
+     */
+    public static boolean isGnssCarrierFrequenciesSupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
      * Creates a unique key to identify this satellite using a combination of both the svid and
      * constellation type
      *

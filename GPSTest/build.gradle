@@ -3,11 +3,10 @@ import groovy.swing.SwingBuilder
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 24
         versionName "2.2.0"
@@ -109,8 +108,7 @@ tasks.whenTaskAdded { theTask ->
 
 dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'org.jraf:android-switch-backport:1.4.0'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
     // Unit tests that don't rely on Android framework
     testCompile 'junit:junit:4.12'

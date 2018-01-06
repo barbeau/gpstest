@@ -51,6 +51,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -110,7 +111,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteNmeaTimestampToLog;
 
-    org.jraf.android.backport.switchwidget.Switch mSwitch;  //GPS on/off switch
+    private SwitchCompat mSwitch;  // GPS on/off switch
 
     SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -699,8 +700,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void initGpsSwitch(Menu menu) {
         MenuItem item = menu.findItem(R.id.gps_switch);
         if (item != null) {
-            mSwitch = (org.jraf.android.backport.switchwidget.Switch) MenuItemCompat
-                    .getActionView(item);
+            mSwitch = (SwitchCompat) MenuItemCompat.getActionView(item);
             if (mSwitch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
                 mSwitch.setChecked(mStarted);

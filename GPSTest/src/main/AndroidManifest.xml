@@ -44,7 +44,6 @@
             android:theme="@style/Theme.AppCompat">
 
         <activity android:name=".GpsTestActivity"
-                  android:theme="@style/GpsSwitchTheme"
                   android:configChanges="keyboard|keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

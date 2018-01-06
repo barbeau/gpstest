@@ -28,7 +28,9 @@
         android:showAsAction="ifRoom|withText"
         android:actionLayout="@layout/gps_switch" />  -->
 
-    <item android:id="@+id/gps_switch"
+    <item
+        android:id="@+id/gps_switch_item"
+        android:title="@string/gps_switch"
           app:showAsAction="ifRoom|withText"
           app:actionLayout="@layout/gps_switch"/>
 
