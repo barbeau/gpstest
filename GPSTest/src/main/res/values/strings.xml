@@ -72,7 +72,7 @@
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gps_flag_image_label">GNSS</string>
-    <string name="gps_carrier_column_label">Carrier (MHz)</string>
+    <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_elevation_column_label">Elev</string>
