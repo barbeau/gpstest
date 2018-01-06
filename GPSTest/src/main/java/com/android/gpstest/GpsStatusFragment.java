@@ -151,9 +151,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         View v = inflater.inflate(R.layout.gps_status, container,
                 false);
 
-        // If this device can't provide signal carrier frequencies (O and higher), then hide the column
         TableLayout tableLayout = v.findViewById(R.id.lat_long_table);
-        tableLayout.setColumnCollapsed(CARRIER_COLUMN, !GpsTestUtil.isGnssCarrierFrequenciesSupported());
+        // FIXME - the below line of code doesn't do anything - we need to modify gridView instead
+        //tableLayout.setColumnCollapsed(CARRIER_COLUMN, !GpsTestUtil.isGnssCarrierFrequenciesSupported());
+
 
         mLatitudeView = (TextView) v.findViewById(R.id.latitude);
         mLongitudeView = (TextView) v.findViewById(R.id.longitude);
