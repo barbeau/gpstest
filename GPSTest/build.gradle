@@ -110,6 +110,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     // Unit tests that don't rely on Android framework
     testCompile 'junit:junit:4.12'
 }
