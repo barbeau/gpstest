@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.MathUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -577,7 +578,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                     if (mCarrierFreqsHz[dataRow] != 0.0f) {
                         // Convert Hz to MHz
-                        v.getCarrierFrequency().setText(Float.toString(mCarrierFreqsHz[dataRow] / 1000000.00f));
+                        v.getCarrierFrequency().setText(Float.toString(MathUtils.toMhz(mCarrierFreqsHz[dataRow])));
+                        // TODO - If carrier signal can't be classified (e.g., not L1 or L5), then shrink text size and show full carrier frequency
+                        //v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
+                    } else {
+                        v.getCarrierFrequency().setText("");
                     }
                 }
                 if (mSnrCn0s[dataRow] != 0.0f) {
