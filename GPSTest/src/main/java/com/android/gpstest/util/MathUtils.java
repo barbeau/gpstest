@@ -33,4 +33,13 @@ public class MathUtils {
     public static float mod(float a, float b) {
         return (a % b + b) % b;
     }
+
+    /**
+     * Converts the provided number in Hz to MHz
+     * @param hertz value to be converted
+     * @return value converted to MHz
+     */
+    public static float toMhz(float hertz) {
+        return hertz / 1000000.00f;
+    }
 }

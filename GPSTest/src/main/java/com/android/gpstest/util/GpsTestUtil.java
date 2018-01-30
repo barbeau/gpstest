@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.gpstest.DilutionOfPrecision;
+import com.google.common.math.DoubleMath;
 
 import java.util.concurrent.TimeUnit;
 
@@ -146,6 +147,15 @@ public class GpsTestUtil {
      */
     public static boolean isGnssStatusListenerSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
+    }
+
+    /**
+     * Returns true if the platform supports providing carrier frequencies for each satellite, false if it does not
+     *
+     * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
+     */
+    public static boolean isGnssCarrierFrequenciesSupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
     /**
@@ -333,5 +343,120 @@ public class GpsTestUtil {
             Log.w(TAG, "Input must be a $GNGSA NMEA: " + nmeaSentence);
             return null;
         }
+    }
+
+    /**
+     * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
+     * frequency in MHz, and obtained from GnssStatus, or null if no carrier frequency label is
+     * found
+     *
+     * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
+     *                              method
+     * @param svid identification number provided by the GnssStatus.getSvid() method
+     * @param carrierFrequencyMhz carrier frequency for the signal in MHz
+     * @return the label that should be displayed for a given GNSS constellation, svid, and carrier
+     * frequency in MHz, all obtained from GnssStatus, or null if no carrier frequency label is found
+     */
+    public static String getCarrierFrequencyLabel(int gnssConstellationType, int svid, float carrierFrequencyMhz) {
+        final float TOLERANCE_MHZ = 1f;
+        switch (gnssConstellationType) {
+            case GnssStatus.CONSTELLATION_GPS:
+                // GnssType.NAVSTAR
+                if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                    return "L1";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1227.6f, TOLERANCE_MHZ)) {
+                    return "L2";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1381.05f, TOLERANCE_MHZ)) {
+                    return "L3";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1379.913f, TOLERANCE_MHZ)) {
+                    return "L4";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "L5";
+                }
+                break;
+            case GnssStatus.CONSTELLATION_GLONASS:
+                // GnssType.GLONASS
+                if (carrierFrequencyMhz >= 1598.0000f && carrierFrequencyMhz <= 1610.000f) {
+                    // Actual range is 1598.0625 MHz to 1609.3125, but allow padding for float comparisons - #103
+                    return "L1";
+                } else if (carrierFrequencyMhz >= 1242.0000f && carrierFrequencyMhz <= 1252.000f) {
+                    // Actual range is 1242.9375 - 1251.6875, but allow padding for float comparisons - #103
+                    return "L2";
+                } else if (carrierFrequencyMhz >= 1200.0000f && carrierFrequencyMhz <= 1210.000f) {
+                    // Exact range is unclear - appears to be 1202.025 - 1207.14 - #103
+                    return "L3";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "L5";
+                }
+                break;
+            case GnssStatus.CONSTELLATION_BEIDOU:
+                // GnssType.BEIDOU
+                if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1561.098f, TOLERANCE_MHZ)) {
+                    return "B1";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1589.742f, TOLERANCE_MHZ)) {
+                    return "B1-2";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1207.14f, TOLERANCE_MHZ)) {
+                    return "B2";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "B2a";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1268.52f, TOLERANCE_MHZ)) {
+                    return "B3";
+                }
+                break;
+            case GnssStatus.CONSTELLATION_QZSS:
+                // GnssType.QZSS;
+                if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                    return "L1";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1227.6f, TOLERANCE_MHZ)) {
+                    return "L2";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "L5";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1278.75f, TOLERANCE_MHZ)) {
+                    return "LEX";
+                }
+                break;
+            case GnssStatus.CONSTELLATION_GALILEO:
+                // GnssType.GALILEO;
+                if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                    return "E1";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1191.795f, TOLERANCE_MHZ)) {
+                    return "E5";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "E5a";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1207.14f, TOLERANCE_MHZ)) {
+                    return "E5b";
+                } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1278.75f, TOLERANCE_MHZ)) {
+                    return "E6";
+                }
+                break;
+            case GnssStatus.CONSTELLATION_SBAS:
+                if (svid == 127 || svid == 128 || svid == 139) {
+                    // GnssType.GAGAN
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    }
+                } else if (svid == 135) {
+                    // GnssType.GALAXY_15;
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                        return "L5";
+                    }
+                } else if (svid == 138) {
+                    // GnssType.ANIK;
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                        return "L5";
+                    }
+                }
+                break;
+            case GnssStatus.CONSTELLATION_UNKNOWN:
+                break;
+            default:
+                break;
+        }
+        // Unknown carrier frequency for given constellation and svid
+        return null;
     }
 }

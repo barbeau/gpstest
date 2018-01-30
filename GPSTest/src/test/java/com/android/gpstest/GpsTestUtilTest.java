@@ -15,6 +15,8 @@
  */
 package com.android.gpstest;
 
+import android.location.GnssStatus;
+
 import com.android.gpstest.util.GpsTestUtil;
 
 import org.junit.Test;
@@ -97,5 +99,118 @@ public class GpsTestUtilTest {
         assertEquals(2.5d, dop.getPositionDop());
         assertEquals(1.3d, dop.getHorizontalDop());
         assertEquals(2.1d, dop.getVerticalDop());
+    }
+
+    /**
+     * Test converting GNSS signal carrier frequencies to labels like "L1"
+     */
+    @Test
+    public void testGetCarrierFrequencyLabel() {
+        String label;
+
+        // NAVSTAR (GPS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1227.6f);
+        assertEquals("L2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1381.05f);
+        assertEquals("L3",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1379.913f);
+        assertEquals("L4",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1176.45f);
+        assertEquals("L5",label);
+
+        // GLONASS
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 	1598.0625f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 1609.3125f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 1242.9375f);
+        assertEquals("L2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 1251.6875f);
+        assertEquals("L2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 1202.025f);
+        assertEquals("L3",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 1207.14f);
+        assertEquals("L3",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GLONASS, 1, 	1176.45f);
+        assertEquals("L5",label);
+
+        // QZSS
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_QZSS, 1, 	1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_QZSS, 1, 	1227.6f);
+        assertEquals("L2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_QZSS, 1, 	1176.45f);
+        assertEquals("L5",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_QZSS, 1, 	1278.75f);
+        assertEquals("LEX",label);
+
+        // Galileo
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1575.42f);
+        assertEquals("E1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1191.795f);
+        assertEquals("E5",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1176.45f);
+        assertEquals("E5a",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1207.14f);
+        assertEquals("E5b",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1278.75f);
+        assertEquals("E6",label);
+
+        // Beidou
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_BEIDOU, 1, 	1561.098f);
+        assertEquals("B1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_BEIDOU, 1, 	1589.742f);
+        assertEquals("B1-2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_BEIDOU, 1, 	1207.14f);
+        assertEquals("B2",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_BEIDOU, 1, 	1176.45f);
+        assertEquals("B2a",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_BEIDOU, 1, 	1268.52f);
+        assertEquals("B3",label);
+
+        // GAGAN (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 127, 	1575.42f);
+        assertEquals("L1",label);
+
+        // Galaxy 15 (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 135, 	1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 135, 	1176.45f);
+        assertEquals("L5",label);
+
+        // ANIK F1R (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 138, 	1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 138, 	1176.45f);
+        assertEquals("L5",label);
+
+        // Test variations on the "same" numbers to make sure floating point equality works
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GPS, 1, 1575.420000f);
+        assertEquals("L1",label);
     }
 }

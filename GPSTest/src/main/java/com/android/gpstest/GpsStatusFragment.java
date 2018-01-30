@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 2008-2013 The Android Open Source Project,
- * Sean J. Barbeau
+ * Copyright (C) 2008-2018 The Android Open Source Project,
+ * Sean J. Barbeau (sjbarbeau@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 package com.android.gpstest;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
@@ -30,41 +29,29 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.MathUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
 
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private final static String TAG = "GpsStatusFragment";
-
-    private static final int PRN_COLUMN = 0;
-
-    private static final int FLAG_IMAGE_COLUMN = 1;
-
-    private static final int SNR_COLUMN = 2;
-
-    private static final int ELEVATION_COLUMN = 3;
-
-    private static final int AZIMUTH_COLUMN = 4;
-
-    private static final int FLAGS_COLUMN = 5;
-
-    private static final int COLUMN_COUNT = 6;
 
     private static final String EMPTY_LAT_LONG = "             ";
 
@@ -76,11 +63,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mAltitudeMslView, mAccuracyView, mSpeedView, mBearingView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView;
 
-    private SvGridAdapter mAdapter;
+    private RecyclerView mStatusList;
+
+    private GnssStatusAdapter mAdapter;
 
     private int mSvCount, mPrns[], mConstellationType[], mUsedInFixCount;
 
-    private float mSnrCn0s[], mSvElevations[], mSvAzimuths[];
+    private float mCarrierFreqsHz[], mSnrCn0s[], mSvElevations[], mSvAzimuths[];
 
     private String mSnrCn0Title;
 
@@ -145,8 +134,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             Bundle savedInstanceState) {
 
         mRes = getResources();
-        View v = inflater.inflate(R.layout.gps_status, container,
-                false);
+        View v = inflater.inflate(R.layout.gps_status, container,false);
 
         mLatitudeView = (TextView) v.findViewById(R.id.latitude);
         mLongitudeView = (TextView) v.findViewById(R.id.longitude);
@@ -174,11 +162,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
         mFlagCanada = getResources().getDrawable(R.drawable.ic_flag_canada);
 
-        GridView gridView = (GridView) v.findViewById(R.id.sv_grid);
-        mAdapter = new SvGridAdapter(getActivity());
-        gridView.setAdapter(mAdapter);
-        gridView.setFocusable(false);
-        gridView.setFocusableInTouchMode(false);
+        mStatusList = v.findViewById(R.id.status_list);
+        mAdapter = new GnssStatusAdapter();
+        mStatusList.setAdapter(mAdapter);
+        mStatusList.setFocusable(false);
+        mStatusList.setFocusableInTouchMode(false);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mStatusList.setLayoutManager(llm);
 
         GpsTestActivity.getInstance().addListener(this);
 
@@ -351,6 +342,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
              */
             final int MAX_LENGTH = 255;
             mPrns = new int[MAX_LENGTH];
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                mCarrierFreqsHz = new float[MAX_LENGTH];
+            }
             mSnrCn0s = new float[MAX_LENGTH];
             mSvElevations = new float[MAX_LENGTH];
             mSvAzimuths = new float[MAX_LENGTH];
@@ -367,6 +361,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
+            }
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
             mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
@@ -436,160 +433,201 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mAdapter.notifyDataSetChanged();
     }
 
-    private class SvGridAdapter extends BaseAdapter {
+    private class GnssStatusAdapter extends RecyclerView.Adapter<GnssStatusAdapter.ViewHolder> {
 
-        private Context mContext;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            private final TextView svId;
+            private final TextView gnssFlagHeader;
+            private final ImageView gnssFlag;
+            private final TextView carrierFrequency;
+            private final TextView signal;
+            private final TextView elevation;
+            private final TextView azimuth;
+            private final TextView statusFlags;
 
-        public SvGridAdapter(Context c) {
-            mContext = c;
-        }
-
-        public int getCount() {
-            // add 1 for header row
-            return (mSvCount + 1) * COLUMN_COUNT;
-        }
-
-        public Object getItem(int position) {
-            Log.d(TAG, "getItem(" + position + ")");
-            return "foo";
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = null;
-            ImageView imageView = null;
-
-            int row = position / COLUMN_COUNT;
-            int column = position % COLUMN_COUNT;
-
-            if (convertView != null) {
-                if (convertView instanceof ImageView) {
-                    imageView = (ImageView) convertView;
-                } else if (convertView instanceof TextView) {
-                    textView = (TextView) convertView;
-                }
+            ViewHolder(View v) {
+                super(v);
+                svId = v.findViewById(R.id.sv_id);
+                gnssFlagHeader = v.findViewById(R.id.gnss_flag_header);
+                gnssFlag = v.findViewById(R.id.gnss_flag);
+                carrierFrequency = v.findViewById(R.id.carrier_frequency);
+                signal = v.findViewById(R.id.signal);
+                elevation = v.findViewById(R.id.elevation);
+                azimuth = v.findViewById(R.id.azimuth);
+                statusFlags = v.findViewById(R.id.status_flags);
             }
 
-            CharSequence text = null;
+            public TextView getSvId() {
+                return svId;
+            }
 
-            if (row == 0) {
-                switch (column) {
-                    case PRN_COLUMN:
-                        text = mRes.getString(R.string.gps_prn_column_label);
-                        break;
-                    case FLAG_IMAGE_COLUMN:
-                        text = mRes.getString(R.string.gps_flag_image_label);
-                        break;
-                    case SNR_COLUMN:
-                        text = mSnrCn0Title;
-                        break;
-                    case ELEVATION_COLUMN:
-                        text = mRes.getString(R.string.gps_elevation_column_label);
-                        break;
-                    case AZIMUTH_COLUMN:
-                        text = mRes.getString(R.string.gps_azimuth_column_label);
-                        break;
-                    case FLAGS_COLUMN:
-                        text = mRes.getString(R.string.gps_flags_column_label);
-                        break;
+            public TextView getGnssFlagHeader() {
+                return gnssFlagHeader;
+            }
+
+            public ImageView getGnssFlag() {
+                return gnssFlag;
+            }
+
+            public TextView getCarrierFrequency() {
+                return carrierFrequency;
+            }
+
+            public TextView getSignal() {
+                return signal;
+            }
+
+            public TextView getElevation() {
+                return elevation;
+            }
+
+            public TextView getAzimuth() {
+                return azimuth;
+            }
+
+            public TextView getStatusFlags() {
+                return statusFlags;
+            }
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View v = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.status_row_item, viewGroup, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public int getItemCount() {
+            // Add 1 for header row
+            return mSvCount + 1;
+        }
+
+        public void onBindViewHolder(ViewHolder v, final int position) {
+            if (position == 0) {
+                // Show the header field for the GNSS flag and hide the ImageView
+                v.getGnssFlagHeader().setVisibility(View.VISIBLE);
+                v.getGnssFlag().setVisibility(View.GONE);
+
+                // Populate the header fields
+                v.getSvId().setText(mRes.getString(R.string.gps_prn_column_label));
+                v.getGnssFlagHeader().setText(mRes.getString(R.string.gps_flag_image_label));
+                if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                    v.getCarrierFrequency().setVisibility(View.VISIBLE);
+                    v.getCarrierFrequency().setText(mRes.getString(R.string.gps_carrier_column_label));
+                } else {
+                    v.getCarrierFrequency().setVisibility(View.GONE);
                 }
+                v.getSignal().setText(mSnrCn0Title);
+                v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_label));
+                v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_label));
+                v.getStatusFlags().setText(mRes.getString(R.string.gps_flags_column_label));
             } else {
-                row--;
-                switch (column) {
-                    case PRN_COLUMN:
-                        text = Integer.toString(mPrns[row]);
+                // There is a header at 0, so the first data row will be at position - 1, etc.
+                int dataRow = position - 1;
+
+                // Show the row field for the GNSS flag image and hide the header
+                v.getGnssFlagHeader().setVisibility(View.GONE);
+                v.getGnssFlag().setVisibility(View.VISIBLE);
+
+                // Populate status data for this row
+                v.getSvId().setText(Integer.toString(mPrns[dataRow]));
+                v.getGnssFlag().setScaleType(ImageView.ScaleType.FIT_START);
+
+                GnssType type;
+                if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
+                    type = GpsTestUtil.getGnssConstellationType(mConstellationType[dataRow], mPrns[dataRow]);
+                } else {
+                    type = GpsTestUtil.getGnssType(mPrns[dataRow]);
+                }
+                switch (type) {
+                    case NAVSTAR:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagUsa);
                         break;
-                    case FLAG_IMAGE_COLUMN:
-                        if (imageView == null) {
-                            imageView = new ImageView(mContext);
-                            imageView.setScaleType(ImageView.ScaleType.FIT_START);
-                        }
-                        GnssType type;
-                        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-                            type = GpsTestUtil.getGnssConstellationType(mConstellationType[row], mPrns[row]);
-                        } else {
-                            type = GpsTestUtil.getGnssType(mPrns[row]);
-                        }
-                        switch (type) {
-                            case NAVSTAR:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagUsa);
-                                break;
-                            case GLONASS:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagRussia);
-                                break;
-                            case QZSS:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagJapan);
-                                break;
-                            case BEIDOU:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagChina);
-                                break;
-                            case GALILEO:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagGalileo);
-                                break;
-                            case GAGAN:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagIndia);
-                                break;
-                            case ANIK:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagCanada);
-                                break;
-                            case GALAXY_15:
-                                imageView.setVisibility(View.VISIBLE);
-                                imageView.setImageDrawable(mFlagUsa);
-                                break;
-                            case UNKNOWN:
-                                imageView.setVisibility(View.INVISIBLE);
-                                break;
-                        }
-                        return imageView;
-                    case SNR_COLUMN:
-                        if (mSnrCn0s[row] != 0.0f) {
-                            text = Float.toString(mSnrCn0s[row]);
-                        } else {
-                            text = "";
-                        }
+                    case GLONASS:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagRussia);
                         break;
-                    case ELEVATION_COLUMN:
-                        if (mSvElevations[row] != 0.0f) {
-                            text = mRes.getString(R.string.gps_elevation_column_value,
-                                    Float.toString(mSvElevations[row]));
-                        } else {
-                            text = "";
-                        }
+                    case QZSS:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagJapan);
                         break;
-                    case AZIMUTH_COLUMN:
-                        if (mSvAzimuths[row] != 0.0f) {
-                            text = mRes.getString(R.string.gps_azimuth_column_value,
-                                    Float.toString(mSvAzimuths[row]));
-                        } else {
-                            text = "";
-                        }
+                    case BEIDOU:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagChina);
                         break;
-                    case FLAGS_COLUMN:
-                        char[] flags = new char[3];
-                        flags[0] = !mHasEphemeris[row] ? ' ' : 'E';
-                        flags[1] = !mHasAlmanac[row] ? ' ' : 'A';
-                        flags[2] = !mUsedInFix[row] ? ' ' : 'U';
-                        text = new String(flags);
+                    case GALILEO:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagGalileo);
+                        break;
+                    case GAGAN:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagIndia);
+                        break;
+                    case ANIK:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagCanada);
+                        break;
+                    case GALAXY_15:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagUsa);
+                        break;
+                    case UNKNOWN:
+                        v.getGnssFlag().setVisibility(View.INVISIBLE);
                         break;
                 }
-            }
+                if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                    if (mCarrierFreqsHz[dataRow] != 0.0f) {
+                        // Convert Hz to MHz
+                        float carrierMhz = MathUtils.toMhz(mCarrierFreqsHz[dataRow]);
+                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(mConstellationType[dataRow],
+                                mPrns[dataRow],
+                                carrierMhz);
+                        if (carrierLabel != null) {
+                            // Make sure it's the normal text size (in case it's previously been
+                            // resized to show raw number).  Use another TextView for default text size.
+                            v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_PX, v.getSvId().getTextSize());
+                            // Show label such as "L1"
+                            v.getCarrierFrequency().setText(carrierLabel);
+                        } else {
+                            // Shrink the size so we can show raw number
+                            v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
+                            // Show raw number for carrier frequency
+                            v.getCarrierFrequency().setText(Float.toString(carrierMhz));
+                        }
+                    } else {
+                        v.getCarrierFrequency().setText("");
+                    }
+                } else {
+                    v.getCarrierFrequency().setVisibility(View.GONE);
+                }
+                if (mSnrCn0s[dataRow] != 0.0f) {
+                    v.getSignal().setText(Float.toString(mSnrCn0s[dataRow]));
+                } else {
+                    v.getSignal().setText("");
+                }
 
-            if (textView == null) {
-                textView = new TextView(mContext);
-            }
+                if (mSvElevations[dataRow] != 0.0f) {
+                    v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
+                                    Float.toString(mSvElevations[dataRow])));
+                } else {
+                    v.getElevation().setText("");
+                }
 
-            textView.setText(text);
-            return textView;
+                if (mSvAzimuths[dataRow] != 0.0f) {
+                    v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
+                            Float.toString(mSvAzimuths[dataRow])));
+                } else {
+                    v.getAzimuth().setText("");
+                }
+
+                char[] flags = new char[3];
+                flags[0] = !mHasEphemeris[dataRow] ? ' ' : 'E';
+                flags[1] = !mHasAlmanac[dataRow] ? ' ' : 'A';
+                flags[2] = !mUsedInFix[dataRow] ? ' ' : 'U';
+                v.getStatusFlags().setText(new String(flags));
+            }
         }
     }
 }

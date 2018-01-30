@@ -31,6 +31,7 @@
     <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
     <string name="delete_aiding_data_failure">Device does not support deleting aiding data.
     </string>
+    <string name="gps_switch">Off/On</string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection">Inject Time</string>
@@ -71,6 +72,7 @@
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gps_flag_image_label">GNSS</string>
+    <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_elevation_column_label">Elev</string>
@@ -205,6 +207,8 @@
         - Estimated accuracy (radius in meters of 68% confidence)\n&#8226;\u0020
         <b>ID or PRN</b>
         - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
+        <b>CF</b>
+        - Label (e.g., "L1") for carrier frequency of the signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
         <b>SNR</b>
         - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>

@@ -15,13 +15,6 @@
 -->
 
 <resources>
-    <style name="Theme.Settings" parent="@style/GpsSwitchTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-
-        <item name="toolbarStyle">@style/Widget.Toolbar</item>
-    </style>
-
     <style name="Widget.Toolbar" parent="@style/Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:navigationIcon">?attr/homeAsUpIndicator</item>
