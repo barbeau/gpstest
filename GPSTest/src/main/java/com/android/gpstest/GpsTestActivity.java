@@ -51,13 +51,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,7 +110,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteNmeaTimestampToLog;
 
-    private SwitchCompat mSwitch;  // GPS on/off switch
+    private Switch mSwitch;  // GPS on/off switch
 
     SectionsPagerAdapter mSectionsPagerAdapter;
 
