@@ -208,7 +208,7 @@
         <b>ID or PRN</b>
         - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
         <b>CF</b>
-        - Carrier frequency of the signal being tracked, in MHz (on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
+        - Label (e.g., "L1") for carrier frequency of the signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
         <b>SNR</b>
         - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
