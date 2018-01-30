@@ -44,6 +44,8 @@ import com.android.gpstest.util.MathUtils;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
 
 
@@ -578,12 +580,27 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                     if (mCarrierFreqsHz[dataRow] != 0.0f) {
                         // Convert Hz to MHz
-                        v.getCarrierFrequency().setText(Float.toString(MathUtils.toMhz(mCarrierFreqsHz[dataRow])));
-                        // TODO - If carrier signal can't be classified (e.g., not L1 or L5), then shrink text size and show full carrier frequency
-                        //v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
+                        float carrierMhz = MathUtils.toMhz(mCarrierFreqsHz[dataRow]);
+                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(mConstellationType[dataRow],
+                                mPrns[dataRow],
+                                carrierMhz);
+                        if (carrierLabel != null) {
+                            // Make sure it's the normal text size (in case it's previously been
+                            // resized to show raw number).  Use another TextView for default text size.
+                            v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_PX, v.getSvId().getTextSize());
+                            // Show label such as "L1"
+                            v.getCarrierFrequency().setText(carrierLabel);
+                        } else {
+                            // Shrink the size so we can show raw number
+                            v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
+                            // Show raw number for carrier frequency
+                            v.getCarrierFrequency().setText(Float.toString(carrierMhz));
+                        }
                     } else {
                         v.getCarrierFrequency().setText("");
                     }
+                } else {
+                    v.getCarrierFrequency().setVisibility(View.GONE);
                 }
                 if (mSnrCn0s[dataRow] != 0.0f) {
                     v.getSignal().setText(Float.toString(mSnrCn0s[dataRow]));

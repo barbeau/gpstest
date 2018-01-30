@@ -376,13 +376,13 @@ public class GpsTestUtil {
                 break;
             case GnssStatus.CONSTELLATION_GLONASS:
                 // GnssType.GLONASS
-                if (carrierFrequencyMhz >=1598.0000f && carrierFrequencyMhz >=1610.000f) {
+                if (carrierFrequencyMhz >= 1598.0000f && carrierFrequencyMhz <= 1610.000f) {
                     // Actual range is 1598.0625 MHz to 1609.3125, but allow padding for float comparisons - #103
                     return "L1";
-                } else if (carrierFrequencyMhz >=1242.0000f && carrierFrequencyMhz >=1252.000f) {
+                } else if (carrierFrequencyMhz >= 1242.0000f && carrierFrequencyMhz <= 1252.000f) {
                     // Actual range is 1242.9375 - 1251.6875, but allow padding for float comparisons - #103
                     return "L2";
-                } else if (carrierFrequencyMhz >=1200.0000f && carrierFrequencyMhz >=1210.000f) {
+                } else if (carrierFrequencyMhz >= 1200.0000f && carrierFrequencyMhz <= 1210.000f) {
                     // Exact range is unclear - appears to be 1202.025 - 1207.14 - #103
                     return "L3";
                 } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
