@@ -235,9 +235,10 @@
         &#8226;\u0020 Thin outline - In view but not used in fix\n
         &#8226;\u0020 Bold outline - Used in fix\n\n
 
-        Expected SNR range is 0 dB (red) to 30 dB (green) on Android versions less than 7.0 \n
-        Expected SNR range is 10 dB (red) to 45 dB (green) on Android 7.0 and higher \n
-        Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher\n\n
+        &#8226;\u0020 Expected SNR range is 0 dB (red) to 30 dB (green) on Android versions less than 7.0. \n
+        &#8226;\u0020 Expected SNR range is 10 dB (red) to 45 dB (green) on Android 7.0 and higher. \n
+        &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
+        &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
         "<b>*** Acknowledgments ***</b>\n\n&#8226;\u0020
         <b>Mike Lockwood</b>
