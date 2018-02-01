@@ -16,8 +16,12 @@ The purpose of GPSTest is to give application developers and platform implemente
 
 Galileo support has been confirmed on the following devices:
 
-* [BQ Aquaris X5 Plus](https://groups.google.com/forum/m/#!topic/gpstest_android/SbvcUyGU67U)
-* [Huawei Mate 9](http://www.startlr.com/we-tried-galileo-huawei-mate-9-already-sees-the-european-satellites/)
+* BQ Aquaris X5 Plus (See [this post](https://groups.google.com/d/msg/gpstest_android/SbvcUyGU67U/cL8T9GX3BwAJ))
+* Huawei Mate 9 (See [this post](http://www.startlr.com/we-tried-galileo-huawei-mate-9-already-sees-the-european-satellites/))
+* Samsung Galaxy S8 and S8+ (See [this post](https://github.com/barbeau/gpstest/issues/58#issuecomment-319781535) and [official specs](http://www.samsung.com/global/galaxy/galaxy-s8/specs/) which say "Location (GPS, Galileo, Glonass, BeiDou) *Galileo and BeiDou coverage may be limited.")
+* OnePlus 5 (Android 7.1.1 / OxygenOS 4.5.8) (See [this post](https://github.com/barbeau/gpstest/issues/58#issuecomment-322124679))
+* Huawei P10 (See [this post](https://groups.google.com/forum/#!topic/gpstest_android/Kc_YOQLp35I) - Android 7.0, firmware version L29C432B171)
+* OnePlus 5T (See [this post](https://groups.google.com/forum/m/#!topic/gpstest_android/MCowNjKpVyo)) 
 
 ## What Android devices does GPSTest run on?
 
