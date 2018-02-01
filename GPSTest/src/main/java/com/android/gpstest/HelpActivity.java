@@ -52,20 +52,6 @@ public class HelpActivity extends AppCompatActivity {
 
         versionView.setText(version.toString());
 
-        // FIXME - fix performance issue with loading text from Play Services
-//        String googleOssLicense = null;
-//
-//        // License info for Google Play Services, if available
-//        try {
-//            GoogleApiAvailability gaa = GoogleApiAvailability.getInstance();
-//            googleOssLicense = gaa.getOpenSourceSoftwareLicenseInfo(this);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        if (googleOssLicense != null) {
-//            builder.append(googleOssLicense);
-//        }
-
         helpView.setText(R.string.help_text);
     }
 }
