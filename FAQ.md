@@ -13,6 +13,7 @@ The purpose of GPSTest is to give application developers and platform implemente
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
+* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15)
 
 Galileo support has been confirmed on the following devices:
 
@@ -22,6 +23,10 @@ Galileo support has been confirmed on the following devices:
 * OnePlus 5 (Android 7.1.1 / OxygenOS 4.5.8) (See [this post](https://github.com/barbeau/gpstest/issues/58#issuecomment-322124679))
 * Huawei P10 (See [this post](https://groups.google.com/forum/#!topic/gpstest_android/Kc_YOQLp35I) - Android 7.0, firmware version L29C432B171)
 * OnePlus 5T (See [this post](https://groups.google.com/forum/m/#!topic/gpstest_android/MCowNjKpVyo)) 
+
+For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
+
+If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
 
 ## What Android devices does GPSTest run on?
 
