@@ -185,7 +185,8 @@
 
     <string name="help_text">
         <b>Frequently Asked Questions (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n"
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
         <b>*** Status View ***</b>\n\n&#8226;\u0020
         <b>Latitude</b>
         - In decimal degrees (WGS 84)\n&#8226;\u0020
@@ -208,7 +209,7 @@
         <b>ID or PRN</b>
         - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
         <b>CF</b>
-        - Label (e.g., "L1") for carrier frequency of the signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
+        - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
         <b>SNR</b>
         - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
@@ -217,7 +218,7 @@
         - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
         for the satellite, (U) if the satellite was used in the latest fix\n\n
 
-        "<b>*** Sky View ***</b>\n\n&#8226;\u0020
+        <b>*** Sky View ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
         - Circles\n&#8226;\u0020
         <b>GLONASS (Russia)</b>
@@ -240,12 +241,8 @@
         &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
         &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
-        "<b>*** Acknowledgments ***</b>\n\n&#8226;\u0020
-        <b>Mike Lockwood</b>
-        - original developer for v1.x\n&#8226;\u0020
-        <b>Sean Barbeau</b>
-        - developer for v2.x and higher\n&#8226;\u0020
-        <b>android-switch-backport</b>
-        - https://github.com/BoD/android-switch-backport
+        <b>*** Acknowledgments ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
     </string>
 </resources>
