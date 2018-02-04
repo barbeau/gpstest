@@ -42,6 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
+        android:layout_marginTop="-2.5dp"
+        android:layout_marginBottom="-2.5dp"
         android:layout_marginRight="@dimen/column_padding"
         android:layout_marginEnd="@dimen/column_padding"
         android:visibility="gone"/>
