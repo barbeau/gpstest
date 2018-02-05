@@ -56,9 +56,15 @@ public class GpsTestUtil {
      */
     @Deprecated
     public static GnssType getGnssType(int prn) {
-        if (prn >= 40 && prn <= 41) {
+        if (prn >= 1 && prn <= 32) {
+            return GnssType.NAVSTAR;
+        } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
             return GnssType.GAGAN;
+        } else if (prn == 48) {
+            return GnssType.GALAXY_15;
+        } else if (prn == 51) {
+            return GnssType.ANIK;
         } else if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
             return GnssType.GLONASS;
@@ -71,8 +77,6 @@ public class GpsTestUtil {
         } else if (prn >= 301 && prn <= 330) {
             // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
             return GnssType.GALILEO;
-        } else if (prn >= 1 && prn <= 32) {
-            return GnssType.NAVSTAR;
         } else {
             return GnssType.UNKNOWN;
         }
