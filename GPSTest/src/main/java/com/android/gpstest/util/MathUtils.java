@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 The Android Open Source Project
+ * Copyright (C) 2013-2018 The Android Open Source Project, Sean J. Barbeau (sjbarbeau@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,13 +18,14 @@ package com.android.gpstest.util;
 /**
  * A utility class containing arithmetic and geometry helper methods.
  *
- * (from Glass Compass sample)
  */
 public class MathUtils {
 
     /**
      * Calculates {@code a mod b} in a way that respects negative values (for example,
      * {@code mod(-1, 5) == 4}, rather than {@code -1}).
+     *
+     * (from Glass Compass sample)
      *
      * @param a the dividend
      * @param b the divisor
