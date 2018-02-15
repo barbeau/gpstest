@@ -512,7 +512,15 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;
+                case INMARSAT_3F2:
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
+                    break;
                 case INMARSAT_4F3:
+                    // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                    drawTriangle(c, x, y, fillPaint, strokePaint);
+                    break;
+                case SES_5:
                     // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
                     drawTriangle(c, x, y, fillPaint, strokePaint);
                     break;

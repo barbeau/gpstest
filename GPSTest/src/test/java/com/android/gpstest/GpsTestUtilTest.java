@@ -195,6 +195,10 @@ public class GpsTestUtilTest {
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 127, 	1575.42f);
         assertEquals("L1",label);
 
+        // INMARSAT_3F2 (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 120, 	1575.42f);
+        assertEquals("L1",label);
+
         // INMARSAT_4F3 (SBAS)
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 133, 	1575.42f);
         assertEquals("L1",label);
@@ -214,6 +218,13 @@ public class GpsTestUtilTest {
         assertEquals("L1",label);
 
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 138, 	1176.45f);
+        assertEquals("L5",label);
+
+        // SES_5 (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 136, 	1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 136, 	1176.45f);
         assertEquals("L5",label);
 
         // Test variations on the "same" numbers to make sure floating point equality works

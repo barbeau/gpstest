@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008, The Android Open Source Project
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -229,7 +229,7 @@
         - Triangles\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15)</b>
+        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)</b>
         - Triangles\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n

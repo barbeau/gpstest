@@ -58,6 +58,8 @@ public class GpsTestUtil {
     public static GnssType getGnssType(int prn) {
         if (prn >= 1 && prn <= 32) {
             return GnssType.NAVSTAR;
+        } else if (prn == 33) {
+            return GnssType.INMARSAT_3F2;
         } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
             return GnssType.GAGAN;
@@ -65,6 +67,8 @@ public class GpsTestUtil {
             return GnssType.INMARSAT_4F3;
         } else if (prn == 48) {
             return GnssType.GALAXY_15;
+        } else if (prn == 49) {
+            return GnssType.SES_5;
         } else if (prn == 51) {
             return GnssType.ANIK;
         } else if (prn >= 65 && prn <= 96) {
@@ -107,12 +111,16 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GnssType.GALILEO;
             case GnssStatus.CONSTELLATION_SBAS:
-                if (svid == 127 || svid == 128 || svid == 139) {
+                if (svid == 120) {
+                    return GnssType.INMARSAT_3F2;
+                } else if (svid == 127 || svid == 128 || svid == 139) {
                     return GnssType.GAGAN;
                 } else if (svid == 133) {
                     return GnssType.INMARSAT_4F3;
                 } else if (svid == 135) {
                     return GnssType.GALAXY_15;
+                } else if (svid == 136) {
+                    return GnssType.SES_5;
                 } else if (svid == 138) {
                     return GnssType.ANIK;
                 }
@@ -438,7 +446,12 @@ public class GpsTestUtil {
                 }
                 break;
             case GnssStatus.CONSTELLATION_SBAS:
-                if (svid == 127 || svid == 128 || svid == 139) {
+                if (svid == 120) {
+                    // GnssType.INMARSAT_3F2
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    }
+                } else if (svid == 127 || svid == 128 || svid == 139) {
                     // GnssType.GAGAN
                     if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
@@ -452,6 +465,13 @@ public class GpsTestUtil {
                     }
                 } else if (svid == 135) {
                     // GnssType.GALAXY_15;
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                        return "L5";
+                    }
+                }  else if (svid == 136) {
+                    // GnssType.SES_5;
                     if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
