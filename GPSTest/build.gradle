@@ -109,8 +109,10 @@ tasks.whenTaskAdded { theTask ->
 dependencies {
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.google.maps.android:android-maps-utils:0.4.4'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
+    // Calculating offset for camera target in map view
+    compile 'com.google.maps.android:android-maps-utils:0.4.4'
     // Comparing carrier frequency floating point values
     compile group: 'com.google.guava', name: 'guava', version: '23.6-android'
     // Unit tests that don't rely on Android framework

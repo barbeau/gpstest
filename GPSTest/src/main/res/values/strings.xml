@@ -24,6 +24,9 @@
     <string name="gps_map_tab">Map</string>
     <string name="gps_sky_tab">Sky</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="gps_start">Start</string>
     <string name="gps_pause">Pause</string>
     <string name="menu_settings">Settings</string>

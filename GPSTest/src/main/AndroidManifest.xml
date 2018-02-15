@@ -40,11 +40,12 @@
     <application
             android:name=".Application"
             android:label="@string/app_name"
-            android:icon="@drawable/gpstest_icon"
-            android:theme="@style/Theme.AppCompat">
+            android:icon="@mipmap/ic_launcher"
+            android:theme="@style/AppTheme">
 
         <activity android:name=".GpsTestActivity"
-                  android:configChanges="keyboard|keyboardHidden|orientation">
+                  android:configChanges="keyboard|keyboardHidden|orientation"
+                  android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

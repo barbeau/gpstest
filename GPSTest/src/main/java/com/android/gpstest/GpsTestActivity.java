@@ -47,16 +47,21 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentTransaction;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,7 +69,6 @@ import android.widget.Toast;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 import java.util.ArrayList;
 
@@ -74,8 +78,8 @@ import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements LocationListener, android.support.v7.app.ActionBar.TabListener,
-        SensorEventListener {
+        implements LocationListener, SensorEventListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "GpsTestActivity";
 
@@ -113,8 +117,6 @@ public class GpsTestActivity extends AppCompatActivity
     private Switch mSwitch;  // GPS on/off switch
 
     SectionsPagerAdapter mSectionsPagerAdapter;
-
-    ViewPagerMapBevelScroll mViewPager;
 
     private LocationManager mLocationManager;
 
@@ -186,8 +188,27 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
         }
 
-        initActionBar(savedInstanceState);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                        new String[]{"One", "Two", "Three"});
+
+        ListView listView = findViewById(R.id.lst_menu_items);
+        listView.setAdapter(itemsAdapter);
+
+        // Apply settings from preferences
         SharedPreferences settings = Application.getPrefs();
 
         double tempMinTime = Double.valueOf(
@@ -257,6 +278,30 @@ public class GpsTestActivity extends AppCompatActivity
             removeGnssMeasurementsListener();
         }
         super.onPause();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     static GpsTestActivity getInstance() {
@@ -633,22 +678,23 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkKeepScreenOn(SharedPreferences settings) {
-        if (mViewPager != null) {
-            if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                mViewPager.setKeepScreenOn(true);
-            } else {
-                mViewPager.setKeepScreenOn(false);
-            }
-        } else {
-            View v = findViewById(R.id.large_screen_layout);
-            if (v != null && mIsLargeScreen) {
-                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                    v.setKeepScreenOn(true);
-                } else {
-                    v.setKeepScreenOn(false);
-                }
-            }
-        }
+        //TODO - update below to use another view instead of view pager
+//        if (mViewPager != null) {
+//            if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+//                mViewPager.setKeepScreenOn(true);
+//            } else {
+//                mViewPager.setKeepScreenOn(false);
+//            }
+//        } else {
+//            View v = findViewById(R.id.large_screen_layout);
+//            if (v != null && mIsLargeScreen) {
+//                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+//                    v.setKeepScreenOn(true);
+//                } else {
+//                    v.setKeepScreenOn(false);
+//                }
+//            }
+//        }
     }
 
     private void checkTrueNorth(SharedPreferences settings) {
@@ -950,61 +996,6 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(tab.getPosition());
-        }
-    }
-
-    @Override
-    public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    private void initActionBar(Bundle savedInstanceState) {
-        // Set up the action bar.
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
-
-        // If we don't have a large screen, set up the tabs using the ViewPager
-        if (!mIsLargeScreen) {
-            //  page adapter contains all the fragment registrations
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = (ViewPagerMapBevelScroll) findViewById(R.id.pager);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            mViewPager.setOffscreenPageLimit(2);
-
-            // When swiping between different sections, select the corresponding
-            // tab. We can also use ActionBar.Tab#select() to do this if we have a
-            // reference to the Tab.
-            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    actionBar.setSelectedNavigationItem(position);
-                }
-            });
-            // For each of the sections in the app, add a tab to the action bar.
-            for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-                // Create a tab with text corresponding to the page title defined by
-                // the adapter. Also specify this Activity object, which implements
-                // the TabListener interface, as the listener for when this tab is
-                // selected.
-                actionBar.addTab(actionBar.newTab()
-                        .setText(mSectionsPagerAdapter.getPageTitle(i))
-                        .setTabListener(this));
-            }
-        }
-    }
-
     /**
      * Show the "What's New" message if a new version was just installed
      */
@@ -1049,7 +1040,7 @@ public class GpsTestActivity extends AppCompatActivity
         android.support.v7.app.AlertDialog.Builder builder
                 = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle(R.string.main_help_whatsnew_title);
-        builder.setIcon(R.drawable.gpstest_icon);
+        builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(textView);
         builder.setNeutralButton(R.string.main_help_close,
                 new DialogInterface.OnClickListener() {
