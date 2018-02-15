@@ -48,7 +48,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -80,8 +79,7 @@ import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements LocationListener, SensorEventListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        implements LocationListener, SensorEventListener {
 
     private static final String TAG = "GpsTestActivity";
 
@@ -275,8 +273,6 @@ public class GpsTestActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this); // TODO - do we need this?
         String navDrawerTitles[] = getResources().getStringArray(R.array.nav_drawer_titles);
         TypedArray navDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
 
@@ -291,33 +287,10 @@ public class GpsTestActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long itemId) {
                 Log.d(TAG, "Clicked " + position);
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-        Log.d(TAG, "Selected item = " + id);
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     @Override
