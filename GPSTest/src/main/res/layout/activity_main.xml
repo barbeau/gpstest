@@ -63,10 +63,11 @@
                 android:orientation="vertical">
 
                 <ListView
-                    android:id="@+id/lst_menu_items"
+                    android:id="@+id/nav_drawer_list"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@color/navdrawer_background"/>
             </LinearLayout>
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>

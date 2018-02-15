@@ -20,9 +20,9 @@
 <resources>
     <string name="app_name">GPSTest</string>
 
-    <string name="gps_status_tab">Status</string>
-    <string name="gps_map_tab">Map</string>
-    <string name="gps_sky_tab">Sky</string>
+    <string name="gps_status_title">Status</string>
+    <string name="gps_map_title">Map</string>
+    <string name="gps_sky_title">Sky</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

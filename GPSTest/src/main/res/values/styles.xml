@@ -29,6 +29,13 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!-- Navigation Drawer -->
+    <style name="NavDrawerListItem" parent="Widget.AppCompat.ListView.Menu">
+        <item name="android:background">@drawable/navdrawer_item_selectable</item>
+        <item name="android:shape">oval</item>
+    </style>
+
+    <!-- GNSS Status view -->
     <style name="info_label">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>

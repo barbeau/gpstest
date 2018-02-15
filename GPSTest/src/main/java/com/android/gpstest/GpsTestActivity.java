@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -60,7 +61,7 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.Intent.createChooser;
 import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
@@ -191,22 +193,7 @@ public class GpsTestActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ArrayAdapter<String> itemsAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                        new String[]{"One", "Two", "Three"});
-
-        ListView listView = findViewById(R.id.lst_menu_items);
-        listView.setAdapter(itemsAdapter);
+        setupNavigationDrawer(toolbar);
 
         // Apply settings from preferences
         SharedPreferences settings = Application.getPrefs();
@@ -280,6 +267,34 @@ public class GpsTestActivity extends AppCompatActivity
         super.onPause();
     }
 
+    public void setupNavigationDrawer(Toolbar toolbar) {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this); // TODO - do we need this?
+        String navDrawerTitles[] = getResources().getStringArray(R.array.nav_drawer_titles);
+        TypedArray navDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+
+        List<NavDrawerItem> navDrawerItems = new ArrayList<>();
+        for (int i = 0; i < navDrawerTitles.length; i++) {
+            navDrawerItems.add(new NavDrawerItem(navDrawerIcons.getResourceId(i, -1), navDrawerTitles[i]));
+        }
+
+        ListView listView = findViewById(R.id.nav_drawer_list);
+        listView.setAdapter(new NavDrawerAdapter(this, navDrawerItems));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long itemId) {
+                Log.d(TAG, "Clicked " + position);
+            }
+        });
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -298,10 +313,21 @@ public class GpsTestActivity extends AppCompatActivity
 //        } else if (id == R.id.nav_send) {
 //
 //        }
+        Log.d(TAG, "Selected item = " + id);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     static GpsTestActivity getInstance() {

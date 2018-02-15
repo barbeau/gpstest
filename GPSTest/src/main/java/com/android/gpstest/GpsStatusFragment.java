@@ -529,7 +529,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 int dataRow = position - 1;
 
-                // Show the row field for the GNSS flag image and hide the header
+                // Show the row field for the GNSS flag mImage and hide the header
                 v.getGnssFlagHeader().setVisibility(View.GONE);
                 v.getGnssFlag().setVisibility(View.VISIBLE);
 
