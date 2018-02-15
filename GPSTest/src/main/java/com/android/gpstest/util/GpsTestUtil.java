@@ -61,6 +61,8 @@ public class GpsTestUtil {
         } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
             return GnssType.GAGAN;
+        } else if (prn == 46) {
+            return GnssType.INMARSAT_4F3;
         } else if (prn == 48) {
             return GnssType.GALAXY_15;
         } else if (prn == 51) {
@@ -107,6 +109,8 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_SBAS:
                 if (svid == 127 || svid == 128 || svid == 139) {
                     return GnssType.GAGAN;
+                } else if (svid == 133) {
+                    return GnssType.INMARSAT_4F3;
                 } else if (svid == 135) {
                     return GnssType.GALAXY_15;
                 } else if (svid == 138) {
@@ -438,6 +442,13 @@ public class GpsTestUtil {
                     // GnssType.GAGAN
                     if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
+                    }
+                } else if (svid == 133) {
+                    // GnssType.INMARSAT_4F3;
+                    if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                        return "L1";
+                    } else if (DoubleMath.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                        return "L5";
                     }
                 } else if (svid == 135) {
                     // GnssType.GALAXY_15;

@@ -79,7 +79,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private boolean mNavigating;
 
-    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia, mFlagCanada;
+    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia, mFlagCanada, mFlagUnitedKingdom;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -161,6 +161,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
         mFlagCanada = getResources().getDrawable(R.drawable.ic_flag_canada);
+        mFlagUnitedKingdom = getResources().getDrawable(R.drawable.ic_flag_united_kingdom);
 
         mStatusList = v.findViewById(R.id.status_list);
         mAdapter = new GnssStatusAdapter();
@@ -572,6 +573,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     case GALAXY_15:
                         v.getGnssFlag().setVisibility(View.VISIBLE);
                         v.getGnssFlag().setImageDrawable(mFlagUsa);
+                        break;
+                    case INMARSAT_4F3:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
                         break;
                     case UNKNOWN:
                         v.getGnssFlag().setVisibility(View.INVISIBLE);

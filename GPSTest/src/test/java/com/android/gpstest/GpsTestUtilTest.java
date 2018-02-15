@@ -195,6 +195,13 @@ public class GpsTestUtilTest {
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 127, 	1575.42f);
         assertEquals("L1",label);
 
+        // INMARSAT_4F3 (SBAS)
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 133, 	1575.42f);
+        assertEquals("L1",label);
+
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 133, 	1176.45f);
+        assertEquals("L5",label);
+
         // Galaxy 15 (SBAS)
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_SBAS, 135, 	1575.42f);
         assertEquals("L1",label);
