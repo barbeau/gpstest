@@ -17,16 +17,6 @@
 
 package com.android.gpstest;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.maps.android.SphericalUtil;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,6 +34,16 @@ import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.maps.android.SphericalUtil;
 
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
@@ -71,7 +71,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
 
-    private final static String TAG = "GpsMapFragment";
+    public final static String TAG = "GpsMapFragment";
 
     Bundle mSavedInstanceState;
 

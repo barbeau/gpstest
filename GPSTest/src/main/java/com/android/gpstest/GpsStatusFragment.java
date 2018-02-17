@@ -51,7 +51,7 @@ import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
-    private final static String TAG = "GpsStatusFragment";
+    public final static String TAG = "GpsStatusFragment";
 
     private static final String EMPTY_LAT_LONG = "             ";
 

@@ -48,6 +48,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -307,19 +308,19 @@ public class GpsTestActivity extends AppCompatActivity
         switch (item) {
             case NAVDRAWER_ITEM_STATUS:
                 if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
-                    //showStatusFragment();
+                    showStatusFragment();
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
             case NAVDRAWER_ITEM_MAP:
-                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
-                    //showMapFragment();
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_MAP) {
+                    showMapFragment();
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
             case NAVDRAWER_ITEM_SKY:
                 if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_SKY) {
-                    //showSkyFragment();
+                    showSkyFragment();
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
@@ -345,6 +346,114 @@ public class GpsTestActivity extends AppCompatActivity
     // Return true if this HomeActivity has no active content fragments
     private boolean noActiveFragments() {
         return mStatusFragment == null && mMapFragment == null && mSkyFragment == null;
+    }
+
+    private void showStatusFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideMapFragment();
+        hideSkyFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mStatusFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
+
+            if (mStatusFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsStatusFragment");
+                mStatusFragment = new GpsStatusFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mStatusFragment, GpsStatusFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mStatusFragment).commit();
+        setTitle(getResources().getString(R.string.gps_status_title));
+    }
+
+    private void hideStatusFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
+        if (mStatusFragment != null && !mStatusFragment.isHidden()) {
+            fm.beginTransaction().hide(mStatusFragment).commit();
+        }
+    }
+
+    private void showMapFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideSkyFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mMapFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+
+            if (mMapFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsMapFragment");
+                mMapFragment = new GpsMapFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mMapFragment, GpsMapFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
+        setTitle(getResources().getString(R.string.gps_map_title));
+    }
+
+    private void hideMapFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+        if (mMapFragment != null && !mMapFragment.isHidden()) {
+            fm.beginTransaction().hide(mMapFragment).commit();
+        }
+    }
+
+    private void showSkyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideMapFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mSkyFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
+
+            if (mSkyFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsStatusFragment");
+                mSkyFragment = new GpsSkyFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mSkyFragment, GpsSkyFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mSkyFragment).commit();
+        setTitle(getResources().getString(R.string.gps_sky_title));
+    }
+
+    private void hideSkyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
+        if (mSkyFragment != null && !mSkyFragment.isHidden()) {
+            fm.beginTransaction().hide(mSkyFragment).commit();
+        }
     }
 
     @Override

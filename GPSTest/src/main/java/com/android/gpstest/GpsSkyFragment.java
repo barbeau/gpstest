@@ -47,7 +47,7 @@ import java.util.Iterator;
 
 public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
-    private final static String TAG = "GpsSkyFragment";
+    public final static String TAG = "GpsSkyFragment";
 
     // View dimensions, to draw the compass with the correct width and height
     public static int mHeight;
