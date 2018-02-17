@@ -95,9 +95,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     // icons for navdrawer items (indices must correspond to above array)
     private static final int[] NAVDRAWER_ICON_RES_ID = new int[]{
-            R.drawable.ic_wireless_inverted,  // Nearby
-            R.drawable.ic_map, // Starred Stops
-            R.drawable.ic_sky, // My reminders
+            R.drawable.ic_wireless_inverted,  // Status
+            R.drawable.ic_map, // Map
+            R.drawable.ic_sky, // Sky
             0, // Settings
             0, // Help
             0, // Send feedback
@@ -106,9 +106,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     // Secondary navdrawer item icons that appear align to right of list item layout
     private static final int[] NAVDRAWER_ICON_SECONDARY_RES_ID = new int[]{
-            0,  // Nearby
-            0, // Starred Stops
-            0, // My reminders
+            0,  // Status
+            0, // Map
+            0, // Sky
             0, // Settings
             0, // Help
             0, // Send feedback
