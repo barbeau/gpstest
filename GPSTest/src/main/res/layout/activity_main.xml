@@ -41,7 +41,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/drawer_layout"
+        android:id="@+id/nav_drawer_left_pane"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
@@ -51,22 +51,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="match_parent"
+        <!-- The drawer is given a fixed width in dp and extends the full height of
+             the container. -->
+        <fragment android:id="@+id/navigation_drawer"
+            android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
-            android:layout_gravity="start">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/nav_drawer_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
-        </android.support.design.widget.NavigationView>
+            android:layout_gravity="start"
+            android:name="com.android.gpstest.NavigationDrawerFragment"
+            tools:layout="@layout/navigation_drawer"/>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

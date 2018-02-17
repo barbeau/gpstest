@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -42,6 +41,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.location.OnNmeaMessageListener;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,7 +51,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -60,8 +59,6 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,15 +68,20 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Intent.createChooser;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
 import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements LocationListener, SensorEventListener {
+        implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "GpsTestActivity";
 
@@ -92,6 +94,27 @@ public class GpsTestActivity extends AppCompatActivity
     static boolean mIsLargeScreen = false;
 
     private static GpsTestActivity sInstance;
+
+    /**
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    /**
+     * Currently selected navigation drawer position (so we don't unnecessarily swap fragments
+     * if the same item is selected).  Initialized to -1 so the initial callback from
+     * NavigationDrawerFragment always instantiates the fragments
+     */
+    private int mCurrentNavDrawerPosition = -1;
+
+    //
+    // Fragments controlled by the nav drawer
+    //
+    private GpsStatusFragment mStatusFragment;
+
+    private GpsMapFragment mMapFragment;
+
+    private GpsSkyFragment mSkyFragment;
 
     // Holds sensor data
     private static float[] mRotationMatrix = new float[16];
@@ -115,8 +138,6 @@ public class GpsTestActivity extends AppCompatActivity
     boolean mWriteNmeaTimestampToLog;
 
     private Switch mSwitch;  // GPS on/off switch
-
-    SectionsPagerAdapter mSectionsPagerAdapter;
 
     private LocationManager mLocationManager;
 
@@ -188,10 +209,11 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
         }
 
+        // TODO - do we need to get rid of this toolbar?
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setupNavigationDrawer(toolbar);
+        setupNavigationDrawer();
 
         // Apply settings from preferences
         SharedPreferences settings = Application.getPrefs();
@@ -265,37 +287,69 @@ public class GpsTestActivity extends AppCompatActivity
         super.onPause();
     }
 
-    public void setupNavigationDrawer(Toolbar toolbar) {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+    private void setupNavigationDrawer() {
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        String navDrawerTitles[] = getResources().getStringArray(R.array.nav_drawer_titles);
-        TypedArray navDrawerIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
+    }
 
-        List<NavDrawerItem> navDrawerItems = new ArrayList<>();
-        for (int i = 0; i < navDrawerTitles.length; i++) {
-            navDrawerItems.add(new NavDrawerItem(navDrawerIcons.getResourceId(i, -1), navDrawerTitles[i]));
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        goToNavDrawerItem(position);
+    }
+
+    private void goToNavDrawerItem(int item) {
+        // Update the main content by replacing fragments
+        switch (item) {
+            case NAVDRAWER_ITEM_STATUS:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
+                    //showStatusFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_MAP:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
+                    //showMapFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_SKY:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_SKY) {
+                    //showSkyFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_SETTINGS:
+                startActivity(new Intent(this, Preferences.class));
+                break;
+            case NAVDRAWER_ITEM_HELP:
+                if (noActiveFragments()) {
+                    //showStatusFragment();
+                }
+                // TODO - Show help menu (What's new, Tutorial video, About)
+                //showDialog(HELP_DIALOG);
+                break;
+            case NAVDRAWER_ITEM_OPEN_SOURCE:
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(getString(R.string.open_source_github)));
+                startActivity(i);
+                break;
         }
+        invalidateOptionsMenu();
+    }
 
-        ListView listView = findViewById(R.id.nav_drawer_list);
-        listView.setAdapter(new NavDrawerAdapter(this, navDrawerItems));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long itemId) {
-                Log.d(TAG, "Clicked " + position);
-                DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        });
+    // Return true if this HomeActivity has no active content fragments
+    private boolean noActiveFragments() {
+        return mStatusFragment == null && mMapFragment == null && mSkyFragment == null;
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.nav_drawer_left_pane);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

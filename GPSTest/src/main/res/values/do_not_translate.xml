@@ -59,4 +59,6 @@
     <string name="gps_benchmark_url">
         http://play.google.com/store/apps/details?id=com.gpsbenchmark.android
     </string>
+    <!-- Open-source link for Github project -->
+    <string name="open_source_github">https://github.com/barbeau/gpstest</string>
 </resources>
