@@ -42,6 +42,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingRight">4dip</item>
+        <item name="android:textColor">@color/body_text_2</item>
     </style>
 
     <style name="info_value">
@@ -49,6 +50,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/body_text_2</item>
     </style>
 </resources>
 

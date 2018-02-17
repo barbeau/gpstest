@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         android:minWidth="40dp"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
     <TextView
         android:id="@+id/gnss_flag_header"
         android:layout_width="wrap_content"
@@ -36,7 +37,8 @@
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
         android:layout_marginEnd="@dimen/column_padding"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:textColor="@color/body_text_2"/>
     <ImageView
         android:id="@+id/gnss_flag"
         android:layout_width="wrap_content"
@@ -53,33 +55,38 @@
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
     <TextView
         android:id="@+id/signal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
     <TextView
         android:id="@+id/elevation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
     <TextView
         android:id="@+id/azimuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
     <TextView
         android:id="@+id/status_flags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding" />
+        android:layout_marginEnd="@dimen/column_padding"
+        android:textColor="@color/body_text_2"/>
 </LinearLayout>

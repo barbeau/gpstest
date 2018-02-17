@@ -30,6 +30,7 @@
     <color name="body_text_1">#de000000</color>
     <color name="body_text_2">#8a000000</color>
     <color name="body_text_3">#60000000</color>
+    <color name="status_background">#eaeaea</color>
 
     <!-- GNSS Sky View -->
     <color name="not_in_view_sat">#11000000</color>
