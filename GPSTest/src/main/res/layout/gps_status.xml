@@ -20,12 +20,17 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
+              android:paddingTop="@dimen/activity_vertical_margin"
               android:background="@color/status_background">
 
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
 
         <TableLayout android:id="@+id/lat_long_table"
                      android:layout_width="wrap_content"
