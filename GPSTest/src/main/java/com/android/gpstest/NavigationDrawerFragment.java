@@ -100,7 +100,6 @@ public class NavigationDrawerFragment extends Fragment {
             R.drawable.ic_sky, // Sky
             0, // Settings
             0, // Help
-            0, // Send feedback
             R.drawable.ic_drawer_github // Open-source
     };
 
@@ -111,7 +110,6 @@ public class NavigationDrawerFragment extends Fragment {
             0, // Sky
             0, // Settings
             0, // Help
-            0, // Send feedback
             R.drawable.ic_drawer_link // Open-source
     };
 
