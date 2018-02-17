@@ -88,6 +88,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private static final int WHATSNEW_DIALOG = 1;
 
+    private static final int HELP_DIALOG = 2;
+
     private static final String WHATS_NEW_VER = "whatsNewVer";
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
@@ -328,11 +330,7 @@ public class GpsTestActivity extends AppCompatActivity
                 startActivity(new Intent(this, Preferences.class));
                 break;
             case NAVDRAWER_ITEM_HELP:
-                if (noActiveFragments()) {
-                    //showStatusFragment();
-                }
-                // TODO - Show help menu (What's new, Tutorial video, About)
-                //showDialog(HELP_DIALOG);
+                showDialog(HELP_DIALOG);
                 break;
             case NAVDRAWER_ITEM_OPEN_SOURCE:
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -948,7 +946,6 @@ public class GpsTestActivity extends AppCompatActivity
         // Handle menu item selection
         switch (item.getItemId()) {
             case R.id.gps_switch:
-
                 return true;
             case R.id.delete_aiding_data:
                 // If GPS is currently running, stop it
@@ -998,18 +995,6 @@ public class GpsTestActivity extends AppCompatActivity
                     Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
                             Toast.LENGTH_SHORT).show();
                 }
-                return true;
-            case R.id.menu_settings:
-                // Show settings menu
-                startActivity(new Intent(this, Preferences.class));
-                return true;
-            case R.id.menu_whats_new:
-                // Show "What's New?"
-                showDialog(WHATSNEW_DIALOG);
-                return true;
-            case R.id.menu_help:
-                // Show help
-                startActivity(new Intent(this, HelpActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1190,6 +1175,8 @@ public class GpsTestActivity extends AppCompatActivity
         switch (id) {
             case WHATSNEW_DIALOG:
                 return createWhatsNewDialog();
+            case HELP_DIALOG:
+                return createHelpDialog();
         }
         return super.onCreateDialog(id);
     }
@@ -1208,6 +1195,28 @@ public class GpsTestActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dismissDialog(WHATSNEW_DIALOG);
+                    }
+                }
+        );
+        return builder.create();
+    }
+
+    @SuppressWarnings("deprecation")
+    private Dialog createHelpDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_help);
+        int options = R.array.main_help_options;
+        builder.setItems(options,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                showDialog(WHATSNEW_DIALOG);
+                                break;
+                            case 1:
+                                startActivity(new Intent(GpsTestActivity.getInstance(), HelpActivity.class));
+                                break;
+                        }
                     }
                 }
         );

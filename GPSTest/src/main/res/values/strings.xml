@@ -191,7 +191,7 @@
     <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
 
     <!-- Help -->
-    <string name="title_activity_help">Help</string>
+    <string name="title_help">Help</string>
 
     <string name="help_text">
         <b>Frequently Asked Questions (FAQ)</b>

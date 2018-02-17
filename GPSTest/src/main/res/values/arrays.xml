@@ -46,4 +46,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <!-- Help -->
+    <string-array name="main_help_options">
+        <item>What\'s New?</item>
+        <item>About</item>
+    </string-array>
 </resources>

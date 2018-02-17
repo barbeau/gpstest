@@ -66,7 +66,7 @@
 
         <activity
                 android:name=".HelpActivity"
-                android:label="@string/title_activity_help"
+                android:label="@string/title_help"
                 android:parentActivityName=".GpsTestActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

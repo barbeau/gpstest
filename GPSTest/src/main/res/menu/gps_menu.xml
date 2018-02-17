@@ -22,12 +22,6 @@
           android:icon="@drawable/social_share"
           app:showAsAction="ifRoom|withText"/>
 
-    <!-- <item android:id="@+id/gps_start"
-        android:title="@string/gps_start"
-        android:icon="@drawable/av_play"
-        android:showAsAction="ifRoom|withText"
-        android:actionLayout="@layout/gps_switch" />  -->
-
     <item
         android:id="@+id/gps_switch_item"
         android:title="@string/gps_switch"
@@ -42,20 +36,4 @@
 
     <item android:id="@+id/delete_aiding_data"
           android:title="@string/delete_aiding_data"/>
-
-    <item android:id="@+id/menu_settings"
-          android:title="@string/navdrawer_item_settings"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/menu_whats_new"
-        android:title="@string/main_help_whatsnew_title"
-        android:orderInCategory="101"
-        app:showAsAction="never" />
-
-    <item android:id="@+id/menu_help"
-          android:title="@string/title_activity_help"
-        android:orderInCategory="102"
-          app:showAsAction="never"/>
 </menu>
