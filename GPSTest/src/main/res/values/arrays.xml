@@ -18,18 +18,6 @@
 */
 -->
 <resources>
-    <!-- Navigation Drawer -->
-    <string-array name="nav_drawer_titles">
-        <item>@string/gps_status_title</item>
-        <item>@string/gps_map_title</item>
-        <item>@string/gps_sky_title</item>
-    </string-array>
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_flag_usa</item>
-        <item>@drawable/ic_flag_canada</item>
-        <item>@drawable/ic_flag_galileo</item>
-    </array>
-
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
         <item>Map View</item>
