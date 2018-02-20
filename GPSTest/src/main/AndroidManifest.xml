@@ -54,7 +54,7 @@
         <activity
                 android:name=".Preferences"
                 android:label="@string/pref_title"
-                android:theme="@style/Theme.AppCompat">
+                android:theme="@style/AppTheme.Preferences">
         <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
