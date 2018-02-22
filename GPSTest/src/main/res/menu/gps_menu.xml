@@ -26,14 +26,5 @@
         android:id="@+id/gps_switch_item"
         android:title="@string/gps_switch"
           app:showAsAction="ifRoom|withText"
-          app:actionLayout="@layout/gps_switch"/>
-
-    <item android:id="@+id/force_time_injection"
-          android:title="@string/force_time_injection"/>
-
-    <item android:id="@+id/force_xtra_injection"
-          android:title="@string/force_xtra_injection"/>
-
-    <item android:id="@+id/delete_aiding_data"
-          android:title="@string/delete_aiding_data"/>
+          app:actionLayout="@layout/gps_switch" />
 </menu>

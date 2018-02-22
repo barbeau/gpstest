@@ -25,8 +25,11 @@
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:text="Placeholder for future use"
-            android:textStyle="bold"
-            android:layout_marginLeft="20dp"/>
-
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="4dp"
+            android:paddingBottom="6dp"
+            android:text="@string/navdrawer_separator_assist_data"
+            android:textColor="@color/navdrawer_icon_tint"
+            android:textStyle="bold"/>
 </LinearLayout>

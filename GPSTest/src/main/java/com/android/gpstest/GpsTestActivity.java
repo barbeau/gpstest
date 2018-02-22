@@ -71,7 +71,10 @@ import com.android.gpstest.util.PreferenceUtils;
 import java.util.ArrayList;
 
 import static android.content.Intent.createChooser;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_XTRA_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
@@ -326,6 +329,15 @@ public class GpsTestActivity extends AppCompatActivity
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
+            case NAVDRAWER_ITEM_INJECT_XTRA_DATA:
+                forceXtraInjection();
+                break;
+            case NAVDRAWER_ITEM_INJECT_TIME_DATA:
+                forceTimeInjection();
+                break;
+            case NAVDRAWER_ITEM_CLEAR_AIDING_DATA:
+                deleteAidingData();
+                break;
             case NAVDRAWER_ITEM_SETTINGS:
                 startActivity(new Intent(this, Preferences.class));
                 break;
@@ -451,6 +463,55 @@ public class GpsTestActivity extends AppCompatActivity
         mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
         if (mSkyFragment != null && !mSkyFragment.isHidden()) {
             fm.beginTransaction().hide(mSkyFragment).commit();
+        }
+    }
+
+    private void forceXtraInjection() {
+        boolean success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.force_xtra_injection_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void forceTimeInjection() {
+        boolean success = sendExtraCommand(getString(R.string.force_time_injection_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.force_time_injection_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.force_time_injection_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteAidingData() {
+        // If GPS is currently running, stop it
+        boolean lastStartState = mStarted;
+        if (mStarted) {
+            gpsStop();
+        }
+        boolean success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.delete_aiding_data_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        if (lastStartState) {
+            Handler h = new Handler();
+            // Restart the GPS, if it was previously started, with a slight delay,
+            // to refresh the assistance data
+            h.postDelayed(new Runnable() {
+                public void run() {
+                    gpsStart();
+                }
+            }, 500);
         }
     }
 
@@ -947,54 +1008,8 @@ public class GpsTestActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.gps_switch:
                 return true;
-            case R.id.delete_aiding_data:
-                // If GPS is currently running, stop it
-                boolean lastStartState = mStarted;
-                if (mStarted) {
-                    gpsStop();
-                }
-                success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.delete_aiding_data_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                if (lastStartState) {
-                    Handler h = new Handler();
-                    // Restart the GPS, if it was previously started, with a slight delay,
-                    // to refresh the assistance data
-                    h.postDelayed(new Runnable() {
-                        public void run() {
-                            gpsStart();
-                        }
-                    }, 500);
-                }
-                return true;
             case R.id.send_location:
                 sendLocation();
-                return true;
-            case R.id.force_time_injection:
-                success = sendExtraCommand(getString(R.string.force_time_injection_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.force_time_injection_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.force_time_injection_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.force_xtra_injection:
-                success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.force_xtra_injection_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
