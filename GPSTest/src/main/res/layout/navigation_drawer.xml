@@ -23,7 +23,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/navdrawer"
-        android:background="@color/navdrawer_background"
         android:fitsSystemWindows="true"
         app:insetForeground="#4000">
 

@@ -215,7 +215,6 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
         }
 
-        // TODO - do we need to get rid of this toolbar?
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

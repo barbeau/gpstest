@@ -53,8 +53,7 @@
         </activity>
         <activity
                 android:name=".Preferences"
-                android:label="@string/pref_title"
-                android:theme="@style/AppTheme.Preferences">
+                android:label="@string/pref_title">
         <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
