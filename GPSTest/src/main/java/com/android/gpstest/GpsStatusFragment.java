@@ -19,6 +19,7 @@ package com.android.gpstest;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
@@ -516,17 +517,23 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
                 // Populate the header fields
                 v.getSvId().setText(mRes.getString(R.string.gps_prn_column_label));
+                v.getSvId().setTypeface(v.getSvId().getTypeface(), Typeface.BOLD);
                 v.getGnssFlagHeader().setText(mRes.getString(R.string.gps_flag_image_label));
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                     v.getCarrierFrequency().setVisibility(View.VISIBLE);
                     v.getCarrierFrequency().setText(mRes.getString(R.string.gps_carrier_column_label));
+                    v.getCarrierFrequency().setTypeface(v.getCarrierFrequency().getTypeface(), Typeface.BOLD);
                 } else {
                     v.getCarrierFrequency().setVisibility(View.GONE);
                 }
                 v.getSignal().setText(mSnrCn0Title);
+                v.getSignal().setTypeface(v.getSignal().getTypeface(), Typeface.BOLD);
                 v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_label));
+                v.getElevation().setTypeface(v.getElevation().getTypeface(), Typeface.BOLD);
                 v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_label));
+                v.getAzimuth().setTypeface(v.getAzimuth().getTypeface(), Typeface.BOLD);
                 v.getStatusFlags().setText(mRes.getString(R.string.gps_flags_column_label));
+                v.getStatusFlags().setTypeface(v.getStatusFlags().getTypeface(), Typeface.BOLD);
             } else {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 int dataRow = position - 1;
