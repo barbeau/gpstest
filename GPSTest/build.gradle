@@ -111,6 +111,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
+    compile 'com.android.support:cardview-v7:26.1.0'
     // Calculating offset for camera target in map view
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
     // Comparing carrier frequency floating point values

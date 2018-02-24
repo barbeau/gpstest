@@ -53,7 +53,7 @@
         android:id="@+id/carrier_frequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="@dimen/min_column_width"
+        android:minWidth="40dp"
         android:layout_marginRight="@dimen/column_padding"
         android:layout_marginEnd="@dimen/column_padding"
         android:textColor="@color/body_text_2"/>

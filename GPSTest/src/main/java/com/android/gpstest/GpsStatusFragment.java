@@ -55,7 +55,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private static final String EMPTY_LAT_LONG = "             ";
 
-    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
+    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss a");
 
     private Resources mRes;
 
@@ -171,8 +171,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mStatusList.setFocusable(false);
         mStatusList.setFocusableInTouchMode(false);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setAutoMeasureEnabled(true);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mStatusList.setLayoutManager(llm);
+        mStatusList.setNestedScrollingEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
 
