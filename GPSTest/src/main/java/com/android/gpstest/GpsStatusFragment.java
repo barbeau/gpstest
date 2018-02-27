@@ -31,6 +31,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private static final String EMPTY_LAT_LONG = "             ";
 
-    SimpleDateFormat mDateFormat = new SimpleDateFormat("hh:mm:ss.SS a");
+    @SuppressLint("SimpleDateFormat") // See #117
+    SimpleDateFormat mDateFormat = new SimpleDateFormat(
+            DateFormat.is24HourFormat(Application.get().getApplicationContext())
+                    ? "HH:mm:ss" : "hh:mm:ss a");
 
     private Resources mRes;
 
