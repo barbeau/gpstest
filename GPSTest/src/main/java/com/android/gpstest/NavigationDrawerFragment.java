@@ -104,7 +104,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     // icons for navdrawer items (indices must correspond to above array)
     private static final int[] NAVDRAWER_ICON_RES_ID = new int[]{
-            R.drawable.ic_wireless_inverted,  // Status
+            R.drawable.ic_wireless,  // Status
             R.drawable.ic_map, // Map
             R.drawable.ic_sky, // Sky
             0, // Settings
