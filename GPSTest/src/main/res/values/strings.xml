@@ -20,25 +20,38 @@
 <resources>
     <string name="app_name">GPSTest</string>
 
-    <string name="gps_status_tab">Status</string>
-    <string name="gps_map_tab">Map</string>
-    <string name="gps_sky_tab">Sky</string>
+    <!-- Fragments -->
+    <string name="gps_status_title">Status</string>
+    <string name="gps_map_title">Map</string>
+    <string name="gps_sky_title">Sky</string>
 
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">Modify assist data</string>
+    <string name="force_xtra_injection">Inject XTRA data</string>
+    <string name="force_time_injection">Inject time data</string>
+    <string name="delete_aiding_data">Clear assist data</string>
+    <string name="navdrawer_item_settings">Settings</string>
+    <string name="navdrawer_item_help">Help</string>
+    <string name="navdrawer_item_send_feedback">Send feedback</string>
+    <string name="navdrawer_item_open_source">Visit us on GitHub</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- GPS functionality -->
     <string name="gps_start">Start</string>
     <string name="gps_pause">Pause</string>
-    <string name="menu_settings">Settings</string>
-    <string name="delete_aiding_data">Clear Aiding Data</string>
-    <string name="delete_aiding_data_success">Successfully deleted aiding data.</string>
-    <string name="delete_aiding_data_failure">Device does not support deleting aiding data.
+
+    <string name="delete_aiding_data_success">Successfully deleted assist data.</string>
+    <string name="delete_aiding_data_failure">Device does not support deleting assist data.
     </string>
     <string name="gps_switch">Off/On</string>
     <string name="send_location">Send Location</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
-    <string name="force_time_injection">Inject Time</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
     <string name="force_time_injection_failure">Device does not support injecting time data.
     </string>
-    <string name="force_xtra_injection">Inject XTRA Data</string>
+
     <string name="force_xtra_injection_success">Successfully injected XTRA data.</string>
     <string name="force_xtra_injection_failure">Device does not support injecting XTRA data.
     </string>
@@ -181,7 +194,7 @@
     <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
 
     <!-- Help -->
-    <string name="title_activity_help">Help</string>
+    <string name="title_help">Help</string>
 
     <string name="help_text">
         <b>Frequently Asked Questions (FAQ)</b>

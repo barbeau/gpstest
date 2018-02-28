@@ -41,16 +41,19 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.location.OnNmeaMessageListener;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,22 +67,31 @@ import android.widget.Toast;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.view.ViewPagerMapBevelScroll;
 
 import java.util.ArrayList;
 
 import static android.content.Intent.createChooser;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_XTRA_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
 import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
 import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements LocationListener, android.support.v7.app.ActionBar.TabListener,
-        SensorEventListener {
+        implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "GpsTestActivity";
 
     private static final int WHATSNEW_DIALOG = 1;
+
+    private static final int HELP_DIALOG = 2;
 
     private static final String WHATS_NEW_VER = "whatsNewVer";
 
@@ -88,6 +100,27 @@ public class GpsTestActivity extends AppCompatActivity
     static boolean mIsLargeScreen = false;
 
     private static GpsTestActivity sInstance;
+
+    /**
+     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+     */
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    /**
+     * Currently selected navigation drawer position (so we don't unnecessarily swap fragments
+     * if the same item is selected).  Initialized to -1 so the initial callback from
+     * NavigationDrawerFragment always instantiates the fragments
+     */
+    private int mCurrentNavDrawerPosition = -1;
+
+    //
+    // Fragments controlled by the nav drawer
+    //
+    private GpsStatusFragment mStatusFragment;
+
+    private GpsMapFragment mMapFragment;
+
+    private GpsSkyFragment mSkyFragment;
 
     // Holds sensor data
     private static float[] mRotationMatrix = new float[16];
@@ -111,10 +144,6 @@ public class GpsTestActivity extends AppCompatActivity
     boolean mWriteNmeaTimestampToLog;
 
     private Switch mSwitch;  // GPS on/off switch
-
-    SectionsPagerAdapter mSectionsPagerAdapter;
-
-    ViewPagerMapBevelScroll mViewPager;
 
     private LocationManager mLocationManager;
 
@@ -186,8 +215,12 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
         }
 
-        initActionBar(savedInstanceState);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        setupNavigationDrawer();
+
+        // Apply settings from preferences
         SharedPreferences settings = Application.getPrefs();
 
         double tempMinTime = Double.valueOf(
@@ -257,6 +290,238 @@ public class GpsTestActivity extends AppCompatActivity
             removeGnssMeasurementsListener();
         }
         super.onPause();
+    }
+
+    private void setupNavigationDrawer() {
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+        goToNavDrawerItem(position);
+    }
+
+    private void goToNavDrawerItem(int item) {
+        // Update the main content by replacing fragments
+        switch (item) {
+            case NAVDRAWER_ITEM_STATUS:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
+                    showStatusFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_MAP:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_MAP) {
+                    showMapFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_SKY:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_SKY) {
+                    showSkyFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
+            case NAVDRAWER_ITEM_INJECT_XTRA_DATA:
+                forceXtraInjection();
+                break;
+            case NAVDRAWER_ITEM_INJECT_TIME_DATA:
+                forceTimeInjection();
+                break;
+            case NAVDRAWER_ITEM_CLEAR_AIDING_DATA:
+                deleteAidingData();
+                break;
+            case NAVDRAWER_ITEM_SETTINGS:
+                startActivity(new Intent(this, Preferences.class));
+                break;
+            case NAVDRAWER_ITEM_HELP:
+                showDialog(HELP_DIALOG);
+                break;
+            case NAVDRAWER_ITEM_OPEN_SOURCE:
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(getString(R.string.open_source_github)));
+                startActivity(i);
+                break;
+        }
+        invalidateOptionsMenu();
+    }
+
+    // Return true if this HomeActivity has no active content fragments
+    private boolean noActiveFragments() {
+        return mStatusFragment == null && mMapFragment == null && mSkyFragment == null;
+    }
+
+    private void showStatusFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideMapFragment();
+        hideSkyFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mStatusFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
+
+            if (mStatusFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsStatusFragment");
+                mStatusFragment = new GpsStatusFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mStatusFragment, GpsStatusFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mStatusFragment).commit();
+        setTitle(getResources().getString(R.string.gps_status_title));
+    }
+
+    private void hideStatusFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
+        if (mStatusFragment != null && !mStatusFragment.isHidden()) {
+            fm.beginTransaction().hide(mStatusFragment).commit();
+        }
+    }
+
+    private void showMapFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideSkyFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mMapFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+
+            if (mMapFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsMapFragment");
+                mMapFragment = new GpsMapFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mMapFragment, GpsMapFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
+        setTitle(getResources().getString(R.string.gps_map_title));
+    }
+
+    private void hideMapFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+        if (mMapFragment != null && !mMapFragment.isHidden()) {
+            fm.beginTransaction().hide(mMapFragment).commit();
+        }
+    }
+
+    private void showSkyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideMapFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mSkyFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
+
+            if (mSkyFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsStatusFragment");
+                mSkyFragment = new GpsSkyFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mSkyFragment, GpsSkyFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mSkyFragment).commit();
+        setTitle(getResources().getString(R.string.gps_sky_title));
+    }
+
+    private void hideSkyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
+        if (mSkyFragment != null && !mSkyFragment.isHidden()) {
+            fm.beginTransaction().hide(mSkyFragment).commit();
+        }
+    }
+
+    private void forceXtraInjection() {
+        boolean success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.force_xtra_injection_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void forceTimeInjection() {
+        boolean success = sendExtraCommand(getString(R.string.force_time_injection_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.force_time_injection_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.force_time_injection_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteAidingData() {
+        // If GPS is currently running, stop it
+        boolean lastStartState = mStarted;
+        if (mStarted) {
+            gpsStop();
+        }
+        boolean success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
+        if (success) {
+            Toast.makeText(this, getString(R.string.delete_aiding_data_success),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        if (lastStartState) {
+            Handler h = new Handler();
+            // Restart the GPS, if it was previously started, with a slight delay,
+            // to refresh the assistance data
+            h.postDelayed(new Runnable() {
+                public void run() {
+                    gpsStart();
+                }
+            }, 500);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.nav_drawer_left_pane);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     static GpsTestActivity getInstance() {
@@ -633,22 +898,23 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkKeepScreenOn(SharedPreferences settings) {
-        if (mViewPager != null) {
-            if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                mViewPager.setKeepScreenOn(true);
-            } else {
-                mViewPager.setKeepScreenOn(false);
-            }
-        } else {
-            View v = findViewById(R.id.large_screen_layout);
-            if (v != null && mIsLargeScreen) {
-                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                    v.setKeepScreenOn(true);
-                } else {
-                    v.setKeepScreenOn(false);
-                }
-            }
-        }
+        //TODO - update below to use another view instead of view pager
+//        if (mViewPager != null) {
+//            if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+//                mViewPager.setKeepScreenOn(true);
+//            } else {
+//                mViewPager.setKeepScreenOn(false);
+//            }
+//        } else {
+//            View v = findViewById(R.id.large_screen_layout);
+//            if (v != null && mIsLargeScreen) {
+//                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+//                    v.setKeepScreenOn(true);
+//                } else {
+//                    v.setKeepScreenOn(false);
+//                }
+//            }
+//        }
     }
 
     private void checkTrueNorth(SharedPreferences settings) {
@@ -740,68 +1006,9 @@ public class GpsTestActivity extends AppCompatActivity
         // Handle menu item selection
         switch (item.getItemId()) {
             case R.id.gps_switch:
-
-                return true;
-            case R.id.delete_aiding_data:
-                // If GPS is currently running, stop it
-                boolean lastStartState = mStarted;
-                if (mStarted) {
-                    gpsStop();
-                }
-                success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.delete_aiding_data_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
-
-                if (lastStartState) {
-                    Handler h = new Handler();
-                    // Restart the GPS, if it was previously started, with a slight delay,
-                    // to refresh the assistance data
-                    h.postDelayed(new Runnable() {
-                        public void run() {
-                            gpsStart();
-                        }
-                    }, 500);
-                }
                 return true;
             case R.id.send_location:
                 sendLocation();
-                return true;
-            case R.id.force_time_injection:
-                success = sendExtraCommand(getString(R.string.force_time_injection_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.force_time_injection_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.force_time_injection_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.force_xtra_injection:
-                success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
-                if (success) {
-                    Toast.makeText(this, getString(R.string.force_xtra_injection_success),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
-                            Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            case R.id.menu_settings:
-                // Show settings menu
-                startActivity(new Intent(this, Preferences.class));
-                return true;
-            case R.id.menu_whats_new:
-                // Show "What's New?"
-                showDialog(WHATSNEW_DIALOG);
-                return true;
-            case R.id.menu_help:
-                // Show help
-                startActivity(new Intent(this, HelpActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -950,61 +1157,6 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onTabSelected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        if (mViewPager != null) {
-            mViewPager.setCurrentItem(tab.getPosition());
-        }
-    }
-
-    @Override
-    public void onTabUnselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(android.support.v7.app.ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    private void initActionBar(Bundle savedInstanceState) {
-        // Set up the action bar.
-        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(android.support.v7.app.ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setTitle(getApplicationContext().getText(R.string.app_name));
-
-        // If we don't have a large screen, set up the tabs using the ViewPager
-        if (!mIsLargeScreen) {
-            //  page adapter contains all the fragment registrations
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-            // Set up the ViewPager with the sections adapter.
-            mViewPager = (ViewPagerMapBevelScroll) findViewById(R.id.pager);
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            mViewPager.setOffscreenPageLimit(2);
-
-            // When swiping between different sections, select the corresponding
-            // tab. We can also use ActionBar.Tab#select() to do this if we have a
-            // reference to the Tab.
-            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    actionBar.setSelectedNavigationItem(position);
-                }
-            });
-            // For each of the sections in the app, add a tab to the action bar.
-            for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-                // Create a tab with text corresponding to the page title defined by
-                // the adapter. Also specify this Activity object, which implements
-                // the TabListener interface, as the listener for when this tab is
-                // selected.
-                actionBar.addTab(actionBar.newTab()
-                        .setText(mSectionsPagerAdapter.getPageTitle(i))
-                        .setTabListener(this));
-            }
-        }
-    }
-
     /**
      * Show the "What's New" message if a new version was just installed
      */
@@ -1037,6 +1189,8 @@ public class GpsTestActivity extends AppCompatActivity
         switch (id) {
             case WHATSNEW_DIALOG:
                 return createWhatsNewDialog();
+            case HELP_DIALOG:
+                return createHelpDialog();
         }
         return super.onCreateDialog(id);
     }
@@ -1049,12 +1203,34 @@ public class GpsTestActivity extends AppCompatActivity
         android.support.v7.app.AlertDialog.Builder builder
                 = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle(R.string.main_help_whatsnew_title);
-        builder.setIcon(R.drawable.gpstest_icon);
+        builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(textView);
         builder.setNeutralButton(R.string.main_help_close,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dismissDialog(WHATSNEW_DIALOG);
+                    }
+                }
+        );
+        return builder.create();
+    }
+
+    @SuppressWarnings("deprecation")
+    private Dialog createHelpDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_help);
+        int options = R.array.main_help_options;
+        builder.setItems(options,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                showDialog(WHATSNEW_DIALOG);
+                                break;
+                            case 1:
+                                startActivity(new Intent(GpsTestActivity.getInstance(), HelpActivity.class));
+                                break;
+                        }
                     }
                 }
         );

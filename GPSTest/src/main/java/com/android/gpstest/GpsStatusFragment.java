@@ -19,6 +19,7 @@ package com.android.gpstest;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
@@ -36,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
@@ -52,7 +54,7 @@ import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
-    private final static String TAG = "GpsStatusFragment";
+    public final static String TAG = "GpsStatusFragment";
 
     private static final String EMPTY_LAT_LONG = "             ";
 
@@ -175,8 +177,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mStatusList.setFocusable(false);
         mStatusList.setFocusableInTouchMode(false);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setAutoMeasureEnabled(true);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mStatusList.setLayoutManager(llm);
+        mStatusList.setNestedScrollingEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
 
@@ -446,6 +450,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             private final TextView svId;
             private final TextView gnssFlagHeader;
             private final ImageView gnssFlag;
+            private final LinearLayout gnssFlagLayout;
             private final TextView carrierFrequency;
             private final TextView signal;
             private final TextView elevation;
@@ -457,6 +462,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 svId = v.findViewById(R.id.sv_id);
                 gnssFlagHeader = v.findViewById(R.id.gnss_flag_header);
                 gnssFlag = v.findViewById(R.id.gnss_flag);
+                gnssFlagLayout = v.findViewById(R.id.gnss_flag_layout);
                 carrierFrequency = v.findViewById(R.id.carrier_frequency);
                 signal = v.findViewById(R.id.signal);
                 elevation = v.findViewById(R.id.elevation);
@@ -474,6 +480,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
             public ImageView getGnssFlag() {
                 return gnssFlag;
+            }
+
+            public LinearLayout getGnssFlagLayout() {
+                return gnssFlagLayout;
             }
 
             public TextView getCarrierFrequency() {
@@ -515,27 +525,35 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 // Show the header field for the GNSS flag and hide the ImageView
                 v.getGnssFlagHeader().setVisibility(View.VISIBLE);
                 v.getGnssFlag().setVisibility(View.GONE);
+                v.getGnssFlagLayout().setVisibility(View.GONE);
 
                 // Populate the header fields
                 v.getSvId().setText(mRes.getString(R.string.gps_prn_column_label));
+                v.getSvId().setTypeface(v.getSvId().getTypeface(), Typeface.BOLD);
                 v.getGnssFlagHeader().setText(mRes.getString(R.string.gps_flag_image_label));
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                     v.getCarrierFrequency().setVisibility(View.VISIBLE);
                     v.getCarrierFrequency().setText(mRes.getString(R.string.gps_carrier_column_label));
+                    v.getCarrierFrequency().setTypeface(v.getCarrierFrequency().getTypeface(), Typeface.BOLD);
                 } else {
                     v.getCarrierFrequency().setVisibility(View.GONE);
                 }
                 v.getSignal().setText(mSnrCn0Title);
+                v.getSignal().setTypeface(v.getSignal().getTypeface(), Typeface.BOLD);
                 v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_label));
+                v.getElevation().setTypeface(v.getElevation().getTypeface(), Typeface.BOLD);
                 v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_label));
+                v.getAzimuth().setTypeface(v.getAzimuth().getTypeface(), Typeface.BOLD);
                 v.getStatusFlags().setText(mRes.getString(R.string.gps_flags_column_label));
+                v.getStatusFlags().setTypeface(v.getStatusFlags().getTypeface(), Typeface.BOLD);
             } else {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 int dataRow = position - 1;
 
-                // Show the row field for the GNSS flag image and hide the header
+                // Show the row field for the GNSS flag mImage and hide the header
                 v.getGnssFlagHeader().setVisibility(View.GONE);
                 v.getGnssFlag().setVisibility(View.VISIBLE);
+                v.getGnssFlagLayout().setVisibility(View.VISIBLE);
 
                 // Populate status data for this row
                 v.getSvId().setText(Integer.toString(mPrns[dataRow]));

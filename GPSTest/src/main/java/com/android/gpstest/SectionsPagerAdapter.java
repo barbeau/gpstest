@@ -74,11 +74,11 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case GPS_STATUS_FRAGMENT:
-                return Application.get().getString(R.string.gps_status_tab);
+                return Application.get().getString(R.string.gps_status_title);
             case GPS_MAP_FRAGMENT:
-                return Application.get().getString(R.string.gps_map_tab);
+                return Application.get().getString(R.string.gps_map_title);
             case GPS_SKY_FRAGMENT:
-                return Application.get().getString(R.string.gps_sky_tab);
+                return Application.get().getString(R.string.gps_sky_title);
         }
         return null; // This should never happen
     }
