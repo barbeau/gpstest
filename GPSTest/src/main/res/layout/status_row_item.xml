@@ -40,14 +40,23 @@
         android:visibility="gone"
         android:textStyle="bold"
         android:textColor="@color/body_text_2"/>
-    <ImageView
-        android:id="@+id/gnss_flag"
+    <!-- We need the LinearLayout to draw a thin border around the flag image, but keep the minWidth for the column -->
+    <LinearLayout
+        android:id="@+id/gnss_flag_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
         android:layout_marginEnd="@dimen/column_padding"
-        android:visibility="gone"/>
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/gnss_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/body_text_2"
+            android:padding="1dp"
+            android:visibility="gone"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/carrier_frequency"
         android:layout_width="wrap_content"

@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
@@ -445,6 +446,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             private final TextView svId;
             private final TextView gnssFlagHeader;
             private final ImageView gnssFlag;
+            private final LinearLayout gnssFlagLayout;
             private final TextView carrierFrequency;
             private final TextView signal;
             private final TextView elevation;
@@ -456,6 +458,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 svId = v.findViewById(R.id.sv_id);
                 gnssFlagHeader = v.findViewById(R.id.gnss_flag_header);
                 gnssFlag = v.findViewById(R.id.gnss_flag);
+                gnssFlagLayout = v.findViewById(R.id.gnss_flag_layout);
                 carrierFrequency = v.findViewById(R.id.carrier_frequency);
                 signal = v.findViewById(R.id.signal);
                 elevation = v.findViewById(R.id.elevation);
@@ -473,6 +476,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
             public ImageView getGnssFlag() {
                 return gnssFlag;
+            }
+
+            public LinearLayout getGnssFlagLayout() {
+                return gnssFlagLayout;
             }
 
             public TextView getCarrierFrequency() {
@@ -514,6 +521,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 // Show the header field for the GNSS flag and hide the ImageView
                 v.getGnssFlagHeader().setVisibility(View.VISIBLE);
                 v.getGnssFlag().setVisibility(View.GONE);
+                v.getGnssFlagLayout().setVisibility(View.GONE);
 
                 // Populate the header fields
                 v.getSvId().setText(mRes.getString(R.string.gps_prn_column_label));
@@ -541,6 +549,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 // Show the row field for the GNSS flag mImage and hide the header
                 v.getGnssFlagHeader().setVisibility(View.GONE);
                 v.getGnssFlag().setVisibility(View.VISIBLE);
+                v.getGnssFlagLayout().setVisibility(View.VISIBLE);
 
                 // Populate status data for this row
                 v.getSvId().setText(Integer.toString(mPrns[dataRow]));
