@@ -115,7 +115,7 @@ dependencies {
     // Calculating offset for camera target in map view
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
     // Comparing carrier frequency floating point values
-    compile group: 'com.google.guava', name: 'guava', version: '23.6-android'
+    compile group: 'com.google.guava', name: 'guava', version: '24.0-android'
     // Unit tests that don't rely on Android framework
     testCompile 'junit:junit:4.12'
 }
