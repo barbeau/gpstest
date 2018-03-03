@@ -25,6 +25,6 @@
                 android:id="@+id/es_navigationOverflowButtonImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/navdrawer_background"
+                android:background="@color/navdrawer_background_light"
                 android:layout_gravity="end"/>
 </LinearLayout>

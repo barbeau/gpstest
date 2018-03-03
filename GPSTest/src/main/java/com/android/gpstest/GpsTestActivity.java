@@ -187,6 +187,10 @@ public class GpsTestActivity extends AppCompatActivity
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Set theme
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+            setTheme(R.style.AppTheme_Dark_NoActionBar);
+        }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         sInstance = this;

@@ -30,6 +30,6 @@
             android:paddingTop="4dp"
             android:paddingBottom="6dp"
             android:text="@string/navdrawer_separator_assist_data"
-            android:textColor="@color/navdrawer_icon_tint"
+            android:textColor="@color/navdrawer_icon_tint_light"
             android:textStyle="bold"/>
 </LinearLayout>

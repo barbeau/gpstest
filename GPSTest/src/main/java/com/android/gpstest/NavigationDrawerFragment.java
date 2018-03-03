@@ -406,15 +406,21 @@ public class NavigationDrawerFragment extends Fragment {
             return;
         }
 
+        // Set background color of nav drawer
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+            mDrawerItemsListContainer.setBackgroundColor(getContext().getResources().getColor(R.color.navdrawer_background_dark));
+        }
+
+        // Populate views
         mNavDrawerItemViews = new View[mNavDrawerItems.size()];
         int i = 0;
 
-        LinearLayout containerLayout = mDrawerItemsListContainer.findViewById(R.id.navdrawer_items_list);
-        containerLayout.removeAllViews();
+        LinearLayout listLayout = mDrawerItemsListContainer.findViewById(R.id.navdrawer_items_list);
+        listLayout.removeAllViews();
 
         for (int itemId : mNavDrawerItems) {
-            mNavDrawerItemViews[i] = makeNavDrawerItem(itemId, containerLayout);
-            containerLayout.addView(mNavDrawerItemViews[i]);
+            mNavDrawerItemViews[i] = makeNavDrawerItem(itemId, listLayout);
+            listLayout.addView(mNavDrawerItemViews[i]);
             ++i;
         }
     }
@@ -504,9 +510,17 @@ public class NavigationDrawerFragment extends Fragment {
             // Show the category as not highlighted, if its not currently selected
             if (itemId != mCurrentSelectedPosition) {
                 view.setSelected(false);
-                titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color));
-                iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint));
-                secondaryIconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint));
+                if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+                    // Dark theme
+                    titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color_dark));
+                    iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_dark));
+                    secondaryIconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_dark));
+                } else {
+                    // Light theme
+                    titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color_light));
+                    iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_light));
+                    secondaryIconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_light));
+                }
             }
         }
     }

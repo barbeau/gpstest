@@ -16,8 +16,6 @@
 
 package com.android.gpstest;
 
-import com.android.gpstest.util.GpsTestUtil;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.gpstest.util.GpsTestUtil;
+
 public class Preferences extends PreferenceActivity {
 
     Preference prefAnalyzeGpsAccuracy;
@@ -43,11 +43,17 @@ public class Preferences extends PreferenceActivity {
 
     EditTextPreference txtMinDistance;
 
+    CheckBoxPreference chkDarkTheme;
+
     private Toolbar mActionBar;
 
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Set theme
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+            setTheme(R.style.AppTheme_Dark);
+        }
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
@@ -119,6 +125,22 @@ public class Preferences extends PreferenceActivity {
                 } else {
                     return true;
                 }
+            }
+        });
+
+        // Check Dark Theme
+        chkDarkTheme = (CheckBoxPreference) this
+                .findPreference(getString(R.string.pref_key_dark_theme));
+
+        chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                // Close and restart Activities (clearing the back stack) to apply new theme
+                finish();
+                final Intent intent = getIntent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                return true;
             }
         });
 

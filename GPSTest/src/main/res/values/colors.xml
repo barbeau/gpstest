@@ -19,18 +19,26 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#C5CAE9</color>
 
-    <!-- Navigation Drawer -->
-    <color name="navdrawer_background">@android:color/white</color>
-    <color name="navdrawer_text_color">@color/body_text_1</color>
+    <!-- Navigation Drawer (Shared for Light and Dark Themes) -->
     <color name="navdrawer_text_color_selected">@color/colorPrimary</color>
-    <color name="navdrawer_background_color_selected">#11000000</color>
-    <color name="navdrawer_icon_tint">#888</color>
     <color name="navdrawer_icon_tint_selected">@color/colorPrimary</color>
 
-    <color name="body_text_1">#de000000</color>
-    <color name="body_text_2">#8a000000</color>
-    <color name="body_text_3">#60000000</color>
-    <color name="status_background">#eaeaea</color>
+    <!-- Navigation Drawer (Light Theme) -->
+    <color name="navdrawer_background_light">@android:color/white</color>
+    <color name="navdrawer_text_color_light">@color/body_text_1_light</color>
+    <color name="navdrawer_icon_tint_light">#888</color>
+    <color name="navdrawer_background_color_selected_light">#11000000</color>
+
+    <!-- Navigation Drawer (Dark Theme) -->
+    <color name="navdrawer_background_dark">@color/cardview_dark_background</color>
+    <color name="navdrawer_text_color_dark">@color/body_text_1_dark</color>
+    <color name="navdrawer_icon_tint_dark">#888</color>
+    <color name="navdrawer_background_color_selected_dark">#2f000000</color>
+
+    <!-- Text colors -->
+    <color name="body_text_1_light">#de000000</color>
+    <color name="body_text_2_light">#8a000000</color>
+    <color name="body_text_1_dark">#deffffff</color>
 
     <!-- GNSS Sky View -->
     <color name="not_in_view_sat">#11000000</color>

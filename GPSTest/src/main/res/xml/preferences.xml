@@ -60,6 +60,11 @@
             android:title="@string/pref_display_category_title"
             android:key="@string/pref_key_display_category">
         <CheckBoxPreference
+            android:key="@string/pref_key_dark_theme"
+            android:title="@string/pref_dark_theme_title"
+            android:summary="@string/pref_dark_theme_summary"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
                 android:key="@string/pref_key_keep_screen_on"
                 android:title="@string/pref_keep_screen_on_title"
                 android:summary="@string/pref_keep_screen_on_summary"

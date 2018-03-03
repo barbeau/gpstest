@@ -28,8 +28,7 @@
         android:layout_height="wrap_content"
         android:minWidth="40dp"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
     <TextView
         android:id="@+id/gnss_flag_header"
         android:layout_width="wrap_content"
@@ -38,8 +37,7 @@
         android:layout_marginRight="@dimen/column_padding"
         android:layout_marginEnd="@dimen/column_padding"
         android:visibility="gone"
-        android:textStyle="bold"
-        android:textColor="@color/body_text_2"/>
+        style="@style/info_label"/>
     <!-- We need the LinearLayout to draw a thin border around the flag image, but keep the minWidth for the column -->
     <LinearLayout
         android:id="@+id/gnss_flag_layout"
@@ -53,7 +51,7 @@
             android:id="@+id/gnss_flag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/body_text_2"
+            android:background="@color/body_text_2_light"
             android:padding="1dp"
             android:visibility="gone"/>
     </LinearLayout>
@@ -63,38 +61,33 @@
         android:layout_height="wrap_content"
         android:minWidth="40dp"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
     <TextView
         android:id="@+id/signal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
     <TextView
         android:id="@+id/elevation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
     <TextView
         android:id="@+id/azimuth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
     <TextView
         android:id="@+id/status_flags"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="@dimen/min_column_width"
         android:layout_marginRight="@dimen/column_padding"
-        android:layout_marginEnd="@dimen/column_padding"
-        android:textColor="@color/body_text_2"/>
+        android:layout_marginEnd="@dimen/column_padding" />
 </LinearLayout>

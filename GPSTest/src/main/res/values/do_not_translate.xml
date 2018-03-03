@@ -45,6 +45,7 @@
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
     <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
+    <string name="pref_key_dark_theme">dark_theme</string>
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>

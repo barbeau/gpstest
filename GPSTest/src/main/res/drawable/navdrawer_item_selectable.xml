@@ -16,8 +16,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
           android:exitFadeDuration="@android:integer/config_mediumAnimTime">
     <item android:state_pressed="true"
-          android:drawable="@color/navdrawer_background_color_selected"/>
+          android:drawable="@color/navdrawer_background_color_selected_light"/>
     <item android:state_selected="true"
-          android:drawable="@color/navdrawer_background_color_selected"/>
+          android:drawable="@color/navdrawer_background_color_selected_light"/>
     <item android:drawable="@android:color/transparent"/>
 </selector>

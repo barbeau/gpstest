@@ -193,6 +193,10 @@
     <string name="pref_show_tutorial_title">Show tutorial</string>
     <string name="pref_show_tutorial_summary">Shows instructions for using the app</string>
 
+    <string name="pref_dark_theme_title">Use Dark Theme</string>
+    <string name="pref_dark_theme_summary">Give the background a dark color and text a light color
+    </string>
+
     <!-- Help -->
     <string name="title_help">Help</string>
 

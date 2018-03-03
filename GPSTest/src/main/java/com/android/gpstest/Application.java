@@ -44,6 +44,11 @@ public class Application extends android.app.Application {
 
         mApp = this;
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Set theme
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+            setTheme(R.style.AppTheme_Dark);
+        }
     }
 
     @Override

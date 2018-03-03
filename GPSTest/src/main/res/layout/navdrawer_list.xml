@@ -21,10 +21,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/navdrawer_items_layout"
         android:paddingTop="8dp"
-        android:background="@color/navdrawer_background"
         android:clickable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/navdrawer_background_light">
     <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -33,10 +34,6 @@
                       android:layout_height="wrap_content"
                       android:id="@+id/navdrawer_items_list"
                       android:orientation="vertical">
-
         </LinearLayout>
-
-
     </ScrollView>
-
 </LinearLayout>
