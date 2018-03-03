@@ -16,7 +16,7 @@
    From the Google I/0 2014 app (https://github.com/google/iosched), modified for OneBusAway by USF
 -->
 
-<org.onebusaway.android.view.ScrimInsetsScrollView
+<com.android.gpstest.view.ScrimInsetsScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="@dimen/navigation_drawer_width"
@@ -38,4 +38,4 @@
         </FrameLayout>
     </LinearLayout>
 
-</org.onebusaway.android.view.ScrimInsetsScrollView>
+</com.android.gpstest.view.ScrimInsetsScrollView>
