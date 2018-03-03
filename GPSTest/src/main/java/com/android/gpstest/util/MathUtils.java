@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013-2018 The Android Open Source Project, Sean J. Barbeau (sjbarbeau@gmail.com)
+ * Copyright (C) 2013-2018 The Android Open Source Project, Sean J. Barbeau (sjbarbeau@gmail.com),
+ * Google (fuzzyEquals() is from Guava)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,4 +44,46 @@ public class MathUtils {
     public static float toMhz(float hertz) {
         return hertz / 1000000.00f;
     }
+
+    /**
+     * Returns {@code true} if {@code a} and {@code b} are within {@code tolerance} of each other.
+     *
+     * <p>Technically speaking, this is equivalent to {@code Math.abs(a - b) <= tolerance ||
+     * Double.valueOf(a).equals(Double.valueOf(b))}.
+     *
+     * <p>Notable special cases include:
+     *
+     * <ul>
+     *   <li>All NaNs are fuzzily equal.
+     *   <li>If {@code a == b}, then {@code a} and {@code b} are always fuzzily equal.
+     *   <li>Positive and negative zero are always fuzzily equal.
+     *   <li>If {@code tolerance} is zero, and neither {@code a} nor {@code b} is NaN, then {@code a}
+     *       and {@code b} are fuzzily equal if and only if {@code a == b}.
+     *   <li>With {@link Double#POSITIVE_INFINITY} tolerance, all non-NaN values are fuzzily equal.
+     *   <li>With finite tolerance, {@code Double.POSITIVE_INFINITY} and {@code
+     *       Double.NEGATIVE_INFINITY} are fuzzily equal only to themselves.
+     * </ul>
+     *
+     * <p>This is reflexive and symmetric, but <em>not</em> transitive, so it is <em>not</em> an
+     * equivalence relation and <em>not</em> suitable for use in {@link Object#equals}
+     * implementations.
+     *
+     * @throws IllegalArgumentException if {@code tolerance} is {@code < 0} or NaN
+     * @since 13.0
+     */
+    public static boolean fuzzyEquals(double a, double b, double tolerance) {
+        checkNonNegative("tolerance", tolerance);
+        return Math.copySign(a - b, 1.0) <= tolerance
+                // copySign(x, 1.0) is a branch-free version of abs(x), but with different NaN semantics
+                || (a == b) // needed to ensure that infinities equal themselves
+                || (Double.isNaN(a) && Double.isNaN(b));
+    }
+
+    static double checkNonNegative(String role, double x) {
+        if (!(x >= 0)) { // not x < 0, to work with NaN.
+            throw new IllegalArgumentException(role + " (" + x + ") must be >= 0");
+        }
+        return x;
+    }
+
 }
