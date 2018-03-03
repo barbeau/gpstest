@@ -17,12 +17,4 @@
     <declare-styleable name="ScrimInsetsView">
         <attr name="obaInsetForeground" format="reference|color"/>
     </declare-styleable>
-    <declare-styleable name="RealtimeIndicatorView">
-        <!-- Duration of animation, in milliseconds -->
-        <attr name="duration" format="reference|integer"/>
-        <!-- Color of circle -->
-        <attr name="fillColor" format="reference|color"/>
-        <!-- Color of circle -->
-        <attr name="lineColor" format="reference|color"/>
-    </declare-styleable>
 </resources>
