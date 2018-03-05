@@ -193,6 +193,7 @@
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/status_margin"
             card_view:cardUseCompatPadding="true"
             card_view:cardCornerRadius="4dp"
             android:foreground="?attr/selectableItemBackground">
