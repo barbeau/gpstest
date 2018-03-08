@@ -414,11 +414,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSnrCn0s = new float[length];
             mSvElevations = new float[length];
             mSvAzimuths = new float[length];
-            // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
-            mConstellationType = new int[length];
             mHasEphemeris = new boolean[length];
             mHasAlmanac = new boolean[length];
             mUsedInFix = new boolean[length];
+            // Carrier frequencies and constellation type aren't used, but instantiate it to avoid NPEs in legacy devices or when "Use GNSS APIs" is false
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                mCarrierFreqsHz = new float[length];
+            }
+            mConstellationType = new int[length];
         }
 
         mSvCount = 0;
