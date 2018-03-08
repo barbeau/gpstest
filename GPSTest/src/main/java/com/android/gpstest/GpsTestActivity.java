@@ -214,12 +214,13 @@ public class GpsTestActivity extends AppCompatActivity
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // If we have a large screen, show all the fragments in one layout
-        if (GpsTestUtil.isLargeScreen(this)) {
-            setContentView(R.layout.activity_main_large_screen);
-            mIsLargeScreen = true;
-        } else {
+        // TODO - Fix large screen layouts (see #122)
+//        if (GpsTestUtil.isLargeScreen(this)) {
+//            setContentView(R.layout.activity_main_large_screen);
+//            mIsLargeScreen = true;
+//        } else {
             setContentView(R.layout.activity_main);
-        }
+//        }
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -904,24 +905,24 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkKeepScreenOn(SharedPreferences settings) {
-        if (!mIsLargeScreen) {
+//        if (!mIsLargeScreen) {
             if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
                 mToolbar.setKeepScreenOn(true);
             } else {
                 mToolbar.setKeepScreenOn(false);
             }
-        } else {
-            // TODO - After we fix large screen devices in #122, we can delete the below block and
-            // use the above block with mToolbar.setKeepScreenOn() for all screen sizes
-            View v = findViewById(R.id.large_screen_layout);
-            if (v != null) {
-                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                    v.setKeepScreenOn(true);
-                } else {
-                    v.setKeepScreenOn(false);
-                }
-            }
-        }
+//        } else {
+//            // TODO - After we fix large screen devices in #122, we can delete the below block and
+//            // use the above block with mToolbar.setKeepScreenOn() for all screen sizes
+//            View v = findViewById(R.id.large_screen_layout);
+//            if (v != null) {
+//                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
+//                    v.setKeepScreenOn(true);
+//                } else {
+//                    v.setKeepScreenOn(false);
+//                }
+//            }
+//        }
     }
 
     private void checkTrueNorth(SharedPreferences settings) {
