@@ -10,5 +10,4 @@
     <!-- Status view -->
     <dimen name="status_margin">5dp</dimen>
     <dimen name="column_padding">3dp</dimen>
-    <dimen name="min_column_width">50dp</dimen>
 </resources>

@@ -57,7 +57,7 @@
     <style name="info_label">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/status_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingRight">4dip</item>
     </style>
@@ -65,7 +65,7 @@
     <style name="info_value">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/status_text_size</item>
         <item name="android:textStyle">normal</item>
     </style>
 </resources>
