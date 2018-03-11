@@ -31,6 +31,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -88,6 +89,18 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         );
 
         return mSkyView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Set a margin around the SkyView
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mSkyView.getLayoutParams();
+        int mPx = GpsTestUtil.dpToPixels(getContext(), 5);
+        params.setMargins(mPx, mPx, mPx, mPx);
+        mSkyView.setLayoutParams(params);
+        // Allow the edge of the circle to draw onto the parent view to avoid clipping it
+        ((ViewGroup) mSkyView.getParent()).setClipChildren(false);
     }
 
     public void onLocationChanged(Location loc) {
