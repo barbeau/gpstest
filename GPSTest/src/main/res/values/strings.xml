@@ -116,7 +116,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
-    <!-- Try to only show trip planning in What's New for regions that support it -->
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>New look</b>
         - Tap main menu to switch screens\n&#8226;\u0020
