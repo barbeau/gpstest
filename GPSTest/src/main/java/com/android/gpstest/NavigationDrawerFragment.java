@@ -443,6 +443,12 @@ public class NavigationDrawerFragment extends Fragment {
             return view;
         }
 
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+                && layoutToInflate == R.layout.navdrawer_item) {
+            // Dark theme
+            view.setBackgroundResource(R.drawable.navdrawer_item_selectable_dark);
+        }
+
         ImageView iconView = view.findViewById(R.id.icon);
         TextView titleView = view.findViewById(R.id.title);
         ImageView secondaryIconView = view.findViewById(R.id.secondary_icon);

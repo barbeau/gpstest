@@ -48,10 +48,12 @@
     </style>
 
     <!-- Navigation Drawer -->
-    <style name="NavDrawerListItem" parent="Widget.AppCompat.ListView.Menu">
-        <item name="android:background">@drawable/navdrawer_item_selectable</item>
+    <style name="NavDrawerListItem.Light" parent="Widget.AppCompat.ListView.Menu">
+        <item name="android:background">@drawable/navdrawer_item_selectable_light</item>
         <item name="android:shape">oval</item>
     </style>
+
+    <!-- Dark style is set programmatically in NavigationDrawerFragment instead of via style - see #119 -->
 
     <!-- GNSS Status view -->
     <style name="info_label">

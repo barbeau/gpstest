@@ -33,7 +33,7 @@
     <color name="navdrawer_background_dark">@color/cardview_dark_background</color>
     <color name="navdrawer_text_color_dark">@color/body_text_1_dark</color>
     <color name="navdrawer_icon_tint_dark">#888</color>
-    <color name="navdrawer_background_color_selected_dark">#2f000000</color>
+    <color name="navdrawer_background_color_selected_dark">#99000000</color>
 
     <!-- Text colors -->
     <color name="body_text_1_light">#de000000</color>
