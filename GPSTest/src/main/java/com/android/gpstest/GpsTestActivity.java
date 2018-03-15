@@ -67,6 +67,7 @@ import android.widget.Toast;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.util.UIUtils;
 
 import java.util.ArrayList;
 
@@ -682,7 +683,7 @@ public class GpsTestActivity extends AppCompatActivity
                         statusMessage = getString(R.string.gnss_status_unknown);
                 }
                 Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
-                if (GpsTestUtil.canManageDialog(GpsTestActivity.this)) {
+                if (UIUtils.canManageDialog(GpsTestActivity.this)) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -833,7 +834,7 @@ public class GpsTestActivity extends AppCompatActivity
                             statusMessage = getString(R.string.gnss_status_unknown);
                     }
                     Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
-                    if (GpsTestUtil.canManageDialog(GpsTestActivity.this)) {
+                    if (UIUtils.canManageDialog(GpsTestActivity.this)) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

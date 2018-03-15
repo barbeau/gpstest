@@ -43,14 +43,13 @@ import android.widget.TextView;
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
-import static com.android.gpstest.util.GpsTestUtil.isFragmentAttached;
-
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
@@ -93,7 +92,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private String mTtff = "";
 
     public void onLocationChanged(Location location) {
-        if (!isFragmentAttached(this)) {
+        if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return;
         }
@@ -255,7 +254,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 break;
 
             case GpsStatus.GPS_EVENT_FIRST_FIX:
-                mTtff = GpsTestUtil.getTtffString(status.getTimeToFirstFix());
+                mTtff = UIUtils.getTtffString(status.getTimeToFirstFix());
                 if (mTTFFView != null) {
                     mTTFFView.setText(mTtff);
                 }
@@ -269,7 +268,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onGnssFirstFix(int ttffMillis) {
-        mTtff = GpsTestUtil.getTtffString(ttffMillis);
+        mTtff = UIUtils.getTtffString(ttffMillis);
         if (mTTFFView != null) {
             mTTFFView.setText(mTtff);
         }
@@ -338,7 +337,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         setStarted(true);
         updateFixTime();
 
-        if (!isFragmentAttached(this)) {
+        if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return;
         }
@@ -399,7 +398,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         setStarted(true);
         updateFixTime();
 
-        if (!isFragmentAttached(this)) {
+        if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return;
         }

@@ -16,7 +16,6 @@
 
 package com.android.gpstest.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -26,13 +25,10 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.gpstest.DilutionOfPrecision;
-
-import java.util.concurrent.TimeUnit;
 
 public class GpsTestUtil {
 
@@ -184,63 +180,6 @@ public class GpsTestUtil {
         return String.valueOf(svid) + " " + String.valueOf(constellationType);
     }
 
-    /**
-     * Converts screen dimension units from dp to pixels, based on algorithm defined in
-     * http://developer.android.com/guide/practices/screens_support.html#dips-pels
-     *
-     * @param dp value in dp
-     * @return value in pixels
-     */
-    public static int dpToPixels(Context context, float dp) {
-        // Get the screen's density scale
-        final float scale = context.getResources().getDisplayMetrics().density;
-        // Convert the dps to pixels, based on density scale
-        return (int) (dp * scale + 0.5f);
-    }
-
-    /**
-     * Returns true if the activity is still active and dialogs can be managed (i.e., displayed
-     * or dismissed), or false if it is not
-     *
-     * @param activity Activity to check for displaying/dismissing a dialog
-     * @return true if the activity is still active and dialogs can be managed, or false if it is
-     * not
-     */
-    public static boolean canManageDialog(Activity activity) {
-        if (activity == null) {
-            return false;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return !activity.isFinishing() && !activity.isDestroyed();
-        } else {
-            return !activity.isFinishing();
-        }
-    }
-
-    /**
-     * Returns true if the fragment is attached to the activity, or false if it is not attached
-     *
-     * @param f fragment to be tested
-     * @return true if the fragment is attached to the activity, or false if it is not attached
-     */
-    public static boolean isFragmentAttached(Fragment f) {
-        return f.getActivity() != null && f.isAdded();
-    }
-
-    /**
-     * Returns a human-readable description of the time-to-first-fix, such as "38 sec"
-     *
-     * @param ttff time-to-first fix, in milliseconds
-     * @return a human-readable description of the time-to-first-fix, such as "38 sec"
-     */
-    public static String getTtffString(int ttff) {
-        if (ttff == 0) {
-            return "";
-        } else {
-            return TimeUnit.MILLISECONDS.toSeconds(ttff) + " sec";
-        }
-    }
 
     /**
      * Outputs the provided nmea message and timestamp to log

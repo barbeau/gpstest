@@ -43,6 +43,7 @@ import android.view.WindowManager;
 
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
 
@@ -96,7 +97,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         super.onActivityCreated(savedInstanceState);
         // Set a margin around the SkyView
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mSkyView.getLayoutParams();
-        int mPx = GpsTestUtil.dpToPixels(getContext(), 5);
+        int mPx = UIUtils.dpToPixels(getContext(), 5);
         params.setMargins(mPx, mPx, mPx, mPx);
         mSkyView.setLayoutParams(params);
         // Allow the edge of the circle to draw onto the parent view to avoid clipping it
@@ -223,7 +224,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             mContext = context;
             mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-            SAT_RADIUS = GpsTestUtil.dpToPixels(context, 5);
+            SAT_RADIUS = UIUtils.dpToPixels(context, 5);
 
             mHorizonActiveFillPaint = new Paint();
             mHorizonActiveFillPaint.setColor(Color.WHITE);
@@ -285,7 +286,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mPrnIdPaint.setColor(Color.BLACK);
             mPrnIdPaint.setStyle(Paint.Style.STROKE);
             mPrnIdPaint
-                    .setTextSize(GpsTestUtil.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
+                    .setTextSize(UIUtils.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
             mPrnIdPaint.setAntiAlias(true);
 
             mNotInViewPaint = new Paint();
