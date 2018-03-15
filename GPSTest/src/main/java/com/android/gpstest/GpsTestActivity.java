@@ -104,6 +104,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private Toolbar mToolbar;
 
+    private boolean mUseDarkTheme = false;
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -193,6 +195,7 @@ public class GpsTestActivity extends AppCompatActivity
         // Set theme
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             setTheme(R.style.AppTheme_Dark_NoActionBar);
+            mUseDarkTheme = true;
         }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
@@ -251,6 +254,13 @@ public class GpsTestActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
+        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
+        if (mUseDarkTheme != useDarkTheme) {
+            mUseDarkTheme = useDarkTheme;
+            recreate();
+        }
 
         addStatusListener();
 

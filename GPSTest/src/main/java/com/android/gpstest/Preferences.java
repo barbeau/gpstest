@@ -135,11 +135,8 @@ public class Preferences extends PreferenceActivity {
         chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                // Close and restart Activities (clearing the back stack) to apply new theme
-                finish();
-                final Intent intent = getIntent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                // Destroy and recreate Activity
+                recreate();
                 return true;
             }
         });
