@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Status view (for smaller screens with 350-399dp width - see values-w240dp for smaller screens and values-w400dp for larger screens) -->
+    <dimen name="min_column_width">45dp</dimen>
+    <dimen name="status_text_size">13sp</dimen>
+</resources>
