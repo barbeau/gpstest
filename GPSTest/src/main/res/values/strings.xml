@@ -72,11 +72,17 @@
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
     <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>
+    <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
     <string name="gps_accuracy_value">%1$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value">%1$.1f/%2$.1f m</string>
     <string name="gps_speed_label">Speed:</string>
     <string name="gps_speed_value">%1$.1f m/sec</string>
+    <string name="gps_speed_acc_label">Speed Acc:</string>
+    <string name="gps_speed_acc_value">%1$.1f m/sec</string>
     <string name="gps_bearing_label">Bearing:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
+    <string name="gps_bearing_acc_label">Bearing Acc:</string>
+    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># Sats:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
@@ -214,10 +220,22 @@
         - In decimal degrees (WGS 84)\n&#8226;\u0020
         <b>Longitude</b>
         - In decimal degrees (WGS 84)\n&#8226;\u0020
-        <b>Altitude</b>
+        <b>Alt</b>
         - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
-        <b>Altitude (MSL)</b>
+        <b>Alt (MSL)</b>
         - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
+        <b>Acc</b>
+        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location's latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle.\n&#8226;\u0020
+        <b>H/V Acc</b>
+        - The horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters.\n&#8226;\u0020
+        <b>Speed</b>
+        - Speed, in meters/second over ground\n&#8226;\u0020
+        <b>Speed Acc</b>
+        - Estimated speed accuracy of this location at 68% confidence, in meters per second. For example, if Speed is 5, and Speed Acc is 1, then there is a 68% probability of the true speed being between 4 and 6 meters per second.\n&#8226;\u0020
+        <b>Bearing</b>
+        - The horizontal direction of travel of the device (in degrees 0-360), and is not related to the device orientation.\n&#8226;\u0020
+        <b>Bearing Acc</b>
+        - Estimated bearing accuracy of this location at 68% confidence, in degrees. For example, if Bearing is 60, and Bearing Acc is 10, then there is a 68% probability of the true bearing being between 50 and 70 degrees.\n&#8226;\u0020
         <b># Sats</b>
         - # satellites used in fix / # satellites in view\n&#8226;\u0020
         <b>PDOP</b>
@@ -226,8 +244,6 @@
         - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
         <b>TTFF</b>
         - Time to first fix\n&#8226;\u0020
-        <b>Acc</b>
-        - Estimated accuracy (radius in meters of 68% confidence)\n&#8226;\u0020
         <b>ID or PRN</b>
         - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
         <b>CF</b>

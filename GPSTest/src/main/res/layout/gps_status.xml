@@ -105,13 +105,13 @@
                             android:id="@+id/altitude"
                             style="@style/info_value" />
                         <TextView
-                            android:id="@+id/accuracy_label"
+                            android:id="@+id/hor_vert_accuracy_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
                             android:layout_marginRight="8dip"
                             android:text="@string/gps_accuracy_label" />
                         <TextView
-                            android:id="@+id/accuracy"
+                            android:id="@+id/hor_vert_accuracy"
                             style="@style/info_value" />
                     </TableRow>
 
@@ -126,19 +126,6 @@
                             android:id="@+id/altitude_msl"
                             style="@style/info_value" />
                         <TextView
-                            android:id="@+id/speed_label"
-                            style="@style/info_label"
-                            android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
-                            android:text="@string/gps_speed_label" />
-                        <TextView
-                            android:id="@+id/speed"
-                            style="@style/info_value" />
-
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
                             android:id="@+id/num_sats_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
@@ -146,6 +133,18 @@
                             android:text="@string/gps_num_sats_label" />
                         <TextView
                             android:id="@+id/num_sats"
+                            style="@style/info_value" />
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:id="@+id/speed_label"
+                            style="@style/info_label"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="8dip"
+                            android:text="@string/gps_speed_label" />
+                        <TextView
+                            android:id="@+id/speed"
                             style="@style/info_value" />
                         <TextView
                             android:id="@+id/bearing_label"
@@ -155,6 +154,29 @@
                             android:text="@string/gps_bearing_label" />
                         <TextView
                             android:id="@+id/bearing"
+                            style="@style/info_value" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/speed_bearing_acc_row"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/speed_acc_label"
+                            style="@style/info_label"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="8dip"
+                            android:text="@string/gps_speed_acc_label" />
+                        <TextView
+                            android:id="@+id/speed_acc"
+                            style="@style/info_value" />
+                        <TextView
+                            android:id="@+id/bearing_acc_label"
+                            style="@style/info_label"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="8dip"
+                            android:text="@string/gps_bearing_acc_label" />
+                        <TextView
+                            android:id="@+id/bearing_acc"
                             style="@style/info_value" />
                     </TableRow>
 

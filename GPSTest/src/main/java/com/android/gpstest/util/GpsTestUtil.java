@@ -170,6 +170,24 @@ public class GpsTestUtil {
     }
 
     /**
+     * Returns true if the platform supports providing vertical accuracy values, false if it does not
+     *
+     * @return true if the platform supports providing vertical accuracy values, false if it does not
+     */
+    public static boolean isVerticalAccuracySupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
+     * Returns true if the platform supports providing speed and bearing accuracy values, false if it does not
+     *
+     * @return true if the platform supports providing speed and bearing accuracy values, false if it does not
+     */
+    public static boolean isSpeedAndBearingAccuracySupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
      * Creates a unique key to identify this satellite using a combination of both the svid and
      * constellation type
      *

@@ -38,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.gpstest.util.GnssType;
@@ -65,8 +66,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private Resources mRes;
 
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
-            mAltitudeMslView, mAccuracyView, mSpeedView, mBearingView, mNumSats,
+            mAltitudeMslView, mHorVertAccuracyLabelView, mHorVertAccuracyView,
+            mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView;
+
+    private TableRow mSpeedBearingAccuracyRow;
 
     private RecyclerView mStatusList;
 
@@ -108,11 +112,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         } else {
             mAltitudeView.setText("");
         }
-        if (location.hasAccuracy()) {
-            mAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value, location.getAccuracy()));
-        } else {
-            mAccuracyView.setText("");
-        }
         if (location.hasSpeed()) {
             mSpeedView.setText(mRes.getString(R.string.gps_speed_value, location.getSpeed()));
         } else {
@@ -123,6 +122,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         } else {
             mBearingView.setText("");
         }
+        updateLocationAccuracies(location);
+        updateSpeedAndBearingAccuracies(location);
         updateFixTime();
     }
 
@@ -148,14 +149,19 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mTTFFView = (TextView) v.findViewById(R.id.ttff);
         mAltitudeView = (TextView) v.findViewById(R.id.altitude);
         mAltitudeMslView = (TextView) v.findViewById(R.id.altitude_msl);
-        mAccuracyView = (TextView) v.findViewById(R.id.accuracy);
+        mHorVertAccuracyLabelView = v.findViewById(R.id.hor_vert_accuracy_label);
+        mHorVertAccuracyView = v.findViewById(R.id.hor_vert_accuracy);
         mSpeedView = (TextView) v.findViewById(R.id.speed);
+        mSpeedAccuracyView = v.findViewById(R.id.speed_acc);
         mBearingView = (TextView) v.findViewById(R.id.bearing);
+        mBearingAccuracyView = v.findViewById(R.id.bearing_acc);
         mNumSats = (TextView) v.findViewById(R.id.num_sats);
         mPdopLabelView = (TextView) v.findViewById(R.id.pdop_label);
         mPdopView = (TextView) v.findViewById(R.id.pdop);
         mHvdopLabelView = (TextView) v.findViewById(R.id.hvdop_label);
         mHvdopView = (TextView) v.findViewById(R.id.hvdop);
+
+        mSpeedBearingAccuracyRow = v.findViewById(R.id.speed_bearing_acc_row);
 
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
@@ -198,9 +204,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mTTFFView.setText("");
                 mAltitudeView.setText("");
                 mAltitudeMslView.setText("");
-                mAccuracyView.setText("");
+                mHorVertAccuracyView.setText("");
                 mSpeedView.setText("");
+                mSpeedAccuracyView.setText("");
                 mBearingView.setText("");
+                mBearingAccuracyView.setText("");
                 mNumSats.setText("");
                 mPdopView.setText("");
                 mHvdopView.setText("");
@@ -217,6 +225,51 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mFixTimeView.setText("");
         } else {
             mFixTimeView.setText(mDateFormat.format(mFixTime));
+        }
+    }
+
+    /**
+     * Update views for horizontal and vertical location accuracies based on the provided location
+     * @param location
+     */
+    private void updateLocationAccuracies(Location location) {
+        if (GpsTestUtil.isVerticalAccuracySupported()) {
+            mHorVertAccuracyLabelView.setText(R.string.gps_hor_and_vert_accuracy_label);
+            if (location.hasAccuracy() || location.hasVerticalAccuracy()) {
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value,
+                        location.getAccuracy(),
+                        location.getVerticalAccuracyMeters()));
+            } else {
+                mHorVertAccuracyView.setText("");
+            }
+        } else {
+            if (location.hasAccuracy()) {
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value, location.getAccuracy()));
+            } else {
+                mHorVertAccuracyView.setText("");
+            }
+        }
+    }
+
+    /**
+     * Update views for speed and bearing location accuracies based on the provided location
+     * @param location
+     */
+    private void updateSpeedAndBearingAccuracies(Location location) {
+        if (GpsTestUtil.isSpeedAndBearingAccuracySupported()) {
+            mSpeedBearingAccuracyRow.setVisibility(View.VISIBLE);
+            if (location.hasSpeedAccuracy()) {
+                mSpeedAccuracyView.setText(mRes.getString(R.string.gps_speed_acc_value, location.getSpeedAccuracyMetersPerSecond()));
+            } else {
+                mSpeedAccuracyView.setText("");
+            }
+            if (location.hasBearingAccuracy()) {
+                mBearingAccuracyView.setText(mRes.getString(R.string.gps_bearing_acc_value, location.getBearingAccuracyDegrees()));
+            } else {
+                mBearingAccuracyView.setText("");
+            }
+        } else {
+            mSpeedBearingAccuracyRow.setVisibility(View.GONE);
         }
     }
 
