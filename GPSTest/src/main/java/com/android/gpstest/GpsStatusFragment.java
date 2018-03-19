@@ -143,23 +143,23 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mRes = getResources();
         View v = inflater.inflate(R.layout.gps_status, container,false);
 
-        mLatitudeView = (TextView) v.findViewById(R.id.latitude);
-        mLongitudeView = (TextView) v.findViewById(R.id.longitude);
-        mFixTimeView = (TextView) v.findViewById(R.id.fix_time);
-        mTTFFView = (TextView) v.findViewById(R.id.ttff);
-        mAltitudeView = (TextView) v.findViewById(R.id.altitude);
-        mAltitudeMslView = (TextView) v.findViewById(R.id.altitude_msl);
+        mLatitudeView = v.findViewById(R.id.latitude);
+        mLongitudeView = v.findViewById(R.id.longitude);
+        mFixTimeView = v.findViewById(R.id.fix_time);
+        mTTFFView = v.findViewById(R.id.ttff);
+        mAltitudeView = v.findViewById(R.id.altitude);
+        mAltitudeMslView = v.findViewById(R.id.altitude_msl);
         mHorVertAccuracyLabelView = v.findViewById(R.id.hor_vert_accuracy_label);
         mHorVertAccuracyView = v.findViewById(R.id.hor_vert_accuracy);
-        mSpeedView = (TextView) v.findViewById(R.id.speed);
+        mSpeedView = v.findViewById(R.id.speed);
         mSpeedAccuracyView = v.findViewById(R.id.speed_acc);
-        mBearingView = (TextView) v.findViewById(R.id.bearing);
+        mBearingView = v.findViewById(R.id.bearing);
         mBearingAccuracyView = v.findViewById(R.id.bearing_acc);
-        mNumSats = (TextView) v.findViewById(R.id.num_sats);
-        mPdopLabelView = (TextView) v.findViewById(R.id.pdop_label);
-        mPdopView = (TextView) v.findViewById(R.id.pdop);
-        mHvdopLabelView = (TextView) v.findViewById(R.id.hvdop_label);
-        mHvdopView = (TextView) v.findViewById(R.id.hvdop);
+        mNumSats = v.findViewById(R.id.num_sats);
+        mPdopLabelView = v.findViewById(R.id.pdop_label);
+        mPdopView = v.findViewById(R.id.pdop);
+        mHvdopLabelView = v.findViewById(R.id.hvdop_label);
+        mHvdopView = v.findViewById(R.id.hvdop);
 
         mSpeedBearingAccuracyRow = v.findViewById(R.id.speed_bearing_acc_row);
 
