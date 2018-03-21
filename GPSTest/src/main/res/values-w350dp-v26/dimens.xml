@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Status view (for smaller screens with 350-399dp width and API 26 and higher, for which carrier
+    frequency is added as a column).  See values-w240dp for smaller screens and values-w400dp for
+    larger screens, or values-350dp for smaller screens without the carrier frequency column -->
+    <dimen name="min_column_width">42dp</dimen>
+    <dimen name="status_text_size">13sp</dimen>
+</resources>
