@@ -369,7 +369,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             DilutionOfPrecision dop = GpsTestUtil.getDop(message);
             if (dop != null && mNavigating) {
                 showDopViews();
-                mPdopView.setText(String.valueOf(dop.getPositionDop()));
+                mPdopView.setText(mRes.getString(R.string.pdop_value, dop.getPositionDop()));
                 mHvdopView.setText(
                         mRes.getString(R.string.hvdop_value, dop.getHorizontalDop(),
                                 dop.getVerticalDop()));
@@ -686,7 +686,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                             // Shrink the size so we can show raw number
                             v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
                             // Show raw number for carrier frequency
-                            v.getCarrierFrequency().setText(Float.toString(carrierMhz));
+                            v.getCarrierFrequency().setText(String.format("%.3f", carrierMhz));
                         }
                     } else {
                         v.getCarrierFrequency().setText("");
@@ -695,21 +695,21 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     v.getCarrierFrequency().setVisibility(View.GONE);
                 }
                 if (mSnrCn0s[dataRow] != 0.0f) {
-                    v.getSignal().setText(Float.toString(mSnrCn0s[dataRow]));
+                    v.getSignal().setText(String.format("%.1f", mSnrCn0s[dataRow]));
                 } else {
                     v.getSignal().setText("");
                 }
 
                 if (mSvElevations[dataRow] != 0.0f) {
                     v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
-                                    Float.toString(mSvElevations[dataRow])));
+                                    mSvElevations[dataRow]));
                 } else {
                     v.getElevation().setText("");
                 }
 
                 if (mSvAzimuths[dataRow] != 0.0f) {
                     v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
-                            Float.toString(mSvAzimuths[dataRow])));
+                            mSvAzimuths[dataRow]));
                 } else {
                     v.getAzimuth().setText("");
                 }

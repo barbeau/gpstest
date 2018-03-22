@@ -86,6 +86,7 @@
     <string name="gps_num_sats_label"># Sats:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
+    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">H/V DOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
@@ -95,9 +96,9 @@
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_elevation_column_value">%1$s\u00B0</string>
+    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_azimuth_column_value">%1$s\u00B0</string>
+    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">GPS not supported. Exiting app&#8230;</string>
     <string name="install">Install</string>
