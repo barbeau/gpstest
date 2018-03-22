@@ -715,8 +715,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 }
 
                 char[] flags = new char[3];
-                flags[0] = !mHasEphemeris[dataRow] ? ' ' : 'E';
-                flags[1] = !mHasAlmanac[dataRow] ? ' ' : 'A';
+                flags[0] = !mHasAlmanac[dataRow] ? ' ' : 'A';
+                flags[1] = !mHasEphemeris[dataRow] ? ' ' : 'E';
                 flags[2] = !mUsedInFix[dataRow] ? ' ' : 'U';
                 v.getStatusFlags().setText(new String(flags));
             }
