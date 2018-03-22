@@ -78,7 +78,7 @@ To build the release build, run:
 
 If Gradle is running as a daemon, you'll be prompted for the keystore/key password via a popup dialog box. If you're not running Gradle as a daemon, command will prompt for your passwords (See https://github.com/barbeau/gpstest/issues/87).
 
-If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease -Dorg.gradle.daemon=false`.
+If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease -D org.gradle.daemon=false`.
 
 ### Contributing
 
