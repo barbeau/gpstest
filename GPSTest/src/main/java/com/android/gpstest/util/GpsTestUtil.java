@@ -254,7 +254,13 @@ public class GpsTestUtil {
         String[] tokens = nmeaSentence.split(",");
 
         if (nmeaSentence.startsWith("$GPGGA") || nmeaSentence.startsWith("$GNGNS")) {
-            String altitude = tokens[ALTITUDE_INDEX];
+            String altitude;
+            try {
+                altitude = tokens[ALTITUDE_INDEX];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for geoid altitude - " + nmeaSentence + " :" + e);
+                return null;
+            }
             if (!TextUtils.isEmpty(altitude)) {
                 return Double.parseDouble(altitude);
             } else {
