@@ -287,16 +287,22 @@ public class GpsTestUtil {
      * @param nmeaSentence a $GNGSA or $GPGSA NMEA sentence
      * @return the dilution of precision, or null if dilution of precision can't be parsed
      */
-    public static DilutionOfPrecision getDop(String nmeaSentence) throws ArrayIndexOutOfBoundsException {
+    public static DilutionOfPrecision getDop(String nmeaSentence) {
         final int PDOP_INDEX = 15;
         final int HDOP_INDEX = 16;
         final int VDOP_INDEX = 17;
         String[] tokens = nmeaSentence.split(",");
 
         if (nmeaSentence.startsWith("$GNGSA") || nmeaSentence.startsWith("$GPGSA")) {
-            String pdop = tokens[PDOP_INDEX];
-            String hdop = tokens[HDOP_INDEX];
-            String vdop = tokens[VDOP_INDEX];
+            String pdop, hdop, vdop;
+            try {
+                pdop = tokens[PDOP_INDEX];
+                hdop = tokens[HDOP_INDEX];
+                vdop = tokens[VDOP_INDEX];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA message for parsing DOP - " + nmeaSentence + " :" + e);
+                return null;
+            }
 
             // See https://github.com/barbeau/gpstest/issues/71#issuecomment-263169174
             if (vdop.contains("*")) {
