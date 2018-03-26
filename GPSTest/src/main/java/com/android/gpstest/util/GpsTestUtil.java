@@ -281,7 +281,7 @@ public class GpsTestUtil {
      * @param nmeaSentence a $GNGSA or $GPGSA NMEA sentence
      * @return the dilution of precision, or null if dilution of precision can't be parsed
      */
-    public static DilutionOfPrecision getDop(String nmeaSentence) {
+    public static DilutionOfPrecision getDop(String nmeaSentence) throws ArrayIndexOutOfBoundsException {
         final int PDOP_INDEX = 15;
         final int HDOP_INDEX = 16;
         final int VDOP_INDEX = 17;

@@ -33,6 +33,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -366,7 +367,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             }
         }
         if (message.startsWith("$GNGSA") || message.startsWith("$GPGSA")) {
-            DilutionOfPrecision dop = GpsTestUtil.getDop(message);
+            DilutionOfPrecision dop = null;
+            try {
+                dop = GpsTestUtil.getDop(message);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Can't parse DOP from NMEA message - " + message + " :" + e);
+            }
             if (dop != null && mNavigating) {
                 showDopViews();
                 mPdopView.setText(mRes.getString(R.string.pdop_value, dop.getPositionDop()));
