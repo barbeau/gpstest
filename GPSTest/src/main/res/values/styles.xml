@@ -70,5 +70,20 @@
         <item name="android:textSize">@dimen/status_text_size</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <!-- GNSS Sky view -->
+    <style name="sky_legend_label">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sky_legend_text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="sky_legend_value">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/sky_legend_text_size_small</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>
 

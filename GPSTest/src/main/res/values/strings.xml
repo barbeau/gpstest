@@ -110,6 +110,11 @@
     <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm
     </string>
 
+    <!-- Sky view -->
+    <string name="sky_legend_cn0_low">10</string>
+    <string name="sky_legend_cn0_high">45</string>
+    <string name="sky_legend_cn0_units">(dB-Hz)</string>
+
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider or Location is disabled, no updates until it\'s enabled</string>
     <string name="gnss_nav_msg_status_not_supported">Device does not support tracking of GNSS Navigation Messages</string>

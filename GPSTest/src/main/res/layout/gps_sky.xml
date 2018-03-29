@@ -16,36 +16,98 @@
 ** limitations under the License.
 */
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:clipChildren="false">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.android.gpstest.view.GpsSkyView
-        android:id="@+id/sky_view"
-        android:layout_width="wrap_content"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sky_view"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_margin="5dp">
-        <TextView
+        android:clipChildren="false">
+
+        <com.android.gpstest.view.GpsSkyView
+            android:id="@+id/sky_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            style="@style/info_label"
+            android:layout_margin="5dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sky_view"
+            android:layout_toLeftOf="@+id/sky_legend_cn0"
+            android:layout_toStartOf="@+id/sky_legend_cn0"
+            android:orientation="vertical"
             android:layout_margin="5dp"
-            android:text="C/N0"/>
+            android:paddingTop="5dp">
+            <!-- C/N0 legend title and units-->
+            <TextView
+                android:id="@+id/sky_legend_cn0_title"
+                style="@style/sky_legend_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="@string/gps_cn0_column_label" />
+            <TextView
+                android:id="@+id/sky_legend_cn0_units"
+                style="@style/sky_legend_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="@string/sky_legend_cn0_units" />
+        </LinearLayout>
+        <!-- Colored C/N0 legend -->
         <ImageView
+            android:id="@+id/sky_legend_cn0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_below="@id/sky_view"
+            android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
             app:srcCompat="@drawable/signal_box"/>
-    </LinearLayout>
-</RelativeLayout>
+        <!-- CN/0 legend scale text and lines -->
+        <View
+            android:id="@+id/sky_legend_cn0_left_line"
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_below="@id/sky_legend_cn0"
+            android:layout_alignLeft="@id/sky_legend_cn0"
+            android:layout_alignStart="@id/sky_legend_cn0"
+            android:layout_margin="2dp"
+            android:background="@color/gray"/>
+        <TextView
+            android:id="@+id/sky_legend_cn0_left_text"
+            style="@style/sky_legend_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sky_legend_cn0_left_line"
+            android:layout_gravity="start"
+            android:layout_alignLeft="@+id/sky_legend_cn0"
+            android:layout_alignStart="@+id/sky_legend_cn0"
+            android:text="@string/sky_legend_cn0_low"
+            android:textAlignment="textStart" />
+        <View
+            android:id="@+id/sky_legend_cn0_right_line"
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_below="@id/sky_legend_cn0"
+            android:layout_alignRight="@id/sky_legend_cn0"
+            android:layout_alignEnd="@id/sky_legend_cn0"
+            android:layout_margin="2dp"
+            android:background="@color/gray" />
+        <TextView
+            android:id="@+id/sky_legend_cn0_right_text"
+            style="@style/sky_legend_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sky_legend_cn0_left_line"
+            android:layout_gravity="start"
+            android:layout_alignRight="@+id/sky_legend_cn0"
+            android:layout_alignEnd="@+id/sky_legend_cn0"
+            android:text="@string/sky_legend_cn0_high"
+            android:textAlignment="textStart" />
+    </RelativeLayout>
+</ScrollView>

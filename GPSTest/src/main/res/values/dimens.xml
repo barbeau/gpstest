@@ -10,4 +10,8 @@
     <!-- Status view -->
     <dimen name="status_margin">5dp</dimen>
     <dimen name="column_padding">3dp</dimen>
+
+    <!-- Sky view -->
+    <dimen name="sky_legend_text_size_large">14sp</dimen>
+    <dimen name="sky_legend_text_size_small">10sp</dimen>
 </resources>
