@@ -570,6 +570,14 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // Use the width of the screen as the measured dimension for width and height of view
+        // This allows other views in the same layout to be visible on the screen (#124)
+        int specSize = MeasureSpec.getSize(widthMeasureSpec);
+        setMeasuredDimension(specSize, specSize);
+    }
+
+    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         mOrientation = orientation;
         invalidate();

@@ -10,6 +10,8 @@ android {
         targetSdkVersion 21
         versionCode 28
         versionName "3.0.3"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
