@@ -112,6 +112,7 @@
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
+    <string name="sky_legend_cn0_middle">27.5</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
 
