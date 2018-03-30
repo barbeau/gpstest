@@ -39,7 +39,7 @@
             android:layout_toLeftOf="@+id/sky_legend_cn0"
             android:layout_toStartOf="@+id/sky_legend_cn0"
             android:orientation="vertical"
-            android:layout_margin="5dp"
+            android:layout_margin="15dp"
             android:paddingTop="5dp">
             <!-- C/N0 legend title and units-->
             <TextView
@@ -71,7 +71,10 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="15dp"
             android:background="@android:color/black"
-            android:padding="1dp"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             app:srcCompat="@drawable/signal_box" />
         <!-- CN/0 legend scale text and lines -->
         <View
