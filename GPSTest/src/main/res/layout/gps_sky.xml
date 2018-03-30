@@ -66,10 +66,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/sky_view"
             android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
             android:background="@android:color/black"
             android:padding="1dp"
-            app:srcCompat="@drawable/signal_box"/>
+            app:srcCompat="@drawable/signal_box" />
         <!-- CN/0 legend scale text and lines -->
         <View
             android:id="@+id/sky_legend_cn0_left_line"
