@@ -67,6 +67,8 @@
             android:layout_below="@id/sky_view"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
+            android:background="@android:color/black"
+            android:padding="1dp"
             app:srcCompat="@drawable/signal_box"/>
         <!-- CN/0 legend scale text and lines -->
         <View
@@ -77,7 +79,7 @@
             android:layout_alignLeft="@id/sky_legend_cn0"
             android:layout_alignStart="@id/sky_legend_cn0"
             android:layout_margin="2dp"
-            android:background="@color/gray"/>
+            android:background="@android:color/black"/>
         <TextView
             android:id="@+id/sky_legend_cn0_left_text"
             style="@style/sky_legend_value"
@@ -97,7 +99,7 @@
             android:layout_alignRight="@id/sky_legend_cn0"
             android:layout_alignEnd="@id/sky_legend_cn0"
             android:layout_margin="2dp"
-            android:background="@color/gray" />
+            android:background="@android:color/black" />
         <TextView
             android:id="@+id/sky_legend_cn0_right_text"
             style="@style/sky_legend_value"

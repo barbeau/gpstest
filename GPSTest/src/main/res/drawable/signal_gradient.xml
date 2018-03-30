@@ -7,9 +7,7 @@
     android:viewportWidth="100">
 
     <path
-        android:pathData="M1,1 H99 V99 H1Z"
-        android:strokeColor="@color/body_text_1_light"
-        android:strokeWidth="5">
+        android:pathData="M1,1 H99 V99 H1Z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:endX="99"
