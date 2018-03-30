@@ -116,6 +116,7 @@
             android:layout_gravity="start"
             android:layout_alignRight="@+id/sky_legend_cn0"
             android:layout_alignEnd="@+id/sky_legend_cn0"
+            android:paddingRight="1dp"
             android:text="@string/sky_legend_cn0_high"
             android:textAlignment="textStart" />
     </RelativeLayout>
