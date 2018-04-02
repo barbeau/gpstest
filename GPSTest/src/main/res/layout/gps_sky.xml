@@ -36,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sky_view"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="13dp"
             android:layout_toLeftOf="@+id/sky_legend_cn0"
             android:layout_toStartOf="@+id/sky_legend_cn0"
             android:orientation="vertical"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="10dp"
             android:paddingTop="5dp">
             <!-- C/N0 legend title and units-->
             <TextView
@@ -49,16 +49,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:text="@string/gps_cn0_column_label" />
+                android:text="@string/gps_cn0_column_label"
+                android:textAlignment="center" />
+
             <TextView
                 android:id="@+id/sky_legend_cn0_units"
                 style="@style/sky_legend_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
-                android:text="@string/sky_legend_cn0_units" />
+                android:text="@string/sky_legend_cn0_units"
+                android:textAlignment="center" />
         </LinearLayout>
         <!-- Colored C/N0 legend -->
         <android.support.v7.widget.AppCompatImageView
