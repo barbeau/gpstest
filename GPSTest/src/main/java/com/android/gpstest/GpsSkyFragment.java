@@ -37,13 +37,36 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private GpsSkyView mSkyView;
 
+    private View mLegendCn0LeftLine, mLegendCn0CenterLine, mLegendCn0RightLine;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.gps_sky, container,false);
+        
         mSkyView = v.findViewById(R.id.sky_view);
+        mLegendCn0LeftLine = v.findViewById(R.id.sky_legend_cn0_left_line);
+        mLegendCn0CenterLine = v.findViewById(R.id.sky_legend_cn0_center_line);
+        mLegendCn0RightLine = v.findViewById(R.id.sky_legend_cn0_right_line);
+
         GpsTestActivity.getInstance().addListener(this);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+            // Dark theme
+            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
+            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
+            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
+        } else {
+            // Light theme
+            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
+            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
+            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
+        }
     }
 
     public void onLocationChanged(Location loc) {

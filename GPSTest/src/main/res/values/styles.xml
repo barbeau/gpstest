@@ -77,7 +77,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/sky_legend_text_size_large</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="sky_legend_value">
@@ -85,7 +84,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/sky_legend_text_size_small</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>
 
