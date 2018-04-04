@@ -43,7 +43,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.gps_sky, container,false);
-        
+
         mSkyView = v.findViewById(R.id.sky_view);
         mLegendCn0LeftLine = v.findViewById(R.id.sky_legend_cn0_left_line);
         mLegendCn0CenterLine = v.findViewById(R.id.sky_legend_cn0_center_line);
@@ -58,14 +58,14 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         super.onResume();
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
-            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
-            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
-            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_dark));
+            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
+            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
+            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
         } else {
             // Light theme
-            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
-            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
-            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.primary_text_light));
+            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
+            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
+            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
         }
     }
 
