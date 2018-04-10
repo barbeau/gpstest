@@ -20,7 +20,7 @@
                     android:offset="0.0" />
                 <item
                     android:color="@color/red"
-                    android:offset="0.33" />
+                    android:offset="0.19" />
                 <item
                     android:color="@color/yellow"
                     android:offset="0.66" />
