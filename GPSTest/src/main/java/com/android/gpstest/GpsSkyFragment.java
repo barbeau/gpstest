@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.gpstest.view.GpsSkyView;
 
@@ -39,15 +40,28 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private View mLegendCn0LeftLine, mLegendCn0CenterLine, mLegendCn0RightLine;
 
+    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText, mLegendCn0RightText;
+
+    private boolean mUseLegacyGnssApi = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.gps_sky, container,false);
 
         mSkyView = v.findViewById(R.id.sky_view);
+
+        // C/N0 Legend lines
         mLegendCn0LeftLine = v.findViewById(R.id.sky_legend_cn0_left_line);
         mLegendCn0CenterLine = v.findViewById(R.id.sky_legend_cn0_center_line);
         mLegendCn0RightLine = v.findViewById(R.id.sky_legend_cn0_right_line);
+
+        // C/N0 Legend text
+        mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
+        mLegendCn0Units = v.findViewById(R.id.sky_legend_cn0_units);
+        mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
+        mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
+        mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
@@ -96,6 +110,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
         mSkyView.setGnssStatus(status);
+        mUseLegacyGnssApi = false;
+        updateCn0LegendText();
     }
 
     @Override
@@ -127,6 +143,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 mSkyView.setSats(status);
+                mUseLegacyGnssApi = true;
+                updateCn0LegendText();
                 break;
         }
     }
@@ -145,5 +163,24 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onNmeaMessage(String message, long timestamp) {
+    }
+
+    private void updateCn0LegendText() {
+        if (!mUseLegacyGnssApi) {
+            // C/N0
+            mLegendCn0Title.setText(R.string.gps_cn0_column_label);
+            mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
+            mLegendCn0LeftText.setText(R.string.sky_legend_cn0_low);
+            mLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle);
+            mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
+        } else {
+            // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting)
+            mLegendCn0Title.setText(R.string.gps_snr_column_label);
+            mLegendCn0Units.setText(R.string.sky_legend_snr_units);
+            mLegendCn0LeftText.setText(R.string.sky_legend_snr_low);
+            mLegendCn0CenterText.setText(R.string.sky_legend_snr_middle);
+            mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
+        }
+
     }
 }
