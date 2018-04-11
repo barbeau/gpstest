@@ -98,6 +98,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
+    private static final String GPS_STARTED = "gps_started";
+
     static boolean mIsLargeScreen = false;
 
     private static GpsTestActivity sInstance;
@@ -244,11 +246,27 @@ public class GpsTestActivity extends AppCompatActivity
                         getString(R.string.pref_gps_min_distance_default_meters))
         );
 
-        if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
-            gpsStart();
+        if (savedInstanceState != null) {
+            // Activity is being restarted and has previous state (e.g., user rotated device)
+            boolean gpsWasStarted = savedInstanceState.getBoolean(GPS_STARTED, true);
+            if (gpsWasStarted) {
+                gpsStart();
+            }
+        } else {
+            // Activity is starting without previous state - use "Auto-start GNSS" setting
+            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+                gpsStart();
+            }
         }
 
         autoShowWhatsNew();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // Save current GPS started state
+        outState.putBoolean(GPS_STARTED, mStarted);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
