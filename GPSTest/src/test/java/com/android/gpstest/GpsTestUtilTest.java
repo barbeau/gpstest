@@ -22,6 +22,7 @@ import com.android.gpstest.util.GpsTestUtil;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 public class GpsTestUtilTest {
 
@@ -30,7 +31,7 @@ public class GpsTestUtilTest {
      */
     @Test
     public void testGetAltitudeFromNmea() {
-        double altitude;
+        Double altitude;
         final String gpsSentence
                 = "$GPGGA,032739.0,2804.732835,N,08224.639709,W,1,08,0.8,19.2,M,-24.0,M,,*5B";
         final String gnssSentence
@@ -41,6 +42,11 @@ public class GpsTestUtilTest {
 
         altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gnssSentence);
         assertEquals(78.9d, altitude);
+
+        final String badGnssSentence
+                = "$GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,BAD,-24.0,,*23";
+        altitude = GpsTestUtil.getAltitudeMeanSeaLevel(badGnssSentence);
+        assertNull(altitude);
     }
 
     /**

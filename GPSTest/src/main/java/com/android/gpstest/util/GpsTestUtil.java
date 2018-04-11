@@ -262,7 +262,13 @@ public class GpsTestUtil {
                 return null;
             }
             if (!TextUtils.isEmpty(altitude)) {
-                return Double.parseDouble(altitude);
+                Double altitudeParsed = null;
+                try {
+                    altitudeParsed = Double.parseDouble(altitude);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Bad geoid altitude value of '" + altitude + "' in NMEA sentence " + nmeaSentence + " :" + e);
+                }
+                return altitudeParsed;
             } else {
                 Log.w(TAG, "Couldn't parse geoid altitude from NMEA: " + nmeaSentence);
                 return null;
