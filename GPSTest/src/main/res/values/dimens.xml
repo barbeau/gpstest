@@ -14,4 +14,8 @@
     <!-- Sky view -->
     <dimen name="sky_legend_text_size_large">14sp</dimen>
     <dimen name="sky_legend_text_size_small">10sp</dimen>
+
+    <dimen name="sky_legend_large_line">10dp</dimen>
+    <dimen name="sky_legend_medium_line">7dp</dimen>
+    <dimen name="sky_legend_small_line">4dp</dimen>
 </resources>

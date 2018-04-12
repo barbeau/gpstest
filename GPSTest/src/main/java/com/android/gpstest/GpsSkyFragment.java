@@ -32,13 +32,16 @@ import android.widget.TextView;
 
 import com.android.gpstest.view.GpsSkyView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     public final static String TAG = "GpsSkyFragment";
 
     private GpsSkyView mSkyView;
 
-    private View mLegendCn0LeftLine, mLegendCn0CenterLine, mLegendCn0RightLine;
+    private List<View> mLegendCn0Lines;
 
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText, mLegendCn0RightText;
 
@@ -51,10 +54,22 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         mSkyView = v.findViewById(R.id.sky_view);
 
+        if (mLegendCn0Lines == null) {
+            mLegendCn0Lines = new LinkedList<>();
+        } else {
+            mLegendCn0Lines.clear();
+        }
+
         // C/N0 Legend lines
-        mLegendCn0LeftLine = v.findViewById(R.id.sky_legend_cn0_left_line);
-        mLegendCn0CenterLine = v.findViewById(R.id.sky_legend_cn0_center_line);
-        mLegendCn0RightLine = v.findViewById(R.id.sky_legend_cn0_right_line);
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line4));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line3));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line2));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line1));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_center_line));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line1));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line2));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line3));
+        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line4));
 
         // C/N0 Legend text
         mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
@@ -70,16 +85,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     @Override
     public void onResume() {
         super.onResume();
+        int color;
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
-            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
-            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
-            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_dark));
+            color = getResources().getColor(android.R.color.secondary_text_dark);
         } else {
             // Light theme
-            mLegendCn0LeftLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
-            mLegendCn0CenterLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
-            mLegendCn0RightLine.setBackgroundColor(getResources().getColor(android.R.color.secondary_text_light));
+            color = getResources().getColor(android.R.color.secondary_text_light);
+        }
+        for (View v : mLegendCn0Lines) {
+            v.setBackgroundColor(color);
         }
     }
 
