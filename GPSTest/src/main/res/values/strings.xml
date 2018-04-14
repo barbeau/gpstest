@@ -121,6 +121,18 @@
     <string name="sky_legend_snr_high">30</string>
     <string name="sky_legend_snr_units">(dB)</string>
 
+    <string name="sky_legend_shape_legend_title">Legend</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
+    <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
+    <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (SBAS - India)</string>
+    <string name="sky_legend_shape_anik">Anik (SBAS - Canada)</string>
+    <string name="sky_legend_shape_galaxy_15">Galaxy 15 (SBAS - USA)</string>
+    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 &amp; 4-F3 (SBAS - UK)</string>
+    <string name="sky_legend_shape_ses_5">SES-5 (SBAS - Luxembourg)</string>
+
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider or Location is disabled, no updates until it\'s enabled</string>
     <string name="gnss_nav_msg_status_not_supported">Device does not support tracking of GNSS Navigation Messages</string>

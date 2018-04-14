@@ -48,5 +48,17 @@
             android:layout_below="@id/sky_view"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"/>
+        <include layout="@layout/gps_sky_shape_legend"
+            android:id="@+id/sky_legend_shape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_legend_cn0"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="@dimen/sky_margin"
+            android:layout_marginStart="@dimen/sky_margin"
+            android:layout_marginRight="@dimen/sky_margin"
+            android:layout_marginEnd="@dimen/sky_margin"
+            android:layout_marginBottom="@dimen/sky_margin"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 </ScrollView>
