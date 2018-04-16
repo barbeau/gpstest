@@ -122,10 +122,12 @@
     <string name="sky_legend_snr_units">(dB)</string>
 
     <string name="sky_legend_shape_legend_title">Legend</string>
+    <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
+    <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
     <string name="sky_legend_shape_gagan">GAGAN (SBAS - India)</string>
     <string name="sky_legend_shape_anik">Anik (SBAS - Canada)</string>

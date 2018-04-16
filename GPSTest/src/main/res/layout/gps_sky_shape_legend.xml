@@ -12,483 +12,513 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:id="@+id/sky_shape_legend_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_margin="10dp"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:text="@string/sky_legend_shape_legend_title" />
 
-    <TableLayout
-        android:id="@+id/sky_shape_legend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sky_shape_legend_title"
-        android:layout_margin="5dp"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/sky_shape_gnss_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_shape_legend_title"
+            android:layout_margin="@dimen/sky_margin"
+            android:textStyle="bold"
+            android:text="@string/sky_legend_shape_gnss_title" />
 
-        <TableRow
+        <TableLayout
+            android:id="@+id/sky_shape_legend_gnss"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_shape_gnss_title"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true">
 
-            <ImageView
-                android:id="@+id/sky_legend_circle"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/circle" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line1a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_circle"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/circle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_usa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_usa" />
+                <View
+                    android:id="@+id/sky_legend_shape_line1a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line1b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_usa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_usa" />
 
-            <TextView
-                android:id="@+id/sky_navstar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_navstar" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line1b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
+                <TextView
+                    android:id="@+id/sky_navstar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_navstar" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_square"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/square" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line2"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/legend_flag_russia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_russia" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line2b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/sky_glonass_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_glonass" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_triangle"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line3a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/legend_flag_galileo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_galileo" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line3b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/sky_galileo_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_galileo" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_pentagon"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/pentagon" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line4a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/legend_flag_china"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_china" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line4b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/sky_beidou_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_beidou" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_triangle2"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line5a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <ImageView
+                    android:id="@+id/legend_flag_japan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_japan" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line5b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/sky_japan_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_qzss" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/sky_shape_sbas_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_shape_legend_gnss"
+            android:layout_margin="@dimen/sky_margin"
+            android:textStyle="bold"
+            android:text="@string/sky_legend_shape_sbas_title" />
+
+        <TableLayout
+            android:id="@+id/sky_shape_legend_sbas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_shape_sbas_title"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true">
 
-            <ImageView
-                android:id="@+id/sky_legend_square"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/square" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line2"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_triangle3"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_russia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_russia" />
+                <View
+                    android:id="@+id/sky_legend_shape_line6a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line2b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_gagan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_gagan" />
 
-            <TextView
-                android:id="@+id/sky_glonass_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_glonass" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line6b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sky_gagan_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_gagan" />
+            </TableRow>
 
-            <ImageView
-                android:id="@+id/sky_legend_triangle"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line3a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_triangle4"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_galileo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_galileo" />
+                <View
+                    android:id="@+id/sky_legend_shape_line7a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line3b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_anik"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_canada" />
 
-            <TextView
-                android:id="@+id/sky_galileo_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_galileo" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line7b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sky_anik_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_anik" />
+            </TableRow>
 
-            <ImageView
-                android:id="@+id/sky_legend_pentagon"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/pentagon" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line4a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_triangle5"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_china"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_china" />
+                <View
+                    android:id="@+id/sky_legend_shape_line8a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line4b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_galaxy_15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_usa" />
 
-            <TextView
-                android:id="@+id/sky_beidou_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_beidou" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line8b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sky_galaxy_15_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_galaxy_15" />
+            </TableRow>
 
-            <ImageView
-                android:id="@+id/sky_legend_triangle2"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line5a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_triangle6"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_japan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_japan" />
+                <View
+                    android:id="@+id/sky_legend_shape_line9a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line5b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_inmarsat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_united_kingdom" />
 
-            <TextView
-                android:id="@+id/sky_japan_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_qzss" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line9b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sky_inmarsat_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_inmarsat" />
+            </TableRow>
 
-            <ImageView
-                android:id="@+id/sky_legend_triangle3"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/sky_legend_shape_line6a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/sky_legend_triangle7"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/triangle" />
 
-            <ImageView
-                android:id="@+id/legend_flag_gagan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_gagan" />
+                <View
+                    android:id="@+id/sky_legend_shape_line10a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-            <View
-                android:id="@+id/sky_legend_shape_line6b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
+                <ImageView
+                    android:id="@+id/legend_flag_ses_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_luxembourg" />
 
-            <TextView
-                android:id="@+id/sky_gagan_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_gagan" />
-        </TableRow>
+                <View
+                    android:id="@+id/sky_legend_shape_line10b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@android:color/black" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/sky_ses_5_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_ses_5" />
+            </TableRow>
+        </TableLayout>
 
-            <ImageView
-                android:id="@+id/sky_legend_triangle4"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line7a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <ImageView
-                android:id="@+id/legend_flag_anik"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_canada" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line7b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <TextView
-                android:id="@+id/sky_anik_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_anik" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/sky_legend_triangle5"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line8a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <ImageView
-                android:id="@+id/legend_flag_galaxy_15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_usa" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line8b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <TextView
-                android:id="@+id/sky_galaxy_15_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_galaxy_15" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/sky_legend_triangle6"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line9a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <ImageView
-                android:id="@+id/legend_flag_inmarsat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_united_kingdom" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line9b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <TextView
-                android:id="@+id/sky_inmarsat_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_inmarsat" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/sky_legend_triangle7"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                app:srcCompat="@drawable/triangle" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line10a"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <ImageView
-                android:id="@+id/legend_flag_ses_5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@color/body_text_2_light"
-                android:padding="1dp"
-                app:srcCompat="@drawable/ic_flag_luxembourg" />
-
-            <View
-                android:id="@+id/sky_legend_shape_line10b"
-                android:layout_width="@dimen/sky_legend_shape_small_line"
-                android:layout_height="1dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:background="@android:color/black" />
-
-            <TextView
-                android:id="@+id/sky_ses_5_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/sky_legend_shape_ses_5" />
-        </TableRow>
-    </TableLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
