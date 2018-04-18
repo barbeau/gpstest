@@ -41,7 +41,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private GpsSkyView mSkyView;
 
-    private List<View> mLegendCn0Lines;
+    private List<View> mLegendLines;
 
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText, mLegendCn0RightText;
 
@@ -54,29 +54,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         mSkyView = v.findViewById(R.id.sky_view);
 
-        if (mLegendCn0Lines == null) {
-            mLegendCn0Lines = new LinkedList<>();
-        } else {
-            mLegendCn0Lines.clear();
-        }
-
-        // C/N0 Legend lines
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line4));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line3));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line2));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_left_line1));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_center_line));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line1));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line2));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line3));
-        mLegendCn0Lines.add(v.findViewById(R.id.sky_legend_cn0_right_line4));
-
-        // C/N0 Legend text
-        mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
-        mLegendCn0Units = v.findViewById(R.id.sky_legend_cn0_units);
-        mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
-        mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
-        mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
+        initLegendViews(v);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
@@ -93,7 +71,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             // Light theme
             color = getResources().getColor(android.R.color.secondary_text_light);
         }
-        for (View v : mLegendCn0Lines) {
+        for (View v : mLegendLines) {
             v.setBackgroundColor(color);
         }
     }
@@ -178,6 +156,58 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     @Override
     public void onNmeaMessage(String message, long timestamp) {
+    }
+
+    /**
+     * Initialize the views in the C/N0 and Shape legends
+     * @param v view in which the legend view IDs can be found via view.findViewById()
+     */
+    private void initLegendViews(View v) {
+        if (mLegendLines == null) {
+            mLegendLines = new LinkedList<>();
+        } else {
+            mLegendLines.clear();
+        }
+
+        // C/N0 Legend lines
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line4));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line3));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line2));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line1));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_center_line));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_right_line1));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_right_line2));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_right_line3));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_right_line4));
+
+        // Shape Legend lines
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line1a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line1b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line2a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line2b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line3a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line3b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line4a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line4b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line5a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line5b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line6a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line6b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line7a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line7b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line8a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line8b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line9a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line9b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line10a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line10b));
+
+        // C/N0 Legend text
+        mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
+        mLegendCn0Units = v.findViewById(R.id.sky_legend_cn0_units);
+        mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
+        mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
+        mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
     }
 
     private void updateCn0LegendText() {

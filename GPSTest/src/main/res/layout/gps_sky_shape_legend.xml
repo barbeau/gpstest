@@ -99,7 +99,7 @@
                     app:srcCompat="@drawable/square" />
 
                 <View
-                    android:id="@+id/sky_legend_shape_line2"
+                    android:id="@+id/sky_legend_shape_line2a"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
