@@ -41,7 +41,7 @@
     <View
         android:id="@+id/sky_legend_cn0_left_line4"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_large_line"
+        android:layout_height="@dimen/sky_legend_cn0_large_line"
         android:layout_below="@id/sky_legend_cn0"
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
@@ -63,7 +63,7 @@
     <View
         android:id="@+id/sky_legend_cn0_left_line3"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_small_line"
+        android:layout_height="@dimen/sky_legend_cn0_small_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -74,7 +74,7 @@
     <View
         android:id="@+id/sky_legend_cn0_left_line2"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_medium_line"
+        android:layout_height="@dimen/sky_legend_cn0_medium_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -85,7 +85,7 @@
     <View
         android:id="@+id/sky_legend_cn0_left_line1"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_small_line"
+        android:layout_height="@dimen/sky_legend_cn0_small_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -96,7 +96,7 @@
     <View
         android:id="@+id/sky_legend_cn0_center_line"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_large_line"
+        android:layout_height="@dimen/sky_legend_cn0_large_line"
         android:layout_below="@id/sky_legend_cn0"
         android:layout_centerHorizontal="true"
         android:layout_margin="2dp"
@@ -116,7 +116,7 @@
     <View
         android:id="@+id/sky_legend_cn0_right_line1"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_small_line"
+        android:layout_height="@dimen/sky_legend_cn0_small_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -127,7 +127,7 @@
     <View
         android:id="@+id/sky_legend_cn0_right_line2"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_medium_line"
+        android:layout_height="@dimen/sky_legend_cn0_medium_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -138,7 +138,7 @@
     <View
         android:id="@+id/sky_legend_cn0_right_line3"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_small_line"
+        android:layout_height="@dimen/sky_legend_cn0_small_line"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
@@ -149,7 +149,7 @@
     <View
         android:id="@+id/sky_legend_cn0_right_line4"
         android:layout_width="1dp"
-        android:layout_height="@dimen/sky_legend_large_line"
+        android:layout_height="@dimen/sky_legend_cn0_large_line"
         android:layout_below="@id/sky_legend_cn0"
         android:layout_alignRight="@id/sky_legend_cn0"
         android:layout_alignEnd="@id/sky_legend_cn0"
