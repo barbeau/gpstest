@@ -46,8 +46,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_circle"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/circle" />
@@ -92,8 +92,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_square"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/square" />
@@ -138,8 +138,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -184,8 +184,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_pentagon"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/pentagon" />
@@ -230,8 +230,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle2"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -295,8 +295,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle3"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -341,8 +341,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle4"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -387,8 +387,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle5"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -433,8 +433,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle6"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
@@ -479,8 +479,8 @@
 
                 <ImageView
                     android:id="@+id/sky_legend_triangle7"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/triangle" />
