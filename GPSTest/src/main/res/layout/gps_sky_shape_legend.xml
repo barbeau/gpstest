@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sky_shape_legend_title"
-            android:layout_margin="@dimen/sky_margin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:textStyle="bold"
             android:text="@string/sky_legend_shape_gnss_title" />
 
@@ -276,7 +277,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sky_shape_legend_gnss"
-            android:layout_margin="@dimen/sky_margin"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:textStyle="bold"
             android:text="@string/sky_legend_shape_sbas_title" />
 
