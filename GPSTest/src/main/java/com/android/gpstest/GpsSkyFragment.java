@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.gpstest.view.GpsSkyView;
@@ -42,6 +43,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     private GpsSkyView mSkyView;
 
     private List<View> mLegendLines;
+
+    private List<ImageView> mLegendShapes;
 
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText, mLegendCn0RightText;
 
@@ -69,10 +72,13 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             color = getResources().getColor(android.R.color.secondary_text_dark);
         } else {
             // Light theme
-            color = getResources().getColor(android.R.color.secondary_text_light);
+            color = getResources().getColor(R.color.body_text_2_light);
         }
         for (View v : mLegendLines) {
             v.setBackgroundColor(color);
+        }
+        for (ImageView v: mLegendShapes) {
+            v.setColorFilter(color);
         }
     }
 
@@ -169,6 +175,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendLines.clear();
         }
 
+        if (mLegendShapes == null) {
+            mLegendShapes = new LinkedList<>();
+        } else {
+            mLegendShapes.clear();
+        }
+
         // C/N0 Legend lines
         mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line4));
         mLegendLines.add(v.findViewById(R.id.sky_legend_cn0_left_line3));
@@ -208,6 +220,18 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
         mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
         mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
+
+        // Shape Legend shapes
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_circle));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_square));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_pentagon));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle2));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle3));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle4));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle5));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle6));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle7));
     }
 
     private void updateCn0LegendText() {
