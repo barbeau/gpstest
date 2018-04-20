@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.concurrent.TimeUnit;
 
@@ -97,5 +98,51 @@ public class UIUtils {
         } else {
             return TimeUnit.MILLISECONDS.toSeconds(ttff) + " sec";
         }
+    }
+
+    /**
+     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 indicator ImageViews in gps_sky_signal_legend.xml
+     *
+     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_legend is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz).
+     * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     *
+     * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
+     *
+     * @param cn0 carrier-to-noise density at the antenna of the satellite in dB-Hz (from GnssStatus)
+     * @return left margin value in dp for the C/N0 indicator ImageViews
+     */
+    public static float cn0ToLeftMarginDp(float cn0) {
+        final float MIN_VALUE_CN0 = 10.0f;
+        final float MAX_VALUE_CN0 = 45.0f;
+        final float MIN_VALUE_MARGIN_DP = -5.0f;
+        final float MAX_VALUE_MARGIN_DP = 155.0f;
+
+        // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
+        final float MAX_VALUE_MARGIN_DP_SHIFTED = MAX_VALUE_MARGIN_DP - MIN_VALUE_MARGIN_DP;
+        final float MAX_VALUE_CN0_SHIFTED = MAX_VALUE_CN0 - MIN_VALUE_CN0;
+
+        // Calculate percentage of given CN0 to the CN0 range
+        final float cn0Percent = (100 * (cn0 - MIN_VALUE_CN0)) / MAX_VALUE_CN0_SHIFTED;
+
+        // Apply percentage to adjusted margin range
+        final float leftMarginShiftedDp = (MAX_VALUE_MARGIN_DP_SHIFTED * cn0Percent) / 100;
+
+        // Shift margin back using original margin offset and return
+        return leftMarginShiftedDp + MIN_VALUE_MARGIN_DP;
+    }
+
+    /**
+     * Sets the margins for a given view
+     *
+     * @param v View to set the margin for
+     * @param l left margin, in pixels
+     * @param t top margin, in pixels
+     * @param r right margin, in pixels
+     * @param b bottom margin, in pixels
+     */
+    public static void setMargins(View v, int l, int t, int r, int b) {
+        ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+        p.setMargins(l, t, r, b);
+        v.setLayoutParams(p);
     }
 }

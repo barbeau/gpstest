@@ -67,6 +67,10 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
 
+    private float mCn0UsedAvg = 0.0f;
+
+    private float mCn0InViewAvg = 0.0f;
+
     private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
     private int mPrns[], mConstellationType[];
@@ -197,7 +201,7 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setGnssStatus(GnssStatus status) {
+    public synchronized void setGnssStatus(GnssStatus status) {
         mUseLegacyGnssApi = false;
         if (mPrns == null) {
             /**
@@ -218,6 +222,12 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         int length = status.getSatelliteCount();
         mSvCount = 0;
+        int svInViewCount = 0;
+        int svUsedCount = 0;
+        float cn0InViewSum = 0.0f;
+        float cn0UsedSum = 0.0f;
+        mCn0InViewAvg = 0.0f;
+        mCn0UsedAvg = 0.0f;
         while (mSvCount < length) {
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
             mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
@@ -227,7 +237,23 @@ public class GpsSkyView extends View implements GpsTestListener {
             mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
             mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
             mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
+            // If satellite is in view, add signal to calculate avg
+            if (status.getCn0DbHz(mSvCount) != 0.0f) {
+                svInViewCount++;
+                cn0InViewSum = cn0InViewSum + status.getCn0DbHz(mSvCount);
+            }
+            if (status.usedInFix(mSvCount)) {
+                svUsedCount++;
+                cn0UsedSum = cn0UsedSum + status.getCn0DbHz(mSvCount);
+            }
             mSvCount++;
+        }
+
+        if (svInViewCount > 0) {
+            mCn0InViewAvg = cn0InViewSum / svInViewCount;
+        }
+        if (svUsedCount > 0) {
+            mCn0UsedAvg = cn0UsedSum / svUsedCount;
         }
 
         mStarted = true;
@@ -638,5 +664,21 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     @Override
     public void onProviderDisabled(String provider) {
+    }
+
+    /**
+     * Returns the average C/N0 for satellites that are in view of the device (i.e., C/N0 is not 0), or 0 if the average can't be calculated
+     * @return the average C/N0 for satellites that are in view of the device (i.e., C/N0 is not 0), or 0 if the average can't be calculated
+     */
+    public synchronized float getCn0InViewAvg() {
+        return mCn0InViewAvg;
+    }
+
+    /**
+     * Returns the average C/N0 for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     * @return the average C/N0 for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     */
+    public synchronized float getCn0UsedAvg() {
+        return mCn0UsedAvg;
     }
 }

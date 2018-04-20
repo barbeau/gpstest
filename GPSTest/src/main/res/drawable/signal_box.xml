@@ -3,7 +3,7 @@
     android:id="@+id/signal_box">
     <item android:drawable="@drawable/signal_gradient" />
     <item>
-        <shape android:shape="rectangle" android:padding="10dp">
+        <shape android:shape="rectangle">
             <corners
                 android:bottomRightRadius="5dp"
                 android:bottomLeftRadius="5dp"

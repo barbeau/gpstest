@@ -21,6 +21,30 @@
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
 
+    <ImageView
+        android:id="@+id/cn0_indicator_in_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/sky_legend_cn0"
+        android:layout_alignStart="@id/sky_legend_cn0"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        app:srcCompat="@drawable/ic_cn0_indicator_in_view" />
+
+    <ImageView
+        android:id="@+id/cn0_indicator_used"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/sky_legend_cn0"
+        android:layout_alignStart="@id/sky_legend_cn0"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+        app:srcCompat="@drawable/ic_cn0_indicator_used" />
+
     <!-- Colored C/N0 legend -->
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/sky_legend_cn0"
@@ -30,7 +54,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/cn0_indicator_used"
         android:background="@android:color/black"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
@@ -144,7 +168,7 @@
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
         android:background="@android:color/black"
         android:layout_marginLeft="136dp"
-        android:layout_marginStart="126dp" />
+        android:layout_marginStart="136dp" />
 
     <View
         android:id="@+id/sky_legend_cn0_right_line4"

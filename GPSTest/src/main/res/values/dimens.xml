@@ -16,6 +16,7 @@
     <dimen name="sky_legend_text_size_small">10sp</dimen>
 
     <dimen name="sky_margin">5dp</dimen>
+    <dimen name="sky_legend_cn0_indicator">10dp</dimen>
     <dimen name="sky_legend_cn0_large_line">10dp</dimen>
     <dimen name="sky_legend_cn0_medium_line">7dp</dimen>
     <dimen name="sky_legend_cn0_small_line">4dp</dimen>

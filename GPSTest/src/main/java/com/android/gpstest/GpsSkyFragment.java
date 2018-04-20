@@ -29,8 +29,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.GpsSkyView;
 
 import java.util.LinkedList;
@@ -46,7 +48,10 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private List<ImageView> mLegendShapes;
 
-    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText, mLegendCn0RightText;
+    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText,
+            mLegendCn0RightText;
+
+    private ImageView mCn0InViewAvg, mCn0UsedAvg;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -58,6 +63,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mSkyView = v.findViewById(R.id.sky_view);
 
         initLegendViews(v);
+
+        mCn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view);
+        mCn0UsedAvg = v.findViewById(R.id.cn0_indicator_used);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
@@ -111,6 +119,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mSkyView.setGnssStatus(status);
         mUseLegacyGnssApi = false;
         updateCn0LegendText();
+        updateCn0Avgs();
     }
 
     @Override
@@ -250,6 +259,39 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendCn0CenterText.setText(R.string.sky_legend_snr_middle);
             mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
         }
+    }
 
+    private void updateCn0Avgs() {
+        // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_legend is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
+        // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
+        if (mSkyView != null) {
+
+            if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
+                float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0InViewAvg());
+                int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
+
+                mCn0InViewAvg.setVisibility(View.VISIBLE);
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
+                lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                mCn0InViewAvg.setLayoutParams(lp);
+                //mCn0InViewAvg.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
+            } else {
+                //mCn0InViewAvg.setText("");
+                mCn0InViewAvg.setVisibility(View.INVISIBLE);
+            }
+            if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
+                float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0UsedAvg());
+                int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
+
+                mCn0UsedAvg.setVisibility(View.VISIBLE);
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvg.getLayoutParams();
+                lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                //mCn0UsedAvg.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
+                mCn0UsedAvg.setLayoutParams(lp);
+            } else {
+                //mCn0UsedAvg.setText("");
+                mCn0UsedAvg.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 }
