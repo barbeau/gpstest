@@ -25,11 +25,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.gpstest.util.UIUtils;
@@ -52,6 +54,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendCn0RightText;
 
     private ImageView mCn0InViewAvg, mCn0UsedAvg;
+
+    Animation mCn0InViewAvgAnimation, mCn0UsedAvgAnimation;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -265,33 +269,74 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_legend is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         if (mSkyView != null) {
-
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
+                //mCn0InViewAvg.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
+                mCn0InViewAvg.setVisibility(View.VISIBLE);
+
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
 
-                mCn0InViewAvg.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
-                lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                mCn0InViewAvg.setLayoutParams(lp);
-                //mCn0InViewAvg.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
+                animateCn0Indicator(mCn0InViewAvg, leftMarginPx, mCn0InViewAvgAnimation);
             } else {
                 //mCn0InViewAvg.setText("");
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
+                //mCn0UsedAvg.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
+                mCn0UsedAvg.setVisibility(View.VISIBLE);
+
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
 
-                mCn0UsedAvg.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvg.getLayoutParams();
-                lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                //mCn0UsedAvg.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
-                mCn0UsedAvg.setLayoutParams(lp);
+                animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
             } else {
                 //mCn0UsedAvg.setText("");
                 mCn0UsedAvg.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    /**
+     * Animates a C/N0 indicator view from it's current location to the provided left margin location (in pixels)
+     * @param v view to animate
+     * @param goalLeftMarginPx the new left margin for the view that the view should animate to in pixels
+     * @param animation Animation to use for the animation
+     */
+    private void animateCn0Indicator(final View v, final int goalLeftMarginPx, Animation animation) {
+        if (v == null) {
+            return;
+        }
+
+        if (animation != null) {
+            animation.reset();
+        }
+
+        final ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+
+        final int currentMargin = p.leftMargin;
+
+        animation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                int newLeft;
+                if (goalLeftMarginPx > currentMargin) {
+                    newLeft = currentMargin + (int) (Math.abs(currentMargin - goalLeftMarginPx)
+                            * interpolatedTime);
+                } else {
+                    newLeft = currentMargin - (int) (Math.abs(currentMargin - goalLeftMarginPx)
+                            * interpolatedTime);
+                }
+                UIUtils.setMargins(v,
+                        newLeft,
+                        p.topMargin,
+                        p.rightMargin,
+                        p.bottomMargin);
+            }
+        };
+        // C/N0 updates every second, so animation of 300ms (https://material.io/guidelines/motion/duration-easing.html#duration-easing-common-durations)
+        // wit FastOutSlowInInterpolator recommended by Material Design spec easily finishes in time for next C/N0 update
+        animation.setDuration(300);
+        animation.setInterpolator(new FastOutSlowInInterpolator());
+        v.startAnimation(animation);
     }
 }
