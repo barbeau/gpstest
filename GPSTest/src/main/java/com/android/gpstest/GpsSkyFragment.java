@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.gpstest.util.UIUtils;
@@ -273,24 +274,39 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
-                mCn0InViewAvg.setVisibility(View.VISIBLE);
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
 
-                animateCn0Indicator(mCn0InViewAvg, leftMarginPx, mCn0InViewAvgAnimation);
+                // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
+                if (mCn0InViewAvg.getVisibility() == View.VISIBLE) {
+                    animateCn0Indicator(mCn0InViewAvg, leftMarginPx, mCn0InViewAvgAnimation);
+                } else {
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
+                    lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                    mCn0InViewAvg.setLayoutParams(lp);
+                    mCn0InViewAvg.setVisibility(View.VISIBLE);
+                }
+
             } else {
                 mCn0InViewAvgText.setText("");
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
                 mCn0UsedAvgText.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
-                mCn0UsedAvg.setVisibility(View.VISIBLE);
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
 
-                animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
+                // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
+                if (mCn0UsedAvg.getVisibility() == View.VISIBLE) {
+                    animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
+                } else {
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvg.getLayoutParams();
+                    lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                    mCn0UsedAvg.setLayoutParams(lp);
+                    mCn0UsedAvg.setVisibility(View.VISIBLE);
+                }
             } else {
                 mCn0UsedAvgText.setText("");
                 mCn0UsedAvg.setVisibility(View.INVISIBLE);
