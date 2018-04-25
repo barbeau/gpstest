@@ -30,6 +30,7 @@
         android:layout_marginLeft="-4dp"
         android:layout_marginStart="-4dp"
         android:layout_marginTop="2.25dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/ic_cn0_indicator_in_view" />
 
     <ImageView
@@ -42,6 +43,7 @@
         android:layout_marginStart="-5dp"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
+        android:visibility="invisible"
         app:srcCompat="@drawable/ic_cn0_indicator_used" />
 
     <!-- Colored C/N0 legend -->
