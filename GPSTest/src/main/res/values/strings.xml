@@ -115,6 +115,9 @@
     <string name="sky_legend_cn0_middle">27.5</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
+    <string name="sky_legend_cn0_indicator_title">Avg</string>
+    <string name="sky_legend_cn0_avg_in_view_title">In view:</string>
+    <string name="sky_legend_cn0_avg_used_title">Used:</string>
 
     <string name="sky_legend_snr_low">0</string>
     <string name="sky_legend_snr_middle">15</string>

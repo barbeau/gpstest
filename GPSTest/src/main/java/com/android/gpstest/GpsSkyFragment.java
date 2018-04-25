@@ -51,7 +51,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     private List<ImageView> mLegendShapes;
 
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText,
-            mLegendCn0RightText;
+            mLegendCn0RightText, mCn0InViewAvgText, mCn0UsedAvgText;
 
     private ImageView mCn0InViewAvg, mCn0UsedAvg;
 
@@ -233,6 +233,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
         mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
         mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
+        mCn0InViewAvgText = v.findViewById(R.id.sky_legend_cn0_avg_in_view_value);
+        mCn0UsedAvgText = v.findViewById(R.id.sky_legend_cn0_avg_used_value);
 
         // Shape Legend shapes
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_circle));
@@ -270,7 +272,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
-                //mCn0InViewAvg.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
+                mCn0InViewAvgText.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
                 mCn0InViewAvg.setVisibility(View.VISIBLE);
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0InViewAvg());
@@ -278,11 +280,11 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
                 animateCn0Indicator(mCn0InViewAvg, leftMarginPx, mCn0InViewAvgAnimation);
             } else {
-                //mCn0InViewAvg.setText("");
+                mCn0InViewAvgText.setText("");
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
-                //mCn0UsedAvg.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
+                mCn0UsedAvgText.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
                 mCn0UsedAvg.setVisibility(View.VISIBLE);
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0UsedAvg());
@@ -290,7 +292,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
                 animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
             } else {
-                //mCn0UsedAvg.setText("");
+                mCn0UsedAvgText.setText("");
                 mCn0UsedAvg.setVisibility(View.INVISIBLE);
             }
         }

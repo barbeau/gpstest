@@ -38,7 +38,7 @@
             android:layout_toStartOf="@+id/sky_legend_cn0"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="22dp"
             android:paddingTop="5dp"
             android:layout_centerHorizontal="true" />
         <include layout="@layout/gps_sky_signal_legend"
@@ -48,6 +48,17 @@
             android:layout_below="@id/sky_view"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"/>
+        <include layout="@layout/gps_sky_signal_legend_avg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sky_view"
+            android:layout_toRightOf="@+id/sky_legend_cn0"
+            android:layout_toEndOf="@+id/sky_legend_cn0"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:paddingTop="5dp"
+            android:layout_centerHorizontal="true" />
         <include layout="@layout/gps_sky_shape_legend"
             android:id="@+id/sky_legend_shape"
             android:layout_width="match_parent"
