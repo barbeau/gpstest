@@ -17,6 +17,7 @@
 -->
 <!-- C/N0 legend title and units-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sky_legend_cn0_avg_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -32,12 +33,23 @@
         android:textAlignment="center"
         android:text="@string/sky_legend_cn0_indicator_title" />
 
+    <ImageView
+        android:id="@+id/cn0_legend_indicator_in_view"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="2dp"
+        android:layout_below="@id/sky_legend_cn0_avg_title"
+        app:srcCompat="@drawable/ic_cn0_indicator_in_view" />
+
     <TextView
         android:id="@+id/sky_legend_cn0_avg_in_view_title"
         style="@style/sky_legend_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_avg_title"
+        android:layout_toRightOf="@+id/cn0_legend_indicator_in_view"
+        android:layout_toEndOf="@+id/cn0_legend_indicator_in_view"
         android:paddingRight="2dp"
         android:paddingEnd="2dp"
         android:text="@string/sky_legend_cn0_avg_in_view_title" />
@@ -48,6 +60,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_avg_title"
         android:layout_toRightOf="@id/sky_legend_cn0_avg_in_view_title" />
+    <ImageView
+        android:id="@+id/cn0_legend_indicator_used"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:paddingTop="5dp"
+        android:paddingRight="2dp"
+        android:layout_below="@id/sky_legend_cn0_avg_in_view_title"
+        app:srcCompat="@drawable/ic_cn0_indicator_used" />
     <TextView
         android:id="@+id/sky_legend_cn0_avg_used_title"
         style="@style/sky_legend_value"
