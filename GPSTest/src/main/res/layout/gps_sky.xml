@@ -74,7 +74,7 @@
                     android:layout_toEndOf="@+id/sky_legend_cn0"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:paddingTop="5dp"
                     android:layout_centerHorizontal="true" />
             </RelativeLayout>
