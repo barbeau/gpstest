@@ -68,15 +68,26 @@
                     android:layout_marginBottom="5dp"
                     android:layout_centerHorizontal="true"/>
                 <include layout="@layout/gps_sky_signal_legend_avg"
+                    android:id="@+id/gps_sky_signal_legend_avg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/sky_legend_cn0"
-                    android:layout_toEndOf="@+id/sky_legend_cn0"
+                    android:layout_below="@+id/sky_legend_cn0"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="4dp"
-                    android:paddingTop="4dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_centerHorizontal="true" />
+                <TextView
+                    android:id="@+id/sky_legend_cn0_avg_title"
+                    style="@style/sky_legend_value"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sky_legend_cn0"
+                    android:layout_toLeftOf="@+id/gps_sky_signal_legend_avg"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    android:text="@string/sky_legend_cn0_indicator_title" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
