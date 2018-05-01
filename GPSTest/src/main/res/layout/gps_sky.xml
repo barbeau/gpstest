@@ -74,8 +74,8 @@
                     android:layout_toEndOf="@+id/sky_legend_cn0"
                     android:layout_marginLeft="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="6dp"
-                    android:paddingTop="5dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="4dp"
                     android:layout_centerHorizontal="true" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
