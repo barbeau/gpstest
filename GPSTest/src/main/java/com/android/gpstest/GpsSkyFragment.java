@@ -273,7 +273,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
-                mCn0InViewAvgText.setText(String.format("%.2f", mSkyView.getCn0InViewAvg()));
+                mCn0InViewAvgText.setText(mSkyView.getResources().getString(R.string.sky_legend_cn0_units_and_value, mSkyView.getCn0InViewAvg()));
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
@@ -293,7 +293,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
-                mCn0UsedAvgText.setText(String.format("%.2f", mSkyView.getCn0UsedAvg()));
+                mCn0UsedAvgText.setText(mSkyView.getResources().getString(R.string.sky_legend_cn0_units_and_value, mSkyView.getCn0UsedAvg()));
 
                 float leftMarginDp = UIUtils.cn0ToLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
