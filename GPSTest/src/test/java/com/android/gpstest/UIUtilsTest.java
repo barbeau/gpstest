@@ -9,7 +9,7 @@ import static junit.framework.Assert.assertEquals;
 public class UIUtilsTest {
 
     /**
-     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_legend is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz).
+     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz).
      */
     @Test
     public void testCn0ToLeftMargin() {

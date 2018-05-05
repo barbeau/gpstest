@@ -18,8 +18,7 @@
 -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -31,59 +30,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"/>
-        <android.support.v7.widget.CardView
+
+        <include layout="@layout/gps_sky_cn0_indicator_card"
             android:id="@+id/sky_cn0_indicator_card"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/sky_view"
             android:layout_marginTop="@dimen/sky_margin"
             android:layout_marginLeft="@dimen/sky_margin"
             android:layout_marginStart="@dimen/sky_margin"
             android:layout_marginRight="@dimen/sky_margin"
             android:layout_marginEnd="@dimen/sky_margin"
-            android:layout_centerHorizontal="true"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="4dp"
-            android:foreground="?attr/selectableItemBackground">
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <include layout="@layout/gps_sky_signal_legend_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/sky_legend_cn0"
-                    android:layout_toStartOf="@+id/sky_legend_cn0"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="22dp"
-                    android:paddingTop="5dp"
-                    android:layout_centerHorizontal="true" />
-                <include layout="@layout/gps_sky_signal_legend"
-                    android:id="@+id/sky_legend_cn0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_centerHorizontal="true"/>
-                <include layout="@layout/gps_sky_signal_legend_avg"
-                    android:id="@+id/gps_sky_signal_legend_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/sky_legend_cn0"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_centerInParent="true" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+            android:layout_below="@id/sky_view"/>
 
         <include layout="@layout/gps_sky_shape_legend"
             android:id="@+id/sky_legend_shape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sky_cn0_indicator_card"
+            android:layout_marginLeft="@dimen/sky_margin"
+            android:layout_marginStart="@dimen/sky_margin"
+            android:layout_marginRight="@dimen/sky_margin"
+            android:layout_marginEnd="@dimen/sky_margin"
+            android:layout_marginBottom="@dimen/sky_margin"
+            android:layout_centerHorizontal="true"/>
+
+        <include layout="@layout/gps_sky_cn0_legend"
+            android:id="@+id/sky_legend_cn0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sky_legend_shape"
             android:layout_marginLeft="@dimen/sky_margin"
             android:layout_marginStart="@dimen/sky_margin"
             android:layout_marginRight="@dimen/sky_margin"

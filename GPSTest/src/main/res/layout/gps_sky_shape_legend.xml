@@ -521,6 +521,5 @@
                     android:text="@string/sky_legend_shape_ses_5" />
             </TableRow>
         </TableLayout>
-
     </RelativeLayout>
 </android.support.v7.widget.CardView>

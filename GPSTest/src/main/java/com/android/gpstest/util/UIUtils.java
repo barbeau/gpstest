@@ -101,9 +101,8 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 indicator ImageViews in gps_sky_signal_legend.xml
-     *
-     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_legend is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz).
+     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 indicator ImageViews in gps_sky_signal   *
+     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz).
      * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
