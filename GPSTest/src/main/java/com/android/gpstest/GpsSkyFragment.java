@@ -269,7 +269,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     }
 
     private void updateCn0Avgs() {
-        // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
+        // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_meter is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
