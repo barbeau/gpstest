@@ -137,7 +137,7 @@
     <string name="sky_legend_shape_ses_5">SES-5 (Luxembourg)</string>
 
     <string name="sky_legend_signal_quality_legend_title">Signal Quality Legend</string>
-    <string name="sky_legend_cn0_legend_title">Carrier-to-noise density ratio</string>
+    <string name="sky_legend_cn0_legend_title">Carrier-to-Noise Density Ratio (C/N0)</string>
     <string name="sky_legend_cn0_avg_in_view_title">Average C/N0 of satellites in view</string>
     <string name="sky_legend_cn0_avg_used_title">Average C/N0 of satellites used in fix</string>
 
