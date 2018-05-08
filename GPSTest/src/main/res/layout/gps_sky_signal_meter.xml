@@ -19,32 +19,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sky_signal_legend"
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    android:clipChildren="false">
 
-    <ImageView
-        android:id="@+id/cn0_indicator_in_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/sky_legend_cn0"
-        android:layout_alignStart="@id/sky_legend_cn0"
-        android:layout_marginLeft="-4dp"
-        android:layout_marginStart="-4dp"
-        android:layout_marginTop="2.25dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_cn0_indicator_in_view" />
-
-    <ImageView
-        android:id="@+id/cn0_indicator_used"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/sky_legend_cn0"
-        android:layout_alignStart="@id/sky_legend_cn0"
-        android:layout_marginLeft="-5dp"
-        android:layout_marginStart="-5dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="1dp"
-        android:visibility="invisible"
-        app:srcCompat="@drawable/ic_cn0_indicator_used" />
 
     <!-- Colored C/N0 legend -->
     <android.support.v7.widget.AppCompatImageView
@@ -56,12 +33,55 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_below="@+id/cn0_indicator_used"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         app:srcCompat="@drawable/signal_box" />
+
+    <ImageView
+        android:id="@+id/cn0_indicator_in_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/sky_legend_cn0"
+        android:layout_alignStart="@id/sky_legend_cn0"
+        android:layout_below="@id/sky_legend_cn0_avg_in_view_value"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginBottom="-8dp"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/ic_cn0_indicator" />
+
+    <include
+        android:id="@+id/sky_legend_cn0_avg_in_view_value"
+        layout="@layout/cn0_in_view_value_text"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="-5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/cn0_indicator_used"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/sky_legend_cn0"
+        android:layout_alignStart="@id/sky_legend_cn0"
+        android:layout_below="@id/sky_legend_cn0_avg_used_value"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginStart="-5dp"
+        android:layout_marginBottom="-8dp"
+        android:tint="@color/colorPrimaryDark"
+        app:srcCompat="@drawable/ic_cn0_indicator" />
+
+    <include
+        android:id="@+id/sky_legend_cn0_avg_used_value"
+        layout="@layout/cn0_used_value_text"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="-5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <!-- CN/0 legend scale text and lines -->
     <View
         android:id="@+id/sky_legend_cn0_left_line4"
@@ -71,11 +91,11 @@
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
         android:layout_margin="2dp"
-        android:background="@android:color/black" />
+        android:background="@color/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/sky_legend_cn0_left_text"
-        style="@style/sky_legend_value"
+        style="@style/cn0_meter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_left_line4"
@@ -92,7 +112,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="25dp"
         android:layout_marginStart="25dp" />
 
@@ -103,7 +123,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="44dp"
         android:layout_marginStart="44dp"/>
 
@@ -114,7 +134,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="63dp"
         android:layout_marginStart="63dp" />
 
@@ -125,11 +145,11 @@
         android:layout_below="@id/sky_legend_cn0"
         android:layout_centerHorizontal="true"
         android:layout_margin="2dp"
-        android:background="@android:color/black" />
+        android:background="@color/cn0_meter_border" />
 
     <TextView
         android:id="@+id/sky_legend_cn0_center_text"
-        style="@style/sky_legend_value"
+        style="@style/cn0_meter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_center_line"
@@ -145,7 +165,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="98dp"
         android:layout_marginStart="98dp" />
 
@@ -156,7 +176,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="117dp"
         android:layout_marginStart="117dp"/>
 
@@ -167,7 +187,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/sky_legend_cn0_left_line4"
-        android:background="@android:color/black"
+        android:background="@color/cn0_meter_border"
         android:layout_marginLeft="136dp"
         android:layout_marginStart="136dp" />
 
@@ -179,11 +199,11 @@
         android:layout_alignRight="@id/sky_legend_cn0"
         android:layout_alignEnd="@id/sky_legend_cn0"
         android:layout_margin="2dp"
-        android:background="@android:color/black" />
+        android:background="@color/cn0_meter_border" />
 
     <TextView
         android:id="@+id/sky_legend_cn0_right_text"
-        style="@style/sky_legend_value"
+        style="@style/cn0_meter_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_left_line4"

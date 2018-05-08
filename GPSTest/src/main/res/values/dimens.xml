@@ -21,6 +21,7 @@
     <dimen name="sky_legend_cn0_large_line">10dp</dimen>
     <dimen name="sky_legend_cn0_medium_line">7dp</dimen>
     <dimen name="sky_legend_cn0_small_line">4dp</dimen>
+    <dimen name="cn0_value_min_width">40dp</dimen>
 
     <dimen name="sky_legend_shape_size">14dp</dimen>
     <dimen name="sky_legend_shape_small_line">5dp</dimen>

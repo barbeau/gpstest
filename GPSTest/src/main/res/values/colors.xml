@@ -46,4 +46,6 @@
     <color name="red">#ffff0000</color>
     <color name="yellow">#ffffff00</color>
     <color name="green">#ff00ff00</color>
+
+    <color name="cn0_meter_border">@android:color/black</color>
 </resources>

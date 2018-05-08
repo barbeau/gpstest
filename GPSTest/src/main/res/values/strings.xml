@@ -115,7 +115,6 @@
     <string name="sky_legend_cn0_middle">27.5</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
-    <string name="sky_legend_cn0_units_and_value">%1$.1f dB-Hz</string>
 
     <string name="sky_legend_snr_low">0</string>
     <string name="sky_legend_snr_middle">15</string>
