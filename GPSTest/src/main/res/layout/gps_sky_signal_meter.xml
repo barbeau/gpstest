@@ -46,15 +46,14 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
-        android:layout_below="@id/sky_legend_cn0_avg_in_view_value"
+        android:layout_below="@id/cn0_text_in_view"
         android:layout_marginLeft="-5dp"
         android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
-        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_cn0_indicator" />
 
     <include
-        android:id="@+id/sky_legend_cn0_avg_in_view_value"
+        android:id="@+id/cn0_text_in_view"
         layout="@layout/cn0_in_view_value_text"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="-5dp"
@@ -67,15 +66,14 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
-        android:layout_below="@id/sky_legend_cn0_avg_used_value"
+        android:layout_below="@id/cn0_text_used"
         android:layout_marginLeft="-5dp"
         android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
-        android:tint="@color/colorPrimaryDark"
         app:srcCompat="@drawable/ic_cn0_indicator" />
 
     <include
-        android:id="@+id/sky_legend_cn0_avg_used_value"
+        android:id="@+id/cn0_text_used"
         layout="@layout/cn0_used_value_text"
         android:layout_marginTop="1dp"
         android:layout_marginBottom="-5dp"

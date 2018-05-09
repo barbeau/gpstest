@@ -110,24 +110,62 @@ public class UIUtils {
      * @param cn0 carrier-to-noise density at the antenna of the satellite in dB-Hz (from GnssStatus)
      * @return left margin value in dp for the C/N0 indicator ImageViews
      */
-    public static float cn0ToLeftMarginDp(float cn0) {
+    public static float cn0ToIndicatorLeftMarginDp(float cn0) {
         final float MIN_VALUE_CN0 = 10.0f;
         final float MAX_VALUE_CN0 = 45.0f;
         final float MIN_VALUE_MARGIN_DP = -5.0f;
         final float MAX_VALUE_MARGIN_DP = 155.0f;
 
         // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
-        final float MAX_VALUE_MARGIN_DP_SHIFTED = MAX_VALUE_MARGIN_DP - MIN_VALUE_MARGIN_DP;
-        final float MAX_VALUE_CN0_SHIFTED = MAX_VALUE_CN0 - MIN_VALUE_CN0;
+        return mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, MIN_VALUE_MARGIN_DP, MAX_VALUE_MARGIN_DP);
+    }
 
-        // Calculate percentage of given CN0 to the CN0 range
-        final float cn0Percent = (100 * (cn0 - MIN_VALUE_CN0)) / MAX_VALUE_CN0_SHIFTED;
+    /**
+     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 TextViews in gps_sky_signal
+     * Left margin range for the C/N0 TextView in gps_sky_signal is from 0dp (10 dB-Hz) to 155dp (45 dB-Hz).
+     * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     *
+     * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
+     *
+     * @param cn0 carrier-to-noise density at the antenna of the satellite in dB-Hz (from GnssStatus)
+     * @return left margin value in dp for the C/N0 TextViews
+     */
+    public static float cn0ToTextViewLeftMarginDp(float cn0) {
+        final float MIN_VALUE_CN0 = 10.0f;
+        final float MAX_VALUE_CN0 = 45.0f;
+        final float MIN_VALUE_MARGIN_DP = 0.0f;
+        final float MAX_VALUE_MARGIN_DP = 155.0f;
 
-        // Apply percentage to adjusted margin range
-        final float leftMarginShiftedDp = (MAX_VALUE_MARGIN_DP_SHIFTED * cn0Percent) / 100;
+        // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
+        return mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, MIN_VALUE_MARGIN_DP, MAX_VALUE_MARGIN_DP);
+    }
 
-        // Shift margin back using original margin offset and return
-        return leftMarginShiftedDp + MIN_VALUE_MARGIN_DP;
+    /**
+     * Converts the provided value "a" value to a value "b" given a range of possible values for "a"
+     * ("minA" and "maxA") and a range of possible values for b ("minB" and "maxB").
+     *
+     * @param a the value to be mapped to the range between minB and maxB
+     * @param minA the minimum value of the range of a
+     * @param maxA the maximum value of the range of a
+     * @param minB the minimum value of the range of b
+     * @param maxB the maximum value of the range of b
+     * @return the value of b as it relates to the values minB and maxB, based on the provided value a
+     *         and it's range of minA and maxA
+     */
+    public static float mapToRange(float a, float minA, float maxA,
+                                   float minB, float maxB) {
+        // Shift ranges to calculate percentages (because default min value may not be 0)
+        final float maxBshifted = maxB - minB;
+        final float maxAshifted = maxA - minA;
+
+        // Calculate percentage of given a value to the a range
+        final float aPercent = (100 * (a - minA)) / maxAshifted;
+
+        // Apply percentage to adjusted b range
+        final float bShifted = (maxBshifted * aPercent) / 100;
+
+        // Shift b value back using original b range offset and return
+        return bShifted + minB;
     }
 
     /**

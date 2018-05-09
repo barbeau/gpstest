@@ -1,11 +1,15 @@
 package com.android.gpstest;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import com.android.gpstest.util.UIUtils;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static junit.framework.Assert.assertEquals;
 
+@RunWith(AndroidJUnit4.class)
 public class UIUtilsTest {
 
     /**
@@ -16,15 +20,15 @@ public class UIUtilsTest {
         float marginDp;
 
         // CN0 value of 27.5 dB-Hz is 50% between 10 and 45, so output should be halfway between -5dp and 155dp, which is 75dp
-        marginDp = UIUtils.cn0ToLeftMarginDp(27.5f);
+        marginDp = UIUtils.cn0ToIndicatorLeftMarginDp(27.5f);
         assertEquals(75.0f, marginDp);
 
         // CN0 value of 45.0 dB-Hz is 100% of 45, so output should be 100% of 155dp, which is 155dp
-        marginDp = UIUtils.cn0ToLeftMarginDp(45.0f);
+        marginDp = UIUtils.cn0ToIndicatorLeftMarginDp(45.0f);
         assertEquals(155.0f, marginDp);
 
         // CN0 value of 10.0 dB-Hz is 0% (min value of CN0), so output should be 0% of dp range, which is -5
-        marginDp = UIUtils.cn0ToLeftMarginDp(10.0f);
+        marginDp = UIUtils.cn0ToIndicatorLeftMarginDp(10.0f);
         assertEquals(-5.0f, marginDp);
     }
 }

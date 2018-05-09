@@ -4,7 +4,7 @@
           android:layout_height="wrap_content"
           android:gravity="center"
           android:minWidth="@dimen/cn0_value_min_width"
-          android:text="38.25"
+          android:text="38.2"
           style="@style/cn0_avg_value_used"
           android:layout_span="2"
           android:layout_alignParentRight="true" />

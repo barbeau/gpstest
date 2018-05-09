@@ -3,7 +3,8 @@ import groovy.swing.SwingBuilder
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
@@ -12,6 +13,13 @@ android {
         versionName "3.0.3"
 
         vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // The following argument makes the Android Test Orchestrator run its
+        // "pm clear" command after each test invocation. This command ensures
+        // that the app's state is completely cleared between tests.
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
@@ -60,7 +68,7 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
+        execution 'ANDROID_TEST_ORCHESTRATOR'
     }
 }
 
@@ -109,13 +117,28 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services-maps:11.8.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.android.support:cardview-v7:26.1.0'
+    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation ("com.android.support:appcompat-v7:27.1.1")  {
+        force = true
+    }
+    implementation ("com.android.support:design:27.1.1") {
+        force = true
+    }
+    implementation ("com.android.support:recyclerview-v7:27.1.1") {
+        force = true
+    }
+    implementation ("com.android.support:cardview-v7:27.1.1") {
+        force = true
+    }
     // Calculating offset for camera target in map view
-    compile 'com.google.maps.android:android-maps-utils:0.4.4'
-    // Unit tests that don't rely on Android framework
-    testCompile 'junit:junit:4.12'
+    implementation 'com.google.maps.android:android-maps-utils:0.4.4'
+    // Unit tests
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
+}
+
+// Dependencies not directly used in this project, but used by dependencies that we are using
+configurations.all {
+    // Needed to eliminate conflict with com.android.support:support-annotations in com.android.support.test
+    resolutionStrategy.force "com.android.support:support-annotations:27.1.1"
 }
