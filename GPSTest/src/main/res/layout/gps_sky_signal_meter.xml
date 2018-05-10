@@ -45,11 +45,10 @@
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
         android:layout_below="@id/cn0_text_in_view"
-        android:layout_marginLeft="140dp"
-        android:layout_marginStart="140dp"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:tint="@color/colorPrimary"
         android:visibility="invisible"/>
 
     <include
@@ -72,7 +71,6 @@
         android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:tint="@color/colorPrimary"
         android:visibility="invisible" />
 
     <include
