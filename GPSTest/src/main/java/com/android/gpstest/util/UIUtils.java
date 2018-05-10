@@ -114,7 +114,7 @@ public class UIUtils {
         final float MIN_VALUE_CN0 = 10.0f;
         final float MAX_VALUE_CN0 = 45.0f;
         final float MIN_VALUE_MARGIN_DP = -5.0f;
-        final float MAX_VALUE_MARGIN_DP = 155.0f;
+        final float MAX_VALUE_MARGIN_DP = 145.0f;
 
         // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
         return MathUtils.mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, MIN_VALUE_MARGIN_DP, MAX_VALUE_MARGIN_DP);
