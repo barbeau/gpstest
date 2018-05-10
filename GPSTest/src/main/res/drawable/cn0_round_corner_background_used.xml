@@ -4,12 +4,12 @@
     <!-- Outside border -->
     <item android:id="@+id/cn0_avg_border">
         <shape>
-            <corners android:radius="8dp"/>
+            <corners android:radius="9dp"/>
             <padding
-                    android:top="2dp"
-                    android:left="2dp"
-                    android:bottom="2dp"
-                    android:right="2dp"/>
+                    android:top="3dp"
+                    android:left="3dp"
+                    android:bottom="3dp"
+                    android:right="3dp"/>
             <solid android:color="@android:color/black"/>
         </shape>
     </item>
@@ -17,7 +17,7 @@
     <item android:id="@+id/cn0_avg_fill">
         <shape>
             <corners android:radius="6dp"/>
-            <solid android:color="@color/colorPrimary"/>
+            <solid android:color="@color/red"/>
         </shape>
     </item>
 </layer-list>

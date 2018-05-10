@@ -6,18 +6,18 @@
         <shape>
             <corners android:radius="8dp"/>
             <padding
-                    android:top="2dp"
-                    android:left="2dp"
-                    android:bottom="2dp"
-                    android:right="2dp"/>
-            <solid android:color="@color/colorPrimary"/>
+                    android:top="3dp"
+                    android:left="3dp"
+                    android:bottom="3dp"
+                    android:right="3dp"/>
+            <solid android:color="@color/red"/>
         </shape>
     </item>
     <!-- Inside fill -->
     <item android:id="@+id/cn0_avg_fill">
         <shape>
             <corners android:radius="6dp"/>
-            <solid android:color="@color/colorPrimary"/>
+            <solid android:color="@color/red"/>
         </shape>
     </item>
 </layer-list>
