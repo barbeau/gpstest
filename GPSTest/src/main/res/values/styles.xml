@@ -91,10 +91,10 @@
     <style name="cn0_avg_value_in_view">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">2dp</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:paddingLeft">5dp</item>
-        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
         <item name="android:background">@drawable/cn0_round_corner_background_in_view</item>
     </style>
 

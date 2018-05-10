@@ -22,7 +22,6 @@
     android:layout_width="wrap_content"
     android:clipChildren="false">
 
-
     <!-- Colored C/N0 legend -->
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/sky_legend_cn0"
@@ -50,7 +49,8 @@
         android:layout_marginStart="140dp"
         android:layout_marginBottom="-8dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:visibility="gone"/>
+        android:tint="@color/colorPrimary"
+        android:visibility="invisible"/>
 
     <include
         android:id="@+id/cn0_text_in_view"
@@ -59,7 +59,7 @@
         android:layout_marginBottom="-5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/cn0_indicator_used"
@@ -72,7 +72,8 @@
         android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:visibility="gone" />
+        android:tint="@color/colorPrimary"
+        android:visibility="invisible" />
 
     <include
         android:id="@+id/cn0_text_used"
@@ -81,7 +82,7 @@
         android:layout_marginBottom="-5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <!-- CN/0 legend scale text and lines -->
     <View

@@ -10,7 +10,7 @@
                     android:left="2dp"
                     android:bottom="2dp"
                     android:right="2dp"/>
-            <solid android:color="@color/colorPrimaryDark"/>
+            <solid android:color="@android:color/black"/>
         </shape>
     </item>
     <!-- Inside fill -->

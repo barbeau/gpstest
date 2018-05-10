@@ -299,6 +299,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 }
             } else {
                 mCn0InViewAvgText.setText("");
+                mCn0InViewAvgText.setVisibility(View.INVISIBLE);
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
@@ -328,6 +329,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 }
             } else {
                 mCn0UsedAvgText.setText("");
+                mCn0UsedAvgText.setVisibility(View.INVISIBLE);
                 mCn0UsedAvg.setVisibility(View.INVISIBLE);
             }
         }
