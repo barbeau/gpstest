@@ -31,4 +31,21 @@ public class MathUtilTest {
         float mhz = MathUtils.toMhz(1000000.0f);
         assertEquals(1.0f, mhz);
     }
+
+    /**
+     * Test mapping a value on one range to the equivalent value on another range
+     */
+    @Test
+    public void testMapToRange() {
+        final float a = 50;
+        final float minA = 0.0f;
+        final float maxA = 100.0f;
+        final float minB = 0.0f;
+        final float maxB = 200.0f;
+
+        float mappedB = MathUtils.mapToRange(a, minA, maxA, minB, maxB);
+
+        // mappedB should be 100, because a = 50 is halfway between 0 and 100, and b = 100 is halfway between 0 and 200
+        assertEquals(100.0f, mappedB);
+    }
 }

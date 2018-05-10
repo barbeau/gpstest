@@ -86,4 +86,31 @@ public class MathUtils {
         return x;
     }
 
+    /**
+     * Converts the provided value "a" value to a value "b" given a range of possible values for "a"
+     * ("minA" and "maxA") and a range of possible values for b ("minB" and "maxB").
+     *
+     * @param a the value to be mapped to the range between minB and maxB
+     * @param minA the minimum value of the range of a
+     * @param maxA the maximum value of the range of a
+     * @param minB the minimum value of the range of b
+     * @param maxB the maximum value of the range of b
+     * @return the value of b as it relates to the values minB and maxB, based on the provided value a
+     *         and it's range of minA and maxA
+     */
+    public static float mapToRange(float a, float minA, float maxA,
+                                   float minB, float maxB) {
+        // Shift ranges to calculate percentages (because default min value may not be 0)
+        final float maxBshifted = maxB - minB;
+        final float maxAshifted = maxA - minA;
+
+        // Calculate percentage of given a value to the a range
+        final float aPercent = (100 * (a - minA)) / maxAshifted;
+
+        // Apply percentage to adjusted b range
+        final float bShifted = (maxBshifted * aPercent) / 100;
+
+        // Shift b value back using original b range offset and return
+        return bShifted + minB;
+    }
 }
