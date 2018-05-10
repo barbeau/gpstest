@@ -73,7 +73,6 @@
 
     <!-- GNSS Sky view -->
     <style name="sky_legend_label">
-        <item name="android:textColor">@color/cn0_meter_border</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/sky_legend_text_size_large</item>
@@ -81,7 +80,6 @@
     </style>
 
     <style name="sky_legend_value">
-        <item name="android:textColor">@color/cn0_meter_border</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/sky_legend_text_size_small</item>

@@ -275,7 +275,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
-                int leftTextViewMarginPx = UIUtils.dpToPixels(getContext(), leftTextViewMarginDp);
+                int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
                     animateCn0Indicator(mCn0InViewAvgText, leftTextViewMarginPx, mCn0InViewAvgAnimationTextView);
                 } else {
@@ -286,7 +286,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 }
 
                 float leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
-                int leftIndicatorMarginPx = UIUtils.dpToPixels(getContext(), leftIndicatorMarginDp);
+                int leftIndicatorMarginPx = UIUtils.dpToPixels(Application.get(), leftIndicatorMarginDp);
 
                 // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
                 if (mCn0InViewAvg.getVisibility() == View.VISIBLE) {
@@ -305,7 +305,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
                 mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
-                int leftTextViewMarginPx = UIUtils.dpToPixels(getContext(), leftTextViewMarginDp);
+                int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
                     animateCn0Indicator(mCn0UsedAvgText, leftTextViewMarginPx, mCn0UsedAvgAnimationTextView);
                 } else {
@@ -316,7 +316,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                 }
 
                 float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0UsedAvg());
-                int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
+                int leftMarginPx = UIUtils.dpToPixels(Application.get(), leftMarginDp);
 
                 // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
                 if (mCn0UsedAvg.getVisibility() == View.VISIBLE) {
