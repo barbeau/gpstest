@@ -28,7 +28,6 @@
         android:id="@+id/sky_legend_cn0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -47,10 +46,11 @@
         android:layout_alignLeft="@id/sky_legend_cn0"
         android:layout_alignStart="@id/sky_legend_cn0"
         android:layout_below="@id/cn0_text_in_view"
-        android:layout_marginLeft="-5dp"
-        android:layout_marginStart="-5dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginStart="140dp"
         android:layout_marginBottom="-8dp"
-        app:srcCompat="@drawable/ic_cn0_indicator" />
+        app:srcCompat="@drawable/ic_cn0_indicator"
+        android:visibility="gone"/>
 
     <include
         android:id="@+id/cn0_text_in_view"
@@ -58,7 +58,8 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="-5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/cn0_indicator_used"
@@ -70,7 +71,8 @@
         android:layout_marginLeft="-5dp"
         android:layout_marginStart="-5dp"
         android:layout_marginBottom="-8dp"
-        app:srcCompat="@drawable/ic_cn0_indicator" />
+        app:srcCompat="@drawable/ic_cn0_indicator"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/cn0_text_used"
@@ -78,7 +80,8 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="-5dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <!-- CN/0 legend scale text and lines -->
     <View

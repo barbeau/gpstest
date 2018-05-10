@@ -56,7 +56,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private ImageView mCn0InViewAvg, mCn0UsedAvg;
 
-    Animation mCn0InViewAvgAnimation, mCn0UsedAvgAnimation;
+    Animation mCn0InViewAvgAnimation, mCn0UsedAvgAnimation, mCn0InViewAvgAnimationTextView, mCn0UsedAvgAnimationTextView;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -274,26 +274,45 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
+                float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
+                int leftTextViewMarginPx = UIUtils.dpToPixels(getContext(), leftTextViewMarginDp);
+                if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
+                    animateCn0Indicator(mCn0InViewAvgText, leftTextViewMarginPx, mCn0InViewAvgAnimationTextView);
+                } else {
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvgText.getLayoutParams();
+                    lp.setMargins(leftTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                    mCn0InViewAvgText.setLayoutParams(lp);
+                    mCn0InViewAvgText.setVisibility(View.VISIBLE);
+                }
 
-                float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
-                int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
+                float leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
+                int leftIndicatorMarginPx = UIUtils.dpToPixels(getContext(), leftIndicatorMarginDp);
 
                 // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
                 if (mCn0InViewAvg.getVisibility() == View.VISIBLE) {
-                    animateCn0Indicator(mCn0InViewAvg, leftMarginPx, mCn0InViewAvgAnimation);
+                    animateCn0Indicator(mCn0InViewAvg, leftIndicatorMarginPx, mCn0InViewAvgAnimation);
                 } else {
                     RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
-                    lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                    lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
                     mCn0InViewAvg.setLayoutParams(lp);
                     mCn0InViewAvg.setVisibility(View.VISIBLE);
                 }
-
             } else {
                 mCn0InViewAvgText.setText("");
                 mCn0InViewAvg.setVisibility(View.INVISIBLE);
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
                 mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
+                float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
+                int leftTextViewMarginPx = UIUtils.dpToPixels(getContext(), leftTextViewMarginDp);
+                if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
+                    animateCn0Indicator(mCn0UsedAvgText, leftTextViewMarginPx, mCn0UsedAvgAnimationTextView);
+                } else {
+                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvgText.getLayoutParams();
+                    lp.setMargins(leftTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                    mCn0UsedAvgText.setLayoutParams(lp);
+                    mCn0UsedAvgText.setVisibility(View.VISIBLE);
+                }
 
                 float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftMarginPx = UIUtils.dpToPixels(getContext(), leftMarginDp);
