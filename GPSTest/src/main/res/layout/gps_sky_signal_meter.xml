@@ -97,7 +97,7 @@
 
     <TextView
         android:id="@+id/sky_legend_cn0_left_text"
-        style="@style/cn0_meter_text"
+        style="@style/sky_legend_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_left_line4"
@@ -151,7 +151,7 @@
 
     <TextView
         android:id="@+id/sky_legend_cn0_center_text"
-        style="@style/cn0_meter_text"
+        style="@style/sky_legend_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_center_line"
@@ -205,7 +205,7 @@
 
     <TextView
         android:id="@+id/sky_legend_cn0_right_text"
-        style="@style/cn0_meter_text"
+        style="@style/sky_legend_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0_left_line4"
