@@ -13,13 +13,6 @@ android {
         versionName "3.0.3"
 
         vectorDrawables.useSupportLibrary = true
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        // The following argument makes the Android Test Orchestrator run its
-        // "pm clear" command after each test invocation. This command ensures
-        // that the app's state is completely cleared between tests.
-        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
     // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
@@ -68,7 +61,7 @@ android {
     }
 
     testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
+        unitTests.returnDefaultValues = true
     }
 }
 
@@ -118,27 +111,12 @@ tasks.whenTaskAdded { theTask ->
 
 dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.8.0'
-    implementation ("com.android.support:appcompat-v7:27.1.1")  {
-        force = true
-    }
-    implementation ("com.android.support:design:27.1.1") {
-        force = true
-    }
-    implementation ("com.android.support:recyclerview-v7:27.1.1") {
-        force = true
-    }
-    implementation ("com.android.support:cardview-v7:27.1.1") {
-        force = true
-    }
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1"'
+    implementation 'com.android.support:cardview-v7:27.1.1'
     // Calculating offset for camera target in map view
     implementation 'com.google.maps.android:android-maps-utils:0.4.4'
     // Unit tests
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestUtil 'com.android.support.test:orchestrator:1.0.2'
-}
-
-// Dependencies not directly used in this project, but used by dependencies that we are using
-configurations.all {
-    // Needed to eliminate conflict with com.android.support:support-annotations in com.android.support.test
-    resolutionStrategy.force "com.android.support:support-annotations:27.1.1"
+    testImplementation 'junit:junit:4.12'
 }
