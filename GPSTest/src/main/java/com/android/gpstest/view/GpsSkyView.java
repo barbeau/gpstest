@@ -111,12 +111,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         mHorizonStrokePaint.setAntiAlias(true);
 
         mGridStrokePaint = new Paint();
-        mGridStrokePaint.setColor(Color.GRAY);
+        mGridStrokePaint.setColor(ContextCompat.getColor(mContext, R.color.gray));
         mGridStrokePaint.setStyle(Paint.Style.STROKE);
         mGridStrokePaint.setAntiAlias(true);
 
         mSatelliteFillPaint = new Paint();
-        mSatelliteFillPaint.setColor(Color.YELLOW);
+        mSatelliteFillPaint.setColor(ContextCompat.getColor(mContext, R.color.yellow));
         mSatelliteFillPaint.setStyle(Paint.Style.FILL);
         mSatelliteFillPaint.setAntiAlias(true);
 
@@ -133,10 +133,16 @@ public class GpsSkyView extends View implements GpsTestListener {
         mSatelliteUsedStrokePaint.setAntiAlias(true);
 
         mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
-        mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
+        mSnrColors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
+                ContextCompat.getColor(mContext, R.color.red),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.green)};
 
         mCn0Thresholds = new float[]{10.0f, 16.6f, 33.3f, 45.0f};
-        mCn0Colors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
+        mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
+                ContextCompat.getColor(mContext, R.color.red),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.green)};
 
         mNorthPaint = new Paint();
         mNorthPaint.setColor(Color.BLACK);
