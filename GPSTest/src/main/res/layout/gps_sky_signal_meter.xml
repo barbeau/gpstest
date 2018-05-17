@@ -48,7 +48,7 @@
         android:layout_below="@id/cn0_text_in_view"
         android:layout_marginLeft="-4dp"
         android:layout_marginStart="-4dp"
-        android:layout_marginBottom="-8dp"
+        android:layout_marginBottom="-3dp"
         android:tint="@color/red"
         app:srcCompat="@drawable/ic_cn0_indicator"
         android:visibility="invisible"/>
@@ -71,7 +71,7 @@
         android:layout_below="@id/cn0_text_used"
         android:layout_marginLeft="-4dp"
         android:layout_marginStart="-4dp"
-        android:layout_marginBottom="-8dp"
+        android:layout_marginBottom="-3dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
         android:visibility="invisible" />
 

@@ -4,7 +4,7 @@
     <!-- Outside border -->
     <item android:id="@+id/cn0_avg_border">
         <shape>
-            <corners android:radius="8dp"/>
+            <corners android:radius="9dp"/>
             <padding
                     android:top="3dp"
                     android:left="3dp"
