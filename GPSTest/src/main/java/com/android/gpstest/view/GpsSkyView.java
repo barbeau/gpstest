@@ -506,7 +506,7 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     /**
-     * Gets the paint color for a satellite based on provided SNR or C/N0
+     * Gets the paint object for a satellite based on provided SNR or C/N0
      *
      * @param base   the base paint color to be changed
      * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
@@ -517,7 +517,18 @@ public class GpsSkyView extends View implements GpsTestListener {
     private Paint getSatellitePaint(Paint base, float snrCn0) {
         Paint newPaint;
         newPaint = new Paint(base);
+        newPaint.setColor(getSatelliteColor(snrCn0));
+        return newPaint;
+    }
 
+    /**
+     * Gets the paint color for a satellite based on provided SNR or C/N0 and the thresholds defined in this class
+     *
+     * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
+     *               GnssStatus) to generate the satellite color based on signal quality
+     * @return the paint color for a satellite based on provided SNR or C/N0
+     */
+    public synchronized int getSatelliteColor(float snrCn0) {
         int numSteps;
         final float thresholds[];
         final int colors[];
@@ -535,13 +546,11 @@ public class GpsSkyView extends View implements GpsTestListener {
         }
 
         if (snrCn0 <= thresholds[0]) {
-            newPaint.setColor(colors[0]);
-            return newPaint;
+            return colors[0];
         }
 
         if (snrCn0 >= thresholds[numSteps - 1]) {
-            newPaint.setColor(colors[numSteps - 1]);
-            return newPaint;
+            return colors[numSteps - 1];
         }
 
         for (int i = 0; i < numSteps - 1; i++) {
@@ -568,15 +577,10 @@ public class GpsSkyView extends View implements GpsTestListener {
                 b3 = (int) (b2 * f + b1 * (1.0f - f));
                 c3 = Color.rgb(r3, g3, b3);
 
-                newPaint.setColor(c3);
-
-                return newPaint;
+                return c3;
             }
         }
-
-        newPaint.setColor(Color.MAGENTA);
-
-        return newPaint;
+        return Color.MAGENTA;
     }
 
     @Override
