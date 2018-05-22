@@ -2,7 +2,7 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Outside border -->
-    <item android:id="@+id/cn0_avg_border">
+    <item android:id="@+id/cn0_avg_used_border">
         <shape>
             <corners android:radius="9dp"/>
             <padding
@@ -14,7 +14,7 @@
         </shape>
     </item>
     <!-- Inside fill -->
-    <item android:id="@+id/cn0_avg_fill">
+    <item android:id="@+id/cn0_avg_used_fill">
         <shape>
             <corners android:radius="6dp"/>
             <solid android:color="@color/red"/>

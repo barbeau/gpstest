@@ -17,6 +17,8 @@
 
 package com.android.gpstest;
 
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
@@ -25,6 +27,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -274,6 +277,32 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
+                // Set color
+                if (mSkyView.getContext() != null) {
+                    int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
+                    LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_in_view);
+
+                    // Fill
+                    GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_fill);
+                    backgroundGradient.setColor(color);
+
+                    // Stroke
+                    GradientDrawable borderGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_border);
+                    borderGradient.setColor(color);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mCn0InViewAvgText.setBackground(background);
+                    } else {
+                        mCn0InViewAvgText.setBackgroundDrawable(background);
+                    }
+
+                    // Set padding
+                    int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
+                    int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
+                    mCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+                }
+
+                // Set position and visibility
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
@@ -304,6 +333,28 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
                 mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
+                // Set color
+                if (mSkyView.getContext() != null) {
+                    int color = mSkyView.getSatelliteColor(mSkyView.getCn0UsedAvg());
+                    LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_used);
+
+                    // Fill
+                    GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
+                    backgroundGradient.setColor(color);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        mCn0UsedAvgText.setBackground(background);
+                    } else {
+                        mCn0UsedAvgText.setBackgroundDrawable(background);
+                    }
+
+                    // Set padding
+                    int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
+                    int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
+                    mCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+                }
+
+                // Set position and visibility
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
