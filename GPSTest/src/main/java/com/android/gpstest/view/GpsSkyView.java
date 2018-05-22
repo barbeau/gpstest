@@ -522,13 +522,13 @@ public class GpsSkyView extends View implements GpsTestListener {
         final float thresholds[];
         final int colors[];
 
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
             // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
             numSteps = mCn0Thresholds.length;
             thresholds = mCn0Thresholds;
             colors = mCn0Colors;
         } else {
-            // Use legacy SNR ranges/colors for Android versions less than Android 7.0 (see #76)
+            // Use legacy SNR ranges/colors for Android versions less than Android 7.0 or if user selects legacy API (see #76)
             numSteps = mSnrThresholds.length;
             thresholds = mSnrThresholds;
             colors = mSnrColors;
