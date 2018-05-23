@@ -47,20 +47,20 @@
         android:layout_alignStart="@id/sky_legend_cn0"
         android:layout_below="@id/cn0_text_in_view"
         android:layout_marginLeft="-4dp"
-        android:layout_marginStart="-4dp"
+        android:layout_marginStart="-3dp"
         android:layout_marginBottom="-3dp"
         android:tint="@color/red"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
 
     <include
         android:id="@+id/cn0_text_in_view"
         layout="@layout/cn0_in_view_value_text"
         android:layout_marginTop="1dp"
-        android:layout_marginBottom="-5dp"
+        android:layout_marginBottom="-7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
 
     <ImageView
         android:id="@+id/cn0_indicator_used"
@@ -70,7 +70,7 @@
         android:layout_alignStart="@id/sky_legend_cn0"
         android:layout_below="@id/cn0_text_used"
         android:layout_marginLeft="-4dp"
-        android:layout_marginStart="-4dp"
+        android:layout_marginStart="-3dp"
         android:layout_marginBottom="-3dp"
         app:srcCompat="@drawable/ic_cn0_indicator"
         android:visibility="invisible" />
@@ -79,7 +79,7 @@
         android:id="@+id/cn0_text_used"
         layout="@layout/cn0_used_value_text"
         android:layout_marginTop="1dp"
-        android:layout_marginBottom="-5dp"
+        android:layout_marginBottom="-7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible" />
