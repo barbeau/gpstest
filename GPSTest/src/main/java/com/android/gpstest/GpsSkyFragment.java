@@ -277,8 +277,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (mSkyView != null) {
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
-                // Set color
                 if (mSkyView.getContext() != null) {
+                    // Set color of TextView
                     int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
                     LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_in_view);
 
@@ -300,9 +300,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
                     int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
                     mCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+
+                    // Set color of indicator
+                    mCn0InViewAvg.setColorFilter(color);
                 }
 
-                // Set position and visibility
+                // Set position and visibility of TextView
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
@@ -314,6 +317,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     mCn0InViewAvgText.setVisibility(View.VISIBLE);
                 }
 
+                // Set position and visibility of indicator
                 float leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
                 int leftIndicatorMarginPx = UIUtils.dpToPixels(Application.get(), leftIndicatorMarginDp);
 
@@ -333,7 +337,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             }
             if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
                 mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
-                // Set color
+                // Set color of TextView
                 if (mSkyView.getContext() != null) {
                     int color = mSkyView.getSatelliteColor(mSkyView.getCn0UsedAvg());
                     LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_used);
@@ -354,7 +358,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     mCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
                 }
 
-                // Set position and visibility
+                // Set position and visibility of TextView
                 float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
                 if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
@@ -366,6 +370,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     mCn0UsedAvgText.setVisibility(View.VISIBLE);
                 }
 
+                // Set position and visibility of indicator
                 float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0UsedAvg());
                 int leftMarginPx = UIUtils.dpToPixels(Application.get(), leftMarginDp);
 
