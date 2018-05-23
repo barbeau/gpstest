@@ -102,7 +102,7 @@ public class UIUtils {
 
     /**
      * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 indicator ImageViews in gps_sky_signal   *
-     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -3dp (10 dB-Hz) to 140dp (45 dB-Hz).
+     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -6dp (10 dB-Hz) to 140dp (45 dB-Hz).
      * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
@@ -113,7 +113,7 @@ public class UIUtils {
     public static float cn0ToIndicatorLeftMarginDp(float cn0) {
         final float MIN_VALUE_CN0 = 10.0f;
         final float MAX_VALUE_CN0 = 45.0f;
-        final float MIN_VALUE_MARGIN_DP = -3.0f;
+        final float MIN_VALUE_MARGIN_DP = -6.0f;
         final float MAX_VALUE_MARGIN_DP = 140.0f;
 
         // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
@@ -122,7 +122,7 @@ public class UIUtils {
 
     /**
      * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 TextViews in gps_sky_signal
-     * Left margin range for the C/N0 TextView in gps_sky_signal is from 5dp (10 dB-Hz) to 145dp (45 dB-Hz).
+     * Left margin range for the C/N0 TextView in gps_sky_signal is from 3dp (10 dB-Hz) to 145dp (45 dB-Hz).
      * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
@@ -133,7 +133,7 @@ public class UIUtils {
     public static float cn0ToTextViewLeftMarginDp(float cn0) {
         final float MIN_VALUE_CN0 = 10.0f;
         final float MAX_VALUE_CN0 = 45.0f;
-        final float MIN_VALUE_MARGIN_DP = 5.0f;
+        final float MIN_VALUE_MARGIN_DP = 3.0f;
         final float MAX_VALUE_MARGIN_DP = 145.0f;
 
         // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
