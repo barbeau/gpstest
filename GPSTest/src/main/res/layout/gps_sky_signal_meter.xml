@@ -53,7 +53,7 @@
         android:layout_marginBottom="-3dp"
         android:tint="@color/red"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <include
         android:id="@+id/cn0_text_in_view"
@@ -64,7 +64,7 @@
         android:layout_marginStart="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <ImageView
         android:id="@+id/cn0_indicator_used"
