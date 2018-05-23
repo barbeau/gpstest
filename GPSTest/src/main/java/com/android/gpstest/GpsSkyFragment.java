@@ -275,8 +275,14 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_meter is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         if (mSkyView != null) {
+            // Define paddings used for TextViews
+            int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
+            int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
+
             if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
                 mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
+
+
                 if (mSkyView.getContext() != null) {
                     // Set color of TextView
                     int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
@@ -297,8 +303,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     }
 
                     // Set padding
-                    int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
-                    int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
                     mCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
 
                     // Set color of indicator
@@ -353,8 +357,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
                     }
 
                     // Set padding
-                    int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
-                    int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
                     mCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
                 }
 
