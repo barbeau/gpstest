@@ -138,7 +138,7 @@ public class GpsSkyView extends View implements GpsTestListener {
                 ContextCompat.getColor(mContext, R.color.yellow),
                 ContextCompat.getColor(mContext, R.color.green)};
 
-        mCn0Thresholds = new float[]{10.0f, 16.6f, 33.3f, 45.0f};
+        mCn0Thresholds = new float[]{10.0f, 21.67f, 33.3f, 45.0f};
         mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
                 ContextCompat.getColor(mContext, R.color.red),
                 ContextCompat.getColor(mContext, R.color.yellow),
