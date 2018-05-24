@@ -38,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.GpsSkyView;
 
@@ -272,124 +273,143 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     }
 
     private void updateCn0Avgs() {
-        // Left margin range for the C/N0 indicator ImageViews in gps_sky_signal_meter is from -5dp (10 dB-Hz) to 155dp (45 dB-Hz)
+        if (mSkyView == null) {
+            return;
+        }
         // So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
-        if (mSkyView != null) {
-            // Define paddings used for TextViews
-            int pSides = UIUtils.dpToPixels(mSkyView.getContext(), 6);
-            int pTopBottom = UIUtils.dpToPixels(mSkyView.getContext(), 3);
 
-            if (mSkyView.getCn0InViewAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0InViewAvg())) {
-                mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
+        // Calculate normal offsets for avg in view satellite C/N0 value TextViews
+        Integer leftInViewTextViewMarginPx = null;
+        if (MathUtils.isValidFloat(mSkyView.getCn0InViewAvg())) {
+            float leftInViewTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
+            leftInViewTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftInViewTextViewMarginDp);
 
+        }
+        // Calculate normal offsets for avg used satellite C/N0 value TextViews
+        Integer leftUsedTextViewMarginPx = null;
+        if (MathUtils.isValidFloat(mSkyView.getCn0UsedAvg())) {
+            float leftUsedTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
+            leftUsedTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftUsedTextViewMarginDp);
+        }
 
-                if (mSkyView.getContext() != null) {
-                    // Set color of TextView
-                    int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
-                    LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_in_view);
-
-                    // Fill
-                    GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_fill);
-                    backgroundGradient.setColor(color);
-
-                    // Stroke
-                    GradientDrawable borderGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_border);
-                    borderGradient.setColor(color);
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        mCn0InViewAvgText.setBackground(background);
-                    } else {
-                        mCn0InViewAvgText.setBackgroundDrawable(background);
-                    }
-
-                    // Set padding
-                    mCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
-
-                    // Set color of indicator
-                    mCn0InViewAvg.setColorFilter(color);
-                }
-
-                // Set position and visibility of TextView
-                float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0InViewAvg());
-                int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
-                if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
-                    animateCn0Indicator(mCn0InViewAvgText, leftTextViewMarginPx, mCn0InViewAvgAnimationTextView);
-                } else {
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvgText.getLayoutParams();
-                    lp.setMargins(leftTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                    mCn0InViewAvgText.setLayoutParams(lp);
-                    mCn0InViewAvgText.setVisibility(View.VISIBLE);
-                }
-
-                // Set position and visibility of indicator
-                float leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
-                int leftIndicatorMarginPx = UIUtils.dpToPixels(Application.get(), leftIndicatorMarginDp);
-
-                // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-                if (mCn0InViewAvg.getVisibility() == View.VISIBLE) {
-                    animateCn0Indicator(mCn0InViewAvg, leftIndicatorMarginPx, mCn0InViewAvgAnimation);
-                } else {
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
-                    lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                    mCn0InViewAvg.setLayoutParams(lp);
-                    mCn0InViewAvg.setVisibility(View.VISIBLE);
-                }
+        // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
+        if (leftInViewTextViewMarginPx != null && leftUsedTextViewMarginPx != null) {
+            int offset = UIUtils.dpToPixels(Application.get(), -14);
+            if (leftInViewTextViewMarginPx <= leftUsedTextViewMarginPx) {
+                leftInViewTextViewMarginPx += offset;
             } else {
-                mCn0InViewAvgText.setText("");
-                mCn0InViewAvgText.setVisibility(View.INVISIBLE);
-                mCn0InViewAvg.setVisibility(View.INVISIBLE);
+                leftUsedTextViewMarginPx += offset;
             }
-            if (mSkyView.getCn0UsedAvg() != 0.0f && !Float.isNaN(mSkyView.getCn0UsedAvg())) {
-                mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
-                // Set color of TextView
-                if (mSkyView.getContext() != null) {
-                    int color = mSkyView.getSatelliteColor(mSkyView.getCn0UsedAvg());
-                    LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(mSkyView.getContext(), R.drawable.cn0_round_corner_background_used);
+        }
 
-                    // Fill
-                    GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
-                    backgroundGradient.setColor(color);
+        // Define paddings used for TextViews
+        int pSides = UIUtils.dpToPixels(Application.get(), 6);
+        int pTopBottom = UIUtils.dpToPixels(Application.get(), 3);
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        mCn0UsedAvgText.setBackground(background);
-                    } else {
-                        mCn0UsedAvgText.setBackgroundDrawable(background);
-                    }
+        // Set avg C/N0 of satellites in view of device
+        if (MathUtils.isValidFloat(mSkyView.getCn0InViewAvg())) {
+            mCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
 
-                    // Set padding
-                    mCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
-                }
+            // Set color of TextView
+            int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
+            LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), R.drawable.cn0_round_corner_background_in_view);
 
-                // Set position and visibility of TextView
-                float leftTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getCn0UsedAvg());
-                int leftTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftTextViewMarginDp);
-                if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
-                    animateCn0Indicator(mCn0UsedAvgText, leftTextViewMarginPx, mCn0UsedAvgAnimationTextView);
-                } else {
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvgText.getLayoutParams();
-                    lp.setMargins(leftTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                    mCn0UsedAvgText.setLayoutParams(lp);
-                    mCn0UsedAvgText.setVisibility(View.VISIBLE);
-                }
+            // Fill
+            GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_fill);
+            backgroundGradient.setColor(color);
 
-                // Set position and visibility of indicator
-                float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0UsedAvg());
-                int leftMarginPx = UIUtils.dpToPixels(Application.get(), leftMarginDp);
+            // Stroke
+            GradientDrawable borderGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_border);
+            borderGradient.setColor(color);
 
-                // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-                if (mCn0UsedAvg.getVisibility() == View.VISIBLE) {
-                    animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
-                } else {
-                    RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvg.getLayoutParams();
-                    lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                    mCn0UsedAvg.setLayoutParams(lp);
-                    mCn0UsedAvg.setVisibility(View.VISIBLE);
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mCn0InViewAvgText.setBackground(background);
             } else {
-                mCn0UsedAvgText.setText("");
-                mCn0UsedAvgText.setVisibility(View.INVISIBLE);
-                mCn0UsedAvg.setVisibility(View.INVISIBLE);
+                mCn0InViewAvgText.setBackgroundDrawable(background);
             }
+
+            // Set padding
+            mCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+
+            // Set color of indicator
+            mCn0InViewAvg.setColorFilter(color);
+
+            // Set position and visibility of TextView
+            if (mCn0InViewAvgText.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(mCn0InViewAvgText, leftInViewTextViewMarginPx, mCn0InViewAvgAnimationTextView);
+            } else {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvgText.getLayoutParams();
+                lp.setMargins(leftInViewTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                mCn0InViewAvgText.setLayoutParams(lp);
+                mCn0InViewAvgText.setVisibility(View.VISIBLE);
+            }
+
+            // Set position and visibility of indicator
+            float leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0InViewAvg());
+            int leftIndicatorMarginPx = UIUtils.dpToPixels(Application.get(), leftIndicatorMarginDp);
+
+            // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
+            if (mCn0InViewAvg.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(mCn0InViewAvg, leftIndicatorMarginPx, mCn0InViewAvgAnimation);
+            } else {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0InViewAvg.getLayoutParams();
+                lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                mCn0InViewAvg.setLayoutParams(lp);
+                mCn0InViewAvg.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mCn0InViewAvgText.setText("");
+            mCn0InViewAvgText.setVisibility(View.INVISIBLE);
+            mCn0InViewAvg.setVisibility(View.INVISIBLE);
+        }
+
+        // Set avg C/N0 of satellites used in fix
+        if (MathUtils.isValidFloat(mSkyView.getCn0UsedAvg())) {
+            mCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
+            // Set color of TextView
+            int color = mSkyView.getSatelliteColor(mSkyView.getCn0UsedAvg());
+            LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), R.drawable.cn0_round_corner_background_used);
+
+            // Fill
+            GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
+            backgroundGradient.setColor(color);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                mCn0UsedAvgText.setBackground(background);
+            } else {
+                mCn0UsedAvgText.setBackgroundDrawable(background);
+            }
+
+            // Set padding
+            mCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+
+            // Set position and visibility of TextView
+            if (mCn0UsedAvgText.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(mCn0UsedAvgText, leftUsedTextViewMarginPx, mCn0UsedAvgAnimationTextView);
+            } else {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvgText.getLayoutParams();
+                lp.setMargins(leftUsedTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                mCn0UsedAvgText.setLayoutParams(lp);
+                mCn0UsedAvgText.setVisibility(View.VISIBLE);
+            }
+
+            // Set position and visibility of indicator
+            float leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getCn0UsedAvg());
+            int leftMarginPx = UIUtils.dpToPixels(Application.get(), leftMarginDp);
+
+            // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
+            if (mCn0UsedAvg.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(mCn0UsedAvg, leftMarginPx, mCn0UsedAvgAnimation);
+            } else {
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mCn0UsedAvg.getLayoutParams();
+                lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+                mCn0UsedAvg.setLayoutParams(lp);
+                mCn0UsedAvg.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mCn0UsedAvgText.setText("");
+            mCn0UsedAvgText.setVisibility(View.INVISIBLE);
+            mCn0UsedAvg.setVisibility(View.INVISIBLE);
         }
     }
 

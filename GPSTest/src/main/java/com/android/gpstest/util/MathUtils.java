@@ -90,6 +90,8 @@ public class MathUtils {
      * Converts the provided value "a" value to a value "b" given a range of possible values for "a"
      * ("minA" and "maxA") and a range of possible values for b ("minB" and "maxB").
      *
+     * If a is less than minA, then minB is returned.  If a is more than maxA, then maxB is returned.
+     *
      * @param a the value to be mapped to the range between minB and maxB
      * @param minA the minimum value of the range of a
      * @param maxA the maximum value of the range of a
@@ -100,6 +102,14 @@ public class MathUtils {
      */
     public static float mapToRange(float a, float minA, float maxA,
                                    float minB, float maxB) {
+        // If the value is outside the range return the min or max accordingly
+        if (a < minA) {
+            return minB;
+        }
+        if (a > maxA) {
+            return maxB;
+        }
+
         // Shift ranges to calculate percentages (because default min value may not be 0)
         final float maxBshifted = maxB - minB;
         final float maxAshifted = maxA - minA;
@@ -112,5 +122,13 @@ public class MathUtils {
 
         // Shift b value back using original b range offset and return
         return bShifted + minB;
+    }
+
+    /**
+     * Returns true if the provided value is a valid floating point value for signal strength, or false if it's not
+     * @return true if the provided value is a valid floating point value for signal strength, or false if it's not
+     */
+    public static boolean isValidFloat(float value) {
+        return value != 0.0f && !Float.isNaN(value);
     }
 }
