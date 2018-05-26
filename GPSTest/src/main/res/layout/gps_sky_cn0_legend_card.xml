@@ -37,37 +37,32 @@
             android:layout_below="@+id/sky_legend_cn0_title"
             android:layout_margin="5dp"
             android:orientation="vertical"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:clipChildren="false">
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/cn0_legend_indicator_in_view"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
-                    android:tint="@color/colorPrimary"
-                    card_view:srcCompat="@drawable/ic_cn0_indicator" />
+                <include
+                    layout="@layout/cn0_in_view_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line11"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
+                    android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin"
                     android:background="@color/body_text_2_light" />
 
                 <TextView
                     android:id="@+id/sky_legend_cn0_avg_in_view_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginStart="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginRight="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginEnd="@dimen/sky_legend_cn0_indicator_legend_margin"
+                    android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin"
                     android:text="@string/sky_legend_cn0_avg_in_view_title" />
             </TableRow>
 
@@ -75,14 +70,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/cn0_legend_indicator_used"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    card_view:srcCompat="@drawable/ic_cn0_indicator" />
+                <include
+                    layout="@layout/cn0_used_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line12"
@@ -96,10 +88,7 @@
                     android:id="@+id/sky_legend_cn0_avg_used_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginStart="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginRight="@dimen/sky_legend_cn0_indicator_legend_margin"
-                    android:layout_marginEnd="@dimen/sky_legend_cn0_indicator_legend_margin"
+                    android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin"
                     android:text="@string/sky_legend_cn0_avg_used_title" />
             </TableRow>
         </TableLayout>
