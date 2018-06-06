@@ -231,6 +231,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line9b));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line10a));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line10b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line11a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line12a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line13a));
 
         // Shape Legend shapes
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_circle));
