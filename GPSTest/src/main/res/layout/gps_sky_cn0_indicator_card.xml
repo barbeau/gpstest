@@ -43,7 +43,7 @@
             android:layout_toStartOf="@+id/sky_legend_cn0"
             android:layout_marginRight="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="24dp"
             android:paddingTop="5dp"
             android:layout_centerHorizontal="true" />
         <include layout="@layout/gps_sky_signal_meter"

@@ -95,6 +95,7 @@
     <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
