@@ -51,7 +51,7 @@
                     android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin"/>
 
                 <View
-                    android:id="@+id/sky_legend_shape_line11"
+                    android:id="@+id/sky_legend_signal_line1"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
@@ -77,7 +77,7 @@
                     android:layout_margin="@dimen/sky_legend_cn0_indicator_legend_margin" />
 
                 <View
-                    android:id="@+id/sky_legend_shape_line12"
+                    android:id="@+id/sky_legend_signal_line2"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
