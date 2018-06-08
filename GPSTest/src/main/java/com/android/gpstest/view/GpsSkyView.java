@@ -67,9 +67,9 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
 
-    private float mCn0UsedAvg = 0.0f;
+    private float mSnrCn0UsedAvg = 0.0f;
 
-    private float mCn0InViewAvg = 0.0f;
+    private float mSnrCn0InViewAvg = 0.0f;
 
     private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
@@ -232,8 +232,8 @@ public class GpsSkyView extends View implements GpsTestListener {
         int svUsedCount = 0;
         float cn0InViewSum = 0.0f;
         float cn0UsedSum = 0.0f;
-        mCn0InViewAvg = 0.0f;
-        mCn0UsedAvg = 0.0f;
+        mSnrCn0InViewAvg = 0.0f;
+        mSnrCn0UsedAvg = 0.0f;
         while (mSvCount < length) {
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
             mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
@@ -256,10 +256,10 @@ public class GpsSkyView extends View implements GpsTestListener {
         }
 
         if (svInViewCount > 0) {
-            mCn0InViewAvg = cn0InViewSum / svInViewCount;
+            mSnrCn0InViewAvg = cn0InViewSum / svInViewCount;
         }
         if (svUsedCount > 0) {
-            mCn0UsedAvg = cn0UsedSum / svUsedCount;
+            mSnrCn0UsedAvg = cn0UsedSum / svUsedCount;
         }
 
         mStarted = true;
@@ -290,6 +290,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         }
 
         mSvCount = 0;
+        int svInViewCount = 0;
+        int svUsedCount = 0;
+        float snrInViewSum = 0.0f;
+        float snrUsedSum = 0.0f;
+        mSnrCn0InViewAvg = 0.0f;
+        mSnrCn0UsedAvg = 0.0f;
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
             mSnrCn0s[mSvCount] = satellite.getSnr(); // Store SNR values (see #65)
@@ -299,7 +305,23 @@ public class GpsSkyView extends View implements GpsTestListener {
             mHasEphemeris[mSvCount] = satellite.hasEphemeris();
             mHasAlmanac[mSvCount] = satellite.hasAlmanac();
             mUsedInFix[mSvCount] = satellite.usedInFix();
+            // If satellite is in view, add signal to calculate avg
+            if (satellite.getSnr() != 0.0f) {
+                svInViewCount++;
+                snrInViewSum = snrInViewSum + satellite.getSnr();
+            }
+            if (satellite.usedInFix()) {
+                svUsedCount++;
+                snrUsedSum = snrUsedSum + satellite.getSnr();
+            }
             mSvCount++;
+        }
+
+        if (svInViewCount > 0) {
+            mSnrCn0InViewAvg = snrInViewSum / svInViewCount;
+        }
+        if (svUsedCount > 0) {
+            mSnrCn0UsedAvg = snrUsedSum / svUsedCount;
         }
 
         mStarted = true;
@@ -677,18 +699,26 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     /**
-     * Returns the average C/N0 for satellites that are in view of the device (i.e., C/N0 is not 0), or 0 if the average can't be calculated
-     * @return the average C/N0 for satellites that are in view of the device (i.e., C/N0 is not 0), or 0 if the average can't be calculated
+     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
      */
-    public synchronized float getCn0InViewAvg() {
-        return mCn0InViewAvg;
+    public synchronized float getSnrCn0InViewAvg() {
+        return mSnrCn0InViewAvg;
     }
 
     /**
-     * Returns the average C/N0 for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
-     * @return the average C/N0 for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
      */
-    public synchronized float getCn0UsedAvg() {
-        return mCn0UsedAvg;
+    public synchronized float getSnrCn0UsedAvg() {
+        return mSnrCn0UsedAvg;
+    }
+
+    /**
+     * Returns true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
+     * @return true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
+     */
+    public synchronized boolean isUsingLegacyGpsApi() {
+        return mUseLegacyGnssApi;
     }
 }

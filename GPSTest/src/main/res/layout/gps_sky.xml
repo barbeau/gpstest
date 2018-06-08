@@ -53,17 +53,5 @@
             android:layout_marginEnd="@dimen/sky_margin"
             android:layout_marginBottom="@dimen/sky_margin"
             android:layout_centerHorizontal="true"/>
-
-        <include layout="@layout/gps_sky_cn0_legend_card"
-            android:id="@+id/sky_legend_cn0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/sky_legend_shape"
-            android:layout_marginLeft="@dimen/sky_margin"
-            android:layout_marginStart="@dimen/sky_margin"
-            android:layout_marginRight="@dimen/sky_margin"
-            android:layout_marginEnd="@dimen/sky_margin"
-            android:layout_marginBottom="@dimen/sky_margin"
-            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 </ScrollView>
