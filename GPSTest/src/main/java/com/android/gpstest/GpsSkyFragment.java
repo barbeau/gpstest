@@ -321,8 +321,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
 
         // Define paddings used for TextViews
-        int pSides = UIUtils.dpToPixels(Application.get(), 6);
-        int pTopBottom = UIUtils.dpToPixels(Application.get(), 3);
+        int pSides = UIUtils.dpToPixels(Application.get(), 7);
+        int pTopBottom = UIUtils.dpToPixels(Application.get(), 4);
 
         // Set avg SNR or C/N0 of satellites in view of device
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
