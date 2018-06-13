@@ -113,7 +113,7 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided SNR values to a left margin value (dp) for the SNR,indicator ImageViews in gps_sky_signal   *
+     * Converts the provided SNR values to a left margin value (dp) for the avg SNR indicator ImageViews in gps_sky_signal
      * Left margin range for the SNR indicator ImageViews in gps_sky_signal is from -6dp (0 dB) to 140dp (30 dB).
      * So, based on the avg SNR for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
@@ -128,7 +128,7 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided SNR values to a left margin value (dp) for the SNR TextViews in gps_sky_signal
+     * Converts the provided SNR values to a left margin value (dp) for the avg SNR TextViews in gps_sky_signal
      * Left margin range for the SNR TextView in gps_sky_signal is from 3dp (0 dB) to 149dp (30 dB).
      * So, based on the avg SNR for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
@@ -143,7 +143,7 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 indicator ImageViews in gps_sky_signal   *
+     * Converts the provided C/N0 values to a left margin value (dp) for the avg C/N0 indicator ImageViews in gps_sky_signal
      * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -6dp (10 dB-Hz) to 140dp (45 dB-Hz).
      * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
@@ -158,7 +158,7 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided C/N0 values to a left margin value (dp) for the C/N0 TextViews in gps_sky_signal
+     * Converts the provided C/N0 values to a left margin value (dp) for the avg C/N0 TextViews in gps_sky_signal
      * Left margin range for the C/N0 TextView in gps_sky_signal is from 3dp (10 dB-Hz) to 149dp (45 dB-Hz).
      * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
      *
