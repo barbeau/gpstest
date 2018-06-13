@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outside border -->
+    <item android:id="@+id/cn0_avg_used_border">
+        <shape>
+            <corners android:radius="9dp"/>
+            <padding
+                    android:top="3dp"
+                    android:left="3dp"
+                    android:bottom="3dp"
+                    android:right="3dp"/>
+            <solid android:color="@android:color/black"/>
+        </shape>
+    </item>
+    <!-- Inside fill -->
+    <item android:id="@+id/cn0_avg_used_fill">
+        <shape>
+            <corners android:radius="6dp"/>
+            <solid android:color="@color/red"/>
+        </shape>
+    </item>
+</layer-list>

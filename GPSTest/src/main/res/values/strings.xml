@@ -95,6 +95,7 @@
     <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
@@ -121,7 +122,7 @@
     <string name="sky_legend_snr_high">30</string>
     <string name="sky_legend_snr_units">(dB)</string>
 
-    <string name="sky_legend_shape_legend_title">Legend</string>
+    <string name="sky_legend_title">Legend</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
@@ -134,6 +135,10 @@
     <string name="sky_legend_shape_galaxy_15">Galaxy 15 (USA)</string>
     <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 &amp; 4-F3 (UK)</string>
     <string name="sky_legend_shape_ses_5">SES-5 (Luxembourg)</string>
+    <string name="sky_legend_shape_availability_title">Signal Availability</string>
+    <string name="sky_legend_shape_not_in_view">Not in view of device</string>
+    <string name="sky_legend_shape_in_view">In view</string>
+    <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider or Location is disabled, no updates until it\'s enabled</string>

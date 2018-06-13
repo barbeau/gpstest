@@ -85,5 +85,19 @@
         <item name="android:textSize">@dimen/sky_legend_text_size_small</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <style name="cn0_avg_value_in_view">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:background">@drawable/cn0_round_corner_background_in_view</item>
+    </style>
+
+    <style name="cn0_avg_value_used" parent="cn0_avg_value_in_view">
+        <item name="android:background">@drawable/cn0_round_corner_background_used</item>
+    </style>
 </resources>
 

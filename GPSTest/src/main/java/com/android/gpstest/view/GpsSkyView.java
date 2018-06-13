@@ -67,6 +67,10 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
 
+    private float mSnrCn0UsedAvg = 0.0f;
+
+    private float mSnrCn0InViewAvg = 0.0f;
+
     private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
     private int mPrns[], mConstellationType[];
@@ -107,12 +111,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         mHorizonStrokePaint.setAntiAlias(true);
 
         mGridStrokePaint = new Paint();
-        mGridStrokePaint.setColor(Color.GRAY);
+        mGridStrokePaint.setColor(ContextCompat.getColor(mContext, R.color.gray));
         mGridStrokePaint.setStyle(Paint.Style.STROKE);
         mGridStrokePaint.setAntiAlias(true);
 
         mSatelliteFillPaint = new Paint();
-        mSatelliteFillPaint.setColor(Color.YELLOW);
+        mSatelliteFillPaint.setColor(ContextCompat.getColor(mContext, R.color.yellow));
         mSatelliteFillPaint.setStyle(Paint.Style.FILL);
         mSatelliteFillPaint.setAntiAlias(true);
 
@@ -129,10 +133,16 @@ public class GpsSkyView extends View implements GpsTestListener {
         mSatelliteUsedStrokePaint.setAntiAlias(true);
 
         mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
-        mSnrColors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
+        mSnrColors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
+                ContextCompat.getColor(mContext, R.color.red),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.green)};
 
-        mCn0Thresholds = new float[]{10.0f, 16.6f, 33.3f, 45.0f};
-        mCn0Colors = new int[]{Color.GRAY, Color.RED, Color.YELLOW, Color.GREEN};
+        mCn0Thresholds = new float[]{10.0f, 21.67f, 33.3f, 45.0f};
+        mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
+                ContextCompat.getColor(mContext, R.color.red),
+                ContextCompat.getColor(mContext, R.color.yellow),
+                ContextCompat.getColor(mContext, R.color.green)};
 
         mNorthPaint = new Paint();
         mNorthPaint.setColor(Color.BLACK);
@@ -197,7 +207,7 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setGnssStatus(GnssStatus status) {
+    public synchronized void setGnssStatus(GnssStatus status) {
         mUseLegacyGnssApi = false;
         if (mPrns == null) {
             /**
@@ -218,6 +228,12 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         int length = status.getSatelliteCount();
         mSvCount = 0;
+        int svInViewCount = 0;
+        int svUsedCount = 0;
+        float cn0InViewSum = 0.0f;
+        float cn0UsedSum = 0.0f;
+        mSnrCn0InViewAvg = 0.0f;
+        mSnrCn0UsedAvg = 0.0f;
         while (mSvCount < length) {
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
             mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
@@ -227,7 +243,23 @@ public class GpsSkyView extends View implements GpsTestListener {
             mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
             mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
             mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
+            // If satellite is in view, add signal to calculate avg
+            if (status.getCn0DbHz(mSvCount) != 0.0f) {
+                svInViewCount++;
+                cn0InViewSum = cn0InViewSum + status.getCn0DbHz(mSvCount);
+            }
+            if (status.usedInFix(mSvCount)) {
+                svUsedCount++;
+                cn0UsedSum = cn0UsedSum + status.getCn0DbHz(mSvCount);
+            }
             mSvCount++;
+        }
+
+        if (svInViewCount > 0) {
+            mSnrCn0InViewAvg = cn0InViewSum / svInViewCount;
+        }
+        if (svUsedCount > 0) {
+            mSnrCn0UsedAvg = cn0UsedSum / svUsedCount;
         }
 
         mStarted = true;
@@ -258,6 +290,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         }
 
         mSvCount = 0;
+        int svInViewCount = 0;
+        int svUsedCount = 0;
+        float snrInViewSum = 0.0f;
+        float snrUsedSum = 0.0f;
+        mSnrCn0InViewAvg = 0.0f;
+        mSnrCn0UsedAvg = 0.0f;
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
             mSnrCn0s[mSvCount] = satellite.getSnr(); // Store SNR values (see #65)
@@ -267,7 +305,23 @@ public class GpsSkyView extends View implements GpsTestListener {
             mHasEphemeris[mSvCount] = satellite.hasEphemeris();
             mHasAlmanac[mSvCount] = satellite.hasAlmanac();
             mUsedInFix[mSvCount] = satellite.usedInFix();
+            // If satellite is in view, add signal to calculate avg
+            if (satellite.getSnr() != 0.0f) {
+                svInViewCount++;
+                snrInViewSum = snrInViewSum + satellite.getSnr();
+            }
+            if (satellite.usedInFix()) {
+                svUsedCount++;
+                snrUsedSum = snrUsedSum + satellite.getSnr();
+            }
             mSvCount++;
+        }
+
+        if (svInViewCount > 0) {
+            mSnrCn0InViewAvg = snrInViewSum / svInViewCount;
+        }
+        if (svUsedCount > 0) {
+            mSnrCn0UsedAvg = snrUsedSum / svUsedCount;
         }
 
         mStarted = true;
@@ -474,7 +528,7 @@ public class GpsSkyView extends View implements GpsTestListener {
     }
 
     /**
-     * Gets the paint color for a satellite based on provided SNR or C/N0
+     * Gets the paint object for a satellite based on provided SNR or C/N0
      *
      * @param base   the base paint color to be changed
      * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
@@ -485,31 +539,40 @@ public class GpsSkyView extends View implements GpsTestListener {
     private Paint getSatellitePaint(Paint base, float snrCn0) {
         Paint newPaint;
         newPaint = new Paint(base);
+        newPaint.setColor(getSatelliteColor(snrCn0));
+        return newPaint;
+    }
 
+    /**
+     * Gets the paint color for a satellite based on provided SNR or C/N0 and the thresholds defined in this class
+     *
+     * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
+     *               GnssStatus) to generate the satellite color based on signal quality
+     * @return the paint color for a satellite based on provided SNR or C/N0
+     */
+    public synchronized int getSatelliteColor(float snrCn0) {
         int numSteps;
         final float thresholds[];
         final int colors[];
 
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
             // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
             numSteps = mCn0Thresholds.length;
             thresholds = mCn0Thresholds;
             colors = mCn0Colors;
         } else {
-            // Use legacy SNR ranges/colors for Android versions less than Android 7.0 (see #76)
+            // Use legacy SNR ranges/colors for Android versions less than Android 7.0 or if user selects legacy API (see #76)
             numSteps = mSnrThresholds.length;
             thresholds = mSnrThresholds;
             colors = mSnrColors;
         }
 
         if (snrCn0 <= thresholds[0]) {
-            newPaint.setColor(colors[0]);
-            return newPaint;
+            return colors[0];
         }
 
         if (snrCn0 >= thresholds[numSteps - 1]) {
-            newPaint.setColor(colors[numSteps - 1]);
-            return newPaint;
+            return colors[numSteps - 1];
         }
 
         for (int i = 0; i < numSteps - 1; i++) {
@@ -536,15 +599,10 @@ public class GpsSkyView extends View implements GpsTestListener {
                 b3 = (int) (b2 * f + b1 * (1.0f - f));
                 c3 = Color.rgb(r3, g3, b3);
 
-                newPaint.setColor(c3);
-
-                return newPaint;
+                return c3;
             }
         }
-
-        newPaint.setColor(Color.MAGENTA);
-
-        return newPaint;
+        return Color.MAGENTA;
     }
 
     @Override
@@ -638,5 +696,29 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     @Override
     public void onProviderDisabled(String provider) {
+    }
+
+    /**
+     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     */
+    public synchronized float getSnrCn0InViewAvg() {
+        return mSnrCn0InViewAvg;
+    }
+
+    /**
+     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     */
+    public synchronized float getSnrCn0UsedAvg() {
+        return mSnrCn0UsedAvg;
+    }
+
+    /**
+     * Returns true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
+     * @return true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
+     */
+    public synchronized boolean isUsingLegacyGpsApi() {
+        return mUseLegacyGnssApi;
     }
 }
