@@ -18,13 +18,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.android.gpstest">
 
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true"/>
 
     <application
             android:name=".Application"
@@ -48,9 +44,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <meta-data
-                android:name="com.google.android.maps.v2.API_KEY"
-                android:value="AIzaSyDQ74tuldesS1VnK84CgeSq0v6FVe5Od-M"/>
 
         <activity
                 android:name=".HelpActivity"
