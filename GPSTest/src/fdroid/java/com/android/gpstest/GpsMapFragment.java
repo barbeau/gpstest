@@ -36,19 +36,11 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
-
-import java.util.ArrayList;
 
 public class GpsMapFragment extends Fragment implements GpsTestListener {
 
-    // Amount of time the user must not touch the map for the automatic camera movements to kick in
-    public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
-
     public final static String TAG = "GpsMapFragment";
-
-    Bundle mSavedInstanceState;
 
     private MapView mMap;
 
@@ -56,21 +48,11 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 
     Marker mMarker;
 
-    ArrayList<OverlayItem> mOverlayItems = new ArrayList<OverlayItem>();
-
-    //private LatLng mLatLng;
-
     // Camera control
     private long mLastMapTouchTime = 0;
 
-    //private CameraPosition mlastCameraPosition;
-
-    private boolean mGotFix;
-
     // User preferences for map rotation and tilt based on sensors
     private boolean mRotate;
-
-    private boolean mTilt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -113,7 +95,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 //        }
         mRotate = settings
                 .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), false);
-        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
         mMap.onResume();
     }
 
@@ -121,38 +102,12 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     }
 
     public void gpsStart() {
-        mGotFix = false;
     }
 
     public void gpsStop() {
     }
 
     public void onLocationChanged(Location loc) {
-//        //Update real-time location on map
-//        if (mListener != null) {
-//            mListener.onLocationChanged(loc);
-//        }
-//
-//        mLatLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-//
-//        if (mMap != null) {
-//            //Get bounds for detection of real-time location within bounds
-//            LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-//            if (!mGotFix &&
-//                    (!bounds.contains(mLatLng) ||
-//                            mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
-//                CameraPosition cameraPosition = new CameraPosition.Builder()
-//                        .target(mLatLng)
-//                        .zoom(CAMERA_INITIAL_ZOOM)
-//                        .bearing(CAMERA_INITIAL_BEARING)
-//                        .tilt(CAMERA_INITIAL_TILT)
-//                        .build();
-//
-//                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//            }
-//            mGotFix = true;
-//        }
-
         GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
         mMap.getController().setCenter(startPoint);
         mMap.getController().setZoom(20.0f);
@@ -224,11 +179,9 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 
         /*
         If we have a location fix, and we have a preference to rotate the map based on sensors,
-        and the user hasn't touched the map lately, then do the map camera reposition
+        then do the map camera reposition
         */
-        if (mMarker != null && mRotate
-                && System.currentTimeMillis() - mLastMapTouchTime
-                > MOVE_MAP_INTERACTION_THRESHOLD) {
+        if (mMarker != null && mRotate) {
             mMap.setMapOrientation((float) -orientation);
         }
     }
