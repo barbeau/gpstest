@@ -21,11 +21,13 @@ android {
         google {
             // Google Play release using Google Play Services for maps
             dimension "map"
+            applicationId "com.android.gpstest"
         }
 
-        fdroid {
-            // F-Droid release using OSMDroid for maps
+        osmdroid {
+            // F-Droid release using osmdroid for maps
             dimension "map"
+            applicationId "com.android.gpstest.osmdroid"
         }
     }
 
@@ -134,7 +136,7 @@ dependencies {
     // Calculating offset for camera target in map view (Google flavor only)
     googleImplementation 'com.google.maps.android:android-maps-utils:0.4.4'
     // OSM Droid (fdroid flavor only)
-    fdroidImplementation 'org.osmdroid:osmdroid-android:6.0.1'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.0.1'
 
     // Unit tests
     testImplementation 'junit:junit:4.12'
