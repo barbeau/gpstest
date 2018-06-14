@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
@@ -141,14 +142,24 @@ public class Preferences extends PreferenceActivity {
             }
         });
 
-        // Remove preferences that shouldn't be shown based on this device
-        if (!GpsTestUtil.isRotationVectorSensorSupported(this)) {
-            // We don't have tilt info, so remove this preference
-            CheckBoxPreference mCheckBoxTiltMap = (CheckBoxPreference) findPreference(
+        // Remove preference for rotating map if needed
+        if (!GpsTestUtil.isRotationVectorSensorSupported(this) || !BuildConfig.FLAVOR.equals("google")) {
+            // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
+            CheckBoxPreference checkBoxTiltMap = (CheckBoxPreference) findPreference(
                     getString(R.string.pref_key_tilt_map_with_sensors));
             PreferenceCategory mMapCategory = (PreferenceCategory) findPreference(
                     getString(R.string.pref_key_map_category));
-            mMapCategory.removePreference(mCheckBoxTiltMap);
+            mMapCategory.removePreference(checkBoxTiltMap);
+        }
+
+        // Remove preference for setting map type if needed
+        if (!BuildConfig.FLAVOR.equals("google")) {
+            // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
+            ListPreference checkBoxMapType = (ListPreference) findPreference(
+                    getString(R.string.pref_key_map_type));
+            PreferenceCategory mMapCategory = (PreferenceCategory) findPreference(
+                    getString(R.string.pref_key_map_category));
+            mMapCategory.removePreference(checkBoxMapType);
         }
     }
 

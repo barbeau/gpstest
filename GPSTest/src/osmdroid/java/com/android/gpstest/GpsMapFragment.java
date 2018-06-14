@@ -54,7 +54,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     // Camera control
     private long mLastMapTouchTime = 0;
 
-    // User preferences for map rotation and tilt based on sensors
+    // User preferences for map rotation based on sensors
     private boolean mRotate;
 
     @Override
@@ -85,17 +85,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     public void onResume() {
         super.onResume();
         SharedPreferences settings = Application.getPrefs();
-//        if (mMap != null) {
-//            if (mMap.getMapType() != Integer.valueOf(
-//                    settings.getString(getString(R.string.pref_key_map_type),
-//                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-//            )) {
-//                mMap.setMapType(Integer.valueOf(
-//                        settings.getString(getString(R.string.pref_key_map_type),
-//                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-//                ));
-//            }
-//        }
         mRotate = settings
                 .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
         mMap.onResume();
