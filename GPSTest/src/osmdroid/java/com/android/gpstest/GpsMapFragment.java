@@ -36,6 +36,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
 public class GpsMapFragment extends Fragment implements GpsTestListener {
@@ -47,6 +48,8 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     RotationGestureOverlay mRotationGestureOverlay;
 
     Marker mMarker;
+
+    Polygon mHorAccPolygon;
 
     // Camera control
     private long mLastMapTouchTime = 0;
@@ -111,6 +114,20 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
         GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
         mMap.getController().setCenter(startPoint);
         mMap.getController().setZoom(20.0f);
+
+        if (loc.hasAccuracy()) {
+            // Add horizontal accuracy uncertainty as polygon
+            if (mHorAccPolygon == null) {
+                mHorAccPolygon = new Polygon();
+            }
+            mHorAccPolygon.setPoints(Polygon.pointsAsCircle(startPoint, loc.getAccuracy()));
+
+            if (!mMap.getOverlays().contains(mHorAccPolygon)) {
+                mHorAccPolygon.setStrokeWidth(0.5f);
+                mHorAccPolygon.setFillColor(ContextCompat.getColor(Application.get(), R.color.horizontal_accuracy));
+                mMap.getOverlays().add(mHorAccPolygon);
+            }
+        }
 
         if (mMarker == null) {
             mMarker = new Marker(mMap);
