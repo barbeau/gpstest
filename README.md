@@ -43,12 +43,13 @@ The below steps will help you build and run the project.  For a Developer's Guid
 2. In Android Studio, choose "Import Project" at the welcome screen.
 3. Browse to the location of the project, and double-click on the project directory.
 4. If prompted with options, check "Use auto-import", and select "Use default gradle wrapper (recommended)".  Click "Ok".
-5. Click the green play button (or 'Shift->F10') to run the project!
+5. The default build flavor will be the `google` flavor, which is the version of GPSTest on Google Play that uses Google Play Services for maps.  If you want to build the version on Fdroid that uses OSMDroid for maps, use the "Build Variants" toolbar item to select the `osmdroid` flavor.
+6. Click the green play button (or 'Shift->F10') to run the project!
 
 ### Building from the command line using Gradle
 
-1. To build and push the app to the device, run `gradlew installDebug` from the command line at the root of the project
-2. To start the app, run `adb shell am start -n com.android.gpstest/.GpsTestActivity` (alternately, you can manually start the app)
+1. To build and push the app to the device, run `gradlew installGoogleDebug` from the command line at the root of the project for the version of GPSTest on Google Play.  If you want to build the Fdroid version with OSM Droid, then use `gradlew installOsmdroidDebug`.
+3. To start the app, run `adb shell am start -n com.android.gpstest/.GpsTestActivity` for the Google Play version, or `adb shell am start -n com.android.gpstest.fdroid/.GpsTestActivity` for the Fdroid version (alternately, you can manually start the app)
 
 ### Release builds
 
