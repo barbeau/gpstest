@@ -94,7 +94,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 //            }
 //        }
         mRotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), false);
+                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
         mMap.onResume();
     }
 
