@@ -120,7 +120,7 @@ task askForPasswords << {
 }
 
 tasks.whenTaskAdded { theTask ->
-    if (theTask.name.equals("packageRelease")) {
+    if (theTask.name.matches("\\bpackage\\w+Release\\b")) {
         theTask.dependsOn "askForPasswords"
     }
 }
