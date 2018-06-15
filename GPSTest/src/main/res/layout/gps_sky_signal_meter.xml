@@ -33,7 +33,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_below="@+id/cn0_indicator_used"
+        android:layout_below="@+id/cn0_indicator_in_view"
         android:background="@color/cn0_meter_border"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
