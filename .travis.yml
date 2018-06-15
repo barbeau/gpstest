@@ -34,4 +34,4 @@ android:
     - extra-android-m2repository
 
 script:
-  - ./gradlew assembleDebug test -PdisablePreDex
+  - ./gradlew assembleGoogleDebug assembleOsmdroidDebug test -PdisablePreDex

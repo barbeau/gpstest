@@ -35,6 +35,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.util.GpsTestUtil;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
@@ -118,7 +121,7 @@ public class GpsMapFragment extends SupportMapFragment
 
         View v = super.onCreateView(inflater, container, savedInstanceState);
 
-        if (isGoogleMapsInstalled()) {
+        if (isGooglePlayServicesInstalled()) {
             // Save the savedInstanceState
             mSavedInstanceState = savedInstanceState;
             // Register for an async callback when the map is ready
@@ -308,20 +311,6 @@ public class GpsMapFragment extends SupportMapFragment
         mListener = null;
     }
 
-    /**
-     * Returns true if Google Maps is installed, false if it is not
-     */
-    @SuppressWarnings("unused")
-    public boolean isGoogleMapsInstalled() {
-        try {
-            ApplicationInfo info = getActivity().getPackageManager()
-                    .getApplicationInfo("com.google.android.apps.maps", 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
         if (System.currentTimeMillis() - mLastMapTouchTime < MOVE_MAP_INTERACTION_THRESHOLD) {
@@ -367,5 +356,13 @@ public class GpsMapFragment extends SupportMapFragment
         mMap.setOnMyLocationButtonClickListener(this);
 
         GpsTestActivity.getInstance().addListener(this);
+    }
+
+
+    /**
+     * Returns true if Google Play Services is available, false if it is not
+     */
+    public static boolean isGooglePlayServicesInstalled() {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS;
     }
 }
