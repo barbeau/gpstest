@@ -39,6 +39,8 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
+import java.util.ArrayList;
+
 public class GpsMapFragment extends Fragment implements GpsTestListener {
 
     public final static String TAG = "GpsMapFragment";
@@ -50,9 +52,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     Marker mMarker;
 
     Polygon mHorAccPolygon;
-
-    // Camera control
-    private long mLastMapTouchTime = 0;
 
     // User preferences for map rotation based on sensors
     private boolean mRotate;
@@ -77,7 +76,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     @Override
     public void onPause() {
         super.onPause();
-
         mMap.onPause();
     }
 
@@ -109,7 +107,10 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
             if (mHorAccPolygon == null) {
                 mHorAccPolygon = new Polygon();
             }
-            mHorAccPolygon.setPoints(Polygon.pointsAsCircle(startPoint, loc.getAccuracy()));
+            ArrayList<GeoPoint> circle = Polygon.pointsAsCircle(startPoint, loc.getAccuracy());
+            if (circle != null) {
+                mHorAccPolygon.setPoints(circle);
+            }
 
             if (!mMap.getOverlays().contains(mHorAccPolygon)) {
                 mHorAccPolygon.setStrokeWidth(0.5f);
