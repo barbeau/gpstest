@@ -154,16 +154,10 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>New look</b>
-        - Tap main menu to switch screens\n&#8226;\u0020
-        <b>Light and dark themes</b>
-        - See \"Settings->Display\" to change theme\n&#8226;\u0020
-        <b>L1/L5 signal labels</b>
-        - Carrier frequencies (CF) supported on certain devices with Android 8.0 and up\n&#8226;\u0020
-        <b>More SBAS</b>
-        - Inmarsat 3-F2 &amp; 4-F3 and SES-5\n&#8226;\u0020
-        <b>Remove unnecessary permissions</b>
-        - These are no longer required for Google Maps\n&#8226;\u0020
+        <b>Sky view legend</b>
+        - Shows mapping of shapes, flags, and constellations\n&#8226;\u0020
+        <b>Sky view avg. signal strength</b>
+        - Shows average for satellites in view and used in fix\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
