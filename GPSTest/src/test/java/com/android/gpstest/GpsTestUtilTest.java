@@ -163,7 +163,7 @@ public class GpsTestUtilTest {
         assertEquals("L5",label);
 
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_QZSS, 1, 	1278.75f);
-        assertEquals("LEX",label);
+        assertEquals("L6",label);
 
         // Galileo
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssStatus.CONSTELLATION_GALILEO, 1, 	1575.42f);
