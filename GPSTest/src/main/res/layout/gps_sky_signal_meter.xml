@@ -39,7 +39,7 @@
         android:paddingRight="1dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        app:srcCompat="@drawable/signal_box" />
+        app:srcCompat="@drawable/signal_gradient" />
 
     <ImageView
         android:id="@+id/cn0_indicator_in_view"
