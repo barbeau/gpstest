@@ -402,7 +402,7 @@ public class GpsTestUtil {
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                     return "L5";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1278.75f, TOLERANCE_MHZ)) {
-                    return "LEX";
+                    return "L6";
                 }
                 break;
             case GnssStatus.CONSTELLATION_GALILEO:
