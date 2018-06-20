@@ -16,10 +16,11 @@
 */
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sky_legend_cn0_ticks_and_text"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/cn0_meter_width"
     android:layout_height="wrap_content"
-    android:id="@+id/sky_legend_cn0_ticks_and_text">
+    android:gravity="center|top">
 
     <!-- C/N0 meter ticks-->
     <LinearLayout

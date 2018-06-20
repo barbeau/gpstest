@@ -25,7 +25,7 @@
     <!-- Colored C/N0 legend -->
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/sky_legend_cn0"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/cn0_meter_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="5dp"
@@ -34,11 +34,14 @@
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:layout_below="@+id/cn0_indicator_in_view"
+        android:layout_centerHorizontal="true"
         android:background="@color/cn0_meter_border"
         android:paddingLeft="1dp"
         android:paddingRight="1dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         app:srcCompat="@drawable/signal_gradient" />
 
     <ImageView
@@ -92,10 +95,9 @@
 
     <include
         layout="@layout/signal_meter_ticks_and_text"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/cn0_meter_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0"
-        android:layout_alignLeft="@id/sky_legend_cn0"
-        android:layout_alignStart="@id/sky_legend_cn0"/>
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
