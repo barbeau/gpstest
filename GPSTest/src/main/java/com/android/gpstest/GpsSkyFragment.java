@@ -55,8 +55,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private List<ImageView> mLegendShapes;
 
-    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText,
-            mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
+    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0LeftCenterText,
+            mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
 
     private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg;
 
@@ -252,7 +252,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
         mLegendCn0Units = v.findViewById(R.id.sky_legend_cn0_units);
         mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
+        mLegendCn0LeftCenterText = v.findViewById(R.id.sky_legend_cn0_left_center_text);
         mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
+        mLegendCn0RightCenterText = v.findViewById(R.id.sky_legend_cn0_right_center_text);
         mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
         mSnrCn0InViewAvgText = v.findViewById(R.id.cn0_text_in_view);
         mSnrCn0UsedAvgText = v.findViewById(R.id.cn0_text_used);
@@ -264,14 +266,18 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendCn0Title.setText(R.string.gps_cn0_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
             mLegendCn0LeftText.setText(R.string.sky_legend_cn0_low);
+            mLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle);
             mLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle);
+            mLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
         } else {
             // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting)
             mLegendCn0Title.setText(R.string.gps_snr_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_snr_units);
             mLegendCn0LeftText.setText(R.string.sky_legend_snr_low);
+            mLegendCn0LeftCenterText.setText(R.string.sky_legend_snr_low_middle);
             mLegendCn0CenterText.setText(R.string.sky_legend_snr_middle);
+            mLegendCn0RightCenterText.setText(R.string.sky_legend_snr_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
         }
     }
