@@ -113,12 +113,16 @@
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_middle">27.5</string>
+    <string name="sky_legend_cn0_low_middle">18</string>
+    <string name="sky_legend_cn0_middle">27</string>
+    <string name="sky_legend_cn0_middle_high">36</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
 
     <string name="sky_legend_snr_low">0</string>
+    <string name="sky_legend_snr_low_middle">7</string>
     <string name="sky_legend_snr_middle">15</string>
+    <string name="sky_legend_snr_middle_high">22</string>
     <string name="sky_legend_snr_high">30</string>
     <string name="sky_legend_snr_units">(dB)</string>
 

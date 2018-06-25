@@ -36,12 +36,6 @@ public class UIUtils {
     private static final float MIN_VALUE_SNR = 0.0f;
     private static final float MAX_VALUE_SNR = 30.0f;
 
-    // Margin ranges for signal strength indicators
-    private static final float MIN_VALUE_INDICATOR_MARGIN_DP = -6.0f;
-    private static final float MAX_VALUE_INDICATOR_MARGIN_DP = 140.0f;
-    private static final float MIN_VALUE_TEXT_VIEW_MARGIN_DP = 3.0f;
-    private static final float MAX_VALUE_TEXT_VIEW_MARGIN_DP = 149.0f;
-
     /**
      * Formats a view so it is ignored for accessible access
      */
@@ -113,63 +107,59 @@ public class UIUtils {
     }
 
     /**
-     * Converts the provided SNR values to a left margin value (dp) for the avg SNR indicator ImageViews in gps_sky_signal
-     * Left margin range for the SNR indicator ImageViews in gps_sky_signal is from -6dp (0 dB) to 140dp (30 dB).
-     * So, based on the avg SNR for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     * Converts the provided SNR values to a left margin value (pixels) for the avg SNR indicator ImageViews in gps_sky_signal
+     * Left margin range for the SNR indicator ImageViews in gps_sky_signal is determined by dimens.xml
+     * cn0_meter_width (based on device screen width) and cn0_indicator_min_left_margin values.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
      *
      * @param snr signal-to-noise ratio of the satellite in dB (from GpsSatellite)
-     * @return left margin value in dp for the SNR indicator ImageViews
+     * @return left margin value in pixels for the SNR indicator ImageViews
      */
-    public static float snrToIndicatorLeftMarginDp(float snr) {
-        // Shift margin and SNR ranges to calculate percentages (because default min value isn't 0)
-        return MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, MIN_VALUE_INDICATOR_MARGIN_DP, MAX_VALUE_INDICATOR_MARGIN_DP);
+    public static int snrToIndicatorLeftMarginPx(float snr, int minIndicatorMarginPx, int maxIndicatorMarginPx) {
+        return (int) MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, minIndicatorMarginPx, maxIndicatorMarginPx);
     }
 
     /**
-     * Converts the provided SNR values to a left margin value (dp) for the avg SNR TextViews in gps_sky_signal
-     * Left margin range for the SNR TextView in gps_sky_signal is from 3dp (0 dB) to 149dp (30 dB).
-     * So, based on the avg SNR for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     * Converts the provided SNR values to a left margin value (pixels) for the avg SNR TextViews in gps_sky_signal
+     * Left margin range for the SNR indicator TextView in gps_sky_signal is determined by dimens.xml
+     * cn0_meter_width (based on device screen width) and cn0_textview_min_left_margin values.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
      *
      * @param snr signal-to-noise ratio of the satellite in dB (from GpsSatellite)
      * @return left margin value in dp for the SNR TextViews
      */
-    public static float snrToTextViewLeftMarginDp(float snr) {
-        // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
-        return MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, MIN_VALUE_TEXT_VIEW_MARGIN_DP, MAX_VALUE_TEXT_VIEW_MARGIN_DP);
+    public static int snrToTextViewLeftMarginPx(float snr, int minTextViewMarginPx, int maxTextViewMarginPx) {
+        return (int) MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, minTextViewMarginPx, maxTextViewMarginPx);
     }
 
     /**
      * Converts the provided C/N0 values to a left margin value (dp) for the avg C/N0 indicator ImageViews in gps_sky_signal
-     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is from -6dp (10 dB-Hz) to 140dp (45 dB-Hz).
-     * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     * Left margin range for the C/N0 indicator ImageViews in gps_sky_signal is determined by dimens.xml
+     * cn0_meter_width (based on device screen width) and cn0_indicator_min_left_margin values.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
      *
      * @param cn0 carrier-to-noise density at the antenna of the satellite in dB-Hz (from GnssStatus)
      * @return left margin value in dp for the C/N0 indicator ImageViews
      */
-    public static float cn0ToIndicatorLeftMarginDp(float cn0) {
-        // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
-        return MathUtils.mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, MIN_VALUE_INDICATOR_MARGIN_DP, MAX_VALUE_INDICATOR_MARGIN_DP);
+    public static int cn0ToIndicatorLeftMarginPx(float cn0, int minIndicatorMarginPx, int maxIndicatorMarginPx) {
+        return (int) MathUtils.mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, minIndicatorMarginPx, maxIndicatorMarginPx);
     }
 
     /**
      * Converts the provided C/N0 values to a left margin value (dp) for the avg C/N0 TextViews in gps_sky_signal
-     * Left margin range for the C/N0 TextView in gps_sky_signal is from 3dp (10 dB-Hz) to 149dp (45 dB-Hz).
-     * So, based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly.
+     * Left margin range for the C/N0 indicator TextView in gps_sky_signal is determined by dimens.xml
+     * cn0_meter_width (based on device screen width) and cn0_textview_min_left_margin values.
      *
      * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
      *
      * @param cn0 carrier-to-noise density at the antenna of the satellite in dB-Hz (from GnssStatus)
      * @return left margin value in dp for the C/N0 TextViews
      */
-    public static float cn0ToTextViewLeftMarginDp(float cn0) {
-        // Shift margin and CN0 ranges to calculate percentages (because default min value isn't 0)
-        return MathUtils.mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, MIN_VALUE_TEXT_VIEW_MARGIN_DP, MAX_VALUE_TEXT_VIEW_MARGIN_DP);
+    public static int cn0ToTextViewLeftMarginPx(float cn0, int minTextViewMarginPx, int maxTextViewMarginPx) {
+        return (int) MathUtils.mapToRange(cn0, MIN_VALUE_CN0, MAX_VALUE_CN0, minTextViewMarginPx, maxTextViewMarginPx);
     }
 
     /**

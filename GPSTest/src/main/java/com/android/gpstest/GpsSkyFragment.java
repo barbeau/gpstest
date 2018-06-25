@@ -55,8 +55,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     private List<ImageView> mLegendShapes;
 
-    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0CenterText,
-            mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
+    private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0LeftCenterText,
+            mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
 
     private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg;
 
@@ -127,7 +127,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     public void onSatelliteStatusChanged(GnssStatus status) {
         mSkyView.setGnssStatus(status);
         mUseLegacyGnssApi = false;
-        updateSnrCn0AvgText();
+        updateSnrCn0AvgValues();
         updateSnrCn0Avgs();
     }
 
@@ -161,7 +161,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 mSkyView.setSats(status);
                 mUseLegacyGnssApi = true;
-                updateSnrCn0AvgText();
+                updateSnrCn0AvgValues();
                 updateSnrCn0Avgs();
                 break;
         }
@@ -252,26 +252,32 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
         mLegendCn0Units = v.findViewById(R.id.sky_legend_cn0_units);
         mLegendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text);
+        mLegendCn0LeftCenterText = v.findViewById(R.id.sky_legend_cn0_left_center_text);
         mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
+        mLegendCn0RightCenterText = v.findViewById(R.id.sky_legend_cn0_right_center_text);
         mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
         mSnrCn0InViewAvgText = v.findViewById(R.id.cn0_text_in_view);
         mSnrCn0UsedAvgText = v.findViewById(R.id.cn0_text_used);
     }
 
-    private void updateSnrCn0AvgText() {
+    private void updateSnrCn0AvgValues() {
         if (!mUseLegacyGnssApi) {
             // C/N0
             mLegendCn0Title.setText(R.string.gps_cn0_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
             mLegendCn0LeftText.setText(R.string.sky_legend_cn0_low);
+            mLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle);
             mLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle);
+            mLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
         } else {
             // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting)
             mLegendCn0Title.setText(R.string.gps_snr_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_snr_units);
             mLegendCn0LeftText.setText(R.string.sky_legend_snr_low);
+            mLegendCn0LeftCenterText.setText(R.string.sky_legend_snr_low_middle);
             mLegendCn0CenterText.setText(R.string.sky_legend_snr_middle);
+            mLegendCn0RightCenterText.setText(R.string.sky_legend_snr_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
         }
     }
@@ -281,33 +287,39 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             return;
         }
         // Based on the avg SNR or C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
+        int meterWidthPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_meter_width)
+                - UIUtils.dpToPixels(Application.get(), 7.0f); // Reduce width for padding
+        int minIndicatorMarginPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_indicator_min_left_margin);
+        int maxIndicatorMarginPx = meterWidthPx + minIndicatorMarginPx;
+        int minTextViewMarginPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_textview_min_left_margin);
+        int maxTextViewMarginPx = meterWidthPx + minTextViewMarginPx;
 
         // Calculate normal offsets for avg in view satellite SNR or C/N0 value TextViews
         Integer leftInViewTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
-            float leftInViewTextViewMarginDp;
             if (!mSkyView.isUsingLegacyGpsApi()) {
                 // C/N0
-                leftInViewTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getSnrCn0InViewAvg());
+                leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
+                        minTextViewMarginPx, maxTextViewMarginPx);
             } else {
                 // SNR
-                leftInViewTextViewMarginDp = UIUtils.snrToTextViewLeftMarginDp(mSkyView.getSnrCn0InViewAvg());
+                leftInViewTextViewMarginPx = UIUtils.snrToTextViewLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
+                        minTextViewMarginPx, maxTextViewMarginPx);
             }
-            leftInViewTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftInViewTextViewMarginDp);
-
         }
+
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         Integer leftUsedTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg())) {
-            float leftUsedTextViewMarginDp;
             if (!mSkyView.isUsingLegacyGpsApi()) {
                 // C/N0
-                leftUsedTextViewMarginDp = UIUtils.cn0ToTextViewLeftMarginDp(mSkyView.getSnrCn0UsedAvg());
+                leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
+                        minTextViewMarginPx, maxTextViewMarginPx);
             } else {
                 // SNR
-                leftUsedTextViewMarginDp = UIUtils.snrToTextViewLeftMarginDp(mSkyView.getSnrCn0UsedAvg());
+                leftUsedTextViewMarginPx = UIUtils.snrToTextViewLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
+                        minTextViewMarginPx, maxTextViewMarginPx);
             }
-            leftUsedTextViewMarginPx = UIUtils.dpToPixels(Application.get(), leftUsedTextViewMarginDp);
         }
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
@@ -363,15 +375,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             }
 
             // Set position and visibility of indicator
-            float leftIndicatorMarginDp;
+            int leftIndicatorMarginPx;
             if (!mSkyView.isUsingLegacyGpsApi()) {
                 // C/N0
-                leftIndicatorMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getSnrCn0InViewAvg());
+                leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
+                        minIndicatorMarginPx, maxIndicatorMarginPx);
             } else {
                 // SNR
-                leftIndicatorMarginDp = UIUtils.snrToIndicatorLeftMarginDp(mSkyView.getSnrCn0InViewAvg());
+                leftIndicatorMarginPx = UIUtils.snrToIndicatorLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
+                        minIndicatorMarginPx, maxIndicatorMarginPx);
             }
-            int leftIndicatorMarginPx = UIUtils.dpToPixels(Application.get(), leftIndicatorMarginDp);
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
             if (mSnrCn0InViewAvg.getVisibility() == View.VISIBLE) {
@@ -419,15 +432,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             }
 
             // Set position and visibility of indicator
-            float leftMarginDp;
+            int leftMarginPx;
             if (!mSkyView.isUsingLegacyGpsApi()) {
                 // C/N0
-                leftMarginDp = UIUtils.cn0ToIndicatorLeftMarginDp(mSkyView.getSnrCn0UsedAvg());
+                leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
+                        minIndicatorMarginPx, maxIndicatorMarginPx);
             } else {
                 // SNR
-                leftMarginDp = UIUtils.snrToIndicatorLeftMarginDp(mSkyView.getSnrCn0UsedAvg());
+                leftMarginPx = UIUtils.snrToIndicatorLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
+                        minIndicatorMarginPx, maxIndicatorMarginPx);
             }
-            int leftMarginPx = UIUtils.dpToPixels(Application.get(), leftMarginDp);
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
             if (mSnrCn0UsedAvg.getVisibility() == View.VISIBLE) {

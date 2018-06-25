@@ -23,6 +23,10 @@
     <dimen name="sky_legend_cn0_small_line">4dp</dimen>
     <dimen name="cn0_value_min_width">30dp</dimen>
 
+    <dimen name="cn0_meter_width">180dp</dimen>
+    <dimen name="cn0_indicator_min_left_margin">-6dp</dimen>
+    <dimen name="cn0_textview_min_left_margin">13dp</dimen>
+
     <dimen name="sky_legend_shape_size">14dp</dimen>
     <dimen name="sky_legend_shape_small_line">5dp</dimen>
 </resources>
