@@ -127,7 +127,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     public void onSatelliteStatusChanged(GnssStatus status) {
         mSkyView.setGnssStatus(status);
         mUseLegacyGnssApi = false;
-        updateSnrCn0AvgValues();
+        updateSnrCn0AvgMeterText();
         updateSnrCn0Avgs();
     }
 
@@ -161,7 +161,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 mSkyView.setSats(status);
                 mUseLegacyGnssApi = true;
-                updateSnrCn0AvgValues();
+                updateSnrCn0AvgMeterText();
                 updateSnrCn0Avgs();
                 break;
         }
@@ -260,8 +260,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mSnrCn0UsedAvgText = v.findViewById(R.id.cn0_text_used);
     }
 
-    private void updateSnrCn0AvgValues() {
-        if (!mUseLegacyGnssApi) {
+    private void updateSnrCn0AvgMeterText() {
+        if (useCn0Scale()) {
             // C/N0
             mLegendCn0Title.setText(R.string.gps_cn0_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
@@ -271,7 +271,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
         } else {
-            // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting)
+            // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting and values conform to SNR range)
             mLegendCn0Title.setText(R.string.gps_snr_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_snr_units);
             mLegendCn0LeftText.setText(R.string.sky_legend_snr_low);
@@ -280,6 +280,22 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mLegendCn0RightCenterText.setText(R.string.sky_legend_snr_middle_high);
             mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
         }
+    }
+
+    /**
+     * Some devices return suspicious SNR values that appear to be C/N0 instead based on the range
+     * (see #153). This method returns true if the C/N0 scale should be used (i.e., if the values
+     * came from GnssStatus OR if the avg SNR value is greater than the max SNR value defined, and
+     * false if the SNR scale should be used (i.e., if the values came from GpsStatus and are within
+     * the valid SNR range)
+     * @return returns true if the C/N0 scale should be used (i.e., if the values came from GnssStatus OR if the avg SNR value is greater
+     * than the max SNR value defined, and false if the SNR scale should be used (i.e., if the values came from GpsStatus and are within the valid SNR range)
+     */
+    private boolean useCn0Scale() {
+        return !mUseLegacyGnssApi ||
+                (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg()) && mSkyView.getSnrCn0InViewAvg() > GpsSkyView.MAX_VALUE_SNR) ||
+                (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg()) && mSkyView.getSnrCn0UsedAvg() > GpsSkyView.MAX_VALUE_SNR);
+
     }
 
     private void updateSnrCn0Avgs() {

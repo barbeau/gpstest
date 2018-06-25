@@ -36,6 +36,11 @@ import java.util.Iterator;
 
 public class GpsSkyView extends View implements GpsTestListener {
 
+    public static final float MIN_VALUE_CN0 = 10.0f;
+    public static final float MAX_VALUE_CN0 = 45.0f;
+    public static final float MIN_VALUE_SNR = 0.0f;
+    public static final float MAX_VALUE_SNR = 30.0f;
+
     // View dimensions, to draw the compass with the correct width and height
     private static int mHeight;
 
@@ -132,13 +137,13 @@ public class GpsSkyView extends View implements GpsTestListener {
         mSatelliteUsedStrokePaint.setStrokeWidth(8.0f);
         mSatelliteUsedStrokePaint.setAntiAlias(true);
 
-        mSnrThresholds = new float[]{0.0f, 10.0f, 20.0f, 30.0f};
+        mSnrThresholds = new float[]{MIN_VALUE_SNR, 10.0f, 20.0f, MAX_VALUE_SNR};
         mSnrColors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
                 ContextCompat.getColor(mContext, R.color.red),
                 ContextCompat.getColor(mContext, R.color.yellow),
                 ContextCompat.getColor(mContext, R.color.green)};
 
-        mCn0Thresholds = new float[]{10.0f, 21.67f, 33.3f, 45.0f};
+        mCn0Thresholds = new float[]{MIN_VALUE_CN0, 21.67f, 33.3f, MAX_VALUE_CN0};
         mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
                 ContextCompat.getColor(mContext, R.color.red),
                 ContextCompat.getColor(mContext, R.color.yellow),

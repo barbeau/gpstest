@@ -24,17 +24,16 @@ import android.view.ViewGroup;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
+import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_SNR;
+import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_CN0;
+import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_SNR;
+
 /**
  * Utilities for processing user inteface elements
  */
 
 public class UIUtils {
-
-    // Signal strength ranges
-    private static final float MIN_VALUE_CN0 = 10.0f;
-    private static final float MAX_VALUE_CN0 = 45.0f;
-    private static final float MIN_VALUE_SNR = 0.0f;
-    private static final float MAX_VALUE_SNR = 30.0f;
 
     /**
      * Formats a view so it is ignored for accessible access
