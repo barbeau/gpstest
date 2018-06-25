@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Sky view C/N0 indicator width for screens wider than 800dp and API Level >= 24 (landscape orientation on devices) -->
+    <dimen name="cn0_meter_width">480dp</dimen>
+</resources>
