@@ -110,6 +110,11 @@
     <string name="enable_gps_negative_button">No</string>
     <string name="gps_set_location_listener">Started GPS with interval = %1$ss, min. dist. = %2$sm
     </string>
+    <string name="clear_assist_warning_title">Delete assist data?</string>
+    <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GPS may not work for any app until the auto-refresh completes. Are you sure?</string>
+    <string name="never_ask_again">Never ask again</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>

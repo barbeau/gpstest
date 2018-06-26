@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="24dp"
+    android:paddingStart="24dp"
+    android:paddingRight="12dp"
+    android:paddingEnd="12dp">
+
+    <TextView
+        android:id="@+id/clear_assist_warning_text"
+        style="?android:attr/textAppearance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="14dp"
+        android:paddingBottom="6dp"
+        android:text="@string/clear_assist_warning"
+        android:textSize="16sp"
+        android:autoLink="all"
+        android:linksClickable="true"/>
+
+    <CheckBox
+        android:id="@+id/clear_assist_never_ask_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/never_ask_again" />
+</LinearLayout>

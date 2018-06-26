@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -49,6 +50,7 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -60,6 +62,8 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.Window;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,6 +97,8 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int WHATSNEW_DIALOG = 1;
 
     private static final int HELP_DIALOG = 2;
+
+    private static final int CLEAR_ASSIST_WARNING_DIALOG = 3;
 
     private static final String WHATS_NEW_VER = "whatsNewVer";
 
@@ -371,7 +377,12 @@ public class GpsTestActivity extends AppCompatActivity
                 forceTimeInjection();
                 break;
             case NAVDRAWER_ITEM_CLEAR_AIDING_DATA:
-                deleteAidingData();
+                SharedPreferences prefs = Application.getPrefs();
+                if (!prefs.getBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), false)) {
+                    showDialog(CLEAR_ASSIST_WARNING_DIALOG);
+                } else {
+                    deleteAidingData();
+                }
                 break;
             case NAVDRAWER_ITEM_SETTINGS:
                 startActivity(new Intent(this, Preferences.class));
@@ -1228,6 +1239,8 @@ public class GpsTestActivity extends AppCompatActivity
                 return createWhatsNewDialog();
             case HELP_DIALOG:
                 return createHelpDialog();
+            case CLEAR_ASSIST_WARNING_DIALOG:
+                return createClearAssistWarningDialog();
         }
         return super.onCreateDialog(id);
     }
@@ -1271,6 +1284,46 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                 }
         );
+        return builder.create();
+    }
+
+    @SuppressWarnings("deprecation")
+    private Dialog createClearAssistWarningDialog() {
+        View view = getLayoutInflater().inflate(R.layout.clear_assist_warning, null);
+        CheckBox neverShowDialog = view.findViewById(R.id.clear_assist_never_ask_again);
+
+        neverShowDialog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                // Save the preference
+                PreferenceUtils.saveBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), isChecked);
+            }
+        });
+
+        Drawable icon = getResources().getDrawable(R.drawable.ic_delete);
+        DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
+
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
+                .setTitle(R.string.clear_assist_warning_title)
+                .setIcon(icon)
+                .setCancelable(false)
+                .setView(view)
+                .setPositiveButton(R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteAidingData();
+                            }
+                        }
+                )
+                .setNegativeButton(R.string.no,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // No-op
+                            }
+                        }
+                );
         return builder.create();
     }
 }
