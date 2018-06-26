@@ -26,6 +26,7 @@ import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.util.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
@@ -83,6 +84,8 @@ public class GpsSkyView extends View implements GpsTestListener {
     private int mSvCount;
 
     private boolean mUseLegacyGnssApi = false;
+
+    private boolean mIsSnrBad = false;
 
     public GpsSkyView(Context context) {
         super(context);
@@ -214,6 +217,7 @@ public class GpsSkyView extends View implements GpsTestListener {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized void setGnssStatus(GnssStatus status) {
         mUseLegacyGnssApi = false;
+        mIsSnrBad = false;
         if (mPrns == null) {
             /**
              * We need to allocate arrays big enough so we don't overflow them.  Per
@@ -329,8 +333,23 @@ public class GpsSkyView extends View implements GpsTestListener {
             mSnrCn0UsedAvg = snrUsedSum / svUsedCount;
         }
 
+        checkBadSnr();
+
         mStarted = true;
         invalidate();
+    }
+
+    /**
+     * Check if the SNR values are bad (see #153)
+     */
+    private void checkBadSnr() {
+        if (mUseLegacyGnssApi) {
+            // If either of the avg SNR values are greater than the max SNR value, mark the data as suspect
+            if ((MathUtils.isValidFloat(mSnrCn0InViewAvg) && mSnrCn0InViewAvg > GpsSkyView.MAX_VALUE_SNR) ||
+                    (MathUtils.isValidFloat(mSnrCn0UsedAvg) && mSnrCn0UsedAvg > GpsSkyView.MAX_VALUE_SNR)) {
+                mIsSnrBad = true;
+            }
+        }
     }
 
     private void drawLine(Canvas c, float x1, float y1, float x2, float y2) {
@@ -560,7 +579,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         final float thresholds[];
         final int colors[];
 
-        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
+        if (!mUseLegacyGnssApi || mIsSnrBad) {
             // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
             numSteps = mCn0Thresholds.length;
             thresholds = mCn0Thresholds;
@@ -725,5 +744,13 @@ public class GpsSkyView extends View implements GpsTestListener {
      */
     public synchronized boolean isUsingLegacyGpsApi() {
         return mUseLegacyGnssApi;
+    }
+
+    /**
+     * Returns true if bad SNR data has been detected (avgs exceeded max SNR threshold), or false if no SNR is observed (i.e., C/N0 data is observed) or SNR data seems ok
+     * @return true if bad SNR data has been detected (avgs exceeded max SNR threshold), or false if no SNR is observed (i.e., C/N0 data is observed) or SNR data seems ok
+     */
+    public synchronized boolean isSnrBad() {
+        return mIsSnrBad;
     }
 }

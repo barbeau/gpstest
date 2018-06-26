@@ -261,7 +261,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     }
 
     private void updateSnrCn0AvgMeterText() {
-        if (useCn0Scale()) {
+        if (!mUseLegacyGnssApi || (mSkyView != null && mSkyView.isSnrBad())) {
             // C/N0
             mLegendCn0Title.setText(R.string.gps_cn0_column_label);
             mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
@@ -282,22 +282,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
     }
 
-    /**
-     * Some devices return suspicious SNR values that appear to be C/N0 instead based on the range
-     * (see #153). This method returns true if the C/N0 scale should be used (i.e., if the values
-     * came from GnssStatus OR if the avg SNR value is greater than the max SNR value defined, and
-     * false if the SNR scale should be used (i.e., if the values came from GpsStatus and are within
-     * the valid SNR range)
-     * @return returns true if the C/N0 scale should be used (i.e., if the values came from GnssStatus OR if the avg SNR value is greater
-     * than the max SNR value defined, and false if the SNR scale should be used (i.e., if the values came from GpsStatus and are within the valid SNR range)
-     */
-    private boolean useCn0Scale() {
-        return !mUseLegacyGnssApi ||
-                (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg()) && mSkyView.getSnrCn0InViewAvg() > GpsSkyView.MAX_VALUE_SNR) ||
-                (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg()) && mSkyView.getSnrCn0UsedAvg() > GpsSkyView.MAX_VALUE_SNR);
-
-    }
-
     private void updateSnrCn0Avgs() {
         if (mSkyView == null) {
             return;
@@ -313,7 +297,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // Calculate normal offsets for avg in view satellite SNR or C/N0 value TextViews
         Integer leftInViewTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
-            if (!mSkyView.isUsingLegacyGpsApi()) {
+            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
                 // C/N0
                 leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
                         minTextViewMarginPx, maxTextViewMarginPx);
@@ -327,7 +311,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         Integer leftUsedTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg())) {
-            if (!mSkyView.isUsingLegacyGpsApi()) {
+            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
                 // C/N0
                 leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
                         minTextViewMarginPx, maxTextViewMarginPx);
@@ -392,7 +376,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             // Set position and visibility of indicator
             int leftIndicatorMarginPx;
-            if (!mSkyView.isUsingLegacyGpsApi()) {
+            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
                 // C/N0
                 leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
                         minIndicatorMarginPx, maxIndicatorMarginPx);
@@ -449,7 +433,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             // Set position and visibility of indicator
             int leftMarginPx;
-            if (!mSkyView.isUsingLegacyGpsApi()) {
+            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
                 // C/N0
                 leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
                         minIndicatorMarginPx, maxIndicatorMarginPx);
