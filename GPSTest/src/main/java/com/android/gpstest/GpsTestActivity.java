@@ -1196,10 +1196,13 @@ public class GpsTestActivity extends AppCompatActivity
     private void sendLocation() {
         if (mLastLocation != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);
-            String url = "http://maps.google.com/maps?geocode=&q=" +
-                    Double.toString(mLastLocation.getLatitude()) + "," +
-                    Double.toString(mLastLocation.getLongitude());
-            intent.putExtra(Intent.EXTRA_TEXT, url);
+            String googleMapsUrl = Application.get().getString(R.string.google_maps_share_url,
+                    mLastLocation.getLatitude(),
+                            mLastLocation.getLongitude());
+            String osmMapsUrl = Application.get().getString(R.string.openstreetmap_share_url,
+                    mLastLocation.getLatitude(),
+                    mLastLocation.getLongitude());
+            intent.putExtra(Intent.EXTRA_TEXT, googleMapsUrl + "\n" + osmMapsUrl);
             intent.setType("text/plain");
             startActivity(createChooser(intent, getString(R.string.send_location)));
         }

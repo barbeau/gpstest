@@ -52,6 +52,11 @@
     <string name="pref_gps_min_time_default_sec">1</string>
     <string name="pref_gps_min_distance_default_meters">0</string>
 
+    <!-- Send location URLs -->
+    <string name="google_maps_share_url">http://maps.google.com/maps?geocode=&amp;q=%1$.7f,%2$.7f\n</string>
+    <string name="openstreetmap_share_url">https://www.openstreetmap.org/?mlat=%1$.7f&amp;mlon=%2$.7f#map=18/%1$.7f/%2$.7f</string>
+    <string name="geo_share_url">http://maps.google.com/maps?geocode=&amp;q=%1$s,%2$s\n</string>
+
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>
