@@ -106,9 +106,9 @@ task askForPasswords << {
                     label(text: "Key passphrase:")
                     textField id: "keyText", input = passwordField()
                     button(defaultButton: true, text: 'OK', actionPerformed: {
-                        storePw = storeText.text
-                        keyPw = keyText.text
-                        dispose()
+                        storePw = storeText.text;
+                        keyPw = keyText.text;
+                        dispose();
                     })
                 }
             }
