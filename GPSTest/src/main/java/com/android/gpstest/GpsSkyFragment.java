@@ -294,6 +294,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         int minTextViewMarginPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_textview_min_left_margin);
         int maxTextViewMarginPx = meterWidthPx + minTextViewMarginPx;
 
+        // When both "in view" and "used" indicators and TextViews are shown, slide the "in view" TextView by this amount to the left to avoid overlap
+        float TEXTVIEW_NON_OVERLAP_OFFSET_DP = -16.0f;
+
         // Calculate normal offsets for avg in view satellite SNR or C/N0 value TextViews
         Integer leftInViewTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
@@ -324,7 +327,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
         if (leftInViewTextViewMarginPx != null && leftUsedTextViewMarginPx != null) {
-            int offset = UIUtils.dpToPixels(Application.get(), -14);
+            int offset = UIUtils.dpToPixels(Application.get(), TEXTVIEW_NON_OVERLAP_OFFSET_DP);
             if (leftInViewTextViewMarginPx <= leftUsedTextViewMarginPx) {
                 leftInViewTextViewMarginPx += offset;
             } else {
