@@ -3,7 +3,7 @@ import groovy.swing.SwingBuilder
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 21
     buildToolsVersion "27.0.3"
 
     defaultConfig {
@@ -134,7 +134,7 @@ dependencies {
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
     // Calculating offset for camera target in map view (Google flavor only)
-    googleImplementation 'com.google.maps.android:android-maps-utils:0.4.4'
+    googleImplementation 'com.google.maps.android:android-maps-utils:0.5'
     // OSM Droid (fdroid flavor only)
     osmdroidImplementation 'org.osmdroid:osmdroid-android:6.0.1'
 
