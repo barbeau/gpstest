@@ -15,13 +15,21 @@
  */
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class HelpActivity extends AppCompatActivity {
+
+    public static final String TAG = "HelpActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,29 @@ public class HelpActivity extends AppCompatActivity {
                 .append(" (")
                 .append(versionCode)
                 .append(")\n");
+
+        java.lang.reflect.Method method;
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        try {
+            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
+            int hwYear = (int) method.invoke(locationManager);
+            if (hwYear == 0) {
+                version.append("HW Year: " + "2015 or older \n");
+            } else {
+                version.append("HW Year: " + hwYear + "\n");
+            }
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "No such method exception: ", e);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "Illegal Access exception: ", e);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "Invocation Target Exception: ", e);
+        }
+
+        String versionRelease = Build.VERSION.RELEASE;
+        version.append("Platform: " + versionRelease + "\n");
+        int apiLevel = Build.VERSION.SDK_INT;
+        version.append("API Level: " + apiLevel + "\n");
 
         versionView.setText(version.toString());
 
