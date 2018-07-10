@@ -241,12 +241,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_square));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_pentagon));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle2));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle3));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle4));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle5));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle6));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle7));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon1));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon2));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon3));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon4));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon5));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon6));
 
         // C/N0 Legend text
         mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
