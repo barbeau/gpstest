@@ -58,8 +58,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private static final String EMPTY_LAT_LONG = "             ";
 
-    private static final float NO_DATA = 0.0f;
-
     @SuppressLint("SimpleDateFormat") // See #117
     SimpleDateFormat mDateFormat = new SimpleDateFormat(
             DateFormat.is24HourFormat(Application.get().getApplicationContext())
@@ -426,10 +424,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported() && status.hasCarrierFrequencyHz(mSvCount)) {
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                 mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
-            } else {
-                mCarrierFreqsHz[mSvCount] = NO_DATA;
             }
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
@@ -674,7 +670,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         break;
                 }
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-                    if (mCarrierFreqsHz[dataRow] != NO_DATA) {
+                    if (mCarrierFreqsHz[dataRow] != 0.0f) {
                         // Convert Hz to MHz
                         float carrierMhz = MathUtils.toMhz(mCarrierFreqsHz[dataRow]);
                         String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(mConstellationType[dataRow],
@@ -698,20 +694,20 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 } else {
                     v.getCarrierFrequency().setVisibility(View.GONE);
                 }
-                if (mSnrCn0s[dataRow] != NO_DATA) {
+                if (mSnrCn0s[dataRow] != 0.0f) {
                     v.getSignal().setText(String.format("%.1f", mSnrCn0s[dataRow]));
                 } else {
                     v.getSignal().setText("");
                 }
 
-                if (mSvElevations[dataRow] != NO_DATA) {
+                if (mSvElevations[dataRow] != 0.0f) {
                     v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
                                     mSvElevations[dataRow]));
                 } else {
                     v.getElevation().setText("");
                 }
 
-                if (mSvAzimuths[dataRow] != NO_DATA) {
+                if (mSvAzimuths[dataRow] != 0.0f) {
                     v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
                             mSvAzimuths[dataRow]));
                 } else {

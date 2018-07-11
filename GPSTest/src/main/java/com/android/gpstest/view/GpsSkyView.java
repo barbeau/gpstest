@@ -1,5 +1,6 @@
 package com.android.gpstest.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import com.android.gpstest.GpsTestListener;
@@ -177,15 +179,28 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         setFocusable(true);
 
-        // Get the proper height and width of view, to ensure the compass draws onscreen
-        // (don't use ViewTreeObserver.OnGlobalLayoutListener - see #156)
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mHeight = getHeight();
-                mWidth = getWidth();
-            }
-        });
+        // Get the proper height and width of this view, to ensure the compass draws onscreen
+        getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+
+                    @SuppressWarnings("deprecation")
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onGlobalLayout() {
+                        mHeight = getHeight();
+                        mWidth = getWidth();
+
+                        if (getViewTreeObserver().isAlive()) {
+                            // remove this layout listener
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            } else {
+                                getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     public void setStarted() {
@@ -456,36 +471,37 @@ public class GpsSkyView extends View implements GpsTestListener {
                         strokePaint);
                 break;
             case QZSS:
-                drawHexagon(c, x, y, fillPaint, strokePaint);
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case BEIDOU:
                 drawPentagon(c, x, y, fillPaint, strokePaint);
                 break;
             case GALILEO:
+                // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
                 drawTriangle(c, x, y, fillPaint, strokePaint);
             case GAGAN:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case ANIK:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case GALAXY_15:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case INMARSAT_3F2:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case INMARSAT_4F3:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
             case SES_5:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
+                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
+                drawTriangle(c, x, y, fillPaint, strokePaint);
                 break;
         }
 
@@ -522,18 +538,6 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawPath(path, strokePaint);
     }
 
-    private void drawDiamond(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
-        Path path = new Path();
-        path.moveTo(x, y - SAT_RADIUS);
-        path.lineTo(x - SAT_RADIUS * 1.5f, y);
-        path.lineTo(x, y + SAT_RADIUS);
-        path.lineTo(x + SAT_RADIUS * 1.5f, y);
-        path.close();
-
-        c.drawPath(path, fillPaint);
-        c.drawPath(path, strokePaint);
-    }
-
     private void drawPentagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
         Path path = new Path();
         path.moveTo(x, y - SAT_RADIUS);
@@ -547,27 +551,15 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawPath(path, strokePaint);
     }
 
-    private void drawHexagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
-        final float MULTIPLIER = 0.6f;
-        final float SIDE_MULTIPLIER = 1.4f;
-        Path path = new Path();
-        // Top-left
-        path.moveTo(x - SAT_RADIUS * MULTIPLIER, y - SAT_RADIUS);
-        // Left
-        path.lineTo(x - SAT_RADIUS * SIDE_MULTIPLIER, y);
-        // Bottom
-        path.lineTo(x - SAT_RADIUS * MULTIPLIER, y + SAT_RADIUS);
-        path.lineTo(x + SAT_RADIUS * MULTIPLIER, y + SAT_RADIUS);
-        // Right
-        path.lineTo(x + SAT_RADIUS * SIDE_MULTIPLIER, y);
-        // Top-right
-        path.lineTo(x + SAT_RADIUS * MULTIPLIER, y - SAT_RADIUS);
-        path.close();
-
-        c.drawPath(path, fillPaint);
-        c.drawPath(path, strokePaint);
-    }
-
+    /**
+     * Gets the paint object for a satellite based on provided SNR or C/N0
+     *
+     * @param base   the base paint color to be changed
+     * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
+     *               GnssStatus)
+     *               to generate the satellite color based on signal quality
+     * @return the paint color for a satellite based on provided SNR or C/N0
+     */
     private Paint getSatellitePaint(Paint base, float snrCn0) {
         Paint newPaint;
         newPaint = new Paint(base);

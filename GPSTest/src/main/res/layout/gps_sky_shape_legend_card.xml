@@ -230,12 +230,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon1"
+                    android:id="@+id/sky_legend_triangle2"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/hexagon" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line5a"
@@ -296,12 +296,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon2"
+                    android:id="@+id/sky_legend_triangle3"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line6a"
@@ -342,12 +342,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon3"
+                    android:id="@+id/sky_legend_triangle4"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line7a"
@@ -388,12 +388,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon4"
+                    android:id="@+id/sky_legend_triangle5"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line8a"
@@ -434,12 +434,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon5"
+                    android:id="@+id/sky_legend_triangle6"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line9a"
@@ -480,12 +480,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_hexagon6"
+                    android:id="@+id/sky_legend_triangle7"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/triangle" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line10a"
