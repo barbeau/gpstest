@@ -302,11 +302,11 @@
         <b>Galileo (European Union)</b>
         - Triangles\n&#8226;\u0020
         <b>QZSS (Japan)</b>
-        - Triangles\n&#8226;\u0020
+        - Hexagons\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n&#8226;\u0020
         <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)</b>
-        - Triangles\n\n
+        - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
         &#8226;\u0020 Thin outline - In view but not used in fix\n
