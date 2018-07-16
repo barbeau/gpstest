@@ -69,6 +69,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
@@ -82,6 +83,7 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_XTRA_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
@@ -394,6 +396,16 @@ public class GpsTestActivity extends AppCompatActivity
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(getString(R.string.open_source_github)));
                 startActivity(i);
+                break;
+            case NAVDRAWER_ITEM_SEND_FEEDBACK:
+                // Send App feedback
+                String email = getString(R.string.app_feedback_email);
+                String locationString = null;
+                if (mLastLocation != null) {
+                    locationString = LocationUtils.printLocationDetails(mLastLocation);
+                }
+
+                UIUtils.sendEmail(this, email, locationString);
                 break;
         }
         invalidateOptionsMenu();

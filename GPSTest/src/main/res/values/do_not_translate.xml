@@ -63,4 +63,7 @@
     </string>
     <!-- Open-source link for Github project -->
     <string name="open_source_github">https://github.com/barbeau/gpstest</string>
+
+    <!-- Send feedback -->
+    <string name="app_feedback_email">barbeaudev@gmail.com</string>
 </resources>
