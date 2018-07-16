@@ -557,6 +557,7 @@ public class NavigationDrawerFragment extends Fragment {
                 itemId == NAVDRAWER_ITEM_OPEN_SOURCE ||
                 itemId == NAVDRAWER_ITEM_INJECT_XTRA_DATA ||
                 itemId == NAVDRAWER_ITEM_INJECT_TIME_DATA ||
-                itemId == NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
+                itemId == NAVDRAWER_ITEM_CLEAR_AIDING_DATA ||
+                itemId == NAVDRAWER_ITEM_SEND_FEEDBACK;
     }
 }

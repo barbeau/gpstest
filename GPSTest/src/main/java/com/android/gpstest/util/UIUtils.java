@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Sean J. Barbeau
+ * Copyright (C) 2015-2018 University of South  Florida, Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,19 @@
 package com.android.gpstest.util;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.gpstest.R;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.concurrent.TimeUnit;
 
@@ -174,5 +182,67 @@ public class UIUtils {
         ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
         p.setMargins(l, t, r, b);
         v.setLayoutParams(p);
+    }
+
+    /**
+     * Opens email apps based on the given email address
+     * @param email address
+     * @param location string that shows the current location
+     */
+    public static void sendEmail(Context context, String email, String location) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo appInfo;
+        PackageInfo appInfoGps;
+        String appVersion = "";
+        String googlePlayServicesAppVersion = "";
+        try {
+            appInfo = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            appVersion = appInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Leave version as empty string
+        }
+        try {
+            appInfoGps = pm.getPackageInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0);
+            googlePlayServicesAppVersion = appInfoGps.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Leave version as empty string
+        }
+        String body;
+        if (location != null) {
+            // Have location
+            body = context.getString(R.string.feedback_body,
+                    appVersion,
+                    Build.MODEL,
+                    Build.VERSION.RELEASE,
+                    Build.VERSION.SDK_INT,
+                    googlePlayServicesAppVersion,
+                    GoogleApiAvailability.GOOGLE_PLAY_SERVICES_VERSION_CODE,
+                    location,
+                    GpsTestUtil.getGnssHardwareYear());
+        } else {
+            // No location
+            body = context.getString(R.string.feedback_body_without_location,
+                    appVersion,
+                    Build.MODEL,
+                    Build.VERSION.RELEASE,
+                    Build.VERSION.SDK_INT,
+                    GpsTestUtil.getGnssHardwareYear());
+        }
+
+        Intent send = new Intent(Intent.ACTION_SEND);
+        send.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+
+        String subject = context.getString(R.string.feedback_subject);
+
+        send.putExtra(Intent.EXTRA_SUBJECT, subject);
+        send.putExtra(Intent.EXTRA_TEXT, body);
+        send.setType("message/rfc822");
+        try {
+            context.startActivity(Intent.createChooser(send, subject));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 }

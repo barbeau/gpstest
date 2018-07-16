@@ -69,6 +69,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
@@ -400,11 +401,11 @@ public class GpsTestActivity extends AppCompatActivity
                 // Send App feedback
                 String email = getString(R.string.app_feedback_email);
                 String locationString = null;
-//                if (mLastLocation != null) {
-//                    locationString = LocationUtils.printLocationDetails(loc);
-//                }
-//
-//                UIUtils.sendEmail(getActivity(), email, locationString);
+                if (mLastLocation != null) {
+                    locationString = LocationUtils.printLocationDetails(mLastLocation);
+                }
+
+                UIUtils.sendEmail(this, email, locationString);
                 break;
         }
         invalidateOptionsMenu();
