@@ -23,12 +23,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.concurrent.TimeUnit;
 
@@ -192,42 +193,38 @@ public class UIUtils {
     public static void sendEmail(Context context, String email, String location) {
         PackageManager pm = context.getPackageManager();
         PackageInfo appInfo;
-        PackageInfo appInfoGps;
-        String appVersion = "";
-        String googlePlayServicesAppVersion = "";
+
+        StringBuilder body = new StringBuilder();
+        body.append(context.getString(R.string.feedback_body));
+
+        String versionName = "";
+        int versionCode = 0;
+
         try {
             appInfo = pm.getPackageInfo(context.getPackageName(),
                     PackageManager.GET_META_DATA);
-            appVersion = appInfo.versionName;
+            versionName = appInfo.versionName;
+            versionCode = appInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             // Leave version as empty string
         }
-        try {
-            appInfoGps = pm.getPackageInfo(GoogleApiAvailability.GOOGLE_PLAY_SERVICES_PACKAGE, 0);
-            googlePlayServicesAppVersion = appInfoGps.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // Leave version as empty string
-        }
-        String body;
-        if (location != null) {
-            // Have location
-            body = context.getString(R.string.feedback_body,
-                    appVersion,
-                    Build.MODEL,
-                    Build.VERSION.RELEASE,
-                    Build.VERSION.SDK_INT,
-                    googlePlayServicesAppVersion,
-                    GoogleApiAvailability.GOOGLE_PLAY_SERVICES_VERSION_CODE,
-                    location,
-                    GpsTestUtil.getGnssHardwareYear());
-        } else {
-            // No location
-            body = context.getString(R.string.feedback_body_without_location,
-                    appVersion,
-                    Build.MODEL,
-                    Build.VERSION.RELEASE,
-                    Build.VERSION.SDK_INT,
-                    GpsTestUtil.getGnssHardwareYear());
+
+        // App version
+        body.append("App version: v")
+                .append(versionName)
+                .append(" (")
+                .append(versionCode)
+                .append("-" + BuildConfig.FLAVOR + ")\n");
+
+        // Device
+        body.append("Model: " + Build.MODEL + "\n");
+        body.append("Android version: " + Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT + "\n");
+
+        body.append("Location: " + location + "\n");
+        body.append(GpsTestUtil.getGnssHardwareYear());
+
+        if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
+            body.append(BuildUtils.getPlayServicesVersion());
         }
 
         Intent send = new Intent(Intent.ACTION_SEND);
@@ -236,7 +233,7 @@ public class UIUtils {
         String subject = context.getString(R.string.feedback_subject);
 
         send.putExtra(Intent.EXTRA_SUBJECT, subject);
-        send.putExtra(Intent.EXTRA_TEXT, body);
+        send.putExtra(Intent.EXTRA_TEXT, body.toString());
         send.setType("message/rfc822");
         try {
             context.startActivity(Intent.createChooser(send, subject));

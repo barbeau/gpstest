@@ -484,9 +484,9 @@ public class GpsTestUtil {
             method = locationManager.getClass().getMethod("getGnssYearOfHardware");
             int hwYear = (int) method.invoke(locationManager);
             if (hwYear == 0) {
-                return "HW Year: " + "2015 or older \n";
+                return "GNSS HW Year: " + "2015 or older \n";
             } else {
-                return "HW Year: " + hwYear + "\n";
+                return "GNSS HW Year: " + hwYear + "\n";
             }
         } catch (NoSuchMethodException e) {
             Log.e(TAG, "No such method exception: ", e);

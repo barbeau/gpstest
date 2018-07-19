@@ -162,13 +162,7 @@
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
-    <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\nApp Version:
-        %1$s\nModel: %2$s\nOS Version: %3$s / %4$d\nGoogle Play Services App: %5$s\n
-        Google Play Services Library: %6$d\nLoc: %7$s\n%8$s\n\n
-    </string>
-    <string name="feedback_body_without_location">Complaints, kudos, or bug reports are welcome!\n\n\nApp Version:
-        %1$s\nModel: %2$s\nOS Version: %3$s / %4$d\n%5$s\n\n
-    </string>
+    <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>
     <string name="feedback_error">Unable to send feedback: no suitable application found.
     </string>
 
