@@ -169,10 +169,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">有什么新特性?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Sky view legend</b>
-        - 显示形状、标志和星座图。\n&#8226;\u0020
-        <b>天空模式平均信号强度</b>
-        - 显示卫星平均值并用于固定\n&#8226;\u0020
+        <b>发送反馈</b>
+        - 使用这个导航抽屉选项来询问问题\n&#8226;\u0020
+        <b>为QZSS和SBAS卫星设计了新的图标</b>
+        - 请打开天空视图查看更新的图形\n&#8226;\u0020
+        <b>中文翻译</b>
+        - 感谢 wangkf\n&#8226;\u0020
         <b>错误修复</b>
         - 点击 http://bit.ly/gpstest-releases
     </string>
