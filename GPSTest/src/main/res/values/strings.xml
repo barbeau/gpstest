@@ -169,10 +169,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Sky view legend</b>
-        - Shows mapping of shapes, flags, and constellations\n&#8226;\u0020
-        <b>Sky view avg. signal strength</b>
-        - Shows average for satellites in view and used in fix\n&#8226;\u0020
+        <b>Send feedback</b>
+        - Use this navigation drawer option to ask questions or report problems\n&#8226;\u0020
+        <b>New satellite shapes for QZSS and SBAS</b>
+        - See the updated shapes in the Sky view Legend\n&#8226;\u0020
+        <b>Chinese translation</b>
+        - Thanks to wangkf!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
