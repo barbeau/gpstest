@@ -220,7 +220,10 @@ public class UIUtils {
         body.append("Model: " + Build.MODEL + "\n");
         body.append("Android version: " + Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT + "\n");
 
-        body.append("Location: " + location + "\n");
+        if (!TextUtils.isEmpty(location)) {
+            body.append("Location: " + location + "\n");
+        }
+        
         body.append(GpsTestUtil.getGnssHardwareYear());
 
         if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
