@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 
@@ -216,7 +217,7 @@ public class UIUtils {
                 .append(versionCode)
                 .append("-" + BuildConfig.FLAVOR + ")\n");
 
-        // Device
+        // Device properties
         body.append("Model: " + Build.MODEL + "\n");
         body.append("Android version: " + Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT + "\n");
 
@@ -226,9 +227,48 @@ public class UIUtils {
         
         body.append(GpsTestUtil.getGnssHardwareYear());
 
-        if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
-            body.append(BuildUtils.getPlayServicesVersion());
+        // Raw GNSS measurement capability
+        int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_raw_measurements, PreferenceUtils.getCapabilityDescription(capability)));
         }
+
+        // Navigation messages capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_nav_messages, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // NMEA capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_nmea, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Inject XTRA capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_inject_xtra, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Inject time capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_inject_time, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Delete assist capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+
+        if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
+            body.append("\n" + BuildUtils.getPlayServicesVersion());
+        }
+
+        body.append("\n\n\n");
 
         Intent send = new Intent(Intent.ACTION_SEND);
         send.putExtra(Intent.EXTRA_EMAIL, new String[]{email});

@@ -15,16 +15,42 @@
  */
 package com.android.gpstest.util;
 
-import com.android.gpstest.Application;
-
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
+
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
 
 /**
  * A class containing utility methods related to preferences
  */
 public class PreferenceUtils {
+
+    public static final int CAPABILITY_UNKNOWN = -1;
+    public static final int CAPABILITY_NOT_SUPPORTED = 0;
+    public static final int CAPABILITY_SUPPORTED = 1;
+    public static final int CAPABILITY_LOCATION_DISABLED = 2;
+
+    /**
+     * Gets the string description of a CAPABILITY_* constant
+     * @param capability CAPABILITY_* constant defined in this class
+     * @return a string description of the CAPABILITY_* constant
+     */
+    public static String getCapabilityDescription(int capability) {
+        switch (capability) {
+            case CAPABILITY_UNKNOWN:
+                return Application.get().getString(R.string.capability_value_unknown);
+            case CAPABILITY_NOT_SUPPORTED:
+                return Application.get().getString(R.string.capability_value_not_supported);
+            case CAPABILITY_SUPPORTED:
+                return Application.get().getString(R.string.capability_value_supported);
+            case CAPABILITY_LOCATION_DISABLED:
+                return Application.get().getString(R.string.capability_value_location_disabled);
+            default:
+                return Application.get().getString(R.string.capability_value_unknown);
+        }
+    }
 
     @TargetApi(9)
     public static void saveString(SharedPreferences prefs, String key, String value) {

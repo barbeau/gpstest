@@ -66,4 +66,24 @@
 
     <!-- Send feedback -->
     <string name="app_feedback_email">barbeaudev@gmail.com</string>
+
+    <!-- Device capabilities -->
+    <string name="capability_key_inject_xtra">capability_key_inject_xtra</string>
+    <string name="capability_key_inject_time">capability_key_inject_time</string>
+    <string name="capability_key_delete_assist">capability_key_delete_assist</string>
+    <string name="capability_key_raw_measurements">capability_key_raw_measurements</string>
+    <string name="capability_key_nav_messages">capability_key_nav_messages</string>
+    <string name="capability_key_nmea">capability_key_nmea</string>
+
+    <string name="capability_title_inject_xtra">Inject XTRA: %1$s\n</string>
+    <string name="capability_title_inject_time">Inject time: %1$s\n</string>
+    <string name="capability_title_delete_assist">Delete assist: %1$s\n</string>
+    <string name="capability_title_raw_measurements">Raw measurements: %1$s\n</string>
+    <string name="capability_title_nav_messages">Navigation messages: %1$s\n</string>
+    <string name="capability_title_nmea">NMEA: %1$s\n</string>
+
+    <string name="capability_value_unknown">UNKNOWN</string>
+    <string name="capability_value_not_supported">NOT_SUPPORTED</string>
+    <string name="capability_value_supported">SUPPORTED</string>
+    <string name="capability_value_location_disabled">LOCATION_DISABLED</string>
 </resources>
