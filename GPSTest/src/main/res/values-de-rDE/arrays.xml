@@ -20,36 +20,22 @@
 <resources>
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-    <!-- Let the user choose between map views -->
         <item>Kartenansicht</item>
-    <!-- Let the user choose between map views -->
         <item>Hybridansicht</item>
-    <!-- Let the user choose between map views -->
         <item>Satellitenansicht</item>
-    <!-- Let the user choose between map views -->
         <item>Geländeansicht</item>
     </string-array>
     <!-- These contants above and below match those in GoogleMap object:
         https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
     <string-array name="map_type_values">
-    <!-- These contants above and below match those in GoogleMap object:
-        https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
         <item>1</item>
-    <!-- These contants above and below match those in GoogleMap object:
-        https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
         <item>4</item>
-    <!-- These contants above and below match those in GoogleMap object:
-        https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
         <item>2</item>
-    <!-- These contants above and below match those in GoogleMap object:
-        https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
         <item>3</item>
     </string-array>
     <!-- Help -->
     <string-array name="main_help_options">
-    <!-- Help -->
         <item>Was ist neu?</item>
-    <!-- Help -->
         <item>Über GPSTest</item>
     </string-array>
 </resources>
