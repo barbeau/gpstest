@@ -39,7 +39,7 @@ Note that the U.S. [FCC currently restricts use of Galileo](https://groups.googl
 
 Yes!  Look for the "CF" column on the "Status" screen.  For more detailed information on GPSTest support see my article ["Dual-frequency GNSS on Android devices"](https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c.). 
 
-Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com/rs/324-UVH-477/images/Wireless_po_en_A1_0758-1029-82_v1600.pdf)) that shows all of the frquency labels you can see in GPSTest, along with their correponding frequencies:
+Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com/rs/324-UVH-477/images/Wireless_po_en_A1_0758-1029-82_v1600.pdf)) that shows all of the frequency labels you can see in GPSTest, along with their correponding frequencies:
 
 ![image](https://user-images.githubusercontent.com/928045/42654926-53581aa0-85e8-11e8-91ab-cd8ab6553bb7.png)
 
