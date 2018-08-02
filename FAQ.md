@@ -15,7 +15,16 @@ The purpose of GPSTest is to give application developers and platform implemente
 * Galileo (European Union)
 * Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15)
 
-Galileo support has been confirmed on the following devices:
+For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
+
+If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
+
+## How do I know if my device supports Galileo?
+
+An official list of devices that support Galileo can be found at:
+https://www.usegalileo.eu
+
+Galileo support has also been confirmed using GPSTest on the following devices:
 
 * BQ Aquaris X5 Plus (See [this post](https://groups.google.com/d/msg/gpstest_android/SbvcUyGU67U/cL8T9GX3BwAJ))
 * Huawei Mate 9 (See [this post](http://www.startlr.com/we-tried-galileo-huawei-mate-9-already-sees-the-european-satellites/))
@@ -24,9 +33,7 @@ Galileo support has been confirmed on the following devices:
 * Huawei P10 (See [this post](https://groups.google.com/forum/#!topic/gpstest_android/Kc_YOQLp35I) - Android 7.0, firmware version L29C432B171)
 * OnePlus 5T (See [this post](https://groups.google.com/forum/m/#!topic/gpstest_android/MCowNjKpVyo)) 
 
-For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
-
-If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
+Note that the U.S. [FCC currently restricts use of Galileo](https://groups.google.com/forum/#!topic/gpstest_android/KrBe_csYFfg) when in the United States, so even if your device supports Galileo you won't see any Galileo satellites in GPSTest when in the United States.
 
 ## What Android devices does GPSTest run on?
 
