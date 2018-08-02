@@ -18,6 +18,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import com.android.gpstest.GpsTestListener;
@@ -177,15 +178,17 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         setFocusable(true);
 
-        // Get the proper height and width of view, to ensure the compass draws onscreen
-        // (don't use ViewTreeObserver.OnGlobalLayoutListener - see #156)
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mHeight = getHeight();
-                mWidth = getWidth();
-            }
-        });
+        // Get the proper height and width of view before drawing
+        getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        mHeight = getHeight();
+                        mWidth = getWidth();
+                        return true;
+                    }
+                }
+        );
     }
 
     public void setStarted() {
