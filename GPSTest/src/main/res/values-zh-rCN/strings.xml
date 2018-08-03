@@ -144,6 +144,7 @@
     <string name="sky_legend_shape_galaxy_15">Galaxy 15 (美国)</string>
     <string name="sky_legend_shape_inmarsat">国际海事卫星组织3-F2 &amp; 4-F3 (英国)</string>
     <string name="sky_legend_shape_ses_5">SES-5 (卢森堡)</string>
+    <string name="sky_legend_shape_astra_5b">Astra 5B (卢森堡)</string>
     <string name="sky_legend_shape_availability_title">信号可用性</string>
     <string name="sky_legend_shape_not_in_view">不基于设备</string>
     <string name="sky_legend_shape_in_view">计划好的</string>
@@ -306,7 +307,7 @@
         - 六边形\n&#8226;\u0020
         <b>北斗/COMPASS (中国)</b>
         - 五边形\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)</b>
+        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)</b>
         - 钻石\n\n
 
         &#8226;\u0020 显而易见的卫星 - 不在视野中\n

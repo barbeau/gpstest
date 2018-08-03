@@ -13,9 +13,18 @@ The purpose of GPSTest is to give application developers and platform implemente
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
-* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15)
+* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)
 
-Galileo support has been confirmed on the following devices:
+For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
+
+If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
+
+## How do I know if my device supports Galileo?
+
+An official list of devices that support Galileo can be found at:
+https://www.usegalileo.eu
+
+Galileo support has also been confirmed using GPSTest on the following devices:
 
 * BQ Aquaris X5 Plus (See [this post](https://groups.google.com/d/msg/gpstest_android/SbvcUyGU67U/cL8T9GX3BwAJ))
 * Huawei Mate 9 (See [this post](http://www.startlr.com/we-tried-galileo-huawei-mate-9-already-sees-the-european-satellites/))
@@ -24,9 +33,17 @@ Galileo support has been confirmed on the following devices:
 * Huawei P10 (See [this post](https://groups.google.com/forum/#!topic/gpstest_android/Kc_YOQLp35I) - Android 7.0, firmware version L29C432B171)
 * OnePlus 5T (See [this post](https://groups.google.com/forum/m/#!topic/gpstest_android/MCowNjKpVyo)) 
 
-For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
+Note that the U.S. [FCC currently restricts use of Galileo](https://groups.google.com/forum/#!topic/gpstest_android/KrBe_csYFfg) when in the United States, so even if your device supports Galileo you won't see any Galileo satellites in GPSTest when in the United States.
 
-If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
+## Does GPSTest support dual-frequency GNSS?
+
+Yes!  Look for the "CF" column on the "Status" screen.  For more detailed information on GPSTest support see my article ["Dual-frequency GNSS on Android devices"](https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c.). 
+
+Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com/rs/324-UVH-477/images/Wireless_po_en_A1_0758-1029-82_v1600.pdf)) that shows all of the frequency labels you can see in GPSTest, along with their correponding frequencies:
+
+![image](https://user-images.githubusercontent.com/928045/42654926-53581aa0-85e8-11e8-91ab-cd8ab6553bb7.png)
+
+For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
 ## What Android devices does GPSTest run on?
 

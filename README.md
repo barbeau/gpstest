@@ -16,7 +16,7 @@ It supports the following satellite systems:
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
-* Various satellite-based augmentation systems SBAS (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)
+* Various satellite-based augmentation systems SBAS (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)
 
 Questions?  Check out the [FAQ](FAQ.md), our [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 
