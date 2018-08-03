@@ -490,6 +490,10 @@ public class GpsSkyView extends View implements GpsTestListener {
                 // SBAS
                 drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
+            case ASTRA_5B:
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
+                break;
         }
 
         c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),

@@ -13,7 +13,7 @@ The purpose of GPSTest is to give application developers and platform implemente
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
-* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15)
+* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)
 
 For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
 

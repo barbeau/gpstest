@@ -112,6 +112,8 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_SBAS:
                 if (svid == 120) {
                     return GnssType.INMARSAT_3F2;
+                } else if (svid == 123) {
+                    return GnssType.ASTRA_5B;
                 } else if (svid == 127 || svid == 128 || svid == 139) {
                     return GnssType.GAGAN;
                 } else if (svid == 133) {
