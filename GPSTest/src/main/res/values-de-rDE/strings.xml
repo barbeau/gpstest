@@ -147,7 +147,7 @@
     <string name="feedback_error">Feedback kann nicht gesendet werden, da keine geeignete App gefunden wurde.</string>
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020<b>Himmelansicht Legende</b>\n - Anzeige der Zuordnung der Formen, Flaggen, und Konstellationen\n\n&#8226;\u0020<b>Himmelansicht durchschnittl. Signalst\u00e4rke</b>\n - Anzeige des Zustandes der Satelliten bzgl. Sichtbarkeit und Verwendung\n\n&#8226;\u0020<b>Fehlerbehebungen</b>\n - Siehe http://bit.ly/gpstest-releases</string>
+    <string name="main_help_whatsnew">&#8226;\u0020<b>Feedback senden</b> - Nutze diese Menüoption, um Fragen zu stellen oder Probleme zu melden\n &#8226;\u0020<b>Neue Satellitensymbole für QZSS und SBAS</b> - Siehe aktualisierte Satellitensymbole in der Legende der Himmelsansicht\n &#8226;\u0020<b>Chinesische &amp; deutsche Übersetzungen</b> - Vielen Dank an wangkf &amp; SIRSteiner!\n &#8226;\u0020<b>Fehlerbehebungen</b> - Siehe http://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Schließen</string>
     <!-- Preferences -->
     <string name="pref_title">Einstellungen</string>
