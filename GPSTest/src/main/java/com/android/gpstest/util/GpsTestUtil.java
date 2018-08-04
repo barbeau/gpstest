@@ -23,12 +23,16 @@ import android.hardware.SensorManager;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.gpstest.Application;
 import com.android.gpstest.DilutionOfPrecision;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class GpsTestUtil {
 
@@ -108,6 +112,8 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_SBAS:
                 if (svid == 120) {
                     return GnssType.INMARSAT_3F2;
+                } else if (svid == 123) {
+                    return GnssType.ASTRA_5B;
                 } else if (svid == 127 || svid == 128 || svid == 139) {
                     return GnssType.GAGAN;
                 } else if (svid == 133) {
@@ -466,6 +472,31 @@ public class GpsTestUtil {
                 break;
         }
         // Unknown carrier frequency for given constellation and svid
+        return null;
+    }
+
+    /**
+     * Returns the GNSS hardware year for the device, or null if the year couldn't be determined
+     * @return the GNSS hardware year for the device, or null if the year couldn't be determined
+     */
+    public static String getGnssHardwareYear() {
+        java.lang.reflect.Method method;
+        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+        try {
+            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
+            int hwYear = (int) method.invoke(locationManager);
+            if (hwYear == 0) {
+                return "GNSS HW Year: " + "2015 or older \n";
+            } else {
+                return "GNSS HW Year: " + hwYear + "\n";
+            }
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "No such method exception: ", e);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "Illegal Access exception: ", e);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "Invocation Target Exception: ", e);
+        }
         return null;
     }
 }

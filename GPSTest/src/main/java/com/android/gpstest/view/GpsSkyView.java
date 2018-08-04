@@ -1,6 +1,5 @@
 package com.android.gpstest.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -179,25 +178,14 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         setFocusable(true);
 
-        // Get the proper height and width of this view, to ensure the compass draws onscreen
-        getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                    @SuppressWarnings("deprecation")
-                    @SuppressLint("NewApi")
+        // Get the proper height and width of view before drawing
+        getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
                     @Override
-                    public void onGlobalLayout() {
+                    public boolean onPreDraw() {
                         mHeight = getHeight();
                         mWidth = getWidth();
-
-                        if (getViewTreeObserver().isAlive()) {
-                            // remove this layout listener
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            } else {
-                                getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            }
-                        }
+                        return true;
                     }
                 }
         );
@@ -471,37 +459,40 @@ public class GpsSkyView extends View implements GpsTestListener {
                         strokePaint);
                 break;
             case QZSS:
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                drawHexagon(c, x, y, fillPaint, strokePaint);
                 break;
             case BEIDOU:
                 drawPentagon(c, x, y, fillPaint, strokePaint);
                 break;
             case GALILEO:
-                // We're running out of shapes - QZSS should be regional to Japan, so re-use triangle
                 drawTriangle(c, x, y, fillPaint, strokePaint);
             case GAGAN:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
             case ANIK:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
             case GALAXY_15:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
             case INMARSAT_3F2:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
             case INMARSAT_4F3:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
             case SES_5:
-                // We're running out of shapes - QZSS has fewest sats, so re-use triangle for SBAS
-                drawTriangle(c, x, y, fillPaint, strokePaint);
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
+                break;
+            case ASTRA_5B:
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
         }
 
@@ -538,6 +529,18 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawPath(path, strokePaint);
     }
 
+    private void drawDiamond(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
+        Path path = new Path();
+        path.moveTo(x, y - SAT_RADIUS);
+        path.lineTo(x - SAT_RADIUS * 1.5f, y);
+        path.lineTo(x, y + SAT_RADIUS);
+        path.lineTo(x + SAT_RADIUS * 1.5f, y);
+        path.close();
+
+        c.drawPath(path, fillPaint);
+        c.drawPath(path, strokePaint);
+    }
+
     private void drawPentagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
         Path path = new Path();
         path.moveTo(x, y - SAT_RADIUS);
@@ -551,15 +554,27 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawPath(path, strokePaint);
     }
 
-    /**
-     * Gets the paint object for a satellite based on provided SNR or C/N0
-     *
-     * @param base   the base paint color to be changed
-     * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
-     *               GnssStatus)
-     *               to generate the satellite color based on signal quality
-     * @return the paint color for a satellite based on provided SNR or C/N0
-     */
+    private void drawHexagon(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
+        final float MULTIPLIER = 0.6f;
+        final float SIDE_MULTIPLIER = 1.4f;
+        Path path = new Path();
+        // Top-left
+        path.moveTo(x - SAT_RADIUS * MULTIPLIER, y - SAT_RADIUS);
+        // Left
+        path.lineTo(x - SAT_RADIUS * SIDE_MULTIPLIER, y);
+        // Bottom
+        path.lineTo(x - SAT_RADIUS * MULTIPLIER, y + SAT_RADIUS);
+        path.lineTo(x + SAT_RADIUS * MULTIPLIER, y + SAT_RADIUS);
+        // Right
+        path.lineTo(x + SAT_RADIUS * SIDE_MULTIPLIER, y);
+        // Top-right
+        path.lineTo(x + SAT_RADIUS * MULTIPLIER, y - SAT_RADIUS);
+        path.close();
+
+        c.drawPath(path, fillPaint);
+        c.drawPath(path, strokePaint);
+    }
+
     private Paint getSatellitePaint(Paint base, float snrCn0) {
         Paint newPaint;
         newPaint = new Paint(base);

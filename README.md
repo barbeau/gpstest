@@ -2,7 +2,12 @@
 
 The #1 open-source global navigation satellite system (GNSS) testing app
 
-[![Google Play logo](http://www.android.com/images/brand/android_app_on_play_logo_large.png)](https://play.google.com/store/apps/details?id=com.android.gpstest)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+      alt="Get it on Google Play"
+      height="80">](https://play.google.com/store/apps/details?id=com.android.gpstest)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/packages/com.android.gpstest.osmdroid/)
 
 It supports the following satellite systems:
 
@@ -11,7 +16,7 @@ It supports the following satellite systems:
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
-* Various satellite-based augmentation systems SBAS (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)
+* Various satellite-based augmentation systems SBAS (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)
 
 Questions?  Check out the [FAQ](FAQ.md), our [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 

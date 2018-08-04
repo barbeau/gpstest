@@ -17,11 +17,16 @@ package com.android.gpstest;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.android.gpstest.util.GpsTestUtil;
+
 public class HelpActivity extends AppCompatActivity {
+
+    public static final String TAG = "HelpActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,13 @@ public class HelpActivity extends AppCompatActivity {
                 .append(" (")
                 .append(versionCode)
                 .append(")\n");
+
+        version.append(GpsTestUtil.getGnssHardwareYear());
+
+        String versionRelease = Build.VERSION.RELEASE;
+        version.append("Platform: " + versionRelease + "\n");
+        int apiLevel = Build.VERSION.SDK_INT;
+        version.append("API Level: " + apiLevel + "\n");
 
         versionView.setText(version.toString());
 

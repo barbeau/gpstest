@@ -69,6 +69,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
@@ -82,6 +83,7 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_XTRA_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
@@ -395,6 +397,16 @@ public class GpsTestActivity extends AppCompatActivity
                 i.setData(Uri.parse(getString(R.string.open_source_github)));
                 startActivity(i);
                 break;
+            case NAVDRAWER_ITEM_SEND_FEEDBACK:
+                // Send App feedback
+                String email = getString(R.string.app_feedback_email);
+                String locationString = null;
+                if (mLastLocation != null) {
+                    locationString = LocationUtils.printLocationDetails(mLastLocation);
+                }
+
+                UIUtils.sendEmail(this, email, locationString);
+                break;
         }
         invalidateOptionsMenu();
     }
@@ -517,9 +529,11 @@ public class GpsTestActivity extends AppCompatActivity
         if (success) {
             Toast.makeText(this, getString(R.string.force_xtra_injection_success),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_SUPPORTED);
         } else {
             Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
         }
     }
 
@@ -528,9 +542,11 @@ public class GpsTestActivity extends AppCompatActivity
         if (success) {
             Toast.makeText(this, getString(R.string.force_time_injection_success),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_SUPPORTED);
         } else {
             Toast.makeText(this, getString(R.string.force_time_injection_failure),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
         }
     }
 
@@ -544,9 +560,11 @@ public class GpsTestActivity extends AppCompatActivity
         if (success) {
             Toast.makeText(this, getString(R.string.delete_aiding_data_success),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_SUPPORTED);
         } else {
             Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
                     Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
         }
 
         if (lastStartState) {
@@ -711,15 +729,19 @@ public class GpsTestActivity extends AppCompatActivity
                 switch (status) {
                     case STATUS_LOCATION_DISABLED:
                         statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
                         break;
                     case STATUS_NOT_SUPPORTED:
                         statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
                         break;
                     case STATUS_READY:
                         statusMessage = getString(R.string.gnss_measurement_status_ready);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
                         break;
                     default:
                         statusMessage = getString(R.string.gnss_status_unknown);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
                 }
                 Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
                 if (UIUtils.canManageDialog(GpsTestActivity.this)) {
@@ -812,6 +834,7 @@ public class GpsTestActivity extends AppCompatActivity
                         writeNmeaToLog(message,
                                 mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
                     }
+                    PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
                 }
             };
         }
@@ -829,6 +852,7 @@ public class GpsTestActivity extends AppCompatActivity
                     if (mLogNmea) {
                         writeNmeaToLog(nmea, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
                     }
+                    PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
                 }
             };
         }
@@ -862,12 +886,15 @@ public class GpsTestActivity extends AppCompatActivity
                     switch (status) {
                         case STATUS_LOCATION_DISABLED:
                             statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
                             break;
                         case STATUS_NOT_SUPPORTED:
                             statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
                             break;
                         case STATUS_READY:
                             statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
                             break;
                         default:
                             statusMessage = getString(R.string.gnss_status_unknown);

@@ -230,12 +230,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle2"
+                    android:id="@+id/sky_legend_hexagon1"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/hexagon" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line5a"
@@ -296,12 +296,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle3"
+                    android:id="@+id/sky_legend_diamond1"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/diamond" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line6a"
@@ -342,12 +342,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle4"
+                    android:id="@+id/sky_legend_diamond2"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/diamond" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line7a"
@@ -388,12 +388,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle5"
+                    android:id="@+id/sky_legend_diamond3"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/diamond" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line8a"
@@ -434,12 +434,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle6"
+                    android:id="@+id/sky_legend_diamond4"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/diamond" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line9a"
@@ -480,12 +480,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/sky_legend_triangle7"
+                    android:id="@+id/sky_legend_diamond5"
                     android:layout_width="@dimen/sky_legend_shape_size"
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/diamond" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line10a"
@@ -519,6 +519,52 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:text="@string/sky_legend_shape_ses_5" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_diamond6"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/diamond" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line14a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <ImageView
+                    android:id="@+id/legend_flag__5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_luxembourg" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line14b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <TextView
+                    android:id="@+id/sky_astra_5b_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_astra_5b" />
             </TableRow>
         </TableLayout>
 

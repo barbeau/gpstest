@@ -235,18 +235,21 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line11a));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line12a));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line13a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line14a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line14b));
 
         // Shape Legend shapes
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_circle));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_square));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_pentagon));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle2));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle3));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle4));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle5));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle6));
-        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle7));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon1));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond1));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond2));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond3));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond4));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond5));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond6));
 
         // C/N0 Legend text
         mLegendCn0Title = v.findViewById(R.id.sky_legend_cn0_title);
@@ -294,6 +297,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         int minTextViewMarginPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_textview_min_left_margin);
         int maxTextViewMarginPx = meterWidthPx + minTextViewMarginPx;
 
+        // When both "in view" and "used" indicators and TextViews are shown, slide the "in view" TextView by this amount to the left to avoid overlap
+        float TEXTVIEW_NON_OVERLAP_OFFSET_DP = -16.0f;
+
         // Calculate normal offsets for avg in view satellite SNR or C/N0 value TextViews
         Integer leftInViewTextViewMarginPx = null;
         if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
@@ -324,7 +330,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
         if (leftInViewTextViewMarginPx != null && leftUsedTextViewMarginPx != null) {
-            int offset = UIUtils.dpToPixels(Application.get(), -14);
+            int offset = UIUtils.dpToPixels(Application.get(), TEXTVIEW_NON_OVERLAP_OFFSET_DP);
             if (leftInViewTextViewMarginPx <= leftUsedTextViewMarginPx) {
                 leftInViewTextViewMarginPx += offset;
             } else {
