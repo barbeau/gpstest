@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 30
-        versionName "3.1.1"
+        versionCode 31
+        versionName "3.1.2"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -35,6 +35,10 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+    }
+
+    lintOptions {
+        disable 'MissingTranslation', 'ExtraTranslation'
     }
 
     if (project.hasProperty("secure.properties")
