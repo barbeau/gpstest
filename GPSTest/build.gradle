@@ -37,6 +37,10 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
+    lintOptions {
+        disable 'MissingTranslation', 'ExtraTranslation'
+    }
+
     if (project.hasProperty("secure.properties")
             && new File(project.property("secure.properties")).exists()) {
 
