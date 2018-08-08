@@ -55,7 +55,7 @@
     <string name="gps_longitude_label">Länge:</string>
     <string name="gps_longitude_value">%1$.7f\u00b0</string>
     <string name="gps_fix_time_label">Zeit:</string>
-    <string name="gps_ttff_label">Erster Fix:</string>
+    <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Höhe:</string>
     <string name="gps_altitude_value">%1$.1f m</string>
     <string name="gps_altitude_msl_label">Höhe (MSL):</string>
@@ -74,9 +74,9 @@
     <string name="gps_bearing_acc_value">%1$.1f\u00b0</string>
     <string name="gps_num_sats_label"># Sats:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
-    <string name="pdop_label">Positionsgenauigkeit:</string>
+    <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
-    <string name="hvdop_label">H/V-DOP-Genauigkeit:</string>
+    <string name="hvdop_label">H/V-DOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
     <string name="gps_prn_column_label">ID</string>
     <string name="gps_flag_image_label">GNSS</string>
