@@ -426,10 +426,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             int prn = status.getSvid(mSvCount);
             mPrns[mSvCount] = prn;
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported() && status.hasCarrierFrequencyHz(mSvCount)) {
-                mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
-            } else {
-                mCarrierFreqsHz[mSvCount] = NO_DATA;
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                if (status.hasCarrierFrequencyHz(mSvCount)) {
+                    mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
+                } else {
+                    mCarrierFreqsHz[mSvCount] = NO_DATA;
+                }
             }
             mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
             mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
