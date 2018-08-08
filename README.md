@@ -56,6 +56,33 @@ The below steps will help you build and run the project.  For a Developer's Guid
 1. To build and push the app to the device, run `gradlew installGoogleDebug` from the command line at the root of the project for the version of GPSTest on Google Play.  If you want to build the Fdroid version with OSM Droid, then use `gradlew installOsmdroidDebug`.
 3. To start the app, run `adb shell am start -n com.android.gpstest/.GpsTestActivity` for the Google Play version, or `adb shell am start -n com.android.gpstest.fdroid/.GpsTestActivity` for the Fdroid version (alternately, you can manually start the app)
 
+### Testing translations
+
+Translations can be tested with an emulator using the following commands:
+
+~~~
+adb root
+adb shell
+...
+~~~
+
+... where the line `...` sets the local as follows.
+
+**U.S. English:**
+~~~
+setprop persist.sys.locale en_US;stop;sleep 5;start
+~~~
+
+**German:**
+~~~
+setprop persist.sys.locale de-rDE;stop;sleep 5;start
+~~~
+
+**Chinese:**
+~~~
+setprop persist.sys.locale zh-rCN;stop;sleep 5;start
+~~~
+
 ### Release builds
 
 To build a release build, you first need to create a `gradle.properties` file that points to a `secure.properties` file, and a `secure.properties` file that points to your keystore and alias. 
