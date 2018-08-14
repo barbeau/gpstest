@@ -92,14 +92,13 @@ Google is keeping a list on the [Raw GNSS Measurements page](https://developer.a
 
 The below table is compiled from users of GPSTest, based on sending feedback via the "Send feedback" feature.  An "x" indicates that the feature is supported for a device, a blank value means the feature is not supported for a device, and a "?" means that support is unknown (no one has submitted data for this feature yet).
 
-
 Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navigation messages | NMEA | Inject XTRA | Inject time | Delete assist
 -- | -- | -- | -- | -- | -- | -- | -- | -- | --
-Xiaomi | Redmi 4A | 7.1.2 / 25 | 2015 |   |   | x |   | ? | ?
 HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
-Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
 Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
 Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | ? | ? | x |   | x | x
+Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
+Xiaomi | Redmi 4A | 7.1.2 / 25 | 2015 |   |   | x |   | ? | ?
 
 Is your device not above, or does it still have some question marks?
 
