@@ -88,13 +88,36 @@ You can view the data output from GPSTest, including NMEA (Android 2.3 and highe
 
 Google is keeping a list on the [Raw GNSS Measurements page](https://developer.android.com/guide/topics/sensors/gnss.html#supported_devices).
 
-Observations from users of the GPSTest app (which aren't on the above page):
+## What devices support the various functionality shown in GPSTest?
+
+The below table is compiled from users of GPSTest, based on sending feedback via the "Send feedback" feature.  An "x" indicates that the feature is supported for a device, a blank value means the feature is not supported for a device, and a "?" means that support is unknown (no one has submitted data for this feature yet).
 
 
-|  **Model** | **OS** | **Pseudorange and Pseudorange Rate** | **Nav data** | **Accumulated Delta Range or Carrier** | **HW clock** | **Raw** | **Meas.** | **Notes** |
-|  ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-|  LG G5 | N | 7.0 | no | |  | no | no |  |
-|  BQ Aquaris X5 Plus with Android | 7.1.1 |  | | |  | no | |  |
+Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navigation messages | NMEA | Inject XTRA | Inject time | Delete assist
+-- | -- | -- | -- | -- | -- | -- | -- | -- | --
+Xiaomi | Redmi 4A | 7.1.2 / 25 | 2015 |   |   | x |   | ? | ?
+HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
+Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
+Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
+Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | ? | ? | x |   | x | x
+
+Is your device not above, or does it still have some question marks?
+
+By default the "Send feedback" email only contains the support information for features that the user has enabled/tried. 
+
+If you want to provide a full record for your device, in the navigation drawer first tap on:
+                 
+* Inject xtra
+* Inject time
+* Clear assist (Caution - some devices take a while to recover from this. I'd confirm you can inject the above before trying to clear the data)
+
+...and in Settings, you can check logging for the following features:
+                 
+* GNSS measurement data
+* Navigation messages
+* NMEA data
+
+Then tap on "Send feedback", and GPSTest it will capture success/failure for all the above.
 
 ## Does GPSTest collect any personal information about me?
 
