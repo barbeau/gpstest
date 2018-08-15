@@ -6,6 +6,8 @@ Want to know more about the data that GPSTest collects?  See some common questio
 
 The purpose of GPSTest is to give application developers and platform implementers an open-source reference application that demonstrates how GNSS works on Android devices.  Its goal is to advance the quality and smart use of GNSS technology in mobile devices and mobile apps.  It also allows curious users to better understand GPS on their Android device.
 
+More details are in the European Global Navigation Satellite System Agency (GSA)'s publication [Understanding GNSS performance on Android using the GPSTest App](https://www.gsa.europa.eu/sites/default/files/understanding_gnss_performance_on_android_using_the_gps_testc_app_0.pdf). 
+
 ## What satellite constellations does GPSTest support?
 
 * GPS (USA Navstar)
