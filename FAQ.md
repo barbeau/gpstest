@@ -4,7 +4,7 @@ Want to know more about the data that GPSTest collects?  See some common questio
 
 ## What's the purpose of GPSTest?
 
-The purpose of GPSTest is to give application developers and platform implementers an open-source reference application that demonstrates how GPS works on Android devices.  Its goal is to advance the quality and smart use of GPS technology in mobile devices and mobile apps.  It also allows curious users to better understand GPS on their Android device.
+The purpose of GPSTest is to give application developers and platform implementers an open-source reference application that demonstrates how GNSS works on Android devices.  Its goal is to advance the quality and smart use of GNSS technology in mobile devices and mobile apps.  It also allows curious users to better understand GPS on their Android device.
 
 ## What satellite constellations does GPSTest support?
 
