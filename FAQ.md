@@ -84,7 +84,7 @@ See http://www.insidegnss.com/auto/novdec10-Solutions.pdf for details.
 
 You can view the data output from GPSTest, including NMEA (Android 2.3 and higher) and pseudorange measurements and navigation messages (Android 7.0 and higher) in log format by using Android Monitor, which is included with [Android Studio](https://developer.android.com/studio/index.html).  Check out our [Data Output and Logging](LOGGING.md) page for more info.
 
-## What Android 7.0 devices support logging raw pseudorange and navigation messages?
+## What Android 7.0 and higher devices support logging raw pseudorange and navigation messages?
 
 Google is keeping a list on the [Raw GNSS Measurements page](https://developer.android.com/guide/topics/sensors/gnss.html#supported_devices).
 
