@@ -89,7 +89,7 @@
     <string name="gps_azimuth_column_label">Azim</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00b0</string>
     <string name="gps_flags_column_label">Flags</string>
-    <string name="gps_not_supported">GPS wird nicht unterstützt. Beende die App&#8230;</string>
+    <string name="gps_not_supported">GPS wird nicht unterstützt.</string>
     <string name="install">Installieren</string>
     <string name="no_thanks">Nein danke</string>
     <string name="please_install_google_maps">Die Kartenansicht benötigt Google Maps.</string>

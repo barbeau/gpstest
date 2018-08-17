@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2013 The Android Open Source Project,
+ * Copyright (C) 2008-2018 The Android Open Source Project,
  * Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,9 @@
 
 package com.android.gpstest;
 
+import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -49,6 +51,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
@@ -71,6 +74,7 @@ import android.widget.Toast;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 
@@ -107,6 +111,12 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
+
+    private static final int LOCATION_PERMISSION_REQUEST = 1;
+
+    private static final String[] REQUIRED_PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
     static boolean mIsLargeScreen = false;
 
@@ -180,7 +190,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private GnssStatus.Callback mGnssStatusListener;
 
-    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener; // For SNRs
+    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener;
 
     private OnNmeaMessageListener mOnNmeaMessageListener;
 
@@ -199,6 +209,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private SensorManager mSensorManager;
 
+    Bundle mLastSavedInstanceState;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -211,21 +223,11 @@ public class GpsTestActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         sInstance = this;
 
+        saveInstanceState(savedInstanceState);
+
         // Set the default values from the XML file if this is the first
         // execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
-        if (mProvider == null) {
-            Log.e(TAG, "Unable to get GPS_PROVIDER");
-            Toast.makeText(this, getString(R.string.gps_not_supported),
-                    Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // If we have a large screen, show all the fragments in one layout
         // TODO - Fix large screen layouts (see #122)
@@ -240,37 +242,33 @@ public class GpsTestActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         setupNavigationDrawer();
-
-        // Apply settings from preferences
-        SharedPreferences settings = Application.getPrefs();
-
-        double tempMinTime = Double.valueOf(
-                settings.getString(getString(R.string.pref_key_gps_min_time),
-                        getString(R.string.pref_gps_min_time_default_sec))
-        );
-        minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
-        minDistance = Float.valueOf(
-                settings.getString(getString(R.string.pref_key_gps_min_distance),
-                        getString(R.string.pref_gps_min_distance_default_meters))
-        );
-
-        if (savedInstanceState != null) {
-            // Activity is being restarted and has previous state (e.g., user rotated device)
-            boolean gpsWasStarted = savedInstanceState.getBoolean(GPS_STARTED, true);
-            if (gpsWasStarted) {
-                gpsStart();
-            }
-        } else {
-            // Activity is starting without previous state - use "Auto-start GNSS" setting
-            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
-                gpsStart();
-            }
-        }
-
-        autoShowWhatsNew();
     }
 
-    @Override
+    /**
+     * Save instance state locally so we can use it after the permission callback
+     * @param savedInstanceState instance state to save
+     */
+    private void saveInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                mLastSavedInstanceState = savedInstanceState.deepCopy();
+            } else {
+                mLastSavedInstanceState = savedInstanceState;
+            }
+        }
+    }
+
+    private void setupNavigationDrawer() {
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
+    }
+
+     @Override
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
@@ -280,6 +278,41 @@ public class GpsTestActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        requestPermissionAndInit(this);
+    }
+
+    private void requestPermissionAndInit(final Activity activity) {
+        if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
+            init();
+        } else {
+            ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                init();
+            }
+        }
+    }
+
+    private void init() {
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
+        if (mProvider == null) {
+            Log.e(TAG, "Unable to get GPS_PROVIDER");
+            Toast.makeText(this, getString(R.string.gps_not_supported),
+                    Toast.LENGTH_SHORT).show();
+        }
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        setupStartState(mLastSavedInstanceState);
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
         boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
@@ -318,11 +351,15 @@ public class GpsTestActivity extends AppCompatActivity
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkNavMessageOutput(settings);
         }
+
+        autoShowWhatsNew();
     }
 
     @Override
     protected void onPause() {
-        mSensorManager.unregisterListener(this);
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this);
+        }
 
         // Remove status listeners
         removeStatusListener();
@@ -336,14 +373,32 @@ public class GpsTestActivity extends AppCompatActivity
         super.onPause();
     }
 
-    private void setupNavigationDrawer() {
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+    private void setupStartState(Bundle savedInstanceState) {
+        // Apply start state settings from preferences
+        SharedPreferences settings = Application.getPrefs();
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
+        double tempMinTime = Double.valueOf(
+                settings.getString(getString(R.string.pref_key_gps_min_time),
+                        getString(R.string.pref_gps_min_time_default_sec))
+        );
+        minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
+        minDistance = Float.valueOf(
+                settings.getString(getString(R.string.pref_key_gps_min_distance),
+                        getString(R.string.pref_gps_min_distance_default_meters))
+        );
+
+        if (savedInstanceState != null) {
+            // Activity is being restarted and has previous state (e.g., user rotated device)
+            boolean gpsWasStarted = savedInstanceState.getBoolean(GPS_STARTED, true);
+            if (gpsWasStarted) {
+                gpsStart();
+            }
+        } else {
+            // Activity is starting without previous state - use "Auto-start GNSS" setting
+            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+                gpsStart();
+            }
+        }
     }
 
     @Override
@@ -598,6 +653,10 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private synchronized void gpsStart() {
+        if (mProvider == null) {
+            return;
+        }
+
         if (!mStarted) {
             mLocationManager
                     .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
@@ -797,7 +856,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     @RequiresApi(Build.VERSION_CODES.N)
     private void removeGnssStatusListener() {
-        mLocationManager.unregisterGnssStatusCallback(mGnssStatusListener);
+        if (mLocationManager != null) {
+            mLocationManager.unregisterGnssStatusCallback(mGnssStatusListener);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -960,7 +1021,7 @@ public class GpsTestActivity extends AppCompatActivity
             minDistance = Float.valueOf(
                     settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
             // If the GPS is started, reset the location listener with the new values
-            if (mStarted) {
+            if (mStarted && mProvider != null) {
                 mLocationManager
                         .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
