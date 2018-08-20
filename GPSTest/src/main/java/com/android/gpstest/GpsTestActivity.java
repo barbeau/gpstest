@@ -120,7 +120,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     static boolean mIsLargeScreen = false;
 
-    private static GpsTestActivity sInstance;
+    private static GpsTestActivity mActivity;
 
     private Toolbar mToolbar;
 
@@ -221,7 +221,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-        sInstance = this;
+        mActivity = this;
 
         saveInstanceState(savedInstanceState);
 
@@ -645,7 +645,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     static GpsTestActivity getInstance() {
-        return sInstance;
+        return mActivity;
     }
 
     void addListener(GpsTestListener listener) {
@@ -653,7 +653,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private synchronized void gpsStart() {
-        if (mProvider == null) {
+        if (mLocationManager == null || mProvider == null) {
             return;
         }
 
@@ -684,6 +684,9 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private synchronized void gpsStop() {
+        if (mLocationManager == null) {
+            return;
+        }
         if (mStarted) {
             mLocationManager.removeUpdates(this);
             mStarted = false;
@@ -1087,7 +1090,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        mLocationManager.removeUpdates(this);
+        if (mLocationManager != null) {
+            mLocationManager.removeUpdates(this);
+        }
         super.onDestroy();
     }
 
