@@ -99,8 +99,9 @@ Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navig
 HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
 Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
 Samsung | SM-G955U (Galaxy S8+) | 8.0.0 / 26 | 2015 |   |   | x |   | x |  
+Samsung | SM-G965F (Galaxy S9+) | 8.0.0 / 26 | 2016 | ? | ? | x | ? | ? | ?
 Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | ? | ? | x |   | x | x
-Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
+Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   | x | x | x | x
 Xiaomi | Redmi 4A | 7.1.2 / 25 | 2015 |   |   | x |   | ? | ?
 
 Is your device not above, or does it still have some question marks?
