@@ -106,6 +106,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private static final int CLEAR_ASSIST_WARNING_DIALOG = 3;
 
+    private static final int EXPLAIN_LOC_PERMISSION_DIALOG = 4;
+
     private static final String WHATS_NEW_VER = "whatsNewVer";
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
@@ -283,10 +285,18 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void requestPermissionAndInit(final Activity activity) {
+        Log.d(TAG, "Called requestPermissionAndInit");
         if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
             init();
         } else {
-            ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // User has previously denied location permission (but not selected "Never ask again") - explain to them why it's needed
+                showDialog(EXPLAIN_LOC_PERMISSION_DIALOG);
+            } else {
+                // Request permissions from the user
+                ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+            }
         }
     }
 
@@ -299,6 +309,7 @@ public class GpsTestActivity extends AppCompatActivity
                 init();
             }
         }
+        Log.d(TAG, "Called onRequestPermissionsResult");
     }
 
     private void init() {
@@ -1334,6 +1345,8 @@ public class GpsTestActivity extends AppCompatActivity
                 return createHelpDialog();
             case CLEAR_ASSIST_WARNING_DIALOG:
                 return createClearAssistWarningDialog();
+            case EXPLAIN_LOC_PERMISSION_DIALOG:
+                return createLocationPermissionDialog();
         }
         return super.onCreateDialog(id);
     }
@@ -1417,6 +1430,33 @@ public class GpsTestActivity extends AppCompatActivity
                             }
                         }
                 );
+        return builder.create();
+    }
+
+    @SuppressWarnings("deprecation")
+    private Dialog createLocationPermissionDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
+                .setTitle(R.string.title_location_permission)
+                .setMessage(R.string.text_location_permission)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Request permissions from the user
+                                ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+                            }
+                        }
+                )
+            .setNegativeButton(R.string.no_thanks,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Exit app
+                        finish();
+                    }
+                }
+        );
         return builder.create();
     }
 }
