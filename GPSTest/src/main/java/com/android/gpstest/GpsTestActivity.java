@@ -106,8 +106,6 @@ public class GpsTestActivity extends AppCompatActivity
 
     private static final int CLEAR_ASSIST_WARNING_DIALOG = 3;
 
-    private static final int EXPLAIN_LOC_PERMISSION_DIALOG = 4;
-
     private static final String WHATS_NEW_VER = "whatsNewVer";
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
@@ -285,18 +283,12 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void requestPermissionAndInit(final Activity activity) {
-        Log.d(TAG, "Called requestPermissionAndInit");
         if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
             init();
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // User has previously denied location permission (but not selected "Never ask again") - explain to them why it's needed
-                showDialog(EXPLAIN_LOC_PERMISSION_DIALOG);
-            } else {
-                // Request permissions from the user
-                ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
-            }
+            // Explain permission to user (don't request permission here directly to avoid infinite
+            // loop if user selects "Don't ask again") in system permission prompt
+            showLocationPermissionDialog();
         }
     }
 
@@ -309,7 +301,6 @@ public class GpsTestActivity extends AppCompatActivity
                 init();
             }
         }
-        Log.d(TAG, "Called onRequestPermissionsResult");
     }
 
     private void init() {
@@ -1345,8 +1336,6 @@ public class GpsTestActivity extends AppCompatActivity
                 return createHelpDialog();
             case CLEAR_ASSIST_WARNING_DIALOG:
                 return createClearAssistWarningDialog();
-            case EXPLAIN_LOC_PERMISSION_DIALOG:
-                return createLocationPermissionDialog();
         }
         return super.onCreateDialog(id);
     }
@@ -1433,11 +1422,23 @@ public class GpsTestActivity extends AppCompatActivity
         return builder.create();
     }
 
-    @SuppressWarnings("deprecation")
-    private Dialog createLocationPermissionDialog() {
+    /**
+     * Shows the dialog to prompt the user to grant location permissions.
+     *
+     * NOTE - this dialog can't be managed under the old dialog framework as the method
+     * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
+     */
+    private void showLocationPermissionDialog() {
+        String message = Application.get().getString(R.string.text_location_permission);
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // User has denied permission once - add extra explanation
+            message += Application.get().getString(R.string.second_text_location_permission);
+        }
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle(R.string.title_location_permission)
-                .setMessage(R.string.text_location_permission)
+                .setMessage(message)
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -1448,7 +1449,7 @@ public class GpsTestActivity extends AppCompatActivity
                             }
                         }
                 )
-            .setNegativeButton(R.string.no_thanks,
+            .setNegativeButton(R.string.exit,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -1457,6 +1458,6 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                 }
         );
-        return builder.create();
+        builder.create().show();
     }
 }
