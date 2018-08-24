@@ -53,7 +53,7 @@ public class HelpActivity extends AppCompatActivity {
                 .append(versionString)
                 .append(" (")
                 .append(versionCode)
-                .append(")\n");
+                .append("-" + BuildConfig.FLAVOR + ")\n");
 
         version.append(GpsTestUtil.getGnssHardwareYear());
 
