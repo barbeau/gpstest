@@ -19,7 +19,6 @@
     package="com.android.gpstest">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Below attributes are added to the manifest in /main folder -->
     <uses-feature
