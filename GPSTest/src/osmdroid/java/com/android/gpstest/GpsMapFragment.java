@@ -53,6 +53,8 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 
     Polygon mHorAccPolygon;
 
+    private boolean mGotFix;
+
     // User preferences for map rotation based on sensors
     private boolean mRotate;
 
@@ -92,6 +94,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
     }
 
     public void gpsStart() {
+        mGotFix = false;
     }
 
     public void gpsStop() {
@@ -99,8 +102,10 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
 
     public void onLocationChanged(Location loc) {
         GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
-        mMap.getController().setCenter(startPoint);
-        mMap.getController().setZoom(20.0f);
+        if (!mGotFix) {
+            mMap.getController().setCenter(startPoint);
+            mMap.getController().setZoom(20.0f);
+        }
 
         if (loc.hasAccuracy()) {
             // Add horizontal accuracy uncertainty as polygon
@@ -132,6 +137,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener {
             mMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             mMap.getOverlays().add(mMarker);
         }
+        mGotFix = true;
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
