@@ -47,6 +47,7 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -106,8 +107,18 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
         mTTFFView.setText(mTtff);
 
-        mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
-        mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+        boolean showDMS = Application.getPrefs().getBoolean(getString(R.string.pref_key_dms_mode), false);
+        if (showDMS) {
+            HashMap<String, Integer> dms;
+            dms = MathUtils.getDMSFromLocation(location.getLatitude());
+            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_dms_value, dms.get("D"), dms.get("M"), dms.get("S")));
+            dms = MathUtils.getDMSFromLocation(location.getLongitude());
+            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_dms_value, dms.get("D"), dms.get("M"), dms.get("S")));
+        } else {
+            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
+            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+        }
+
         mFixTime = location.getTime();
         if (location.hasAltitude()) {
             mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value, location.getAltitude()));

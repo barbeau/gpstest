@@ -16,6 +16,10 @@
  */
 package com.android.gpstest.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+
 /**
  * A utility class containing arithmetic and geometry helper methods.
  *
@@ -122,6 +126,20 @@ public class MathUtils {
 
         // Shift b value back using original b range offset and return
         return bShifted + minB;
+    }
+
+    public static HashMap<String, Integer> getDMSFromLocation(Double location) {
+        HashMap<String,Integer> dms = new HashMap<>();
+        BigDecimal loc = new BigDecimal(location);
+        BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
+        BigDecimal minTemp = loc.subtract(degrees).multiply((new BigDecimal(60))).abs();
+        BigDecimal minutes = minTemp.setScale(0, RoundingMode.DOWN);
+        BigDecimal seconds = minTemp.subtract(minutes).multiply(new BigDecimal(60)).setScale(0, RoundingMode.DOWN);
+
+        dms.put("D", degrees.intValue());
+        dms.put("M", minutes.intValue());
+        dms.put("S", seconds.intValue());
+        return dms;
     }
 
     /**
