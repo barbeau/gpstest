@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Sean J. Barbeau
+ * Copyright (C) 2015-2018 University of South  Florida, Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,21 @@
 package com.android.gpstest.util;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
+import com.android.gpstest.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -174,5 +184,105 @@ public class UIUtils {
         ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
         p.setMargins(l, t, r, b);
         v.setLayoutParams(p);
+    }
+
+    /**
+     * Opens email apps based on the given email address
+     * @param email address
+     * @param location string that shows the current location
+     */
+    public static void sendEmail(Context context, String email, String location) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo appInfo;
+
+        StringBuilder body = new StringBuilder();
+        body.append(context.getString(R.string.feedback_body));
+
+        String versionName = "";
+        int versionCode = 0;
+
+        try {
+            appInfo = pm.getPackageInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            versionName = appInfo.versionName;
+            versionCode = appInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Leave version as empty string
+        }
+
+        // App version
+        body.append("App version: v")
+                .append(versionName)
+                .append(" (")
+                .append(versionCode)
+                .append("-" + BuildConfig.FLAVOR + ")\n");
+
+        // Device properties
+        body.append("Model: " + Build.MODEL + "\n");
+        body.append("Android version: " + Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT + "\n");
+
+        if (!TextUtils.isEmpty(location)) {
+            body.append("Location: " + location + "\n");
+        }
+        
+        body.append(GpsTestUtil.getGnssHardwareYear());
+
+        // Raw GNSS measurement capability
+        int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_raw_measurements, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Navigation messages capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_nav_messages, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // NMEA capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_nmea, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Inject XTRA capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_inject_xtra, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Inject time capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_inject_time, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+        // Delete assist capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN);
+        if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
+            body.append(Application.get().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
+        }
+
+
+        if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
+            body.append("\n" + BuildUtils.getPlayServicesVersion());
+        }
+
+        body.append("\n\n\n");
+
+        Intent send = new Intent(Intent.ACTION_SEND);
+        send.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+
+        String subject = context.getString(R.string.feedback_subject);
+
+        send.putExtra(Intent.EXTRA_SUBJECT, subject);
+        send.putExtra(Intent.EXTRA_TEXT, body.toString());
+        send.setType("message/rfc822");
+        try {
+            context.startActivity(Intent.createChooser(send, subject));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
+                    .show();
+        }
     }
 }

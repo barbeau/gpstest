@@ -81,6 +81,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     protected static final int NAVDRAWER_ITEM_CLEAR_AIDING_DATA = 8;
 
+    protected static final int NAVDRAWER_ITEM_SEND_FEEDBACK = 9;
+
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
     protected static final int NAVDRAWER_ITEM_SEPARATOR = -2;
@@ -100,7 +102,8 @@ public class NavigationDrawerFragment extends Fragment {
             R.string.navdrawer_item_open_source,
             R.string.force_xtra_injection,
             R.string.force_time_injection,
-            R.string.delete_aiding_data
+            R.string.delete_aiding_data,
+            R.string.navdrawer_item_send_feedback
     };
 
     // icons for navdrawer items (indices must correspond to above array)
@@ -113,7 +116,8 @@ public class NavigationDrawerFragment extends Fragment {
             R.drawable.ic_drawer_github, // Open-source
             R.drawable.ic_inject_xtra, // Inject XTRA data
             R.drawable.ic_inject_time, // Inject time data
-            R.drawable.ic_delete // Clear assist data
+            R.drawable.ic_delete, // Clear assist data
+            0, // Send feedback
     };
 
     // Secondary navdrawer item icons that appear align to right of list item layout
@@ -126,7 +130,8 @@ public class NavigationDrawerFragment extends Fragment {
             R.drawable.ic_drawer_link, // Open-source
             0, // Inject XTRA data
             0, // Inject time data
-            0 // Clear assist data
+            0, // Clear assist data
+            0  // Send feedback
     };
 
     // list of navdrawer items that were actually added to the navdrawer, in order
@@ -398,6 +403,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         mNavDrawerItems.add(NAVDRAWER_ITEM_SETTINGS);
         mNavDrawerItems.add(NAVDRAWER_ITEM_HELP);
+        mNavDrawerItems.add(NAVDRAWER_ITEM_SEND_FEEDBACK);
 
         createNavDrawerItems();
     }
@@ -551,6 +557,7 @@ public class NavigationDrawerFragment extends Fragment {
                 itemId == NAVDRAWER_ITEM_OPEN_SOURCE ||
                 itemId == NAVDRAWER_ITEM_INJECT_XTRA_DATA ||
                 itemId == NAVDRAWER_ITEM_INJECT_TIME_DATA ||
-                itemId == NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
+                itemId == NAVDRAWER_ITEM_CLEAR_AIDING_DATA ||
+                itemId == NAVDRAWER_ITEM_SEND_FEEDBACK;
     }
 }

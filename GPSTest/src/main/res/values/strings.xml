@@ -103,7 +103,7 @@
     <string name="gps_azimuth_column_label">Azim</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">Flags</string>
-    <string name="gps_not_supported">GPS not supported. Exiting app&#8230;</string>
+    <string name="gps_not_supported">Please check system settings - device doesn\'t seem to support GNSS/GPS.</string>
     <string name="install">Install</string>
     <string name="no_thanks">No thanks</string>
     <string name="please_install_google_maps">The Map tab requires Google Maps</string>
@@ -146,6 +146,7 @@
     <string name="sky_legend_shape_galaxy_15">Galaxy 15 (USA)</string>
     <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 &amp; 4-F3 (UK)</string>
     <string name="sky_legend_shape_ses_5">SES-5 (Luxembourg)</string>
+    <string name="sky_legend_shape_astra_5b">Astra 5B (Luxembourg)</string>
     <string name="sky_legend_shape_availability_title">Signal Availability</string>
     <string name="sky_legend_shape_not_in_view">Not in view of device</string>
     <string name="sky_legend_shape_in_view">In view</string>
@@ -162,13 +163,30 @@
 
     <string name="gnss_status_unknown">Unknown status callback</string>
 
+    <!-- Permissions -->
+    <string name="title_location_permission">Need location permission</string>
+    <string name="text_location_permission">GPSTest needs access to your location to show GNSS data.</string>
+    <string name="second_text_location_permission">  If you select \"Never ask again\" you will need to reinstall the app or enable permissions via system settings.</string>
+    <string name="ok">OK</string>
+    <string name="exit">EXIT</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Feedback</string>
+    <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>
+    <string name="feedback_error">Unable to send feedback: no suitable application found.
+    </string>
+
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Sky view legend</b>
-        - Shows mapping of shapes, flags, and constellations\n&#8226;\u0020
-        <b>Sky view avg. signal strength</b>
-        - Shows average for satellites in view and used in fix\n&#8226;\u0020
+        <b>Send feedback</b>
+        - Use this navigation drawer option to ask questions or report problems\n&#8226;\u0020
+        <b>New satellite shapes for QZSS and SBAS</b>
+        - See the updated shapes in the Sky view Legend\n&#8226;\u0020
+        <b>Support for SBAS Astra 5B</b>
+        - Now visible in Status and Sky views\n&#8226;\u0020
+        <b>Chinese &amp; German translations</b>
+        - Thanks to wangkf &amp; SIRSteiner!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
@@ -305,7 +323,7 @@
         - Hexagons\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5)</b>
+        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)</b>
         - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
@@ -320,5 +338,10 @@
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
+        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
+        &#8226;\u0020 Chinese translation provided by wangkf\n
+        &#8226;\u0020 German translation provided by SIRSteiner\n
+        &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
+        &#8226;\u0020 Greek translation provided by Jim\n
     </string>
 </resources>

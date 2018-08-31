@@ -8,9 +8,9 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 21
-        versionCode 30
-        versionName "3.1.1"
+        targetSdkVersion 27
+        versionCode 34
+        versionName "3.1.5"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -35,6 +35,10 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+    }
+
+    lintOptions {
+        disable 'MissingTranslation', 'ExtraTranslation'
     }
 
     if (project.hasProperty("secure.properties")
@@ -128,15 +132,15 @@ tasks.whenTaskAdded { theTask ->
 dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1"'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
 
     // Map (Google flavor only)
-    googleImplementation 'com.google.android.gms:play-services-maps:11.8.0'
+    googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
     // Calculating offset for camera target in map view (Google flavor only)
-    googleImplementation 'com.google.maps.android:android-maps-utils:0.4.4'
+    googleImplementation 'com.google.maps.android:android-maps-utils:0.5'
     // OSM Droid (fdroid flavor only)
-    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.0.1'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.0.2'
 
     // Unit tests
     testImplementation 'junit:junit:4.12'
