@@ -52,6 +52,9 @@
     <string name="pref_gps_min_time_default_sec">1</string>
     <string name="pref_gps_min_distance_default_meters">0</string>
 
+    <!-- Send location URLs -->
+    <string name="geohack_url">https://tools.wmflabs.org/geohack/geohack.php?params=%1$.7f;%2$.7f</string>
+
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>
