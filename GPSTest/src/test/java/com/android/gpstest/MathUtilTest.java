@@ -19,8 +19,6 @@ import com.android.gpstest.util.MathUtils;
 
 import org.junit.Test;
 
-import java.util.HashMap;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
@@ -61,14 +59,6 @@ public class MathUtilTest {
         a = 105;
         mappedB = MathUtils.mapToRange(a, minA, maxA, minB, maxB);
         assertEquals(200.0f, mappedB);
-    }
-
-    @Test
-    public void testGetDMSFromLocation() {
-        HashMap<String, Integer> dms = MathUtils.getDMSFromLocation(-42.853583);
-        assertEquals(dms.get("D"), new Integer(-42));
-        assertEquals(dms.get("M"), new Integer(51));
-        assertEquals(dms.get("S"), new Integer(12));
     }
 
     @Test

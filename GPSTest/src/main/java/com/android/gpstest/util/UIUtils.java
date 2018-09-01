@@ -32,6 +32,8 @@ import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
@@ -284,5 +286,20 @@ public class UIUtils {
             Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
                     .show();
         }
+    }
+
+    /**
+     * Returns the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
+     * @param latOrLon latitude or longitude to convert to DMS format
+     * @return the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
+     */
+    public static String getDMSFromLocation(Context context, double latOrLon) {
+        BigDecimal loc = new BigDecimal(latOrLon);
+        BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
+        BigDecimal minTemp = loc.subtract(degrees).multiply((new BigDecimal(60))).abs();
+        BigDecimal minutes = minTemp.setScale(0, RoundingMode.DOWN);
+        BigDecimal seconds = minTemp.subtract(minutes).multiply(new BigDecimal(60)).setScale(0, RoundingMode.DOWN);
+
+        return context.getString(R.string.gps_lat_lon_dms_value, degrees.intValue(), minutes.intValue(), seconds.intValue());
     }
 }

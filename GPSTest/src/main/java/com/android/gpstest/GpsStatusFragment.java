@@ -47,7 +47,6 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -109,11 +108,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         boolean showDMS = Application.getPrefs().getBoolean(getString(R.string.pref_key_dms_mode), false);
         if (showDMS) {
-            HashMap<String, Integer> dms;
-            dms = MathUtils.getDMSFromLocation(location.getLatitude());
-            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_dms_value, dms.get("D"), dms.get("M"), dms.get("S")));
-            dms = MathUtils.getDMSFromLocation(location.getLongitude());
-            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_dms_value, dms.get("D"), dms.get("M"), dms.get("S")));
+            mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude()));
+            mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude()));
         } else {
             mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
             mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
