@@ -19,6 +19,11 @@
             android:title="@string/pref_true_north_title"
             android:summary="@string/pref_true_north_summary"
             android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="@string/pref_key_dms_mode"
+            android:title="@string/pref_dms_mode_title"
+            android:summary="@string/pref_dms_mode_summary"
+            android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -63,6 +63,7 @@
 
     <string name="gps_latitude_label">Lat:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Long:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Time:</string>
@@ -259,6 +260,9 @@
     <string name="pref_dark_theme_title">Use Dark Theme</string>
     <string name="pref_dark_theme_summary">Give the background a dark color and text a light color
     </string>
+
+    <string name="pref_dms_mode_title">Use DMS format</string>
+    <string name="pref_dms_mode_summary">Show latitude and longitude in degrees, minutes, and seconds instead of decimal degrees</string>
 
     <!-- Help -->
     <string name="title_help">Help</string>
