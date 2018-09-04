@@ -94,6 +94,7 @@ The below table is compiled from users of GPSTest, based on sending feedback via
 
 Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navigation messages | NMEA | Inject XTRA | Inject time | Delete assist
 -- | -- | -- | -- | -- | -- | -- | -- | -- | --
+Google | Pixel 2 | 9 / 28 | 2017 | ? | ? | x |   | x | ?
 HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
 Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
 Samsung | SM-G955U (Galaxy S8+) | 8.0.0 / 26 | 2015 |   |   | x |   | x |  
