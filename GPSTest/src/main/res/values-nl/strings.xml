@@ -161,7 +161,7 @@
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
-    <string name="feedback_body">Complimenten, kudo's of bug reports zijn welkom!\n\n\n</string>
+    <string name="feedback_body">Complimenten, kudo\'s of bug reports zijn welkom!\n\n\n</string>
     <string name="feedback_error">Kan geen feedback verzenden. Geen geschikte applicatie gevonden.</string>
 
     <!-- What's New -->
@@ -219,8 +219,8 @@
     <string name="pref_display_category_title">Scherm</string>
     <string name="pref_keep_screen_on_title">Houd aan </string>
     <string name="pref_keep_screen_on_summary">Voorkom dat het scherm uitschakelt</string>
-    <string name="pref_true_north_title">Richt het kompas op het 'echte' noorden</string>
-    <string name="pref_true_north_summary"> Het kompas zal op het 'echte noorden' richten inplaats van het magnetische noorden </string>
+    <string name="pref_true_north_title">Richt het kompas op het \'echte' noorden</string>
+    <string name="pref_true_north_summary"> Het kompas zal op het \'echte noorden\' richten inplaats van het magnetische noorden </string>
 
     <string name="pref_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
@@ -263,7 +263,7 @@
         <b>Acc</b>
 		- Geschatte horizontale accuratie van de locatie(Radius in meters met 68% zekerheid). In andere woorden, als je een cirkel tekent in het midden van deze breedte- en lengtegraad , met een radius gelijk aan deze accuratie, dan is er een kans van 68% dat de daadwerkelijke locatie zich binnen deze cirkel bevind.\n&#8226;\u0020
         <b>H/V Acc</b>
-		- De horizontale en verticale nauwkeurigheid van de locatie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Acc hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 Oreo en hoger. Verticaal nauwkeurigheidsvoorbeeld - als Alt 150 is en V Acc 20 is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt.\n&#8226;\u0020
+		- De geschatte horizontale en verticale nauwkeurigheid van de locatie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Acc hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 Oreo en hoger. Verticaal nauwkeurigheidsvoorbeeld - als Alt 150 is en V Acc 20 is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt.\n&#8226;\u0020
         <b>Snelheid</b>
         - Snelheid, in meters/seconde over de grond\n&#8226;\u0020
         <b>S. Acc</b>
