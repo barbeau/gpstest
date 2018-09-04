@@ -49,8 +49,6 @@ For more information on dual-frequency GNSS in general, see the EU GSA article [
 
 ## What Android devices does GPSTest run on?
 
-<img src="https://dl.dropboxusercontent.com/u/46443835/GPSTest/GPSTestDeviceMenu.png" width="287" height="498" align=right />
-
 Android 1.5 and up, in its simplest form.  More advanced versions with an updated user interface and better maps interface (based on Android Maps API v2) is available on Android 2.2 and up.  NMEA logging is available on Android 2.3 and up.  GNSS measurements and navigation message logging is available on Android 7.0 and up.
 
 ## What are the menu buttons for?
