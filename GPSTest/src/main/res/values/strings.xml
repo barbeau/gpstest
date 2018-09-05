@@ -178,14 +178,14 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Send feedback</b>
-        - Use this navigation drawer option to ask questions or report problems\n&#8226;\u0020
-        <b>New satellite shapes for QZSS and SBAS</b>
-        - See the updated shapes in the Sky view Legend\n&#8226;\u0020
-        <b>Support for SBAS Astra 5B</b>
-        - Now visible in Status and Sky views\n&#8226;\u0020
-        <b>Chinese &amp; German translations</b>
-        - Thanks to wangkf &amp; SIRSteiner!\n&#8226;\u0020
+        <b>DMS support</b>
+        - Use settings to see lat &amp; long in degrees/minutes/seconds\n&#8226;\u0020
+        <b>Share multiple location formats</b>
+        - Wikimedia Foundation GeoHack site is now supported\n&#8226;\u0020
+        <b>Run-time permissions</b>
+        - You\'re now prompted on initial startup to grant permissions\n&#8226;\u0020
+        <b>Greek &amp; Dutch translations</b>
+        - Thanks Jim &amp; Dennis!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
