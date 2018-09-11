@@ -136,6 +136,21 @@ On Android 4.1 and below, your system clock must be accurate to calculate an acc
 
 This is apparently a limitation of the implementation of the Android Maps API v2 on certain devices.  On the devices we've seen it on (HTC EVO 4G LTE, Nexus S 4G), it only appears briefly and doesn't interfere with the operation of the app.  If this issue prevents you from using GPSTest, please contact us on the [support forum](https://groups.google.com/forum/#!forum/gpstest_android).
 
+## I'd like to publish my own app based on GPSTest source code.  Is this allowed?
+
+The GPSTest source code is licensed under [Apache v2.0](LICENSE.md) so there are no legal restrictions to using the code in other apps.  Ideally, if you're missing features in GPSTest that you think would generally be useful, please consider contributing those features to GPSTest rather than launching your own app.
+
+If you do launch your own app, I would ask that you do the following when publishing your own app using source code from GPSTest:
+* Use different theme colors for your app - These can easily be changed via the top three values in colors.xml.  Looking at any screenshot of the app, it should be easy to distinguish between the two apps based on color.
+* Use a different name for your app - Something not close to "GPSTest"
+* Use a different logo for your app - Again, something not close to the GPSTest logo
+* If your app collects data from users, clearly explain to users within your app on first startup that the app is collecting data, who you are, and how the data will be used
+* Clearly explain to users that your app is not endorsed by me or GPSTest
+* Clearly explain to users that your app uses source code from GPSTest
+* Let me know when you publish the app, and a link to the app on Google Play or another app store
+* If you're using GPSTest for research, if possible I'd be interested in seeing the results of your research
+* If possible, publish your own code as open-source
+
 ## My question wasn't answered here.  What's the next step?
 
 You can ask questions by:
