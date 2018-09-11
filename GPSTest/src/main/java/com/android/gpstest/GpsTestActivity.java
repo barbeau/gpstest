@@ -211,6 +211,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     Bundle mLastSavedInstanceState;
 
+    private boolean mUserDeniedPermission = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -279,12 +281,8 @@ public class GpsTestActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        requestPermissionAndInit(this);
-    }
-
-    private void requestPermissionAndInit(final Activity activity) {
-        if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
-            init();
+        if (!mUserDeniedPermission) {
+            requestPermissionAndInit(this);
         } else {
             // Explain permission to user (don't request permission here directly to avoid infinite
             // loop if user selects "Don't ask again") in system permission prompt
@@ -292,13 +290,24 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
+    private void requestPermissionAndInit(final Activity activity) {
+        if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
+            init();
+        } else {
+            // Request permissions from the user
+            ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            // If request is cancelled, the result arrays are empty.
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mUserDeniedPermission = false;
                 init();
+            } else {
+                mUserDeniedPermission = true;
             }
         }
     }
@@ -1423,22 +1432,15 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     /**
-     * Shows the dialog to prompt the user to grant location permissions.
+     * Shows the dialog to explain why location permissions are needed
      *
      * NOTE - this dialog can't be managed under the old dialog framework as the method
      * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
      */
     private void showLocationPermissionDialog() {
-        String message = Application.get().getString(R.string.text_location_permission);
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity,
-                Manifest.permission.ACCESS_FINE_LOCATION)) {
-            // User has denied permission once - add extra explanation
-            message += Application.get().getString(R.string.second_text_location_permission);
-        }
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
                 .setTitle(R.string.title_location_permission)
-                .setMessage(message)
+                .setMessage(R.string.text_location_permission)
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
