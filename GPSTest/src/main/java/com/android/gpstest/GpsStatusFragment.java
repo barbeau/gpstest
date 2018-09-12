@@ -670,6 +670,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         v.getGnssFlag().setVisibility(View.VISIBLE);
                         v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
                         break;
+                    case INMARSAT_3F5:
+                        v.getGnssFlag().setVisibility(View.VISIBLE);
+                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
+                        break;
                     case INMARSAT_4F3:
                         v.getGnssFlag().setVisibility(View.VISIBLE);
                         v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);

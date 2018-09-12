@@ -140,7 +140,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_anik">Anik (Canada)</string>
     <string name="sky_legend_shape_galaxy_15">Galaxy 15 (VS)</string>
-    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 &amp; 4-F3 (Engeland)</string>
+    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2, 3-F5 &amp; 4-F3 (Engeland)</string>
     <string name="sky_legend_shape_ses_5">SES-5 (Luxemburg)</string>
     <string name="sky_legend_shape_astra_5b">Astra 5B (Luxemburg)</string>
     <string name="sky_legend_shape_availability_title">Signaal Beschikbaarheid</string>
@@ -303,7 +303,7 @@
         - Zeshoeken\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Vijfhoeken\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)</b>
+        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)</b>
         - Diamanten\n\n
 
         &#8226;\u0020 Transparente satelietten - niet in zicht\n

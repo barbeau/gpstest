@@ -482,6 +482,10 @@ public class GpsSkyView extends View implements GpsTestListener {
                 // SBAS
                 drawDiamond(c, x, y, fillPaint, strokePaint);
                 break;
+            case INMARSAT_3F5:
+                // SBAS
+                drawDiamond(c, x, y, fillPaint, strokePaint);
+                break;
             case INMARSAT_4F3:
                 // SBAS
                 drawDiamond(c, x, y, fillPaint, strokePaint);
