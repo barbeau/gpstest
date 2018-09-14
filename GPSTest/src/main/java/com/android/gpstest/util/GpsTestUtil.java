@@ -59,6 +59,9 @@ public class GpsTestUtil {
             return GnssType.NAVSTAR;
         } else if (prn == 33) {
             return GnssType.INMARSAT_3F2;
+        } else if (prn == 39) {
+            // See Issue #205
+            return GnssType.INMARSAT_3F5;
         } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
             return GnssType.GAGAN;
@@ -73,9 +76,6 @@ public class GpsTestUtil {
         } else if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
             return GnssType.GLONASS;
-        } else if (prn == 126) {
-            // See Issue #205
-            return GnssType.INMARSAT_3F5;
         } else if (prn >= 193 && prn <= 200) {
             // See Issue #54 for details
             return GnssType.QZSS;
