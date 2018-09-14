@@ -100,6 +100,7 @@ Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
 Samsung | SM-A520F (Galaxy A5 2017) | 8.0.0 / 26 | 2015 or older | x | x | x | x | x |  
 Samsung | SM-G955U (Galaxy S8+) | 8.0.0 / 26 | 2015 |   |   | x |   | x |  
 Samsung | SM-G965F (Galaxy S9+) | 8.0.0 / 26 | 2016 | ? | ? | x | ? | ? | ?
+Sony | G8342 (Xperia XZ1) | 8.0.0 / 26 | 2016 | x |   | x |   | x | ?
 Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | x |   | x |   | x | x
 Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
 Xiaomi | MI 3W | 6.0.1 / 23 | N/A | N/A | N/A | x | x | ? | ?
