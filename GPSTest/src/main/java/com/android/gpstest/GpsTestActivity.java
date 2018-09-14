@@ -1300,10 +1300,10 @@ public class GpsTestActivity extends AppCompatActivity
     private void sendLocation() {
         if (mLastLocation != null) {
             Intent intent = new Intent(Intent.ACTION_SEND);
-            String geohack_url = Application.get().getString(R.string.geohack_url,
-                    mLastLocation.getLatitude(),
-                    mLastLocation.getLongitude());
-            intent.putExtra(Intent.EXTRA_TEXT, geohack_url);
+            String geohackUrl = Application.get().getString(R.string.geohack_url) +
+                    mLastLocation.getLatitude() + ";" +
+                    mLastLocation.getLongitude();
+            intent.putExtra(Intent.EXTRA_TEXT, geohackUrl);
             intent.setType("text/plain");
             startActivity(createChooser(intent, getString(R.string.send_location)));
         }
