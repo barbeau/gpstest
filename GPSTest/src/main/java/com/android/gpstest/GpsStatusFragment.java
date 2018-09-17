@@ -18,6 +18,7 @@
 package com.android.gpstest;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -97,6 +98,15 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private String mTtff = "";
 
+    private String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
+    private String FEET = Application.get().getString(R.string.preferences_preferred_distance_units_option_feet);
+    private String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
+    private String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
+    private String MILES_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_miles_per_hour);
+
+    String mPrefDistanceUnits;
+    String mPrefSpeedUnits;
+
     public void onLocationChanged(Location location) {
         if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
@@ -150,6 +160,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             Bundle savedInstanceState) {
 
         mRes = getResources();
+        setupUnitPreferences();
+
         View v = inflater.inflate(R.layout.gps_status, container,false);
 
         mLatitudeView = v.findViewById(R.id.latitude);
@@ -287,6 +299,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         super.onResume();
         GpsTestActivity gta = GpsTestActivity.getInstance();
         setStarted(gta.mStarted);
+
+        setupUnitPreferences();
     }
 
     public void onGpsStarted() {
@@ -510,6 +524,16 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void setupUnitPreferences() {
+        SharedPreferences settings = Application.getPrefs();
+        Application app = Application.get();
+
+        mPrefDistanceUnits = settings
+                .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
+        mPrefSpeedUnits = settings
+                .getString(app.getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
     }
 
     private class GnssStatusAdapter extends RecyclerView.Adapter<GnssStatusAdapter.ViewHolder> {

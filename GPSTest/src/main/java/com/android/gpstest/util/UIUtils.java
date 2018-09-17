@@ -302,4 +302,31 @@ public class UIUtils {
 
         return context.getString(R.string.gps_lat_lon_dms_value, degrees.intValue(), minutes.intValue(), seconds.intValue());
     }
+
+    /**
+     * Converts the provide value in meters to the corresponding value in feet
+     * @param meters value in meters to convert to feet
+     * @return the provided meters value converted to feet
+     */
+    public static double toFeet(double meters) {
+        return meters * 3.28084f;
+    }
+
+    /**
+     * Converts the provide value in meters per second to the corresponding value in kilometers per hour
+     * @param metersPerSecond value in meters per second to convert to kilometers per hour
+     * @return the provided meters per second value converted to kilometers per hour
+     */
+    public static double toKilometersPerHour(double metersPerSecond) {
+        return metersPerSecond * 3.6f;
+    }
+
+    /**
+     * Converts the provide value in meters per second to the corresponding value in miles per hour
+     * @param metersPerSecond value in meters per second to convert to miles per hour
+     * @return the provided meters per second value converted to miles per hour
+     */
+    public static double toMilesPerHour(double metersPerSecond) {
+        return metersPerSecond * 2.23694f;
+    }
 }

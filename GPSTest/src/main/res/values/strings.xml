@@ -266,6 +266,19 @@
     <string name="pref_dms_mode_title">Use DMS format</string>
     <string name="pref_dms_mode_summary">Show latitude and longitude in degrees, minutes, and seconds instead of decimal degrees</string>
 
+    <string name="preferences_preferred_distance_units_title">Preferred distance units</string>
+    <string name="preferences_preferred_distance_units_option_meters">Meters</string>
+    <string name="preferences_preferred_distance_units_option_feet">Feet</string>
+
+    <string name="preferences_preferred_speed_units_title">Preferred speed units</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per second</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per hour</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Miles per hour</string>
+
+    <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
+
     <!-- Help -->
     <string name="title_help">Help</string>
 
