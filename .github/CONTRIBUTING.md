@@ -2,6 +2,10 @@
 
 This guide details how to use issues and pull requests (for new code) to improve GPSTest.
 
+## Start contributing
+
+Want to contribute, but don't know where to start?  Take a look at the issues marked with the [your-first-pr](https://github.com/barbeau/gpstest/labels/your-first-pr) label and comment to let me know if you're interested in working on it.
+
 ## Code Style and Template
 
 We use the [Android Open-Source Project (AOSP) Code Style Guidelines](http://source.android.com/source/code-style.html).
