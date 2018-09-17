@@ -61,6 +61,8 @@
 
     <string name="gps_latitude_label">Breedtegraad:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
+	<string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
+
     <string name="gps_longitude_label">Lengtegraad:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Tijd:</string>
@@ -140,7 +142,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_anik">Anik (Canada)</string>
     <string name="sky_legend_shape_galaxy_15">Galaxy 15 (VS)</string>
-    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2, 3-F5 &amp; 4-F3 (Engeland)</string>
+    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 F, 3-F5 &amp; 4-F3 (Engeland)</string>
     <string name="sky_legend_shape_ses_5">SES-5 (Luxemburg)</string>
     <string name="sky_legend_shape_astra_5b">Astra 5B (Luxemburg)</string>
     <string name="sky_legend_shape_availability_title">Signaal Beschikbaarheid</string>
@@ -159,6 +161,14 @@
 
     <string name="gnss_status_unknown">Onbekende status ontvangen</string>
 
+	   <!-- Permissions -->
+    <string name="title_location_permission">Locatie permissie vereist!</string>
+    <string name="text_location_permission">GPSTest heeft toegang nodig tot jouw locatie om GNSS data te tonen.</string>
+    <string name="second_text_location_permission"> Als je \"Nooit meer vragen"\ selecteert , moet je de app opnieuw installeren of toegang geven via de systeem instellingen. </string>
+    <string name="ok">OK</string>
+    <string name="exit">Afsluiten</string>
+
+	
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complimenten, kudo\'s of bug reports zijn welkom!\n\n\n</string>
@@ -219,7 +229,7 @@
     <string name="pref_display_category_title">Scherm</string>
     <string name="pref_keep_screen_on_title">Houd aan </string>
     <string name="pref_keep_screen_on_summary">Voorkom dat het scherm uitschakelt</string>
-    <string name="pref_true_north_title">Richt het kompas op het \'echte' noorden</string>
+    <string name="pref_true_north_title">Kompas op echte noorden</string>
     <string name="pref_true_north_summary"> Het kompas zal op het \'echte noorden\' richten inplaats van het magnetische noorden </string>
 
     <string name="pref_output_category_title">Android Monitor Output</string>
@@ -243,6 +253,8 @@
     <string name="pref_dark_theme_title">Gebruik het donkere thema</string>
     <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de text een lichte kleur.
 	</string>
+    <string name="pref_dms_mode_title">Gebruik DMS formaat</string>
+    <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden inplaats van decimale graden</string>
 
     <!-- Help -->
     <string name="title_help">Help</string>
@@ -290,7 +302,7 @@
         - Carrier-to-noise dichtheid (Android N en hoger) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flags</b>
         - (E) als het apparaat efemeride-gegevens voor de satelliet heeft, (A) als het apparaat almanakgegevens heeft
-         voor de satelliet, (U) als de satelliet werd gebruikt in de nieuwste fix\n\n
+         voor de satelliet, (U) als de satelliet werd gebruikt in de nieuwste fix\n\n
 
         <b>*** Lucht Weergave ***</b>\n\n&#8226;\u0020
         <b>GPS (VS Navstar)</b>
@@ -321,5 +333,7 @@
         &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
         &#8226;\u0020 Chinese translation provided by wangkf\n
         &#8226;\u0020 German translation provided by SIRSteiner\n
+        &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
+        &#8226;\u0020 Greek translation provided by Jim\n
     </string>
 </resources>
