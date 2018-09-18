@@ -69,7 +69,8 @@
     <string name="gps_fix_time_label">Time:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Alt:</string>
-    <string name="gps_altitude_value">%1$.1f m</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
     <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>

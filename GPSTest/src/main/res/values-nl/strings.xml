@@ -68,7 +68,7 @@
     <string name="gps_fix_time_label">Tijd:</string>
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
-    <string name="gps_altitude_value">%1$.1f m</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_label">Hoogte (MSL):</string>
     <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>

@@ -68,7 +68,7 @@
     <string name="gps_fix_time_label">时间:</string>
     <string name="gps_ttff_label">首次启动时间:</string>
     <string name="gps_altitude_label">海拔高度:</string>
-    <string name="gps_altitude_value">%1$.1f 米</string>
+    <string name="gps_altitude_value_meters">%1$.1f 米</string>
     <string name="gps_altitude_msl_label">海拔高度(平均海平面):</string>
     <string name="gps_altitude_msl_value">%1$.1f 米</string>
     <string name="gps_accuracy_label">加速:</string>

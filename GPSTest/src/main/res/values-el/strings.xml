@@ -64,7 +64,7 @@
     <string name="gps_fix_time_label">Ωρα:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Υψος:</string>
-    <string name="gps_altitude_value">%1$.1f m</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_label">Υψος (MSL):</string>
     <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Ακρίβεια:</string>

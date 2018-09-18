@@ -98,11 +98,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private String mTtff = "";
 
-    private String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
-    private String FEET = Application.get().getString(R.string.preferences_preferred_distance_units_option_feet);
-    private String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
-    private String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
-    private String MILES_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_miles_per_hour);
+    private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
+    private static final String FEET = Application.get().getString(R.string.preferences_preferred_distance_units_option_feet);
+    private static final String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
+    private static final String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
+    private static final String MILES_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_miles_per_hour);
 
     String mPrefDistanceUnits;
     String mPrefSpeedUnits;
@@ -124,10 +124,20 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
             mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
         }
-
         mFixTime = location.getTime();
+
+        String prefDistanceUnits = Application.getPrefs()
+                .getString(Application.get().getString(R.string.pref_key_preferred_distance_units), METERS);
+        String prefSpeedUnits = Application.getPrefs()
+                .getString(Application.get().getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
+
         if (location.hasAltitude()) {
-            mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value, location.getAltitude()));
+            if (prefDistanceUnits.equalsIgnoreCase(METERS)) {
+                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_meters, location.getAltitude()));
+            } else {
+                // Feet
+                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_feet, UIUtils.toFeet(location.getAltitude())));
+            }
         } else {
             mAltitudeView.setText("");
         }
