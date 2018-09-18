@@ -309,7 +309,7 @@ public class UIUtils {
      * @return the provided meters value converted to feet
      */
     public static double toFeet(double meters) {
-        return meters * 3.28084f;
+        return meters * 1000d / 25.4d / 12d;
     }
 
     /**
@@ -317,8 +317,8 @@ public class UIUtils {
      * @param metersPerSecond value in meters per second to convert to kilometers per hour
      * @return the provided meters per second value converted to kilometers per hour
      */
-    public static double toKilometersPerHour(double metersPerSecond) {
-        return metersPerSecond * 3.6f;
+    public static float toKilometersPerHour(float metersPerSecond) {
+        return metersPerSecond * 3600f / 1000f ;
     }
 
     /**
@@ -326,7 +326,7 @@ public class UIUtils {
      * @param metersPerSecond value in meters per second to convert to miles per hour
      * @return the provided meters per second value converted to miles per hour
      */
-    public static double toMilesPerHour(double metersPerSecond) {
-        return metersPerSecond * 2.23694f;
+    public static float toMilesPerHour(float metersPerSecond) {
+        return metersPerSecond * toKilometersPerHour(metersPerSecond) / 1.6093440f;
     }
 }
