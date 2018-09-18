@@ -24,6 +24,20 @@
             android:title="@string/pref_dms_mode_title"
             android:summary="@string/pref_dms_mode_summary"
             android:defaultValue="false"/>
+        <ListPreference
+            android:key="@string/pref_key_preferred_distance_units"
+            android:title="@string/preferences_preferred_distance_units_title"
+            android:entries="@array/preferred_distance_units_options"
+            android:entryValues="@array/preferred_distance_units_options"
+            android:defaultValue="@string/preferences_preferred_distance_units_option_meters">
+        </ListPreference>
+        <ListPreference
+            android:key="@string/pref_key_preferred_speed_units"
+            android:title="@string/preferences_preferred_speed_units_title"
+            android:entries="@array/preferred_speed_units_options"
+            android:entryValues="@array/preferred_speed_units_options"
+            android:defaultValue="@string/preferences_preferred_speed_units_option_meters_per_second">
+        </ListPreference>
     </PreferenceCategory>
 
     <PreferenceCategory
