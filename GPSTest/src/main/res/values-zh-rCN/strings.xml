@@ -73,12 +73,12 @@
     <string name="gps_altitude_msl_value">%1$.1f 米</string>
     <string name="gps_accuracy_label">加速:</string>
     <string name="gps_hor_and_vert_accuracy_label">水平/垂直 海拔高度:</string>
-    <string name="gps_accuracy_value">%1$.1f 米</string>
-    <string name="gps_hor_and_vert_accuracy_value">%1$.1f/%2$.1f 米</string>
+    <string name="gps_accuracy_value_meters">%1$.1f 米</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f 米</string>
     <string name="gps_speed_label">速度:</string>
-    <string name="gps_speed_value">%1$.1f 米/秒</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f 米/秒</string>
     <string name="gps_speed_acc_label">S. 海拔高度:</string>
-    <string name="gps_speed_acc_value">%1$.1f 米/秒</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f 米/秒</string>
     <string name="gps_bearing_label">Bearing:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B.海拔高度:</string>

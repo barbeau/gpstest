@@ -62,12 +62,12 @@
     <string name="gps_altitude_msl_value">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V-Acc:</string>
-    <string name="gps_accuracy_value">%1$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value">%1$.1f/%2$.1f m</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
     <string name="gps_speed_label">v:</string>
-    <string name="gps_speed_value">%1$.1f m/s</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
     <string name="gps_speed_acc_label">v-Acc:</string>
-    <string name="gps_speed_acc_value">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
     <string name="gps_bearing_label">Kurs:</string>
     <string name="gps_bearing_value">%1$.1f\u00b0</string>
     <string name="gps_bearing_acc_label">Kurs-Acc:</string>

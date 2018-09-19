@@ -126,13 +126,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
         mFixTime = location.getTime();
 
-        String prefDistanceUnits = Application.getPrefs()
-                .getString(Application.get().getString(R.string.pref_key_preferred_distance_units), METERS);
-        String prefSpeedUnits = Application.getPrefs()
-                .getString(Application.get().getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
-
         if (location.hasAltitude()) {
-            if (prefDistanceUnits.equalsIgnoreCase(METERS)) {
+            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                 mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_meters, location.getAltitude()));
             } else {
                 // Feet
@@ -142,7 +137,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mAltitudeView.setText("");
         }
         if (location.hasSpeed()) {
-            mSpeedView.setText(mRes.getString(R.string.gps_speed_value, location.getSpeed()));
+            if (mPrefSpeedUnits.equalsIgnoreCase(METERS_PER_SECOND)) {
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_meters_sec, location.getSpeed()));
+            } else if (mPrefSpeedUnits.equalsIgnoreCase(KILOMETERS_PER_HOUR)) {
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_kilometers_hour, UIUtils.toKilometersPerHour(location.getSpeed())));
+            } else {
+                // Miles per hour
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_miles_hour, UIUtils.toMilesPerHour(location.getSpeed())));
+            }
         } else {
             mSpeedView.setText("");
         }
@@ -267,15 +269,27 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (GpsTestUtil.isVerticalAccuracySupported()) {
             mHorVertAccuracyLabelView.setText(R.string.gps_hor_and_vert_accuracy_label);
             if (location.hasAccuracy() || location.hasVerticalAccuracy()) {
-                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value,
-                        location.getAccuracy(),
-                        location.getVerticalAccuracyMeters()));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
+                            location.getAccuracy(),
+                            location.getVerticalAccuracyMeters()));
+                } else {
+                    // Feet
+                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_feet,
+                            UIUtils.toFeet(location.getAccuracy()),
+                            UIUtils.toFeet(location.getVerticalAccuracyMeters())));
+                }
             } else {
                 mHorVertAccuracyView.setText("");
             }
         } else {
             if (location.hasAccuracy()) {
-                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value, location.getAccuracy()));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value_meters, location.getAccuracy()));
+                } else {
+                    // Feet
+                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_accuracy_value_feet, UIUtils.toFeet(location.getAccuracy())));
+                }
             } else {
                 mHorVertAccuracyView.setText("");
             }
@@ -290,7 +304,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (GpsTestUtil.isSpeedAndBearingAccuracySupported()) {
             mSpeedBearingAccuracyRow.setVisibility(View.VISIBLE);
             if (location.hasSpeedAccuracy()) {
-                mSpeedAccuracyView.setText(mRes.getString(R.string.gps_speed_acc_value, location.getSpeedAccuracyMetersPerSecond()));
+                if (mPrefSpeedUnits.equalsIgnoreCase(METERS_PER_SECOND)) {
+                    mSpeedAccuracyView.setText(mRes.getString(R.string.gps_speed_acc_value_meters_sec, location.getSpeedAccuracyMetersPerSecond()));
+                } else if (mPrefSpeedUnits.equalsIgnoreCase(KILOMETERS_PER_HOUR)) {
+                    mSpeedAccuracyView.setText(mRes.getString(R.string.gps_speed_acc_value_km_hour, UIUtils.toKilometersPerHour(location.getSpeedAccuracyMetersPerSecond())));
+                } else {
+                    // Miles per hour
+                    mSpeedAccuracyView.setText(mRes.getString(R.string.gps_speed_acc_value_miles_hour, UIUtils.toMilesPerHour(location.getSpeedAccuracyMetersPerSecond())));
+                }
             } else {
                 mSpeedAccuracyView.setText("");
             }
