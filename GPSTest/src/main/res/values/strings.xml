@@ -81,7 +81,7 @@
     <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Speed:</string>
     <string name="gps_speed_value_meters_sec">%1$.1f m/sec</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f m/sec</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/hr</string>
     <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
     <string name="gps_speed_acc_value_meters_sec">%1$.1f m/sec</string>
