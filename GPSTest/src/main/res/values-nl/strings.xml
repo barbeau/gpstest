@@ -70,7 +70,7 @@
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_label">Hoogte (MSL):</string>
-    <string name="gps_altitude_msl_value">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>

@@ -416,7 +416,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS")) {
             Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
             if (altitudeMsl != null && mNavigating) {
-                mAltitudeMslView.setText(mRes.getString(R.string.gps_altitude_msl_value, altitudeMsl));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mAltitudeMslView.setText(mRes.getString(R.string.gps_altitude_msl_value_meters, altitudeMsl));
+                } else {
+                    mAltitudeMslView.setText(mRes.getString(R.string.gps_altitude_msl_value_feet, UIUtils.toFeet(altitudeMsl)));
+                }
             }
         }
         if (message.startsWith("$GNGSA") || message.startsWith("$GPGSA")) {
