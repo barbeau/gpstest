@@ -69,17 +69,25 @@
     <string name="gps_fix_time_label">Time:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Alt:</string>
-    <string name="gps_altitude_value">%1$.1f m</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_altitude_msl_value">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
-    <string name="gps_accuracy_value">%1$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value">%1$.1f/%2$.1f m</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Speed:</string>
-    <string name="gps_speed_value">%1$.1f m/sec</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f m/sec</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/hr</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
-    <string name="gps_speed_acc_value">%1$.1f m/sec</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/sec</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/hr</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">Bearing:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
@@ -265,6 +273,19 @@
 
     <string name="pref_dms_mode_title">Use DMS format</string>
     <string name="pref_dms_mode_summary">Show latitude and longitude in degrees, minutes, and seconds instead of decimal degrees</string>
+
+    <string name="preferences_preferred_distance_units_title">Preferred distance units</string>
+    <string name="preferences_preferred_distance_units_option_meters">Meters</string>
+    <string name="preferences_preferred_distance_units_option_feet">Feet</string>
+
+    <string name="preferences_preferred_speed_units_title">Preferred speed units</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per second</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per hour</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Miles per hour</string>
+
+    <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
 
     <!-- Help -->
     <string name="title_help">Help</string>

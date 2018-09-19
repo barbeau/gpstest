@@ -95,4 +95,34 @@ public class UIUtilsTest {
         marginPx = UIUtils.snrToTextViewLeftMarginPx(0.0f, MIN_PX, MAX_PX);
         assertEquals(3, marginPx);
     }
+
+    /**
+     * Tests converting from meters to feet
+     */
+    @Test
+    public void testToFeet() {
+        double meters = 1.0d;
+
+        assertEquals(3.2808398950131235d, UIUtils.toFeet(meters));
+    }
+
+    /**
+     * Tests converting from meters per second to kilometers per hour
+     */
+    @Test
+    public void testToKilometersPerHour() {
+        float metersPerSecond = 1.0f;
+
+        assertEquals(3.6f, UIUtils.toKilometersPerHour(metersPerSecond));
+    }
+
+    /**
+     * Tests converting from meters per second to miles per hour
+     */
+    @Test
+    public void testToMilesPerHour() {
+        float metersPerSecond = 1.0f;
+
+        assertEquals(2.2369363f, UIUtils.toMilesPerHour(metersPerSecond));
+    }
 }

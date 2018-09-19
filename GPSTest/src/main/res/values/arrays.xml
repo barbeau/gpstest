@@ -35,6 +35,18 @@
         <item>3</item>
     </string-array>
 
+    <!-- Units -->
+    <string-array name="preferred_distance_units_options">
+        <item>@string/preferences_preferred_distance_units_option_meters</item>
+        <item>@string/preferences_preferred_distance_units_option_feet</item>
+    </string-array>
+
+    <string-array name="preferred_speed_units_options">
+        <item>@string/preferences_preferred_speed_units_option_meters_per_second</item>
+        <item>@string/preferences_preferred_speed_units_option_kilometers_per_hour</item>
+        <item>@string/preferences_preferred_speed_units_option_miles_per_hour</item>
+    </string-array>
+
     <!-- Help -->
     <string-array name="main_help_options">
         <item>What\'s New?</item>
