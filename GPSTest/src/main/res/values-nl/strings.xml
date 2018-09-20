@@ -69,16 +69,24 @@
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
+	<string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Hoogte (MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+	<string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Acc:</string>
+	<string name="gps_accuracy_value_meters">%1$.1f m</string>
+	<string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+	<string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Snelheid:</string>
     <string name="gps_speed_value_meters_sec">%1$.1f m/sec</string>
+	<string name="gps_speed_value_kilometers_hour">%1$.1f km/u</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f m/u</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
     <string name="gps_speed_acc_value_meters_sec">%1$.1f m/sec</string>
+	<string name="gps_speed_acc_value_km_hour">%1$.1f km/u</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f m/u</string>
     <string name="gps_bearing_label">Bearing:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
@@ -255,6 +263,16 @@
 	</string>
     <string name="pref_dms_mode_title">Gebruik DMS formaat</string>
     <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden inplaats van decimale graden</string>
+	<string name="preferences_preferred_distance_units_title">Voorkeurs afstands eenheden</string>
+    <string name="preferences_preferred_distance_units_option_meters">Meters</string>
+    <string name="preferences_preferred_distance_units_option_feet">Voet</string>
+    <string name="preferences_preferred_speed_units_title">Voorkeurs snelheids eenheden</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per seconden</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per uur</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Mijlen per uur</string>
+     <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
 
     <!-- Help -->
     <string name="title_help">Help</string>
