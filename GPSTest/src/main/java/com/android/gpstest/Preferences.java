@@ -17,6 +17,7 @@
 package com.android.gpstest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -36,7 +37,8 @@ import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
 
-public class Preferences extends PreferenceActivity {
+public class Preferences extends PreferenceActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     Preference prefAnalyzeGpsAccuracy;
 
@@ -47,6 +49,10 @@ public class Preferences extends PreferenceActivity {
     CheckBoxPreference chkDarkTheme;
 
     private Toolbar mActionBar;
+
+    ListPreference preferredDistanceUnits;
+
+    ListPreference preferredSpeedUnits;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -142,6 +148,12 @@ public class Preferences extends PreferenceActivity {
             }
         });
 
+        preferredDistanceUnits = (ListPreference) findPreference(
+                getString(R.string.pref_key_preferred_distance_units));
+
+        preferredSpeedUnits = (ListPreference) findPreference(
+                getString(R.string.pref_key_preferred_speed_units));
+
         // Remove preference for rotating map if needed
         if (!GpsTestUtil.isRotationVectorSensorSupported(this) || !BuildConfig.FLAVOR.equals("google")) {
             // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
@@ -160,6 +172,28 @@ public class Preferences extends PreferenceActivity {
             PreferenceCategory mMapCategory = (PreferenceCategory) findPreference(
                     getString(R.string.pref_key_map_category));
             mMapCategory.removePreference(checkBoxMapType);
+        }
+
+        Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units));
+        changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units));
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units))) {
+            // Change the preferred distance units description
+            changePreferenceSummary(key);
+        } else {
+            if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units))) {
+                // Change the preferred speed units description
+                changePreferenceSummary(key);
+            }
         }
     }
 
@@ -195,5 +229,19 @@ public class Preferences extends PreferenceActivity {
         LayoutInflater.from(this).inflate(layoutResID, contentWrapper, true);
 
         getWindow().setContentView(contentView);
+    }
+
+    /**
+     * Changes the summary of a preference based on a given preference key
+     *
+     * @param prefKey preference key that triggers a change in summary
+     */
+    private void changePreferenceSummary(String prefKey) {
+        // Change the current region summary and server API URL summary
+        if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units))) {
+            preferredDistanceUnits.setSummary(preferredDistanceUnits.getValue());
+        } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units))) {
+            preferredSpeedUnits.setSummary(preferredSpeedUnits.getValue());
+        }
     }
 }

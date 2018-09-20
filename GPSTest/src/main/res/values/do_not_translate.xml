@@ -48,6 +48,8 @@
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
     <string name="pref_key_dms_mode">dms_mode</string>
+    <string name="pref_key_preferred_distance_units">preference_distance_units</string>
+    <string name="pref_key_preferred_speed_units">preference_speed_units</string>
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>
