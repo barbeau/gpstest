@@ -16,7 +16,8 @@
 package com.android.gpstest.util;
 
 /**
- * Types of Satellite Based Augmentation Systems
+ * Types of Satellite Based Augmentation Systems. See
+ * https://gssc.esa.int/navipedia/index.php/SBAS_Systems.
  */
 public enum SbasType {
     WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA, UNKNOWN
