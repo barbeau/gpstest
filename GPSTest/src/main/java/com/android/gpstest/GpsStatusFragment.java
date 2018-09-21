@@ -209,7 +209,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagUnitedKingdom = getResources().getDrawable(R.drawable.ic_flag_united_kingdom);
         mFlagLuxembourg = getResources().getDrawable(R.drawable.ic_flag_luxembourg);
 
-        mStatusList = v.findViewById(R.id.status_list);
+        mStatusList = v.findViewById(R.id.gnss_status_list);
         mAdapter = new GnssStatusAdapter();
         mStatusList.setAdapter(mAdapter);
         mStatusList.setFocusable(false);
@@ -688,7 +688,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
                 GnssType type;
                 if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-                    type = GpsTestUtil.getGnssConstellationType(mConstellationType[dataRow], mPrns[dataRow]);
+                    type = GpsTestUtil.getGnssConstellationType(mConstellationType[dataRow]);
                 } else {
                     type = GpsTestUtil.getGnssType(mPrns[dataRow]);
                 }
@@ -713,38 +713,38 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         v.getGnssFlag().setVisibility(View.VISIBLE);
                         v.getGnssFlag().setImageDrawable(mFlagGalileo);
                         break;
-                    case GAGAN:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagIndia);
-                        break;
-                    case ANIK:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagCanada);
-                        break;
-                    case GALAXY_15:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUsa);
-                        break;
-                    case INMARSAT_3F2:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case INMARSAT_3F5:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case INMARSAT_4F3:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case SES_5:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
-                        break;
-                    case ASTRA_5B:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
-                        break;
+//                    case GAGAN:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagIndia);
+//                        break;
+//                    case ANIK:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagCanada);
+//                        break;
+//                    case GALAXY_15:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagUsa);
+//                        break;
+//                    case INMARSAT_3F2:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
+//                        break;
+//                    case INMARSAT_3F5:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
+//                        break;
+//                    case INMARSAT_4F3:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
+//                        break;
+//                    case SES_5:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
+//                        break;
+//                    case ASTRA_5B:
+//                        v.getGnssFlag().setVisibility(View.VISIBLE);
+//                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
+//                        break;
                     case UNKNOWN:
                         v.getGnssFlag().setVisibility(View.INVISIBLE);
                         break;

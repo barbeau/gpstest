@@ -16,6 +16,7 @@
 
 package com.android.gpstest.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -58,21 +59,21 @@ public class GpsTestUtil {
         if (prn >= 1 && prn <= 32) {
             return GnssType.NAVSTAR;
         } else if (prn == 33) {
-            return GnssType.INMARSAT_3F2;
+            return GnssType.SBAS;
         } else if (prn == 39) {
             // See Issue #205
-            return GnssType.INMARSAT_3F5;
+            return GnssType.SBAS;
         } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
-            return GnssType.GAGAN;
+            return GnssType.SBAS;
         } else if (prn == 46) {
-            return GnssType.INMARSAT_4F3;
+            return GnssType.SBAS;
         } else if (prn == 48) {
-            return GnssType.GALAXY_15;
+            return GnssType.SBAS;
         } else if (prn == 49) {
-            return GnssType.SES_5;
+            return GnssType.SBAS;
         } else if (prn == 51) {
-            return GnssType.ANIK;
+            return GnssType.SBAS;
         } else if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
             return GnssType.GLONASS;
@@ -93,14 +94,15 @@ public class GpsTestUtil {
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the GnssStatus
      * constellation type.  For Android 7.0 and higher.  This is basically a translation to our
-     * own GnssType enumeration that we use for Android 6.0.1 and lower.
+     * own GnssType enumeration that we use for Android 6.0.1 and lower.  Note that
+     * getSbasConstellationType() should be used to get the particular SBAS constellation type
      *
      * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
      *                              method
-     * @param svid identification number provided by the GnssStatus.getSvid() method
      * @return GnssType for the given GnssStatus constellation type
      */
-    public static GnssType getGnssConstellationType(int gnssConstellationType, int svid) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static GnssType getGnssConstellationType(int gnssConstellationType) {
         switch (gnssConstellationType) {
             case GnssStatus.CONSTELLATION_GPS:
                 return GnssType.NAVSTAR;
@@ -113,28 +115,91 @@ public class GpsTestUtil {
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GnssType.GALILEO;
             case GnssStatus.CONSTELLATION_SBAS:
-                if (svid == 120) {
-                    return GnssType.INMARSAT_3F2;
-                } else if (svid == 123) {
-                    return GnssType.ASTRA_5B;
-                } else if (svid == 126) {
-                    return GnssType.INMARSAT_3F5;
-                } else if (svid == 127 || svid == 128 || svid == 139) {
-                    return GnssType.GAGAN;
-                } else if (svid == 133) {
-                    return GnssType.INMARSAT_4F3;
-                } else if (svid == 135) {
-                    return GnssType.GALAXY_15;
-                } else if (svid == 136) {
-                    return GnssType.SES_5;
-                } else if (svid == 138) {
-                    return GnssType.ANIK;
-                }
-                return GnssType.UNKNOWN;
+                return GnssType.SBAS;
             case GnssStatus.CONSTELLATION_UNKNOWN:
                 return GnssType.UNKNOWN;
             default:
                 return GnssType.UNKNOWN;
+        }
+    }
+
+    /**
+     * Returns the SBAS constellation type for a GnssStatus.CONSTELLATION_SBAS satellite given the GnssStatus
+     * svid.  For Android 7.0 and higher.
+     *
+     * @param svid identification number provided by the GnssStatus.getSvid() method
+     * @return SbasType for the given GnssStatus svid for GnssStatus.CONSTELLATION_SBAS satellites
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static SbasType getSbasConstellationType(int svid) {
+        if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
+            return SbasType.EGNOS;
+        } else if (svid == 131 || svid == 133 || svid == 135 || svid == 138) {
+            return SbasType.WAAS;
+        } else if (svid == 127 || svid == 128 || svid == 139) {
+            return SbasType.GAGAN;
+        } else if (svid == 129 || svid == 137) {
+            return SbasType.MSAS;
+        }
+        return SbasType.UNKNOWN;
+    }
+
+    /**
+     * Returns the SBAS constellation type for a satellite for Android 6.0.1 and lower
+     *
+     * @param svid PRN provided by the GpsSatellite.getPrn() method method
+     * @return SbasType for the given GpsSatellite.getPrn() method
+     */
+    @SuppressLint("NewApi")
+    @Deprecated
+    public static SbasType getSbasConstellationTypeLegacy(int svid) {
+        return getSbasConstellationType(svid + 87);
+    }
+
+    /**
+     * Returns the satellite name for a satellite given the GnssStatus
+     * constellation type and svid.  For Android 7.0 and higher.
+     *
+     * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
+     *                              method
+     * @param svid identification number provided by the GnssStatus.getSvid() method
+     * @return SatelliteName for the given GnssStatus constellation type and svid
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static SatelliteName getSatelliteType(int gnssConstellationType, int svid) {
+        // TODO - support more satellite types
+        switch (gnssConstellationType) {
+            case GnssStatus.CONSTELLATION_GPS:
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_GLONASS:
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_BEIDOU:
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_QZSS:
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_GALILEO:
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_SBAS:
+                if (svid == 120) {
+                    return SatelliteName.INMARSAT_3F2;
+                } else if (svid == 123) {
+                    return SatelliteName.ASTRA_5B;
+                } else if (svid == 126) {
+                    return SatelliteName.INMARSAT_3F5;
+                } else if (svid == 133) {
+                    return SatelliteName.INMARSAT_4F3;
+                } else if (svid == 135) {
+                    return SatelliteName.GALAXY_15;
+                } else if (svid == 136) {
+                    return SatelliteName.SES_5;
+                } else if (svid == 138) {
+                    return SatelliteName.ANIK;
+                }
+                return SatelliteName.UNKNOWN;
+            case GnssStatus.CONSTELLATION_UNKNOWN:
+                return SatelliteName.UNKNOWN;
+            default:
+                return SatelliteName.UNKNOWN;
         }
     }
 
