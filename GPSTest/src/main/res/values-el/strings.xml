@@ -135,11 +135,6 @@
     <string name="sky_legend_shape_sbas_title">Δορυφορικά συστήματα επεκτάσεως (SBAS)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (ΚΙΝΑ)</string>
     <string name="sky_legend_shape_gagan">GAGAN (ΙΝΔΙΑ)</string>
-    <string name="sky_legend_shape_anik">Anik (ΚΑΝΑΔΑΣ)</string>
-    <string name="sky_legend_shape_galaxy_15">Galaxy 15 (ΑΜΕΡΙΚΗ)</string>
-    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2, 3-F5 &amp; 4-F3 (ΑΓΓΛΙΑ)</string>
-    <string name="sky_legend_shape_ses_5">SES-5 (ΛΟΥΞΕΜΒΟΥΡΓΟ)</string>
-    <string name="sky_legend_shape_astra_5b">Astra 5B (ΛΟΥΞΕΜΒΟΥΡΓΟ)</string>
     <string name="sky_legend_shape_availability_title">Διαθεσιμότητα Σήματος</string>
     <string name="sky_legend_shape_not_in_view">Εκτός ορατότητας της συσκευής</string>
     <string name="sky_legend_shape_in_view">Σε ορατότητα</string>

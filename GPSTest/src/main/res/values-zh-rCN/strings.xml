@@ -140,11 +140,6 @@
     <string name="sky_legend_shape_sbas_title">卫星增强系统(SBAS)</string>
     <string name="sky_legend_shape_beidou">北斗/COMPASS (中国)</string>
     <string name="sky_legend_shape_gagan">GAGAN (印度)</string>
-    <string name="sky_legend_shape_anik">Anik (加拿大)</string>
-    <string name="sky_legend_shape_galaxy_15">Galaxy 15 (美国)</string>
-    <string name="sky_legend_shape_inmarsat">国际海事卫星组织3-F2 &amp; 4-F3 (英国)</string>
-    <string name="sky_legend_shape_ses_5">SES-5 (卢森堡)</string>
-    <string name="sky_legend_shape_astra_5b">Astra 5B (卢森堡)</string>
     <string name="sky_legend_shape_availability_title">信号可用性</string>
     <string name="sky_legend_shape_not_in_view">不基于设备</string>
     <string name="sky_legend_shape_in_view">计划好的</string>

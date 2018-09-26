@@ -124,11 +124,6 @@
     <string name="sky_legend_shape_sbas_title">Satellitenbasierte Ergänzungssysteme (SBAS)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
     <string name="sky_legend_shape_gagan">GAGAN (Indien)</string>
-    <string name="sky_legend_shape_anik">Anik (Kanada)</string>
-    <string name="sky_legend_shape_galaxy_15">Galaxy 15 (USA)</string>
-    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2, 3-F5 &amp; 4-F3 (UK)</string>
-    <string name="sky_legend_shape_ses_5">SES-5 (Luxemburg)</string>
-    <string name="sky_legend_shape_astra_5b">Astra 5B (Luxemburg)</string>
     <string name="sky_legend_shape_availability_title">Signalverfügbarkeit</string>
     <string name="sky_legend_shape_not_in_view">Nicht im Sichtfeld des Gerätes</string>
     <string name="sky_legend_shape_in_view">Im Sichtfeld des Gerätes</string>
