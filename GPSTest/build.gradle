@@ -1,10 +1,10 @@
 import groovy.swing.SwingBuilder
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
@@ -148,4 +148,9 @@ dependencies {
     // Unit tests
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+repositories {
+    mavenCentral()
 }

@@ -23,7 +23,7 @@ import android.view.WindowManager;
 
 import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
-import com.android.gpstest.util.GnssType;
+import com.android.gpstest.model.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
@@ -443,7 +443,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         // Change shape based on satellite operator
         GnssType operator;
         if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-            operator = GpsTestUtil.getGnssConstellationType(constellationType, prn);
+            operator = GpsTestUtil.getGnssConstellationType(constellationType);
         } else {
             operator = GpsTestUtil.getGnssType(prn);
         }
@@ -466,38 +466,38 @@ public class GpsSkyView extends View implements GpsTestListener {
                 break;
             case GALILEO:
                 drawTriangle(c, x, y, fillPaint, strokePaint);
-            case GAGAN:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case ANIK:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case GALAXY_15:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_3F2:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_3F5:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_4F3:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case SES_5:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case ASTRA_5B:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
+//            case GAGAN:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case ANIK:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case GALAXY_15:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_3F2:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_3F5:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_4F3:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case SES_5:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case ASTRA_5B:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
         }
 
         c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),
