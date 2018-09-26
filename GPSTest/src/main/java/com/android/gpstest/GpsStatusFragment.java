@@ -211,6 +211,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
                 mSvCount = 0;
                 mGnssAdapter.notifyDataSetChanged();
+                mSbasAdapter.notifyDataSetChanged();
             }
             mNavigating = navigating;
         }
