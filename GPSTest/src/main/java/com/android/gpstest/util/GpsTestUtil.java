@@ -26,7 +26,6 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,6 +36,8 @@ import com.android.gpstest.model.SatelliteName;
 import com.android.gpstest.model.SbasType;
 
 import java.lang.reflect.InvocationTargetException;
+
+import androidx.annotation.RequiresApi;
 
 import static com.android.gpstest.model.GnssType.BEIDOU;
 import static com.android.gpstest.model.GnssType.GALILEO;

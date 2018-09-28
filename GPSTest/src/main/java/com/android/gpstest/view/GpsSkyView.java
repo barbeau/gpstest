@@ -13,9 +13,6 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -29,6 +26,10 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 /**
 * View that shows satellite positions on a circle representing the sky

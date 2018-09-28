@@ -50,15 +50,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,6 +70,16 @@ import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.ArrayList;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import static android.content.Intent.createChooser;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
@@ -1354,8 +1355,8 @@ public class GpsTestActivity extends AppCompatActivity
         TextView textView = (TextView) getLayoutInflater().inflate(R.layout.whats_new_dialog, null);
         textView.setText(R.string.main_help_whatsnew);
 
-        android.support.v7.app.AlertDialog.Builder builder
-                = new android.support.v7.app.AlertDialog.Builder(this);
+        androidx.appcompat.app.AlertDialog.Builder builder
+                = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setTitle(R.string.main_help_whatsnew_title);
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(textView);
@@ -1371,7 +1372,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressWarnings("deprecation")
     private Dialog createHelpDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
         builder.setTitle(R.string.title_help);
         int options = R.array.main_help_options;
         builder.setItems(options,
@@ -1407,7 +1408,7 @@ public class GpsTestActivity extends AppCompatActivity
         Drawable icon = getResources().getDrawable(R.drawable.ic_delete);
         DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.clear_assist_warning_title)
                 .setIcon(icon)
                 .setCancelable(false)
@@ -1438,7 +1439,7 @@ public class GpsTestActivity extends AppCompatActivity
      * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
      */
     private void showLocationPermissionDialog() {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this)
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.title_location_permission)
                 .setMessage(R.string.text_location_permission)
                 .setCancelable(false)
