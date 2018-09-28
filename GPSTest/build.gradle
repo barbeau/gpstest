@@ -4,7 +4,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "28.0.2"
 
     defaultConfig {
@@ -134,10 +134,18 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:design:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation ("com.android.support:appcompat-v7:28.0.0") {
+        force = true
+    }
+    implementation ("com.android.support:design:28.0.0") {
+        force = true
+    }
+    implementation ("com.android.support:recyclerview-v7:28.0.0") {
+        force = true
+    }
+    implementation ("com.android.support:cardview-v7:28.0.0") {
+        force = true
+    }
 
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
