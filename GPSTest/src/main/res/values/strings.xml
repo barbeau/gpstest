@@ -151,7 +151,7 @@
 
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
-    <string name="sky_legend_shape_egnos">EGNOS (EU)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (European Union)</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>

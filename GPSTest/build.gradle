@@ -134,18 +134,10 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    implementation ("androidx.appcompat:appcompat:1.0.0") {
-        force = true
-    }
-    implementation ("com.google.android.material:material:1.0.0") {
-        force = true
-    }
-    implementation ("androidx.recyclerview:recyclerview:1.0.0") {
-        force = true
-    }
-    implementation ("androidx.cardview:cardview:1.0.0") {
-        force = true
-    }
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
@@ -158,8 +150,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-
-repositories {
-    mavenCentral()
 }
