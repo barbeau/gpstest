@@ -211,7 +211,7 @@
         </LinearLayout>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/gnss_status_signals_card"
+            android:id="@+id/gnss_status_card"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -224,9 +224,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp" />
+
+            <TextView
+                android:id="@+id/gnss_not_available"
+                style="@style/info_value"
+                android:gravity="center"
+                android:text="@string/gnss_not_available"
+                android:layout_margin="10dp"
+                android:visibility="gone" />
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/sbas_status_signals_card"
+            android:id="@+id/sbas_status_card"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -239,6 +248,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp" />
+
+            <TextView
+                android:id="@+id/sbas_not_available"
+                style="@style/info_value"
+                android:gravity="center"
+                android:layout_margin="10dp"
+                android:text="@string/sbas_not_available"
+                android:visibility="gone" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

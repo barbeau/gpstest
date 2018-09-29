@@ -58,6 +58,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static com.android.gpstest.model.ConstellationType.GNSS;
+import static com.android.gpstest.model.ConstellationType.SBAS;
 import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
@@ -76,7 +77,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
             mAltitudeMslView, mHorVertAccuracyLabelView, mHorVertAccuracyView,
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
-            mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView;
+            mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
+            mSbasNotAvailableView;
 
     private TableRow mSpeedBearingAccuracyRow;
 
@@ -143,6 +145,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mSpeedBearingAccuracyRow = v.findViewById(R.id.speed_bearing_acc_row);
 
+        mGnssNotAvailableView = v.findViewById(R.id.gnss_not_available);
+        mSbasNotAvailableView = v.findViewById(R.id.sbas_not_available);
+
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
 
@@ -161,7 +166,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // GNSS
         LinearLayoutManager llmGnss = new LinearLayoutManager(getContext());
         llmGnss.setAutoMeasureEnabled(true);
-        llmGnss.setOrientation(LinearLayoutManager.VERTICAL);
+        llmGnss.setOrientation(RecyclerView.VERTICAL);
 
         mGnssStatusList = v.findViewById(R.id.gnss_status_list);
         mGnssAdapter = new SatelliteStatusAdapter(GNSS);
@@ -174,10 +179,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // SBAS
         LinearLayoutManager llmSbas = new LinearLayoutManager(getContext());
         llmSbas.setAutoMeasureEnabled(true);
-        llmSbas.setOrientation(LinearLayoutManager.VERTICAL);
+        llmSbas.setOrientation(RecyclerView.VERTICAL);
 
         mSbasStatusList = v.findViewById(R.id.sbas_status_list);
-        mSbasAdapter = new SatelliteStatusAdapter(ConstellationType.SBAS);
+        mSbasAdapter = new SatelliteStatusAdapter(SBAS);
         mSbasStatusList.setAdapter(mSbasAdapter);
         mSbasStatusList.setFocusable(false);
         mSbasStatusList.setFocusableInTouchMode(false);
@@ -516,6 +521,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
+        updateListVisibility();
         mGnssAdapter.notifyDataSetChanged();
         mSbasAdapter.notifyDataSetChanged();
     }
@@ -564,6 +570,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
+        updateListVisibility();
         mGnssAdapter.notifyDataSetChanged();
         mSbasAdapter.notifyDataSetChanged();
     }
@@ -576,6 +583,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
         mPrefSpeedUnits = settings
                 .getString(app.getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
+    }
+
+    /**
+     * Sets the visibility of the lists
+     */
+    private void updateListVisibility() {
+        if (!mGnssStatus.isEmpty()) {
+            mGnssNotAvailableView.setVisibility(View.GONE);
+            mGnssStatusList.setVisibility(View.VISIBLE);
+        } else {
+            mGnssNotAvailableView.setVisibility(View.VISIBLE);
+            mGnssStatusList.setVisibility(View.GONE);
+        }
+        if (!mSbasStatus.isEmpty()) {
+            mSbasNotAvailableView.setVisibility(View.GONE);
+            mSbasStatusList.setVisibility(View.VISIBLE);
+        } else {
+            mSbasNotAvailableView.setVisibility(View.VISIBLE);
+            mSbasStatusList.setVisibility(View.GONE);
+        }
     }
 
     private class SatelliteStatusAdapter extends RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder> {
