@@ -29,10 +29,6 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,24 +38,34 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.android.gpstest.util.GnssType;
+import com.android.gpstest.model.ConstellationType;
+import com.android.gpstest.model.GnssType;
+import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static com.android.gpstest.model.ConstellationType.GNSS;
+import static com.android.gpstest.model.ConstellationType.SBAS;
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     public final static String TAG = "GpsStatusFragment";
 
     private static final String EMPTY_LAT_LONG = "             ";
-
-    private static final float NO_DATA = 0.0f;
 
     @SuppressLint("SimpleDateFormat") // See #117
     SimpleDateFormat mDateFormat = new SimpleDateFormat(
@@ -71,101 +77,42 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private TextView mLatitudeView, mLongitudeView, mFixTimeView, mTTFFView, mAltitudeView,
             mAltitudeMslView, mHorVertAccuracyLabelView, mHorVertAccuracyView,
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
-            mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView;
+            mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
+            mSbasNotAvailableView;
 
     private TableRow mSpeedBearingAccuracyRow;
 
-    private RecyclerView mStatusList;
+    private RecyclerView mGnssStatusList;
+    private RecyclerView mSbasStatusList;
 
-    private GnssStatusAdapter mAdapter;
+    private SatelliteStatusAdapter mGnssAdapter;
+    private SatelliteStatusAdapter mSbasAdapter;
 
-    private int mSvCount, mPrns[], mConstellationType[], mUsedInFixCount;
+    private List<SatelliteStatus> mGnssStatus = new ArrayList<>();
 
-    private float mCarrierFreqsHz[], mSnrCn0s[], mSvElevations[], mSvAzimuths[];
+    private List<SatelliteStatus> mSbasStatus = new ArrayList<>();
+
+    private int mSvCount, mUsedInFixCount;
 
     private String mSnrCn0Title;
-
-    private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
 
     private long mFixTime;
 
     private boolean mNavigating;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia,
-            mFlagCanada, mFlagUnitedKingdom, mFlagLuxembourg;
+            mFlagEU, mFlagICAO;
 
     private boolean mUseLegacyGnssApi = false;
 
     private String mTtff = "";
 
     private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
-    private static final String FEET = Application.get().getString(R.string.preferences_preferred_distance_units_option_feet);
     private static final String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
     private static final String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
-    private static final String MILES_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_miles_per_hour);
 
     String mPrefDistanceUnits;
     String mPrefSpeedUnits;
-
-    public void onLocationChanged(Location location) {
-        if (!UIUtils.isFragmentAttached(this)) {
-            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
-            return;
-        }
-
-        // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
-        mTTFFView.setText(mTtff);
-
-        boolean showDMS = Application.getPrefs().getBoolean(getString(R.string.pref_key_dms_mode), false);
-        if (showDMS) {
-            mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude()));
-            mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude()));
-        } else {
-            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
-            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
-        }
-        mFixTime = location.getTime();
-
-        if (location.hasAltitude()) {
-            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_meters, location.getAltitude()));
-            } else {
-                // Feet
-                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_feet, UIUtils.toFeet(location.getAltitude())));
-            }
-        } else {
-            mAltitudeView.setText("");
-        }
-        if (location.hasSpeed()) {
-            if (mPrefSpeedUnits.equalsIgnoreCase(METERS_PER_SECOND)) {
-                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_meters_sec, location.getSpeed()));
-            } else if (mPrefSpeedUnits.equalsIgnoreCase(KILOMETERS_PER_HOUR)) {
-                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_kilometers_hour, UIUtils.toKilometersPerHour(location.getSpeed())));
-            } else {
-                // Miles per hour
-                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_miles_hour, UIUtils.toMilesPerHour(location.getSpeed())));
-            }
-        } else {
-            mSpeedView.setText("");
-        }
-        if (location.hasBearing()) {
-            mBearingView.setText(mRes.getString(R.string.gps_bearing_value, location.getBearing()));
-        } else {
-            mBearingView.setText("");
-        }
-        updateLocationAccuracies(location);
-        updateSpeedAndBearingAccuracies(location);
-        updateFixTime();
-    }
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -196,6 +143,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mSpeedBearingAccuracyRow = v.findViewById(R.id.speed_bearing_acc_row);
 
+        mGnssNotAvailableView = v.findViewById(R.id.gnss_not_available);
+        mSbasNotAvailableView = v.findViewById(R.id.sbas_not_available);
+
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
 
@@ -205,20 +155,34 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
         mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
-        mFlagCanada = getResources().getDrawable(R.drawable.ic_flag_canada);
-        mFlagUnitedKingdom = getResources().getDrawable(R.drawable.ic_flag_united_kingdom);
-        mFlagLuxembourg = getResources().getDrawable(R.drawable.ic_flag_luxembourg);
+        mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
+        mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
 
-        mStatusList = v.findViewById(R.id.status_list);
-        mAdapter = new GnssStatusAdapter();
-        mStatusList.setAdapter(mAdapter);
-        mStatusList.setFocusable(false);
-        mStatusList.setFocusableInTouchMode(false);
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setAutoMeasureEnabled(true);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        mStatusList.setLayoutManager(llm);
-        mStatusList.setNestedScrollingEnabled(false);
+        // GNSS
+        LinearLayoutManager llmGnss = new LinearLayoutManager(getContext());
+        llmGnss.setAutoMeasureEnabled(true);
+        llmGnss.setOrientation(RecyclerView.VERTICAL);
+
+        mGnssStatusList = v.findViewById(R.id.gnss_status_list);
+        mGnssAdapter = new SatelliteStatusAdapter(GNSS);
+        mGnssStatusList.setAdapter(mGnssAdapter);
+        mGnssStatusList.setFocusable(false);
+        mGnssStatusList.setFocusableInTouchMode(false);
+        mGnssStatusList.setLayoutManager(llmGnss);
+        mGnssStatusList.setNestedScrollingEnabled(false);
+
+        // SBAS
+        LinearLayoutManager llmSbas = new LinearLayoutManager(getContext());
+        llmSbas.setAutoMeasureEnabled(true);
+        llmSbas.setOrientation(RecyclerView.VERTICAL);
+
+        mSbasStatusList = v.findViewById(R.id.sbas_status_list);
+        mSbasAdapter = new SatelliteStatusAdapter(SBAS);
+        mSbasStatusList.setAdapter(mSbasAdapter);
+        mSbasStatusList.setFocusable(false);
+        mSbasStatusList.setFocusableInTouchMode(false);
+        mSbasStatusList.setLayoutManager(llmSbas);
+        mSbasStatusList.setNestedScrollingEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
 
@@ -247,7 +211,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mHvdopView.setText("");
 
                 mSvCount = 0;
-                mAdapter.notifyDataSetChanged();
+                mGnssAdapter.notifyDataSetChanged();
+                mSbasAdapter.notifyDataSetChanged();
             }
             mNavigating = navigating;
         }
@@ -347,6 +312,66 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     public void gpsStop() {
+    }
+
+    public void onLocationChanged(Location location) {
+        if (!UIUtils.isFragmentAttached(this)) {
+            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
+            return;
+        }
+
+        // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
+        mTTFFView.setText(mTtff);
+
+        boolean showDMS = Application.getPrefs().getBoolean(getString(R.string.pref_key_dms_mode), false);
+        if (showDMS) {
+            mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude()));
+            mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude()));
+        } else {
+            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
+            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+        }
+        mFixTime = location.getTime();
+
+        if (location.hasAltitude()) {
+            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_meters, location.getAltitude()));
+            } else {
+                // Feet
+                mAltitudeView.setText(mRes.getString(R.string.gps_altitude_value_feet, UIUtils.toFeet(location.getAltitude())));
+            }
+        } else {
+            mAltitudeView.setText("");
+        }
+        if (location.hasSpeed()) {
+            if (mPrefSpeedUnits.equalsIgnoreCase(METERS_PER_SECOND)) {
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_meters_sec, location.getSpeed()));
+            } else if (mPrefSpeedUnits.equalsIgnoreCase(KILOMETERS_PER_HOUR)) {
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_kilometers_hour, UIUtils.toKilometersPerHour(location.getSpeed())));
+            } else {
+                // Miles per hour
+                mSpeedView.setText(mRes.getString(R.string.gps_speed_value_miles_hour, UIUtils.toMilesPerHour(location.getSpeed())));
+            }
+        } else {
+            mSpeedView.setText("");
+        }
+        if (location.hasBearing()) {
+            mBearingView.setText(mRes.getString(R.string.gps_bearing_value, location.getBearing()));
+        } else {
+            mBearingView.setText("");
+        }
+        updateLocationAccuracies(location);
+        updateSpeedAndBearingAccuracies(location);
+        updateFixTime();
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    public void onProviderEnabled(String provider) {
+    }
+
+    public void onProviderDisabled(String provider) {
     }
 
     @Deprecated
@@ -455,47 +480,34 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mSnrCn0Title = mRes.getString(R.string.gps_cn0_column_label);
 
-        if (mPrns == null) {
-            /**
-             * We need to allocate arrays big enough so we don't overflow them.  Per
-             * https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
-             * 255 should be enough to contain all known satellites world-wide.
-             */
-            final int MAX_LENGTH = 255;
-            mPrns = new int[MAX_LENGTH];
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-                mCarrierFreqsHz = new float[MAX_LENGTH];
-            }
-            mSnrCn0s = new float[MAX_LENGTH];
-            mSvElevations = new float[MAX_LENGTH];
-            mSvAzimuths = new float[MAX_LENGTH];
-            mConstellationType = new int[MAX_LENGTH];
-            mHasEphemeris = new boolean[MAX_LENGTH];
-            mHasAlmanac = new boolean[MAX_LENGTH];
-            mUsedInFix = new boolean[MAX_LENGTH];
-        }
-
         final int length = status.getSatelliteCount();
         mSvCount = 0;
         mUsedInFixCount = 0;
+        mGnssStatus.clear();
+        mSbasStatus.clear();
         while (mSvCount < length) {
-            int prn = status.getSvid(mSvCount);
-            mPrns[mSvCount] = prn;
-            mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
+            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), GpsTestUtil.getGnssConstellationType(status.getConstellationType(mSvCount)),
+                    status.getCn0DbHz(mSvCount),
+                    status.hasAlmanacData(mSvCount),
+                    status.hasEphemerisData(mSvCount),
+                    status.usedInFix(mSvCount),
+                    status.getElevationDegrees(mSvCount),
+                    status.getAzimuthDegrees(mSvCount));
             if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                 if (status.hasCarrierFrequencyHz(mSvCount)) {
-                    mCarrierFreqsHz[mSvCount] = status.getCarrierFrequencyHz(mSvCount);
-                } else {
-                    mCarrierFreqsHz[mSvCount] = NO_DATA;
+                    satStatus.setHasCarrierFrequency(true);
+                    satStatus.setCarrierFrequencyHz(status.getCarrierFrequencyHz(mSvCount));
                 }
             }
-            mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);
-            mSvElevations[mSvCount] = status.getElevationDegrees(mSvCount);
-            mSvAzimuths[mSvCount] = status.getAzimuthDegrees(mSvCount);
-            mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
-            mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
-            mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
-            if (status.usedInFix(mSvCount)) {
+
+            if (satStatus.getGnssType() == GnssType.SBAS) {
+                satStatus.setSbasType(GpsTestUtil.getSbasConstellationType(satStatus.getSvid()));
+                mSbasStatus.add(satStatus);
+            } else {
+                mGnssStatus.add(satStatus);
+            }
+
+            if (satStatus.getUsedInFix()) {
                 mUsedInFixCount++;
             }
 
@@ -504,7 +516,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
-        mAdapter.notifyDataSetChanged();
+        updateListVisibility();
+        mGnssAdapter.notifyDataSetChanged();
+        mSbasAdapter.notifyDataSetChanged();
     }
 
     @Deprecated
@@ -522,34 +536,27 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
-        if (mPrns == null) {
-            int length = status.getMaxSatellites();
-            mPrns = new int[length];
-            mSnrCn0s = new float[length];
-            mSvElevations = new float[length];
-            mSvAzimuths = new float[length];
-            mHasEphemeris = new boolean[length];
-            mHasAlmanac = new boolean[length];
-            mUsedInFix = new boolean[length];
-            // Carrier frequencies and constellation type aren't used, but instantiate it to avoid NPEs in legacy devices or when "Use GNSS APIs" is false
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-                mCarrierFreqsHz = new float[length];
-            }
-            mConstellationType = new int[length];
-        }
-
         mSvCount = 0;
         mUsedInFixCount = 0;
+        mGnssStatus.clear();
+        mSbasStatus.clear();
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
-            int prn = satellite.getPrn();
-            mPrns[mSvCount] = prn;
-            mSnrCn0s[mSvCount] = satellite.getSnr();
-            mSvElevations[mSvCount] = satellite.getElevation();
-            mSvAzimuths[mSvCount] = satellite.getAzimuth();
-            mHasEphemeris[mSvCount] = satellite.hasEphemeris();
-            mHasAlmanac[mSvCount] = satellite.hasAlmanac();
-            mUsedInFix[mSvCount] = satellite.usedInFix();
+
+            SatelliteStatus satStatus = new SatelliteStatus(satellite.getPrn(), GpsTestUtil.getGnssType(satellite.getPrn()),
+                    satellite.getSnr(),
+                    satellite.hasAlmanac(),
+                    satellite.hasEphemeris(),
+                    satellite.usedInFix(),
+                    satellite.getElevation(),
+                    satellite.getAzimuth());
+
+            if (satStatus.getGnssType() == GnssType.SBAS) {
+                satStatus.setSbasType(GpsTestUtil.getSbasConstellationTypeLegacy(satStatus.getSvid()));
+                mSbasStatus.add(satStatus);
+            } else {
+                mGnssStatus.add(satStatus);
+            }
             if (satellite.usedInFix()) {
                 mUsedInFixCount++;
             }
@@ -558,7 +565,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
-        mAdapter.notifyDataSetChanged();
+        updateListVisibility();
+        mGnssAdapter.notifyDataSetChanged();
+        mSbasAdapter.notifyDataSetChanged();
     }
 
     private void setupUnitPreferences() {
@@ -571,7 +580,33 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 .getString(app.getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
     }
 
-    private class GnssStatusAdapter extends RecyclerView.Adapter<GnssStatusAdapter.ViewHolder> {
+    /**
+     * Sets the visibility of the lists
+     */
+    private void updateListVisibility() {
+        if (!mGnssStatus.isEmpty()) {
+            mGnssNotAvailableView.setVisibility(View.GONE);
+            mGnssStatusList.setVisibility(View.VISIBLE);
+        } else {
+            mGnssNotAvailableView.setVisibility(View.VISIBLE);
+            mGnssStatusList.setVisibility(View.GONE);
+        }
+        if (!mSbasStatus.isEmpty()) {
+            mSbasNotAvailableView.setVisibility(View.GONE);
+            mSbasStatusList.setVisibility(View.VISIBLE);
+        } else {
+            mSbasNotAvailableView.setVisibility(View.VISIBLE);
+            mSbasStatusList.setVisibility(View.GONE);
+        }
+    }
+
+    private class SatelliteStatusAdapter extends RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder> {
+
+        ConstellationType mConstellationType;
+
+        public SatelliteStatusAdapter(ConstellationType constellationType) {
+            mConstellationType = constellationType;
+        }
 
         class ViewHolder extends RecyclerView.ViewHolder {
             private final TextView svId;
@@ -601,15 +636,15 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 return svId;
             }
 
-            public TextView getGnssFlagHeader() {
+            public TextView getFlagHeader() {
                 return gnssFlagHeader;
             }
 
-            public ImageView getGnssFlag() {
+            public ImageView getFlag() {
                 return gnssFlag;
             }
 
-            public LinearLayout getGnssFlagLayout() {
+            public LinearLayout getFlagLayout() {
                 return gnssFlagLayout;
             }
 
@@ -644,20 +679,28 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         @Override
         public int getItemCount() {
             // Add 1 for header row
-            return mSvCount + 1;
+            if (mConstellationType == GNSS) {
+                return mGnssStatus.size() + 1;
+            } else {
+                return mSbasStatus.size() + 1;
+            }
         }
 
         public void onBindViewHolder(ViewHolder v, final int position) {
             if (position == 0) {
                 // Show the header field for the GNSS flag and hide the ImageView
-                v.getGnssFlagHeader().setVisibility(View.VISIBLE);
-                v.getGnssFlag().setVisibility(View.GONE);
-                v.getGnssFlagLayout().setVisibility(View.GONE);
+                v.getFlagHeader().setVisibility(View.VISIBLE);
+                v.getFlag().setVisibility(View.GONE);
+                v.getFlagLayout().setVisibility(View.GONE);
 
                 // Populate the header fields
                 v.getSvId().setText(mRes.getString(R.string.gps_prn_column_label));
                 v.getSvId().setTypeface(v.getSvId().getTypeface(), Typeface.BOLD);
-                v.getGnssFlagHeader().setText(mRes.getString(R.string.gps_flag_image_label));
+                if (mConstellationType == GNSS) {
+                    v.getFlagHeader().setText(mRes.getString(R.string.gnss_flag_image_label));
+                } else {
+                    v.getFlagHeader().setText(mRes.getString(R.string.sbas_flag_image_label));
+                }
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
                     v.getCarrierFrequency().setVisibility(View.VISIBLE);
                     v.getCarrierFrequency().setText(mRes.getString(R.string.gps_carrier_column_label));
@@ -677,84 +720,57 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 int dataRow = position - 1;
 
+                List<SatelliteStatus> sats;
+                if (mConstellationType == GNSS) {
+                    sats = mGnssStatus;
+                } else {
+                    sats = mSbasStatus;
+                }
+
                 // Show the row field for the GNSS flag mImage and hide the header
-                v.getGnssFlagHeader().setVisibility(View.GONE);
-                v.getGnssFlag().setVisibility(View.VISIBLE);
-                v.getGnssFlagLayout().setVisibility(View.VISIBLE);
+                v.getFlagHeader().setVisibility(View.GONE);
+                v.getFlag().setVisibility(View.VISIBLE);
+                v.getFlagLayout().setVisibility(View.VISIBLE);
 
                 // Populate status data for this row
-                v.getSvId().setText(Integer.toString(mPrns[dataRow]));
-                v.getGnssFlag().setScaleType(ImageView.ScaleType.FIT_START);
+                v.getSvId().setText(Integer.toString(sats.get(dataRow).getSvid()));
+                v.getFlag().setScaleType(ImageView.ScaleType.FIT_START);
 
-                GnssType type;
-                if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-                    type = GpsTestUtil.getGnssConstellationType(mConstellationType[dataRow], mPrns[dataRow]);
-                } else {
-                    type = GpsTestUtil.getGnssType(mPrns[dataRow]);
-                }
+                GnssType type = sats.get(dataRow).getGnssType();
                 switch (type) {
                     case NAVSTAR:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUsa);
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagUsa);
                         break;
                     case GLONASS:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagRussia);
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagRussia);
                         break;
                     case QZSS:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagJapan);
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagJapan);
                         break;
                     case BEIDOU:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagChina);
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagChina);
                         break;
                     case GALILEO:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagGalileo);
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagGalileo);
                         break;
-                    case GAGAN:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagIndia);
-                        break;
-                    case ANIK:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagCanada);
-                        break;
-                    case GALAXY_15:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUsa);
-                        break;
-                    case INMARSAT_3F2:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case INMARSAT_3F5:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case INMARSAT_4F3:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagUnitedKingdom);
-                        break;
-                    case SES_5:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
-                        break;
-                    case ASTRA_5B:
-                        v.getGnssFlag().setVisibility(View.VISIBLE);
-                        v.getGnssFlag().setImageDrawable(mFlagLuxembourg);
+                    case SBAS:
+                        setSbasFlag(sats.get(dataRow), v.getFlag());
                         break;
                     case UNKNOWN:
-                        v.getGnssFlag().setVisibility(View.INVISIBLE);
+                        v.getFlag().setVisibility(View.INVISIBLE);
                         break;
                 }
                 if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-                    if (mCarrierFreqsHz[dataRow] != NO_DATA) {
+                    if (sats.get(dataRow).getCarrierFrequencyHz() != NO_DATA) {
                         // Convert Hz to MHz
-                        float carrierMhz = MathUtils.toMhz(mCarrierFreqsHz[dataRow]);
-                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(mConstellationType[dataRow],
-                                mPrns[dataRow],
+                        float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());
+                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
+                                sats.get(dataRow).getSvid(),
                                 carrierMhz);
                         if (carrierLabel != null) {
                             // Make sure it's the normal text size (in case it's previously been
@@ -774,31 +790,67 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 } else {
                     v.getCarrierFrequency().setVisibility(View.GONE);
                 }
-                if (mSnrCn0s[dataRow] != NO_DATA) {
-                    v.getSignal().setText(String.format("%.1f", mSnrCn0s[dataRow]));
+                if (sats.get(dataRow).getCn0DbHz() != NO_DATA) {
+                    v.getSignal().setText(String.format("%.1f", sats.get(dataRow).getCn0DbHz()));
                 } else {
                     v.getSignal().setText("");
                 }
 
-                if (mSvElevations[dataRow] != NO_DATA) {
+                if (sats.get(dataRow).getElevationDegrees() != NO_DATA) {
                     v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
-                                    mSvElevations[dataRow]));
+                            sats.get(dataRow).getElevationDegrees()));
                 } else {
                     v.getElevation().setText("");
                 }
 
-                if (mSvAzimuths[dataRow] != NO_DATA) {
+                if (sats.get(dataRow).getAzimuthDegrees() != NO_DATA) {
                     v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
-                            mSvAzimuths[dataRow]));
+                            sats.get(dataRow).getAzimuthDegrees()));
                 } else {
                     v.getAzimuth().setText("");
                 }
 
                 char[] flags = new char[3];
-                flags[0] = !mHasAlmanac[dataRow] ? ' ' : 'A';
-                flags[1] = !mHasEphemeris[dataRow] ? ' ' : 'E';
-                flags[2] = !mUsedInFix[dataRow] ? ' ' : 'U';
+                flags[0] = !sats.get(dataRow).getHasAlmanac() ? ' ' : 'A';
+                flags[1] = !sats.get(dataRow).getHasEphemeris() ? ' ' : 'E';
+                flags[2] = !sats.get(dataRow).getUsedInFix() ? ' ' : 'U';
                 v.getStatusFlags().setText(new String(flags));
+            }
+        }
+
+        private void setSbasFlag(SatelliteStatus status, ImageView flag) {
+            switch(status.getSbasType()) {
+                case WAAS:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagUsa);
+                    break;
+                case EGNOS:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagEU);
+                    break;
+                case GAGAN:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagIndia);
+                    break;
+                case MSAS:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagJapan);
+                    break;
+                case SDCM:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagRussia);
+                    break;
+                case SNAS:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagChina);
+                    break;
+                case SACCSA:
+                    flag.setVisibility(View.VISIBLE);
+                    flag.setImageDrawable(mFlagICAO);
+                    break;
+                case UNKNOWN:
+                default:
+                    flag.setVisibility(View.INVISIBLE);
             }
         }
     }

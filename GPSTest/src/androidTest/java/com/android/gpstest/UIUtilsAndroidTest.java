@@ -15,14 +15,14 @@
  */
 package com.android.gpstest;
 
-import android.support.test.runner.AndroidJUnit4;
-
 import com.android.gpstest.util.UIUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
+import androidx.test.runner.AndroidJUnit4;
+
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)

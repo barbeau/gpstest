@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Sean J. Barbeau
+ * Copyright (C) 2018 Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest.util;
+package com.android.gpstest.model;
 
 /**
- * Types of Global Navigation Satellite Systems
+ * Types of constellations
  */
-public enum GnssType {
-    NAVSTAR, GLONASS, QZSS, BEIDOU, GALILEO, GAGAN, ANIK, GALAXY_15, INMARSAT_3F2, INMARSAT_3F5, INMARSAT_4F3, SES_5, ASTRA_5B, UNKNOWN
+public enum ConstellationType {
+    GNSS, SBAS
 }

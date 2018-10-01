@@ -13,9 +13,6 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -23,12 +20,16 @@ import android.view.WindowManager;
 
 import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
-import com.android.gpstest.util.GnssType;
+import com.android.gpstest.model.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 /**
 * View that shows satellite positions on a circle representing the sky
@@ -443,7 +444,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         // Change shape based on satellite operator
         GnssType operator;
         if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-            operator = GpsTestUtil.getGnssConstellationType(constellationType, prn);
+            operator = GpsTestUtil.getGnssConstellationType(constellationType);
         } else {
             operator = GpsTestUtil.getGnssType(prn);
         }
@@ -466,38 +467,38 @@ public class GpsSkyView extends View implements GpsTestListener {
                 break;
             case GALILEO:
                 drawTriangle(c, x, y, fillPaint, strokePaint);
-            case GAGAN:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case ANIK:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case GALAXY_15:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_3F2:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_3F5:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case INMARSAT_4F3:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case SES_5:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
-            case ASTRA_5B:
-                // SBAS
-                drawDiamond(c, x, y, fillPaint, strokePaint);
-                break;
+//            case GAGAN:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case ANIK:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case GALAXY_15:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_3F2:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_3F5:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case INMARSAT_4F3:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case SES_5:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
+//            case ASTRA_5B:
+//                // SBAS
+//                drawDiamond(c, x, y, fillPaint, strokePaint);
+//                break;
         }
 
         c.drawText(String.valueOf(prn), x - (int) (SAT_RADIUS * PRN_X_SCALE),

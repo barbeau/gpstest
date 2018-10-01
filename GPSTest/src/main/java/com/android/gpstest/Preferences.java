@@ -27,7 +27,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
+
+import androidx.appcompat.widget.Toolbar;
 
 public class Preferences extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {

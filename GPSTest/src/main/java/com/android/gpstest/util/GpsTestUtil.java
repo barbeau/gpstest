@@ -16,6 +16,7 @@
 
 package com.android.gpstest.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
@@ -25,14 +26,26 @@ import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.LocationManager;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.DilutionOfPrecision;
+import com.android.gpstest.model.GnssType;
+import com.android.gpstest.model.SatelliteName;
+import com.android.gpstest.model.SbasType;
 
 import java.lang.reflect.InvocationTargetException;
+
+import androidx.annotation.RequiresApi;
+
+import static com.android.gpstest.model.GnssType.BEIDOU;
+import static com.android.gpstest.model.GnssType.GALILEO;
+import static com.android.gpstest.model.GnssType.GLONASS;
+import static com.android.gpstest.model.GnssType.NAVSTAR;
+import static com.android.gpstest.model.GnssType.QZSS;
+import static com.android.gpstest.model.GnssType.SBAS;
+import static com.android.gpstest.model.GnssType.UNKNOWN;
 
 public class GpsTestUtil {
 
@@ -56,85 +69,148 @@ public class GpsTestUtil {
     @Deprecated
     public static GnssType getGnssType(int prn) {
         if (prn >= 1 && prn <= 32) {
-            return GnssType.NAVSTAR;
+            return NAVSTAR;
         } else if (prn == 33) {
-            return GnssType.INMARSAT_3F2;
+            return SBAS;
         } else if (prn == 39) {
             // See Issue #205
-            return GnssType.INMARSAT_3F5;
+            return SBAS;
         } else if (prn >= 40 && prn <= 41) {
             // See Issue #92
-            return GnssType.GAGAN;
+            return SBAS;
         } else if (prn == 46) {
-            return GnssType.INMARSAT_4F3;
+            return SBAS;
         } else if (prn == 48) {
-            return GnssType.GALAXY_15;
+            return SBAS;
         } else if (prn == 49) {
-            return GnssType.SES_5;
+            return SBAS;
         } else if (prn == 51) {
-            return GnssType.ANIK;
+            return SBAS;
         } else if (prn >= 65 && prn <= 96) {
             // See Issue #26 for details
-            return GnssType.GLONASS;
+            return GLONASS;
         } else if (prn >= 193 && prn <= 200) {
             // See Issue #54 for details
-            return GnssType.QZSS;
+            return QZSS;
         } else if (prn >= 201 && prn <= 235) {
             // See Issue #54 for details
-            return GnssType.BEIDOU;
+            return BEIDOU;
         } else if (prn >= 301 && prn <= 330) {
             // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
-            return GnssType.GALILEO;
+            return GALILEO;
         } else {
-            return GnssType.UNKNOWN;
+            return UNKNOWN;
         }
     }
 
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the GnssStatus
      * constellation type.  For Android 7.0 and higher.  This is basically a translation to our
-     * own GnssType enumeration that we use for Android 6.0.1 and lower.
+     * own GnssType enumeration that we use for Android 6.0.1 and lower.  Note that
+     * getSbasConstellationType() should be used to get the particular SBAS constellation type
      *
      * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
      *                              method
-     * @param svid identification number provided by the GnssStatus.getSvid() method
      * @return GnssType for the given GnssStatus constellation type
      */
-    public static GnssType getGnssConstellationType(int gnssConstellationType, int svid) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static GnssType getGnssConstellationType(int gnssConstellationType) {
         switch (gnssConstellationType) {
             case GnssStatus.CONSTELLATION_GPS:
-                return GnssType.NAVSTAR;
+                return NAVSTAR;
             case GnssStatus.CONSTELLATION_GLONASS:
-                return GnssType.GLONASS;
+                return GLONASS;
             case GnssStatus.CONSTELLATION_BEIDOU:
-                return GnssType.BEIDOU;
+                return BEIDOU;
             case GnssStatus.CONSTELLATION_QZSS:
-                return GnssType.QZSS;
+                return QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
-                return GnssType.GALILEO;
+                return GALILEO;
             case GnssStatus.CONSTELLATION_SBAS:
-                if (svid == 120) {
-                    return GnssType.INMARSAT_3F2;
-                } else if (svid == 123) {
-                    return GnssType.ASTRA_5B;
-                } else if (svid == 126) {
-                    return GnssType.INMARSAT_3F5;
-                } else if (svid == 127 || svid == 128 || svid == 139) {
-                    return GnssType.GAGAN;
-                } else if (svid == 133) {
-                    return GnssType.INMARSAT_4F3;
-                } else if (svid == 135) {
-                    return GnssType.GALAXY_15;
-                } else if (svid == 136) {
-                    return GnssType.SES_5;
-                } else if (svid == 138) {
-                    return GnssType.ANIK;
-                }
-                return GnssType.UNKNOWN;
+                return SBAS;
             case GnssStatus.CONSTELLATION_UNKNOWN:
-                return GnssType.UNKNOWN;
+                return UNKNOWN;
             default:
-                return GnssType.UNKNOWN;
+                return UNKNOWN;
+        }
+    }
+
+    /**
+     * Returns the SBAS constellation type for a GnssStatus.CONSTELLATION_SBAS satellite given the GnssStatus
+     * svid.  For Android 7.0 and higher.
+     *
+     * @param svid identification number provided by the GnssStatus.getSvid() method
+     * @return SbasType for the given GnssStatus svid for GnssStatus.CONSTELLATION_SBAS satellites
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static SbasType getSbasConstellationType(int svid) {
+        if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
+            return SbasType.EGNOS;
+        } else if (svid == 131 || svid == 133 || svid == 135 || svid == 138) {
+            return SbasType.WAAS;
+        } else if (svid == 127 || svid == 128 || svid == 139) {
+            return SbasType.GAGAN;
+        } else if (svid == 129 || svid == 137) {
+            return SbasType.MSAS;
+        }
+        return SbasType.UNKNOWN;
+    }
+
+    /**
+     * Returns the SBAS constellation type for a satellite for Android 6.0.1 and lower
+     *
+     * @param svid PRN provided by the GpsSatellite.getPrn() method method
+     * @return SbasType for the given GpsSatellite.getPrn() method
+     */
+    @SuppressLint("NewApi")
+    @Deprecated
+    public static SbasType getSbasConstellationTypeLegacy(int svid) {
+        return getSbasConstellationType(svid + 87);
+    }
+
+    /**
+     * Returns the satellite name for a satellite given the constellation type and svid.  For
+     * Android 7.0 and higher.
+     *
+     * @param gnssType constellation type
+     * @param svid identification number
+     * @return SatelliteName for the given constellation type and svid
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static SatelliteName getSatelliteName(GnssType gnssType, int svid) {
+        // TODO - support more satellite names
+        switch (gnssType) {
+            case NAVSTAR:
+                return SatelliteName.UNKNOWN;
+            case GLONASS:
+                return SatelliteName.UNKNOWN;
+            case BEIDOU:
+                return SatelliteName.UNKNOWN;
+            case QZSS:
+                return SatelliteName.UNKNOWN;
+            case GALILEO:
+                return SatelliteName.UNKNOWN;
+            case SBAS:
+                if (svid == 120) {
+                    return SatelliteName.INMARSAT_3F2;
+                } else if (svid == 123) {
+                    return SatelliteName.ASTRA_5B;
+                } else if (svid == 126) {
+                    return SatelliteName.INMARSAT_3F5;
+                } else if (svid == 133) {
+                    return SatelliteName.INMARSAT_4F3;
+                } else if (svid == 135) {
+                    return SatelliteName.GALAXY_15;
+                } else if (svid == 136) {
+                    return SatelliteName.SES_5;
+                } else if (svid == 138) {
+                    return SatelliteName.ANIK;
+                }
+                return SatelliteName.UNKNOWN;
+            case UNKNOWN:
+                return SatelliteName.UNKNOWN;
+            default:
+                return SatelliteName.UNKNOWN;
         }
     }
 
@@ -348,21 +424,18 @@ public class GpsTestUtil {
 
     /**
      * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
-     * frequency in MHz, and obtained from GnssStatus, or null if no carrier frequency label is
-     * found
+     * frequency in MHz, or null if no carrier frequency label is found
      *
-     * @param gnssConstellationType constellation type provided by the GnssStatus.getConstellationType()
-     *                              method
+     * @param gnssType constellation type defined in GnssType
      * @param svid identification number provided by the GnssStatus.getSvid() method
      * @param carrierFrequencyMhz carrier frequency for the signal in MHz
      * @return the label that should be displayed for a given GNSS constellation, svid, and carrier
-     * frequency in MHz, all obtained from GnssStatus, or null if no carrier frequency label is found
+     * frequency in MHz or null if no carrier frequency label is found
      */
-    public static String getCarrierFrequencyLabel(int gnssConstellationType, int svid, float carrierFrequencyMhz) {
+    public static String getCarrierFrequencyLabel(GnssType gnssType, int svid, float carrierFrequencyMhz) {
         final float TOLERANCE_MHZ = 1f;
-        switch (gnssConstellationType) {
-            case GnssStatus.CONSTELLATION_GPS:
-                // GnssType.NAVSTAR
+        switch (gnssType) {
+            case NAVSTAR:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                     return "L1";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6f, TOLERANCE_MHZ)) {
@@ -375,8 +448,7 @@ public class GpsTestUtil {
                     return "L5";
                 }
                 break;
-            case GnssStatus.CONSTELLATION_GLONASS:
-                // GnssType.GLONASS
+            case GLONASS:
                 if (carrierFrequencyMhz >= 1598.0000f && carrierFrequencyMhz <= 1610.000f) {
                     // Actual range is 1598.0625 MHz to 1609.3125, but allow padding for float comparisons - #103
                     return "L1";
@@ -390,8 +462,7 @@ public class GpsTestUtil {
                     return "L5";
                 }
                 break;
-            case GnssStatus.CONSTELLATION_BEIDOU:
-                // GnssType.BEIDOU
+            case BEIDOU:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1561.098f, TOLERANCE_MHZ)) {
                     return "B1";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1589.742f, TOLERANCE_MHZ)) {
@@ -404,8 +475,7 @@ public class GpsTestUtil {
                     return "B3";
                 }
                 break;
-            case GnssStatus.CONSTELLATION_QZSS:
-                // GnssType.QZSS;
+            case QZSS:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                     return "L1";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6f, TOLERANCE_MHZ)) {
@@ -416,8 +486,7 @@ public class GpsTestUtil {
                     return "L6";
                 }
                 break;
-            case GnssStatus.CONSTELLATION_GALILEO:
-                // GnssType.GALILEO;
+            case GALILEO:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                     return "E1";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1191.795f, TOLERANCE_MHZ)) {
@@ -430,7 +499,7 @@ public class GpsTestUtil {
                     return "E6";
                 }
                 break;
-            case GnssStatus.CONSTELLATION_SBAS:
+            case SBAS:
                 if (svid == 120) {
                     // GnssType.INMARSAT_3F2
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
@@ -471,7 +540,7 @@ public class GpsTestUtil {
                     }
                 }
                 break;
-            case GnssStatus.CONSTELLATION_UNKNOWN:
+            case UNKNOWN:
                 break;
             default:
                 break;

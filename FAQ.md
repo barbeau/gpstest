@@ -15,9 +15,20 @@ More details are in the European Global Navigation Satellite System Agency (GSA)
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
-* Various satellite-based augmentation systems (SBAS) (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)
+* Various satellite-based augmentation systems (SBAS):
+    * Wide Area Augmentation System (WAAS) (USA)
+    * European Geostationary Navigation Overlay Service (EGNOS) (European Union)
+    * GPS-aided GEO augmented navigation (GAGAN) (India)
+    * Multi-functional Satellite Augmentation System (MSAS) (Japan)
+    * System for Differential Corrections and Monitoring (SDCM) (Russia)
+    * Satellite Navigation Augmentation System (SNAS) (China)
+    * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
 
 For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
+
+Real-time satellites status:
+* Galileo - https://www.gsc-europa.eu/system-status/Constellation-Information
+* WAAS - http://www.nstb.tc.faa.gov/RT_WaasSatelliteStatus.htm
 
 If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
 

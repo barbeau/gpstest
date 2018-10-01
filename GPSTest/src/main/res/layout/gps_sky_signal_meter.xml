@@ -23,7 +23,7 @@
     android:clipChildren="false">
 
     <!-- Colored C/N0 legend -->
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sky_legend_cn0"
         android:layout_width="@dimen/cn0_meter_width"
         android:layout_height="wrap_content"

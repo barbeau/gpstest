@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,8 @@ import com.android.gpstest.R;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
+
+import androidx.fragment.app.Fragment;
 
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_SNR;
