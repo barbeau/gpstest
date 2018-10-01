@@ -47,8 +47,10 @@ import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -516,9 +518,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
-        updateListVisibility();
-        mGnssAdapter.notifyDataSetChanged();
-        mSbasAdapter.notifyDataSetChanged();
+        refreshViews();
     }
 
     @Deprecated
@@ -565,9 +565,69 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
+        refreshViews();
+    }
+
+    private void refreshViews() {
+        sortLists();
+
         updateListVisibility();
         mGnssAdapter.notifyDataSetChanged();
         mSbasAdapter.notifyDataSetChanged();
+    }
+
+    private void sortLists() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // GNSS, C/N0
+//            mGnssStatus = mGnssStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getGnssType)
+//                            .thenComparing(SatelliteStatus::getCn0DbHz)
+//                    ).collect(Collectors.toList());
+//
+//            mSbasStatus = mSbasStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getGnssType)
+//                            .thenComparing(SatelliteStatus::getCn0DbHz)
+//                    ).collect(Collectors.toList());
+//
+//            // GNSS, SvID
+//            mGnssStatus = mGnssStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getGnssType)
+//                            .thenComparing(SatelliteStatus::getSvid)
+//                    ).collect(Collectors.toList());
+//
+//            mSbasStatus = mSbasStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getGnssType)
+//                            .thenComparing(SatelliteStatus::getSvid)
+//                    ).collect(Collectors.toList());
+
+            // GNSS, Used in fix
+            mGnssStatus = mGnssStatus.stream()
+                    .sorted(Comparator
+                            .comparing(SatelliteStatus::getGnssType)
+                            .thenComparing(SatelliteStatus::getUsedInFix)
+                    ).collect(Collectors.toList());
+
+            mSbasStatus = mSbasStatus.stream()
+                    .sorted(Comparator
+                            .comparing(SatelliteStatus::getGnssType)
+                            .thenComparing(SatelliteStatus::getUsedInFix)
+                    ).collect(Collectors.toList());
+
+//            // SvID
+//            mGnssStatus = mGnssStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getSvid)
+//                    ).collect(Collectors.toList());
+//
+//            mSbasStatus = mSbasStatus.stream()
+//                    .sorted(Comparator
+//                            .comparing(SatelliteStatus::getSvid)
+//                    ).collect(Collectors.toList());
+        }
     }
 
     private void setupUnitPreferences() {

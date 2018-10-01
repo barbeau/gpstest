@@ -19,5 +19,5 @@ package com.android.gpstest.model;
  * Types of Global Navigation Satellite Systems
  */
 public enum GnssType {
-    NAVSTAR, GLONASS, QZSS, BEIDOU, GALILEO, SBAS, UNKNOWN
+    NAVSTAR, GLONASS, GALILEO, QZSS, BEIDOU, SBAS, UNKNOWN
 }
