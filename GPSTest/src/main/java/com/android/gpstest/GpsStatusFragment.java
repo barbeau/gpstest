@@ -101,17 +101,15 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private boolean mNavigating;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia,
-            mFlagCanada, mFlagUnitedKingdom, mFlagLuxembourg, mFlagEU, mFlagICAO;
+            mFlagEU, mFlagICAO;
 
     private boolean mUseLegacyGnssApi = false;
 
     private String mTtff = "";
 
     private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
-    private static final String FEET = Application.get().getString(R.string.preferences_preferred_distance_units_option_feet);
     private static final String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
     private static final String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
-    private static final String MILES_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_miles_per_hour);
 
     String mPrefDistanceUnits;
     String mPrefSpeedUnits;
@@ -157,9 +155,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
         mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
-        mFlagCanada = getResources().getDrawable(R.drawable.ic_flag_canada);
-        mFlagUnitedKingdom = getResources().getDrawable(R.drawable.ic_flag_united_kingdom);
-        mFlagLuxembourg = getResources().getDrawable(R.drawable.ic_flag_luxembourg);
         mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
         mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
 
