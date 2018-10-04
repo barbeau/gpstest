@@ -576,45 +576,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     private void sortLists() {
-            // GNSS, C/N0
-//            mGnssStatus = mGnssStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getCn0DbHz).reversed()
-//                    ).collect(Collectors.toList());
-//
-//            mSbasStatus = mSbasStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getCn0DbHz).reversed()
-//                    ).collect(Collectors.toList());
-//
-//            // GNSS, SvID
-//            mGnssStatus = mGnssStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getSvid)
-//                    ).collect(Collectors.toList());
-//
-//            mSbasStatus = mSbasStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getSvid)
-//                    ).collect(Collectors.toList());
-
-//            // GNSS, Used in fix
-//            mGnssStatus = mGnssStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getUsedInFix)
-//                    ).collect(Collectors.toList());
-//
-//            mSbasStatus = mSbasStatus.stream()
-//                    .sorted(Comparator
-//                            .comparing(SatelliteStatus::getGnssType)
-//                            .thenComparing(SatelliteStatus::getUsedInFix)
-//                    ).collect(Collectors.toList());
-
         // SvID
         mGnssStatus = SortUtil.Companion.sortById(mGnssStatus);
         mSbasStatus = SortUtil.Companion.sortById(mSbasStatus);
