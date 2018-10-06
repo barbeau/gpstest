@@ -16,15 +16,19 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/gps_group">
+        <item android:id="@+id/send_location"
+              android:title="@string/send_location"
+              android:icon="@drawable/social_share"
+              android:orderInCategory="10"
+              app:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/send_location"
-          android:title="@string/send_location"
-          android:icon="@drawable/social_share"
-          app:showAsAction="ifRoom|withText"/>
-
-    <item
-        android:id="@+id/gps_switch_item"
-        android:title="@string/gps_switch"
-          app:showAsAction="ifRoom|withText"
-          app:actionLayout="@layout/gps_switch" />
+        <item
+            android:id="@+id/gps_switch_item"
+            android:title="@string/gps_switch"
+            android:orderInCategory="11"
+              app:showAsAction="ifRoom|withText"
+              app:actionLayout="@layout/gps_switch" />
+    </group>
 </menu>

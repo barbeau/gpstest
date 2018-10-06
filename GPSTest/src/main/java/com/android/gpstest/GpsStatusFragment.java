@@ -30,7 +30,11 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,6 +47,7 @@ import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.SortUtil;
 import com.android.gpstest.util.UIUtils;
 
@@ -51,7 +56,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -298,6 +305,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         setStarted(gta.mStarted);
 
         setupUnitPreferences();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.status_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        if (id == R.id.sort_sats) {
+            showSortByDialog();
+        }
+        return false;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     public void onGpsStarted() {
@@ -576,9 +603,52 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     private void sortLists() {
-        // SvID
-        mGnssStatus = SortUtil.Companion.sortById(mGnssStatus);
-        mSbasStatus = SortUtil.Companion.sortById(mSbasStatus);
+        final int currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences();
+        // Below switch statement order must match arrays.xml sort_sats order
+        switch (currentSatOrder) {
+            case 0:
+                // Sort by Constellation
+                Log.d(TAG, "Sort by Constellation");
+                mGnssStatus = SortUtil.Companion.sortByGnssThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortBySbasThenId(mSbasStatus);
+                break;
+            case 1:
+                // Sort by Carrier Frequency
+                Log.d(TAG, "Sort by Carrier Frequency");
+                mGnssStatus = SortUtil.Companion.sortByCarrierFrequencyThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortByCarrierFrequencyThenId(mSbasStatus);
+                break;
+            case 2:
+                // Sort by Signal Strength
+                Log.d(TAG, "Sort by Signal Strength");
+                mGnssStatus = SortUtil.Companion.sortByCn0(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortByCn0(mSbasStatus);
+                break;
+            case 3:
+                // Sort by Used in Fix
+                Log.d(TAG, "Sort by Used in Fix");
+                mGnssStatus = SortUtil.Companion.sortByUsedThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortByUsedThenId(mSbasStatus);
+                break;
+            case 4:
+                // Sort by Constellation, Carrier Frequency
+                Log.d(TAG, "Sort by Constellation, Carrier Frequency");
+                mGnssStatus = SortUtil.Companion.sortByGnssThenCarrierFrequencyThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortBySbasThenCarrierFrequencyThenId(mSbasStatus);
+                break;
+            case 5:
+                // Sort by Constellation, Signal Strength
+                Log.d(TAG, "Sort by Constellation, Signal Strength");
+                mGnssStatus = SortUtil.Companion.sortByGnssThenCn0ThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortBySbasThenCn0ThenId(mSbasStatus);
+                break;
+            case 6:
+                // Sort by Constellation, Used in Fix
+                Log.d(TAG, "Sort by Constellation, Used in Fix");
+                mGnssStatus = SortUtil.Companion.sortByGnssThenUsedThenId(mGnssStatus);
+                mSbasStatus = SortUtil.Companion.sortBySbasThenUsedThenId(mSbasStatus);
+                break;
+        }
     }
 
     private void setupUnitPreferences() {
@@ -609,6 +679,34 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSbasNotAvailableView.setVisibility(View.VISIBLE);
             mSbasStatusList.setVisibility(View.GONE);
         }
+    }
+
+    private void showSortByDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.menu_option_sort_by);
+
+        final int currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences();
+
+        builder.setSingleChoiceItems(R.array.sort_sats, currentSatOrder,
+                (dialog, index) -> {
+                    setSortByClause(index);
+                    dialog.dismiss();
+                });
+        AlertDialog dialog = builder.create();
+        dialog.setOwnerActivity(getActivity());
+        dialog.show();
+    }
+
+    /**
+     * Saves the "sort by" order to preferences
+     *
+     * @param index the index of R.array.sort_sats that should be set
+     */
+    private void setSortByClause(int index) {
+        final String[] sortOptions = getResources().getStringArray(R.array.sort_sats);
+        PreferenceUtils.saveString(getResources()
+                        .getString(R.string.pref_key_default_sat_sort),
+                        sortOptions[index]);
     }
 
     private class SatelliteStatusAdapter extends RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder> {

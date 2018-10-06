@@ -25,13 +25,6 @@ import com.android.gpstest.model.SatelliteStatus
 class SortUtil {
     companion object {
         /**
-         * Sorts the [list] by the SatelliteStatus svid asc and returns the sorted list
-         */
-        fun sortById(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            return list.sortedWith(compareBy(SatelliteStatus::svid)).toMutableList()
-        }
-
-        /**
          * Sorts the [list] by the SatelliteStatus gnssType then svid asc and returns the sorted list
          */
         fun sortByGnssThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
@@ -55,6 +48,20 @@ class SortUtil {
                 // We don't explicitly sort by ID on M and lower
                 return list.sortedWith(compareByDescending(SatelliteStatus::usedInFix)).toMutableList()
             }
+        }
+
+        /**
+         * Sorts the [list] by the SatelliteStatus C/N0 desc and returns the sorted list
+         */
+        fun sortByCn0(list: List<SatelliteStatus>): List<SatelliteStatus> {
+            return list.sortedWith(compareByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
+        }
+
+        /**
+         * Sorts the [list] by the SatelliteStatus carrier frequency then svid and returns the sorted list
+         */
+        fun sortByCarrierFrequencyThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+            return list.sortedWith(compareBy(SatelliteStatus::carrierFrequencyHz, SatelliteStatus::svid)).toMutableList()
         }
 
         /**
