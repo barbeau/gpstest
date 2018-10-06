@@ -1110,7 +1110,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gps_menu, menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         initGpsSwitch(menu);
         return true;
     }

@@ -17,6 +17,7 @@ package com.android.gpstest.util;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 
 import com.android.gpstest.Application;
@@ -174,5 +175,24 @@ public class PreferenceUtils {
 
     public static float getFloat(String key, float defaultValue) {
         return Application.getPrefs().getFloat(key, defaultValue);
+    }
+
+    /**
+     * Returns the currently selected satellite sort order as the index in R.array.sort_sats
+     *
+     * @return the currently selected satellite sort order as the index in R.array.sort_sats
+     */
+    public static int getSatSortOrderFromPreferences() {
+        Resources r = Application.get().getResources();
+        SharedPreferences settings = Application.getPrefs();
+        String[] sortOptions = r.getStringArray(R.array.sort_sats);
+        String sortPref = settings.getString(r.getString(
+                R.string.pref_key_default_sat_sort), sortOptions[0]);
+        for (int i = 0; i < sortOptions.length; i++) {
+            if (sortPref.equalsIgnoreCase(sortOptions[i])) {
+                return i;
+            }
+        }
+        return 0;  // Default to the first option
     }
 }
