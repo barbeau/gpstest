@@ -30,7 +30,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -603,48 +602,41 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     private void sortLists() {
-        final int currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences();
+        final int sortBy = PreferenceUtils.getSatSortOrderFromPreferences();
         // Below switch statement order must match arrays.xml sort_sats order
-        switch (currentSatOrder) {
+        switch (sortBy) {
             case 0:
                 // Sort by Constellation
-                Log.d(TAG, "Sort by Constellation");
                 mGnssStatus = SortUtil.Companion.sortByGnssThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortBySbasThenId(mSbasStatus);
                 break;
             case 1:
                 // Sort by Carrier Frequency
-                Log.d(TAG, "Sort by Carrier Frequency");
                 mGnssStatus = SortUtil.Companion.sortByCarrierFrequencyThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortByCarrierFrequencyThenId(mSbasStatus);
                 break;
             case 2:
                 // Sort by Signal Strength
-                Log.d(TAG, "Sort by Signal Strength");
                 mGnssStatus = SortUtil.Companion.sortByCn0(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortByCn0(mSbasStatus);
                 break;
             case 3:
                 // Sort by Used in Fix
-                Log.d(TAG, "Sort by Used in Fix");
                 mGnssStatus = SortUtil.Companion.sortByUsedThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortByUsedThenId(mSbasStatus);
                 break;
             case 4:
                 // Sort by Constellation, Carrier Frequency
-                Log.d(TAG, "Sort by Constellation, Carrier Frequency");
                 mGnssStatus = SortUtil.Companion.sortByGnssThenCarrierFrequencyThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortBySbasThenCarrierFrequencyThenId(mSbasStatus);
                 break;
             case 5:
                 // Sort by Constellation, Signal Strength
-                Log.d(TAG, "Sort by Constellation, Signal Strength");
                 mGnssStatus = SortUtil.Companion.sortByGnssThenCn0ThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortBySbasThenCn0ThenId(mSbasStatus);
                 break;
             case 6:
                 // Sort by Constellation, Used in Fix
-                Log.d(TAG, "Sort by Constellation, Used in Fix");
                 mGnssStatus = SortUtil.Companion.sortByGnssThenUsedThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortBySbasThenUsedThenId(mSbasStatus);
                 break;
