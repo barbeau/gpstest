@@ -192,11 +192,14 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Inmarsat 3-F5</b>
-        - Support for this SBAS satellite\n&#8226;\u0020
-        <b>Share multiple location formats</b>
+        <b>Separate GNSS and SBAS lists</b>
+        - SBAS constellations now have their own list in Status. See Sky Legend for details.\n&#8226;\u0020
+        <b>Sortable satellites</b>
+        - Change the order of the Status satellite list\n&#8226;\u0020
         <b>DMS support</b>
         - Use settings to see lat &amp; long in degrees/minutes/seconds\n&#8226;\u0020
+        <b>Configurable speed and distance units</b>
+        - Use settings to change between various metric and imperial units\n&#8226;\u0020
         <b>Share multiple location formats</b>
         - Wikimedia Foundation GeoHack site is now supported\n&#8226;\u0020
         <b>Run-time permissions</b>
