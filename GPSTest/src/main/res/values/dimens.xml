@@ -29,4 +29,12 @@
 
     <dimen name="sky_legend_shape_size">14dp</dimen>
     <dimen name="sky_legend_shape_small_line">5dp</dimen>
+
+    <!-- Below values are only included as placeholders to satisfy #221 MissingDefaultResource
+    in the case where the other values folders for specific widths (values-w240dp, values-w400dp,
+    values-350dp, values-w350dp-v26) don't cover a specific device.  In that case, if we don't
+    include the below defaults it would cause a crash.  To edit these values on the vast majority
+    of devices, see the other values-* folders. -->
+    <dimen name="min_column_width">42dp</dimen>
+    <dimen name="status_text_size">13sp</dimen>
 </resources>
