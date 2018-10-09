@@ -193,21 +193,18 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-		<b>Aparte GNSS and SBAS lijsten</b>
-        - Ondersteuning voorde SBAS satelliet &#8226;\u0020	
-		- SBAS constellatie's hebben nu een eigen lijst in Status. Zie Sky Legend. voor details.\n&#8226;\u0020
-        <b>Deel meerdere locatie formaten</b>	        
-		<b>Sorteerbare Sattelieten</b>
-        -  Verander de volgorde van de satteliet status lijst. \n&#8226;\u0020
-        <b>DMS Ondersteuning</b>	       
-        - Use settings to see lat &amp; long in degrees/minutes/seconds\n&#8226;\u0020	       
-		- Gebruik instellingen om de lat en long te zien in graden/minuten/seconden.\n&#8226;\u0020
+	<b>Aparte GNSS and SBAS lijsten</b>
+	- SBAS constellatie's hebben nu een eigen lijst in Status. Zie Sky Legend. voor details.\n&#8226;\u0020
+	<b>Sorteerbare Sattelieten</b>
+        -  Verander de volgorde van de satteliet status lijst.\n&#8226;\u0020
+        <b>DMS Ondersteuning</b>	             
+	- Gebruik instellingen om de lat en long te zien in graden/minuten/seconden.\n&#8226;\u0020
         <b>Instelbare snelheid en afstand meetwaarden</b>
         - Gebruik instellingen om tussen veschillende metrische en imperiale meetwaarden te wisselen\n&#8226;\u0020
-        <b>Share multiple location formats</b>	
+        <b>Deel meerdere locatie formaten</b>	
         - Wikimedia Foundation GeoHack site is nu ondersteund\n&#8226;\u0020
         <b>Run-time permissies</b>
-		- Bij de eerste keer dat de app wordt opgestart, wordt gevraagd om toestemming te geven.\n&#8226;\u0020
+	- Bij de eerste keer dat de app wordt opgestart, wordt gevraagd om toestemming te geven.\n&#8226;\u0020
         <b>Griekse &amp; Nederlandse vertalingen</b>
         - Bedankt Jim &amp; Dennis!\n&#8226;\u0020
         <b>Bug fixes</b>
