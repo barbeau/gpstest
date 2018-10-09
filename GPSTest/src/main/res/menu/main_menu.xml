@@ -28,7 +28,7 @@
             android:id="@+id/gps_switch_item"
             android:title="@string/gps_switch"
             android:orderInCategory="11"
-              app:showAsAction="ifRoom|withText"
-              app:actionLayout="@layout/gps_switch" />
+            app:showAsAction="always|withText"
+            app:actionLayout="@layout/gps_switch" />
     </group>
 </menu>
