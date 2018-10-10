@@ -81,6 +81,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
         }
+        // Append the version name to the end of aligned APKs
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == "release") {
+                variant.outputs.all { output ->
+                    outputFileName = "${variant.name}-v${variant.versionName}.apk"
+                }
+            }
+        }
     }
 
     compileOptions {
