@@ -20,10 +20,10 @@
     <!-- Status -->
     <string-array name="sort_sats">
         <item>Constellatie</item>
-        <item>Carrier Frequency</item>
+        <item>Carrier frequentie</item>
         <item>Signaal sterkte</item>
         <item>Gebruikt in fix</item>
-        <item>Constellatie, Carrier Frequency</item>
+        <item>Constellatie, Carrier frequentie</item>
         <item>Constellatie, Signaal sterkte </item>
         <item>Constellatie, Gebruikt in fix</item>
     </string-array>
