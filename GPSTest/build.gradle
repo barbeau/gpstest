@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 36
-        versionName "3.2.1"
+        versionCode 37
+        versionName "3.2.2"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -80,6 +80,14 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
             signingConfig signingConfigs.release
+        }
+        // Append the version name to the end of aligned APKs
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == "release") {
+                variant.outputs.all { output ->
+                    outputFileName = "${variant.name}-v${variant.versionName}.apk"
+                }
+            }
         }
     }
 

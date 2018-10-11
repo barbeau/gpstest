@@ -198,9 +198,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private void setStarted(boolean navigating) {
         if (navigating != mNavigating) {
-            if (navigating) {
-
-            } else {
+            if (!navigating) {
                 mLatitudeView.setText(EMPTY_LAT_LONG);
                 mLongitudeView.setText(EMPTY_LAT_LONG);
                 mFixTime = 0;
@@ -218,6 +216,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mHvdopView.setText("");
 
                 mSvCount = 0;
+                mGnssStatus.clear();
+                mSbasStatus.clear();
                 mGnssAdapter.notifyDataSetChanged();
                 mSbasAdapter.notifyDataSetChanged();
             }

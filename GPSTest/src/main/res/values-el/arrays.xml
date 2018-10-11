@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
 ** Copyright 2012-2018, Sean J. Barbeau, Jim
 **
@@ -17,6 +16,17 @@
 */
 -->
 <resources>
+    <!-- Status -->
+    <string-array name="sort_sats">
+        <item>Σχηματισμός</item>
+        <item>Φέρουσα Συχνότητα</item>
+        <item>Ισχύς Σήματος</item>
+        <item>Χρησιμοποιούνται σε κλείδωμα θέσης</item>
+        <item>Σχηματισμός, φέρουσα συχνότητα</item>
+        <item>Σχηματισμός, ισχύς σήματος</item>
+        <item>Σχηματισμός, χρησιμοποιείται σε κλείδωμα θέσης</item>
+    </string-array>
+
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
         <item>Προβολή Χάρτη</item>
