@@ -27,7 +27,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Hulp data importeren</string>
-    <string name="force_xtra_injection">XTRA data importeren </string>
+    <string name="force_xtra_injection">XTRA data importeren</string>
     <string name="force_time_injection">Time data importeren</string>
     <string name="delete_aiding_data">Verwijder hulp data</string>
     <string name="navdrawer_item_settings">Instellingen</string>
@@ -42,17 +42,17 @@
     <string name="gps_start">Start</string>
     <string name="gps_pause">Pauzeer</string>
 
-    <string name="delete_aiding_data_success">GPS Hulp data succesvol verwijderd</string>
+    <string name="delete_aiding_data_success">GPS hulp data succesvol verwijderd</string>
     <string name="delete_aiding_data_failure">Het apparaat ondersteund het verwijderen van hulp data niet</string>
     <string name="gps_switch">Aan/uit</string>
     <string name="send_location">Verzend locatie</string>
     <string name="set_fix_frequency">Fix frequentie instellen </string>
-    <string name="force_time_injection_success">Tijd data succesvol ingeladen.</string>
-    <string name="force_time_injection_failure">Apparaat ondersteund geen importatie van tijd data.
+    <string name="force_time_injection_success">Tijd data succesvol ingeladen</string>
+    <string name="force_time_injection_failure">Apparaat ondersteund het importeren van tijd data niet.
     </string>
 
     <string name="force_xtra_injection_success">XTRA data succesvol ingeladen</string>
-    <string name="force_xtra_injection_failure">Apparaat ondersteund geen importatie van XTRA data.
+    <string name="force_xtra_injection_failure">Apparaat ondersteund het importeren van XTRA data niet .
     </string>
 
     <string name="zoom_in">Zoom In</string>
@@ -92,7 +92,7 @@
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
     <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
-    <string name="gps_num_sats_label"># Sats:</string>
+    <string name="gps_num_sats_label">#Sats:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
@@ -122,11 +122,11 @@
     
     <string name="clear_assist_warning_title">Verwijder hulp data?</string>
     <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulp data automatisch te herladen. Als jouw apparaat handmatige invoer niet ondersteund, zal GPS bij geen enkele andere app meer werken voordat dit voltooid is. Weet je het zeker??</string>
-    <string name="never_ask_again">Niet meer vragen.</string>
+    <string name="never_ask_again">Niet meer vragen</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
-	<string name="gnss_not_available">Global Navigation Satellite System (GNSS) sattelieten niet beschikbaar</string>
-    <string name="sbas_not_available">Satellite-based Augmentation System (SBAS)  sattelieten niet beschikbaar</string>	    
+	<string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellieten niet beschikbaar</string>
+    <string name="sbas_not_available">Satellite-based Augmentation System (SBAS)  satellieten niet beschikbaar</string>	    
     <string name="menu_option_sort_by">Sortering</string>
 
     <!-- Sky view -->
@@ -168,43 +168,43 @@
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider of locatie is uitgeschakeld, geen updates totdat het is ingeschakeld</string>
-    <string name="gnss_nav_msg_status_not_supported">Het apparaat ondersteund geen tracking met GNSS Navigation Messages</string>
+    <string name="gnss_nav_msg_status_not_supported">Het apparaat ondersteund geen tracking met GNSS Navigatie Berichten</string>
     <string name="gnss_nav_msg_status_ready">GNSS Navigation Messages worden succesvol gevolgd</string>
 
     <string name="gnss_measurement_status_loc_disabled">GNSS provider of locatie is uitgeschakeld, geen updates totdat het is ingeschakeld</string>
-    <string name="gnss_measurement_status_not_supported">Het apparaat ondersteund geen tracking met GNSS Measurements</string>
-    <string name="gnss_measurement_status_ready">GNSS Measurements worden succesvol gevolgd.</string>
+    <string name="gnss_measurement_status_not_supported">Het apparaat ondersteund geen tracking met GNSS metingen</string>
+    <string name="gnss_measurement_status_ready">GNSS metingen worden succesvol gevolgd</string>
 
     <string name="gnss_status_unknown">Onbekende status ontvangen</string>
 
     <!-- Permissions -->
     <string name="title_location_permission">Locatie permissie vereist!</string>
-    <string name="text_location_permission">GPSTest heeft toegang nodig tot jouw locatie om GNSS data te tonen.</string>
+    <string name="text_location_permission">GPSTest heeft toegang nodig tot jouw locatie om GNSS data te tonen</string>
     <string name="second_text_location_permission"> Als je \"Nooit meer vragen"\ selecteert , moet je de app opnieuw installeren of toegang geven via de systeem instellingen. </string>
-    <string name="ok">OK</string>
+    <string name="ok">Oke</string>
     <string name="exit">Afsluiten</string>
 
 	
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complimenten, kudo\'s of bug reports zijn welkom!\n\n\n</string>
-    <string name="feedback_error">Kan geen feedback verzenden. Geen geschikte applicatie gevonden.</string>
+    <string name="feedback_error">Kan geen feedback verzenden. Geen geschikte applicatie gevonden</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
 	<b>Aparte GNSS and SBAS lijsten</b>
-	- SBAS constellatie\'s hebben nu een eigen lijst in Status. Zie Sky Legend. voor details.\n&#8226;\u0020
-	<b>Sorteerbare Sattelieten</b>
-        -  Verander de volgorde van de satteliet status lijst.\n&#8226;\u0020
-        <b>DMS Ondersteuning</b>	             
-	- Gebruik instellingen om de lat en long te zien in graden/minuten/seconden.\n&#8226;\u0020
-        <b>Instelbare snelheid en afstand meetwaarden</b>
-        - Gebruik instellingen om tussen veschillende metrische en imperiale meetwaarden te wisselen\n&#8226;\u0020
-        <b>Deel meerdere locatie formaten</b>	
-        - Wikimedia Foundation GeoHack site is nu ondersteund\n&#8226;\u0020
+	- SBAS constellaties hebben nu een eigen lijst in status. Zie de hemel legenda voor meer details\n&#8226;\u0020
+	<b>Sorteerbare satellieten</b>
+    -  Verander de volgorde van de satelliet status lijst\n&#8226;\u0020
+    <b>DMS Ondersteuning</b>	             
+	- Gebruik instellingen om de hoogte- en breedtegraad te zien in graden/minuten/seconden\n&#8226;\u0020
+    <b>Instelbare snelheid en afstand meetwaarden</b>
+    - Gebruik instellingen om tussen verschillende metrische en imperiale meetwaarden te wisselen\n&#8226;\u0020
+    <b>Deel meerdere locatie formaten</b>	
+        - Wikimedia Foundation GeoHack site wordt nu ondersteund\n&#8226;\u0020
         <b>Run-time permissies</b>
-	- Bij de eerste keer dat de app wordt opgestart, wordt gevraagd om toestemming te geven.\n&#8226;\u0020
+		- Tijdens de eerste keer opstarten van de app, wordt gevraagd om toestemming te geven voor GPS gebruik\n&#8226;\u0020
         <b>Griekse &amp; Nederlandse vertalingen</b>
         - Bedankt Jim &amp; Dennis!\n&#8226;\u0020
         <b>Bug fixes</b>
@@ -215,8 +215,8 @@
     <!-- Preferences -->
     <string name="pref_title">Instellingen</string>
     <string name="pref_map_category_title">Kaart</string>
-    <string name="pref_map_type_title">Kaart Type</string>
-    <string name="pref_map_type_summary">Stel het type kaart in</string>
+    <string name="pref_map_type_title">Kaart type</string>
+    <string name="pref_map_type_summary">Stel het kaart type in</string>
     <string name="pref_map_type_dialog_title">Kies het type kaart</string>
 
     <string name="pref_rotate_map_with_compass_title">Draai de kaart met het kompas</string>
@@ -234,17 +234,17 @@
     <string name="pref_gps_min_time_dialog_title">Vul een interval in, in seconden</string>
     <string name="pref_gps_min_time_invalid_entry">Interval moet een nummer zijn</string>
 
-    <string name="pref_use_gnss_apis_title">Gebruik van GNSS APIs</string>
-    <string name="pref_use_gnss_apis_summary">Beschikbaar op Android 7.0 en Hoger. Als hij niet aangevinkt is wordt de legacy GPSStatus.Listener gebruikt.
+    <string name="pref_use_gnss_apis_title">Gebruik van GNSS API\'s</string>
+    <string name="pref_use_gnss_apis_summary">Beschikbaar op Android 7.0 en hoger. Als hij niet aangevinkt is wordt de legacy GPSStatus.Listener gebruikt.
     </string>
 
     <string name="pref_gps_min_distance_title">Min. afstand</string>
     <string name="pref_gps_min_distance_summary">Minimale afstand tussen GNSS fixes, in meters
     </string>
     <string name="pref_gps_min_distance_dialog_title">Vul een min. afstand in, in meters</string>
-    <string name="pref_gps_min_distance_invalid_entry">de minimale afstand moet een nummer zijn.</string>
+    <string name="pref_gps_min_distance_invalid_entry">de minimale afstand moet een nummer zijn</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analyseer GNSS Accuratie</string>
+    <string name="pref_analyze_gps_accuracy_title">Analyseer GNSS nauwkeurigheid</string>
     <string name="pref_analyze_gps_accuracy_summary">Gebruik GPStest om GNSS fouten te meten
     </string>
 
@@ -252,7 +252,7 @@
     <string name="pref_keep_screen_on_title">Houd aan </string>
     <string name="pref_keep_screen_on_summary">Voorkom dat het scherm uitschakelt</string>
     <string name="pref_true_north_title">Kompas op echte noorden</string>
-    <string name="pref_true_north_summary"> Het kompas zal op het \'echte noorden\' richten inplaats van het magnetische noorden </string>
+    <string name="pref_true_north_summary">Het kompas zal op het \'echte noorden\' richten inplaats van het magnetische noorden </string>
 
     <string name="pref_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
@@ -260,7 +260,7 @@
     <string name="pref_nmea_timestamp_output_title">NMEA tijdstempel</string>
     <string name="pref_nmea_timestamp_output_summary">Voeg de NMEA tijdstempel toe in de output</string>
     <string name="pref_measurement_output_title">Meetwaarden</string>
-    <string name="pref_measurement_output_summary">logt GNSS meetwaarden naar Android Studio (Android
+    <string name="pref_measurement_output_summary">Logt GNSS meetwaarden naar Android Studio (Android
         7.0 en hoger)
     </string>
     <string name="pref_navigation_message_output_title">Navigatie berichten</string>
@@ -269,18 +269,18 @@
     </string>
 
     <string name="pref_about_category_title">Over</string>
-    <string name="pref_show_tutorial_title">Bekijk tutorial</string>
+    <string name="pref_show_tutorial_title">Bekijk handleiding</string>
     <string name="pref_show_tutorial_summary">Toon instructies over het gebruik van deze app</string>
 
     <string name="pref_dark_theme_title">Gebruik het donkere thema</string>
-    <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de text een lichte kleur.
+    <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de tekst een lichte kleur.
 	</string>
     <string name="pref_dms_mode_title">Gebruik DMS formaat</string>
     <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden inplaats van decimale graden</string>
-	<string name="preferences_preferred_distance_units_title">Voorkeurs afstands eenheden</string>
+	<string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
     <string name="preferences_preferred_distance_units_option_feet">Voet</string>
-    <string name="preferences_preferred_speed_units_title">Voorkeurs snelheids eenheden</string>
+    <string name="preferences_preferred_speed_units_title">Voorkeurs snelheidseenheden</string>
     <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per seconden</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per uur</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Mijlen per uur</string>
@@ -292,10 +292,10 @@
     <string name="title_help">Help</string>
 
     <string name="help_text">
-        <b>Veelgestelde vragen(FAQ)</b>
+        <b>Veel gestelde vragen(FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
-        <b>*** Status Weergave ***</b>\n\n&#8226;\u0020
+        <b>*** Status weergave - uitleg ***</b>\n\n&#8226;\u0020
         <b>Breedtegraad</b>
         - In decimale graden (WGS 84)\n&#8226;\u0020
         <b>Lengtegraad</b>
@@ -305,19 +305,19 @@
         <b>Hoogte (NAP)</b>
         - Meters boven het Normaal Amsterdams Pijl(Vereist NMEA ondersteuning)\n&#8226;\u0020
         <b>Acc</b>
-		- Geschatte horizontale accuratie van de locatie(Radius in meters met 68% zekerheid). In andere woorden, als je een cirkel tekent in het midden van deze breedte- en lengtegraad , met een radius gelijk aan deze accuratie, dan is er een kans van 68% dat de daadwerkelijke locatie zich binnen deze cirkel bevind.\n&#8226;\u0020
+		- Geschatte horizontale nauwkeurigheid van de locatie(Radius in meters met 68% zekerheid). In andere woorden, als je een cirkel tekent in het midden van deze breedte- en lengtegraad , met een radius gelijk aan deze nauwkeurigheid, dan is er een kans van 68% dat de daadwerkelijke locatie zich binnen deze cirkel bevind.\n&#8226;\u0020
         <b>H/V Acc</b>
 		- De geschatte horizontale en verticale nauwkeurigheid van de locatie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Acc hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 Oreo en hoger. Verticaal nauwkeurigheidsvoorbeeld - als Alt 150 is en V Acc 20 is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt.\n&#8226;\u0020
         <b>Snelheid</b>
         - Snelheid, in meters/seconde over de grond\n&#8226;\u0020
         <b>S. Acc</b>
-		- Geschatte snelheidsnauwkeurigheid van deze locatie met 68% zekerheid, in meter per seconde. Als Snelheid bijvoorbeeld 5 is en Snelheid Acc 1 is, is er een kans van 68% dat de werkelijke snelheid tussen 4 en 6 meter per seconde ligt.\n&#8226;\u0020
+		- Geschatte snelheidsnauwkeurigheid van deze locatie met 68% zekerheid, in meter per seconde. Als snelheid bijvoorbeeld 5 is en Snelheid Acc 1 is, is er een kans van 68% dat de werkelijke snelheid tussen 4 en 6 meter per seconde ligt.\n&#8226;\u0020
         <b>Bearing</b>
 		- De horizontale rijrichting van het apparaat (in graden 0-360) en is niet gerelateerd aan de richting van het apparaat.\n&#8226;\u0020
         <b>B. Acc</b>
-        - Estimated bearing accuracy of this location at 68% confidence, in degrees. For example, if Bearing is 60, and Bearing Acc is 10, then there is a 68% probability of the true bearing being between 50 and 70 degrees.\n&#8226;\u0020
-        <b># Sats</b>
-        - # satelietten gebruikt in de fix / # satellieten in zicht\n&#8226;\u0020
+        - Geschatte bearing van deze locatie bij 68% zekerheid, in graden. Als bijvoorbeeld de bearing 60 is en bearing Acc 10, dan is er een zekerheid van 68% dat het ware peil tussen 50 en 70 graden ligt. \n&#8226;\u0020
+        <b>#Sats</b>
+        -  Aantal satellietten gebruikt in de fix / Aantal satellieten in zicht\n&#8226;\u0020
         <b>PDOP</b>
         - Positie (3D) dilution of precision (vereist NMEA ondersteuning)\n&#8226;\u0020
         <b>H/V DOP</b>
@@ -336,7 +336,7 @@
         - (E) als het apparaat efemeride-gegevens voor de satelliet heeft, (A) als het apparaat almanakgegevens heeft
          voor de satelliet, (U) als de satelliet werd gebruikt in de nieuwste fix\n\n
 
-        <b>*** Lucht Weergave ***</b>\n\n&#8226;\u0020
+        <b>*** Hemel weergave - Uitleg ***</b>\n\n&#8226;\u0020
         <b>GPS (VS Navstar)</b>
         - Cirkels\n&#8226;\u0020
         <b>GLONASS (Rusland)</b>
@@ -350,16 +350,16 @@
         <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)</b>
         - Diamanten\n\n
 
-        &#8226;\u0020 Transparente satelietten - niet in zicht\n
+        &#8226;\u0020 Transparante satellieten  - niet in zicht\n
         &#8226;\u0020 Dunne belijning - In zicht maar niet gebruikt in fix\n
-        &#8226;\u0020 Bold outline - In zicht en in fix\n\n
+        &#8226;\u0020 Dikke belijning - In zicht en in fix\n\n
 
-        &#8226;\u0020 Verwachtte SNR reeks is 0 dB (rood) tot 30 dB (groen) op Android versies lager dan 7.0. \n
+        &#8226;\u0020 Verwachtte SNR reeks is  0 dB (rood) tot 30 dB (groen) op Android versies lager dan 7.0. \n
         &#8226;\u0020 Verwachtte SNR reeks is 10 dB (rood) tot 45 dB (groen) op Android 7.0 en hoger. \n
         &#8226;\u0020 Verwachtte C/N0 reeks is 10 dB-Hz (rood) tot 45 dB-Hz (groen) op Android 7.0 en hoger. \n
-        &#8226;\u0020 Als er geen SNR of C/N0 waarde is voor een satelliet (bijv., Hij is niet in zicht van het apparaat), zal hij een transparantie licht grijze kleur hebben.\n\n
+        &#8226;\u0020 Als er geen SNR of C/N0 waarde is voor een satelliet (bijv. Hij is niet in zicht van het apparaat), zal hij een transparante licht grijze kleur hebben.\n\n
 
-         <b>*** Acknowledgments ***</b>\n\n
+         <b>*** Acknowledgements ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
         &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
