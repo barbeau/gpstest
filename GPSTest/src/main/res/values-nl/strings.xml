@@ -234,7 +234,7 @@
     <string name="pref_gps_min_time_dialog_title">Vul een interval in, in seconden</string>
     <string name="pref_gps_min_time_invalid_entry">Interval moet een nummer zijn</string>
 
-    <string name="pref_use_gnss_apis_title">Gebruik van GNSS API's</string>
+    <string name="pref_use_gnss_apis_title">Gebruik van GNSS API\'s</string>
     <string name="pref_use_gnss_apis_summary">Beschikbaar op Android 7.0 en hoger. Als hij niet aangevinkt is wordt de legacy GPSStatus.Listener gebruikt.
     </string>
 
