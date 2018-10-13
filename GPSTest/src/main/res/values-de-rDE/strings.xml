@@ -52,22 +52,31 @@
     <string name="mode_satellite">Satellit</string>
     <string name="gps_latitude_label">Breite:</string>
     <string name="gps_latitude_value">%1$.7f\u00b0</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00b0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Länge:</string>
     <string name="gps_longitude_value">%1$.7f\u00b0</string>
     <string name="gps_fix_time_label">Zeit:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Höhe:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Höhe (MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V-Acc:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">v:</string>
     <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">v-Acc:</string>
     <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">Kurs:</string>
     <string name="gps_bearing_value">%1$.1f\u00b0</string>
     <string name="gps_bearing_acc_label">Kurs-Acc:</string>
@@ -80,6 +89,7 @@
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N\u2080</string>
@@ -89,7 +99,7 @@
     <string name="gps_azimuth_column_label">Azim</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00b0</string>
     <string name="gps_flags_column_label">Flags</string>
-    <string name="gps_not_supported">GPS wird nicht unterstützt.</string>
+    <string name="gps_not_supported">Bitte die Systemeinstellungen kontrollieren. das Gerät scheint GNSS/GPS nicht zu unterstützen.</string>
     <string name="install">Installieren</string>
     <string name="no_thanks">Nein danke</string>
     <string name="please_install_google_maps">Die Kartenansicht benötigt Google Maps.</string>
@@ -102,6 +112,9 @@
     <string name="never_ask_again">Nicht noch einmal fragen</string>
     <string name="yes">JA</string>
     <string name="no">NEIN</string>
+    <string name="gnss_not_available">Satelliten des Globalen Navigationssatellitensystems (GNSS) nicht verfügbar</string>
+    <string name="sbas_not_available">Satelliten des Satellitenbasierten Ergänzungssystems (SBAS) nicht verfügbar</string>
+    <string name="menu_option_sort_by">Sortiert nach</string>
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
     <string name="sky_legend_cn0_low_middle">18</string>
@@ -121,9 +134,15 @@
     <string name="sky_legend_shape_glonass">GLONASS (Russland)</string>
     <string name="sky_legend_shape_galileo">Galileo (Europäische Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
-    <string name="sky_legend_shape_sbas_title">Satellitenbasierte Ergänzungssysteme (SBAS)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
+    <string name="sky_legend_shape_sbas_title">Satellitenbasierte Ergänzungssysteme (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (Europäische Union)</string>
     <string name="sky_legend_shape_gagan">GAGAN (Indien)</string>
+    <string name="sky_legend_shape_msas">MSAS (Japan)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (Russland)</string>
+    <string name="sky_legend_shape_snas">SNAS (China)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
     <string name="sky_legend_shape_availability_title">Signalverfügbarkeit</string>
     <string name="sky_legend_shape_not_in_view">Nicht im Sichtfeld des Gerätes</string>
     <string name="sky_legend_shape_in_view">Im Sichtfeld des Gerätes</string>
@@ -136,13 +155,18 @@
     <string name="gnss_measurement_status_not_supported">Das Gerät unterstützt nicht die Aufzeichnung von GNSS-Messungen</string>
     <string name="gnss_measurement_status_ready">GNSS-Messungen erfolgreich aufgezeichnet</string>
     <string name="gnss_status_unknown">Unbekannter Status</string>
+    <!-- Permissions -->
+    <string name="title_location_permission">Standortzugriff wird benötigt</string>
+    <string name="text_location_permission">GPSTest benötigt den Standortzugriff, um GNSS-Daten anzeigen zu können. Wenn der Zugriff mit der Option \"Nicht mehr fragen\" abgelehnt wurde, muss entweder die App neu installiert werden oder das Recht manuell in den Systemeinstellungen gewährt werden.</string>
+    <string name="ok">OK</string>
+    <string name="exit">BEENDEN</string>
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Beschwerden, Lob oder Fehlerberichte sind willkommen!\n\n\n</string>
     <string name="feedback_error">Feedback kann nicht gesendet werden, da keine geeignete App gefunden wurde.</string>
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
-    <string name="main_help_whatsnew">&#8226; <b>Feedback senden</b>\n - Nutze diese Men\u00fcoption, um Fragen zu stellen oder Probleme zu melden\n\n&#8226; <b>Neue Satellitensymbole f\u00fcr QZSS und SBAS</b>\n - Siehe aktualisierte Satellitensymbole in der Legende der Himmelsansicht\n\n&#8226; <b>Unterst\u00fctzung f\u00fcr SBAS Astra 5B</b>\n - Nun in der Status- und Himmelsansicht sichtbar\n\n&#8226; <b>Chinesische &amp; deutsche \u00dcbersetzungen</b>\n - Vielen Dank an wangkf &amp; SIRSteiner!\n\n&#8226; <b>Fehlerbehebungen</b>\n - Siehe http://bit.ly/gpstest-releases</string>
+    <string name="main_help_whatsnew">&#8226; <b>Separate GNSS- und SBAS-Liste</b>\n - SBAS hat nun eine eigene Statusliste. Siehe Legende in der Himmelsansicht f\u00fcr Details.\n\n&#8226; <b>Satelliten sortierbar</b>\n - Satelliten in der Statusliste sortierbar\n\n&#8226; <b>Unterst\u00fctzung f\u00fcr Sexagesimal-Anzeige</b>\n - Breite und L\u00e4nge k\u00f6nnen in Grad, Minuten und Sekunden angezeigt werden. Siehe Einstellungen.\n\n&#8226; <b>Einheiten f\u00fcr Geschwindigkeit und Entfernung einstellbar</b>\n - In den Einstellungen k\u00f6nnen verschiedene metrische und imperiale Einheiten gew\u00e4hlt werden\n\n&#8226; <b>Teilen mehrerer Standortformate</b>\n - Wikimedia Foundation GeoHack wird nun unterst\u00fctzt\n\n&#8226; <b>Rechteabfrage</b>\n - Beim ersten Start der App wird nach Zugriffsrechten gefragt.\n\n&#8226; <b>Griechische &amp; holl\u00e4ndische \u00dcbersetzungen</b>\n - Vielen Dank Jim &amp; Dennis!\n\n&#8226; <b>Fehlerbehebungen</b>\n - Siehe http://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Schließen</string>
     <!-- Preferences -->
     <string name="pref_title">Einstellungen</string>
@@ -188,7 +212,31 @@
     <string name="pref_show_tutorial_summary">Zeigt eine Anleitung zur Bedienung dieser App an</string>
     <string name="pref_dark_theme_title">Dunkles Theme verwenden</string>
     <string name="pref_dark_theme_summary">Stellt den Hintergrund in einer dunklen Farbe und den Text in einer hellen Farbe dar</string>
+    <string name="pref_dms_mode_title">Sexagesimal-Format verwenden</string>
+    <string name="pref_dms_mode_summary">Breite und Länge in Grad, Minuten und Sekunden statt dezimal anzeigen</string>
+    <string name="preferences_preferred_distance_units_title">Bevorzugte Entfernungseinheit</string>
+    <string name="preferences_preferred_distance_units_option_meters">Meter</string>
+    <string name="preferences_preferred_distance_units_option_feet">Fuß</string>
+    <string name="preferences_preferred_speed_units_title">Bevorzugte Einheit der Geschwindigkeit</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meter pro Sekunde</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometer pro Stunde</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Meilen pro Stunde</string>
+    <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
     <!-- Help -->
     <string name="title_help">Hilfe</string>
-    <string name="help_text"><b>H\u00e4ufig gestellte Fragen (FAQ)</b>\n https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n\n<b>*** Status ***</b>\n\n&#8226; <b>Breite/L\u00e4nge</b>\nKoordinaten der Position in Dezimalgrad (WGS 84)\n\n&#8226; <b>H\u00f6he</b>\nMeter \u00fcber den WGS 84 Ellipsoid\n\n&#8226; <b>H\u00f6he (MSL)</b>\nMeter \u00fcber den mittleren Meeresspiegel (ben\u00f6tigt NMEA-Support)\n\n&#8226; <b>Acc</b>\nGesch\u00e4tzte horizontale Genauigkeit des Standortes (Radius in Meter mit 68% Wahrscheinlichkeit). Mit anderen Worten: Wenn Du einen Kreis mit dem angegebenen Radius um den Standort zeichnest, dann besteht eine Wahrscheinlichkeit von 68%, dass sich der reale Standort innerhalb des Kreises befindet.\n\n&#8226; <b>H/V-Acc</b>\nHorizontale und vertikale Genauigkeit des Standortes mit 68% Wahrscheinlichkeit. Die horizontale Genauigkeit ist definiert wie im vorherigen Acc-Feld. Die vertikale Genauigkeit ist ab Android 8.0 verf\u00fcgbar. Beispiel: Wenn Alt = 150 m und V-Acc = 20, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale H\u00f6he zwischen 130 m und 170 m liegt.\n\n&#8226; <b>v</b>\nGeschwindigkeit in m/s\n\n&#8226; <b>v-Acc</b>\nGesch\u00e4tzte Genauigkeit der Geschwindigkeit mit 68% Wahrscheinlichkeit in m/s. Beispiel: Wenn v = 5 m/s und v-Acc = 1 m/s, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale Geschwindigkeit zwischen 4 m/s und 6 m/s liegt.\n\n&#8226; <b>Kurs</b>\nDie horizontale Bewegungsrichtung des Ger\u00e4tes in Grad unabh\u00e4ngig der Ger\u00e4telage.\n\n&#8226; <b>Kurs-Acc</b>\nGesch\u00e4tzte Genauigkeit des Kurses mit 68% Wahrscheinlichkeit in Grad. Beispiel: Wenn der Kurs 60\u00B0 und Kurs-Acc 10\u00B0 betragen, dann besteht eine 68%ige Wahrscheinlichkeit, dass der reale Kurs zwischen 50\u00B0 und 70\u00B0 liegt.\n\n&#8226; <b># Sats</b>\nAnzahl der Satelliten a/b, wobei a die Anzahl der Satelliten mit Fix und b die Satelliten im Sichtfeld sind\n\n&#8226; <b>PDOP</b>\n3D-Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit\n\n&#8226; <b>H/V-DOP</b>\nHorizontale / vertikale Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit\n\n&#8226; <b>TTFF</b>\nTime to first fix, Zeit bis zum ersten Fix\n\n&#8226; <b>ID</b>\nKennung des Satelliten (bei GPS entspricht dies der PRN-Nummer)\n\n&#8226; <b>CF</b>\nTr\u00e4gerkennung (z.B. \"L1\") des empfangenen Signals. Bei einer unbekannten Frequenz wird statt der Kennung die Frequenz in MHz angezeigt (verf\u00fcgbar ab Android 8.0, wird nicht von jedem Ger\u00e4t unterst\u00fctzt)\n\n&#8226; <b>SNR</b>\nSignal-Rausch-Verh\u00e4ltnis auch Rauschabstand genannt (verf\u00fcgbar bis Android 6), Details siehe http://bit.ly/SNR-CN0\n\n&#8226; <b>C/N\u2080</b>\nVerh\u00e4ltnis von Tr\u00e4ger- und Rauschleistung (verf\u00fcgbar ab Android 7), Details siehe http://bit.ly/SNR-CN0\n\n&#8226; <b>Flags</b>\nE=Ephemeridendaten des Satelliten vorhanden\nA=Almanachdaten des Satelliten vorhanden\nU=Dieser Satellit wurde beim letzten Fix verwendet\n\n\n<b>*** Himmel-Ansicht ***</b>\n\n&#8226; <b>GPS (USA Navstar)</b>\nSymbol: Kreise\n\n&#8226; <b>GLONASS (Russland)</b>\nSymbol: Quadrate\n\n&#8226; <b>Galileo (Europ\u00e4ische Union)</b>\nSymbol: Dreiecke\n\n&#8226; <b>QZSS (Japan)</b>\nSymbol: Sechsecke\n\n&#8226; <b>BeiDou/COMPASS (China)</b>\nSymbol: F\u00fcnfecke\n\n&#8226; <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)</b>\nSymbol: Karos\n\n\n&#8226; Transparente Satellitensymbole: nicht im Sichtfeld\n\n&#8226; Satellitensymbole mit d\u00fcnnem Umriss: im Sichtfeld aber beim Fix nicht verwendet\n\n&#8226; Satellitensymbole mit fettem Umriss: beim Fix verwendet\n\n\n&#8226; Der zu erwartende SNR-Bereich liegt zwischen 0 dB (rot) und 30 dB (gr\u00fcn) bei Android-Versionen vor 7.0 \n\n&#8226; Der zu erwartende SNR-Bereich liegt zwischen 10 dB (rot) und 45 dB (gr\u00fcn) ab Android 7.0 \n\n&#8226; Der zu erwartende C/N\u2080-Bereich liegt zwischen 10 dB-Hz (rot) und 45 dB-Hz (gr\u00fcn) ab Android 7.0 \n\n&#8226; Sind weder SNR- noch C/N\u2080-Werte f\u00fcr einen Satelliten vorhanden (z.B. wenn er sich nicht im Sichtfeld des Ger\u00e4tes befindet), wird er in heller transparenter grauer Farbe dargestellt.\n\n\n<b>*** Danksagungen ***</b>\n\n&#8226; <b>Mike Lockwood</b>\nurspr\u00fcnglicher Entwickler f\u00fcr Version 1.x\n\n&#8226; <b>Sean Barbeau</b>\nEntwickler der Versionen ab 2.0\n\n&#8226; <b>Ronny Steiner</b>\ndeutsche \u00dcbersetzung\n</string>
+    <string name="help_text"><b>H\u00e4ufig gestellte Fragen (FAQ)</b>\n https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n\n<b>*** Status ***</b>\n\n&#8226; <b>Breite/L\u00e4nge</b>\nKoordinaten der Position in Dezimalgrad (WGS 84)\n\n&#8226; <b>H\u00f6he</b>\nMeter \u00fcber den WGS 84 Ellipsoid\n\n&#8226; <b>H\u00f6he (MSL)</b>\nMeter \u00fcber den mittleren Meeresspiegel (ben\u00f6tigt NMEA-Support)\n\n&#8226; <b>Acc</b>\nGesch\u00e4tzte horizontale Genauigkeit des Standortes (Radius in Meter mit 68% Wahrscheinlichkeit). Mit anderen Worten: Wenn Du einen Kreis mit dem angegebenen Radius um den Standort zeichnest, dann besteht eine Wahrscheinlichkeit von 68%, dass sich der reale Standort innerhalb des Kreises befindet.\n\n&#8226; <b>H/V-Acc</b>\nHorizontale und vertikale Genauigkeit des Standortes mit 68% Wahrscheinlichkeit. Die horizontale Genauigkeit ist definiert wie im vorherigen Acc-Feld. Die vertikale Genauigkeit ist ab Android 8.0 verf\u00fcgbar. Beispiel: Wenn Alt = 150 m und V-Acc = 20, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale H\u00f6he zwischen 130 m und 170 m liegt.\n\n&#8226; <b>v</b>\nGeschwindigkeit in m/s\n\n&#8226; <b>v-Acc</b>\nGesch\u00e4tzte Genauigkeit der Geschwindigkeit mit 68% Wahrscheinlichkeit in m/s. Beispiel: Wenn v = 5 m/s und v-Acc = 1 m/s, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale Geschwindigkeit zwischen 4 m/s und 6 m/s liegt.\n\n&#8226; <b>Kurs</b>\nDie horizontale Bewegungsrichtung des Ger\u00e4tes in Grad unabh\u00e4ngig der Ger\u00e4telage.\n\n&#8226; <b>Kurs-Acc</b>\nGesch\u00e4tzte Genauigkeit des Kurses mit 68% Wahrscheinlichkeit in Grad. Beispiel: Wenn der Kurs 60\u00B0 und Kurs-Acc 10\u00B0 betragen, dann besteht eine 68%ige Wahrscheinlichkeit, dass der reale Kurs zwischen 50\u00B0 und 70\u00B0 liegt.\n\n&#8226; <b># Sats</b>\nAnzahl der Satelliten a/b, wobei a die Anzahl der Satelliten mit Fix und b die Satelliten im Sichtfeld sind\n\n&#8226; <b>PDOP</b>\n3D-Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit\n\n&#8226; <b>H/V-DOP</b>\nHorizontale / vertikale Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit\n\n&#8226; <b>TTFF</b>\nTime to first fix, Zeit bis zum ersten Fix\n\n&#8226; <b>ID</b>\nKennung des Satelliten (bei GPS entspricht dies der PRN-Nummer)\n\n&#8226; <b>CF</b>\nTr\u00e4gerkennung (z.B. \"L1\") des empfangenen Signals. Bei einer unbekannten Frequenz wird statt der Kennung die Frequenz in MHz angezeigt (verf\u00fcgbar ab Android 8.0, wird nicht von jedem Ger\u00e4t unterst\u00fctzt)\n\n&#8226; <b>SNR</b>\nSignal-Rausch-Verh\u00e4ltnis auch Rauschabstand genannt (verf\u00fcgbar bis Android 6), Details siehe http://bit.ly/SNR-CN0\n\n&#8226; <b>C/N\u2080</b>\nVerh\u00e4ltnis von Tr\u00e4ger- und Rauschleistung (verf\u00fcgbar ab Android 7), Details siehe http://bit.ly/SNR-CN0\n\n&#8226; <b>Flags</b>\nE=Ephemeridendaten des Satelliten vorhanden\nA=Almanachdaten des Satelliten vorhanden\nU=Dieser Satellit wurde beim letzten Fix verwendet\n\n\n<b>*** Himmel-Ansicht ***</b>\n\n&#8226; <b>GPS (USA Navstar)</b>\nSymbol: Kreise\n\n&#8226; <b>GLONASS (Russland)</b>\nSymbol: Quadrate\n\n&#8226; <b>Galileo (Europ\u00e4ische Union)</b>\nSymbol: Dreiecke\n\n&#8226; <b>QZSS (Japan)</b>\nSymbol: Sechsecke\n\n&#8226; <b>BeiDou/COMPASS (China)</b>\nSymbol: F\u00fcnfecke\n\n&#8226; <b>SBAS (WAAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>\nSymbol: Karos\n\n\n&#8226; Transparente Satellitensymbole: nicht im Sichtfeld\n\n&#8226; Satellitensymbole mit d\u00fcnnem Umriss: im Sichtfeld aber beim Fix nicht verwendet\n\n&#8226; Satellitensymbole mit fettem Umriss: beim Fix verwendet\n\n\n&#8226; Der zu erwartende SNR-Bereich liegt zwischen 0 dB (rot) und 30 dB (gr\u00fcn) bei Android-Versionen vor 7.0 \n\n&#8226; Der zu erwartende SNR-Bereich liegt zwischen 10 dB (rot) und 45 dB (gr\u00fcn) ab Android 7.0 \n\n&#8226; Der zu erwartende C/N\u2080-Bereich liegt zwischen 10 dB-Hz (rot) und 45 dB-Hz (gr\u00fcn) ab Android 7.0 \n\n&#8226; Sind weder SNR- noch C/N\u2080-Werte f\u00fcr einen Satelliten vorhanden (z.B. wenn er sich nicht im Sichtfeld des Ger\u00e4tes befindet), wird er in heller transparenter grauer Farbe dargestellt.\n\n\n<b>*** Danksagungen ***</b>\n\n&#8226; <b>Mike Lockwood</b>\nurspr\u00fcnglicher Entwickler f\u00fcr Version 1.x\n\n&#8226; <b>Sean Barbeau</b>\nEntwickler der Versionen ab 2.0\n\n&#8226; GPSTest-Symbol ist abgeleitet vom Satellit-Symbol des Android Material Designs und von Google unter Apache v2.0 lizenziert. Andere verwendete Google-Materialdesign-Symbole sind auch unter Apache v2.0 lizenziert.\n\n&#8226; <b>wangkf</b>\nchinesische \u00dcbersetzung\n\n&#8226; <b>Ronny Steiner</b>\ndeutsche \u00dcbersetzung\n\n&#8226; <b>Dennis Dolman</b>\nholl\u00e4ndische \u00dcbersetzung\n\n&#8226; <b>Jim</b>\ngriechische \u00dcbersetzung\n</string>
+    <string name="sky_legend_shape_astra_5b">Astra 5B (Luxemburg)</string>
+    <string name="gps_altitude_value">%1$.1f m</string>
+    <string name="gps_altitude_msl_value">%1$.1f m</string>
+    <string name="gps_accuracy_value">%1$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value">%1$.1f/%2$.1f m</string>
+    <string name="gps_speed_value">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value">%1$.1f m/s</string>
+    <string name="gps_flag_image_label">GNSS</string>
+    <string name="sky_legend_shape_anik">Anik (Kanada)</string>
+    <string name="sky_legend_shape_galaxy_15">Galaxy 15 (USA)</string>
+    <string name="sky_legend_shape_inmarsat">Inmarsat 3-F2 &amp; 4-F3 (UK)</string>
+    <string name="sky_legend_shape_ses_5">SES-5 (Luxemburg)</string>
 </resources>
