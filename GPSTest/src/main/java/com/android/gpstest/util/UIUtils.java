@@ -328,6 +328,6 @@ public class UIUtils {
      * @return the provided meters per second value converted to miles per hour
      */
     public static float toMilesPerHour(float metersPerSecond) {
-        return metersPerSecond * toKilometersPerHour(metersPerSecond) / 1.6093440f;
+        return toKilometersPerHour(metersPerSecond) / 1.6093440f;
     }
 }
