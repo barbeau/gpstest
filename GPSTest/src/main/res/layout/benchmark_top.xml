@@ -1,62 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="5dp">
 
-    <TextView
-        android:id="@+id/avgLabel"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ground_truth_lat"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Avg 30 points"
-        tools:layout_editor_absoluteX="253dp"
-        tools:layout_editor_absoluteY="29dp" />
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-    <TextView
-        android:id="@+id/avgHVerror"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3.5 / 10 m"
-        tools:layout_editor_absoluteX="253dp"
-        tools:layout_editor_absoluteY="63dp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:hint="@string/gps_latitude_label"/>
 
-    <TextView
-        android:id="@+id/thisHVerror"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3 / 5 m"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="63dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/thisPointLabel"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ground_truth_long"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This Point"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="30dp" />
+        android:layout_below="@id/ground_truth_lat"
+        android:paddingTop="5dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-    <TextView
-        android:id="@+id/hvErrorLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="H/V Error"
-        tools:layout_editor_absoluteX="56dp"
-        tools:layout_editor_absoluteY="63dp" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:hint="@string/gps_longitude_label" />
 
-    <TextView
-        android:id="@+id/hvAccError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="H/V Acc Error"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="99dp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/hvErrorMsl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="H/V Error (MSL)"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="135dp" />
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
