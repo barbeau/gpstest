@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/avgLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avg 30 points"
+        tools:layout_editor_absoluteX="253dp"
+        tools:layout_editor_absoluteY="29dp" />
+
+    <TextView
+        android:id="@+id/avgHVerror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3.5 / 10 m"
+        tools:layout_editor_absoluteX="253dp"
+        tools:layout_editor_absoluteY="63dp" />
+
+    <TextView
+        android:id="@+id/thisHVerror"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3 / 5 m"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="63dp" />
+
+    <TextView
+        android:id="@+id/thisPointLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This Point"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <TextView
+        android:id="@+id/hvErrorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="H/V Error"
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="63dp" />
+
+    <TextView
+        android:id="@+id/hvAccError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="H/V Acc Error"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="99dp" />
+
+    <TextView
+        android:id="@+id/hvErrorMsl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="H/V Error (MSL)"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="135dp" />
+</android.support.constraint.ConstraintLayout>
