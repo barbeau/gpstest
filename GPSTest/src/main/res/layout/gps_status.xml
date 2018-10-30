@@ -207,7 +207,7 @@
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/gnss_status_signals_card"
+            android:id="@+id/gnss_status_card"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
