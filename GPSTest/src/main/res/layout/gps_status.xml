@@ -17,8 +17,7 @@
 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -36,14 +35,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/status_location_card"
                 android:layout_gravity="center"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                card_view:cardUseCompatPadding="true"
-                card_view:cardCornerRadius="4dp"
                 android:foreground="?attr/selectableItemBackground">
 
                 <TableLayout
@@ -207,16 +203,14 @@
                     </TableRow>
 
                 </TableLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/gnss_status_card"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/gnss_status_signals_card"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="4dp"
             android:foreground="?attr/selectableItemBackground">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -232,15 +226,13 @@
                 android:text="@string/gnss_not_available"
                 android:layout_margin="10dp"
                 android:visibility="gone" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/sbas_status_card"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="4dp"
             android:foreground="?attr/selectableItemBackground">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -256,6 +248,6 @@
                 android:layout_margin="10dp"
                 android:text="@string/sbas_not_available"
                 android:visibility="gone" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -151,6 +151,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
