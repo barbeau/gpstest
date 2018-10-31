@@ -55,13 +55,13 @@
                 android:key="@string/pref_key_rotate_map_with_compass"
                 android:title="@string/pref_rotate_map_with_compass_title"
                 android:summary="@string/pref_rotate_map_with_compass_summary"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
         <CheckBoxPreference
                 android:key="@string/pref_key_tilt_map_with_sensors"
                 android:title="@string/pref_tilt_map_with_sensors_title"
                 android:summary="@string/pref_tilt_map_with_sensors_summary"
                 android:dependency="@string/pref_key_rotate_map_with_compass"
-                android:defaultValue="true"/>
+                android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory
