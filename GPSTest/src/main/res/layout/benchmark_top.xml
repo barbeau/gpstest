@@ -15,10 +15,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/map_margin"
-        android:layout_marginStart="@dimen/map_margin"
-        android:layout_marginRight="@dimen/map_margin"
-        android:layout_marginEnd="@dimen/map_margin"
+        android:layout_marginLeft="@dimen/map_card_inner_margin"
+        android:layout_marginStart="@dimen/map_card_inner_margin"
+        android:layout_marginRight="@dimen/map_card_inner_margin"
+        android:layout_marginEnd="@dimen/map_card_inner_margin"
         android:padding="5dp">
 
         <com.google.android.material.textfield.TextInputLayout

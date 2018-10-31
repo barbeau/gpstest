@@ -12,7 +12,8 @@
     <dimen name="column_padding">3dp</dimen>
 
     <!-- Map view -->
-    <dimen name="map_margin">15dp</dimen>
+    <dimen name="map_card_outer_margin">10dp</dimen>
+    <dimen name="map_card_inner_margin">15dp</dimen>
     <dimen name="ground_truth_text_size">12sp</dimen>
 
     <!-- Sky view -->
