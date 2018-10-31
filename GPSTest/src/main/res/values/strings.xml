@@ -136,9 +136,9 @@
     <string name="set_ground_truth">Enter your real location to measure accuracy</string>
 
     <string name="horizontal_error_label">Error</string>
-    <string name="vertical_error_label">Vertical error</string>
-    <string name="estimated_hor_accuracy_error_label">Estimated accuracy error</string>
-    <string name="estimated_vertical_accuracy_error_label">Estimated vertical accuracy error</string>
+    <string name="vertical_error_label">Vertical Error</string>
+    <string name="estimated_hor_accuracy_error_label">Estimated Accuracy Error</string>
+    <string name="estimated_vertical_accuracy_error_label">Estimated Vertical Accuracy Error</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>

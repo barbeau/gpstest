@@ -10,44 +10,62 @@
         android:id="@+id/error_table"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/status_margin"
+        android:layout_marginTop="@dimen/status_margin"
+        android:layout_marginBottom="@dimen/ground_truth_sliding_header_bottom_margin"
+        android:layout_marginLeft="@dimen/status_margin"
+        android:layout_marginStart="@dimen/status_margin"
+        android:layout_marginRight="@dimen/status_margin"
+        android:layout_marginEnd="@dimen/status_margin"
         android:gravity="center_horizontal">
 
         <TableRow>
             <TextView
                 android:id="@+id/horizontal_error_label"
-                style="@style/info_label"
+                android:textStyle="bold"
                 android:layout_gravity="right"
-                android:layout_marginRight="8dip"
+                android:layout_marginRight="10dip"
                 android:text="@string/horizontal_error_label" />
             <TextView
                 android:id="@+id/horizontal_error"
-                style="@style/info_value" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/vertical_error_label"
-                style="@style/info_label"
-                android:layout_gravity="right"
-                android:layout_marginRight="8dip"
-                android:text="@string/vertical_error_label" />
-            <TextView
-                android:id="@+id/vertical_error"
-                style="@style/info_value" />
+                android:text="30.234 m"/>
         </TableRow>
 
         <TableRow>
             <TextView
                 android:id="@+id/estimated_horizontal_accuracy_error_label"
-                style="@style/info_label"
+                android:textStyle="bold"
                 android:layout_gravity="right"
-                android:layout_marginRight="8dip"
+                android:layout_marginRight="10dip"
                 android:text="@string/estimated_hor_accuracy_error_label" />
             <TextView
                 android:id="@+id/estimated_horizontal_accuracy_error"
-                style="@style/info_value" />
+                android:text="21.457 m"/>
         </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/vertical_error_label"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dip"
+                android:text="@string/vertical_error_label" />
+            <TextView
+                android:id="@+id/vertical_error"
+                android:text="5.9 m"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/estimated_vertical_accuracy_error_label"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dip"
+                android:text="@string/estimated_vertical_accuracy_error_label" />
+            <TextView
+                android:id="@+id/estimated_horizontal_accuracy_error"
+                android:text="21.457 m"/>
+        </TableRow>
+
     </TableLayout>
 
     <ImageView

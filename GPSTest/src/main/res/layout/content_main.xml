@@ -61,18 +61,7 @@
             <include layout="@layout/benchmark_sliding_header" />
 
             <!-- Content of bottom sliding panel -->
-            <LinearLayout
-                android:id="@+id/slidingPanelLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Test">
-                </TextView>
-            </LinearLayout>
-
+            <include layout="@layout/benchmark_sliding_panel" />
         </LinearLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </RelativeLayout>
