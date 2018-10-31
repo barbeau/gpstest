@@ -10,7 +10,13 @@
     <include layout="@layout/benchmark_top"
         android:id="@+id/benchmark_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/status_margin"
+        android:layout_marginStart="@dimen/status_margin"
+        android:layout_marginRight="@dimen/status_margin"
+        android:layout_marginEnd="@dimen/status_margin"
+        android:layout_marginTop="@dimen/status_margin"
+        android:layout_marginBottom="@dimen/status_margin" />
 
     <!-- Fragment is added here programmatically -->
     <RelativeLayout

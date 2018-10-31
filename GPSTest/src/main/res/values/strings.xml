@@ -129,6 +129,11 @@
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satellites not available</string>
     <string name="menu_option_sort_by">Sort by</string>
 
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Your actual latitude</string>
+    <string name="ground_truth_longitude">Your actual longitude</string>
+    <string name="ground_truth_altitude">Your actual altitude (WGS 84)</string>
+
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
     <string name="sky_legend_cn0_low_middle">18</string>

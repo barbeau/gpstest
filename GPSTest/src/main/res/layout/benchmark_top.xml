@@ -1,37 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/status_location_card"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/status_margin"
+    android:layout_marginStart="@dimen/status_margin"
+    android:layout_marginRight="@dimen/status_margin"
+    android:layout_marginEnd="@dimen/status_margin"
+    android:layout_marginTop="@dimen/status_margin"
+    android:layout_marginBottom="@dimen/status_margin"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@android:color/transparent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ground_truth_lat"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        android:layout_height="match_parent"
+        android:padding="5dp">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/ground_truth_lat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/ground_truth_latitude" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/ground_truth_long"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="1"
-            android:hint="@string/gps_latitude_label"/>
+            android:layout_below="@id/ground_truth_lat">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:hint="@string/ground_truth_longitude" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ground_truth_long"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ground_truth_lat"
-        android:paddingTop="5dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/ground_truth_alt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="1"
-            android:hint="@string/gps_longitude_label" />
+            android:layout_below="@id/ground_truth_long">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:hint="@string/ground_truth_altitude" />
 
-</RelativeLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
