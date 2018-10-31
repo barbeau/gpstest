@@ -130,9 +130,10 @@
     <string name="menu_option_sort_by">Sort by</string>
 
     <!-- Map view -->
-    <string name="ground_truth_latitude">Your actual latitude</string>
-    <string name="ground_truth_longitude">Your actual longitude</string>
-    <string name="ground_truth_altitude">Your actual altitude (WGS 84)</string>
+    <string name="ground_truth_latitude">Your latitude</string>
+    <string name="ground_truth_longitude">Your longitude</string>
+    <string name="ground_truth_altitude">Your altitude (WGS84)</string>
+    <string name="set_ground_truth">Tap on map or type your real location</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>

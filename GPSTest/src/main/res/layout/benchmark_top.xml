@@ -14,51 +14,72 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/map_margin"
+        android:layout_marginStart="@dimen/map_margin"
+        android:layout_marginRight="@dimen/map_margin"
+        android:layout_marginEnd="@dimen/map_margin"
         android:padding="5dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_lat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_margin">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/ground_truth_text_size"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:hint="@string/ground_truth_latitude" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_long"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_margin"
             android:layout_below="@id/ground_truth_lat">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/ground_truth_text_size"
+                android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:hint="@string/ground_truth_longitude" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_alt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_margin"
             android:layout_below="@id/ground_truth_long">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="1"
+                android:textSize="@dimen/ground_truth_text_size"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
                 android:hint="@string/ground_truth_altitude" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/set_ground_truth"
+            style="@style/info_value"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/ground_truth_alt"
+            android:layout_margin="10dp"
+            android:text="@string/set_ground_truth" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
