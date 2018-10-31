@@ -10,8 +10,7 @@
     android:layout_marginEnd="@dimen/status_margin"
     android:layout_marginTop="@dimen/status_margin"
     android:layout_marginBottom="@dimen/status_margin"
-    app:cardCornerRadius="5dp"
-    app:cardBackgroundColor="@android:color/transparent">
+    app:cardCornerRadius="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
