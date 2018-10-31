@@ -7,24 +7,72 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <include layout="@layout/benchmark_top"
-        android:id="@+id/benchmark_top"
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottom_sliding_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/map_card_outer_margin"
-        android:layout_marginStart="@dimen/map_card_outer_margin"
-        android:layout_marginRight="@dimen/map_card_outer_margin"
-        android:layout_marginEnd="@dimen/map_card_outer_margin"
-        android:layout_marginTop="@dimen/map_card_outer_margin"
-        android:layout_marginBottom="@dimen/map_card_outer_margin" />
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="@dimen/ground_truth_sliding_header_height"
+        sothree:umanoShadowHeight="5dp"
+        sothree:umanoParallaxOffset="100dp"
+        sothree:umanoFadeColor="@android:color/transparent"
+        sothree:umanoInitialState="collapsed">
 
-    <!-- Fragment is added here programmatically -->
-    <RelativeLayout
-            android:id="@+id/fragment_container"
+        <!-- MAIN CONTENT -->
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:showIn="@layout/app_bar_main"
-            tools:context="com.android.gpstest.GpsTestActivity">
-    </RelativeLayout>
+            android:layout_weight="1">
+            <!-- Fragment is added here programmatically -->
+            <RelativeLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:showIn="@layout/app_bar_main"
+                tools:context="com.android.gpstest.GpsTestActivity"/>
+
+            <!-- Top card to enter ground truth information-->
+            <include
+                layout="@layout/benchmark_top"
+                android:id="@+id/benchmark_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/map_card_outer_margin"
+                android:layout_marginStart="@dimen/map_card_outer_margin"
+                android:layout_marginRight="@dimen/map_card_outer_margin"
+                android:layout_marginEnd="@dimen/map_card_outer_margin"
+                android:layout_marginTop="@dimen/map_card_outer_margin"
+                android:layout_marginBottom="@dimen/map_card_outer_margin" />
+        </RelativeLayout>
+
+        <!-- Bottom sliding panel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eeeeee"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            android:id="@+id/slidingPanel">
+
+            <!-- Header for bottom sliding panel -->
+            <include layout="@layout/benchmark_sliding_header" />
+
+            <!-- Content of bottom sliding panel -->
+            <LinearLayout
+                android:id="@+id/slidingPanelLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Test">
+                </TextView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </RelativeLayout>

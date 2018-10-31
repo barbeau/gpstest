@@ -133,7 +133,12 @@
     <string name="ground_truth_latitude">Your latitude</string>
     <string name="ground_truth_longitude">Your longitude</string>
     <string name="ground_truth_altitude">Your altitude (WGS84)</string>
-    <string name="set_ground_truth">Tap on map or type your real location</string>
+    <string name="set_ground_truth">Enter your real location to measure accuracy</string>
+
+    <string name="horizontal_error_label">Error</string>
+    <string name="vertical_error_label">Vertical error</string>
+    <string name="estimated_hor_accuracy_error_label">Estimated accuracy error</string>
+    <string name="estimated_vertical_accuracy_error_label">Estimated vertical accuracy error</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
