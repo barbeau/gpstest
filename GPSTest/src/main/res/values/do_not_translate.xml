@@ -24,7 +24,7 @@
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
 
     <string name="pref_key_map_category">map_category</string>
-    <string name="pref_key_map_type">map_type</string>
+    <string name="pref_key_map_type">map_type_ground_truth</string>
     <string name="pref_key_tilt_map_with_sensors">tilt_map_ground_truth</string>
     <string name="pref_key_rotate_map_with_compass">rotate_map_ground_truth</string>
 
