@@ -23,8 +23,11 @@
 
         <TextView
             android:id="@+id/set_ground_truth"
-            style="@style/info_value"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_marginBottom="5dp"
             android:text="@string/set_ground_truth" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -69,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
+            android:layout_marginBottom="@dimen/status_margin"
             android:layout_below="@id/ground_truth_long">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -80,5 +84,14 @@
                 android:hint="@string/ground_truth_altitude" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ground_truth_alt"
+            android:layout_alignParentRight="true"
+            android:text="@string/save" />
+
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

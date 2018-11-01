@@ -134,6 +134,7 @@
     <string name="ground_truth_longitude">Your longitude</string>
     <string name="ground_truth_altitude">Your altitude (WGS84)</string>
     <string name="set_ground_truth">Enter your real location to measure accuracy</string>
+    <string name="save">Save</string>
 
     <string name="horizontal_error_label">Error</string>
     <string name="vertical_error_label">Vertical Error</string>
