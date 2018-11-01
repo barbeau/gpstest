@@ -12,31 +12,34 @@
     android:layout_marginBottom="@dimen/status_margin"
     app:cardCornerRadius="5dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/map_card_inner_margin"
         android:layout_marginStart="@dimen/map_card_inner_margin"
         android:layout_marginRight="@dimen/map_card_inner_margin"
         android:layout_marginEnd="@dimen/map_card_inner_margin"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:id="@+id/relativeLayout">
 
         <TextView
             android:id="@+id/set_ground_truth"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_marginBottom="5dp"
-            android:text="@string/set_ground_truth" />
+            android:text="@string/set_ground_truth"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_lat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/set_ground_truth"
-            android:layout_marginTop="@dimen/status_margin">
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/set_ground_truth">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -54,7 +57,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
-            android:layout_below="@id/ground_truth_lat">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ground_truth_lat">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -73,7 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
             android:layout_marginBottom="@dimen/status_margin"
-            android:layout_below="@id/ground_truth_long">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ground_truth_long">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -89,10 +94,11 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ground_truth_alt"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/save" />
+            android:text="@string/save"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="@dimen/status_margin"
+            app:layout_constraintTop_toBottomOf="@id/ground_truth_alt"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
