@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/Platform.MaterialComponents"
     android:layout_width="match_parent"
     android:layout_height="@dimen/ground_truth_sliding_header_height"
@@ -27,7 +28,7 @@
                 android:text="@string/horizontal_error_label" />
             <TextView
                 android:id="@+id/horizontal_error"
-                android:text="30.234 m"/>
+                tools:text="30.234 m"/>
         </TableRow>
 
         <TableRow>
@@ -39,7 +40,7 @@
                 android:text="@string/estimated_hor_accuracy_error_label" />
             <TextView
                 android:id="@+id/estimated_horizontal_accuracy_error"
-                android:text="21.457 m"/>
+                tools:text="21.457 m"/>
         </TableRow>
 
         <TableRow>
@@ -51,7 +52,7 @@
                 android:text="@string/vertical_error_label" />
             <TextView
                 android:id="@+id/vertical_error"
-                android:text="5.9 m"/>
+                tools:text="5.9 m"/>
         </TableRow>
 
         <TableRow>
@@ -62,8 +63,8 @@
                 android:layout_marginRight="10dip"
                 android:text="@string/estimated_vertical_accuracy_error_label" />
             <TextView
-                android:id="@+id/estimated_horizontal_accuracy_error"
-                android:text="21.457 m"/>
+                android:id="@+id/estimated_vertical_accuracy_error"
+                tools:text="21.457 m"/>
         </TableRow>
 
     </TableLayout>
