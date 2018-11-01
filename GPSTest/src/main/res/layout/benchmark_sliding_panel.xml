@@ -25,9 +25,11 @@
             android:layout_marginStart="@dimen/map_card_inner_margin"
             android:layout_marginRight="@dimen/map_card_inner_margin"
             android:layout_marginEnd="@dimen/map_card_inner_margin"
-            android:padding="5dp">
-            <!-- TODO - Add graphs here -->
-
+            android:padding="@dimen/map_card_inner_margin">
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/error"
+                android:layout_width="match_parent"
+                android:layout_height="200dip" />
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

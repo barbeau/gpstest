@@ -155,6 +155,9 @@ dependencies {
     // Sliding drawer in map view
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
+    // Graphs for sliding drawer
+    implementation 'com.jjoe64:graphview:4.2.2'
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
     // Calculating offset for camera target in map view (Google flavor only)
