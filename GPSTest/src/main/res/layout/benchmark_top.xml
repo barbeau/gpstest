@@ -21,11 +21,18 @@
         android:layout_marginEnd="@dimen/map_card_inner_margin"
         android:padding="5dp">
 
+        <TextView
+            android:id="@+id/set_ground_truth"
+            style="@style/info_value"
+            android:layout_alignParentLeft="true"
+            android:text="@string/set_ground_truth" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_lat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/set_ground_truth"
             android:layout_marginTop="@dimen/status_margin">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -73,13 +80,5 @@
                 android:hint="@string/ground_truth_altitude" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/set_ground_truth"
-            style="@style/info_value"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/ground_truth_alt"
-            android:layout_margin="10dp"
-            android:text="@string/set_ground_truth" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>
