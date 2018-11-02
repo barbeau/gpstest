@@ -13,47 +13,57 @@
     app:cardCornerRadius="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/map_card_inner_margin"
         android:layout_marginStart="@dimen/map_card_inner_margin"
-        android:layout_marginRight="@dimen/map_card_inner_margin"
+        android:layout_marginLeft="@dimen/map_card_inner_margin"
         android:layout_marginEnd="@dimen/map_card_inner_margin"
-        android:padding="5dp"
-        android:id="@+id/relativeLayout">
+        android:layout_marginRight="@dimen/map_card_inner_margin"
+        android:padding="5dp">
 
         <TextView
-            android:id="@+id/set_ground_truth"
+            android:id="@+id/set_ground_truth1"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:text="@string/set_ground_truth"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:text="@string/set_ground_truth1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/set_ground_truth2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/set_ground_truth2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/set_ground_truth1" />
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_lat"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/set_ground_truth">
+            app:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/ground_truth_text_size"
+                android:hint="@string/ground_truth_latitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:hint="@string/ground_truth_latitude" />
+                android:textSize="@dimen/ground_truth_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_long"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
@@ -63,16 +73,16 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/ground_truth_text_size"
+                android:hint="@string/ground_truth_longitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:hint="@string/ground_truth_longitude" />
+                android:textSize="@dimen/ground_truth_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:id="@+id/ground_truth_alt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
@@ -83,10 +93,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/ground_truth_text_size"
+                android:hint="@string/ground_truth_altitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:hint="@string/ground_truth_altitude" />
+                android:textSize="@dimen/ground_truth_text_size" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,11 +104,11 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/status_margin"
-            app:layout_constraintTop_toBottomOf="@id/ground_truth_alt"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:text="@string/save"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ground_truth_alt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

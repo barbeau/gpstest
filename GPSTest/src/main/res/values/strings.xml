@@ -133,7 +133,8 @@
     <string name="ground_truth_latitude">Your latitude</string>
     <string name="ground_truth_longitude">Your longitude</string>
     <string name="ground_truth_altitude">Your altitude (WGS84)</string>
-    <string name="set_ground_truth">Enter your real location to measure accuracy</string>
+    <string name="set_ground_truth1">Measure accuracy</string>
+    <string name="set_ground_truth2">Tap on map or enter your real location</string>
     <string name="save">Save</string>
 
     <string name="horizontal_error_label">Error</string>
