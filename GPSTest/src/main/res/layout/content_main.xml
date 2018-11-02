@@ -35,7 +35,7 @@
 
             <!-- Top card to enter ground truth information-->
             <include
-                layout="@layout/benchmark_top"
+                layout="@layout/benchmark_top_collapsed"
                 android:id="@+id/benchmark_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

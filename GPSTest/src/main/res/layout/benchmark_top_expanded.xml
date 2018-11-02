@@ -57,7 +57,7 @@
                 android:hint="@string/ground_truth_latitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textSize="@dimen/ground_truth_text_size" />
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
                 android:hint="@string/ground_truth_longitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textSize="@dimen/ground_truth_text_size" />
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +96,7 @@
                 android:hint="@string/ground_truth_altitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textSize="@dimen/ground_truth_text_size" />
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -109,6 +109,19 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ground_truth_alt" />
+
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
