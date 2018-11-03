@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2018 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/collapsed"
+        motion:constraintSetStart="@+id/expanded"
+        motion:duration="200"
+        motion:interpolator="easeInOut">
+        <OnClick
+            motion:target="@id/save"
+            motion:mode="toggle"/>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/expanded">
+        <Constraint
+            android:id="@id/set_ground_truth1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+        <Constraint
+            android:id="@id/set_ground_truth2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_lat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_lat_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleX="1.0"
+            android:scaleY="1.0">
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_long"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_margin"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/ground_truth_lat">
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_long_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/ground_truth_text_size_expanded" >
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_alt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/ground_truth_long">
+        </Constraint>
+        <Constraint
+            android:id="@id/ground_truth_alt_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/ground_truth_text_size_expanded">
+        </Constraint>
+        <Constraint
+            android:id="@id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/ground_truth_alt">
+        </Constraint>
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/collapsed">
+        <Constraint
+            android:id="@id/set_ground_truth1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" >
+        </Constraint>
+        <Constraint
+            android:id="@+id/set_ground_truth2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_lat"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_lat_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false"
+            android:scaleX="0.5"
+            android:scaleY="0.5">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_long"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            motion:layout_constraintEnd_toStartOf="@+id/ground_truth_alt"
+            motion:layout_constraintStart_toEndOf="@+id/ground_truth_lat"
+            motion:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_long_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false"
+            android:textSize="@dimen/ground_truth_text_size_collapsed">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_alt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent">
+        </Constraint>
+        <Constraint
+            android:id="@+id/ground_truth_alt_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:focusable="false"
+            android:textSize="@dimen/ground_truth_text_size_collapsed" >
+        </Constraint>
+        <Constraint
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/status_margin"
+            android:text="@string/edit"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/ground_truth_alt">
+        </Constraint>
+    </ConstraintSet>
+</MotionScene>

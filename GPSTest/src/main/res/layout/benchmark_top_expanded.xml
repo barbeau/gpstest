@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/status_location_card"
+    android:id="@+id/benchmark_top_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/status_margin"
@@ -52,6 +52,7 @@
             app:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ground_truth_lat_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/ground_truth_latitude"
@@ -72,6 +73,7 @@
             app:layout_constraintTop_toBottomOf="@id/ground_truth_lat">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ground_truth_long_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/ground_truth_longitude"
@@ -93,6 +95,7 @@
             app:layout_constraintTop_toBottomOf="@id/ground_truth_long">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ground_truth_alt_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/ground_truth_altitude"
@@ -112,19 +115,5 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ground_truth_alt" />
-
-        <ImageButton
-            android:id="@+id/edit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_edit"
-            android:visibility="gone"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
