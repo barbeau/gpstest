@@ -136,6 +136,7 @@
     <string name="set_ground_truth_title">Measure accuracy</string>
     <string name="set_ground_truth_subtitle">Tap on map or enter your real location</string>
     <string name="save">Save</string>
+    <string name="edit">Edit</string>
 
     <string name="horizontal_error_label">Error</string>
     <string name="vertical_error_label">Vertical Error</string>

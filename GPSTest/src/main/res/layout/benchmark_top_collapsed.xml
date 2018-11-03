@@ -47,11 +47,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ground_truth_lat"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="170dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -61,6 +61,7 @@
                 android:hint="@string/ground_truth_latitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
+                android:ellipsize="end"
                 android:textSize="@dimen/ground_truth_text_size_collapsed" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,12 +69,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ground_truth_long"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="170dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/ground_truth_alt"
             app:layout_constraintStart_toEndOf="@+id/ground_truth_lat"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -85,6 +88,7 @@
                 android:hint="@string/ground_truth_longitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
+                android:ellipsize="end"
                 android:textSize="@dimen/ground_truth_text_size_collapsed" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,28 +96,24 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ground_truth_alt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="170dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ground_truth_lat">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
+                android:focusable="false"
                 android:hint="@string/ground_truth_altitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:textSize="@dimen/ground_truth_text_size_collapsed"
-                android:enabled="false"
-                android:focusable="false"/>
+                android:ellipsize="end"
+                android:textSize="@dimen/ground_truth_text_size_collapsed" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,21 +122,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
-            android:text="@string/save"
-            android:visibility="gone"
+            android:text="@string/edit"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ground_truth_alt" />
-
-        <ImageButton
-            android:id="@+id/edit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
