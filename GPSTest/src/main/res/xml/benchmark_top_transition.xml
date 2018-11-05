@@ -19,7 +19,7 @@
     <Transition
         motion:constraintSetEnd="@+id/collapsed"
         motion:constraintSetStart="@+id/expanded"
-        motion:duration="200"
+        motion:duration="250"
         motion:interpolator="easeInOut">
         <OnClick
             motion:target="@id/save"
@@ -57,12 +57,6 @@
             android:layout_height="wrap_content"
             android:scaleX="1.0"
             android:scaleY="1.0">
-            <CustomAttribute
-                motion:attributeName="Enabled"
-                motion:customBoolean="true"/>
-            <CustomAttribute
-                motion:attributeName="Focusable"
-                motion:customBoolean="true"/>
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_long"
@@ -113,7 +107,7 @@
             android:visibility="gone">
         </Constraint>
         <Constraint
-            android:id="@+id/set_ground_truth2"
+            android:id="@id/set_ground_truth2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -123,15 +117,15 @@
             motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_lat"
+            android:id="@id/ground_truth_lat"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent">
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_lat_text"
+            android:id="@id/ground_truth_lat_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleX="0.5"
@@ -144,7 +138,7 @@
                 motion:customBoolean="false"/>
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_long"
+            android:id="@id/ground_truth_long"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -157,7 +151,7 @@
             motion:layout_constraintTop_toTopOf="parent">
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_long_text"
+            android:id="@id/ground_truth_long_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -165,18 +159,18 @@
             android:textSize="@dimen/ground_truth_text_size_collapsed">
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_alt"
+            android:id="@id/ground_truth_alt"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toTopOf="parent">
         </Constraint>
         <Constraint
-            android:id="@+id/ground_truth_alt_text"
+            android:id="@id/ground_truth_alt_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -184,7 +178,7 @@
             android:textSize="@dimen/ground_truth_text_size_collapsed" >
         </Constraint>
         <Constraint
-            android:id="@+id/save"
+            android:id="@id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"

@@ -14,7 +14,8 @@
     <!-- Map view -->
     <dimen name="map_card_outer_margin">10dp</dimen>
     <dimen name="map_card_inner_margin">16dp</dimen>
-    <dimen name="ground_truth_text_size_expanded">12sp</dimen>
+    <dimen name="map_card_top_margin_collapsed">10dp</dimen>
+    <dimen name="ground_truth_text_size_expanded">11sp</dimen>
     <dimen name="ground_truth_text_size_collapsed">10sp</dimen>
     <dimen name="ground_truth_sliding_header_bottom_margin">10dp</dimen>
     <dimen name="ground_truth_sliding_header_height">110dp</dimen>
