@@ -109,9 +109,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:visibility="gone"
             motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintTop_toTopOf="parent" >
+            motion:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone">
         </Constraint>
         <Constraint
             android:id="@+id/set_ground_truth2"
@@ -127,7 +127,7 @@
             android:id="@+id/ground_truth_lat"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toTopOf="parent">
         </Constraint>
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toStartOf="@+id/ground_truth_alt"
@@ -170,7 +170,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toEndOf="parent"

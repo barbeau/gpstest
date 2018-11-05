@@ -10,7 +10,8 @@
     android:layout_marginEnd="@dimen/status_margin"
     android:layout_marginTop="@dimen/status_margin"
     android:layout_marginBottom="@dimen/status_margin"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="5dp"
+    android:animateLayoutChanges="true">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/motion_layout"
@@ -50,7 +51,7 @@
                 android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textSize="@dimen/ground_truth_text_size_expanded"/>
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -66,7 +67,8 @@
                 android:hint="@string/ground_truth_longitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -82,13 +84,14 @@
                 android:hint="@string/ground_truth_altitude"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
-                android:ellipsize="end" />
+                android:ellipsize="end"
+                android:textSize="@dimen/ground_truth_text_size_expanded" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"/>
+            android:text="@string/save" />
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </com.google.android.material.card.MaterialCardView>

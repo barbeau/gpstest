@@ -18,6 +18,7 @@
 package com.android.gpstest;
 
 import android.Manifest;
+import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,6 +56,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -245,6 +247,11 @@ public class GpsTestActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         setupNavigationDrawer();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            ((ViewGroup) findViewById(R.id.benchmark_top_card)).getLayoutTransition()
+                    .enableTransitionType(LayoutTransition.CHANGING);
+        }
     }
 
     /**
