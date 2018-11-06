@@ -54,9 +54,7 @@
         <Constraint
             android:id="@id/ground_truth_lat_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleX="1.0"
-            android:scaleY="1.0">
+            android:layout_height="wrap_content">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_long"
@@ -127,15 +125,7 @@
         <Constraint
             android:id="@id/ground_truth_lat_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleX="0.5"
-            android:scaleY="0.5">
-            <CustomAttribute
-                motion:attributeName="Enabled"
-                motion:customBoolean="false"/>
-            <CustomAttribute
-                motion:attributeName="Focusable"
-                motion:customBoolean="false"/>
+            android:layout_height="wrap_content">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_long"
