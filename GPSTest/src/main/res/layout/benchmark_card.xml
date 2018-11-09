@@ -13,6 +13,8 @@
     android:layout_marginBottom="@dimen/status_margin"
     app:cardCornerRadius="5dp"
     android:animateLayoutChanges="true"
-    tools:showIn="@layout/content_main">
+    tools:showIn="@layout/content_main"
+    android:clickable="true"
+    android:focusable="true">
 
 </com.google.android.material.card.MaterialCardView>
