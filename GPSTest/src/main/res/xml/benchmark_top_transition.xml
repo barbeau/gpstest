@@ -21,9 +21,6 @@
         motion:constraintSetStart="@+id/expanded"
         motion:duration="250"
         motion:interpolator="easeInOut">
-        <OnClick
-            motion:target="@id/save"
-            motion:mode="toggle"/>
     </Transition>
 
     <ConstraintSet android:id="@+id/expanded">

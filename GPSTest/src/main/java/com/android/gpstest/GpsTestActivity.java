@@ -56,10 +56,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,12 +71,14 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
@@ -114,6 +117,8 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
+
+    private static final String BENCHMARK_CARD_COLLAPSED = "ground_truth_card_collapsed";
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -216,6 +221,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean mUserDeniedPermission = false;
 
+    private boolean mBenchmarkCardCollapsed = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -248,10 +255,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         setupNavigationDrawer();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            ((ViewGroup) findViewById(R.id.benchmark_top_card)).getLayoutTransition()
-                    .enableTransitionType(LayoutTransition.CHANGING);
-        }
+        setupBenchmarkCard(savedInstanceState);
     }
 
     /**
@@ -278,10 +282,48 @@ public class GpsTestActivity extends AppCompatActivity
                 (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
     }
 
+    private void setupBenchmarkCard(Bundle savedInstanceState) {
+        MaterialCardView cardView = findViewById(R.id.benchmark_card);
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) cardView.getLayoutParams();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            cardView.getLayoutTransition()
+                    .enableTransitionType(LayoutTransition.CHANGING);
+        }
+
+        if (savedInstanceState != null) {
+            // Activity is being restarted and has previous state (e.g., user rotated device)
+            mBenchmarkCardCollapsed = savedInstanceState.getBoolean(BENCHMARK_CARD_COLLAPSED, false);
+        }
+
+        MotionLayout motionLayout = findViewById(R.id.motion_layout);
+
+        // TODO - set initial state of card and motion layout depending on savedInstanceState
+
+        Button saveGroundTruth = findViewById(R.id.save);
+        saveGroundTruth.setOnClickListener(view -> {
+            if (!mBenchmarkCardCollapsed) {
+                // Collapse card
+                motionLayout.transitionToEnd();
+                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
+                cardView.setLayoutParams(lp);
+                mBenchmarkCardCollapsed = true;
+            } else {
+                // Expand card
+                motionLayout.transitionToStart();
+                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
+                cardView.setLayoutParams(lp);
+                mBenchmarkCardCollapsed = false;
+            }
+        });
+    }
+
      @Override
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
+        // Save current benchmark card state
+        outState.putBoolean(BENCHMARK_CARD_COLLAPSED, mBenchmarkCardCollapsed);
         super.onSaveInstanceState(outState);
     }
 
