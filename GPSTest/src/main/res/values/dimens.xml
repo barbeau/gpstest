@@ -13,6 +13,7 @@
 
     <!-- Map view -->
     <dimen name="map_card_outer_margin">10dp</dimen>
+    <dimen name="map_motion_outer_margin">26dp</dimen>
     <dimen name="map_card_inner_margin">16dp</dimen>
     <dimen name="ground_truth_motion_layout_height">270dp</dimen>
     <dimen name="ground_truth_cardview_height">285dp</dimen>
