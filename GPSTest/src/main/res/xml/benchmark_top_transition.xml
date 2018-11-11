@@ -14,7 +14,8 @@
   limitations under the License.
   -->
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:motion="http://schemas.android.com/apk/res-auto">
+    xmlns:motion="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <Transition
         motion:constraintSetEnd="@+id/collapsed"
@@ -95,34 +96,43 @@
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_lat"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
+            motion:layout_constraintEnd_toStartOf="@+id/ground_truth_long"
+            motion:layout_constraintHorizontal_chainStyle="spread"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent">
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintHorizontal_weight="1"
+            tools:layout_width="0dp">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_long"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toStartOf="@+id/ground_truth_alt"
             motion:layout_constraintStart_toEndOf="@+id/ground_truth_lat"
-            motion:layout_constraintTop_toTopOf="parent">
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintHorizontal_weight="1"
+            tools:layout_width="0dp">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_alt"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toTopOf="parent">
+            motion:layout_constraintStart_toEndOf="@+id/ground_truth_long"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintHorizontal_weight="1"
+            tools:layout_width="0dp">
         </Constraint>
         <Constraint
             android:id="@id/save"
