@@ -37,12 +37,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     private boolean mBenchmarkCardCollapsed = false;
 
+    MaterialCardView mGroundTruthCardView;
+
+    MotionLayout mMotionLayout;
+
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
-        MaterialCardView cardView = v.findViewById(R.id.benchmark_card);
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) cardView.getLayoutParams();
+        mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            cardView.getLayoutTransition()
+            mGroundTruthCardView.getLayoutTransition()
                     .enableTransitionType(LayoutTransition.CHANGING);
         }
 
@@ -51,12 +55,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mBenchmarkCardCollapsed = savedInstanceState.getBoolean(BENCHMARK_CARD_COLLAPSED, false);
         }
 
-        MotionLayout motionLayout = v.findViewById(R.id.motion_layout);
+        mMotionLayout = v.findViewById(R.id.motion_layout);
         Button saveGroundTruth = v.findViewById(R.id.save);
         TextInputLayout latText = v.findViewById(R.id.ground_truth_lat);
         TextInputLayout longText = v.findViewById(R.id.ground_truth_long);
         TextInputLayout altText = v.findViewById(R.id.ground_truth_alt);
-        motionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
+        mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
             @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
             }
@@ -89,15 +93,15 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
                 // Collapse card
-                motionLayout.transitionToEnd();
+                mMotionLayout.transitionToEnd();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
-                cardView.setLayoutParams(lp);
+                mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = true;
             } else {
                 // Expand card
-                motionLayout.transitionToStart();
+                mMotionLayout.transitionToStart();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
-                cardView.setLayoutParams(lp);
+                mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = false;
             }
         });
@@ -107,5 +111,23 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     public void onSaveInstanceState(Bundle outState) {
         // Save current benchmark card state
         outState.putBoolean(BENCHMARK_CARD_COLLAPSED, mBenchmarkCardCollapsed);
+    }
+
+    public void show() {
+        if (mGroundTruthCardView != null) {
+            mGroundTruthCardView.setVisibility(View.VISIBLE);
+        }
+        if (mMotionLayout != null) {
+            mMotionLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hide() {
+        if (mGroundTruthCardView != null) {
+            mGroundTruthCardView.setVisibility(View.GONE);
+        }
+        if (mMotionLayout != null) {
+            mMotionLayout.setVisibility(View.GONE);
+        }
     }
 }

@@ -243,12 +243,18 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
 //        }
 
+        mBenchmarkController = new BenchmarkControllerImpl(findViewById(R.id.mainlayout), savedInstanceState);
+        // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
+        if (mMapFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_MAP) {
+            mBenchmarkController.show();
+        } else {
+            mBenchmarkController.hide();
+        }
+
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         setupNavigationDrawer();
-
-        mBenchmarkController = new BenchmarkControllerImpl(findViewById(R.id.mainlayout), savedInstanceState);
     }
 
     /**
@@ -495,6 +501,10 @@ public class GpsTestActivity extends AppCompatActivity
          */
         hideMapFragment();
         hideSkyFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
+
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
@@ -550,6 +560,10 @@ public class GpsTestActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
         setTitle(getResources().getString(R.string.gps_map_title));
+
+        if (mBenchmarkController != null) {
+            mBenchmarkController.show();
+        }
     }
 
     private void hideMapFragment() {
@@ -567,6 +581,10 @@ public class GpsTestActivity extends AppCompatActivity
          */
         hideStatusFragment();
         hideMapFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
+
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */

@@ -29,4 +29,14 @@ interface BenchmarkController {
      * @param outState outState from the onSaveInstanceState() method in the hosting class
      */
     void onSaveInstanceState(Bundle outState);
+
+    /**
+     * Show the Benchmark views
+     */
+    void show();
+
+    /**
+     * Hide the Benchmark views
+     */
+    void hide();
 }
