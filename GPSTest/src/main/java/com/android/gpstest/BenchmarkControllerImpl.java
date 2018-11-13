@@ -31,13 +31,13 @@ import androidx.constraintlayout.motion.widget.MotionLayout;
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
  * ground truth value against the GPS location.
  */
-public class BenchmarkContainer {
+public class BenchmarkControllerImpl implements BenchmarkController {
 
     private static final String BENCHMARK_CARD_COLLAPSED = "ground_truth_card_collapsed";
 
     private boolean mBenchmarkCardCollapsed = false;
 
-    public BenchmarkContainer(View v, Bundle savedInstanceState) {
+    public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         MaterialCardView cardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) cardView.getLayoutParams();
 
@@ -103,6 +103,7 @@ public class BenchmarkContainer {
         });
     }
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         // Save current benchmark card state
         outState.putBoolean(BENCHMARK_CARD_COLLAPSED, mBenchmarkCardCollapsed);

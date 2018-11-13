@@ -214,7 +214,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean mUserDeniedPermission = false;
 
-    private BenchmarkContainer mBenchmarkContainer;
+    private BenchmarkControllerImpl mBenchmarkController;
 
     /** Called when the activity is first created. */
     @Override
@@ -248,7 +248,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         setupNavigationDrawer();
 
-        mBenchmarkContainer = new BenchmarkContainer(findViewById(R.id.mainlayout), savedInstanceState);
+        mBenchmarkController = new BenchmarkControllerImpl(findViewById(R.id.mainlayout), savedInstanceState);
     }
 
     /**
@@ -279,7 +279,7 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
-        mBenchmarkContainer.onSaveInstanceState(outState);
+        mBenchmarkController.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
 
