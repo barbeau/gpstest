@@ -72,6 +72,7 @@ import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
@@ -297,10 +298,40 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         MotionLayout motionLayout = findViewById(R.id.motion_layout);
+        Button saveGroundTruth = findViewById(R.id.save);
+        TextInputLayout latText = findViewById(R.id.ground_truth_lat);
+        TextInputLayout longText = findViewById(R.id.ground_truth_long);
+        TextInputLayout altText = findViewById(R.id.ground_truth_alt);
+        motionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
+            @Override
+            public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
+            }
+
+            @Override
+            public void onTransitionCompleted(MotionLayout motionLayout, int currentId) {
+                if (currentId == R.id.expanded) {
+                    saveGroundTruth.setText(getString(R.string.save));
+                    latText.setEnabled(true);
+                    longText.setEnabled(true);
+                    altText.setEnabled(true);
+                    latText.setFocusable(true);
+                    longText.setFocusable(true);
+                    altText.setFocusable(true);
+                } else {
+                    // Collapsed
+                    saveGroundTruth.setText(getString(R.string.edit));
+                    latText.setEnabled(false);
+                    longText.setEnabled(false);
+                    altText.setEnabled(false);
+                    latText.setFocusable(false);
+                    longText.setFocusable(false);
+                    altText.setFocusable(false);
+                }
+            }
+        });
 
         // TODO - set initial state of card and motion layout depending on savedInstanceState
 
-        Button saveGroundTruth = findViewById(R.id.save);
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
                 // Collapse card
