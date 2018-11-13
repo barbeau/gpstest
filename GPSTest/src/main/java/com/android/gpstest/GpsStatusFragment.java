@@ -42,6 +42,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.gpstest.model.ConstellationType;
+import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.GpsTestUtil;
