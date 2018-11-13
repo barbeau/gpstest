@@ -15,6 +15,7 @@
  */
 package com.android.gpstest;
 
+import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.util.GpsTestUtil;
 

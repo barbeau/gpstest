@@ -30,7 +30,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.DilutionOfPrecision;
+import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteName;
 import com.android.gpstest.model.SbasType;
