@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -60,6 +61,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         TextInputLayout latText = v.findViewById(R.id.ground_truth_lat);
         TextInputLayout longText = v.findViewById(R.id.ground_truth_long);
         TextInputLayout altText = v.findViewById(R.id.ground_truth_alt);
+        TextView title2 = v.findViewById(R.id.set_ground_truth_title2);
         mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
             @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
@@ -68,6 +70,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             @Override
             public void onTransitionCompleted(MotionLayout motionLayout, int currentId) {
                 if (currentId == R.id.expanded) {
+                    title2.setText(Application.get().getString(R.string.set_ground_truth_subtitle));
                     saveGroundTruth.setText(Application.get().getString(R.string.save));
                     latText.setEnabled(true);
                     longText.setEnabled(true);
@@ -77,6 +80,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     altText.setFocusable(true);
                 } else {
                     // Collapsed
+                    title2.setText(Application.get().getString(R.string.set_ground_truth_subtitle_collapsed));
                     saveGroundTruth.setText(Application.get().getString(R.string.edit));
                     latText.setEnabled(false);
                     longText.setEnabled(false);

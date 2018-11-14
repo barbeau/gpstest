@@ -26,7 +26,7 @@
 
     <ConstraintSet android:id="@+id/expanded">
         <Constraint
-            android:id="@id/set_ground_truth1"
+            android:id="@id/set_ground_truth_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -34,12 +34,12 @@
             motion:layout_constraintTop_toTopOf="parent">
         </Constraint>
         <Constraint
-            android:id="@id/set_ground_truth2"
+            android:id="@id/set_ground_truth_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title1">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_lat"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title2">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_long"
@@ -76,7 +76,7 @@
 
     <ConstraintSet android:id="@+id/collapsed">
         <Constraint
-            android:id="@id/set_ground_truth1"
+            android:id="@id/set_ground_truth_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -85,14 +85,12 @@
             android:visibility="gone">
         </Constraint>
         <Constraint
-            android:id="@id/set_ground_truth2"
+            android:id="@id/set_ground_truth_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:visibility="gone"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title1">
         </Constraint>
         <Constraint
             android:id="@id/ground_truth_lat"
@@ -102,7 +100,7 @@
             motion:layout_constraintEnd_toStartOf="@+id/ground_truth_long"
             motion:layout_constraintHorizontal_chainStyle="spread"
             motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title2"
             motion:layout_constraintHorizontal_weight="1"
             tools:layout_width="0dp">
         </Constraint>
@@ -117,7 +115,7 @@
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toStartOf="@+id/ground_truth_alt"
             motion:layout_constraintStart_toEndOf="@+id/ground_truth_lat"
-            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title2"
             motion:layout_constraintHorizontal_weight="1"
             tools:layout_width="0dp">
         </Constraint>
@@ -130,7 +128,7 @@
             android:layout_marginRight="8dp"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintStart_toEndOf="@+id/ground_truth_long"
-            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/set_ground_truth_title2"
             motion:layout_constraintHorizontal_weight="1"
             tools:layout_width="0dp">
         </Constraint>
