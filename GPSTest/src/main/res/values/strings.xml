@@ -135,7 +135,6 @@
     <string name="ground_truth_altitude">Your altitude in WGS84 (Optional)</string>
     <string name="set_ground_truth_title">Measure accuracy</string>
     <string name="set_ground_truth_subtitle">Tap on map or enter your real location</string>
-    <string name="set_ground_truth_subtitle_collapsed">Your real location</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
 

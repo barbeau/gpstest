@@ -13,14 +13,14 @@
     android:layout_marginBottom="5dp">
 
     <TextView
-        android:id="@+id/set_ground_truth_title1"
+        android:id="@+id/set_ground_truth1"
         style="@style/TextAppearance.MaterialComponents.Headline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/set_ground_truth_title" />
 
     <TextView
-        android:id="@+id/set_ground_truth_title2"
+        android:id="@+id/set_ground_truth2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/set_ground_truth_subtitle" />
