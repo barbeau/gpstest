@@ -187,6 +187,13 @@ public class GpsTestUtilTest {
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssType.BEIDOU, 1, 	1589.742f);
         assertEquals("B1-2",label);
 
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssType.BEIDOU, 1, 	1575.42f);
+        assertEquals("B1C",label);
+
+        // See #202 - We're seeing 1575.450 from Xiaomi devices
+        label = GpsTestUtil.getCarrierFrequencyLabel(GnssType.BEIDOU, 1, 	1575.450f);
+        assertEquals("B1C",label);
+
         label = GpsTestUtil.getCarrierFrequencyLabel(GnssType.BEIDOU, 1, 	1207.14f);
         assertEquals("B2",label);
 
