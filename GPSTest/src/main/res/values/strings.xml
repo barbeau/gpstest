@@ -239,7 +239,7 @@
     <string name="pref_gps_min_distance_invalid_entry">Min. Distance must be a number</string>
 
     <string name="pref_stop_gnss_in_background_title">Stop GNSS in background</string>
-    <string name="pref_stop_gnss_in_background_summary">If enabled will always stop GNSS when the app is put into the background (for example, when using the home button or multitasking button to switch apps)
+    <string name="pref_stop_gnss_in_background_summary">If enabled will always stop GNSS when the app is put into the background (for example, when using the Home button or Multitasking button to switch apps)
     </string>
 
     <string name="pref_analyze_gps_accuracy_title">Analyze GNSS Accuracy</string>
