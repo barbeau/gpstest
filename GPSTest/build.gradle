@@ -157,7 +157,7 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
     // Graphs for sliding drawer
-    implementation 'com.jjoe64:graphview:4.2.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.0.0'

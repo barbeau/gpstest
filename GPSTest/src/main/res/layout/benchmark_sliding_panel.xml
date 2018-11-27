@@ -26,10 +26,10 @@
             android:layout_marginRight="@dimen/map_card_inner_margin"
             android:layout_marginEnd="@dimen/map_card_inner_margin"
             android:padding="@dimen/map_card_inner_margin">
-            <com.jjoe64.graphview.GraphView
-                android:id="@+id/error"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
                 android:layout_width="match_parent"
-                android:layout_height="200dip" />
+                android:layout_height="200dp"/>
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>
