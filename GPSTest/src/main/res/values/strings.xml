@@ -139,9 +139,8 @@
     <string name="edit">Edit</string>
 
     <string name="horizontal_error_label">Error</string>
-    <string name="vertical_error_label">Vertical Error</string>
-    <string name="estimated_hor_accuracy_error_label">Estimated Accuracy Error</string>
-    <string name="estimated_vertical_accuracy_error_label">Estimated Vertical Accuracy Error</string>
+    <string name="horizontal_vertical_error_label">H/V Error</string>
+    <string name="avg_error_label">avg %1$s fixes</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>

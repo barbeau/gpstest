@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16sp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="10"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="18dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/horizontal_error_label"
@@ -61,76 +61,71 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TableLayout
-        android:id="@+id/error_table"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/header_text_faded_color"/>
+
+    <TextView
+        android:id="@+id/avg_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/status_margin"
-        android:layout_marginLeft="@dimen/status_margin"
-        android:layout_marginTop="@dimen/status_margin"
-        android:layout_marginEnd="@dimen/status_margin"
-        android:layout_marginRight="@dimen/status_margin"
-        android:layout_marginBottom="@dimen/ground_truth_sliding_header_bottom_margin"
-        android:gravity="center_horizontal"
-        android:visibility="gone">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="10"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10" />
 
-        <TableRow>
+    <TextView
+        android:id="@+id/avg_error_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_marginTop="28sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/meters_abbreviation"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avg_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582" />
 
-            <TextView
-                android:id="@+id/horizontal_error_label"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dip"
-                android:text="@string/horizontal_error_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/horizontal_error"
-                tools:text="30.234 m" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/estimated_horizontal_accuracy_error_label"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dip"
-                android:text="@string/estimated_hor_accuracy_error_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/estimated_horizontal_accuracy_error"
-                tools:text="21.457 m" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/vertical_error_label"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dip"
-                android:text="@string/vertical_error_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/vertical_error"
-                tools:text="5.9 m" />
-        </TableRow>
-
-        <TableRow>
-
-            <TextView
-                android:id="@+id/estimated_vertical_accuracy_error_label"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dip"
-                android:text="@string/estimated_vertical_accuracy_error_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/estimated_vertical_accuracy_error"
-                tools:text="21.457 m" />
-        </TableRow>
-
-    </TableLayout>
+    <TextView
+        android:id="@+id/avg_error_label"
+        style="@style/TextAppearance.MaterialComponents.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/avg_error_label"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/avg_error"
+        app:layout_constraintStart_toEndOf="@id/divider"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/expand_collapse"
