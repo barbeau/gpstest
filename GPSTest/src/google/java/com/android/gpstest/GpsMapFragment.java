@@ -58,7 +58,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     public static final float CAMERA_INITIAL_BEARING = 0.0f;
 
-    public static final float CAMERA_INITIAL_TILT = 45.0f;
+    public static final float CAMERA_INITIAL_TILT = 0.0f;
 
     public static final float CAMERA_ANCHOR_ZOOM = 19.0f;
 
