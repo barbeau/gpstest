@@ -32,6 +32,8 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
+import static android.text.TextUtils.isEmpty;
+
 /**
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
  * ground truth value against the GPS location.
@@ -47,6 +49,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     MotionLayout mMotionLayout;
 
     SlidingUpPanelLayout mSlidingPanel;
+
+    Location mGroundTruthLocation;
 
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
@@ -101,6 +105,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
+                // Save Ground Truth
+                if (mGroundTruthLocation == null) {
+                    mGroundTruthLocation = new Location("ground_truth");
+                }
+                mGroundTruthLocation.setLatitude(Double.valueOf(latText.getEditText().getText().toString()));
+                mGroundTruthLocation.setLongitude(Double.valueOf(longText.getEditText().getText().toString()));
+                if (!isEmpty(altText.getEditText().getText().toString())) {
+                    mGroundTruthLocation.setAltitude(Double.valueOf(altText.getEditText().getText().toString()));
+                }
+
                 // Collapse card
                 mMotionLayout.transitionToEnd();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
