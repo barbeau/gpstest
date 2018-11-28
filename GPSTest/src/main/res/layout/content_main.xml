@@ -17,7 +17,7 @@
         sothree:umanoShadowHeight="5dp"
         sothree:umanoParallaxOffset="100dp"
         sothree:umanoFadeColor="@android:color/transparent"
-        sothree:umanoInitialState="collapsed">
+        sothree:umanoInitialState="hidden">
 
         <!-- MAIN CONTENT -->
         <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"

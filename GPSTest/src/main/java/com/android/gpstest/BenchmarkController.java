@@ -20,7 +20,7 @@ import android.os.Bundle;
 /**
  * An interface for controlling the Benchmark feature
  */
-interface BenchmarkController {
+interface BenchmarkController extends GpsTestListener {
 
     /**
      * Called from the hosting class to pass in the Bundle when onSaveInstanceState() is being

@@ -16,6 +16,10 @@
 package com.android.gpstest;
 
 import android.animation.LayoutTransition;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssStatus;
+import android.location.GpsStatus;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -24,6 +28,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
@@ -41,7 +46,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     MotionLayout mMotionLayout;
 
+    SlidingUpPanelLayout mSlidingPanel;
+
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
+        mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
+        mSlidingPanel.setAnchorPoint(0.5f);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -97,12 +106,22 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = true;
+
+                // Show sliding panel if it's not visible
+                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
             } else {
                 // Expand card
                 mMotionLayout.transitionToStart();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
                 mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = false;
+
+                // Collapse sliding panel if it's anchored so there is room
+                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
             }
         });
     }
@@ -129,5 +148,75 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         if (mMotionLayout != null) {
             mMotionLayout.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void gpsStart() {
+
+    }
+
+    @Override
+    public void gpsStop() {
+
+    }
+
+    @Override
+    public void onGpsStatusChanged(int event, GpsStatus status) {
+
+    }
+
+    @Override
+    public void onGnssFirstFix(int ttffMillis) {
+
+    }
+
+    @Override
+    public void onSatelliteStatusChanged(GnssStatus status) {
+
+    }
+
+    @Override
+    public void onGnssStarted() {
+
+    }
+
+    @Override
+    public void onGnssStopped() {
+
+    }
+
+    @Override
+    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+
+    }
+
+    @Override
+    public void onOrientationChanged(double orientation, double tilt) {
+
+    }
+
+    @Override
+    public void onNmeaMessage(String message, long timestamp) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }

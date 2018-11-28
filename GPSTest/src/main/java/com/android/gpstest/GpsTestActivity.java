@@ -244,6 +244,7 @@ public class GpsTestActivity extends AppCompatActivity
 //        }
 
         mBenchmarkController = new BenchmarkControllerImpl(findViewById(R.id.mainlayout), savedInstanceState);
+        mGpsTestListeners.add(mBenchmarkController);
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
         if (mMapFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_MAP) {
             mBenchmarkController.show();
