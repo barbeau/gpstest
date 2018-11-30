@@ -17,6 +17,7 @@
         sothree:umanoShadowHeight="5dp"
         sothree:umanoParallaxOffset="100dp"
         sothree:umanoFadeColor="@android:color/transparent"
+        sothree:umanoAnchorPoint="0.5"
         sothree:umanoInitialState="hidden">
 
         <!-- MAIN CONTENT -->

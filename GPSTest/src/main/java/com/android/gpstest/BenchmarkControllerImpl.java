@@ -54,7 +54,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
-        mSlidingPanel.setAnchorPoint(0.5f);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -109,8 +108,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 if (mGroundTruthLocation == null) {
                     mGroundTruthLocation = new Location("ground_truth");
                 }
-                mGroundTruthLocation.setLatitude(Double.valueOf(latText.getEditText().getText().toString()));
-                mGroundTruthLocation.setLongitude(Double.valueOf(longText.getEditText().getText().toString()));
+                if (!isEmpty(latText.getEditText().getText().toString()) && !isEmpty(longText.getEditText().getText().toString())) {
+                    mGroundTruthLocation.setLatitude(Double.valueOf(latText.getEditText().getText().toString()));
+                    mGroundTruthLocation.setLongitude(Double.valueOf(longText.getEditText().getText().toString()));
+                }
                 if (!isEmpty(altText.getEditText().getText().toString())) {
                     mGroundTruthLocation.setAltitude(Double.valueOf(altText.getEditText().getText().toString()));
                 }
