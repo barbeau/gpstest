@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
@@ -52,8 +53,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     Location mGroundTruthLocation;
 
+    TextView mError, mVertError, mAvgError, mAvgVertError;
+
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
+        mError = v.findViewById(R.id.error);
+        mVertError = v.findViewById(R.id.vert_error);
+        mAvgError = v.findViewById(R.id.avg_error);
+        mAvgVertError = v.findViewById(R.id.avg_vert_error);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 

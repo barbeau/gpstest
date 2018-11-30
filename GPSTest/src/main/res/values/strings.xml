@@ -141,6 +141,7 @@
     <string name="horizontal_error_label">Error</string>
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$s fixes</string>
+    <string name="benchmark_header_error_divider">/</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>

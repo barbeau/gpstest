@@ -11,8 +11,8 @@
         android:id="@+id/error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ellipsize="end"
         android:singleLine="true"
@@ -22,6 +22,34 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/divider_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintStart_toEndOf="@id/error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/benchmark_header_error_divider"/>
+
+    <TextView
+        android:id="@+id/vert_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="10"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider_left"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
@@ -39,7 +67,7 @@
         android:textIsSelectable="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/error"
+        app:layout_constraintStart_toEndOf="@+id/vert_error"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.582" />
 
@@ -62,14 +90,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/divider_middle"
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/header_text_faded_color"/>
+        android:background="@color/header_text_faded_color"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/avg_error"
@@ -85,7 +114,35 @@
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintStart_toEndOf="@+id/divider_middle"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="10" />
+
+    <TextView
+        android:id="@+id/divider_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="48sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintStart_toEndOf="@id/avg_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/benchmark_header_error_divider"/>
+
+    <TextView
+        android:id="@+id/avg_vert_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="10"
+        android:textColor="@android:color/white"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider_right"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
@@ -105,7 +162,7 @@
         android:textIsSelectable="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/avg_error"
+        app:layout_constraintStart_toEndOf="@+id/avg_vert_error"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.582" />
 
@@ -124,7 +181,7 @@
         android:textIsSelectable="false"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/avg_error"
-        app:layout_constraintStart_toEndOf="@id/divider"
+        app:layout_constraintStart_toEndOf="@id/divider_middle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
