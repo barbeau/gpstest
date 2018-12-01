@@ -14,29 +14,29 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="10"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
     <TextView
         android:id="@+id/divider_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@android:color/white"
         android:layout_marginTop="32sp"
         android:layout_marginStart="3sp"
         android:layout_marginLeft="3sp"
         app:layout_constraintStart_toEndOf="@id/error"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
         android:text="@string/benchmark_header_error_divider"/>
 
     <TextView
@@ -46,15 +46,15 @@
         android:layout_marginTop="34sp"
         android:layout_marginStart="3sp"
         android:layout_marginLeft="3sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider_left"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="10"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/divider_left"
         tools:text="10" />
 
     <TextView
@@ -64,16 +64,16 @@
         android:layout_marginStart="12dp"
         android:layout_marginLeft="5sp"
         android:layout_marginTop="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vert_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/meters_abbreviation"
         android:textColor="@color/header_text_faded_color"
         android:textIsSelectable="false"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/vert_error"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582" />
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/error_label"
@@ -83,15 +83,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/horizontal_error_label"
         android:textColor="@color/header_text_faded_color"
         android:textIsSelectable="false"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/error"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="14sp"/>
 
     <View
         android:id="@+id/divider_middle"
@@ -111,27 +111,27 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_middle"
+        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="10"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider_middle"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
     <TextView
         android:id="@+id/divider_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="48sp"
-        android:textColor="@android:color/white"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         app:layout_constraintStart_toEndOf="@id/avg_error"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="48sp"
+        android:textColor="@android:color/white"
         android:text="@string/benchmark_header_error_divider"/>
 
     <TextView
@@ -139,15 +139,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/divider_right"
+        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="10"
         android:textColor="@android:color/white"
         android:textSize="48sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/divider_right"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
     <TextView
@@ -159,16 +159,16 @@
         android:layout_marginEnd="5sp"
         android:layout_marginRight="5sp"
         android:layout_marginTop="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avg_vert_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/meters_abbreviation"
         android:textColor="@color/header_text_faded_color"
         android:textIsSelectable="false"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/avg_vert_error"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.582" />
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/avg_error_label"
@@ -178,15 +178,15 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="18dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/avg_error"
+        app:layout_constraintStart_toEndOf="@id/divider_middle"
+        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/avg_error_label"
         android:textColor="@color/header_text_faded_color"
         android:textIsSelectable="false"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/avg_error"
-        app:layout_constraintStart_toEndOf="@id/divider_middle"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="14sp"/>
 
     <ImageView
         android:id="@+id/expand_collapse"
@@ -194,7 +194,7 @@
         android:layout_height="13dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/ground_truth_sliding_header_bottom_margin"
-        android:src="@drawable/ic_navigation_expand_more"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_navigation_expand_more"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
