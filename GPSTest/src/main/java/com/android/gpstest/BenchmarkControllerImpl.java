@@ -51,6 +51,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     SlidingUpPanelLayout mSlidingPanel;
 
+    SlidingUpPanelLayout.PanelState mLastPanelState;
+
     Location mGroundTruthLocation;
 
     TextView mError, mVertError, mAvgError, mAvgVertError;
@@ -161,6 +163,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         if (mMotionLayout != null) {
             mMotionLayout.setVisibility(View.VISIBLE);
         }
+        if (mSlidingPanel != null && mLastPanelState != null) {
+            mSlidingPanel.setPanelState(mLastPanelState);
+        }
     }
 
     public void hide() {
@@ -169,6 +174,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
         if (mMotionLayout != null) {
             mMotionLayout.setVisibility(View.GONE);
+        }
+        if (mSlidingPanel != null) {
+            mLastPanelState = mSlidingPanel.getPanelState();
+            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
     }
 
