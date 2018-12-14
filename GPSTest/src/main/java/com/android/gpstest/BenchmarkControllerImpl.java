@@ -27,6 +27,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.BenchmarkUtils;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -55,7 +57,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     Location mGroundTruthLocation;
 
-    TextView mError, mVertError, mAvgError, mAvgVertError;
+    TextView mError, mVertError, mAvgError, mAvgVertError, mErrorLabel;
 
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
@@ -63,6 +65,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mVertError = v.findViewById(R.id.vert_error);
         mAvgError = v.findViewById(R.id.avg_error);
         mAvgVertError = v.findViewById(R.id.avg_vert_error);
+        mErrorLabel = v.findViewById(R.id.error_label);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -233,7 +236,21 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void onLocationChanged(Location location) {
-
+        if (mGroundTruthLocation == null) {
+            return;
+        }
+        MeasuredError error = BenchmarkUtils.Companion.measureError(location, mGroundTruthLocation);
+        if (mError != null) {
+            mError.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+        }
+        if (mVertError != null && !Double.isNaN(error.getVertError())) {
+            mErrorLabel.setText(R.string.horizontal_vertical_error_label);
+            mVertError.setVisibility(View.VISIBLE);
+            mVertError.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
+        } else {
+            mErrorLabel.setText(R.string.horizontal_error_label);
+            mVertError.setVisibility(View.GONE);
+        }
     }
 
     @Override

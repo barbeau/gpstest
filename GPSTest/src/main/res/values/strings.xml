@@ -74,8 +74,8 @@
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
-    <string name="gps_accuracy_label">E. Acc:</string>
-    <string name="gps_hor_and_vert_accuracy_label">E. H/V Acc:</string>
+    <string name="gps_accuracy_label">E Acc:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
@@ -142,6 +142,7 @@
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$s fixes</string>
     <string name="benchmark_header_error_divider">/</string>
+    <string name="benchmark_error">%1$.2f</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
