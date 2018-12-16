@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau, wangkf (https://github.com/wangkf)
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 */
 -->
 <resources>
-    <string name="app_name">GPS测试</string>
+    <string name="app_name">GPSTest</string>
 
     <!-- Fragments -->
     <string name="gps_status_title">状态</string>
@@ -27,34 +27,31 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">修改辅助数据</string>
-    <string name="force_xtra_injection">添加XTRA数据</string>
-    <string name="force_time_injection">添加时间数据</string>
+    <string name="force_xtra_injection">导入XTRA数据</string>
+    <string name="force_time_injection">导入时间数据</string>
     <string name="delete_aiding_data">清除辅助数据</string>
     <string name="navdrawer_item_settings">设置</string>
     <string name="navdrawer_item_help">帮助</string>
     <string name="navdrawer_item_send_feedback">发送反馈</string>
-    <string name="navdrawer_item_open_source">在GitHub上查看源码</string>
+    <string name="navdrawer_item_open_source">GitHub</string>
 
-    <string name="navigation_drawer_open">打开导航条</string>
-    <string name="navigation_drawer_close">关闭导航条</string>
+    <string name="navigation_drawer_open">打开导航栏</string>
+    <string name="navigation_drawer_close">关闭导航栏</string>
 
     <!-- GPS functionality -->
     <string name="gps_start">开始</string>
     <string name="gps_pause">暂停</string>
 
-    <string name="delete_aiding_data_success">成功删除辅助数据。</string>
-    <string name="delete_aiding_data_failure">设备不支持删除辅助数据。
-    </string>
-    <string name="gps_switch">关/开</string>
+    <string name="delete_aiding_data_success">已成功删除辅助数据。</string>
+    <string name="delete_aiding_data_failure">设备不支持删除辅助数据。</string>
+    <string name="gps_switch">开关</string>
     <string name="send_location">发送位置</string>
     <string name="set_fix_frequency">设置固定频率</string>
-    <string name="force_time_injection_success">成功添加时间数据。</string>
-    <string name="force_time_injection_failure">设备不支持添加时间数据。
-    </string>
+    <string name="force_time_injection_success">已成功导入时间数据。</string>
+    <string name="force_time_injection_failure">设备不支持导入时间数据。</string>
 
-    <string name="force_xtra_injection_success">成功添加XTRA数据。</string>
-    <string name="force_xtra_injection_failure">设备不支持添加XTRA数据。
-    </string>
+    <string name="force_xtra_injection_success">已成功导入XTRA数据。</string>
+    <string name="force_xtra_injection_failure">设备不支持导入XTRA数据。</string>
 
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>
@@ -63,58 +60,70 @@
 
     <string name="gps_latitude_label">纬度:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_longitude_label">长:</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
+    <string name="gps_longitude_label">经度:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">时间:</string>
-    <string name="gps_ttff_label">首次启动时间:</string>
-    <string name="gps_altitude_label">海拔高度:</string>
-    <string name="gps_altitude_value_meters">%1$.1f 米</string>
-    <string name="gps_altitude_msl_label">海拔高度(平均海平面):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f 米</string>
-    <string name="gps_accuracy_label">加速:</string>
-    <string name="gps_hor_and_vert_accuracy_label">水平/垂直 海拔高度:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f 米</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f 米</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">海拔:</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
+    <string name="gps_altitude_msl_label">海拔（平均海平面）:</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
+    <string name="gps_accuracy_label">精度:</string>
+    <string name="gps_hor_and_vert_accuracy_label">水平/垂直 精度:</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">速度:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f 米/秒</string>
-    <string name="gps_speed_acc_label">S. 海拔高度:</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f 米/秒</string>
-    <string name="gps_bearing_label">Bearing:</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_speed_acc_label">速度精度:</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_bearing_label">方位:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
-    <string name="gps_bearing_acc_label">B.海拔高度:</string>
+    <string name="gps_bearing_acc_label">方位精度:</string>
     <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># 卫星:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
-    <string name="pdop_label">位置精度:</string>
+    <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
-    <string name="hvdop_label">水平/垂直 精度:</string>
+    <string name="hvdop_label">水平/垂直 DOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">CF</string>
-    <string name="gps_snr_column_label">信噪比</string>
+    <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">平均</string>
-    <string name="gps_elevation_column_label">海拔高度</string>
+    <string name="gps_elevation_column_label">高度角</string>
     <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">方位角</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
-    <string name="gps_flags_column_label">旗帜</string>
-    <string name="gps_not_supported">GPS不支持。退出程序&#8230;</string>
+    <string name="gps_flags_column_label">标识</string>
+    <string name="gps_not_supported">请检查系统设置 - 设备似乎并不支持GNSS/GPS。</string>
     <string name="install">安装</string>
-    <string name="no_thanks">不谢谢</string>
-    <string name="please_install_google_maps">地图标签请求Google地图</string>
-    <string name="enable_gps_message">GPS没启用。现在启用?</string>
+    <string name="no_thanks">不了</string>
+    <string name="please_install_google_maps">此地图栏需要Google 地图</string>
+    <string name="enable_gps_message">GPS已被禁用。要启用吗？</string>
     <string name="enable_gps_positive_button">启用GPS</string>
-    <string name="enable_gps_negative_button">不</string>
-    <string name="gps_set_location_listener">定时开始GPS= %1$ss, min. dist. = %2$sm
-    </string>
-    <string name="clear_assist_warning_title">删除辅助数据?</string>
-    <string name="clear_assist_warning">有些设备可能需要24小时来自动刷新辅助数据。如果您的设备不支持手动添加，则GPS在自动刷新完成之前不会对任何应用程序工作。你确定吗？</string>
-    <string name="never_ask_again">不再请求</string>
+    <string name="enable_gps_negative_button">不启动</string>
+    <string name="gps_set_location_listener">已以时间间隔为 %1$ss，最小距离为 %2$sm 启动 GPS</string>
+    <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
+    <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。你确认吗?</string>
+    <string name="never_ask_again">不再询问</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
+    <string name="sbas_not_available">星基增强系统（SBAS）卫星不可用</string>
+    <string name="menu_option_sort_by">分类</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
@@ -131,50 +140,59 @@
     <string name="sky_legend_snr_high">30</string>
     <string name="sky_legend_snr_units">(dB)</string>
 
-    <string name="sky_legend_title">传奇</string>
-    <string name="sky_legend_shape_gnss_title">全球卫星导航系统 (GNSS)</string>
-    <string name="sky_legend_shape_navstar">GPS导航(美国)</string>
-    <string name="sky_legend_shape_glonass">格洛纳斯 (俄罗斯)</string>
-    <string name="sky_legend_shape_galileo">伽利略 (欧盟)</string>
-    <string name="sky_legend_shape_qzss">准天顶卫星系统QZSS (日本)</string>
-    <string name="sky_legend_shape_sbas_title">卫星增强系统(SBAS)</string>
-    <string name="sky_legend_shape_beidou">北斗/COMPASS (中国)</string>
-    <string name="sky_legend_shape_gagan">GAGAN (印度)</string>
+    <string name="sky_legend_title">图例</string>
+    <string name="sky_legend_shape_gnss_title">全球卫星导航系统（GNSS）</string>
+    <string name="sky_legend_shape_navstar">全球定位系统（美国）</string>
+    <string name="sky_legend_shape_glonass">格洛纳斯系统（俄罗斯）</string>
+    <string name="sky_legend_shape_galileo">伽利略定位系统（欧盟）</string>
+    <string name="sky_legend_shape_qzss">准天顶卫星系统（日本）</string>
+    <string name="sky_legend_shape_beidou">北斗卫星导航系统（中国）</string>
+
+    <string name="sky_legend_shape_sbas_title">星基增强系统（SBAS）</string>
+    <string name="sky_legend_shape_waas">WAAS（美国）</string>
+    <string name="sky_legend_shape_egnos">EGNOS（欧盟）</string>
+    <string name="sky_legend_shape_gagan">GAGAN（印度）</string>
+    <string name="sky_legend_shape_msas">MSAS（日本）</string>
+    <string name="sky_legend_shape_sdcm">SDCM（俄罗斯）</string>
+    <string name="sky_legend_shape_snas">SNAS（中国）</string>
+    <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
+
     <string name="sky_legend_shape_availability_title">信号可用性</string>
-    <string name="sky_legend_shape_not_in_view">不基于设备</string>
-    <string name="sky_legend_shape_in_view">计划好的</string>
-    <string name="sky_legend_shape_used_in_fix">用于固定</string>
+    <string name="sky_legend_shape_not_in_view">不可见</string>
+    <string name="sky_legend_shape_in_view">可见</string>
+    <string name="sky_legend_shape_used_in_fix">使用中</string>
 
     <!-- GNSS Status callbacks -->
-    <string name="gnss_nav_msg_status_loc_disabled">GNSS提供者或者定位被禁用，直到启用它才更新</string>
-    <string name="gnss_nav_msg_status_not_supported">设备不支持跟踪GNSS导航消息</string>
-    <string name="gnss_nav_msg_status_ready">成功跟踪GNSS导航消息</string>
+    <string name="gnss_nav_msg_status_loc_disabled">GNSS提供者或者此位置已被禁用，直至启用将不会有更新</string>
+    <string name="gnss_nav_msg_status_not_supported">设备不支持追踪GNSS导航信息</string>
+    <string name="gnss_nav_msg_status_ready">GNSS导航信息正在被正常追踪中</string>
 
-    <string name="gnss_measurement_status_loc_disabled">GNSS提供者或位置被禁用，直到启用它才更新</string>
-    <string name="gnss_measurement_status_not_supported">设备不支持跟踪GNSS测量</string>
-    <string name="gnss_measurement_status_ready">GNSS测量成功跟踪</string>
+    <string name="gnss_measurement_status_loc_disabled">GNSS提供者或者此位置已被禁用，直至启用将不会有更新</string>
+    <string name="gnss_measurement_status_not_supported">设备不支持追踪GNSS测量数据</string>
+    <string name="gnss_measurement_status_ready">GNSS测量数据正在被正常追踪中</string>
 
     <string name="gnss_status_unknown">未知状态回调</string>
 
+    <!-- Permissions -->
+    <string name="title_location_permission">需要位置权限</string>
+    <string name="text_location_permission">GPSTest 需要你的位置信息权限。如果你选择了“不再询问”，你将需要重新安装本应用或者通过系统设置来启动该权限。</string>
+    <string name="ok">好</string>
+    <string name="exit">退出</string>
+
     <!-- Send feedback -->
-    <string name="feedback_subject">GPS测试: 回调</string>
-    <string name="feedback_body">欢迎投诉、赞誉或错误报告！\n\n\n</string>
-    <string name="feedback_error">无法发送反馈：找不到合适的应用程序。
-    </string>
+    <string name="feedback_subject">GPSTest: 反馈</string>
+    <string name="feedback_body">我们欢迎任何抱怨、称赞和bug报告！\n\n\n</string>
+    <string name="feedback_error">无法发送反馈: 没有找到合适的应用。</string>
 
     <!-- What's New -->
-    <string name="main_help_whatsnew_title">有什么新特性?</string>
+    <string name="main_help_whatsnew_title">更新内容</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>发送反馈</b>
-        - 使用这个导航抽屉选项来询问问题\n&#8226;\u0020
-        <b>为QZSS和SBAS卫星设计了新的图标</b>
-        - 请打开天空视图查看更新的图形\n&#8226;\u0020
-        <b>支持 SBAS Astra 5B</b>
-        - 在状态视图和天空视图可以看到\n&#8226;\u0020
-        <b>中文翻译,德文翻译</b>
-        - 感谢 wangkf , SIRSteiner\n&#8226;\u0020
-        <b>错误修复</b>
-        - 点击 http://bit.ly/gpstest-releases
+        <b>北斗B1C运营频率</b>
+        - 现在，B1C将会展示在北斗卫星的CF栏中。\n&#8226;\u0020
+        <b>关闭后台运行的选项</b>
+        - 启用后，当应用处于后台时将不会启用GPS。\n&#8226;\u0020
+        <b>Bug修复</b>
+        - 请见 http://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">关闭</string>
 
@@ -182,143 +200,154 @@
     <string name="pref_title">设置</string>
     <string name="pref_map_category_title">地图</string>
     <string name="pref_map_type_title">地图类型</string>
-    <string name="pref_map_type_summary">设置地图展示类型</string>
+    <string name="pref_map_type_summary">选择现实的地图类型</string>
     <string name="pref_map_type_dialog_title">选择地图类型</string>
 
-    <string name="pref_rotate_map_with_compass_title">通过司南旋转地图</string>
-    <string name="pref_rotate_map_with_compass_summary">根据你的方向改变地图方向
-    </string>
+    <string name="pref_rotate_map_with_compass_title">旋转地图</string>
+    <string name="pref_rotate_map_with_compass_summary">根据你的方向来改变地图朝向</string>
 
-    <string name="pref_tilt_map_with_sensors_title">通过设备倾斜地图</string>
-    <string name="pref_tilt_map_with_sensors_summary">举起设备时更改为第一人称视图
-    </string>
+    <string name="pref_tilt_map_with_sensors_title">倾斜地图</string>
+    <string name="pref_tilt_map_with_sensors_summary">当你拿起设备时变更为第一人称显示</string>
 
     <string name="pref_gps_category_title">GNSS</string>
-    <string name="pref_auto_start_gps_title">自动开始GNSS</string>
-    <string name="pref_auto_start_gps_summary">程序启动时自动启动GNSS</string>
+    <string name="pref_auto_start_gps_title">自动启动 GNSS</string>
+    <string name="pref_auto_start_gps_summary">应用启动时自动启动 GNSS</string>
 
-    <string name="pref_gps_min_time_title">间隔</string>
-    <string name="pref_gps_min_time_summary">GNSS之间的时间修复，秒</string>
-    <string name="pref_gps_min_time_dialog_title">输入间隔，以秒为单位</string>
-    <string name="pref_gps_min_time_invalid_entry">区间必须是个数字</string>
+    <string name="pref_gps_min_time_title">时间间隔</string>
+    <string name="pref_gps_min_time_summary">GNSS 修正的时间间隔（单位：秒）</string>
+    <string name="pref_gps_min_time_dialog_title">输入时间间隔（单位：秒）</string>
+    <string name="pref_gps_min_time_invalid_entry">时间间隔必须是一个数字</string>
 
     <string name="pref_use_gnss_apis_title">使用GNSS APIs</string>
-    <string name="pref_use_gnss_apis_summary">可在Android 7或更高版本找到。如果未经检查，将使用遗留的GPS状态侦听器GPSStatus.Listener。
-    </string>
+    <string name="pref_use_gnss_apis_summary">在Android 7.0以及以上可用。取消选择后将会使用旧的GPSStatus.Listener。</string>
 
     <string name="pref_gps_min_distance_title">最小距离</string>
-    <string name="pref_gps_min_distance_summary">GNSS之间的最小距离，以米为单位
-    </string>
-    <string name="pref_gps_min_distance_dialog_title">输入最小距离，以米为单位</string>
-    <string name="pref_gps_min_distance_invalid_entry">最小距离必须是个数字</string>
+    <string name="pref_gps_min_distance_summary">GNSS 修正的最小距离间隔（单位：米）</string>
+    <string name="pref_gps_min_distance_dialog_title">输入最小距离间隔（单位：米）</string>
+    <string name="pref_gps_min_distance_invalid_entry">最小距离间隔必须是一个数字</string>
 
-    <string name="pref_analyze_gps_accuracy_title">GNSS精度分析</string>
-    <string name="pref_analyze_gps_accuracy_summary">利用GPS基准测量GNSS误差
-    </string>
+    <string name="pref_stop_gnss_in_background_title">后台停止 GNSS</string>
+    <string name="pref_stop_gnss_in_background_summary">启用后，当本应用处于后台时将不会启用GNSS</string>
+
+    <string name="pref_analyze_gps_accuracy_title">分析GNSS精确度</string>
+    <string name="pref_analyze_gps_accuracy_summary">使用GPS Benchmark测量GNSS错误</string>
 
     <string name="pref_display_category_title">显示</string>
-    <string name="pref_keep_screen_on_title">保持屏幕常亮</string>
-    <string name="pref_keep_screen_on_summary">防止屏幕关闭</string>
-    <string name="pref_true_north_title">司南指向北方</string>
-    <string name="pref_true_north_summary">罗盘将面对真正的北方而不是磁北
-    </string>
+    <string name="pref_keep_screen_on_title">保持亮屏</string>
+    <string name="pref_keep_screen_on_summary">阻止屏幕关闭</string>
+    <string name="pref_true_north_title">指南正指向正北</string>
+    <string name="pref_true_north_summary">指南针将会指向正北而不是磁北</string>
 
-    <string name="pref_output_category_title">安卓监视器输出</string>
+    <string name="pref_output_category_title">Android显示器输出</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">将NMEA日志输出到Android Studio</string>
-    <string name="pref_nmea_timestamp_output_title">NMEA时间戳</string>
-    <string name="pref_nmea_timestamp_output_summary">在输出文件中包括NMEA时间戳</string>
-    <string name="pref_measurement_output_title">测量</string>
-    <string name="pref_measurement_output_summary">GNSS测量日志输出到Android Studio (Android
-        7.0或更高版本)
-    </string>
+    <string name="pref_nmea_output_summary">输出NMEA至Android Studio</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA 时间戳</string>
+    <string name="pref_nmea_timestamp_output_summary">在输出中包括NMEA时间戳</string>
+    <string name="pref_measurement_output_title">测量数据</string>
+    <string name="pref_measurement_output_summary">输出 GNSS 测量数据至Android Studio（Android 7.0 及其以上）</string>
     <string name="pref_navigation_message_output_title">导航信息</string>
-    <string name="pref_navigation_message_output_summary">GNSS导航信息输出到Android
-        Studio (Android 7.0或更高版本)
-    </string>
+    <string name="pref_navigation_message_output_summary">输出 GNSS 导航信息至Android Studio（Android 7.0 及其以上）</string>
 
     <string name="pref_about_category_title">关于</string>
-    <string name="pref_show_tutorial_title">显示教程</string>
-    <string name="pref_show_tutorial_summary">显示使用该应用程序的说明</string>
+    <string name="pref_show_tutorial_title">显示手册</string>
+    <string name="pref_show_tutorial_summary">显示本应用的使用介绍</string>
 
     <string name="pref_dark_theme_title">使用暗色主题</string>
-    <string name="pref_dark_theme_summary">背景用暗色，文本用亮色
-    </string>
+    <string name="pref_dark_theme_summary">为背景铺上暗色而文字显示为亮色</string>
+
+    <string name="pref_dms_mode_title">使用 DMS 形式</string>
+    <string name="pref_dms_mode_summary">使用度分秒来显示经纬度</string>
+
+    <string name="preferences_preferred_distance_units_title">距离单位</string>
+    <string name="preferences_preferred_distance_units_option_meters">m</string>
+    <string name="preferences_preferred_distance_units_option_feet">ft</string>
+
+    <string name="preferences_preferred_speed_units_title">速度单位</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">m/s</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">km/h</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">mi/h</string>
+
+    <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
 
     <!-- Help -->
     <string name="title_help">帮助</string>
 
     <string name="help_text">
-        <b>常见问题(FAQ)</b>
+        <b>常见问题解答 (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
-        <b>*** 状态视图 ***</b>\n\n&#8226;\u0020
+        <b>*** 状态 ***</b>\n\n&#8226;\u0020
         <b>纬度</b>
-        - In decimal degrees (WGS 84)\n&#8226;\u0020
+        - 十进制（WGS 84）\n&#8226;\u0020
         <b>经度</b>
-        - In decimal degrees (WGS 84)\n&#8226;\u0020
-        <b>海拔高度</b>
-        - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
-        <b>海拔高度(MSL)</b>
-        - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
-        <b>Acc</b>
-        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle.\n&#8226;\u0020
-        <b>H/V Acc</b>
-        - The horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters.\n&#8226;\u0020
-        <b>Speed</b>
-        - Speed, in meters/second over ground\n&#8226;\u0020
-        <b>S. Acc</b>
-        - Estimated speed accuracy of this location at 68% confidence, in meters per second. For example, if Speed is 5, and Speed Acc is 1, then there is a 68% probability of the true speed being between 4 and 6 meters per second.\n&#8226;\u0020
-        <b>Bearing</b>
-        - The horizontal direction of travel of the device (in degrees 0-360), and is not related to the device orientation.\n&#8226;\u0020
-        <b>B. Acc</b>
-        - Estimated bearing accuracy of this location at 68% confidence, in degrees. For example, if Bearing is 60, and Bearing Acc is 10, then there is a 68% probability of the true bearing being between 50 and 70 degrees.\n&#8226;\u0020
-        <b># Sats</b>
-        - # satellites used in fix / # satellites in view\n&#8226;\u0020
+        - 十进制（WGS 84）\n&#8226;\u0020
+        <b>海拔</b>
+        - 基于WGS 84椭球的高度\n&#8226;\u0020
+        <b>海拔（平均海平面）</b>
+        - 基于平均海拔的高度（需要NMEA支持）\n&#8226;\u0020
+        <b>精度</b>
+        - 当前位置的精度（68%可信度的半径）。换言之，如果以当前经纬度画一个圆，你正处于以该数值为半径的圆内的概率为68%。\n&#8226;\u0020
+        <b>水平/垂直 精度</b>
+        - 当前位置的水平精度和垂直精度，都为68%的可信度。水平精度的定义与前面“精度”一致。垂直精度只在Android 8.0或者更高系统可用。垂直精度示例 - 海拔为150、垂直精度为20将会意味着你的海拔处于130~170之间的概率为68%。\n&#8226;\u0020
+        <b>速度</b>
+        - m/s 的对地速度\n&#8226;\u0020
+        <b>速度精度</b>
+        - 68% 可信度下当前位置的速度精度，单位为m/s。比如，速度为5、速度精度为1，速度处于4~6之间的可能性为68%。\n&#8226;\u0020
+        <b>方位</b>
+        - 设备的水平移动方向（角度0°~360°），这个与设备的朝向之间没有任何关系。\n&#8226;\u0020
+        <b>方位精度</b>
+        - 68% 可信度下当前位置的方位精度，单位为度（°）。比如，方位为60、方位精度为10，真实方位为50~70的可能性为68%。\n&#8226;\u0020
+        <b># 卫星</b>
+        - # 使用中的卫星 / # 可见的卫星\n&#8226;\u0020
         <b>PDOP</b>
-        - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
-        <b>H/V DOP</b>
-        - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - 三维位置精度因子（需要NMEA支持）\n&#8226;\u0020
+        <b>水平/垂直 DOP</b>
+        - 水平/垂直的位置精度因子（需要NMEA支持）\n&#8226;\u0020
         <b>TTFF</b>
-        - Time to first fix\n&#8226;\u0020
-        <b>ID or PRN</b>
-        - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
+        - 首次定位时间\n&#8226;\u0020
+        <b>ID 或 PRN</b>
+        - 卫星的标识符（GPS的伪随机噪声）\n&#8226;\u0020
         <b>CF</b>
-        - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
+        - 当前追踪的运营频率的信号标签（比如L1）。如果是一个未知频率，则将会以频率直接显示（在Android 8.0以上可用，但不支持所有设备）\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - 信噪比（Android M或者更低） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>Flags</b>
-        - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
-        for the satellite, (U) if the satellite was used in the latest fix\n\n
+        - 载波噪声谱密度比（Android N 或者更高） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>标签</b>
+        - (E) 设备含有卫星的星历数据 (A) 设备含有卫星的历史数据 (U) 卫星正在被使用中\n\n
 
-        <b>*** Sky View ***</b>\n\n&#8226;\u0020
-        <b>GPS (美国导航)</b>
-        - 圆圈\n&#8226;\u0020
-        <b>GLONASS (俄罗斯)</b>
+        <b>*** 天空视图 ***</b>\n\n&#8226;\u0020
+        <b>全球定位系统（美国）</b>
+        - 圆\n&#8226;\u0020
+        <b>格洛纳斯系统（俄罗斯）</b>
         - 正方形\n&#8226;\u0020
-        <b>Galileo (欧盟)</b>
-        -三角形\n&#8226;\u0020
-        <b>QZSS (日本)</b>
+        <b>伽利略定位系统（欧盟）</b>
+        - 三角形\n&#8226;\u0020
+        <b>准天顶卫星系统（日本）</b>
         - 六边形\n&#8226;\u0020
-        <b>北斗/COMPASS (中国)</b>
+        <b>北斗卫星导航系统（中国）</b>
         - 五边形\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5, Astra 5B)</b>
-        - 钻石\n\n
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        - 菱形\n\n
 
-        &#8226;\u0020 显而易见的卫星 - 不在视野中\n
-        &#8226;\u0020 薄的概要 - 在视图中不固定\n
-        &#8226;\u0020 重点摘要 -在视图中固定 \n\n
+        &#8226;\u0020 透明卫星 - 不可见\n
+        &#8226;\u0020 细轮廓 - 可见但未使用\n
+        &#8226;\u0020 粗轮廓 - 使用中\n\n
 
-        &#8226;\u0020 Android版本小于7时预期的SNR范围是0分贝（红色）到30分贝（绿色）。\n
-        &#8226;\u0020 Android版本7.0或以上时，预期的SNR范围是10分贝（红色）45分贝（绿色）。\n
-        &#8226;\u0020在Android 7和更高版本时，预期的C/N0范围是10分贝-Hz（红色）到45分贝-Hz（绿色）。\n
-        &#8226;\u0020 如果没有卫星的SNR或C/N0值（即，它不在装置的视图中），它将具有透明的浅灰色。\n\n
+        &#8226;\u0020 在低于Android 7.0中，SNR的期待范围为0 dB（红）到30 dB（绿）。\n
+        &#8226;\u0020 在Android 7.0或更高中，SNR的期待范围为10 dB（红）到45 dB（绿）。\n
+        &#8226;\u0020 在Android 7.0或更高中，C/N0的期待范围为10 dB-Hz（红）到45 dB-Hz（绿）。\n
+        &#8226;\u0020 如果没有一个卫星的SNR或C/N0数值（即卫星不可见），这将会变为透明浅灰色。\n\n
 
-        <b>*** 感谢 ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - v1.x 版本开发者\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - v2.x 及更高版本开发者\n
-        &#8226;\u0020 <b>wangkf（wang.kf@qq.com)</b> - 简体中文语言翻译\n
+        <b>*** Acknowledgments ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - v1.x的初代开发者\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - v2.x及其后的开发者\n
+        &#8226;\u0020 GPSTest的图标由Material Design中“卫星”图标派生而来，其基于Google所签发的Apache v2.0。其他的Material Design图标也基于Apache v2.0使用。\n
+        &#8226;\u0020 简体中文翻译由 wangkf 提供\n
+        &#8226;\u0020 德语翻译由 SIRSteiner 提供\n
+        &#8226;\u0020 荷兰语翻译由 Dennis Dolman 提供\n
+        &#8226;\u0020 希腊语翻译由 Jimmy Golfi 提供\n
     </string>
 </resources>
