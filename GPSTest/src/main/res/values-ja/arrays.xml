@@ -20,13 +20,13 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>星座</item>
+        <item>システム</item>
         <item>キャリア周波数</item>
         <item>シグナル強度</item>
-        <item>修正に使用</item>
-        <item>星座、キャリア周波数</item>
-        <item>星座、シグナル強度</item>
-        <item>星座、修正に使用</item>
+        <item>使用</item>
+        <item>システムとキャリア周波数</item>
+        <item>システムとシグナル強度</item>
+        <item>システムと使用</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
