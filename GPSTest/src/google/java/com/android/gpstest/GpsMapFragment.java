@@ -385,6 +385,7 @@ public class GpsMapFragment extends SupportMapFragment
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
     }
