@@ -137,6 +137,9 @@
     <string name="set_ground_truth_subtitle">Tap on map or enter your real location</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="ground_truth_marker_title">Your real location</string>
 
     <string name="horizontal_error_label">Error</string>
     <string name="horizontal_vertical_error_label">H/V Error</string>

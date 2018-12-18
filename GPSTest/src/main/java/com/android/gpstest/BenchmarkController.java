@@ -22,6 +22,20 @@ import android.os.Bundle;
  */
 interface BenchmarkController extends GpsTestListener {
 
+    interface Listener {
+        /**
+         * Called when the ability to edit the ground truth location changes
+         * @param allowChange true if the ground truth can now be edited, and false if it now cannot be edited
+         */
+        void onAllowGroundTruthEditChanged(boolean allowChange);
+    }
+
+    /**
+     * Sets a listener than will be called when Listener events are fired
+     * @param listener a listener than will be called when Listener events are fired
+     */
+    void setListener(Listener listener);
+
     /**
      * Called from the hosting class to pass in the Bundle when onSaveInstanceState() is being
      * called in the hosting class so that the BenchmarkController implementation can save any

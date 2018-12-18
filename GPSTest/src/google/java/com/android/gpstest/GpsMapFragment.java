@@ -43,6 +43,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import androidx.annotation.RequiresApi;
@@ -94,6 +96,12 @@ public class GpsMapFragment extends SupportMapFragment
     private boolean mRotate;
 
     private boolean mTilt;
+
+    private OnMapClickListener mOnMapClickListener;
+
+    private Marker mGroundTruthMarker;
+
+    private boolean mAllowGroundTruthChange = true;
 
     /**
      * Clamps a value between the given positive min and max.  If abs(value) is less than
@@ -325,6 +333,26 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onMapClick(LatLng latLng) {
         mLastMapTouchTime = System.currentTimeMillis();
+        if (!mAllowGroundTruthChange) {
+            // Don't allow changes to the ground truth location, so don't pass taps to listener
+            return;
+        }
+        if (mMap != null) {
+            if (mGroundTruthMarker == null) {
+                mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(Application.get().getString(R.string.ground_truth_marker_title)));
+            } else {
+                mGroundTruthMarker.setPosition(latLng);
+            }
+        }
+
+        if (mOnMapClickListener != null) {
+            Location location = new Location("OnMapClick");
+            location.setLatitude(latLng.latitude);
+            location.setLongitude(latLng.longitude);
+            mOnMapClickListener.onMapClick(location);
+        }
     }
 
     @Override
@@ -367,5 +395,21 @@ public class GpsMapFragment extends SupportMapFragment
      */
     public static boolean isGooglePlayServicesInstalled() {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS;
+    }
+
+    /**
+     * Sets the listener that should receive map click events
+     * @param listener the listener that should receive map click events
+     */
+    public void setOnMapClickListener(OnMapClickListener listener) {
+        mOnMapClickListener = listener;
+    }
+
+    /**
+     * Sets whether the ground truth location can be changed on the map or not
+     * @param allowGroundTruthChange
+     */
+    public void setAllowGroundTruthChange(boolean allowGroundTruthChange) {
+        mAllowGroundTruthChange = allowGroundTruthChange;
     }
 }

@@ -41,7 +41,9 @@ import static android.text.TextUtils.isEmpty;
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
  * ground truth value against the GPS location.
  */
-public class BenchmarkControllerImpl implements BenchmarkController {
+public class BenchmarkControllerImpl implements BenchmarkController, OnMapClickListener {
+
+    private static final String TAG = "BenchmarkCntlrImpl";
 
     private static final String BENCHMARK_CARD_COLLAPSED = "ground_truth_card_collapsed";
 
@@ -57,7 +59,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     Location mGroundTruthLocation;
 
-    TextView mError, mVertError, mAvgError, mAvgVertError, mErrorLabel;
+    TextView mError, mVertError, mAvgError, mAvgVertError, mErrorLabel, mLeftDivider, mRightDivider;
+    TextInputLayout mLatText, mLongText, mAltText;
+
+    private Listener mListener;
 
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
@@ -66,6 +71,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAvgError = v.findViewById(R.id.avg_error);
         mAvgVertError = v.findViewById(R.id.avg_vert_error);
         mErrorLabel = v.findViewById(R.id.error_label);
+        mLeftDivider = v.findViewById(R.id.divider_left);
+        mRightDivider = v.findViewById(R.id.divider_right);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -81,9 +88,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
         Button saveGroundTruth = v.findViewById(R.id.save);
-        TextInputLayout latText = v.findViewById(R.id.ground_truth_lat);
-        TextInputLayout longText = v.findViewById(R.id.ground_truth_long);
-        TextInputLayout altText = v.findViewById(R.id.ground_truth_alt);
+        mLatText = v.findViewById(R.id.ground_truth_lat);
+        mLongText = v.findViewById(R.id.ground_truth_long);
+        mAltText = v.findViewById(R.id.ground_truth_alt);
         mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
             @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
@@ -93,21 +100,21 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             public void onTransitionCompleted(MotionLayout motionLayout, int currentId) {
                 if (currentId == R.id.expanded) {
                     saveGroundTruth.setText(Application.get().getString(R.string.save));
-                    latText.setEnabled(true);
-                    longText.setEnabled(true);
-                    altText.setEnabled(true);
-                    latText.setFocusable(true);
-                    longText.setFocusable(true);
-                    altText.setFocusable(true);
+                    mLatText.setEnabled(true);
+                    mLongText.setEnabled(true);
+                    mAltText.setEnabled(true);
+                    mLatText.setFocusable(true);
+                    mLongText.setFocusable(true);
+                    mAltText.setFocusable(true);
                 } else {
                     // Collapsed
                     saveGroundTruth.setText(Application.get().getString(R.string.edit));
-                    latText.setEnabled(false);
-                    longText.setEnabled(false);
-                    altText.setEnabled(false);
-                    latText.setFocusable(false);
-                    longText.setFocusable(false);
-                    altText.setFocusable(false);
+                    mLatText.setEnabled(false);
+                    mLongText.setEnabled(false);
+                    mAltText.setEnabled(false);
+                    mLatText.setFocusable(false);
+                    mLongText.setFocusable(false);
+                    mAltText.setFocusable(false);
                 }
             }
         });
@@ -116,16 +123,18 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
+                // TODO - if lat and long aren't filled, show error
+
                 // Save Ground Truth
                 if (mGroundTruthLocation == null) {
                     mGroundTruthLocation = new Location("ground_truth");
                 }
-                if (!isEmpty(latText.getEditText().getText().toString()) && !isEmpty(longText.getEditText().getText().toString())) {
-                    mGroundTruthLocation.setLatitude(Double.valueOf(latText.getEditText().getText().toString()));
-                    mGroundTruthLocation.setLongitude(Double.valueOf(longText.getEditText().getText().toString()));
+                if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
+                    mGroundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
+                    mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
                 }
-                if (!isEmpty(altText.getEditText().getText().toString())) {
-                    mGroundTruthLocation.setAltitude(Double.valueOf(altText.getEditText().getText().toString()));
+                if (!isEmpty(mAltText.getEditText().getText().toString())) {
+                    mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
                 }
 
                 // Collapse card
@@ -138,8 +147,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
+                if (mListener != null) {
+                    mListener.onAllowGroundTruthEditChanged(false);
+                }
             } else {
-                // Expand card
+                // Expand card to allow editing ground truth
                 mMotionLayout.transitionToStart();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
                 mGroundTruthCardView.setLayoutParams(lp);
@@ -149,6 +161,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
+
+                if (mListener != null) {
+                    mListener.onAllowGroundTruthEditChanged(true);
+                }
             }
         });
     }
@@ -157,6 +173,15 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     public void onSaveInstanceState(Bundle outState) {
         // Save current benchmark card state
         outState.putBoolean(BENCHMARK_CARD_COLLAPSED, mBenchmarkCardCollapsed);
+    }
+
+    /**
+     * Sets a lister that will be updated when benchmark controller events are fired
+     * @param listener a lister that will be updated when benchmark controller events are fired
+     */
+    @Override
+    public void setListener(Listener listener) {
+        mListener = listener;
     }
 
     public void show() {
@@ -245,10 +270,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
         if (mVertError != null && !Double.isNaN(error.getVertError())) {
             mErrorLabel.setText(R.string.horizontal_vertical_error_label);
+            mLeftDivider.setVisibility(View.VISIBLE);
+            mRightDivider.setVisibility(View.VISIBLE);
             mVertError.setVisibility(View.VISIBLE);
             mVertError.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
         } else {
             mErrorLabel.setText(R.string.horizontal_error_label);
+            mLeftDivider.setVisibility(View.GONE);
+            mRightDivider.setVisibility(View.GONE);
             mVertError.setVisibility(View.GONE);
         }
     }
@@ -266,5 +295,18 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onMapClick(Location location) {
+        mGroundTruthLocation = location;
+        if (!mBenchmarkCardCollapsed) {
+            mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
+            mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
+
+            if (location.hasAltitude()) {
+                mAltText.getEditText().setText(Application.get().getString(R.string.benchmark_alt, location.getAltitude()));
+            }
+        }
     }
 }

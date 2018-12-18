@@ -214,6 +214,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean mUserDeniedPermission = false;
 
+    // TODO - why is the impl declared here?  It should be the interface
     private BenchmarkControllerImpl mBenchmarkController;
 
     /** Called when the activity is first created. */
@@ -245,9 +246,10 @@ public class GpsTestActivity extends AppCompatActivity
 
         mBenchmarkController = new BenchmarkControllerImpl(findViewById(R.id.mainlayout), savedInstanceState);
         mGpsTestListeners.add(mBenchmarkController);
+
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
         if (mMapFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_MAP) {
-            mBenchmarkController.show();
+            initMapAndBenchmark();
         } else {
             mBenchmarkController.hide();
         }
@@ -301,6 +303,18 @@ public class GpsTestActivity extends AppCompatActivity
             // loop if user selects "Don't ask again") in system permission prompt
             showLocationPermissionDialog();
         }
+    }
+
+    private void initMapAndBenchmark() {
+        mBenchmarkController.setListener(new BenchmarkController.Listener() {
+            @Override
+            public void onAllowGroundTruthEditChanged(boolean allowChange) {
+                mMapFragment.setAllowGroundTruthChange(allowChange);
+            }
+        });
+
+        mMapFragment.setOnMapClickListener(mBenchmarkController);
+        mBenchmarkController.show();
     }
 
     private void requestPermissionAndInit(final Activity activity) {
@@ -568,7 +582,7 @@ public class GpsTestActivity extends AppCompatActivity
         setTitle(getResources().getString(R.string.gps_map_title));
 
         if (mBenchmarkController != null) {
-            mBenchmarkController.show();
+            initMapAndBenchmark();
         }
     }
 
