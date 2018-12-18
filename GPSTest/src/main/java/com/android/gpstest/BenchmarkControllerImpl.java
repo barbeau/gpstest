@@ -185,7 +185,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     private void resetError() {
         mAvgError.reset();
         mErrorView.setVisibility(INVISIBLE);
+        mVertErrorView.setVisibility(INVISIBLE);
         mAvgErrorView.setVisibility(INVISIBLE);
+        mAvgVertErrorView.setVisibility(INVISIBLE);
         mLeftDivider.setVisibility(INVISIBLE);
         mRightDivider.setVisibility(INVISIBLE);
         mErrorUnit.setVisibility(INVISIBLE);
@@ -308,6 +310,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mVertErrorView.setVisibility(VISIBLE);
             mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
             mAvgVertErrorView.setVisibility(VISIBLE);
+            mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgVertError()));
         } else {
             mErrorLabel.setText(R.string.horizontal_error_label);
             mLeftDivider.setVisibility(GONE);
