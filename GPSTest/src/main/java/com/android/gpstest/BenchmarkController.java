@@ -15,6 +15,7 @@
  */
 package com.android.gpstest;
 
+import android.location.Location;
 import android.os.Bundle;
 
 /**
@@ -35,6 +36,12 @@ interface BenchmarkController extends GpsTestListener {
      * @param listener a listener than will be called when Listener events are fired
      */
     void setListener(Listener listener);
+
+    /**
+     * Sets the ground truth location (e.g., that has been received via a map click)
+     * @param location location to set the ground truth to
+     */
+    void setGroundTruth(Location location);
 
     /**
      * Called from the hosting class to pass in the Bundle when onSaveInstanceState() is being

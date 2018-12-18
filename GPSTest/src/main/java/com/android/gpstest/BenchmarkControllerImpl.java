@@ -41,7 +41,7 @@ import static android.text.TextUtils.isEmpty;
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
  * ground truth value against the GPS location.
  */
-public class BenchmarkControllerImpl implements BenchmarkController, OnMapClickListener {
+public class BenchmarkControllerImpl implements BenchmarkController {
 
     private static final String TAG = "BenchmarkCntlrImpl";
 
@@ -298,7 +298,7 @@ public class BenchmarkControllerImpl implements BenchmarkController, OnMapClickL
     }
 
     @Override
-    public void onMapClick(Location location) {
+    public void setGroundTruth(Location location) {
         mGroundTruthLocation = location;
         if (!mBenchmarkCardCollapsed) {
             mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));

@@ -214,8 +214,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean mUserDeniedPermission = false;
 
-    // TODO - why is the impl declared here?  It should be the interface
-    private BenchmarkControllerImpl mBenchmarkController;
+    private BenchmarkController mBenchmarkController;
 
     /** Called when the activity is first created. */
     @Override
@@ -306,14 +305,9 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void initMapAndBenchmark() {
-        mBenchmarkController.setListener(new BenchmarkController.Listener() {
-            @Override
-            public void onAllowGroundTruthEditChanged(boolean allowChange) {
-                mMapFragment.setAllowGroundTruthChange(allowChange);
-            }
-        });
+        mBenchmarkController.setListener(allowChange -> mMapFragment.setAllowGroundTruthChange(allowChange));
 
-        mMapFragment.setOnMapClickListener(mBenchmarkController);
+        mMapFragment.setOnMapClickListener(location -> mBenchmarkController.setGroundTruth(location));
         mBenchmarkController.show();
     }
 
