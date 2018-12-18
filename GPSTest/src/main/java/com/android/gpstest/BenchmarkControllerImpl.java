@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.BenchmarkUtils;
 import com.google.android.material.card.MaterialCardView;
@@ -36,6 +37,9 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 
 import static android.text.TextUtils.isEmpty;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 /**
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
@@ -53,26 +57,32 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     MotionLayout mMotionLayout;
 
+    TextView mErrorView, mVertErrorView, mAvgErrorView, mAvgVertErrorView, mErrorLabel, mAvgErrorLabel, mLeftDivider, mRightDivider, mErrorUnit, mAvgErrorUnit;
+    TextInputLayout mLatText, mLongText, mAltText;
+
     SlidingUpPanelLayout mSlidingPanel;
 
     SlidingUpPanelLayout.PanelState mLastPanelState;
 
     Location mGroundTruthLocation;
 
-    TextView mError, mVertError, mAvgError, mAvgVertError, mErrorLabel, mLeftDivider, mRightDivider;
-    TextInputLayout mLatText, mLongText, mAltText;
+    AvgError mAvgError = new AvgError();
 
     private Listener mListener;
 
     public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
-        mError = v.findViewById(R.id.error);
-        mVertError = v.findViewById(R.id.vert_error);
-        mAvgError = v.findViewById(R.id.avg_error);
-        mAvgVertError = v.findViewById(R.id.avg_vert_error);
+        mErrorView = v.findViewById(R.id.error);
+        mVertErrorView = v.findViewById(R.id.vert_error);
+        mAvgErrorView = v.findViewById(R.id.avg_error);
+        mAvgVertErrorView = v.findViewById(R.id.avg_vert_error);
         mErrorLabel = v.findViewById(R.id.error_label);
+        mAvgErrorLabel = v.findViewById(R.id.avg_error_label);
+        mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, 0));
         mLeftDivider = v.findViewById(R.id.divider_left);
         mRightDivider = v.findViewById(R.id.divider_right);
+        mErrorUnit = v.findViewById(R.id.error_unit);
+        mAvgErrorUnit = v.findViewById(R.id.avg_error_unit);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -120,6 +130,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         });
 
         // TODO - set initial state of card and motion layout depending on savedInstanceState
+        // TODO - set initial state of sliding panel depending on savedInstanceState
 
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
@@ -142,6 +153,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = true;
+
+                resetError();
 
                 // Show sliding panel if it's not visible
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
@@ -169,6 +182,17 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         });
     }
 
+    private void resetError() {
+        mAvgError.reset();
+        mErrorView.setVisibility(INVISIBLE);
+        mAvgErrorView.setVisibility(INVISIBLE);
+        mLeftDivider.setVisibility(INVISIBLE);
+        mRightDivider.setVisibility(INVISIBLE);
+        mErrorUnit.setVisibility(INVISIBLE);
+        mAvgErrorUnit.setVisibility(INVISIBLE);
+        mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, 0));
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         // Save current benchmark card state
@@ -186,10 +210,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     public void show() {
         if (mGroundTruthCardView != null) {
-            mGroundTruthCardView.setVisibility(View.VISIBLE);
+            mGroundTruthCardView.setVisibility(VISIBLE);
         }
         if (mMotionLayout != null) {
-            mMotionLayout.setVisibility(View.VISIBLE);
+            mMotionLayout.setVisibility(VISIBLE);
         }
         if (mSlidingPanel != null && mLastPanelState != null) {
             mSlidingPanel.setPanelState(mLastPanelState);
@@ -198,10 +222,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     public void hide() {
         if (mGroundTruthCardView != null) {
-            mGroundTruthCardView.setVisibility(View.GONE);
+            mGroundTruthCardView.setVisibility(GONE);
         }
         if (mMotionLayout != null) {
-            mMotionLayout.setVisibility(View.GONE);
+            mMotionLayout.setVisibility(GONE);
         }
         if (mSlidingPanel != null) {
             mLastPanelState = mSlidingPanel.getPanelState();
@@ -261,24 +285,35 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mGroundTruthLocation == null) {
+        if (mGroundTruthLocation == null || !mBenchmarkCardCollapsed) {
+            // If we don't have a ground truth location yet, or if the user is editing the location,
+            // don't update the errors
             return;
         }
         MeasuredError error = BenchmarkUtils.Companion.measureError(location, mGroundTruthLocation);
-        if (mError != null) {
-            mError.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+        mAvgError.addMeasurement(error);
+        if (mErrorView != null && mAvgErrorView != null) {
+            mErrorUnit.setVisibility(VISIBLE);
+            mErrorView.setVisibility(VISIBLE);
+            mErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+            mAvgErrorUnit.setVisibility(VISIBLE);
+            mAvgErrorView.setVisibility(VISIBLE);
+            mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgError()));
+            mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, mAvgError.getCount()));
         }
-        if (mVertError != null && !Double.isNaN(error.getVertError())) {
+        if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
             mErrorLabel.setText(R.string.horizontal_vertical_error_label);
-            mLeftDivider.setVisibility(View.VISIBLE);
-            mRightDivider.setVisibility(View.VISIBLE);
-            mVertError.setVisibility(View.VISIBLE);
-            mVertError.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
+            mLeftDivider.setVisibility(VISIBLE);
+            mRightDivider.setVisibility(VISIBLE);
+            mVertErrorView.setVisibility(VISIBLE);
+            mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
+            mAvgVertErrorView.setVisibility(VISIBLE);
         } else {
             mErrorLabel.setText(R.string.horizontal_error_label);
-            mLeftDivider.setVisibility(View.GONE);
-            mRightDivider.setVisibility(View.GONE);
-            mVertError.setVisibility(View.GONE);
+            mLeftDivider.setVisibility(GONE);
+            mRightDivider.setVisibility(GONE);
+            mVertErrorView.setVisibility(GONE);
+            mAvgVertErrorView.setVisibility(GONE);
         }
     }
 
@@ -299,8 +334,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void setGroundTruth(Location location) {
-        mGroundTruthLocation = location;
         if (!mBenchmarkCardCollapsed) {
+            mGroundTruthLocation = location;
             mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
             mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
 

@@ -187,7 +187,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="@string/avg_error_label"
         android:textColor="@color/header_text_faded_color"
         android:textIsSelectable="false"
         android:textSize="14sp"/>
