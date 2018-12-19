@@ -168,21 +168,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     @Override
     public void onResume() {
-        SharedPreferences settings = Application.getPrefs();
-        if (mMap != null) {
-            if (mMap.getMapType() != Integer.valueOf(
-                    settings.getString(getString(R.string.pref_key_map_type),
-                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-            )) {
-                mMap.setMapType(Integer.valueOf(
-                        settings.getString(getString(R.string.pref_key_map_type),
-                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-                ));
-            }
-        }
-        mRotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
-        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        checkMapPreferences();
 
         super.onResume();
     }
@@ -371,6 +357,8 @@ public class GpsMapFragment extends SupportMapFragment
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        checkMapPreferences();
+
         //Show the location on the map
         try {
             mMap.setMyLocationEnabled(true);
@@ -412,5 +400,23 @@ public class GpsMapFragment extends SupportMapFragment
      */
     public void setAllowGroundTruthChange(boolean allowGroundTruthChange) {
         mAllowGroundTruthChange = allowGroundTruthChange;
+    }
+
+    private void checkMapPreferences() {
+        SharedPreferences settings = Application.getPrefs();
+        if (mMap != null) {
+            if (mMap.getMapType() != Integer.valueOf(
+                    settings.getString(getString(R.string.pref_key_map_type),
+                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+            )) {
+                mMap.setMapType(Integer.valueOf(
+                        settings.getString(getString(R.string.pref_key_map_type),
+                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+                ));
+            }
+        }
+        mRotate = settings
+                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
+        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
     }
 }
