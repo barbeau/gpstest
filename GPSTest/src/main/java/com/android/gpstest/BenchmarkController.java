@@ -29,6 +29,12 @@ interface BenchmarkController extends GpsTestListener {
          * @param allowChange true if the ground truth can now be edited, and false if it now cannot be edited
          */
         void onAllowGroundTruthEditChanged(boolean allowChange);
+
+        /**
+         * Called when the ground truth location has been set for a test
+         * @param location the new ground truth location
+         */
+        void onGroundTruthLocationSaved(Location location);
     }
 
     /**
@@ -38,10 +44,10 @@ interface BenchmarkController extends GpsTestListener {
     void setListener(Listener listener);
 
     /**
-     * Sets the ground truth location (e.g., that has been received via a map click)
-     * @param location location to set the ground truth to
+     * Called when there is a map click on a location so the controller can be updated with that information
+     * @param location location that was clicked on the map
      */
-    void setGroundTruth(Location location);
+    void onMapClick(Location location);
 
     /**
      * Called from the hosting class to pass in the Bundle when onSaveInstanceState() is being

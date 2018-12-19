@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
@@ -33,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.util.MapUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -45,7 +47,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
+
+import java.util.Arrays;
 
 import androidx.annotation.RequiresApi;
 
@@ -101,26 +107,11 @@ public class GpsMapFragment extends SupportMapFragment
 
     private Marker mGroundTruthMarker;
 
+    private Polyline mErrorLine;
+
     private boolean mAllowGroundTruthChange = true;
 
-    /**
-     * Clamps a value between the given positive min and max.  If abs(value) is less than
-     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
-     * If abs(value) is between min and max, then abs(value) is returned.
-     *
-     * @param min   minimum allowed value
-     * @param value value to be evaluated
-     * @param max   maximum allowed value
-     * @return clamped value between the min and max
-     */
-    private static double clamp(double min, double value, double max) {
-        value = Math.abs(value);
-        if (value >= min && value <= max) {
-            return value;
-        } else {
-            return (value < min ? value : max);
-        }
-    }
+    private Location mGroundTruthLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -207,6 +198,21 @@ public class GpsMapFragment extends SupportMapFragment
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
             mGotFix = true;
+
+            if (!mAllowGroundTruthChange && mGroundTruthLocation != null) {
+                // Draw error line between ground truth and calculated position
+                LatLng gt = MapUtils.makeLatLng(mGroundTruthLocation);
+                LatLng current = MapUtils.makeLatLng(loc);
+
+                if (mErrorLine == null) {
+                    mErrorLine = mMap.addPolyline(new PolylineOptions()
+                        .add(gt, current)
+                        .color(Color.WHITE)
+                        .geodesic(true));
+                } else {
+                    mErrorLine.setPoints(Arrays.asList(gt, current));
+                };
+            }
         }
     }
 
@@ -400,6 +406,33 @@ public class GpsMapFragment extends SupportMapFragment
      */
     public void setAllowGroundTruthChange(boolean allowGroundTruthChange) {
         mAllowGroundTruthChange = allowGroundTruthChange;
+    }
+
+    /**
+     * Sets the ground truth location being used for accuracy measurements
+     * @param groundTruthLocation the ground truth location being used for accuracy measurements
+     */
+    public void setGroundTruthLocation(Location groundTruthLocation) {
+        mGroundTruthLocation = groundTruthLocation;
+    }
+
+    /**
+     * Clamps a value between the given positive min and max.  If abs(value) is less than
+     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
+     * If abs(value) is between min and max, then abs(value) is returned.
+     *
+     * @param min   minimum allowed value
+     * @param value value to be evaluated
+     * @param max   maximum allowed value
+     * @return clamped value between the min and max
+     */
+    private static double clamp(double min, double value, double max) {
+        value = Math.abs(value);
+        if (value >= min && value <= max) {
+            return value;
+        } else {
+            return (value < min ? value : max);
+        }
     }
 
     private void checkMapPreferences() {

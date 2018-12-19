@@ -305,9 +305,19 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void initMapAndBenchmark() {
-        mBenchmarkController.setListener(allowChange -> mMapFragment.setAllowGroundTruthChange(allowChange));
+        mBenchmarkController.setListener(new BenchmarkController.Listener() {
+             @Override
+             public void onAllowGroundTruthEditChanged(boolean allowChange) {
+                 mMapFragment.setAllowGroundTruthChange(allowChange);
+             }
 
-        mMapFragment.setOnMapClickListener(location -> mBenchmarkController.setGroundTruth(location));
+             @Override
+             public void onGroundTruthLocationSaved(Location location) {
+                mMapFragment.setGroundTruthLocation(location);
+             }
+         });
+
+        mMapFragment.setOnMapClickListener(location -> mBenchmarkController.onMapClick(location));
         mBenchmarkController.show();
     }
 

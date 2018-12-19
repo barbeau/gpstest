@@ -162,6 +162,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 }
                 if (mListener != null) {
                     mListener.onAllowGroundTruthEditChanged(false);
+                    mListener.onGroundTruthLocationSaved(mGroundTruthLocation);
                 }
             } else {
                 // Expand card to allow editing ground truth
@@ -336,9 +337,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     @Override
-    public void setGroundTruth(Location location) {
+    public void onMapClick(Location location) {
         if (!mBenchmarkCardCollapsed) {
-            mGroundTruthLocation = location;
             mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
             mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
 
