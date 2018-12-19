@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2012, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Status -->
+    <string-array name="sort_sats">
+        <item>システム</item>
+        <item>キャリア周波数</item>
+        <item>シグナル強度</item>
+        <item>使用</item>
+        <item>システムとキャリア周波数</item>
+        <item>システムとシグナル強度</item>
+        <item>システムと使用</item>
+    </string-array>
+
+    <!-- Let the user choose between map views -->
+    <string-array name="map_type_entries">
+        <item>マップビュー</item>
+        <item>ハイブリッド表示</item>
+        <item>衛星ビュー</item>
+        <item>地形図</item>
+    </string-array>
+
+    <!-- These contants above and below match those in GoogleMap object:
+        https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
+    <string-array name="map_type_values">
+        <item>1</item>
+        <item>4</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Units -->
+    <string-array name="preferred_distance_units_options">
+        <item>@string/preferences_preferred_distance_units_option_meters</item>
+        <item>@string/preferences_preferred_distance_units_option_feet</item>
+    </string-array>
+
+    <string-array name="preferred_speed_units_options">
+        <item>@string/preferences_preferred_speed_units_option_meters_per_second</item>
+        <item>@string/preferences_preferred_speed_units_option_kilometers_per_hour</item>
+        <item>@string/preferences_preferred_speed_units_option_miles_per_hour</item>
+    </string-array>
+
+    <!-- Help -->
+    <string-array name="main_help_options">
+        <item>新しいもの</item>
+        <item>アプリについて</item>
+    </string-array>
+</resources>
