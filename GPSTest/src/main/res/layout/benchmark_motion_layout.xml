@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ground_truth_latitude"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ground_truth_longitude"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ground_truth_altitude"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
