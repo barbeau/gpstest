@@ -63,7 +63,6 @@
 
     <string name="gps_latitude_label">緯度:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">経度:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">時間:</string>
@@ -259,8 +258,6 @@
     <string name="pref_dark_theme_title">暗いテーマを使う</string>
     <string name="pref_dark_theme_summary">背景に暗い色を、テキストに薄い色を付ける</string>
 
-    <string name="pref_dms_mode_title">DMS形式を使用する</string>
-    <string name="pref_dms_mode_summary">緯度と経度を度、分、秒で表示する</string>
 
     <string name="preferences_preferred_distance_units_title">距離単位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>

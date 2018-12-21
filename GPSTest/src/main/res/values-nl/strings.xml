@@ -62,8 +62,6 @@
 
     <string name="gps_latitude_label">Breedtegraad:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
-
     <string name="gps_longitude_label">Lengtegraad:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Tijd:</string>
@@ -275,8 +273,7 @@
     <string name="pref_dark_theme_title">Gebruik het donkere thema</string>
     <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de tekst een lichte kleur.
 	</string>
-    <string name="pref_dms_mode_title">Gebruik DMS formaat</string>
-    <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden inplaats van decimale graden</string>
+
 	<string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
     <string name="preferences_preferred_distance_units_option_feet">Voet</string>

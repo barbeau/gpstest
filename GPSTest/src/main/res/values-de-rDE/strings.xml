@@ -52,7 +52,6 @@
     <string name="mode_satellite">Satellit</string>
     <string name="gps_latitude_label">Breite:</string>
     <string name="gps_latitude_value">%1$.7f\u00b0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00b0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Länge:</string>
     <string name="gps_longitude_value">%1$.7f\u00b0</string>
     <string name="gps_fix_time_label">Zeit:</string>
@@ -212,8 +211,6 @@
     <string name="pref_show_tutorial_summary">Zeigt eine Anleitung zur Bedienung dieser App an</string>
     <string name="pref_dark_theme_title">Dunkles Theme verwenden</string>
     <string name="pref_dark_theme_summary">Stellt den Hintergrund in einer dunklen Farbe und den Text in einer hellen Farbe dar</string>
-    <string name="pref_dms_mode_title">Sexagesimal-Format verwenden</string>
-    <string name="pref_dms_mode_summary">Breite und Länge in Grad, Minuten und Sekunden statt dezimal anzeigen</string>
     <string name="preferences_preferred_distance_units_title">Bevorzugte Entfernungseinheit</string>
     <string name="preferences_preferred_distance_units_option_meters">Meter</string>
     <string name="preferences_preferred_distance_units_option_feet">Fuß</string>

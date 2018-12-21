@@ -50,7 +50,7 @@
     <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
-    <string name="pref_key_dms_mode">dms_mode</string>
+    <string name="pref_key_preferred_display_mode">display_mode</string>
     <string name="pref_key_preferred_distance_units">preference_distance_units</string>
     <string name="pref_key_preferred_speed_units">preference_speed_units</string>
 

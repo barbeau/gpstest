@@ -63,7 +63,8 @@
 
     <string name="gps_latitude_label">Lat:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
+    <string name="gps_lat_lon_dms_value">%1$s %2$d\u00B0 %3$d\' %4$.2f\"</string>
+    <string name="gps_lat_lon_ddm_value">%1$s %2$d\u00B0 %3$.3f</string>
     <string name="gps_longitude_label">Long:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Time:</string>
@@ -275,8 +276,12 @@
     <string name="pref_dark_theme_summary">Give the background a dark color and text a light color
     </string>
 
-    <string name="pref_dms_mode_title">Use DMS format</string>
-    <string name="pref_dms_mode_summary">Show latitude and longitude in degrees, minutes, and seconds instead of decimal degrees</string>
+    <string name="pref_preferred_display_mode_title">Coordinate Display Format</string>
+    <string name="pref_preferred_display_mode_summary">Sets the display format of the GPS coordinates shown</string>
+    <string name="pref_preferred_display_mode_dialog_title">Choose Coordinate Display Format</string>
+    <string name="preferences_preferred_display_mode_option_dd">Decimal Degrees</string>
+    <string name="preferences_preferred_display_mode_option_dms">Degrees, Minutes, Decimal Seconds</string>
+    <string name="preferences_preferred_display_mode_option_ddm">Degrees, Decimal Minutes</string>
 
     <string name="preferences_preferred_distance_units_title">Preferred distance units</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>

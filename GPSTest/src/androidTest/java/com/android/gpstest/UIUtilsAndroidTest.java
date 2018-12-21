@@ -29,8 +29,26 @@ import static junit.framework.Assert.assertEquals;
 public class UIUtilsAndroidTest {
 
     @Test
-    public void testGetDMSFromLocation() {
-        String dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583);
-        assertEquals("-42° 51' 12\"", dms);
+    public void testGetDMSFromLocationLat() {
+        String dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583, "lat");
+        assertEquals("S 42° 51' 12.90\"", dms);
+    }
+
+    @Test
+    public void testGetDMSFromLocationLon() {
+        String dms = UIUtils.getDMSFromLocation(getTargetContext(),47.64896, "lon");
+        assertEquals("E 47° 38' 56.26\"", dms);
+    }
+
+    @Test
+    public void testGetDDMFromLocationLat() {
+        String ddm = UIUtils.getDDMFromLocation(getTargetContext(),24.15346, "lat");
+        assertEquals("N 24° 9.208", ddm);
+    }
+
+    @Test
+    public void testGetDDMFromLocationLon() {
+        String ddm = UIUtils.getDDMFromLocation(getTargetContext(),-150.94523, "lon");
+        assertEquals("W 150° 56.714", ddm);
     }
 }

@@ -19,11 +19,15 @@
             android:title="@string/pref_true_north_title"
             android:summary="@string/pref_true_north_summary"
             android:defaultValue="true"/>
-        <CheckBoxPreference
-            android:key="@string/pref_key_dms_mode"
-            android:title="@string/pref_dms_mode_title"
-            android:summary="@string/pref_dms_mode_summary"
-            android:defaultValue="false"/>
+        <ListPreference
+            android:key="@string/pref_key_preferred_display_mode"
+            android:title="@string/pref_preferred_display_mode_title"
+            android:summary="@string/pref_preferred_display_mode_summary"
+            android:dialogTitle="@string/pref_preferred_display_mode_dialog_title"
+            android:entries="@array/preferred_display_mode_options"
+            android:entryValues="@array/preferred_display_mode_options_values"
+            android:defaultValue="dd">
+        </ListPreference>
         <ListPreference
             android:key="@string/pref_key_preferred_distance_units"
             android:title="@string/preferences_preferred_distance_units_title"
