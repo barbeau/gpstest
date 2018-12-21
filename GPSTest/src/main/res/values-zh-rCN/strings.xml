@@ -200,13 +200,13 @@
     <string name="pref_title">设置</string>
     <string name="pref_map_category_title">地图</string>
     <string name="pref_map_type_title">地图类型</string>
-    <string name="pref_map_type_summary">选择现实的地图类型</string>
+    <string name="pref_map_type_summary">选择显示的地图类型</string>
     <string name="pref_map_type_dialog_title">选择地图类型</string>
 
-    <string name="pref_rotate_map_with_compass_title">旋转地图</string>
+    <string name="pref_rotate_map_with_compass_title">地图旋转跟随</string>
     <string name="pref_rotate_map_with_compass_summary">根据你的方向来改变地图朝向</string>
 
-    <string name="pref_tilt_map_with_sensors_title">倾斜地图</string>
+    <string name="pref_tilt_map_with_sensors_title">地图倾斜跟随</string>
     <string name="pref_tilt_map_with_sensors_summary">当你拿起设备时变更为第一人称显示</string>
 
     <string name="pref_gps_category_title">GNSS</string>
@@ -218,8 +218,8 @@
     <string name="pref_gps_min_time_dialog_title">输入时间间隔（单位：秒）</string>
     <string name="pref_gps_min_time_invalid_entry">时间间隔必须是一个数字</string>
 
-    <string name="pref_use_gnss_apis_title">使用GNSS APIs</string>
-    <string name="pref_use_gnss_apis_summary">在Android 7.0以及以上可用。取消选择后将会使用旧的GPSStatus.Listener。</string>
+    <string name="pref_use_gnss_apis_title">使用GNSS API</string>
+    <string name="pref_use_gnss_apis_summary">在Android 7.0及其更高版本可用。取消选择后将会使用旧的GPSStatus.Listener。</string>
 
     <string name="pref_gps_min_distance_title">最小距离</string>
     <string name="pref_gps_min_distance_summary">GNSS 修正的最小距离间隔（单位：米）</string>
@@ -244,9 +244,9 @@
     <string name="pref_nmea_timestamp_output_title">NMEA 时间戳</string>
     <string name="pref_nmea_timestamp_output_summary">在输出中包括NMEA时间戳</string>
     <string name="pref_measurement_output_title">测量数据</string>
-    <string name="pref_measurement_output_summary">输出 GNSS 测量数据至Android Studio（Android 7.0 及其以上）</string>
+    <string name="pref_measurement_output_summary">输出 GNSS 测量数据至Android Studio（Android 7.0及其更高版本）</string>
     <string name="pref_navigation_message_output_title">导航信息</string>
-    <string name="pref_navigation_message_output_summary">输出 GNSS 导航信息至Android Studio（Android 7.0 及其以上）</string>
+    <string name="pref_navigation_message_output_summary">输出 GNSS 导航信息至Android Studio（Android 7.0及其更高版本）</string>
 
     <string name="pref_about_category_title">关于</string>
     <string name="pref_show_tutorial_title">显示手册</string>
@@ -290,7 +290,7 @@
         <b>精度</b>
         - 当前位置的精度（68%可信度的半径）。换言之，如果以当前经纬度画一个圆，你正处于以该数值为半径的圆内的概率为68%。\n&#8226;\u0020
         <b>水平/垂直 精度</b>
-        - 当前位置的水平精度和垂直精度，都为68%的可信度。水平精度的定义与前面“精度”一致。垂直精度只在Android 8.0或者更高系统可用。垂直精度示例 - 海拔为150、垂直精度为20将会意味着你的海拔处于130~170之间的概率为68%。\n&#8226;\u0020
+        - 当前位置的水平精度和垂直精度，都为68%的可信度。水平精度的定义与前面“精度”一致。垂直精度只在Android 8.0及其更高版本可用。垂直精度示例 - 海拔为150、垂直精度为20将会意味着你的海拔处于130~170之间的概率为68%。\n&#8226;\u0020
         <b>速度</b>
         - m/s 的对地速度\n&#8226;\u0020
         <b>速度精度</b>
@@ -310,11 +310,11 @@
         <b>ID 或 PRN</b>
         - 卫星的标识符（GPS的伪随机噪声）\n&#8226;\u0020
         <b>CF</b>
-        - 当前追踪的运营频率的信号标签（比如L1）。如果是一个未知频率，则将会以频率直接显示（在Android 8.0以上可用，但不支持所有设备）\n&#8226;\u0020
+        - 当前追踪的运营频率的信号标签（比如L1）。如果是一个未知频率，则将会以频率直接显示（在Android 8.0及其更高版本，但不支持所有设备）\n&#8226;\u0020
         <b>SNR</b>
-        - 信噪比（Android M或者更低） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - 信噪比（Android 6.0及其更低版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - 载波噪声谱密度比（Android N 或者更高） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - 载波噪声谱密度比（Android 7.0及其更高版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>标签</b>
         - (E) 设备含有卫星的星历数据 (A) 设备含有卫星的历史数据 (U) 卫星正在被使用中\n\n
 
@@ -336,9 +336,9 @@
         &#8226;\u0020 细轮廓 - 可见但未使用\n
         &#8226;\u0020 粗轮廓 - 使用中\n\n
 
-        &#8226;\u0020 在低于Android 7.0中，SNR的期待范围为0 dB（红）到30 dB（绿）。\n
-        &#8226;\u0020 在Android 7.0或更高中，SNR的期待范围为10 dB（红）到45 dB（绿）。\n
-        &#8226;\u0020 在Android 7.0或更高中，C/N0的期待范围为10 dB-Hz（红）到45 dB-Hz（绿）。\n
+        &#8226;\u0020 在Android 7.0及其更低版本中，SNR的期待范围为0 dB（红）到30 dB（绿）。\n
+        &#8226;\u0020 在Android 7.0及其更高版本中，SNR的期待范围为10 dB（红）到45 dB（绿）。\n
+        &#8226;\u0020 在Android 7.0及其更高版本中，C/N0的期待范围为10 dB-Hz（红）到45 dB-Hz（绿）。\n
         &#8226;\u0020 如果没有一个卫星的SNR或C/N0数值（即卫星不可见），这将会变为透明浅灰色。\n\n
 
         <b>*** Acknowledgments ***</b>\n\n
