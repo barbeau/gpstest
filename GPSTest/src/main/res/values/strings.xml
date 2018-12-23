@@ -63,8 +63,10 @@
 
     <string name="gps_latitude_label">Lat:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$s %2$d\u00B0 %3$d\' %4$.2f\"</string>
-    <string name="gps_lat_lon_ddm_value">%1$s %2$d\u00B0 %3$.3f</string>
+    <string name="gps_lat_dms_value">%1$s\t\u2007%2$02d\u00B0 %3$2d\' %4$05.2f\"</string>
+    <string name="gps_lon_dms_value">%1$s\t%2$03d\u00B0 %3$2d\' %4$05.2f\"</string>
+    <string name="gps_lat_ddm_value">%1$s\t\u2007%2$02d\u00B0 %3$06.3f</string>
+    <string name="gps_lon_ddm_value">%1$s\t%2$03d\u00B0 %3$06.3f</string>
     <string name="gps_longitude_label">Long:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Time:</string>

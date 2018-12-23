@@ -303,13 +303,16 @@ public class UIUtils {
         BigDecimal seconds = minTemp.subtract(minutes).multiply(new BigDecimal(60)).setScale(2, RoundingMode.HALF_UP);
 
         String hemisphere;
+        int output_string;
         if ( latOrLon.equals("lat") ) {
             hemisphere = (coordinate < 0 ? "S" : "N");
+            output_string = R.string.gps_lat_dms_value;
         } else {
             hemisphere = ( coordinate < 0 ? "W" : "E" );
+            output_string = R.string.gps_lon_dms_value;
         }
 
-        return context.getString(R.string.gps_lat_lon_dms_value, hemisphere, degrees.abs().intValue(), minutes.intValue(), seconds.floatValue());
+        return context.getString(output_string, hemisphere, degrees.abs().intValue(), minutes.intValue(), seconds.floatValue());
     }
 
     /**
@@ -323,12 +326,15 @@ public class UIUtils {
         BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
         BigDecimal minutes = loc.subtract(degrees).multiply((new BigDecimal(60))).abs().setScale(3, RoundingMode.HALF_UP);
         String hemisphere;
+        int output_string;
         if ( latOrLon.equals("lat") ) {
             hemisphere = (coordinate < 0 ? "S" : "N");
+            output_string = R.string.gps_lat_ddm_value;
         } else {
             hemisphere = ( coordinate < 0 ? "W" : "E" );
+            output_string = R.string.gps_lon_ddm_value;
         }
-        return context.getString(R.string.gps_lat_lon_ddm_value, hemisphere, degrees.abs().intValue(), minutes.floatValue());
+        return context.getString(output_string, hemisphere, degrees.abs().intValue(), minutes.floatValue());
     }
 
     /**
