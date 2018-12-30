@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2012-2018 Sean J. Barbeau, wangkf (https://github.com/wangkf)
+** Copyright 2012, Sean J. Barbeau, Skimige
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -18,6 +18,17 @@
 */
 -->
 <resources>
+    <!-- Status -->
+    <string-array name="sort_sats">
+        <item>所属系统</item>
+        <item>载波频率</item>
+        <item>信号强度</item>
+        <item>是否用于定位</item>
+        <item>首选所属系统，次选载波频率</item>
+        <item>首选所属系统，次选信号强度</item>
+        <item>首选所属系统，次选是否用于定位</item>
+    </string-array>
+
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
         <item>街道图</item>
@@ -38,6 +49,6 @@
     <!-- Help -->
     <string-array name="main_help_options">
         <item>更新了什么？</item>
-        <item>关于</item>
+        <item>关于应用</item>
     </string-array>
 </resources>
