@@ -195,7 +195,7 @@ public class GpsMapFragment extends SupportMapFragment
                         .tilt(CAMERA_INITIAL_TILT)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
             mGotFix = true;
 

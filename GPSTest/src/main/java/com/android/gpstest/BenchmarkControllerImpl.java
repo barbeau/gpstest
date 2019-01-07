@@ -16,6 +16,7 @@
 package com.android.gpstest;
 
 import android.animation.LayoutTransition;
+import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
@@ -30,6 +31,15 @@ import android.widget.TextView;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.BenchmarkUtils;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -64,6 +74,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     SlidingUpPanelLayout.PanelState mLastPanelState;
 
+    LineChart mErrorChart;
+
     Location mGroundTruthLocation;
 
     AvgError mAvgError = new AvgError();
@@ -83,6 +95,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mRightDivider = v.findViewById(R.id.divider_right);
         mErrorUnit = v.findViewById(R.id.error_unit);
         mAvgErrorUnit = v.findViewById(R.id.avg_error_unit);
+        mErrorChart = v.findViewById(R.id.error_chart);
+        initChart(mErrorChart);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -159,6 +173,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // Show sliding panel if it's not visible
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
                 if (mListener != null) {
                     mListener.onAllowGroundTruthEditChanged(false);
@@ -183,6 +198,53 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         });
     }
 
+    private void initChart(LineChart errorChart) {
+        errorChart.getDescription().setEnabled(false);
+        errorChart.setTouchEnabled(true);
+        errorChart.setDragEnabled(true);
+        errorChart.setScaleEnabled(true);
+        errorChart.setDrawGridBackground(false);
+        // If disabled, scaling can be done on x- and y-axis separately
+        errorChart.setPinchZoom(true);
+
+        // Set an alternate background color
+        //mErrorChart.setBackgroundColor(Color.LTGRAY);
+
+        LineData data = new LineData();
+        //data.setValueTextColor(Color.WHITE);
+
+        // Add empty data
+        errorChart.setData(data);
+
+        // Get the legend (only possible after setting data)
+        Legend l = errorChart.getLegend();
+        l.setEnabled(false);
+
+//        // Modify the legend ...
+//        l.setForm(Legend.LegendForm.LINE);
+//        //l.setTypeface(tfLight);
+//        l.setTextColor(Color.WHITE);
+
+        XAxis xAxis = errorChart.getXAxis();
+        //xAxis.setTypeface(tfLight);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setEnabled(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setAxisMinimum(1f);
+
+        YAxis leftAxis = errorChart.getAxisLeft();
+        //leftAxis.setTypeface(tfLight);
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawGridLines(true);
+
+        YAxis rightAxis = errorChart.getAxisRight();
+        rightAxis.setEnabled(false);
+    }
+
     private void resetError() {
         mAvgError.reset();
         mErrorView.setVisibility(INVISIBLE);
@@ -194,6 +256,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mErrorUnit.setVisibility(INVISIBLE);
         mAvgErrorUnit.setVisibility(INVISIBLE);
         mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, 0));
+
+        mErrorChart.clearValues();
     }
 
     @Override
@@ -305,6 +369,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, mAvgError.getCount()));
         }
         if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
+            // Vertical errors
             mErrorLabel.setText(R.string.horizontal_vertical_error_label);
             mLeftDivider.setVisibility(VISIBLE);
             mRightDivider.setVisibility(VISIBLE);
@@ -313,12 +378,62 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mAvgVertErrorView.setVisibility(VISIBLE);
             mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgVertError()));
         } else {
+            // Hide any vertical error indication
             mErrorLabel.setText(R.string.horizontal_error_label);
             mLeftDivider.setVisibility(GONE);
             mRightDivider.setVisibility(GONE);
             mVertErrorView.setVisibility(GONE);
             mAvgVertErrorView.setVisibility(GONE);
         }
+        addErrorToGraph(error);
+    }
+
+    private void addErrorToGraph(MeasuredError error) {
+        LineData data = mErrorChart.getData();
+
+        if (data != null) {
+
+            ILineDataSet set = data.getDataSetByIndex(0);
+            // set.addEntry(...); // can be called as well
+
+            if (set == null) {
+                set = createGraphDataSet();
+                data.addDataSet(set);
+            }
+
+            data.addEntry(new Entry(set.getEntryCount(), error.getError()), 0);
+            data.notifyDataChanged();
+
+            // let the chart know it's data has changed
+            mErrorChart.notifyDataSetChanged();
+
+            // limit the number of visible entries
+            mErrorChart.setVisibleXRangeMaximum(40);
+            // chart.setVisibleYRange(30, AxisDependency.LEFT);
+
+            // move to the latest entry
+            mErrorChart.moveViewToX(data.getEntryCount());
+
+            // this automatically refreshes the chart (calls invalidate())
+            // chart.moveViewTo(data.getXValCount()-7, 55f,
+            // AxisDependency.LEFT);
+        }
+    }
+
+    private LineDataSet createGraphDataSet() {
+        LineDataSet set = new LineDataSet(null, Application.get().getResources().getString(R.string.horizontal_error_label));
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setColor(ColorTemplate.getHoloBlue());
+        set.setCircleColor(Color.WHITE);
+        set.setLineWidth(2f);
+        set.setCircleRadius(2f);
+        set.setFillAlpha(65);
+        set.setFillColor(ColorTemplate.getHoloBlue());
+        set.setHighLightColor(Color.rgb(244, 117, 117));
+        set.setValueTextColor(Color.WHITE);
+        set.setValueTextSize(9f);
+        set.setDrawValues(false);
+        return set;
     }
 
     @Override

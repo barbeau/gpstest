@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Platform.MaterialComponents"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/ground_truth_sliding_header_height"
+    android:layout_height="match_parent"
     android:padding="5dp">
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/status_location_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_marginEnd="@dimen/map_card_inner_margin"
             android:padding="@dimen/map_card_inner_margin">
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart1"
+                android:id="@+id/error_chart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"/>
         </RelativeLayout>
