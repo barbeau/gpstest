@@ -17,7 +17,7 @@
         android:layout_marginBottom="@dimen/status_margin"
         app:cardCornerRadius="5dp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/map_card_inner_margin"
@@ -29,6 +29,6 @@
                 android:id="@+id/error_chart"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"/>
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>
