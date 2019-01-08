@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.BenchmarkUtils;
@@ -227,7 +228,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         XAxis xAxis = errorChart.getXAxis();
         //xAxis.setTypeface(tfLight);
-        xAxis.setTextColor(Color.WHITE);
+        //xAxis.setTextColor(Color.WHITE);
         xAxis.setDrawGridLines(false);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setEnabled(true);
@@ -235,11 +236,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         xAxis.setGranularity(1f);
         xAxis.setAxisMinimum(1f);
 
+        DistanceValueFormatter formatter = new DistanceValueFormatter("m");
+
         YAxis leftAxis = errorChart.getAxisLeft();
         //leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(Color.WHITE);
+        //leftAxis.setTextColor(Color.WHITE);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setValueFormatter(formatter);
 
         YAxis rightAxis = errorChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -424,7 +428,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         LineDataSet set = new LineDataSet(null, Application.get().getResources().getString(R.string.horizontal_error_label));
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
         set.setColor(ColorTemplate.getHoloBlue());
-        set.setCircleColor(Color.WHITE);
+        set.setCircleColor(Color.BLACK);
         set.setLineWidth(2f);
         set.setCircleRadius(2f);
         set.setFillAlpha(65);
