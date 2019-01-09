@@ -234,7 +234,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         xAxis.setEnabled(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setAxisMinimum(1f);
 
         DistanceValueFormatter formatter = new DistanceValueFormatter("m");
 
@@ -405,7 +404,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 data.addDataSet(set);
             }
 
-            data.addEntry(new Entry(set.getEntryCount(), error.getError()), 0);
+            data.addEntry(new Entry(mAvgError.getCount(), error.getError()), 0);
             data.notifyDataChanged();
 
             // let the chart know it's data has changed
