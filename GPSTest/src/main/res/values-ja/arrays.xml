@@ -20,21 +20,21 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>系统</item>
-        <item>运营频率</item>
-        <item>信号强度</item>
-        <item>使用中</item>
-        <item>系统和运营频率</item>
-        <item>系统和信号强度</item>
-        <item>系统和使用中</item>
+        <item>システム</item>
+        <item>キャリア周波数</item>
+        <item>シグナル強度</item>
+        <item>使用</item>
+        <item>システムとキャリア周波数</item>
+        <item>システムとシグナル強度</item>
+        <item>システムと使用</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>地图视图</item>
-        <item>混合视图</item>
-        <item>卫星视图</item>
-        <item>地形视图</item>
+        <item>マップビュー</item>
+        <item>ハイブリッド表示</item>
+        <item>衛星ビュー</item>
+        <item>地形図</item>
     </string-array>
 
     <!-- These contants above and below match those in GoogleMap object:
@@ -60,7 +60,7 @@
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>更新内容</item>
-        <item>关于</item>
+        <item>新しいもの</item>
+        <item>アプリについて</item>
     </string-array>
 </resources>
