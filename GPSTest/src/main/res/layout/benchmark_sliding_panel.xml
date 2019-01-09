@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/map_card_inner_margin">
             <com.android.gpstest.view.VerticalTextView
-                android:id="@+id/x_axis_label"
+                android:id="@+id/y_axis_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/error_chart"
@@ -36,8 +36,9 @@
                 android:layout_height="200dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginStart="25dp"
-                app:layout_constraintStart_toEndOf="@id/x_axis_label"/>
+                app:layout_constraintStart_toEndOf="@id/y_axis_label"/>
             <TextView
+                android:id="@+id/x_axis_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
