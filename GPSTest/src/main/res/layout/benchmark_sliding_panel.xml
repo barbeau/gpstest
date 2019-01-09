@@ -29,7 +29,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/error_chart"
                 app:layout_constraintEnd_toStartOf="@id/error_chart"
                 android:gravity="bottom"
-                android:text="Error"/>
+                android:text="@string/horizontal_error_label"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/error_chart"
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 app:layout_constraintStart_toStartOf="@id/error_chart"
                 app:layout_constraintEnd_toEndOf="@id/error_chart"
                 app:layout_constraintTop_toBottomOf="@id/error_chart"
-                android:text="Fix #"/>
+                android:text="@string/fix_number"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>
