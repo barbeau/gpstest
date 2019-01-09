@@ -20,15 +20,31 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/map_card_inner_margin"
-            android:layout_marginStart="@dimen/map_card_inner_margin"
-            android:layout_marginRight="@dimen/map_card_inner_margin"
-            android:layout_marginEnd="@dimen/map_card_inner_margin"
             android:padding="@dimen/map_card_inner_margin">
+            <com.android.gpstest.view.VerticalTextView
+                android:id="@+id/x_axis_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/error_chart"
+                app:layout_constraintBottom_toBottomOf="@id/error_chart"
+                app:layout_constraintEnd_toStartOf="@id/error_chart"
+                android:gravity="bottom"
+                android:text="Error"/>
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/error_chart"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="200dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toEndOf="@id/x_axis_label"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="@id/error_chart"
+                app:layout_constraintEnd_toEndOf="@id/error_chart"
+                app:layout_constraintTop_toBottomOf="@id/error_chart"
+                android:text="Fix #"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>
