@@ -106,11 +106,16 @@ The below table is compiled from users of GPSTest, based on sending feedback via
 Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navigation messages | NMEA | Inject XTRA | Inject time | Delete assist
 -- | -- | -- | -- | -- | -- | -- | -- | -- | --
 Google | Pixel 2 | 9 / 28 | 2017 | ? | ? | x |   | x | ?
+HTC | One M8 | 6.0 / 23 | N/A | N/A | N/A | x | x | ? | x
 HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
-Motorola | XT1028 (Moto G 2013) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
+LG | LG-AS993 (G6) | 7.0 / 24 | 2015 | ? | ? | x |   | x | ?
+Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
+Nokia | 7 plus | 9 / 28 | 2017 | ? | ? | x |   | x | x
 Samsung | SM-A520F (Galaxy A5 2017) | 8.0.0 / 26 | 2015 or older | x | x | x | x | x |  
+Samsung | SM-J120G (Galaxy J1 4G) | 5.1.1 / 22 | N/A | N/A | N/A | x | x | x | x
 Samsung | SM-G955U (Galaxy S8+) | 8.0.0 / 26 | 2015 |   |   | x |   | x |  
 Samsung | SM-G965F (Galaxy S9+) | 8.0.0 / 26 | 2016 | ? | ? | x | ? | ? | ?
+Sony | G3121 (Xperia XA1) | 8.0.0 / 26 | 2015 | ? | ? | x |   | x | ?
 Sony | G8342 (Xperia XZ1) | 8.0.0 / 26 | 2016 | x |   | x |   | x | ?
 Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | x |   | x |   | x | x
 Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x

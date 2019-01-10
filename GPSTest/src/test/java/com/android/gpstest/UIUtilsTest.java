@@ -104,6 +104,10 @@ public class UIUtilsTest {
         double meters = 1.0d;
 
         assertEquals(3.2808398950131235d, UIUtils.toFeet(meters));
+
+        meters = 30.0d;
+
+        assertEquals(98.4251968503937d, UIUtils.toFeet(meters));
     }
 
     /**
@@ -114,6 +118,10 @@ public class UIUtilsTest {
         float metersPerSecond = 1.0f;
 
         assertEquals(3.6f, UIUtils.toKilometersPerHour(metersPerSecond));
+
+        metersPerSecond = 30.0f;
+
+        assertEquals(108.0f, UIUtils.toKilometersPerHour(metersPerSecond));
     }
 
     /**
@@ -124,5 +132,9 @@ public class UIUtilsTest {
         float metersPerSecond = 1.0f;
 
         assertEquals(2.2369363f, UIUtils.toMilesPerHour(metersPerSecond));
+
+        metersPerSecond = 60.0f;
+
+        assertEquals(134.21617f, UIUtils.toMilesPerHour(metersPerSecond));
     }
 }

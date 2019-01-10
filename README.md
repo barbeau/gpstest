@@ -126,6 +126,16 @@ We welcome contributions to the project!  Please see our [Contributing Guide](.g
 
 Don't know where to start?  Take a look at the issues marked with the [your-first-pr](https://github.com/barbeau/gpstest/labels/your-first-pr) label and comment to let me know if you're interested in working on it.
 
+### Translations
+
+Users have contributed translations in the following languages:
+* Chinese
+* Dutch
+* German
+* Greek
+
+Want to improve existing translations, or add a new translation?  See our [Translations](/TRANSLATIONS.md) documentation.
+
 ## Troubleshooting
 
 ### When importing to Android Studio, I get an error "You are using an old, unsupported version of Gradle..."

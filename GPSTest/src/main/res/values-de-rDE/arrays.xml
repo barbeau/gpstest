@@ -21,8 +21,8 @@
     <!-- Status -->
     <string-array name="sort_sats">
         <item>Konstellation</item>
-        <item>Signalstärke</item>
         <item>Trägerfrequenz</item>
+        <item>Signalstärke</item>
         <item>Zum Fix verwendet</item>
         <item>Konstellation, Trägerfrequenz</item>
         <item>Konstellation, Signalstärke</item>
