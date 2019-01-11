@@ -68,7 +68,7 @@
     <string name="gps_altitude_label">海拔:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_value_feet">%1$.1f ft</string>
-    <string name="gps_altitude_msl_label">海拔（平均海平面）:</string>
+    <string name="gps_altitude_msl_label">海拔(MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">精度:</string>
@@ -111,10 +111,10 @@
     <string name="gps_not_supported">请检查系统设置 - 设备似乎并不支持GNSS/GPS。</string>
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
-    <string name="please_install_google_maps">此地图栏需要Google 地图</string>
+    <string name="please_install_google_maps">此地图栏需要 Google 地图</string>
     <string name="enable_gps_message">GPS已被禁用。要启用吗？</string>
     <string name="enable_gps_positive_button">启用GPS</string>
-    <string name="enable_gps_negative_button">不启动</string>
+    <string name="enable_gps_negative_button">不启用</string>
     <string name="gps_set_location_listener">已以时间间隔为 %1$ss，最小距离为 %2$sm 启动 GPS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
     <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。你确认吗?</string>
@@ -315,7 +315,7 @@
         - 信噪比（Android 6.0及其更低版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
         - 载波噪声谱密度比（Android 7.0及其更高版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>标签</b>
+        <b>标识</b>
         - (E) 设备含有卫星的星历数据 (A) 设备含有卫星的历史数据 (U) 卫星正在被使用中\n\n
 
         <b>*** 天空视图 ***</b>\n\n&#8226;\u0020
@@ -345,7 +345,7 @@
         &#8226;\u0020 <b>Mike Lockwood</b> - v1.x的初代开发者\n
         &#8226;\u0020 <b>Sean Barbeau</b> - v2.x及其后的开发者\n
         &#8226;\u0020 GPSTest的图标由Material Design中“卫星”图标派生而来，其基于Google所签发的Apache v2.0。其他的Material Design图标也基于Apache v2.0使用。\n
-        &#8226;\u0020 简体中文翻译由 wangkf 提供\n
+        &#8226;\u0020 简体中文翻译由 wangkf、liuyunli、SakuraSa233、Skimige 提供\n
         &#8226;\u0020 德语翻译由 Ronny Steiner 提供\n
         &#8226;\u0020 荷兰语翻译由 Dennis Dolman 提供\n
         &#8226;\u0020 希腊语翻译由 Jimmy Golfi 提供\n
