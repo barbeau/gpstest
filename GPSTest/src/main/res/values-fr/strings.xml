@@ -183,7 +183,7 @@
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Avis</string>
-    <string name="feedback_body">Les plaintes, tickets d'annomalies ou remerciements sont les bienvenus!\n\n\n</string>
+    <string name="feedback_body">Les plaintes, tickets d'annomalies ou remerciements sont les bienvenus\u202F!\n\n\n</string>
     <string name="feedback_error">Impossible d'envoyer un avis\u202F: aucune application adaptée.</string>
 
     <!-- What's New -->
