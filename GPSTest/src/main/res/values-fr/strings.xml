@@ -26,10 +26,10 @@
     <string name="gps_sky_title">Ciel</string>
 
     <!-- Navigation Drawer -->
-    <string name="navdrawer_separator_assist_data">Modifier les données d'assistance</string>
+    <string name="navdrawer_separator_assist_data">Modifier les données d\'assistance</string>
     <string name="force_xtra_injection">Injecter les données XTRA</string>
     <string name="force_time_injection">Injecter les données horraires</string>
-    <string name="delete_aiding_data">Supprimer les données d'assistance</string>
+    <string name="delete_aiding_data">Supprimer les données d\'assistance</string>
     <string name="navdrawer_item_settings">Préférences</string>
     <string name="navdrawer_item_help">Aide</string>
     <string name="navdrawer_item_send_feedback">Envoyer un avis</string>
@@ -42,17 +42,17 @@
     <string name="gps_start">Start</string>
     <string name="gps_pause">Pause</string>
 
-    <string name="delete_aiding_data_success">Données d'assistance supprimées.</string>
-    <string name="delete_aiding_data_failure">Équipement ne permettant pas la suppression des données d'assistance.
+    <string name="delete_aiding_data_success">Données d\'assistance supprimées.</string>
+    <string name="delete_aiding_data_failure">Équipement ne permettant pas la suppression des données d\'assistance.
     </string>
     <string name="gps_switch">On/Off</string>
     <string name="send_location">Transmettre la localisation</string>
     <string name="set_fix_frequency">Choix de la fréquence de localisation</string>
     <string name="force_time_injection_success">Données horraires injectées.</string>
-    <string name="force_time_injection_failure">Équipement ne permettant pas l'injection de données horraires.</string>
+    <string name="force_time_injection_failure">Équipement ne permettant pas l\'injection de données horraires.</string>
 
     <string name="force_xtra_injection_success">Injection de données XTRA réussie.</string>
-    <string name="force_xtra_injection_failure">Équipement ne permettant pas l'injection de données XTRA.</string>
+    <string name="force_xtra_injection_failure">Équipement ne permettant pas l\'injection de données XTRA.</string>
 
     <string name="zoom_in">Zoomer</string>
     <string name="zoom_out">Dézoomer</string>
@@ -112,14 +112,14 @@
     <string name="gps_not_supported">Veuillez vérifier vos paramètres systèmes, cet équipement ne semble pas gérer GNSS ou GPS.</string>
     <string name="install">Installer</string>
     <string name="no_thanks">Non merci</string>
-    <string name="please_install_google_maps">L'onglet de carte requiert Google Maps</string>
+    <string name="please_install_google_maps">L\'onglet de carte requiert Google Maps</string>
     <string name="enable_gps_message">GPS désactivé. Activer maintenant\u202F?</string>
     <string name="enable_gps_positive_button">Activer GPS</string>
     <string name="enable_gps_negative_button">Non</string>
     <string name="gps_set_location_listener">GPS lancé avec un intervale = %1$ss, min. dist. = %2$sm
     </string>
-    <string name="clear_assist_warning_title">Supprimer les données d'assistance\u202F?</string>
-    <string name="clear_assist_warning">Certains équipements ne rafraichissent les données d'assistances que tous les 24 heures. Si votre équipement ne permet pas l'injection manuelle, la localisation peut ne plus fonctionner d'ici au prochain rafraichissement. Confirmez-vous l'injection\u202F?</string>
+    <string name="clear_assist_warning_title">Supprimer les données d\'assistance\u202F?</string>
+    <string name="clear_assist_warning">Certains équipements ne rafraichissent les données d\'assistances que tous les 24 heures. Si votre équipement ne permet pas l\'injection manuelle, la localisation peut ne plus fonctionner d\'ici au prochain rafraichissement. Confirmez-vous l\'injection\u202F?</string>
     <string name="never_ask_again">Ne plus demander</string>
     <string name="yes">OUI</string>
     <string name="no">NON</string>
@@ -144,7 +144,7 @@
 
     <string name="sky_legend_title">Legend</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
-    <string name="sky_legend_shape_navstar">NAVSTAR GPS (États-Unis d'Amérique)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (États-Unis d\'Amérique)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
@@ -166,25 +166,25 @@
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">Le fournisseur GNSS ou localisation est désactivé, son activation est requise pour obtenir des messages.</string>
-    <string name="gnss_nav_msg_status_not_supported">Cet équipement ne permet pas d'acquérir des messages GNSS de navigation</string>
-    <string name="gnss_nav_msg_status_ready">Les messages GNSS de navigation sont en cours d'acquisition</string>
+    <string name="gnss_nav_msg_status_not_supported">Cet équipement ne permet pas d\'acquérir des messages GNSS de navigation</string>
+    <string name="gnss_nav_msg_status_ready">Les messages GNSS de navigation sont en cours d\'acquisition</string>
 
     <string name="gnss_measurement_status_loc_disabled">Le fournisseur GNSS ou localisation est désactivé, son activation est requise pour obtenir des mesures.</string>
-    <string name="gnss_measurement_status_not_supported">Cet équipement ne permet pas d'acquérir des mesures GNSS</string>
-    <string name="gnss_measurement_status_ready">Les mesures GNSS sont en cours d'acquisition</string>
+    <string name="gnss_measurement_status_not_supported">Cet équipement ne permet pas d\'acquérir des mesures GNSS</string>
+    <string name="gnss_measurement_status_ready">Les mesures GNSS sont en cours d\'acquisition</string>
 
     <string name="gnss_status_unknown">État inconnu</string>
 
     <!-- Permissions -->
     <string name="title_location_permission">Besoin de la permission pour localiser</string>
-    <string name="text_location_permission">GPSTest nécessite de vous localiser pour afficher les données GNSS. Si vous choisissez \"Ne plus demander\" vous devrez réinstaller l'application ou activer cette permission dans les paramètres systèmes de l'application.</string>
+    <string name="text_location_permission">GPSTest nécessite de vous localiser pour afficher les données GNSS. Si vous choisissez \"Ne plus demander\" vous devrez réinstaller l\'application ou activer cette permission dans les paramètres systèmes de l\'application.</string>
     <string name="ok">OK</string>
     <string name="exit">SORTIR</string>
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Avis</string>
-    <string name="feedback_body">Les plaintes, tickets d'annomalies ou remerciements sont les bienvenus\u202F!\n\n\n</string>
-    <string name="feedback_error">Impossible d'envoyer un avis\u202F: aucune application adaptée.</string>
+    <string name="feedback_body">Les plaintes, tickets d\'annomalies ou remerciements sont les bienvenus\u202F!\n\n\n</string>
+    <string name="feedback_error">Impossible d\'envoyer un avis\u202F: aucune application adaptée.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf\u202F?</string>
@@ -198,22 +198,22 @@
     <string name="pref_map_type_dialog_title">Choisir le type de carte</string>
 
     <string name="pref_rotate_map_with_compass_title">Orienter la carte selon la bousole</string>
-    <string name="pref_rotate_map_with_compass_summary">Changer l'orientation de la carte selon votre direction détectée</string>
+    <string name="pref_rotate_map_with_compass_summary">Changer l\'orientation de la carte selon votre direction détectée</string>
 
     <string name="pref_tilt_map_with_sensors_title">Vue interractive via les capteurs</string>
-    <string name="pref_tilt_map_with_sensors_summary">Basculer vers une vue cartographique subjective interractive grâce aux capteurs de l'équipement</string>
+    <string name="pref_tilt_map_with_sensors_summary">Basculer vers une vue cartographique subjective interractive grâce aux capteurs de l\'équipement</string>
 
     <string name="pref_gps_category_title">GNSS</string>
     <string name="pref_auto_start_gps_title">Auto-lancement de GNSS</string>
-    <string name="pref_auto_start_gps_summary">Lancer GNSS lorsque l'application se lance</string>
+    <string name="pref_auto_start_gps_summary">Lancer GNSS lorsque l\'application se lance</string>
 
     <string name="pref_gps_min_time_title">Intervale</string>
     <string name="pref_gps_min_time_summary">Intervale de temps entre deux localisation GNSS en secondes</string>
     <string name="pref_gps_min_time_dialog_title">Saisir un intervale en secondes</string>
-    <string name="pref_gps_min_time_invalid_entry">L'intervale doit être un nombre</string>
+    <string name="pref_gps_min_time_invalid_entry">L\'intervale doit être un nombre</string>
 
-    <string name="pref_use_gnss_apis_title">Utiliser l'API GNSS</string>
-    <string name="pref_use_gnss_apis_summary">Disponible sur Android 7.0 et suivants. Si décoché, utilisera l'historique GPSStatus.Listener.</string>
+    <string name="pref_use_gnss_apis_title">Utiliser l\'API GNSS</string>
+    <string name="pref_use_gnss_apis_summary">Disponible sur Android 7.0 et suivants. Si décoché, utilisera l\'historique GPSStatus.Listener.</string>
 
     <string name="pref_gps_min_distance_title">Distance min.</string>
     <string name="pref_gps_min_distance_summary">Distance minimum entre deux localisation GNSS, en mètre</string>
@@ -221,14 +221,14 @@
     <string name="pref_gps_min_distance_invalid_entry">La distance Min. doit être un nombre</string>
 
     <string name="pref_stop_gnss_in_background_title">Arrêter GNSS en arrière plan</string>
-    <string name="pref_stop_gnss_in_background_summary">Lorsqu'actif, toujours arrêter GNSS lorsque l'application est à l'arrière plan, par exemple lorsque le bouton "Maison" (retour à l'écran d'accueil) ou "Tâches" (bascule vers une autre application)</string>
+    <string name="pref_stop_gnss_in_background_summary">Lorsqu\'actif, toujours arrêter GNSS lorsque l\'application est à l\'arrière plan, par exemple lorsque le bouton "Maison" (retour à l\'écran d\'accueil) ou "Tâches" (bascule vers une autre application)</string>
 
     <string name="pref_analyze_gps_accuracy_title">Analyser la précision GNSS</string>
     <string name="pref_analyze_gps_accuracy_summary">Utiliser GPS Benchmark pour mesurer les erreurs GNSS</string>
 
     <string name="pref_display_category_title">Affichage</string>
-    <string name="pref_keep_screen_on_title">Garder l'écran allumé</string>
-    <string name="pref_keep_screen_on_summary">Empèche l'écran de s'éteindre</string>
+    <string name="pref_keep_screen_on_title">Garder l\'écran allumé</string>
+    <string name="pref_keep_screen_on_summary">Empèche l\'écran de s\'éteindre</string>
     <string name="pref_true_north_title">Pointer la bousole vers le nord géographique</string>
     <string name="pref_true_north_summary">Faire pointer la boussole vers le nord géographique au lieu du nord magnétique</string>
 
@@ -248,13 +248,13 @@
 
     <string name="pref_about_category_title">À propos</string>
     <string name="pref_show_tutorial_title">Montrer le tutoriel</string>
-    <string name="pref_show_tutorial_summary">Montrer le manuel d'instruction de l'application</string>
+    <string name="pref_show_tutorial_summary">Montrer le manuel d\'instruction de l\'application</string>
 
     <string name="pref_dark_theme_title">Apparence sombre</string>
     <string name="pref_dark_theme_summary">Donner au fond une couleur sombre et au texte une couleur claire</string>
 
     <string name="pref_dms_mode_title">Formater en DMS</string>
-    <string name="pref_dms_mode_summary">Présenter latitude et longitude en degrés, minutes et seconde au lieu d'une valeur décimale de degrés</string>
+    <string name="pref_dms_mode_summary">Présenter latitude et longitude en degrés, minutes et seconde au lieu d\'une valeur décimale de degrés</string>
 
     <string name="preferences_preferred_distance_units_title">Unité de distance préférée</string>
     <string name="preferences_preferred_distance_units_option_meters">Mètres</string>
