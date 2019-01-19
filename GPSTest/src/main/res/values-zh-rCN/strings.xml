@@ -72,7 +72,7 @@
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">精度:</string>
-    <string name="gps_hor_and_vert_accuracy_label">水平/垂直 精度:</string>
+    <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
@@ -93,7 +93,7 @@
     <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
-    <string name="hvdop_label">水平/垂直 DOP:</string>
+    <string name="hvdop_label">H/V DOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
@@ -285,11 +285,11 @@
         - 十进制（WGS 84）\n&#8226;\u0020
         <b>海拔</b>
         - 基于WGS 84椭球的高度\n&#8226;\u0020
-        <b>海拔（平均海平面）</b>
-        - 基于平均海拔的高度（需要NMEA支持）\n&#8226;\u0020
+        <b>海拔(MSL)</b>
+        - 基于平均海平面的高度（需要NMEA支持）\n&#8226;\u0020
         <b>精度</b>
         - 当前位置的精度（68%可信度的半径）。换言之，如果以当前经纬度画一个圆，你正处于以该数值为半径的圆内的概率为68%。\n&#8226;\u0020
-        <b>水平/垂直 精度</b>
+        <b>水平/垂直(H/V) 精度</b>
         - 当前位置的水平精度和垂直精度，都为68%的可信度。水平精度的定义与前面“精度”一致。垂直精度只在Android 8.0及其更高版本可用。垂直精度示例 - 海拔为150、垂直精度为20将会意味着你的海拔处于130~170之间的概率为68%。\n&#8226;\u0020
         <b>速度</b>
         - m/s 的对地速度\n&#8226;\u0020
@@ -303,7 +303,7 @@
         - # 使用中的卫星 / # 可见的卫星\n&#8226;\u0020
         <b>PDOP</b>
         - 三维位置精度因子（需要NMEA支持）\n&#8226;\u0020
-        <b>水平/垂直 DOP</b>
+        <b>水平/垂直(H/V) DOP</b>
         - 水平/垂直的位置精度因子（需要NMEA支持）\n&#8226;\u0020
         <b>TTFF</b>
         - 首次定位时间\n&#8226;\u0020
