@@ -62,9 +62,13 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     private static final String BENCHMARK_CARD_COLLAPSED = "ground_truth_card_collapsed";
 
+    private static final int ERROR_SET = 0;
+
+    private static final int ESTIMATED_ACCURACY_SET = 1;
+
     private boolean mBenchmarkCardCollapsed = false;
 
-    MaterialCardView mGroundTruthCardView;
+    MaterialCardView mGroundTruthCardView, mVerticalErrorCardView;
 
     MotionLayout mMotionLayout;
 
@@ -75,7 +79,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     SlidingUpPanelLayout.PanelState mLastPanelState;
 
-    LineChart mErrorChart;
+    LineChart mErrorChart, mVertErrorChart;
 
     Location mGroundTruthLocation;
 
@@ -97,7 +101,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mErrorUnit = v.findViewById(R.id.error_unit);
         mAvgErrorUnit = v.findViewById(R.id.avg_error_unit);
         mErrorChart = v.findViewById(R.id.error_chart);
+        mVertErrorChart = v.findViewById(R.id.vert_error_chart);
         initChart(mErrorChart);
+        initChart(mVertErrorChart);
+        mVerticalErrorCardView = v.findViewById(R.id.vert_error_layout);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
@@ -152,9 +159,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // TODO - if lat and long aren't filled, show error
 
                 // Save Ground Truth
-                if (mGroundTruthLocation == null) {
-                    mGroundTruthLocation = new Location("ground_truth");
-                }
+                mGroundTruthLocation = new Location("ground_truth");
                 if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
                     mGroundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
                     mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
@@ -219,7 +224,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         // Get the legend (only possible after setting data)
         Legend l = errorChart.getLegend();
-        l.setEnabled(false);
+        l.setEnabled(true);
 
 //        // Modify the legend ...
 //        l.setForm(Legend.LegendForm.LINE);
@@ -261,6 +266,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, 0));
 
         mErrorChart.clearValues();
+        mVertErrorChart.clearValues();
     }
 
     @Override
@@ -380,6 +386,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
             mAvgVertErrorView.setVisibility(VISIBLE);
             mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgVertError()));
+            mVerticalErrorCardView.setVisibility(VISIBLE);
         } else {
             // Hide any vertical error indication
             mErrorLabel.setText(R.string.horizontal_error_label);
@@ -387,35 +394,57 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mRightDivider.setVisibility(GONE);
             mVertErrorView.setVisibility(GONE);
             mAvgVertErrorView.setVisibility(GONE);
+            mVerticalErrorCardView.setVisibility(GONE);
         }
-        addErrorToGraph(error);
+        addErrorToGraphs(error, location);
     }
 
-    private void addErrorToGraph(MeasuredError error) {
-        LineData data = mErrorChart.getData();
+    private void addErrorToGraphs(MeasuredError error, Location location) {
+        addErrorToGraph(mErrorChart, error.getError(), location.getAccuracy());
 
-        if (data != null) {
+        if (!Double.isNaN(error.getVertError())) {
+            float vertAccuracy = Float.NaN;
 
-            ILineDataSet set = data.getDataSetByIndex(0);
-            // set.addEntry(...); // can be called as well
-
-            if (set == null) {
-                set = createGraphDataSet();
-                data.addDataSet(set);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vertAccuracy = location.getVerticalAccuracyMeters();
             }
 
-            data.addEntry(new Entry(mAvgError.getCount(), error.getError()), 0);
+            addErrorToGraph(mVertErrorChart, error.getVertError(), vertAccuracy);
+        }
+    }
+
+    private void addErrorToGraph(LineChart chart, double error, float estimatedAccuracy) {
+        LineData data = chart.getData();
+
+        if (data != null) {
+            ILineDataSet errorSet = data.getDataSetByIndex(ERROR_SET);
+            ILineDataSet estimatedSet = data.getDataSetByIndex(ESTIMATED_ACCURACY_SET);
+            // errorSet.addEntry(...); // can be called as well
+
+            if (errorSet == null) {
+                errorSet = createGraphDataSet(ERROR_SET);
+                data.addDataSet(errorSet);
+            }
+            if (estimatedSet == null && !Float.isNaN(estimatedAccuracy)) {
+                estimatedSet = createGraphDataSet(ESTIMATED_ACCURACY_SET);
+                data.addDataSet(estimatedSet);
+            }
+
+            data.addEntry(new Entry(mAvgError.getCount(), (float) error), ERROR_SET);
+            if (!Float.isNaN(estimatedAccuracy)) {
+                data.addEntry(new Entry(mAvgError.getCount(), estimatedAccuracy), ESTIMATED_ACCURACY_SET);
+            }
             data.notifyDataChanged();
 
             // let the chart know it's data has changed
-            mErrorChart.notifyDataSetChanged();
+            chart.notifyDataSetChanged();
 
             // limit the number of visible entries
-            mErrorChart.setVisibleXRangeMaximum(40);
+            chart.setVisibleXRangeMaximum(40);
             // chart.setVisibleYRange(30, AxisDependency.LEFT);
 
             // move to the latest entry
-            mErrorChart.moveViewToX(data.getEntryCount());
+            chart.moveViewToX(data.getEntryCount());
 
             // this automatically refreshes the chart (calls invalidate())
             // chart.moveViewTo(data.getXValCount()-7, 55f,
@@ -423,10 +452,26 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
     }
 
-    private LineDataSet createGraphDataSet() {
-        LineDataSet set = new LineDataSet(null, Application.get().getResources().getString(R.string.horizontal_error_label));
+    /**
+     * Creates a graph dataset, for error if set is ERROR_SET, or for estimated accuracy if ESTIMATED_ACCURACY_SET
+     * @param setType creates a data set for error if set is ERROR_SET, and for estimated accuracy if ESTIMATED_ACCURACY_SET
+     * @return a graph dataset
+     */
+    private LineDataSet createGraphDataSet(int setType) {
+        String label;
+        if (setType == ERROR_SET) {
+            label = Application.get().getResources().getString(R.string.measured_error_graph_label);
+        } else {
+            label = Application.get().getResources().getString(R.string.estimated_accuracy_graph_label);
+        }
+
+        LineDataSet set = new LineDataSet(null, label);
         set.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set.setColor(ColorTemplate.getHoloBlue());
+        if (setType == ERROR_SET) {
+            set.setColor(Color.RED);
+        } else {
+            set.setColor(ColorTemplate.getHoloBlue());
+        }
         set.setCircleColor(Color.BLACK);
         set.setLineWidth(2f);
         set.setCircleRadius(2f);
