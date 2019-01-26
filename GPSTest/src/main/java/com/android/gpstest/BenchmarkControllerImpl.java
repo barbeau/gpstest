@@ -276,6 +276,27 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     /**
+     * Called from the hosting Activity when onBackPressed() is called (i.e., when the user
+     * presses the back button)
+     * @return true if the controller handled in the click and super.onBackPressed() should not be
+     * called by the hosting Activity, or false if the controller didn't handle the click and
+     * super.onBackPressed() should be called
+     */
+    @Override
+    public boolean onBackPressed() {
+        // Collapse the panel when the user presses the back button
+        if (mSlidingPanel != null) {
+            // Collapse the sliding panel if its anchored or expanded
+            if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
+                    || mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Sets a lister that will be updated when benchmark controller events are fired
      * @param listener a lister that will be updated when benchmark controller events are fired
      */

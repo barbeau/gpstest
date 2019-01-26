@@ -58,6 +58,15 @@ interface BenchmarkController extends GpsTestListener {
     void onSaveInstanceState(Bundle outState);
 
     /**
+     * Called from the hosting Activity when onBackPressed() is called (i.e., when the user
+     * presses the back button)
+     * @return true if the controller handled in the click and super.onBackPressed() should not be
+     * called by the hosting Activity, or false if the controller didn't handle the click and
+     * super.onBackPressed() should be called
+     */
+    boolean onBackPressed();
+
+    /**
      * Show the Benchmark views
      */
     void show();

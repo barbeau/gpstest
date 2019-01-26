@@ -697,10 +697,16 @@ public class GpsTestActivity extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.nav_drawer_left_pane);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+            // Close navigation drawer
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
+        } else if (mBenchmarkController != null) {
+            // Close sliding drawer
+            if (mBenchmarkController.onBackPressed()) {
+                return;
+            }
         }
+        super.onBackPressed();
     }
 
     static GpsTestActivity getInstance() {
