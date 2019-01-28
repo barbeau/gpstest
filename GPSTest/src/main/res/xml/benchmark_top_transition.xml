@@ -95,13 +95,26 @@
             motion:layout_constraintTop_toBottomOf="@id/set_ground_truth1">
         </Constraint>
         <Constraint
+            android:id="@id/save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
+            motion:layout_constraintHorizontal_chainStyle="spread"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintHorizontal_weight="1"
+            tools:layout_width="0dp">
+        </Constraint>
+        <Constraint
             android:id="@id/ground_truth_lat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/map_card_top_margin_collapsed"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             motion:layout_constraintEnd_toStartOf="@+id/ground_truth_long"
-            motion:layout_constraintHorizontal_chainStyle="spread"
-            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintStart_toEndOf="@id/save"
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintHorizontal_weight="1"
             tools:layout_width="0dp">
@@ -133,15 +146,6 @@
             motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintHorizontal_weight="1"
             tools:layout_width="0dp">
-        </Constraint>
-        <Constraint
-            android:id="@id/save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/status_margin"
-            motion:layout_constraintLeft_toLeftOf="parent"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintTop_toBottomOf="@id/ground_truth_alt">
         </Constraint>
     </ConstraintSet>
 </MotionScene>

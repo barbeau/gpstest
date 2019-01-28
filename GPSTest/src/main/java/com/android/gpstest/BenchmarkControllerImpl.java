@@ -168,7 +168,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
                 }
 
-                // Collapse card
+                // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
                 mMotionLayout.transitionToEnd();
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
@@ -188,6 +188,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             } else {
                 // Expand card to allow editing ground truth
                 mMotionLayout.transitionToStart();
+                // We have to set height on card manually because it doesn't auto-expand right when views are within card container
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
                 mGroundTruthCardView.setLayoutParams(lp);
                 mBenchmarkCardCollapsed = false;
