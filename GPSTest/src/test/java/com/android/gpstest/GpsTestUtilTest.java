@@ -35,12 +35,20 @@ public class GpsTestUtilTest {
                 = "$GPGGA,032739.0,2804.732835,N,08224.639709,W,1,08,0.8,19.2,M,-24.0,M,,*5B";
         final String gnssSentence
                 = "$GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,78.9,-24.0,,*23";
+        final String gnGga1 = "$GNGGA,114926.00,3206.341435,N,11850.092448,E,1,11,0.9,19.9,M,2.2,M,,*7E";
+        final String gnGga2 = "$GNGGA,172814.00,2803.208136,N,08225.981423,W,1,08,1.1,-19.7,M,-24.8,M,,*5F";
 
         altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gpsSentence);
         assertEquals(19.2d, altitude);
 
         altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gnssSentence);
         assertEquals(78.9d, altitude);
+
+        altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gnGga1);
+        assertEquals(19.9d, altitude);
+
+        altitude = GpsTestUtil.getAltitudeMeanSeaLevel(gnGga2);
+        assertEquals(-19.7d, altitude);
 
         final String badGnssSentence
                 = "$GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,BAD,-24.0,,*23";
