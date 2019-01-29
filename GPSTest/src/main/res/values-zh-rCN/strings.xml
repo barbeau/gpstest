@@ -68,11 +68,11 @@
     <string name="gps_altitude_label">海拔:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_value_feet">%1$.1f ft</string>
-    <string name="gps_altitude_msl_label">海拔（平均海平面）:</string>
+    <string name="gps_altitude_msl_label">海拔(MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">精度:</string>
-    <string name="gps_hor_and_vert_accuracy_label">水平/垂直 精度:</string>
+    <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
@@ -93,7 +93,7 @@
     <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
-    <string name="hvdop_label">水平/垂直 DOP:</string>
+    <string name="hvdop_label">H/V DOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
@@ -111,10 +111,10 @@
     <string name="gps_not_supported">请检查系统设置 - 设备似乎并不支持GNSS/GPS。</string>
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
-    <string name="please_install_google_maps">此地图栏需要Google 地图</string>
+    <string name="please_install_google_maps">此地图栏需要 Google 地图</string>
     <string name="enable_gps_message">GPS已被禁用。要启用吗？</string>
     <string name="enable_gps_positive_button">启用GPS</string>
-    <string name="enable_gps_negative_button">不启动</string>
+    <string name="enable_gps_negative_button">不启用</string>
     <string name="gps_set_location_listener">已以时间间隔为 %1$ss，最小距离为 %2$sm 启动 GPS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
     <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。你确认吗?</string>
@@ -285,11 +285,11 @@
         - 十进制（WGS 84）\n&#8226;\u0020
         <b>海拔</b>
         - 基于WGS 84椭球的高度\n&#8226;\u0020
-        <b>海拔（平均海平面）</b>
-        - 基于平均海拔的高度（需要NMEA支持）\n&#8226;\u0020
+        <b>海拔(MSL)</b>
+        - 基于平均海平面的高度（需要NMEA支持）\n&#8226;\u0020
         <b>精度</b>
         - 当前位置的精度（68%可信度的半径）。换言之，如果以当前经纬度画一个圆，你正处于以该数值为半径的圆内的概率为68%。\n&#8226;\u0020
-        <b>水平/垂直 精度</b>
+        <b>水平/垂直(H/V) 精度</b>
         - 当前位置的水平精度和垂直精度，都为68%的可信度。水平精度的定义与前面“精度”一致。垂直精度只在Android 8.0及其更高版本可用。垂直精度示例 - 海拔为150、垂直精度为20将会意味着你的海拔处于130~170之间的概率为68%。\n&#8226;\u0020
         <b>速度</b>
         - m/s 的对地速度\n&#8226;\u0020
@@ -303,7 +303,7 @@
         - # 使用中的卫星 / # 可见的卫星\n&#8226;\u0020
         <b>PDOP</b>
         - 三维位置精度因子（需要NMEA支持）\n&#8226;\u0020
-        <b>水平/垂直 DOP</b>
+        <b>水平/垂直(H/V) DOP</b>
         - 水平/垂直的位置精度因子（需要NMEA支持）\n&#8226;\u0020
         <b>TTFF</b>
         - 首次定位时间\n&#8226;\u0020
@@ -315,7 +315,7 @@
         - 信噪比（Android 6.0及其更低版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
         - 载波噪声谱密度比（Android 7.0及其更高版本） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>标签</b>
+        <b>标识</b>
         - (E) 设备含有卫星的星历数据 (A) 设备含有卫星的历史数据 (U) 卫星正在被使用中\n\n
 
         <b>*** 天空视图 ***</b>\n\n&#8226;\u0020
@@ -345,9 +345,10 @@
         &#8226;\u0020 <b>Mike Lockwood</b> - v1.x的初代开发者\n
         &#8226;\u0020 <b>Sean Barbeau</b> - v2.x及其后的开发者\n
         &#8226;\u0020 GPSTest的图标由Material Design中“卫星”图标派生而来，其基于Google所签发的Apache v2.0。其他的Material Design图标也基于Apache v2.0使用。\n
-        &#8226;\u0020 简体中文翻译由 wangkf 提供\n
-        &#8226;\u0020 德语翻译由 SIRSteiner 提供\n
+        &#8226;\u0020 简体中文翻译由 wangkf、liuyunli、SakuraSa233、Skimige 提供\n
+        &#8226;\u0020 德语翻译由 Ronny Steiner 提供\n
         &#8226;\u0020 荷兰语翻译由 Dennis Dolman 提供\n
         &#8226;\u0020 希腊语翻译由 Jimmy Golfi 提供\n
+        &#8226;\u0020 日语翻译由 SakuraSa233 提供\n
     </string>
 </resources>
