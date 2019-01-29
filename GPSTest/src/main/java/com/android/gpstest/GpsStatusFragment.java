@@ -465,7 +465,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             // Do nothing if the Fragment isn't added
             return;
         }
-        if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS")) {
+        if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS") || message.startsWith("$GNGGA")) {
             Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
             if (altitudeMsl != null && mNavigating) {
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
