@@ -22,6 +22,7 @@
     <dimen name="ground_truth_text_size_expanded">11sp</dimen>
     <dimen name="ground_truth_text_size_collapsed">10sp</dimen>
     <dimen name="ground_truth_sliding_header_bottom_margin">10dp</dimen>
+    <dimen name="ground_truth_sliding_header_handle_bottom_margin">3dp</dimen>
     <dimen name="ground_truth_sliding_header_height">110dp</dimen>
     <dimen name="ground_truth_sliding_header_divider_margin">3sp</dimen>
     <dimen name="ground_truth_sliding_header_vert_text_size">24sp</dimen>

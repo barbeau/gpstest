@@ -188,12 +188,12 @@
         android:textSize="14sp"/>
 
     <ImageView
-        android:id="@+id/expand_collapse"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/ground_truth_sliding_header_bottom_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/drawer_handle"
+        android:layout_width="25dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_handle_bottom_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_navigation_expand_more"/>
+        android:background="@drawable/drawer_handle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
