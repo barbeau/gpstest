@@ -179,7 +179,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // Show sliding panel if it's not visible
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
                 if (mListener != null) {
                     mListener.onAllowGroundTruthEditChanged(false);

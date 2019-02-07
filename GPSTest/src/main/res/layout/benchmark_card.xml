@@ -15,6 +15,7 @@
     android:animateLayoutChanges="true"
     tools:showIn="@layout/content_main"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
 </com.google.android.material.card.MaterialCardView>

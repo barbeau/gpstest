@@ -1,118 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_panel_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/error_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/status_margin"
-        android:layout_marginStart="@dimen/status_margin"
-        android:layout_marginRight="@dimen/status_margin"
-        android:layout_marginEnd="@dimen/status_margin"
-        android:layout_marginTop="@dimen/status_margin"
-        android:layout_marginBottom="@dimen/status_margin"
-        app:cardCornerRadius="5dp">
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/error_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/map_card_inner_margin">
-            <TextView
-                android:id="@+id/error_chart_title"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="Horizontal Error"/>
-            <com.android.gpstest.view.VerticalTextView
-                android:id="@+id/error_y_axis_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/error_chart"
-                app:layout_constraintBottom_toBottomOf="@id/error_chart"
-                app:layout_constraintEnd_toStartOf="@id/error_chart"
-                android:gravity="bottom"
-                android:text="@string/horizontal_error_label"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/error_chart"
+            android:layout_marginLeft="@dimen/status_margin"
+            android:layout_marginStart="@dimen/status_margin"
+            android:layout_marginRight="@dimen/status_margin"
+            android:layout_marginEnd="@dimen/status_margin"
+            android:layout_marginTop="@dimen/status_margin"
+            android:layout_marginBottom="@dimen/status_margin"
+            app:cardCornerRadius="5dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"
-                app:layout_constraintStart_toEndOf="@id/error_y_axis_label"
-                app:layout_constraintTop_toBottomOf="@id/error_chart_title"/>
-            <TextView
-                android:id="@+id/error_x_axis_label"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="@id/error_chart"
-                app:layout_constraintEnd_toEndOf="@id/error_chart"
-                app:layout_constraintTop_toBottomOf="@id/error_chart"
-                android:text="@string/fix_number"/>
+                android:padding="@dimen/map_card_inner_margin">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/error_chart_title"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Horizontal Error" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/vert_error_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/status_margin"
-        android:layout_marginStart="@dimen/status_margin"
-        android:layout_marginRight="@dimen/status_margin"
-        android:layout_marginEnd="@dimen/status_margin"
-        android:layout_marginTop="@dimen/status_margin"
-        android:layout_marginBottom="@dimen/status_margin"
-        app:cardCornerRadius="5dp"
-        android:layout_below="@id/error_layout"
-        android:visibility="gone">
+                <com.android.gpstest.view.VerticalTextView
+                    android:id="@+id/error_y_axis_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/error_chart"
+                    app:layout_constraintBottom_toBottomOf="@id/error_chart"
+                    app:layout_constraintEnd_toStartOf="@id/error_chart"
+                    android:gravity="bottom"
+                    android:text="@string/horizontal_error_label" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/error_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="25dp"
+                    app:layout_constraintStart_toEndOf="@id/error_y_axis_label"
+                    app:layout_constraintTop_toBottomOf="@id/error_chart_title" />
+
+                <TextView
+                    android:id="@+id/error_x_axis_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="@id/error_chart"
+                    app:layout_constraintEnd_toEndOf="@id/error_chart"
+                    app:layout_constraintTop_toBottomOf="@id/error_chart"
+                    android:text="@string/fix_number" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/vert_error_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/map_card_inner_margin">
-            <TextView
-                android:id="@+id/vert_error_chart_title"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="Vertical Error"/>
-            <com.android.gpstest.view.VerticalTextView
-                android:id="@+id/vert_error_y_axis_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="@id/vert_error_chart"
-                app:layout_constraintBottom_toBottomOf="@id/vert_error_chart"
-                app:layout_constraintEnd_toStartOf="@id/vert_error_chart"
-                android:gravity="bottom"
-                android:text="@string/horizontal_error_label"/>
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/vert_error_chart"
+            android:layout_marginLeft="@dimen/status_margin"
+            android:layout_marginStart="@dimen/status_margin"
+            android:layout_marginRight="@dimen/status_margin"
+            android:layout_marginEnd="@dimen/status_margin"
+            android:layout_marginTop="@dimen/status_margin"
+            android:layout_marginBottom="@dimen/status_margin"
+            app:cardCornerRadius="5dp"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"
-                app:layout_constraintStart_toEndOf="@id/vert_error_y_axis_label"
-                app:layout_constraintTop_toBottomOf="@id/vert_error_chart_title"/>
-            <TextView
-                android:id="@+id/vert_error_x_axis_label"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="@id/vert_error_chart"
-                app:layout_constraintEnd_toEndOf="@id/vert_error_chart"
-                app:layout_constraintTop_toBottomOf="@id/vert_error_chart"
-                android:text="@string/fix_number"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</RelativeLayout>
+                android:padding="@dimen/map_card_inner_margin">
+
+                <TextView
+                    android:id="@+id/vert_error_chart_title"
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Vertical Error" />
+
+                <com.android.gpstest.view.VerticalTextView
+                    android:id="@+id/vert_error_y_axis_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="@id/vert_error_chart"
+                    app:layout_constraintBottom_toBottomOf="@id/vert_error_chart"
+                    app:layout_constraintEnd_toStartOf="@id/vert_error_chart"
+                    android:gravity="bottom"
+                    android:text="@string/horizontal_error_label" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/vert_error_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginStart="25dp"
+                    app:layout_constraintStart_toEndOf="@id/vert_error_y_axis_label"
+                    app:layout_constraintTop_toBottomOf="@id/vert_error_chart_title" />
+
+                <TextView
+                    android:id="@+id/vert_error_x_axis_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="@id/vert_error_chart"
+                    app:layout_constraintEnd_toEndOf="@id/vert_error_chart"
+                    app:layout_constraintTop_toBottomOf="@id/vert_error_chart"
+                    android:text="@string/fix_number" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>
