@@ -80,8 +80,7 @@
             android:layout_marginEnd="@dimen/status_margin"
             android:layout_marginTop="@dimen/status_margin"
             android:layout_marginBottom="@dimen/status_margin"
-            app:cardCornerRadius="5dp"
-            android:visibility="gone">
+            app:cardCornerRadius="5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

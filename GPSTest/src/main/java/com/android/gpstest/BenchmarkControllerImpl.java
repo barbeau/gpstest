@@ -166,6 +166,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 }
                 if (!isEmpty(mAltText.getEditText().getText().toString())) {
                     mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
+                } else {
+                    // Hide vertical error chart card
+                    mVerticalErrorCardView.setVisibility(GONE);
                 }
 
                 // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
