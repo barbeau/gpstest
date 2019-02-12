@@ -23,6 +23,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -32,6 +33,7 @@ import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.BenchmarkUtils;
+import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -65,6 +67,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     private static final int ERROR_SET = 0;
 
     private static final int ESTIMATED_ACCURACY_SET = 1;
+
+    private static final float UNIT_VERT_BIAS_HOR_ERROR_ONLY = 0.582f;
+
+    private static final float UNIT_VERT_BIAS_INCL_VERT_ERROR = 0.25f;
 
     private boolean mBenchmarkCardCollapsed = false;
 
@@ -165,10 +171,21 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
                 }
                 if (!isEmpty(mAltText.getEditText().getText().toString())) {
+                    // Use altitude for measuring vertical error
                     mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
+                    // Set default text size and align units properly
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
                 } else {
-                    // Hide vertical error chart card
+                    // No altitude provided - Hide vertical error chart card
                     mVerticalErrorCardView.setVisibility(GONE);
+                    // Set default text size and align units properly
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
                 }
 
                 // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container

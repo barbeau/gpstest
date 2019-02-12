@@ -35,6 +35,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
@@ -329,5 +330,16 @@ public class UIUtils {
      */
     public static float toMilesPerHour(float metersPerSecond) {
         return toKilometersPerHour(metersPerSecond) / 1.6093440f;
+    }
+
+    /**
+     * Sets the vertical bias for a provided view that is within a ConstraintLayout
+     * @param view view within a ConstraintLayout
+     * @param bias vertical bias to be used
+     */
+    public static void setVerticalBias(View view, float bias) {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        params.verticalBias = bias;
+        view.setLayoutParams(params);
     }
 }

@@ -20,9 +20,9 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="48sp"
+        android:textSize="@dimen/ground_truth_sliding_header_error_text_size"
         android:textStyle="bold"
-        tools:text="10" />
+        tools:text="10.23" />
 
     <TextView
         android:id="@+id/divider_left"
@@ -32,8 +32,7 @@
         android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
         android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
         app:layout_constraintStart_toEndOf="@id/error"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/error"
         android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
         android:textColor="@android:color/white"
         android:text="@string/benchmark_header_error_divider"/>
@@ -45,15 +44,14 @@
         android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_top_margin"
         android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
         android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/error"
         app:layout_constraintStart_toEndOf="@id/divider_left"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
         android:textStyle="bold"
-        tools:text="10" />
+        tools:text="10.65" />
 
     <TextView
         android:id="@+id/error_unit"
@@ -115,9 +113,9 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textSize="48sp"
+        android:textSize="@dimen/ground_truth_sliding_header_error_text_size"
         android:textStyle="bold"
-        tools:text="10" />
+        tools:text="10.82" />
 
     <TextView
         android:id="@+id/divider_right"
@@ -127,8 +125,7 @@
         android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
         android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
         app:layout_constraintStart_toEndOf="@id/avg_error"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/avg_error"
         android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
         android:textColor="@android:color/white"
         android:text="@string/benchmark_header_error_divider"/>
@@ -140,15 +137,14 @@
         android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_top_margin"
         android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
         android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/avg_error"
         app:layout_constraintStart_toEndOf="@id/divider_right"
-        app:layout_constraintTop_toTopOf="parent"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@android:color/white"
         android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
         android:textStyle="bold"
-        tools:text="10" />
+        tools:text="10.92" />
 
     <TextView
         android:id="@+id/avg_error_unit"

@@ -25,7 +25,9 @@
     <dimen name="ground_truth_sliding_header_handle_bottom_margin">3dp</dimen>
     <dimen name="ground_truth_sliding_header_height">110dp</dimen>
     <dimen name="ground_truth_sliding_header_divider_margin">3sp</dimen>
-    <dimen name="ground_truth_sliding_header_vert_text_size">24sp</dimen>
+    <dimen name="ground_truth_sliding_header_error_text_size">48sp</dimen>
+    <!-- To include vertical error on narrower devices, text size can be max 22sp -->
+    <dimen name="ground_truth_sliding_header_vert_text_size">22sp</dimen>
     <dimen name="ground_truth_sliding_header_vert_divider_top_margin">32sp</dimen>
     <dimen name="ground_truth_sliding_header_vert_top_margin">34sp</dimen>
 
