@@ -81,7 +81,9 @@ public class GpsMapFragment extends SupportMapFragment
 
     private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
 
-    public final static String TAG = "GpsMapFragment";
+    public final static String MODE_MAP = "GpsMapFragment";
+
+    public final static String MODE_ACCURACY = "GpsAccuracyFragment";
 
     Bundle mSavedInstanceState;
 
@@ -369,7 +371,7 @@ public class GpsMapFragment extends SupportMapFragment
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Log.e(TAG, "Tried to initialize my location on Google Map - " + e);
+            Log.e(MODE_MAP, "Tried to initialize my location on Google Map - " + e);
         }
         //Set location source
         mMap.setLocationSource(this);
