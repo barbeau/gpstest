@@ -161,7 +161,7 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_galileo" />
+                    app:srcCompat="@drawable/ic_flag_european_union" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line3b"
