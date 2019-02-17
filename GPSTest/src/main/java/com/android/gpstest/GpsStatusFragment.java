@@ -108,8 +108,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private boolean mNavigating;
 
-    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagGalileo, mFlagIndia,
-            mFlagEU, mFlagICAO;
+    private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagIndia, mFlagEU, mFlagICAO;
 
     private boolean mUseLegacyGnssApi = false;
 
@@ -161,7 +160,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
         mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
-        mFlagGalileo = getResources().getDrawable(R.drawable.ic_flag_galileo);
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
         mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
         mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
@@ -858,7 +856,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         break;
                     case GALILEO:
                         v.getFlag().setVisibility(View.VISIBLE);
-                        v.getFlag().setImageDrawable(mFlagGalileo);
+                        v.getFlag().setImageDrawable(mFlagEU);
                         break;
                     case SBAS:
                         setSbasFlag(sats.get(dataRow), v.getFlag());
