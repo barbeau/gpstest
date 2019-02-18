@@ -589,7 +589,10 @@ public class GpsTestActivity extends AppCompatActivity
             if (mMapFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment");
+                Bundle bundle = new Bundle();
+                bundle.putString(GpsMapFragment.MODE, GpsMapFragment.MODE_MAP);
                 mMapFragment = new GpsMapFragment();
+                mMapFragment.setArguments(bundle);
                 fm.beginTransaction()
                         .add(R.id.fragment_container, mMapFragment, GpsMapFragment.MODE_MAP)
                         .commit();
@@ -667,7 +670,10 @@ public class GpsTestActivity extends AppCompatActivity
             if (mAccuracyFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment for Accuracy");
+                Bundle bundle = new Bundle();
+                bundle.putString(GpsMapFragment.MODE, GpsMapFragment.MODE_ACCURACY);
                 mAccuracyFragment = new GpsMapFragment();
+                mAccuracyFragment.setArguments(bundle);
                 fm.beginTransaction()
                         .add(R.id.fragment_container, mAccuracyFragment, GpsMapFragment.MODE_ACCURACY)
                         .commit();

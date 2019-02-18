@@ -66,7 +66,9 @@ public class GpsMapFragment extends SupportMapFragment
 
     public static final float CAMERA_INITIAL_BEARING = 0.0f;
 
-    public static final float CAMERA_INITIAL_TILT = 0.0f;
+    public static final float CAMERA_INITIAL_TILT_MAP = 45.0f;
+
+    public static final float CAMERA_INITIAL_TILT_ACCURACY = 0.0f;
 
     public static final float CAMERA_ANCHOR_ZOOM = 19.0f;
 
@@ -81,9 +83,13 @@ public class GpsMapFragment extends SupportMapFragment
 
     private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
 
-    public final static String MODE_MAP = "GpsMapFragment";
+    public final static String MODE = "mode";
 
-    public final static String MODE_ACCURACY = "GpsAccuracyFragment";
+    public final static String MODE_MAP = "mode_map";
+
+    public final static String MODE_ACCURACY = "mode_accuracy";
+
+    String mMode = MODE_MAP;
 
     Bundle mSavedInstanceState;
 
@@ -120,6 +126,10 @@ public class GpsMapFragment extends SupportMapFragment
             Bundle savedInstanceState) {
 
         View v = super.onCreateView(inflater, container, savedInstanceState);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mMode = arguments.getString(MODE, MODE_MAP);
+        }
 
         if (isGooglePlayServicesInstalled()) {
             // Save the savedInstanceState
@@ -190,11 +200,12 @@ public class GpsMapFragment extends SupportMapFragment
             if (!mGotFix &&
                     (!bounds.contains(mLatLng) ||
                             mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
+                float tilt = mMode.equals(MODE_MAP) ? CAMERA_INITIAL_TILT_MAP : CAMERA_INITIAL_TILT_ACCURACY;
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(mLatLng)
                         .zoom(CAMERA_INITIAL_ZOOM)
                         .bearing(CAMERA_INITIAL_BEARING)
-                        .tilt(CAMERA_INITIAL_TILT)
+                        .tilt(tilt)
                         .build();
 
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -264,8 +275,8 @@ public class GpsMapFragment extends SupportMapFragment
         if (!getUserVisibleHint()) {
             return;
         }
-        // Only proceed if map is not null
-        if (mMap == null) {
+        // Only proceed if map is not null and we're in MAP mode
+        if (mMap == null || !mMode.equals(MODE_MAP)) {
             return;
         }
 
@@ -327,7 +338,7 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onMapClick(LatLng latLng) {
         mLastMapTouchTime = System.currentTimeMillis();
-        if (!mAllowGroundTruthChange) {
+        if (!mMode.equals(MODE_ACCURACY) || !mAllowGroundTruthChange) {
             // Don't allow changes to the ground truth location, so don't pass taps to listener
             return;
         }
@@ -439,7 +450,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     private void checkMapPreferences() {
         SharedPreferences settings = Application.getPrefs();
-        if (mMap != null) {
+        if (mMap != null && mMode.equals(MODE_MAP)) {
             if (mMap.getMapType() != Integer.valueOf(
                     settings.getString(getString(R.string.pref_key_map_type),
                             String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
@@ -449,9 +460,13 @@ public class GpsMapFragment extends SupportMapFragment
                                 String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
                 ));
             }
+        } else if (mMap != null && mMode.equals(MODE_ACCURACY)) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         }
-        mRotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
-        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        if (mMode.equals(MODE_MAP)) {
+            mRotate = settings
+                    .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
+            mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        }
     }
 }
