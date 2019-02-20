@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.gpstest.util.MapUtils;
+import com.android.gpstest.util.MathUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -62,36 +63,36 @@ public class GpsMapFragment extends SupportMapFragment
         GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
 
     // Constants used to control how the camera animates to a position
-    public static final float CAMERA_INITIAL_ZOOM = 18.0f;
+    private static final float CAMERA_INITIAL_ZOOM = 18.0f;
 
-    public static final float CAMERA_INITIAL_BEARING = 0.0f;
+    private static final float CAMERA_INITIAL_BEARING = 0.0f;
 
-    public static final float CAMERA_INITIAL_TILT_MAP = 45.0f;
+    private static final float CAMERA_INITIAL_TILT_MAP = 45.0f;
 
-    public static final float CAMERA_INITIAL_TILT_ACCURACY = 0.0f;
+    private static final float CAMERA_INITIAL_TILT_ACCURACY = 0.0f;
 
-    public static final float CAMERA_ANCHOR_ZOOM = 19.0f;
+    private static final float CAMERA_ANCHOR_ZOOM = 19.0f;
 
-    public static final float CAMERA_MIN_TILT = 0.0f;
+    private static final float CAMERA_MIN_TILT = 0.0f;
 
-    public static final float CAMERA_MAX_TILT = 90.0f;
+    private static final float CAMERA_MAX_TILT = 90.0f;
 
-    public static final double TARGET_OFFSET_METERS = 150;
+    private static final double TARGET_OFFSET_METERS = 150;
 
     // Amount of time the user must not touch the map for the automatic camera movements to kick in
-    public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
+    private static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
 
     private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
 
-    public final static String MODE = "mode";
+    static final String MODE = "mode";
 
-    public final static String MODE_MAP = "mode_map";
+    static final String MODE_MAP = "mode_map";
 
-    public final static String MODE_ACCURACY = "mode_accuracy";
+    static final String MODE_ACCURACY = "mode_accuracy";
 
-    String mMode = MODE_MAP;
+    private String mMode = MODE_MAP;
 
-    Bundle mSavedInstanceState;
+    private Bundle mSavedInstanceState;
 
     private GoogleMap mMap;
 
@@ -292,7 +293,7 @@ public class GpsMapFragment extends SupportMapFragment
                 tilt = mlastCameraPosition != null ? mlastCameraPosition.tilt : 0;
             }
 
-            float clampedTilt = (float) clamp(CAMERA_MIN_TILT, tilt, CAMERA_MAX_TILT);
+            float clampedTilt = (float) MathUtils.clamp(CAMERA_MIN_TILT, tilt, CAMERA_MAX_TILT);
 
             double offset = TARGET_OFFSET_METERS * (clampedTilt / CAMERA_MAX_TILT);
 
@@ -401,7 +402,7 @@ public class GpsMapFragment extends SupportMapFragment
     /**
      * Returns true if Google Play Services is available, false if it is not
      */
-    public static boolean isGooglePlayServicesInstalled() {
+    private static boolean isGooglePlayServicesInstalled() {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS;
     }
 
@@ -429,24 +430,7 @@ public class GpsMapFragment extends SupportMapFragment
         mGroundTruthLocation = groundTruthLocation;
     }
 
-    /**
-     * Clamps a value between the given positive min and max.  If abs(value) is less than
-     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
-     * If abs(value) is between min and max, then abs(value) is returned.
-     *
-     * @param min   minimum allowed value
-     * @param value value to be evaluated
-     * @param max   maximum allowed value
-     * @return clamped value between the min and max
-     */
-    private static double clamp(double min, double value, double max) {
-        value = Math.abs(value);
-        if (value >= min && value <= max) {
-            return value;
-        } else {
-            return (value < min ? value : max);
-        }
-    }
+
 
     private void checkMapPreferences() {
         SharedPreferences settings = Application.getPrefs();

@@ -131,4 +131,23 @@ public class MathUtils {
     public static boolean isValidFloat(float value) {
         return value != 0.0f && !Float.isNaN(value);
     }
+
+    /**
+     * Clamps a value between the given positive min and max.  If abs(value) is less than
+     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
+     * If abs(value) is between min and max, then abs(value) is returned.
+     *
+     * @param min   minimum allowed value
+     * @param value value to be evaluated
+     * @param max   maximum allowed value
+     * @return clamped value between the min and max
+     */
+    public static double clamp(double min, double value, double max) {
+        value = Math.abs(value);
+        if (value >= min && value <= max) {
+            return value;
+        } else {
+            return (value < min ? value : max);
+        }
+    }
 }
