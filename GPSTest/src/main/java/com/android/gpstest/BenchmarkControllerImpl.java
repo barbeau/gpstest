@@ -112,7 +112,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         initChart(mVertErrorChart);
         mVerticalErrorCardView = v.findViewById(R.id.vert_error_layout);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mGroundTruthCardView.getLayoutTransition()
@@ -163,65 +162,80 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         saveGroundTruth.setOnClickListener(view -> {
             if (!mBenchmarkCardCollapsed) {
                 // TODO - if lat and long aren't filled, show error
-
-                // Save Ground Truth
-                mGroundTruthLocation = new Location("ground_truth");
-                if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
-                    mGroundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
-                    mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
-                }
-                if (!isEmpty(mAltText.getEditText().getText().toString())) {
-                    // Use altitude for measuring vertical error
-                    mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
-                    // Set default text size and align units properly
-                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
-                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
-                } else {
-                    // No altitude provided - Hide vertical error chart card
-                    mVerticalErrorCardView.setVisibility(GONE);
-                    // Set default text size and align units properly
-                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
-                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
-                }
-
-                // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
-                mMotionLayout.transitionToEnd();
-                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
-                mGroundTruthCardView.setLayoutParams(lp);
-                mBenchmarkCardCollapsed = true;
-
-                resetError();
-
-                // Show sliding panel if it's not visible
-                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
-                if (mListener != null) {
-                    mListener.onAllowGroundTruthEditChanged(false);
-                    mListener.onGroundTruthLocationSaved(mGroundTruthLocation);
-                }
+                saveGroundTruth();
             } else {
-                // Expand card to allow editing ground truth
-                mMotionLayout.transitionToStart();
-                // We have to set height on card manually because it doesn't auto-expand right when views are within card container
-                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
-                mGroundTruthCardView.setLayoutParams(lp);
-                mBenchmarkCardCollapsed = false;
-
-                // Collapse sliding panel if it's anchored so there is room
-                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
-                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                }
-
-                if (mListener != null) {
-                    mListener.onAllowGroundTruthEditChanged(true);
-                }
+                editGroundTruth();
             }
         });
+    }
+
+    /**
+     * Initialize the ground truth value from the values in the lat/long/alt text boxes
+     */
+    private void saveGroundTruth() {
+        // Save Ground Truth
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+        mGroundTruthLocation = new Location("ground_truth");
+        if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
+            mGroundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
+            mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
+        }
+        if (!isEmpty(mAltText.getEditText().getText().toString())) {
+            // Use altitude for measuring vertical error
+            mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
+            // Set default text size and align units properly
+            mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+            mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+            UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+            UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+        } else {
+            // No altitude provided - Hide vertical error chart card
+            mVerticalErrorCardView.setVisibility(GONE);
+            // Set default text size and align units properly
+            mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+            mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+            UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+            UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+        }
+
+        // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
+        mMotionLayout.transitionToEnd();
+        lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
+        mGroundTruthCardView.setLayoutParams(lp);
+        mBenchmarkCardCollapsed = true;
+
+        resetError();
+
+        // Show sliding panel if it's not visible
+        if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+        if (mListener != null) {
+            mListener.onAllowGroundTruthEditChanged(false);
+            mListener.onGroundTruthLocationSaved(mGroundTruthLocation);
+        }
+    }
+
+    /**
+     * Expands the ground truth card to allow the user to enter a new ground truth value
+     */
+    private void editGroundTruth() {
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+        // Expand card to allow editing ground truth
+        mMotionLayout.transitionToStart();
+        // We have to set height on card manually because it doesn't auto-expand right when views are within card container
+        lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
+        mGroundTruthCardView.setLayoutParams(lp);
+        mBenchmarkCardCollapsed = false;
+
+        // Collapse sliding panel if it's anchored so there is room
+        if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        }
+
+        if (mListener != null) {
+            mListener.onAllowGroundTruthEditChanged(true);
+        }
     }
 
     private void initChart(LineChart errorChart) {

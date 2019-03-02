@@ -90,6 +90,10 @@ public class GpsMapFragment extends SupportMapFragment
 
     static final String MODE_ACCURACY = "mode_accuracy";
 
+    static final String GROUND_TRUTH = "ground_truth";
+
+    static final String ALLOW_GROUND_TRUTH_CHANGE = "allow_ground_truth_change";
+
     private String mMode = MODE_MAP;
 
     private Bundle mSavedInstanceState;
@@ -125,12 +129,7 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
         View v = super.onCreateView(inflater, container, savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            mMode = arguments.getString(MODE, MODE_MAP);
-        }
 
         if (isGooglePlayServicesInstalled()) {
             // Save the savedInstanceState
@@ -168,6 +167,16 @@ public class GpsMapFragment extends SupportMapFragment
         }
 
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        bundle.putString(MODE, mMode);
+        bundle.putBoolean(ALLOW_GROUND_TRUTH_CHANGE, mAllowGroundTruthChange);
+        if (mGroundTruthLocation != null) {
+            bundle.putParcelable(GROUND_TRUTH, mGroundTruthLocation);
+        }
+        super.onSaveInstanceState(bundle);
     }
 
     @Override
@@ -344,13 +353,7 @@ public class GpsMapFragment extends SupportMapFragment
             return;
         }
         if (mMap != null) {
-            if (mGroundTruthMarker == null) {
-                mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(Application.get().getString(R.string.ground_truth_marker_title)));
-            } else {
-                mGroundTruthMarker.setPosition(latLng);
-            }
+            addMapMarker(latLng);
         }
 
         if (mOnMapClickListener != null) {
@@ -358,6 +361,16 @@ public class GpsMapFragment extends SupportMapFragment
             location.setLatitude(latLng.latitude);
             location.setLongitude(latLng.longitude);
             mOnMapClickListener.onMapClick(location);
+        }
+    }
+
+    private void addMapMarker(LatLng latLng) {
+        if (mGroundTruthMarker == null) {
+            mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(Application.get().getString(R.string.ground_truth_marker_title)));
+        } else {
+            mGroundTruthMarker.setPosition(latLng);
         }
     }
 
@@ -376,6 +389,8 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        restoreState(mSavedInstanceState);
 
         checkMapPreferences();
 
@@ -396,6 +411,25 @@ public class GpsMapFragment extends SupportMapFragment
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
+    }
+
+    private void restoreState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Restore an existing state (e.g., from device rotation)
+            mMode = savedInstanceState.getString(MODE);
+            mAllowGroundTruthChange = savedInstanceState.getBoolean(ALLOW_GROUND_TRUTH_CHANGE);
+            Location groundTruth = savedInstanceState.getParcelable(GROUND_TRUTH);
+            if (groundTruth != null) {
+                mGroundTruthLocation = groundTruth;
+                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
+            }
+        } else {
+            // Not restoring existing state - see what was provided as arguments
+            Bundle arguments = getArguments();
+            if (arguments != null) {
+                mMode = arguments.getString(MODE, MODE_MAP);
+            }
+        }
     }
 
 
@@ -429,8 +463,6 @@ public class GpsMapFragment extends SupportMapFragment
     public void setGroundTruthLocation(Location groundTruthLocation) {
         mGroundTruthLocation = groundTruthLocation;
     }
-
-
 
     private void checkMapPreferences() {
         SharedPreferences settings = Application.getPrefs();
