@@ -37,8 +37,6 @@ public class BenchmarkViewModel extends AndroidViewModel {
 
     private MutableLiveData<Location> mGroundTruthLocation = new MutableLiveData<>();
 
-    private MutableLiveData<MeasuredError> mMeasuredError = new MutableLiveData<>();
-
     private MutableLiveData<AvgError> mAvgError = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> mAllowGroundTruthEdit = new MutableLiveData<>(true);
@@ -77,10 +75,6 @@ public class BenchmarkViewModel extends AndroidViewModel {
         return mBenchmarkCardCollapsed;
     }
 
-    public LiveData<MeasuredError> getMeasuredError() {
-        return mMeasuredError;
-    }
-
     public LiveData<AvgError> getAvgError() {
         return mAvgError;
     }
@@ -109,7 +103,6 @@ public class BenchmarkViewModel extends AndroidViewModel {
         }
         // Calculate and update error
         MeasuredError error = BenchmarkUtils.Companion.measureError(location, mGroundTruthLocation.getValue());
-        mMeasuredError.setValue(error);
 
         // Update avg error
         AvgError avgError = mAvgError.getValue();
@@ -132,9 +125,6 @@ public class BenchmarkViewModel extends AndroidViewModel {
             avgError.reset();
             mAvgError.setValue(avgError);
         }
-
-        // Reset last measured error
-        mMeasuredError.setValue(null);
 
         // Reset location and error pair and pair list
         mLocationErrorPair.setValue(null);
