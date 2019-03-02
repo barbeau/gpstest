@@ -54,7 +54,10 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.Arrays;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
@@ -126,6 +129,23 @@ public class GpsMapFragment extends SupportMapFragment
 
     private Location mGroundTruthLocation;
 
+    BenchmarkViewModel mViewModel;
+
+    private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
+        @Override
+        public void onChanged(@Nullable final Location newValue) {
+            mGroundTruthLocation = newValue;
+        }
+    };
+
+    private final Observer<Boolean> mAllowGroundTruthEditObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable final Boolean newValue) {
+            mAllowGroundTruthChange = newValue;
+        }
+    };
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -165,6 +185,11 @@ public class GpsMapFragment extends SupportMapFragment
                 dialog.show();
             }
         }
+
+        mViewModel = ViewModelProviders.of(getActivity()).get(BenchmarkViewModel.class);
+        mViewModel.getGroundTruthLocation().observe(getActivity(), mGroundTruthLocationObserver);
+        mViewModel.getAllowGroundTruthEdit().observe(getActivity(), mAllowGroundTruthEditObserver);
+
 
         return v;
     }
@@ -446,22 +471,6 @@ public class GpsMapFragment extends SupportMapFragment
      */
     public void setOnMapClickListener(OnMapClickListener listener) {
         mOnMapClickListener = listener;
-    }
-
-    /**
-     * Sets whether the ground truth location can be changed on the map or not
-     * @param allowGroundTruthChange
-     */
-    public void setAllowGroundTruthChange(boolean allowGroundTruthChange) {
-        mAllowGroundTruthChange = allowGroundTruthChange;
-    }
-
-    /**
-     * Sets the ground truth location being used for accuracy measurements
-     * @param groundTruthLocation the ground truth location being used for accuracy measurements
-     */
-    public void setGroundTruthLocation(Location groundTruthLocation) {
-        mGroundTruthLocation = groundTruthLocation;
     }
 
     private void checkMapPreferences() {

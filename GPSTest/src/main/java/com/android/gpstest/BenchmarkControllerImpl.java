@@ -23,6 +23,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,6 @@ import android.widget.TextView;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
-import com.android.gpstest.util.BenchmarkUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -47,7 +47,11 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import static android.text.TextUtils.isEmpty;
 import static android.view.View.GONE;
@@ -72,8 +76,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     private static final float UNIT_VERT_BIAS_INCL_VERT_ERROR = 0.25f;
 
-    private boolean mBenchmarkCardCollapsed = false;
-
     MaterialCardView mGroundTruthCardView, mVerticalErrorCardView;
 
     MotionLayout mMotionLayout;
@@ -87,13 +89,111 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     LineChart mErrorChart, mVertErrorChart;
 
-    Location mGroundTruthLocation;
+    BenchmarkViewModel mViewModel;
 
-    AvgError mAvgError = new AvgError();
+    private final Observer<Boolean> mAllowGroundTruthEditObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable final Boolean allowEdit) {
+            if (!allowEdit) {
+                if (mViewModel.getGroundTruthLocation().getValue().hasAltitude()) {
+                    // Set default text size and align units properly
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+                } else {
+                    // No altitude provided - Hide vertical error chart card
+                    mVerticalErrorCardView.setVisibility(GONE);
+                    // Set default text size and align units properly
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+                }
 
-    private Listener mListener;
+                // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+                mMotionLayout.transitionToEnd();
+                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
+                mGroundTruthCardView.setLayoutParams(lp);
 
-    public BenchmarkControllerImpl(View v, Bundle savedInstanceState) {
+                resetError();
+
+                // Show sliding panel if it's not visible
+                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
+            } else {
+                // Edits are allowed
+                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+                // Expand card to allow editing ground truth
+                mMotionLayout.transitionToStart();
+                // We have to set height on card manually because it doesn't auto-expand right when views are within card container
+                lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
+                mGroundTruthCardView.setLayoutParams(lp);
+
+                // Collapse sliding panel if it's anchored so there is room
+                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
+            }
+        }
+    };
+
+    private final Observer<Pair<Location, MeasuredError>> mLocationErrorPairObserver = new Observer<Pair<Location, MeasuredError>>() {
+        @Override
+        public void onChanged(@Nullable final Pair<Location, MeasuredError> locationErrorPair) {
+            if (locationErrorPair == null || locationErrorPair.first == null || locationErrorPair.second == null) {
+                return;
+            }
+            Location location = locationErrorPair.first;
+            MeasuredError error = locationErrorPair.second;
+            if (mErrorView != null) {
+                mErrorUnit.setVisibility(VISIBLE);
+                mErrorView.setVisibility(VISIBLE);
+                mErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+            }
+            if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
+                // Vertical errors
+                mErrorLabel.setText(R.string.horizontal_vertical_error_label);
+                mLeftDivider.setVisibility(VISIBLE);
+                mRightDivider.setVisibility(VISIBLE);
+                mVertErrorView.setVisibility(VISIBLE);
+                mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
+                mVerticalErrorCardView.setVisibility(VISIBLE);
+            } else {
+                // Hide any vertical error indication
+                mErrorLabel.setText(R.string.horizontal_error_label);
+                mLeftDivider.setVisibility(GONE);
+                mRightDivider.setVisibility(GONE);
+                mVertErrorView.setVisibility(GONE);
+                mVerticalErrorCardView.setVisibility(GONE);
+            }
+            addErrorToGraphs(error, location);
+        }
+    };
+
+    private final Observer<AvgError> mAvgErrorObserver = new Observer<AvgError>() {
+        @Override
+        public void onChanged(@Nullable final AvgError avgError) {
+            if (mAvgErrorView != null) {
+                mAvgErrorUnit.setVisibility(VISIBLE);
+                mAvgErrorView.setVisibility(VISIBLE);
+                mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgError()));
+                mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, avgError.getCount()));
+            }
+            if (mAvgVertErrorView != null && !Double.isNaN(avgError.getAvgVertError())) {
+                // Vertical errors
+                mAvgVertErrorView.setVisibility(VISIBLE);
+                mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgVertError()));
+            } else {
+                // Hide any vertical error indication
+                mAvgVertErrorView.setVisibility(GONE);
+            }
+        }
+    };
+
+    public BenchmarkControllerImpl(AppCompatActivity activity, View v, Bundle savedInstanceState) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
         mErrorView = v.findViewById(R.id.error);
         mVertErrorView = v.findViewById(R.id.vert_error);
@@ -116,11 +216,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mGroundTruthCardView.getLayoutTransition()
                     .enableTransitionType(LayoutTransition.CHANGING);
-        }
-
-        if (savedInstanceState != null) {
-            // Activity is being restarted and has previous state (e.g., user rotated device)
-            mBenchmarkCardCollapsed = savedInstanceState.getBoolean(BENCHMARK_CARD_COLLAPSED, false);
         }
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
@@ -160,13 +255,18 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         // TODO - set initial state of sliding panel depending on savedInstanceState
 
         saveGroundTruth.setOnClickListener(view -> {
-            if (!mBenchmarkCardCollapsed) {
+            if (!mViewModel.getBenchmarkCardCollapsed()) {
                 // TODO - if lat and long aren't filled, show error
                 saveGroundTruth();
             } else {
                 editGroundTruth();
             }
         });
+
+        mViewModel = ViewModelProviders.of(activity).get(BenchmarkViewModel.class);
+        mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
+        mViewModel.getLocationErrorPair().observe(activity, mLocationErrorPairObserver);
+        mViewModel.getAvgError().observe(activity, mAvgErrorObserver);
     }
 
     /**
@@ -174,68 +274,27 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      */
     private void saveGroundTruth() {
         // Save Ground Truth
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
-        mGroundTruthLocation = new Location("ground_truth");
+        Location groundTruthLocation = new Location("ground_truth");
+
         if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
-            mGroundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
-            mGroundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
+            groundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
+            groundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
         }
         if (!isEmpty(mAltText.getEditText().getText().toString())) {
             // Use altitude for measuring vertical error
-            mGroundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
-            // Set default text size and align units properly
-            mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-            mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-            UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
-            UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
-        } else {
-            // No altitude provided - Hide vertical error chart card
-            mVerticalErrorCardView.setVisibility(GONE);
-            // Set default text size and align units properly
-            mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-            mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.get().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-            UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
-            UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+            groundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
         }
-
-        // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
-        mMotionLayout.transitionToEnd();
-        lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
-        mGroundTruthCardView.setLayoutParams(lp);
-        mBenchmarkCardCollapsed = true;
-
-        resetError();
-
-        // Show sliding panel if it's not visible
-        if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-        if (mListener != null) {
-            mListener.onAllowGroundTruthEditChanged(false);
-            mListener.onGroundTruthLocationSaved(mGroundTruthLocation);
-        }
+        mViewModel.setGroundTruthLocation(groundTruthLocation);
+        mViewModel.setBenchmarkCardCollapsed(true);
+        mViewModel.setAllowGroundTruthEdit(false);
     }
 
     /**
      * Expands the ground truth card to allow the user to enter a new ground truth value
      */
     private void editGroundTruth() {
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
-        // Expand card to allow editing ground truth
-        mMotionLayout.transitionToStart();
-        // We have to set height on card manually because it doesn't auto-expand right when views are within card container
-        lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height);
-        mGroundTruthCardView.setLayoutParams(lp);
-        mBenchmarkCardCollapsed = false;
-
-        // Collapse sliding panel if it's anchored so there is room
-        if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
-            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        }
-
-        if (mListener != null) {
-            mListener.onAllowGroundTruthEditChanged(true);
-        }
+        mViewModel.setBenchmarkCardCollapsed(false);
+        mViewModel.setAllowGroundTruthEdit(true);
     }
 
     private void initChart(LineChart errorChart) {
@@ -288,7 +347,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     private void resetError() {
-        mAvgError.reset();
+        mViewModel.reset();
         mErrorView.setVisibility(INVISIBLE);
         mVertErrorView.setVisibility(INVISIBLE);
         mAvgErrorView.setVisibility(INVISIBLE);
@@ -301,12 +360,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mErrorChart.clearValues();
         mVertErrorChart.clearValues();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // Save current benchmark card state
-        outState.putBoolean(BENCHMARK_CARD_COLLAPSED, mBenchmarkCardCollapsed);
     }
 
     /**
@@ -328,15 +381,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         }
         return false;
-    }
-
-    /**
-     * Sets a lister that will be updated when benchmark controller events are fired
-     * @param listener a lister that will be updated when benchmark controller events are fired
-     */
-    @Override
-    public void setListener(Listener listener) {
-        mListener = listener;
     }
 
     public void show() {
@@ -416,42 +460,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mGroundTruthLocation == null || !mBenchmarkCardCollapsed) {
-            // If we don't have a ground truth location yet, or if the user is editing the location,
-            // don't update the errors
-            return;
-        }
-        MeasuredError error = BenchmarkUtils.Companion.measureError(location, mGroundTruthLocation);
-        mAvgError.addMeasurement(error);
-        if (mErrorView != null && mAvgErrorView != null) {
-            mErrorUnit.setVisibility(VISIBLE);
-            mErrorView.setVisibility(VISIBLE);
-            mErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
-            mAvgErrorUnit.setVisibility(VISIBLE);
-            mAvgErrorView.setVisibility(VISIBLE);
-            mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgError()));
-            mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, mAvgError.getCount()));
-        }
-        if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
-            // Vertical errors
-            mErrorLabel.setText(R.string.horizontal_vertical_error_label);
-            mLeftDivider.setVisibility(VISIBLE);
-            mRightDivider.setVisibility(VISIBLE);
-            mVertErrorView.setVisibility(VISIBLE);
-            mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
-            mAvgVertErrorView.setVisibility(VISIBLE);
-            mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, mAvgError.getAvgVertError()));
-            mVerticalErrorCardView.setVisibility(VISIBLE);
-        } else {
-            // Hide any vertical error indication
-            mErrorLabel.setText(R.string.horizontal_error_label);
-            mLeftDivider.setVisibility(GONE);
-            mRightDivider.setVisibility(GONE);
-            mVertErrorView.setVisibility(GONE);
-            mAvgVertErrorView.setVisibility(GONE);
-            mVerticalErrorCardView.setVisibility(GONE);
-        }
-        addErrorToGraphs(error, location);
+        mViewModel.addLocation(location);
     }
 
     private void addErrorToGraphs(MeasuredError error, Location location) {
@@ -485,9 +494,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 data.addDataSet(estimatedSet);
             }
 
-            data.addEntry(new Entry(mAvgError.getCount(), (float) error), ERROR_SET);
+            data.addEntry(new Entry(mViewModel.getAvgError().getValue().getCount(), (float) error), ERROR_SET);
             if (!Float.isNaN(estimatedAccuracy)) {
-                data.addEntry(new Entry(mAvgError.getCount(), estimatedAccuracy), ESTIMATED_ACCURACY_SET);
+                data.addEntry(new Entry(mViewModel.getAvgError().getValue().getCount(), estimatedAccuracy), ESTIMATED_ACCURACY_SET);
             }
             data.notifyDataChanged();
 
@@ -556,7 +565,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void onMapClick(Location location) {
-        if (!mBenchmarkCardCollapsed) {
+        if (!mViewModel.getBenchmarkCardCollapsed()) {
             mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
             mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
 

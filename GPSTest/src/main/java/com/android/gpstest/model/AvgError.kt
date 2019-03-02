@@ -4,7 +4,7 @@ package com.android.gpstest.model
  * Model class for holding average error for many error measurements
  */
 data class AvgError(var avgError: Float = 0F,
-                    var avgVertError: Double = 0.0,
+                    var avgVertError: Double = Double.NaN,
                     var count: Int = 0) {
 
     var errorRunningSum: Float = 0F
