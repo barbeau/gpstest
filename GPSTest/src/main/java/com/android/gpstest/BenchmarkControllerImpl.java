@@ -267,6 +267,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
         mViewModel.getLocationErrorPair().observe(activity, mLocationErrorPairObserver);
         mViewModel.getAvgError().observe(activity, mAvgErrorObserver);
+        if (mViewModel.getBenchmarkCardCollapsed()) {
+            updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
+            // TODO Instead of saving ground truth again (which starts test back at 1), resume existing test
+            saveGroundTruth();
+        }
     }
 
     /**
@@ -566,12 +571,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     @Override
     public void onMapClick(Location location) {
         if (!mViewModel.getBenchmarkCardCollapsed()) {
-            mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
-            mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
+            updateGroundTruthEditTexts(location);
+        }
+    }
 
-            if (location.hasAltitude()) {
-                mAltText.getEditText().setText(Application.get().getString(R.string.benchmark_alt, location.getAltitude()));
-            }
+    private void updateGroundTruthEditTexts(Location location) {
+        mLatText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLatitude()));
+        mLongText.getEditText().setText(Application.get().getString(R.string.benchmark_lat_long, location.getLongitude()));
+
+        if (location.hasAltitude()) {
+            mAltText.getEditText().setText(Application.get().getString(R.string.benchmark_alt, location.getAltitude()));
         }
     }
 }
