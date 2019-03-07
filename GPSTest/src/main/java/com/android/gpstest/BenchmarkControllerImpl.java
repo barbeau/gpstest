@@ -117,8 +117,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
 
-                resetError();
-
                 // Show sliding panel if it's not visible
                 if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
@@ -169,7 +167,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mVertErrorView.setVisibility(GONE);
                 mVerticalErrorCardView.setVisibility(GONE);
             }
-            addErrorToGraphs(error, location);
+            addErrorToGraphs(mViewModel.getAvgError().getValue().getCount(), error, location);
         }
     };
 
@@ -257,6 +255,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         saveGroundTruth.setOnClickListener(view -> {
             if (!mViewModel.getBenchmarkCardCollapsed()) {
                 // TODO - if lat and long aren't filled, show error
+                resetError();
                 saveGroundTruth();
             } else {
                 editGroundTruth();
@@ -269,8 +268,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.getAvgError().observe(activity, mAvgErrorObserver);
         if (mViewModel.getBenchmarkCardCollapsed()) {
             updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
-            // TODO Instead of saving ground truth again (which starts test back at 1), resume existing test
             saveGroundTruth();
+            restoreGraphData();
         }
     }
 
@@ -365,6 +364,19 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mErrorChart.clearValues();
         mVertErrorChart.clearValues();
+    }
+
+    /**
+     * Load data from the view model into the graphs, for example after rotation
+     */
+    private void restoreGraphData() {
+        mErrorChart.clearValues();
+        mVertErrorChart.clearValues();
+        int i = 1;
+        for (Pair<Location, MeasuredError> pair : mViewModel.getLocationErrorPairs()) {
+            addErrorToGraphs(i, pair.second, pair.first);
+            i++;
+        }
     }
 
     /**
@@ -468,8 +480,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.addLocation(location);
     }
 
-    private void addErrorToGraphs(MeasuredError error, Location location) {
-        addErrorToGraph(mErrorChart, error.getError(), location.getAccuracy());
+    /**
+     * Add the provided error and estimated accuracy info (from Location) to the graph with the given x-axis index
+     * @param index x-axis index
+     * @param error
+     * @param location
+     */
+    private void addErrorToGraphs(int index, MeasuredError error, Location location) {
+        addErrorToGraph(index, mErrorChart, error.getError(), location.getAccuracy());
 
         if (!Double.isNaN(error.getVertError())) {
             float vertAccuracy = Float.NaN;
@@ -478,11 +496,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 vertAccuracy = location.getVerticalAccuracyMeters();
             }
 
-            addErrorToGraph(mVertErrorChart, error.getVertError(), vertAccuracy);
+            addErrorToGraph(index, mVertErrorChart, error.getVertError(), vertAccuracy);
         }
     }
 
-    private void addErrorToGraph(LineChart chart, double error, float estimatedAccuracy) {
+    private void addErrorToGraph(int index, LineChart chart, double error, float estimatedAccuracy) {
         LineData data = chart.getData();
 
         if (data != null) {
@@ -499,9 +517,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 data.addDataSet(estimatedSet);
             }
 
-            data.addEntry(new Entry(mViewModel.getAvgError().getValue().getCount(), (float) error), ERROR_SET);
+            data.addEntry(new Entry(index, (float) error), ERROR_SET);
             if (!Float.isNaN(estimatedAccuracy)) {
-                data.addEntry(new Entry(mViewModel.getAvgError().getValue().getCount(), estimatedAccuracy), ESTIMATED_ACCURACY_SET);
+                data.addEntry(new Entry(index, estimatedAccuracy), ESTIMATED_ACCURACY_SET);
             }
             data.notifyDataChanged();
 
