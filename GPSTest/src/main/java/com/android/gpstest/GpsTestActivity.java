@@ -246,7 +246,7 @@ public class GpsTestActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
 //        }
 
-        mBenchmarkController = new BenchmarkControllerImpl(this, findViewById(R.id.mainlayout), savedInstanceState);
+        mBenchmarkController = new BenchmarkControllerImpl(this, findViewById(R.id.mainlayout));
         mGpsTestListeners.add(mBenchmarkController);
 
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet

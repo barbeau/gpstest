@@ -191,7 +191,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
     };
 
-    public BenchmarkControllerImpl(AppCompatActivity activity, View v, Bundle savedInstanceState) {
+    public BenchmarkControllerImpl(AppCompatActivity activity, View v) {
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
         mErrorView = v.findViewById(R.id.error);
         mVertErrorView = v.findViewById(R.id.vert_error);
