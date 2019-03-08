@@ -249,9 +249,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         });
 
-        // TODO - set initial state of card and motion layout depending on savedInstanceState
-        // TODO - set initial state of sliding panel depending on savedInstanceState
-
         saveGroundTruth.setOnClickListener(view -> {
             if (!mViewModel.getBenchmarkCardCollapsed()) {
                 // TODO - if lat and long aren't filled, show error
@@ -267,6 +264,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.getLocationErrorPair().observe(activity, mLocationErrorPairObserver);
         mViewModel.getAvgError().observe(activity, mAvgErrorObserver);
         if (mViewModel.getBenchmarkCardCollapsed()) {
+            // Test is already in progress (e.g., due to device rotation), restore model to views
             updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
             saveGroundTruth();
             restoreGraphData();
