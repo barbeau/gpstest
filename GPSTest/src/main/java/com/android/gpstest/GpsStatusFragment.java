@@ -44,6 +44,7 @@ import android.widget.TextView;
 import com.android.gpstest.model.ConstellationType;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
@@ -868,7 +869,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     if (sats.get(dataRow).getCarrierFrequencyHz() != NO_DATA) {
                         // Convert Hz to MHz
                         float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());
-                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
+                        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
                                 sats.get(dataRow).getSvid(),
                                 carrierMhz);
                         if (carrierLabel != null) {
