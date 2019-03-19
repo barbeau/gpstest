@@ -95,7 +95,7 @@ public class GpsTestUtil {
         } else if (prn >= 201 && prn <= 235) {
             // See Issue #54 for details
             return BEIDOU;
-        } else if (prn >= 301 && prn <= 330) {
+        } else if (prn >= 301 && prn <= 336) {
             // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
             return GALILEO;
         } else {
