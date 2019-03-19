@@ -197,6 +197,8 @@ public class GpsTestUtil {
                     return SatelliteName.ASTRA_5B;
                 } else if (svid == 126) {
                     return SatelliteName.INMARSAT_3F5;
+                } else if (svid == 131) {
+                    return SatelliteName.GEO5;
                 } else if (svid == 133) {
                     return SatelliteName.INMARSAT_4F3;
                 } else if (svid == 135) {
