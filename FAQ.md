@@ -58,6 +58,16 @@ Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com
 
 For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
+## What does the "U" flag mean for SBAS satellites?
+
+For SBAS, the Android spec does not specify if the "U" ("Used") flag refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.
+
+[Here's](https://developer.android.com/reference/android/location/GnssStatus.html#usedInFix(int)) the documentation for the boolean value for "used" that's passed from the chipset to the Android OS to GPSTest, which is shown as a "U" letter in the "Flags" column on the GPSTest Status screen:
+
+>Reports whether the satellite at the specified index was used in the calculation of the most recent position fix.
+
+As a result, it's unclear how this is being implemented by OEMs.
+
 ## What Android devices does GPSTest run on?
 
 Android 1.5 and up, in its simplest form.  More advanced versions with an updated user interface and better maps interface (based on Android Maps API v2) is available on Android 2.2 and up.  NMEA logging is available on Android 2.3 and up.  GNSS measurements and navigation message logging is available on Android 7.0 and up.  Carrier frequencies are available on supported devices Android 8.0 and higher - all devices with GNSS hardware year 2018 and higher should include them.
