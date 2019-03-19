@@ -21,6 +21,7 @@
             android:layout_marginEnd="@dimen/status_margin"
             android:layout_marginTop="@dimen/status_margin"
             android:layout_marginBottom="@dimen/status_margin"
+            app:cardElevation="@dimen/ground_truth_sliding_panel_card_elevation"
             app:cardCornerRadius="5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,6 +81,7 @@
             android:layout_marginEnd="@dimen/status_margin"
             android:layout_marginTop="@dimen/status_margin"
             android:layout_marginBottom="@dimen/status_margin"
+            app:cardElevation="@dimen/ground_truth_sliding_panel_card_elevation"
             app:cardCornerRadius="5dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
