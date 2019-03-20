@@ -50,6 +50,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -88,6 +89,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     SlidingUpPanelLayout.PanelState mLastPanelState;
 
     LineChart mErrorChart, mVertErrorChart;
+
+    int mChartTextColor;
 
     BenchmarkViewModel mViewModel;
 
@@ -192,6 +195,13 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     };
 
     public BenchmarkControllerImpl(AppCompatActivity activity, View v) {
+        if (Application.getPrefs().getBoolean(activity.getString(R.string.pref_key_dark_theme), false)) {
+            // Dark theme
+            mChartTextColor = ContextCompat.getColor(activity, R.color.body_text_1_dark);
+        } else {
+            // Light theme
+            mChartTextColor = ContextCompat.getColor(activity, R.color.body_text_1_light);
+        }
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
         mErrorView = v.findViewById(R.id.error);
         mVertErrorView = v.findViewById(R.id.vert_error);
@@ -320,6 +330,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         // Get the legend (only possible after setting data)
         Legend l = errorChart.getLegend();
         l.setEnabled(true);
+        l.setTextColor(mChartTextColor);
 
 //        // Modify the legend ...
 //        l.setForm(Legend.LegendForm.LINE);
@@ -328,7 +339,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         XAxis xAxis = errorChart.getXAxis();
         //xAxis.setTypeface(tfLight);
-        //xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(mChartTextColor);
         xAxis.setDrawGridLines(false);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setEnabled(true);
@@ -339,7 +350,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         YAxis leftAxis = errorChart.getAxisLeft();
         //leftAxis.setTypeface(tfLight);
-        //leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTextColor(mChartTextColor);
         leftAxis.setAxisMinimum(0f);
         leftAxis.setDrawGridLines(true);
         leftAxis.setValueFormatter(formatter);
@@ -563,7 +574,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         set.setFillAlpha(65);
         set.setFillColor(ColorTemplate.getHoloBlue());
         set.setHighLightColor(Color.rgb(244, 117, 117));
-        set.setValueTextColor(Color.WHITE);
         set.setValueTextSize(9f);
         set.setDrawValues(false);
         return set;
