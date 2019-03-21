@@ -56,6 +56,8 @@ Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com
 
 ![image](https://user-images.githubusercontent.com/928045/42654926-53581aa0-85e8-11e8-91ab-cd8ab6553bb7.png)
 
+Another reference chart is [here](https://www.novatel.com/assets/Documents/Downloads/NovAtelChartH.pdf) from NovAtel.
+
 For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
 ## What does the "U" flag mean for SBAS satellites?
