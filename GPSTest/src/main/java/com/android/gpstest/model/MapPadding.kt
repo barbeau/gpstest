@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2019 Sean J. Barbeau
+ * Copyright (C) 2019 Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,10 @@
 package com.android.gpstest.model
 
 /**
- * Model class for holding measured error between two locations
+ * Model class for holding map padding, or the area on the edge of the screen that is covered by
+ * other components
  */
-data class MeasuredError(val error: Float,
-                         val vertError: Double = Double.NaN)
+data class MapPadding(val left: Int = 0,
+                      val top: Int = 0,
+                      val right: Int = 0,
+                      val bottom: Int = 0)

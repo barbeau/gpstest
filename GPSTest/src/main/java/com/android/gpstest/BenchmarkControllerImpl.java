@@ -23,9 +23,12 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -93,6 +96,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     int mChartTextColor;
 
     BenchmarkViewModel mViewModel;
+
+    MapPaddingViewModel mMapPaddingViewModel;
 
     private final Observer<Boolean> mAllowGroundTruthEditObserver = new Observer<Boolean>() {
         @Override
@@ -259,6 +264,22 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         });
 
+        // We need to listen to the animation end of the card view and not the MotionLayout because the MotionLayout
+        // doesn't actually change size - the background is invisible (to allow smooth movement of text views) so you can't see the bounds.
+        // So, we need the map padding to align with the bottom of the card view instead.
+        mGroundTruthCardView.getLayoutTransition().addTransitionListener(new LayoutTransition.TransitionListener() {
+            @Override
+            public void startTransition(LayoutTransition layoutTransition, ViewGroup viewGroup, View view, int i) {
+
+            }
+
+            @Override
+            public void endTransition(LayoutTransition layoutTransition, ViewGroup viewGroup, View view, int i) {
+                int newMapMargin = mGroundTruthCardView.getHeight() + UIUtils.dpToPixels(Application.get(), 5.0f);
+                mMapPaddingViewModel.setPadding(null, newMapMargin, null, null);
+            }
+        });
+
         saveGroundTruth.setOnClickListener(view -> {
             if (!mViewModel.getBenchmarkCardCollapsed()) {
                 // TODO - if lat and long aren't filled, show error
@@ -269,6 +290,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         });
 
+        mMapPaddingViewModel = ViewModelProviders.of(activity).get(MapPaddingViewModel.class);
         mViewModel = ViewModelProviders.of(activity).get(BenchmarkViewModel.class);
         mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
         mViewModel.getLocationErrorPair().observe(activity, mLocationErrorPairObserver);
@@ -279,6 +301,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             saveGroundTruth();
             restoreGraphData();
         }
+        setupSlidingPanel();
     }
 
     /**
@@ -608,5 +631,51 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         if (location.hasAltitude()) {
             mAltText.getEditText().setText(Application.get().getString(R.string.benchmark_alt, location.getAltitude()));
         }
+    }
+
+    private void setupSlidingPanel() {
+        mSlidingPanel.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (previousState == SlidingUpPanelLayout.PanelState.HIDDEN) {
+                    return;
+                }
+
+                switch (newState) {
+                    case EXPANDED:
+                        // No-op
+                        break;
+                    case COLLAPSED:
+                        onPanelCollapsed();
+                        break;
+                    case ANCHORED:
+                        onPanelAnchored();
+                        break;
+                    case HIDDEN:
+                        onPanelHidden();
+                        break;
+                }
+            }
+
+            void onPanelCollapsed() {
+                Log.d(TAG, "onPanelCollapsed");
+                mMapPaddingViewModel.setPadding(null, null, null, Application.get().getResources().getDimensionPixelSize(R.dimen.ground_truth_sliding_header_height));
+            }
+
+            void onPanelAnchored() {
+                Log.d(TAG, "onPanelAnchored");
+                mMapPaddingViewModel.setPadding(null, null, null, Application.get().getResources().getDimensionPixelSize(R.dimen.ground_truth_sliding_header_height));
+            }
+
+            void onPanelHidden() {
+                Log.d(TAG, "onPanelHidden");
+                mMapPaddingViewModel.setPadding(null, null, null, 0);
+            }
+        });
     }
 }

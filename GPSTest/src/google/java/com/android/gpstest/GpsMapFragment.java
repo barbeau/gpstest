@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.model.MapPadding;
 import com.android.gpstest.util.MapUtils;
 import com.android.gpstest.util.MathUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -58,6 +59,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import static com.android.gpstest.MapPaddingViewModel.DEFAULT_MAP_PADDING;
 
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
@@ -97,6 +100,14 @@ public class GpsMapFragment extends SupportMapFragment
 
     static final String ALLOW_GROUND_TRUTH_CHANGE = "allow_ground_truth_change";
 
+    static final String MAP_PADDING_LEFT = ".MapPaddingLeft";
+
+    static final String MAP_PADDING_TOP = ".MapPaddingTop";
+
+    static final String MAP_PADDING_RIGHT = ".MapPaddingRight";
+
+    static final String MAP_PADDING_BOTTOM = ".MapPaddingBottom";
+
     private String mMode = MODE_MAP;
 
     private Bundle mSavedInstanceState;
@@ -131,12 +142,15 @@ public class GpsMapFragment extends SupportMapFragment
 
     BenchmarkViewModel mViewModel;
 
+    MapPaddingViewModel mMapPaddingViewModel;
+
     private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
         @Override
         public void onChanged(@Nullable final Location newValue) {
             mGroundTruthLocation = newValue;
         }
     };
+
 
     private final Observer<Boolean> mAllowGroundTruthEditObserver = new Observer<Boolean>() {
         @Override
@@ -145,6 +159,15 @@ public class GpsMapFragment extends SupportMapFragment
         }
     };
 
+    private final Observer<MapPadding> mMapPaddingObserver = new Observer<MapPadding>() {
+        @Override
+        public void onChanged(@Nullable final MapPadding newValue) {
+            if (mMap != null) {
+                // FIXME - why isn't this triggering??
+                mMap.setPadding(newValue.getLeft(), newValue.getTop(), newValue.getRight(), newValue.getBottom());
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -190,6 +213,7 @@ public class GpsMapFragment extends SupportMapFragment
         mViewModel.getGroundTruthLocation().observe(getActivity(), mGroundTruthLocationObserver);
         mViewModel.getAllowGroundTruthEdit().observe(getActivity(), mAllowGroundTruthEditObserver);
 
+        mMapPaddingViewModel = ViewModelProviders.of(getActivity()).get(MapPaddingViewModel.class);
 
         return v;
     }
@@ -448,11 +472,25 @@ public class GpsMapFragment extends SupportMapFragment
                 mGroundTruthLocation = groundTruth;
                 addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
             }
+            if (mMode.equals(MODE_ACCURACY)) {
+                // If this is the accuracy map fragment, then listen for padding events
+                mMapPaddingViewModel.getPadding().observe(getActivity(), mMapPaddingObserver);
+
+                int paddingLeft = savedInstanceState.getInt(MAP_PADDING_LEFT, DEFAULT_MAP_PADDING);
+                int paddingTop = savedInstanceState.getInt(MAP_PADDING_TOP, DEFAULT_MAP_PADDING);
+                int paddingRight = savedInstanceState.getInt(MAP_PADDING_RIGHT, DEFAULT_MAP_PADDING);
+                int paddingBottom = savedInstanceState.getInt(MAP_PADDING_BOTTOM, DEFAULT_MAP_PADDING);
+                mMapPaddingViewModel.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+            }
         } else {
             // Not restoring existing state - see what was provided as arguments
             Bundle arguments = getArguments();
             if (arguments != null) {
                 mMode = arguments.getString(MODE, MODE_MAP);
+            }
+            if (mMode.equals(MODE_ACCURACY)) {
+                // If this is the accuracy map fragment, then listen for padding events
+                mMapPaddingViewModel.getPadding().observe(getActivity(), mMapPaddingObserver);
             }
         }
     }
