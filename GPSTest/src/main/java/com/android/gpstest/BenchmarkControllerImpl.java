@@ -273,7 +273,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
         mViewModel.getLocationErrorPair().observe(activity, mLocationErrorPairObserver);
         mViewModel.getAvgError().observe(activity, mAvgErrorObserver);
-        if (mViewModel.getBenchmarkCardCollapsed()) {
+        if (isTestInProgress()) {
             // Test is already in progress (e.g., due to device rotation), restore model to views
             updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
             saveGroundTruth();
@@ -429,7 +429,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mMotionLayout.setVisibility(GONE);
         }
         if (mSlidingPanel != null) {
-            mLastPanelState = mSlidingPanel.getPanelState();
+            if (mSlidingPanel.getPanelState() != SlidingUpPanelLayout.PanelState.HIDDEN) {
+                // Save the last visible panel state
+                mLastPanelState = mSlidingPanel.getPanelState();
+            }
             mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         }
     }
@@ -608,5 +611,13 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         if (location.hasAltitude()) {
             mAltText.getEditText().setText(Application.get().getString(R.string.benchmark_alt, location.getAltitude()));
         }
+    }
+
+    /**
+     * Returns true if there is a test in progress to measure accuracy, and false if there is not
+     * @return true if there is a test in progress to measure accuracy, and false if there is not
+     */
+    private boolean isTestInProgress() {
+        return mViewModel.getBenchmarkCardCollapsed();
     }
 }
