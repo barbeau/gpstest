@@ -135,6 +135,9 @@ public class GpsMapFragment extends SupportMapFragment
         @Override
         public void onChanged(@Nullable final Location newValue) {
             mGroundTruthLocation = newValue;
+            if (mMap != null) {
+                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
+            }
         }
     };
 
@@ -453,6 +456,12 @@ public class GpsMapFragment extends SupportMapFragment
             Bundle arguments = getArguments();
             if (arguments != null) {
                 mMode = arguments.getString(MODE, MODE_MAP);
+            }
+            // If we have a ground truth location but no marker, we're starting using a ground truth
+            // location from a previous execution but map wasn't initialized when we got the ViewModel
+            // callback to mGroundTruthLocationObserver.  So, add the marker now to restore state.
+            if (mGroundTruthLocation != null && mGroundTruthMarker == null) {
+                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
             }
         }
     }

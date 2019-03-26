@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -67,7 +68,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     private static final String TAG = "BenchmarkCntlrImpl";
 
-    private static final String BENCHMARK_CARD_COLLAPSED = "ground_truth_card_collapsed";
+    private static final String GROUND_TRUTH_LAT = "ground_truth_card_lat";
+
+    private static final String GROUND_TRUTH_LONG = "ground_truth_card_long";
+
+    private static final String GROUND_TRUTH_ALT = "ground_truth_card_alt";
 
     private static final int ERROR_SET = 0;
 
@@ -278,6 +283,18 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
             saveGroundTruth();
             restoreGraphData();
+        } else {
+            // If there is a saved ground truth value from previous executions, start test using that
+            if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
+                Location groundTruth = new Location("ground_truth");
+                groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN));
+                groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN));
+                if (Application.getPrefs().contains(GROUND_TRUTH_ALT)) {
+                    groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN));
+                }
+                updateGroundTruthEditTexts(groundTruth);
+                saveGroundTruth();
+            }
         }
     }
 
@@ -299,6 +316,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.setGroundTruthLocation(groundTruthLocation);
         mViewModel.setBenchmarkCardCollapsed(true);
         mViewModel.setAllowGroundTruthEdit(false);
+
+        PreferenceUtils.saveDouble(GROUND_TRUTH_LAT, groundTruthLocation.getLatitude());
+        PreferenceUtils.saveDouble(GROUND_TRUTH_LONG, groundTruthLocation.getLongitude());
+        if (groundTruthLocation.hasAltitude()) {
+            PreferenceUtils.saveDouble(GROUND_TRUTH_ALT, groundTruthLocation.getAltitude());
+        }
     }
 
     /**
