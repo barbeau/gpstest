@@ -325,6 +325,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         PreferenceUtils.saveDouble(GROUND_TRUTH_LONG, groundTruthLocation.getLongitude());
         if (groundTruthLocation.hasAltitude()) {
             PreferenceUtils.saveDouble(GROUND_TRUTH_ALT, groundTruthLocation.getAltitude());
+        } else {
+            PreferenceUtils.remove(GROUND_TRUTH_ALT);
         }
     }
 
