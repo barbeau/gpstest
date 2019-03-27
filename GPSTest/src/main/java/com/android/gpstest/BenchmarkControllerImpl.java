@@ -297,6 +297,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN));
                 }
                 updateGroundTruthEditTexts(groundTruth);
+                resetError();
                 saveGroundTruth();
             }
         }
