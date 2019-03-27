@@ -141,6 +141,10 @@
     <string name="benchmark_lat_long">%1$.7f</string>
     <string name="benchmark_alt">%1$.1f</string>
     <string name="ground_truth_marker_title">Your real location</string>
+    <string name="ground_truth_invalid_location_title">Invalid location</string>
+    <string name="ground_truth_invalid_lat">Latitude must be in decimal degrees between -90 and 90</string>
+    <string name="ground_truth_invalid_long">Longitude must be in decimal degrees between -180 and 180</string>
+    <string name="ground_truth_invalid_alt">Altitude must be in WGS84 in meters</string>
 
     <string name="horizontal_error_label">Error</string>
     <string name="measured_error_graph_label">Measured error</string>

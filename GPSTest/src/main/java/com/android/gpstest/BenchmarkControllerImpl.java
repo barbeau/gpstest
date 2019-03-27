@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
@@ -266,7 +267,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         saveGroundTruth.setOnClickListener(view -> {
             if (!mViewModel.getBenchmarkCardCollapsed()) {
-                // TODO - if lat and long aren't filled, show error
+                if (!UIUtils.isValidLocationWithErrorDialog(activity, mLatText.getEditText().getText().toString(), mLongText.getEditText().getText().toString(), mAltText.getEditText().getText().toString())) {
+                    return;
+                }
+
                 resetError();
                 saveGroundTruth();
             } else {

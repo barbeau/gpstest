@@ -58,4 +58,49 @@ public class LocationUtils {
 
         return sb.toString();
     }
+
+    /**
+     * Returns true if the provided string is a valid latitude value, false if it is not
+     * @param latitude the latitude value to validate
+     * @return true if the provided string is a valid latitude value, false if it is not
+     */
+    public static boolean isValidLatitude(String latitude) {
+        double latitudeDouble;
+        try {
+            latitudeDouble = Double.parseDouble(latitude);
+        } catch (Exception e) {
+            return false;
+        }
+        return latitudeDouble >= -90.0d && latitudeDouble <= 90.0d;
+    }
+
+    /**
+     * Returns true if the provided string is a valid longitude value, false if it is not
+     * @param longitude the longitude value to validate
+     * @return true if the provided string is a valid longitude value, false if it is not
+     */
+    public static boolean isValidLongitude(String longitude) {
+        double longitudeDouble;
+        try {
+            longitudeDouble = Double.parseDouble(longitude);
+        } catch (Exception e) {
+            return false;
+        }
+        return longitudeDouble >= -180.0d && longitudeDouble <= 180.0d;
+    }
+
+    /**
+     * Returns true if the provided string is a valid altitude value, false if it is not
+     * @param altitude the altitude value to validate
+     * @return true if the provided string is a valid altitude value, false if it is not
+     */
+    public static boolean isValidAltitude(String altitude) {
+        double altitudeDouble;
+        try {
+            altitudeDouble = Double.parseDouble(altitude);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
