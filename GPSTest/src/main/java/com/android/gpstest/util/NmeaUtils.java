@@ -18,7 +18,7 @@ package com.android.gpstest.util;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.android.gpstest.DilutionOfPrecision;
+import com.android.gpstest.model.DilutionOfPrecision;
 
 public class NmeaUtils {
 
