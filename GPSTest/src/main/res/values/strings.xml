@@ -363,7 +363,7 @@
         - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flags</b>
         - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
-        for the satellite, (U) if the satellite was used in the latest fix\n\n
+        for the satellite, (U) if the satellite was used in calculation of the most recent position fix.  For SBAS, the Android spec does not specify if (U) refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.\n\n
 
         <b>*** Sky View ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>

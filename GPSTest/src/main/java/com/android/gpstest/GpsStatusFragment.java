@@ -45,8 +45,10 @@ import com.android.gpstest.model.ConstellationType;
 import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.NmeaUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.SortUtil;
 import com.android.gpstest.util.UIUtils;
@@ -465,7 +467,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             return;
         }
         if (message.startsWith("$GPGGA") || message.startsWith("$GNGNS") || message.startsWith("$GNGGA")) {
-            Double altitudeMsl = GpsTestUtil.getAltitudeMeanSeaLevel(message);
+            Double altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message);
             if (altitudeMsl != null && mNavigating) {
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                     mAltitudeMslView.setText(mRes.getString(R.string.gps_altitude_msl_value_meters, altitudeMsl));
@@ -475,7 +477,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             }
         }
         if (message.startsWith("$GNGSA") || message.startsWith("$GPGSA")) {
-            DilutionOfPrecision dop = GpsTestUtil.getDop(message);
+            DilutionOfPrecision dop = NmeaUtils.getDop(message);
             if (dop != null && mNavigating) {
                 showDopViews();
                 mPdopView.setText(mRes.getString(R.string.pdop_value, dop.getPositionDop()));
@@ -869,7 +871,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     if (sats.get(dataRow).getCarrierFrequencyHz() != NO_DATA) {
                         // Convert Hz to MHz
                         float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());
-                        String carrierLabel = GpsTestUtil.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
+                        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
                                 sats.get(dataRow).getSvid(),
                                 carrierMhz);
                         if (carrierLabel != null) {
