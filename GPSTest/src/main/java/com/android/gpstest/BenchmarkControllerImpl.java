@@ -126,9 +126,13 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 lp.height = (int) Application.get().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
 
-                // Show sliding panel if it's not visible
-                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+                // Show sliding panel if we're showing the Accuracy fragment and the sliding panel isn't visible
+                if (mGroundTruthCardView.getVisibility() == VISIBLE && mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
                     mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                } else if (mGroundTruthCardView.getVisibility() == GONE) {
+                    // A test was started using a saved ground truth, but the user started the app at another fragment other than Accuracy.  Set the last
+                    // sliding panel state to COLLAPSED so it becomes visible when the user switches to the Accuracy fragment
+                    mLastPanelState = SlidingUpPanelLayout.PanelState.COLLAPSED;
                 }
             } else {
                 // Edits are allowed
