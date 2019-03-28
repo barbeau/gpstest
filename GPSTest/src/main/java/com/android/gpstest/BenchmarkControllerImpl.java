@@ -16,6 +16,7 @@
 package com.android.gpstest;
 
 import android.animation.LayoutTransition;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
@@ -33,7 +34,6 @@ import android.widget.TextView;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
-import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
@@ -97,6 +97,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     LineChart mErrorChart, mVertErrorChart;
 
     int mChartTextColor;
+
+    String mPrefDistanceUnits;
+
+    private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
 
     BenchmarkViewModel mViewModel;
 
@@ -162,7 +166,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             if (mErrorView != null) {
                 mErrorUnit.setVisibility(VISIBLE);
                 mErrorView.setVisibility(VISIBLE);
-                mErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getError()));
+                    mErrorUnit.setText(Application.get().getString(R.string.meters_abbreviation));
+                } else {
+                    // Feet
+                    mErrorView.setText(Application.get().getString(R.string.benchmark_error, UIUtils.toFeet(error.getError())));
+                    mErrorUnit.setText(Application.get().getString(R.string.feet_abbreviation));
+                }
             }
             if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
                 // Vertical errors
@@ -170,7 +181,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mLeftDivider.setVisibility(VISIBLE);
                 mRightDivider.setVisibility(VISIBLE);
                 mVertErrorView.setVisibility(VISIBLE);
-                mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, Math.abs(error.getVertError())));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, Math.abs(error.getVertError())));
+                } else {
+                    // Feet
+                    mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, UIUtils.toFeet(Math.abs(error.getVertError()))));
+                }
                 mVerticalErrorCardView.setVisibility(VISIBLE);
             } else {
                 // Hide any vertical error indication
@@ -190,13 +206,24 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             if (mAvgErrorView != null) {
                 mAvgErrorUnit.setVisibility(VISIBLE);
                 mAvgErrorView.setVisibility(VISIBLE);
-                mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgError()));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgError()));
+                    mAvgErrorUnit.setText(Application.get().getString(R.string.meters_abbreviation));
+                } else {
+                    // Feet
+                    mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, UIUtils.toFeet(avgError.getAvgError())));
+                    mAvgErrorUnit.setText(Application.get().getString(R.string.feet_abbreviation));
+                }
                 mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, avgError.getCount()));
             }
             if (mAvgVertErrorView != null && !Double.isNaN(avgError.getAvgVertAbsError())) {
                 // Vertical errors
                 mAvgVertErrorView.setVisibility(VISIBLE);
-                mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgVertAbsError()));
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgVertAbsError()));
+                } else {
+                    mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, UIUtils.toFeet(avgError.getAvgVertAbsError())));
+                }
             } else {
                 // Hide any vertical error indication
                 mAvgVertErrorView.setVisibility(GONE);
@@ -226,6 +253,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAvgErrorUnit = v.findViewById(R.id.avg_error_unit);
         mErrorChart = v.findViewById(R.id.error_chart);
         mVertErrorChart = v.findViewById(R.id.vert_error_chart);
+        setupUnitPreferences();
         initChart(mErrorChart);
         initChart(mVertErrorChart);
         mVerticalErrorCardView = v.findViewById(R.id.vert_error_layout);
@@ -380,7 +408,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
 
-        DistanceValueFormatter formatter = new DistanceValueFormatter("m");
+        String unit;
+        if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+            unit = Application.get().getString(R.string.meters_abbreviation);
+        } else {
+            unit = Application.get().getString(R.string.feet_abbreviation);
+        }
+
+        DistanceValueFormatter formatter = new DistanceValueFormatter(unit);
 
         YAxis leftAxis = errorChart.getAxisLeft();
         //leftAxis.setTypeface(tfLight);
@@ -533,16 +568,37 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      * @param location
      */
     private void addErrorToGraphs(int index, MeasuredError error, Location location) {
-        addErrorToGraph(index, mErrorChart, error.getError(), location.getAccuracy());
+        float horError;
+        float horAccuracy;
+        if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+            horError = error.getError();
+            horAccuracy = location.getAccuracy();
+        } else {
+            // Feet
+            horError = (float) UIUtils.toFeet(error.getError());
+            horAccuracy = (float) UIUtils.toFeet(location.getAccuracy());
+        }
+        addErrorToGraph(index, mErrorChart, horError, horAccuracy);
 
         if (!Double.isNaN(error.getVertError())) {
+            double vertError;
             float vertAccuracy = Float.NaN;
-
+            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                vertError = Math.abs(error.getVertError());
+            } else {
+                // Feet
+                vertError = UIUtils.toFeet(Math.abs(error.getVertError()));
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vertAccuracy = location.getVerticalAccuracyMeters();
+                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                    vertAccuracy = location.getVerticalAccuracyMeters();
+                } else {
+                    // Feet
+                    vertAccuracy = (float) UIUtils.toFeet(location.getVerticalAccuracyMeters());
+                }
             }
 
-            addErrorToGraph(index, mVertErrorChart, Math.abs(error.getVertError()), vertAccuracy);
+            addErrorToGraph(index, mVertErrorChart, vertError, vertAccuracy);
         }
     }
 
@@ -653,5 +709,13 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      */
     private boolean isTestInProgress() {
         return mViewModel.getBenchmarkCardCollapsed();
+    }
+
+    private void setupUnitPreferences() {
+        SharedPreferences settings = Application.getPrefs();
+        Application app = Application.get();
+
+        mPrefDistanceUnits = settings
+                .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
     }
 }
