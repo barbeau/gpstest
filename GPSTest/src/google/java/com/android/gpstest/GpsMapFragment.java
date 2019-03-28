@@ -30,10 +30,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.MapUtils;
 import com.android.gpstest.util.MathUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -81,6 +83,8 @@ public class GpsMapFragment extends SupportMapFragment
     private static final float CAMERA_MAX_TILT = 90.0f;
 
     private static final double TARGET_OFFSET_METERS = 150;
+
+    private static final float DRAW_LINE_THRESHOLD_METERS = 0.01f;
 
     // Amount of time the user must not touch the map for the automatic camera movements to kick in
     private static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
@@ -131,6 +135,8 @@ public class GpsMapFragment extends SupportMapFragment
 
     BenchmarkViewModel mViewModel;
 
+    private Location mLastLocation;
+
     private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
         @Override
         public void onChanged(@Nullable final Location newValue) {
@@ -153,6 +159,7 @@ public class GpsMapFragment extends SupportMapFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
+        mLastLocation = null;
 
         if (isGooglePlayServicesInstalled()) {
             // Save the savedInstanceState
@@ -192,7 +199,6 @@ public class GpsMapFragment extends SupportMapFragment
         mViewModel = ViewModelProviders.of(getActivity()).get(BenchmarkViewModel.class);
         mViewModel.getGroundTruthLocation().observe(getActivity(), mGroundTruthLocationObserver);
         mViewModel.getAllowGroundTruthEdit().observe(getActivity(), mAllowGroundTruthEditObserver);
-
 
         return v;
     }
@@ -264,7 +270,12 @@ public class GpsMapFragment extends SupportMapFragment
                     mErrorLine.setPoints(Arrays.asList(gt, current));
                 };
             }
+            if (mLastLocation != null) {
+                // Draw line between this and last location
+                drawPathLine(mLastLocation, loc);
+            }
         }
+        mLastLocation = loc;
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -464,6 +475,16 @@ public class GpsMapFragment extends SupportMapFragment
                 addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
             }
         }
+        if (mMode.equals(MODE_ACCURACY) && isTestInProgress()) {
+            Location lastLocation = null;
+            // Restore the path lines on the map
+            for (Pair<Location, MeasuredError> pair : mViewModel.getLocationErrorPairs()) {
+                if (lastLocation != null) {
+                    drawPathLine(lastLocation, pair.first);
+                }
+                lastLocation = pair.first;
+            }
+        }
     }
 
 
@@ -502,5 +523,30 @@ public class GpsMapFragment extends SupportMapFragment
                     .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
             mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
         }
+    }
+
+    /**
+     * Returns true if there is a test in progress to measure accuracy, and false if there is not
+     * @return true if there is a test in progress to measure accuracy, and false if there is not
+     */
+    private boolean isTestInProgress() {
+        return mViewModel.getBenchmarkCardCollapsed();
+    }
+
+    /**
+     * Draws a line on the map between the two locations if its greater than a threshold value defined
+     * by DRAW_LINE_THRESHOLD_METERS
+     * @param loc1
+     * @param loc2
+     */
+    private void drawPathLine(Location loc1, Location loc2) {
+        if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
+            return;
+        }
+        mMap.addPolyline(new PolylineOptions()
+                .add(MapUtils.makeLatLng(loc1), MapUtils.makeLatLng(loc2))
+                .color(Color.RED)
+                .width(2.0f)
+                .geodesic(true));
     }
 }
