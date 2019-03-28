@@ -170,7 +170,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mLeftDivider.setVisibility(VISIBLE);
                 mRightDivider.setVisibility(VISIBLE);
                 mVertErrorView.setVisibility(VISIBLE);
-                mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, error.getVertError()));
+                mVertErrorView.setText(Application.get().getString(R.string.benchmark_error, Math.abs(error.getVertError())));
                 mVerticalErrorCardView.setVisibility(VISIBLE);
             } else {
                 // Hide any vertical error indication
@@ -193,10 +193,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mAvgErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgError()));
                 mAvgErrorLabel.setText(Application.get().getString(R.string.avg_error_label, avgError.getCount()));
             }
-            if (mAvgVertErrorView != null && !Double.isNaN(avgError.getAvgVertError())) {
+            if (mAvgVertErrorView != null && !Double.isNaN(avgError.getAvgVertAbsError())) {
                 // Vertical errors
                 mAvgVertErrorView.setVisibility(VISIBLE);
-                mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgVertError()));
+                mAvgVertErrorView.setText(Application.get().getString(R.string.benchmark_error, avgError.getAvgVertAbsError()));
             } else {
                 // Hide any vertical error indication
                 mAvgVertErrorView.setVisibility(GONE);
@@ -542,7 +542,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 vertAccuracy = location.getVerticalAccuracyMeters();
             }
 
-            addErrorToGraph(index, mVertErrorChart, error.getVertError(), vertAccuracy);
+            addErrorToGraph(index, mVertErrorChart, Math.abs(error.getVertError()), vertAccuracy);
         }
     }
 

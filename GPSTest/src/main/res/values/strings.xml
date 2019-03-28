@@ -388,6 +388,10 @@
         &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
         &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
+        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
+        <b>Vertical error</b>
+        - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
+
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
