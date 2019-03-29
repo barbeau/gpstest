@@ -31,6 +31,7 @@
     <dimen name="ground_truth_sliding_header_vert_text_size">22sp</dimen>
     <dimen name="ground_truth_sliding_header_vert_divider_top_margin">32sp</dimen>
     <dimen name="ground_truth_sliding_header_vert_top_margin">34sp</dimen>
+    <dimen name="ground_truth_sliding_header_corner_radius">24dp</dimen>
 
     <!-- Sky view -->
     <dimen name="sky_legend_text_size_large">14sp</dimen>

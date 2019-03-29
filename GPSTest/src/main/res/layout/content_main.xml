@@ -14,11 +14,12 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoPanelHeight="@dimen/ground_truth_sliding_header_height"
-        sothree:umanoShadowHeight="5dp"
+        sothree:umanoShadowHeight="0dp"
         sothree:umanoParallaxOffset="100dp"
         sothree:umanoFadeColor="@android:color/transparent"
         sothree:umanoAnchorPoint="0.5"
         sothree:umanoScrollableView="@+id/sliding_panel_layout"
+        sothree:umanoOverlay="true"
         sothree:umanoInitialState="hidden">
 
         <!-- MAIN CONTENT -->

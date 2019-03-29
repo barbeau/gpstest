@@ -18,15 +18,18 @@ package com.android.gpstest;
 import android.animation.LayoutTransition;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -34,6 +37,7 @@ import android.widget.TextView;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
@@ -93,6 +97,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     SlidingUpPanelLayout mSlidingPanel;
 
     SlidingUpPanelLayout.PanelState mLastPanelState;
+
+    ViewGroup mSlidingPanelHeader;
 
     LineChart mErrorChart, mVertErrorChart;
 
@@ -240,6 +246,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mChartTextColor = ContextCompat.getColor(activity, R.color.body_text_1_light);
         }
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
+        mSlidingPanelHeader = v.findViewById(R.id.sliding_panel_header);
         mErrorView = v.findViewById(R.id.error);
         mVertErrorView = v.findViewById(R.id.vert_error);
         mAvgErrorView = v.findViewById(R.id.avg_error);
@@ -309,6 +316,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 editGroundTruth();
             }
         });
+
+        setupSlidingPanel();
 
         mViewModel = ViewModelProviders.of(activity).get(BenchmarkViewModel.class);
         mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
@@ -717,5 +726,81 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mPrefDistanceUnits = settings
                 .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
+    }
+
+    private void setupSlidingPanel() {
+        mSlidingPanel.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (previousState == SlidingUpPanelLayout.PanelState.HIDDEN) {
+                    return;
+                }
+
+                switch (newState) {
+                    case EXPANDED:
+                        onPanelExpanded(panel);
+                        break;
+                    case COLLAPSED:
+                        onPanelCollapsed(panel);
+                        break;
+                    case ANCHORED:
+                        onPanelAnchored(panel);
+                        break;
+                    case HIDDEN:
+                        onPanelHidden(panel);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.d(TAG, "onPanelSlide, offset " + slideOffset);
+                setPanelHeaderRadius(slideOffset);
+            }
+
+            public void onPanelExpanded(View panel) {
+                Log.d(TAG, "onPanelExpanded");
+            }
+
+            public void onPanelCollapsed(View panel) {
+                Log.d(TAG, "onPanelCollapsed");
+            }
+
+            public void onPanelAnchored(View panel) {
+                Log.d(TAG, "onPanelAnchored");
+            }
+
+            public void onPanelHidden(View panel) {
+                Log.d(TAG, "onPanelHidden");
+            }
+        });
+    }
+
+    private void setPanelHeaderRadius(float slideOffset) {
+        final float ANIMATE_THRESHOLD_PERCENT = 0.5f;
+        // Only animate the corner radius if the panel is over ANIMATE_THRESHOLD_PERCENT expanded
+        if (slideOffset < ANIMATE_THRESHOLD_PERCENT) {
+            return;
+        }
+        float newOffset = MathUtils.mapToRange(slideOffset, ANIMATE_THRESHOLD_PERCENT, 1.0f, 0f, 1.0f);
+        GradientDrawable shape =  new GradientDrawable();
+        float[] corners = new float[8];
+        float radius = (1 - newOffset) * Application.get().getResources().getDimensionPixelSize(R.dimen.ground_truth_sliding_header_corner_radius);
+        corners[0] = radius;
+        corners[1] = radius;
+        corners[2] = radius;
+        corners[3] = radius;
+        corners[4] = 0;
+        corners[5] = 0;
+        corners[6] = 0;
+        corners[7] = 0;
+        shape.setCornerRadii(corners);
+        shape.setColor(Application.get().getResources().getColor(R.color.colorPrimary));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            mSlidingPanelHeader.setBackground(shape);
+        } else {
+            mSlidingPanelHeader.setBackgroundDrawable(shape);
+        }
     }
 }
