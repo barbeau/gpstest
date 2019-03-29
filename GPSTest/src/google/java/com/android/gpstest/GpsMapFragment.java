@@ -54,6 +54,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import androidx.annotation.Nullable;
@@ -137,6 +138,8 @@ public class GpsMapFragment extends SupportMapFragment
 
     private Location mLastLocation;
 
+    private ArrayList<Polyline> mPathLines = new ArrayList<>();
+
     private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
         @Override
         public void onChanged(@Nullable final Location newValue) {
@@ -144,6 +147,7 @@ public class GpsMapFragment extends SupportMapFragment
             if (mMap != null) {
                 addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
             }
+            removePathLines();
         }
     };
 
@@ -543,10 +547,21 @@ public class GpsMapFragment extends SupportMapFragment
         if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
             return;
         }
-        mMap.addPolyline(new PolylineOptions()
+        Polyline line = mMap.addPolyline(new PolylineOptions()
                 .add(MapUtils.makeLatLng(loc1), MapUtils.makeLatLng(loc2))
                 .color(Color.RED)
                 .width(2.0f)
                 .geodesic(true));
+        mPathLines.add(line);
+    }
+
+    /**
+     * Removes all path lines from the map
+     */
+    private void removePathLines() {
+        for (Polyline line : mPathLines) {
+            line.remove();
+        }
+        mPathLines = new ArrayList<>();
     }
 }
