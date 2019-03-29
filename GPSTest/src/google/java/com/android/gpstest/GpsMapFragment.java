@@ -30,13 +30,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.map.BenchmarkMapController;
 import com.android.gpstest.map.OnMapClickListener;
-import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.MapUtils;
 import com.android.gpstest.util.MathUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -58,10 +57,7 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
 import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
@@ -84,9 +80,7 @@ public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
-
-    private String mMode = MODE_MAP;
+        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, BenchmarkMapController.MapInterface {
 
     private Bundle mSavedInstanceState;
 
@@ -114,34 +108,11 @@ public class GpsMapFragment extends SupportMapFragment
 
     private Polyline mErrorLine;
 
-    private boolean mAllowGroundTruthChange = true;
-
-    private Location mGroundTruthLocation;
-
-    BenchmarkViewModel mViewModel;
-
     private Location mLastLocation;
 
     private ArrayList<Polyline> mPathLines = new ArrayList<>();
 
-    private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
-        @Override
-        public void onChanged(@Nullable final Location newValue) {
-            mGroundTruthLocation = newValue;
-            if (mMap != null) {
-                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
-            }
-            removePathLines();
-        }
-    };
-
-    private final Observer<Boolean> mAllowGroundTruthEditObserver = new Observer<Boolean>() {
-        @Override
-        public void onChanged(@Nullable final Boolean newValue) {
-            mAllowGroundTruthChange = newValue;
-        }
-    };
-
+    BenchmarkMapController mMapController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -183,20 +154,16 @@ public class GpsMapFragment extends SupportMapFragment
                 dialog.show();
             }
         }
-
-        mViewModel = ViewModelProviders.of(getActivity()).get(BenchmarkViewModel.class);
-        mViewModel.getGroundTruthLocation().observe(getActivity(), mGroundTruthLocationObserver);
-        mViewModel.getAllowGroundTruthEdit().observe(getActivity(), mAllowGroundTruthEditObserver);
-
+        mMapController = new BenchmarkMapController(getActivity(), this);
         return v;
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString(MODE, mMode);
-        bundle.putBoolean(ALLOW_GROUND_TRUTH_CHANGE, mAllowGroundTruthChange);
-        if (mGroundTruthLocation != null) {
-            bundle.putParcelable(GROUND_TRUTH, mGroundTruthLocation);
+        bundle.putString(MODE, mMapController.getMode());
+        bundle.putBoolean(ALLOW_GROUND_TRUTH_CHANGE, mMapController.allowGroundTruthChange());
+        if (mMapController.getGroundTruthLocation() != null) {
+            bundle.putParcelable(GROUND_TRUTH, mMapController.getGroundTruthLocation());
         }
         super.onSaveInstanceState(bundle);
     }
@@ -232,7 +199,7 @@ public class GpsMapFragment extends SupportMapFragment
             if (!mGotFix &&
                     (!bounds.contains(mLatLng) ||
                             mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
-                float tilt = mMode.equals(MODE_MAP) ? CAMERA_INITIAL_TILT_MAP : CAMERA_INITIAL_TILT_ACCURACY;
+                float tilt = mMapController.getMode().equals(MODE_MAP) ? CAMERA_INITIAL_TILT_MAP : CAMERA_INITIAL_TILT_ACCURACY;
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(mLatLng)
                         .zoom(CAMERA_INITIAL_ZOOM)
@@ -244,9 +211,9 @@ public class GpsMapFragment extends SupportMapFragment
             }
             mGotFix = true;
 
-            if (!mAllowGroundTruthChange && mGroundTruthLocation != null) {
+            if (!mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
                 // Draw error line between ground truth and calculated position
-                LatLng gt = MapUtils.makeLatLng(mGroundTruthLocation);
+                LatLng gt = MapUtils.makeLatLng(mMapController.getGroundTruthLocation());
                 LatLng current = MapUtils.makeLatLng(loc);
 
                 if (mErrorLine == null) {
@@ -313,7 +280,7 @@ public class GpsMapFragment extends SupportMapFragment
             return;
         }
         // Only proceed if map is not null and we're in MAP mode
-        if (mMap == null || !mMode.equals(MODE_MAP)) {
+        if (mMap == null || !mMapController.getMode().equals(MODE_MAP)) {
             return;
         }
 
@@ -375,12 +342,12 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onMapClick(LatLng latLng) {
         mLastMapTouchTime = System.currentTimeMillis();
-        if (!mMode.equals(MODE_ACCURACY) || !mAllowGroundTruthChange) {
+        if (!mMapController.getMode().equals(MODE_ACCURACY) || !mMapController.allowGroundTruthChange()) {
             // Don't allow changes to the ground truth location, so don't pass taps to listener
             return;
         }
         if (mMap != null) {
-            addMapMarker(latLng);
+            addGroundTruthMarker(MapUtils.makeLocation(latLng));
         }
 
         if (mOnMapClickListener != null) {
@@ -391,7 +358,12 @@ public class GpsMapFragment extends SupportMapFragment
         }
     }
 
-    private void addMapMarker(LatLng latLng) {
+    @Override
+    public void addGroundTruthMarker(Location location) {
+        if (mMap == null) {
+            return;
+        }
+        LatLng latLng = MapUtils.makeLatLng(location);
         if (mGroundTruthMarker == null) {
             mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
@@ -417,7 +389,7 @@ public class GpsMapFragment extends SupportMapFragment
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        restoreState(mSavedInstanceState);
+        mMapController.restoreState(mSavedInstanceState, getArguments(), mGroundTruthMarker == null);
 
         checkMapPreferences();
 
@@ -425,7 +397,7 @@ public class GpsMapFragment extends SupportMapFragment
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Log.e(mMode, "Tried to initialize my location on Google Map - " + e);
+            Log.e(mMapController.getMode(), "Tried to initialize my location on Google Map - " + e);
         }
         // Set location source
         mMap.setLocationSource(this);
@@ -439,42 +411,6 @@ public class GpsMapFragment extends SupportMapFragment
 
         GpsTestActivity.getInstance().addListener(this);
     }
-
-    private void restoreState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            // Restore an existing state (e.g., from device rotation)
-            mMode = savedInstanceState.getString(MODE);
-            mAllowGroundTruthChange = savedInstanceState.getBoolean(ALLOW_GROUND_TRUTH_CHANGE);
-            Location groundTruth = savedInstanceState.getParcelable(GROUND_TRUTH);
-            if (groundTruth != null) {
-                mGroundTruthLocation = groundTruth;
-                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
-            }
-        } else {
-            // Not restoring existing state - see what was provided as arguments
-            Bundle arguments = getArguments();
-            if (arguments != null) {
-                mMode = arguments.getString(MODE, MODE_MAP);
-            }
-            // If we have a ground truth location but no marker, we're starting using a ground truth
-            // location from a previous execution but map wasn't initialized when we got the ViewModel
-            // callback to mGroundTruthLocationObserver.  So, add the marker now to restore state.
-            if (mGroundTruthLocation != null && mGroundTruthMarker == null) {
-                addMapMarker(MapUtils.makeLatLng(mGroundTruthLocation));
-            }
-        }
-        if (mMode.equals(MODE_ACCURACY) && isTestInProgress()) {
-            Location lastLocation = null;
-            // Restore the path lines on the map
-            for (Pair<Location, MeasuredError> pair : mViewModel.getLocationErrorPairs()) {
-                if (lastLocation != null) {
-                    drawPathLine(lastLocation, pair.first);
-                }
-                lastLocation = pair.first;
-            }
-        }
-    }
-
 
     /**
      * Returns true if Google Play Services is available, false if it is not
@@ -493,7 +429,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     private void checkMapPreferences() {
         SharedPreferences settings = Application.getPrefs();
-        if (mMap != null && mMode.equals(MODE_MAP)) {
+        if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
             if (mMap.getMapType() != Integer.valueOf(
                     settings.getString(getString(R.string.pref_key_map_type),
                             String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
@@ -503,22 +439,14 @@ public class GpsMapFragment extends SupportMapFragment
                                 String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
                 ));
             }
-        } else if (mMap != null && mMode.equals(MODE_ACCURACY)) {
+        } else if (mMap != null && mMapController.getMode().equals(MODE_ACCURACY)) {
             mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         }
-        if (mMode.equals(MODE_MAP)) {
+        if (mMapController.getMode().equals(MODE_MAP)) {
             mRotate = settings
                     .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
             mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
         }
-    }
-
-    /**
-     * Returns true if there is a test in progress to measure accuracy, and false if there is not
-     * @return true if there is a test in progress to measure accuracy, and false if there is not
-     */
-    private boolean isTestInProgress() {
-        return mViewModel.getBenchmarkCardCollapsed();
     }
 
     /**
@@ -527,7 +455,8 @@ public class GpsMapFragment extends SupportMapFragment
      * @param loc1
      * @param loc2
      */
-    private void drawPathLine(Location loc1, Location loc2) {
+    @Override
+    public void drawPathLine(Location loc1, Location loc2) {
         if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
             return;
         }
@@ -542,7 +471,8 @@ public class GpsMapFragment extends SupportMapFragment
     /**
      * Removes all path lines from the map
      */
-    private void removePathLines() {
+    @Override
+    public void removePathLines() {
         for (Polyline line : mPathLines) {
             line.remove();
         }
