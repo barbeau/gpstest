@@ -62,6 +62,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
@@ -571,17 +572,17 @@ public class GpsTestActivity extends AppCompatActivity
          */
         if (mMapFragment == null) {
             // First check to see if an instance of fragment already exists
-            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.MODE_MAP);
+            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
 
             if (mMapFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment");
                 Bundle bundle = new Bundle();
-                bundle.putString(GpsMapFragment.MODE, GpsMapFragment.MODE_MAP);
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP);
                 mMapFragment = new GpsMapFragment();
                 mMapFragment.setArguments(bundle);
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mMapFragment, GpsMapFragment.MODE_MAP)
+                        .add(R.id.fragment_container, mMapFragment, MapConstants.MODE_MAP)
                         .commit();
             }
         }
@@ -592,7 +593,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void hideMapFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.MODE_MAP);
+        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
         if (mMapFragment != null && !mMapFragment.isHidden()) {
             fm.beginTransaction().hide(mMapFragment).commit();
         }
@@ -652,17 +653,17 @@ public class GpsTestActivity extends AppCompatActivity
          */
         if (mAccuracyFragment == null) {
             // First check to see if an instance of fragment already exists
-            mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.MODE_ACCURACY);
+            mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
 
             if (mAccuracyFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment for Accuracy");
                 Bundle bundle = new Bundle();
-                bundle.putString(GpsMapFragment.MODE, GpsMapFragment.MODE_ACCURACY);
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY);
                 mAccuracyFragment = new GpsMapFragment();
                 mAccuracyFragment.setArguments(bundle);
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mAccuracyFragment, GpsMapFragment.MODE_ACCURACY)
+                        .add(R.id.fragment_container, mAccuracyFragment, MapConstants.MODE_ACCURACY)
                         .commit();
             }
         }
@@ -677,7 +678,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void hideAccuracyFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.MODE_ACCURACY);
+        mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
         if (mAccuracyFragment != null && !mAccuracyFragment.isHidden()) {
             fm.beginTransaction().hide(mAccuracyFragment).commit();
         }

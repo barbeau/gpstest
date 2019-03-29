@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.map.OnMapClickListener;
 import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.MapUtils;
 import com.android.gpstest.util.MathUtils;
@@ -62,45 +63,28 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
+import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_BEARING;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_ACCURACY;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_MAP;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_MAX_TILT;
+import static com.android.gpstest.map.MapConstants.CAMERA_MIN_TILT;
+import static com.android.gpstest.map.MapConstants.DRAW_LINE_THRESHOLD_METERS;
+import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
+import static com.android.gpstest.map.MapConstants.MODE;
+import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
+import static com.android.gpstest.map.MapConstants.MODE_MAP;
+import static com.android.gpstest.map.MapConstants.MOVE_MAP_INTERACTION_THRESHOLD;
+import static com.android.gpstest.map.MapConstants.PREFERENCE_SHOWED_DIALOG;
+import static com.android.gpstest.map.MapConstants.TARGET_OFFSET_METERS;
+
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
-
-    // Constants used to control how the camera animates to a position
-    private static final float CAMERA_INITIAL_ZOOM = 18.0f;
-
-    private static final float CAMERA_INITIAL_BEARING = 0.0f;
-
-    private static final float CAMERA_INITIAL_TILT_MAP = 45.0f;
-
-    private static final float CAMERA_INITIAL_TILT_ACCURACY = 0.0f;
-
-    private static final float CAMERA_ANCHOR_ZOOM = 19.0f;
-
-    private static final float CAMERA_MIN_TILT = 0.0f;
-
-    private static final float CAMERA_MAX_TILT = 90.0f;
-
-    private static final double TARGET_OFFSET_METERS = 150;
-
-    private static final float DRAW_LINE_THRESHOLD_METERS = 0.01f;
-
-    // Amount of time the user must not touch the map for the automatic camera movements to kick in
-    private static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
-
-    private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
-
-    static final String MODE = "mode";
-
-    static final String MODE_MAP = "mode_map";
-
-    static final String MODE_ACCURACY = "mode_accuracy";
-
-    static final String GROUND_TRUTH = "ground_truth";
-
-    static final String ALLOW_GROUND_TRUTH_CHANGE = "allow_ground_truth_change";
 
     private String mMode = MODE_MAP;
 
@@ -437,13 +421,13 @@ public class GpsMapFragment extends SupportMapFragment
 
         checkMapPreferences();
 
-        //Show the location on the map
+        // Show the location on the map
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Log.e(MODE_MAP, "Tried to initialize my location on Google Map - " + e);
+            Log.e(mMode, "Tried to initialize my location on Google Map - " + e);
         }
-        //Set location source
+        // Set location source
         mMap.setLocationSource(this);
         // Listener for camera changes
         mMap.setOnCameraChangeListener(this);
