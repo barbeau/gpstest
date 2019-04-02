@@ -17,41 +17,41 @@ package com.android.gpstest.util;
 
 import android.location.Location;
 
-import com.google.android.gms.maps.model.LatLng;
+import org.osmdroid.util.GeoPoint;
 
 public class MapUtils {
 
     /**
-     * Converts a latitude/longitude to a LatLng.
+     * Converts a latitude/longitude to a GeoPoint.
      *
      * @param lat The latitude.
      * @param lon The longitude.
-     * @return A LatLng representing this latitude/longitude.
+     * @return A GeoPoint representing this latitude/longitude.
      */
-    public static final LatLng makeLatLng(double lat, double lon) {
-        return new LatLng(lat, lon);
+    public static GeoPoint makeGeoPoint(double lat, double lon) {
+        return new GeoPoint(lat, lon);
     }
 
     /**
-     * Converts a Location to a LatLng.
+     * Converts a Location to a GeoPoint.
      *
      * @param l Location to convert
-     * @return A LatLng representing this Location.
+     * @return A GeoPoint representing this Location.
      */
-    public static final LatLng makeLatLng(Location l) {
-        return makeLatLng(l.getLatitude(), l.getLongitude());
+    public static GeoPoint makeGeoPoint(Location l) {
+        return makeGeoPoint(l.getLatitude(), l.getLongitude());
     }
 
     /**
-     * Converts a LatLng to a Location.
+     * Converts a GeoPoint to a Location.
      *
-     * @param latLng LatLng to convert
+     * @param geoPoint LatLng to convert
      * @return A Location representing this LatLng.
      */
-    public static final Location makeLocation(LatLng latLng) {
+    public static Location makeLocation(GeoPoint geoPoint) {
         Location l = new Location("FromLatLng");
-        l.setLatitude(latLng.latitude);
-        l.setLongitude(latLng.longitude);
+        l.setLatitude(geoPoint.getLatitude());
+        l.setLongitude(geoPoint.getLongitude());
         return l;
     }
 }

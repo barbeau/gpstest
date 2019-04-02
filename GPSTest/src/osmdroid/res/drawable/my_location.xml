@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010-2019 Paul Watts (paulcwatts@gmail.com),
+    University of South Florida (sjbarbeau@gmail.com), Sean Barbeau (sjbarbeau@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Drop Shadow Stack -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#02b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_6"
+                android:height="@dimen/my_location_shadow_size_6"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#05b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_5"
+                android:height="@dimen/my_location_shadow_size_5"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="1dp"/>
+            <solid android:color="#10b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_4"
+                android:height="@dimen/my_location_shadow_size_4"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="2dp"/>
+            <solid android:color="#15b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_3"
+                android:height="@dimen/my_location_shadow_size_3"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="3dp"/>
+            <solid android:color="#20b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_2"
+                android:height="@dimen/my_location_shadow_size_2"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="4dp"/>
+            <solid android:color="#25b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_1"
+                android:height="@dimen/my_location_shadow_size_1"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="4dp"/>
+            <solid android:color="#30b7b7b7"/>
+            <size
+                android:width="@dimen/my_location_shadow_size_1"
+                android:height="@dimen/my_location_icon_size"/>
+        </shape>
+    </item>
+    <!-- White outline -->
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="@android:color/transparent"
+                android:width="4dp"/>
+            <solid android:color="@android:color/white"/>
+            <size
+                android:width="@dimen/my_location_icon_size"
+                android:height="@dimen/my_location_icon_size"/>
+        </shape>
+    </item>
+    <!-- Fill -->
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="7dp"
+                android:color="@android:color/transparent"/>
+            <gradient
+                android:angle="90"
+                android:endColor="@color/my_location_marker_light"
+                android:startColor="@color/my_location_marker_dark"/>
+            <size
+                android:width="@dimen/my_location_icon_size_fill"
+                android:height="@dimen/my_location_icon_size_fill"/>
+        </shape>
+    </item>
+</layer-list>
+

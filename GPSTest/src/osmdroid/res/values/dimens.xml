@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010-2019 Paul Watts (paulcwatts@gmail.com),
+    University of South Florida (sjbarbeau@gmail.com), Sean Barbeau (sjbarbeau@gmail.com)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <!-- My location marker -->
+    <dimen name="my_location_icon_size">13dp</dimen>
+    <dimen name="my_location_icon_size_fill">9dp</dimen>
+    <!-- Shadows -->
+    <dimen name="my_location_shadow_size_1">@dimen/my_location_icon_size</dimen>
+    <dimen name="my_location_shadow_size_2">@dimen/my_location_icon_size</dimen>
+    <!-- Below shadow sizes should each increment my_location_icon_size by 1, to form incremental shadows -->
+    <dimen name="my_location_shadow_size_3">19dp</dimen>
+    <dimen name="my_location_shadow_size_4">20dp</dimen>
+    <dimen name="my_location_shadow_size_5">21dp</dimen>
+    <dimen name="my_location_shadow_size_6">22dp</dimen>
+</resources>

@@ -7,6 +7,8 @@ import android.util.Pair;
 import com.android.gpstest.BenchmarkViewModel;
 import com.android.gpstest.model.MeasuredError;
 
+import java.lang.ref.WeakReference;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -18,7 +20,7 @@ import static com.android.gpstest.map.MapConstants.MODE;
 import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
 import static com.android.gpstest.map.MapConstants.MODE_MAP;
 
-public class BenchmarkMapController {
+public class MapViewModelController {
 
     /**
      * An interface implemented by the map to allow other classes to manipulate the map
@@ -42,12 +44,11 @@ public class BenchmarkMapController {
 
     MapInterface mMap;
 
-    public BenchmarkMapController(FragmentActivity activity, MapInterface map) {
-        mMap = map;
+    WeakReference<FragmentActivity> mActivity;
 
-        mViewModel = ViewModelProviders.of(activity).get(BenchmarkViewModel.class);
-        mViewModel.getGroundTruthLocation().observe(activity, mGroundTruthLocationObserver);
-        mViewModel.getAllowGroundTruthEdit().observe(activity, mAllowGroundTruthEditObserver);
+    public MapViewModelController(FragmentActivity activity, MapInterface map) {
+        mMap = map;
+        mActivity = new WeakReference<>(activity);
     }
 
     private final Observer<Location> mGroundTruthLocationObserver = new Observer<Location>() {
@@ -77,22 +78,28 @@ public class BenchmarkMapController {
         if (savedInstanceState != null) {
             // Restore an existing state (e.g., from device rotation)
             mMode = savedInstanceState.getString(MODE);
-            mAllowGroundTruthChange = savedInstanceState.getBoolean(ALLOW_GROUND_TRUTH_CHANGE);
-            Location groundTruth = savedInstanceState.getParcelable(GROUND_TRUTH);
-            if (groundTruth != null) {
-                mGroundTruthLocation = groundTruth;
-                mMap.addGroundTruthMarker(mGroundTruthLocation);
+            if (mMode.equals(MODE_ACCURACY)) {
+                setupViewModels();
+                mAllowGroundTruthChange = savedInstanceState.getBoolean(ALLOW_GROUND_TRUTH_CHANGE);
+                Location groundTruth = savedInstanceState.getParcelable(GROUND_TRUTH);
+                if (groundTruth != null) {
+                    mGroundTruthLocation = groundTruth;
+                    mMap.addGroundTruthMarker(mGroundTruthLocation);
+                }
             }
         } else {
             // Not restoring existing state - see what was provided as arguments
             if (arguments != null) {
                 mMode = arguments.getString(MODE, MODE_MAP);
             }
-            // If we have a ground truth location but no marker, we're starting using a ground truth
-            // location from a previous execution but map wasn't initialized when we got the ViewModel
-            // callback to mGroundTruthLocationObserver.  So, add the marker now to restore state.
-            if (mGroundTruthLocation != null && isGroundTruthMarkerNull) {
-                mMap.addGroundTruthMarker(mGroundTruthLocation);
+            if (mMode.equals(MODE_ACCURACY)) {
+                setupViewModels();
+                // If we have a ground truth location but no marker, we're starting using a ground truth
+                // location from a previous execution but map wasn't initialized when we got the ViewModel
+                // callback to mGroundTruthLocationObserver.  So, add the marker now to restore state.
+                if (mGroundTruthLocation != null && isGroundTruthMarkerNull) {
+                    mMap.addGroundTruthMarker(mGroundTruthLocation);
+                }
             }
         }
         if (mMode.equals(MODE_ACCURACY) && isTestInProgress()) {
@@ -105,6 +112,12 @@ public class BenchmarkMapController {
                 lastLocation = pair.first;
             }
         }
+    }
+
+    private void setupViewModels() {
+        mViewModel = ViewModelProviders.of(mActivity.get()).get(BenchmarkViewModel.class);
+        mViewModel.getGroundTruthLocation().observe(mActivity.get(), mGroundTruthLocationObserver);
+        mViewModel.getAllowGroundTruthEdit().observe(mActivity.get(), mAllowGroundTruthEditObserver);
     }
 
     public String getMode() {

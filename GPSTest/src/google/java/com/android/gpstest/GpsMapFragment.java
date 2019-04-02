@@ -34,7 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.gpstest.map.BenchmarkMapController;
+import com.android.gpstest.map.MapViewModelController;
 import com.android.gpstest.map.OnMapClickListener;
 import com.android.gpstest.util.MapUtils;
 import com.android.gpstest.util.MathUtils;
@@ -80,7 +80,7 @@ public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, BenchmarkMapController.MapInterface {
+        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, MapViewModelController.MapInterface {
 
     private Bundle mSavedInstanceState;
 
@@ -112,7 +112,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     private ArrayList<Polyline> mPathLines = new ArrayList<>();
 
-    BenchmarkMapController mMapController;
+    MapViewModelController mMapController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,7 +154,7 @@ public class GpsMapFragment extends SupportMapFragment
                 dialog.show();
             }
         }
-        mMapController = new BenchmarkMapController(getActivity(), this);
+        mMapController = new MapViewModelController(getActivity(), this);
         return v;
     }
 
@@ -211,7 +211,7 @@ public class GpsMapFragment extends SupportMapFragment
             }
             mGotFix = true;
 
-            if (!mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
+            if (mMapController.getMode().equals(MODE_ACCURACY) && !mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
                 // Draw error line between ground truth and calculated position
                 LatLng gt = MapUtils.makeLatLng(mMapController.getGroundTruthLocation());
                 LatLng current = MapUtils.makeLatLng(loc);
@@ -225,7 +225,7 @@ public class GpsMapFragment extends SupportMapFragment
                     mErrorLine.setPoints(Arrays.asList(gt, current));
                 };
             }
-            if (mLastLocation != null) {
+            if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
                 // Draw line between this and last location
                 drawPathLine(mLastLocation, loc);
             }
