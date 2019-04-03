@@ -26,6 +26,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +34,15 @@ import android.view.ViewGroup;
 import com.android.gpstest.map.MapViewModelController;
 import com.android.gpstest.map.OnMapClickListener;
 import com.android.gpstest.util.MapUtils;
+import com.android.gpstest.util.MathUtils;
 
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.tileprovider.tilesource.ITileSource;
+import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.util.MapTileIndex;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
@@ -44,6 +50,7 @@ import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +69,10 @@ import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
 import static com.android.gpstest.map.MapConstants.MODE_MAP;
 
 public class GpsMapFragment extends Fragment implements GpsTestListener, MapViewModelController.MapInterface {
+
+    private static final String MAP_TYPE_SATELLITE = "mapbox.satellite";
+
+    private static final String MAP_TYPE_STREETS = "barbeau/cju1g27421a0w1fmvsy13tjfv";
 
     private MapView mMap;
 
@@ -116,19 +127,19 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
     public void onResume() {
         super.onResume();
         SharedPreferences settings = Application.getPrefs();
-//        if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
-//            if (mMap.getMapType() != Integer.valueOf(
-//                    settings.getString(getString(R.string.pref_key_map_type),
-//                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-//            )) {
-//                mMap.setMapType(Integer.valueOf(
-//                        settings.getString(getString(R.string.pref_key_map_type),
-//                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-//                ));
-//            }
-//        } else if (mMap != null && mMapController.getMode().equals(MODE_ACCURACY)) {
-//            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-//        }
+        if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
+            try {
+                setMapBoxTileSource(MAP_TYPE_STREETS);
+            } catch (UnsupportedEncodingException e) {
+                Log.e(mMapController.getMode(), "Error setting tile source: " + e);
+            }
+        } else if (mMap != null && mMapController.getMode().equals(MODE_ACCURACY)) {
+            try {
+                setMapBoxTileSource(MAP_TYPE_SATELLITE);
+            } catch (UnsupportedEncodingException e) {
+                Log.e(mMapController.getMode(), "Error setting tile source: " + e);
+            }
+        }
         if (mMapController.getMode().equals(MODE_MAP)) {
             mRotate = settings
                     .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
@@ -172,6 +183,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
                 if (mMap != null) {
                     addGroundTruthMarker(MapUtils.makeLocation(p));
+                    mMap.invalidate();
                 }
 
                 if (mOnMapClickListener != null) {
@@ -191,6 +203,33 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
         mMap.getOverlays().add(new MapEventsOverlay(mReceive));
     }
 
+    private void setMapBoxTileSource(String mapType) throws UnsupportedEncodingException {
+        // To prevent web scrapers from easily finding the key, we store it encoded
+        final String keyBase64 = "cGsuZXlKMUlqb2lZbUZ5WW1WaGRTSXNJbUVpT2lKamFuUjJjRE40YW1veGVteGpORE50TW5kblkyd3djWFpuSW4wLm1OQ3N6OWxXWVNZWVRfZDVaX19ZTWc=";
+        final String key = MathUtils.fromBase64(keyBase64);
+
+        final ITileSource tileSource;
+        if (mapType.equals(MAP_TYPE_SATELLITE)) {
+            tileSource = new MapBoxTileSource();
+            ((MapBoxTileSource) tileSource).setAccessToken(key);
+            ((MapBoxTileSource) tileSource).setMapboxMapid(mapType);
+        } else {
+            // We're using a Mapbox style, which isn't directly supported by OSMDroid due to a different URL format than Map IDs, so build the URL ourselves
+            tileSource = new OnlineTileSourceBase("MapBox Streets", 1, 19, 256, "",
+                    new String[] { "https://api.mapbox.com/styles/v1/" + MAP_TYPE_STREETS + "/tiles/256/"}) {
+                @Override
+                public String getTileURLString(long pMapTileIndex) {
+                    return getBaseUrl()
+                            + MapTileIndex.getZoom(pMapTileIndex)
+                            + "/" + MapTileIndex.getX(pMapTileIndex)
+                            + "/" + MapTileIndex.getY(pMapTileIndex)
+                            + "@2x?access_token=" + key;
+                }
+            };
+        }
+        mMap.setTileSource(tileSource);
+    }
+
     public void gpsStart() {
         mGotFix = false;
     }
@@ -201,7 +240,8 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
     public void onLocationChanged(Location loc) {
         GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
         if (!mGotFix) {
-            mMap.getController().setZoom(CAMERA_INITIAL_ZOOM);
+            // Zoom levels are a little different than Google Maps, so add 2 to our Google default to get the same view
+            mMap.getController().setZoom(CAMERA_INITIAL_ZOOM + 2);
             mMap.getController().setCenter(startPoint);
             mGotFix = true;
         }
@@ -216,6 +256,10 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
             if (!mMap.getOverlays().contains(mHorAccPolygon)) {
                 mHorAccPolygon.setStrokeWidth(0.5f);
+                mHorAccPolygon.setOnClickListener((polygon, mapView, eventPos) -> {
+                    // Disable clicks
+                    return false;
+                });
                 mHorAccPolygon.setFillColor(ContextCompat.getColor(Application.get(), R.color.horizontal_accuracy));
                 mMap.getOverlays().add(mHorAccPolygon);
             }
@@ -328,6 +372,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
         mGroundTruthMarker.setPosition(MapUtils.makeGeoPoint(location));
         mGroundTruthMarker.setIcon(ContextCompat.getDrawable(Application.get(), R.drawable.ic_ground_truth));
+        mGroundTruthMarker.setTitle(Application.get().getString(R.string.ground_truth_marker_title));
         mGroundTruthMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
         if (!mMap.getOverlays().contains(mGroundTruthMarker)) {

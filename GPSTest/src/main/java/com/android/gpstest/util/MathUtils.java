@@ -16,6 +16,10 @@
  */
 package com.android.gpstest.util;
 
+import android.util.Base64;
+
+import java.io.UnsupportedEncodingException;
+
 /**
  * A utility class containing arithmetic and geometry helper methods.
  *
@@ -149,5 +153,15 @@ public class MathUtils {
         } else {
             return (value < min ? value : max);
         }
+    }
+
+    /**
+     * Converts the provided base 64 string to UTF-8
+     * @param base64 the base 64 string to convert to UTF-8
+     * @return the input string converted to UTF-8
+     */
+    public static String fromBase64(String base64) throws UnsupportedEncodingException {
+        byte[] data = Base64.decode(base64, Base64.DEFAULT);
+        return new String(data, "UTF-8");
     }
 }
