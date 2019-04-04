@@ -115,6 +115,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
         mMapController = new MapViewModelController(getActivity(), this);
         mMapController.restoreState(savedInstanceState, getArguments(), mGroundTruthMarker == null);
+        mMap.invalidate();
 
         addMapClickListener();
 
@@ -299,6 +300,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
             mMap.getOverlays().remove(mMyLocationMarker);
             mMap.getOverlays().add(mMyLocationMarker);
         }
+        mMap.invalidate();
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -358,6 +360,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
         if (mMapController.getMode().equals(MODE_MAP) && mMyLocationMarker != null && mRotate) {
             mMap.setMapOrientation((float) -orientation);
         }
+        mMap.invalidate();
     }
 
     @Override
