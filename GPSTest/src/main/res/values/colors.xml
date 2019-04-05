@@ -17,7 +17,7 @@
     <!-- GPSTest Theme -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#C5CAE9</color>
+    <color name="colorAccent">#757de8</color>
 
     <!-- Navigation Drawer (Shared for Light and Dark Themes) -->
     <color name="navdrawer_text_color_selected">@color/colorPrimary</color>
@@ -39,6 +39,7 @@
     <color name="body_text_1_light">#de000000</color>
     <color name="body_text_2_light">#8a000000</color>
     <color name="body_text_1_dark">#deffffff</color>
+    <color name="header_text_faded_color">#bbffffff</color>
 
     <!-- GNSS Sky View -->
     <color name="not_in_view_sat">#11000000</color>

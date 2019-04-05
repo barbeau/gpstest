@@ -62,6 +62,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
@@ -82,6 +83,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
 import static android.content.Intent.createChooser;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
@@ -147,6 +149,8 @@ public class GpsTestActivity extends AppCompatActivity
     private GpsMapFragment mMapFragment;
 
     private GpsSkyFragment mSkyFragment;
+
+    private GpsMapFragment mAccuracyFragment;
 
     // Holds sensor data
     private static float[] mRotationMatrix = new float[16];
@@ -214,6 +218,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean mUserDeniedPermission = false;
 
+    private BenchmarkController mBenchmarkController;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,6 +246,16 @@ public class GpsTestActivity extends AppCompatActivity
 //        } else {
             setContentView(R.layout.activity_main);
 //        }
+
+        mBenchmarkController = new BenchmarkControllerImpl(this, findViewById(R.id.mainlayout));
+        mGpsTestListeners.add(mBenchmarkController);
+
+        // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
+        if (mAccuracyFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_ACCURACY) {
+            initAccuracy();
+        } else {
+            mBenchmarkController.hide();
+        }
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -289,6 +305,11 @@ public class GpsTestActivity extends AppCompatActivity
             // loop if user selects "Don't ask again") in system permission prompt
             showLocationPermissionDialog();
         }
+    }
+
+    private void initAccuracy() {
+        mAccuracyFragment.setOnMapClickListener(location -> mBenchmarkController.onMapClick(location));
+        mBenchmarkController.show();
     }
 
     private void requestPermissionAndInit(final Activity activity) {
@@ -444,6 +465,12 @@ public class GpsTestActivity extends AppCompatActivity
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
+            case NAVDRAWER_ITEM_ACCURACY:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_ACCURACY) {
+                    showAccuracyFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
             case NAVDRAWER_ITEM_INJECT_XTRA_DATA:
                 forceXtraInjection();
                 break;
@@ -495,6 +522,11 @@ public class GpsTestActivity extends AppCompatActivity
          */
         hideMapFragment();
         hideSkyFragment();
+        hideAccuracyFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
+
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
@@ -531,19 +563,26 @@ public class GpsTestActivity extends AppCompatActivity
          */
         hideStatusFragment();
         hideSkyFragment();
+        hideAccuracyFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
         if (mMapFragment == null) {
             // First check to see if an instance of fragment already exists
-            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
 
             if (mMapFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment");
+                Bundle bundle = new Bundle();
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP);
                 mMapFragment = new GpsMapFragment();
+                mMapFragment.setArguments(bundle);
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mMapFragment, GpsMapFragment.TAG)
+                        .add(R.id.fragment_container, mMapFragment, MapConstants.MODE_MAP)
                         .commit();
             }
         }
@@ -554,7 +593,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void hideMapFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(GpsMapFragment.TAG);
+        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
         if (mMapFragment != null && !mMapFragment.isHidden()) {
             fm.beginTransaction().hide(mMapFragment).commit();
         }
@@ -567,6 +606,11 @@ public class GpsTestActivity extends AppCompatActivity
          */
         hideStatusFragment();
         hideMapFragment();
+        hideAccuracyFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
+
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
@@ -593,6 +637,50 @@ public class GpsTestActivity extends AppCompatActivity
         mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
         if (mSkyFragment != null && !mSkyFragment.isHidden()) {
             fm.beginTransaction().hide(mSkyFragment).commit();
+        }
+    }
+
+    private void showAccuracyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideMapFragment();
+        hideSkyFragment();
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mAccuracyFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
+
+            if (mAccuracyFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new GpsMapFragment for Accuracy");
+                Bundle bundle = new Bundle();
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY);
+                mAccuracyFragment = new GpsMapFragment();
+                mAccuracyFragment.setArguments(bundle);
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mAccuracyFragment, MapConstants.MODE_ACCURACY)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mAccuracyFragment).commit();
+        setTitle(getResources().getString(R.string.gps_accuracy_title));
+
+        if (mBenchmarkController != null) {
+            initAccuracy();
+        }
+    }
+
+    private void hideAccuracyFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
+        if (mAccuracyFragment != null && !mAccuracyFragment.isHidden()) {
+            fm.beginTransaction().hide(mAccuracyFragment).commit();
         }
     }
 
@@ -655,10 +743,16 @@ public class GpsTestActivity extends AppCompatActivity
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.nav_drawer_left_pane);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+            // Close navigation drawer
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
+        } else if (mBenchmarkController != null) {
+            // Close sliding drawer
+            if (mBenchmarkController.onBackPressed()) {
+                return;
+            }
         }
+        super.onBackPressed();
     }
 
     static GpsTestActivity getInstance() {
@@ -1235,23 +1329,23 @@ public class GpsTestActivity extends AppCompatActivity
                     case Surface.ROTATION_0:
                         // No orientation change, use default coordinate system
                         SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(TAG, "Rotation-0");
+                        // Log.d(MODE_MAP, "Rotation-0");
                         break;
                     case Surface.ROTATION_90:
-                        // Log.d(TAG, "Rotation-90");
+                        // Log.d(MODE_MAP, "Rotation-90");
                         SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
                                 SensorManager.AXIS_MINUS_X, mRemappedMatrix);
                         SensorManager.getOrientation(mRemappedMatrix, mValues);
                         break;
                     case Surface.ROTATION_180:
-                        // Log.d(TAG, "Rotation-180");
+                        // Log.d(MODE_MAP, "Rotation-180");
                         SensorManager
                                 .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
                                         SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
                         SensorManager.getOrientation(mRemappedMatrix, mValues);
                         break;
                     case Surface.ROTATION_270:
-                        // Log.d(TAG, "Rotation-270");
+                        // Log.d(MODE_MAP, "Rotation-270");
                         SensorManager
                                 .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
                                         SensorManager.AXIS_X, mRemappedMatrix);
@@ -1260,7 +1354,7 @@ public class GpsTestActivity extends AppCompatActivity
                     default:
                         // This shouldn't happen - assume default orientation
                         SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(TAG, "Rotation-Unknown");
+                        // Log.d(MODE_MAP, "Rotation-Unknown");
                         break;
                 }
                 orientation = Math.toDegrees(mValues[0]);  // azimuth

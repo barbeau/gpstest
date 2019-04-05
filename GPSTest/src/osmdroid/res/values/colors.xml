@@ -16,4 +16,7 @@
 <resources>
     <!-- OSM Droid -->
     <color name="horizontal_accuracy">#88C5CAE9</color>
+
+    <color name="my_location_marker_dark">@color/colorPrimary</color>
+    <color name="my_location_marker_light">@color/colorAccent</color>
 </resources>

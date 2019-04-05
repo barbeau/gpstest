@@ -195,4 +195,13 @@ public class PreferenceUtils {
         }
         return 0;  // Default to the first option
     }
+
+    /**
+     * Removes the specified preference by deleting it
+     * @param key
+     */
+    public static void remove(String key) {
+        SharedPreferences.Editor edit = Application.getPrefs().edit();
+        edit.remove(key).apply();
+    }
 }

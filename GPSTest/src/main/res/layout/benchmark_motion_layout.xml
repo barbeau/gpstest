@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motion_layout"
+    app:layoutDescription="@xml/benchmark_top_transition"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ground_truth_motion_layout_height"
+    android:layout_marginTop="@dimen/map_card_inner_margin"
+    android:layout_marginStart="@dimen/map_card_inner_margin"
+    android:layout_marginLeft="@dimen/map_card_inner_margin"
+    android:layout_marginEnd="@dimen/map_card_inner_margin"
+    android:layout_marginRight="@dimen/map_card_inner_margin"
+    android:layout_marginBottom="5dp">
+
+    <TextView
+        android:id="@+id/set_ground_truth1"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_ground_truth_title" />
+
+    <TextView
+        android:id="@+id/set_ground_truth2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/set_ground_truth_subtitle" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ground_truth_lat"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ground_truth_lat_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ground_truth_latitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="@dimen/ground_truth_text_size_expanded" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ground_truth_long"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ground_truth_long_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ground_truth_longitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="@dimen/ground_truth_text_size_expanded" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ground_truth_alt"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ground_truth_alt_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ground_truth_altitude"
+            android:inputType="numberDecimal|numberSigned"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="@dimen/ground_truth_text_size_expanded" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

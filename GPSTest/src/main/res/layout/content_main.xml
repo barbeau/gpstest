@@ -1,13 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Fragment is added here programmatically -->
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/fragment_container"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainlayout"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:showIn="@layout/app_bar_main">
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottom_sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:showIn="@layout/app_bar_main"
-        tools:context="com.android.gpstest.GpsTestActivity">
+        android:gravity="bottom"
+        sothree:umanoPanelHeight="@dimen/ground_truth_sliding_header_height"
+        sothree:umanoShadowHeight="0dp"
+        sothree:umanoParallaxOffset="100dp"
+        sothree:umanoFadeColor="@android:color/transparent"
+        sothree:umanoAnchorPoint="0.5"
+        sothree:umanoScrollableView="@+id/sliding_panel_layout"
+        sothree:umanoOverlay="true"
+        sothree:umanoInitialState="hidden">
+
+        <!-- MAIN CONTENT -->
+        <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            <!-- Fragment is added here programmatically -->
+            <RelativeLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:showIn="@layout/app_bar_main"
+                tools:context="com.android.gpstest.GpsTestActivity"/>
+
+            <!-- Top card to enter ground truth information - CardView first, then MotionLayout
+                 (MotionLayout doesn't resize dynamically well during animations, so instead of
+                 putting MotionLayout within CardView we put it on top, and then pass through taps
+                 on the MotionLayout when the CardView is collapsed to the underlying map view.  So,
+                 CardView shrinks when collapsed but MotionLayout stays a consistent height -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <include
+                    layout="@layout/benchmark_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/ground_truth_cardview_height"
+                    android:layout_marginLeft="@dimen/map_card_outer_margin"
+                    android:layout_marginStart="@dimen/map_card_outer_margin"
+                    android:layout_marginRight="@dimen/map_card_outer_margin"
+                    android:layout_marginEnd="@dimen/map_card_outer_margin"
+                    android:layout_marginTop="@dimen/map_card_outer_margin"
+                    android:layout_marginBottom="@dimen/map_card_outer_margin" />
+            </FrameLayout>
+            <include
+                layout="@layout/benchmark_motion_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/ground_truth_motion_layout_height"
+                android:layout_marginLeft="@dimen/map_motion_outer_margin"
+                android:layout_marginStart="@dimen/map_motion_outer_margin"
+                android:layout_marginRight="@dimen/map_motion_outer_margin"
+                android:layout_marginEnd="@dimen/map_motion_outer_margin"
+                android:layout_marginTop="@dimen/map_motion_outer_margin"
+                android:layout_marginBottom="@dimen/map_motion_outer_margin" />
+        </RelativeLayout>
+
+        <!-- Bottom sliding panel -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="false"
+            android:id="@+id/slidingPanel">
+
+            <!-- Header for bottom sliding panel -->
+            <include layout="@layout/benchmark_sliding_header" />
+
+            <!-- Content of bottom sliding panel -->
+            <include layout="@layout/benchmark_sliding_panel" />
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 </RelativeLayout>

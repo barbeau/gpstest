@@ -147,20 +147,29 @@ tasks.whenTaskAdded { theTask ->
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
+
+    // Sliding drawer in map view
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    // Graphs for sliding drawer
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
     // Map (Google flavor only)
-    googleImplementation 'com.google.android.gms:play-services-maps:15.0.1'
+    googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)
     googleImplementation 'com.google.maps.android:android-maps-utils:0.5'
     // OSM Droid (fdroid flavor only)
-    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.0.2'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.0'
 
     // Unit tests
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

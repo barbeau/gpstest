@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
@@ -33,6 +34,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.gpstest.map.MapViewModelController;
+import com.android.gpstest.map.OnMapClickListener;
+import com.android.gpstest.util.MapUtils;
+import com.android.gpstest.util.MathUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,39 +48,41 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.annotation.RequiresApi;
+
+import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
+import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_BEARING;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_ACCURACY;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_MAP;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_MAX_TILT;
+import static com.android.gpstest.map.MapConstants.CAMERA_MIN_TILT;
+import static com.android.gpstest.map.MapConstants.DRAW_LINE_THRESHOLD_METERS;
+import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
+import static com.android.gpstest.map.MapConstants.MODE;
+import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
+import static com.android.gpstest.map.MapConstants.MODE_MAP;
+import static com.android.gpstest.map.MapConstants.MOVE_MAP_INTERACTION_THRESHOLD;
+import static com.android.gpstest.map.MapConstants.PREFERENCE_SHOWED_DIALOG;
+import static com.android.gpstest.map.MapConstants.TARGET_OFFSET_METERS;
 
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback {
+        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, MapViewModelController.MapInterface {
 
-    // Constants used to control how the camera animates to a position
-    public static final float CAMERA_INITIAL_ZOOM = 18.0f;
-
-    public static final float CAMERA_INITIAL_BEARING = 0.0f;
-
-    public static final float CAMERA_INITIAL_TILT = 45.0f;
-
-    public static final float CAMERA_ANCHOR_ZOOM = 19.0f;
-
-    public static final float CAMERA_MIN_TILT = 0.0f;
-
-    public static final float CAMERA_MAX_TILT = 90.0f;
-
-    public static final double TARGET_OFFSET_METERS = 150;
-
-    // Amount of time the user must not touch the map for the automatic camera movements to kick in
-    public static final long MOVE_MAP_INTERACTION_THRESHOLD = 5 * 1000; // milliseconds
-
-    private static final String PREFERENCE_SHOWED_DIALOG = "showed_google_map_install_dialog";
-
-    public final static String TAG = "GpsMapFragment";
-
-    Bundle mSavedInstanceState;
+    private Bundle mSavedInstanceState;
 
     private GoogleMap mMap;
 
@@ -95,30 +102,23 @@ public class GpsMapFragment extends SupportMapFragment
 
     private boolean mTilt;
 
-    /**
-     * Clamps a value between the given positive min and max.  If abs(value) is less than
-     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
-     * If abs(value) is between min and max, then abs(value) is returned.
-     *
-     * @param min   minimum allowed value
-     * @param value value to be evaluated
-     * @param max   maximum allowed value
-     * @return clamped value between the min and max
-     */
-    private static double clamp(double min, double value, double max) {
-        value = Math.abs(value);
-        if (value >= min && value <= max) {
-            return value;
-        } else {
-            return (value < min ? value : max);
-        }
-    }
+    private OnMapClickListener mOnMapClickListener;
+
+    private Marker mGroundTruthMarker;
+
+    private Polyline mErrorLine;
+
+    private Location mLastLocation;
+
+    private ArrayList<Polyline> mPathLines = new ArrayList<>();
+
+    MapViewModelController mMapController;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-
         View v = super.onCreateView(inflater, container, savedInstanceState);
+        mLastLocation = null;
 
         if (isGooglePlayServicesInstalled()) {
             // Save the savedInstanceState
@@ -154,27 +154,23 @@ public class GpsMapFragment extends SupportMapFragment
                 dialog.show();
             }
         }
-
+        mMapController = new MapViewModelController(getActivity(), this);
         return v;
     }
 
     @Override
-    public void onResume() {
-        SharedPreferences settings = Application.getPrefs();
-        if (mMap != null) {
-            if (mMap.getMapType() != Integer.valueOf(
-                    settings.getString(getString(R.string.pref_key_map_type),
-                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-            )) {
-                mMap.setMapType(Integer.valueOf(
-                        settings.getString(getString(R.string.pref_key_map_type),
-                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-                ));
-            }
+    public void onSaveInstanceState(Bundle bundle) {
+        bundle.putString(MODE, mMapController.getMode());
+        bundle.putBoolean(ALLOW_GROUND_TRUTH_CHANGE, mMapController.allowGroundTruthChange());
+        if (mMapController.getGroundTruthLocation() != null) {
+            bundle.putParcelable(GROUND_TRUTH, mMapController.getGroundTruthLocation());
         }
-        mRotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
-        mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        super.onSaveInstanceState(bundle);
+    }
+
+    @Override
+    public void onResume() {
+        checkMapPreferences();
 
         super.onResume();
     }
@@ -203,16 +199,42 @@ public class GpsMapFragment extends SupportMapFragment
             if (!mGotFix &&
                     (!bounds.contains(mLatLng) ||
                             mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
+                float tilt = mMapController.getMode().equals(MODE_MAP) ? CAMERA_INITIAL_TILT_MAP : CAMERA_INITIAL_TILT_ACCURACY;
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(mLatLng)
                         .zoom(CAMERA_INITIAL_ZOOM)
                         .bearing(CAMERA_INITIAL_BEARING)
-                        .tilt(CAMERA_INITIAL_TILT)
+                        .tilt(tilt)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
             mGotFix = true;
+
+            if (mMapController.getMode().equals(MODE_ACCURACY) && !mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
+                // Draw error line between ground truth and calculated position
+                LatLng gt = MapUtils.makeLatLng(mMapController.getGroundTruthLocation());
+                LatLng current = MapUtils.makeLatLng(loc);
+
+                if (mErrorLine == null) {
+                    mErrorLine = mMap.addPolyline(new PolylineOptions()
+                        .add(gt, current)
+                        .color(Color.WHITE)
+                        .geodesic(true));
+                } else {
+                    mErrorLine.setPoints(Arrays.asList(gt, current));
+                };
+            }
+            if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
+                // Draw line between this and last location
+                boolean drawn = drawPathLine(mLastLocation, loc);
+                if (drawn) {
+                    mLastLocation = loc;
+                }
+            }
+        }
+        if (mLastLocation == null) {
+            mLastLocation = loc;
         }
     }
 
@@ -262,8 +284,8 @@ public class GpsMapFragment extends SupportMapFragment
         if (!getUserVisibleHint()) {
             return;
         }
-        // Only proceed if map is not null
-        if (mMap == null) {
+        // Only proceed if map is not null and we're in MAP mode
+        if (mMap == null || !mMapController.getMode().equals(MODE_MAP)) {
             return;
         }
 
@@ -279,7 +301,7 @@ public class GpsMapFragment extends SupportMapFragment
                 tilt = mlastCameraPosition != null ? mlastCameraPosition.tilt : 0;
             }
 
-            float clampedTilt = (float) clamp(CAMERA_MIN_TILT, tilt, CAMERA_MAX_TILT);
+            float clampedTilt = (float) MathUtils.clamp(CAMERA_MIN_TILT, tilt, CAMERA_MAX_TILT);
 
             double offset = TARGET_OFFSET_METERS * (clampedTilt / CAMERA_MAX_TILT);
 
@@ -325,6 +347,35 @@ public class GpsMapFragment extends SupportMapFragment
     @Override
     public void onMapClick(LatLng latLng) {
         mLastMapTouchTime = System.currentTimeMillis();
+        if (!mMapController.getMode().equals(MODE_ACCURACY) || !mMapController.allowGroundTruthChange()) {
+            // Don't allow changes to the ground truth location, so don't pass taps to listener
+            return;
+        }
+        if (mMap != null) {
+            addGroundTruthMarker(MapUtils.makeLocation(latLng));
+        }
+
+        if (mOnMapClickListener != null) {
+            Location location = new Location("OnMapClick");
+            location.setLatitude(latLng.latitude);
+            location.setLongitude(latLng.longitude);
+            mOnMapClickListener.onMapClick(location);
+        }
+    }
+
+    @Override
+    public void addGroundTruthMarker(Location location) {
+        if (mMap == null) {
+            return;
+        }
+        LatLng latLng = MapUtils.makeLatLng(location);
+        if (mGroundTruthMarker == null) {
+            mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(Application.get().getString(R.string.ground_truth_marker_title)));
+        } else {
+            mGroundTruthMarker.setPosition(latLng);
+        }
     }
 
     @Override
@@ -343,13 +394,17 @@ public class GpsMapFragment extends SupportMapFragment
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //Show the location on the map
+        mMapController.restoreState(mSavedInstanceState, getArguments(), mGroundTruthMarker == null);
+
+        checkMapPreferences();
+
+        // Show the location on the map
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException e) {
-            Log.e(TAG, "Tried to initialize my location on Google Map - " + e);
+            Log.e(mMapController.getMode(), "Tried to initialize my location on Google Map - " + e);
         }
-        //Set location source
+        // Set location source
         mMap.setLocationSource(this);
         // Listener for camera changes
         mMap.setOnCameraChangeListener(this);
@@ -357,15 +412,76 @@ public class GpsMapFragment extends SupportMapFragment
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         GpsTestActivity.getInstance().addListener(this);
     }
 
-
     /**
      * Returns true if Google Play Services is available, false if it is not
      */
-    public static boolean isGooglePlayServicesInstalled() {
+    private static boolean isGooglePlayServicesInstalled() {
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS;
+    }
+
+    /**
+     * Sets the listener that should receive map click events
+     * @param listener the listener that should receive map click events
+     */
+    public void setOnMapClickListener(OnMapClickListener listener) {
+        mOnMapClickListener = listener;
+    }
+
+    private void checkMapPreferences() {
+        SharedPreferences settings = Application.getPrefs();
+        if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
+            if (mMap.getMapType() != Integer.valueOf(
+                    settings.getString(getString(R.string.pref_key_map_type),
+                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+            )) {
+                mMap.setMapType(Integer.valueOf(
+                        settings.getString(getString(R.string.pref_key_map_type),
+                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
+                ));
+            }
+        } else if (mMap != null && mMapController.getMode().equals(MODE_ACCURACY)) {
+            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        }
+        if (mMapController.getMode().equals(MODE_MAP)) {
+            mRotate = settings
+                    .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
+            mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        }
+    }
+
+    /**
+     * Draws a line on the map between the two locations if its greater than a threshold value defined
+     * by DRAW_LINE_THRESHOLD_METERS
+     * @param loc1
+     * @param loc2
+     */
+    @Override
+    public boolean drawPathLine(Location loc1, Location loc2) {
+        if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
+            return false;
+        }
+        Polyline line = mMap.addPolyline(new PolylineOptions()
+                .add(MapUtils.makeLatLng(loc1), MapUtils.makeLatLng(loc2))
+                .color(Color.RED)
+                .width(2.0f)
+                .geodesic(true));
+        mPathLines.add(line);
+        return true;
+    }
+
+    /**
+     * Removes all path lines from the map
+     */
+    @Override
+    public void removePathLines() {
+        for (Polyline line : mPathLines) {
+            line.remove();
+        }
+        mPathLines = new ArrayList<>();
     }
 }
