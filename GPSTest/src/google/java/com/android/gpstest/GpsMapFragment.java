@@ -227,10 +227,15 @@ public class GpsMapFragment extends SupportMapFragment
             }
             if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
                 // Draw line between this and last location
-                drawPathLine(mLastLocation, loc);
+                boolean drawn = drawPathLine(mLastLocation, loc);
+                if (drawn) {
+                    mLastLocation = loc;
+                }
             }
         }
-        mLastLocation = loc;
+        if (mLastLocation == null) {
+            mLastLocation = loc;
+        }
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -456,9 +461,9 @@ public class GpsMapFragment extends SupportMapFragment
      * @param loc2
      */
     @Override
-    public void drawPathLine(Location loc1, Location loc2) {
+    public boolean drawPathLine(Location loc1, Location loc2) {
         if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
-            return;
+            return false;
         }
         Polyline line = mMap.addPolyline(new PolylineOptions()
                 .add(MapUtils.makeLatLng(loc1), MapUtils.makeLatLng(loc2))
@@ -466,6 +471,7 @@ public class GpsMapFragment extends SupportMapFragment
                 .width(2.0f)
                 .geodesic(true));
         mPathLines.add(line);
+        return true;
     }
 
     /**

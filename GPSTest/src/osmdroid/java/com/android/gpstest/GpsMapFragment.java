@@ -268,9 +268,11 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
         if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
             // Draw line between this and last location
-            drawPathLine(mLastLocation, loc);
+            boolean drawn = drawPathLine(mLastLocation, loc);
+            if (drawn) {
+                mLastLocation = loc;
+            }
         }
-        mLastLocation = loc;
         if (mMapController.getMode().equals(MODE_ACCURACY) && !mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
             // Draw error line between ground truth and calculated position
             GeoPoint gt = MapUtils.makeGeoPoint(mMapController.getGroundTruthLocation());
@@ -299,6 +301,9 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
             mMyLocationMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER);
             mMap.getOverlays().remove(mMyLocationMarker);
             mMap.getOverlays().add(mMyLocationMarker);
+        }
+        if (mLastLocation == null) {
+            mLastLocation = loc;
         }
         mMap.invalidate();
     }
@@ -390,9 +395,9 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
      * @param loc2
      */
     @Override
-    public void drawPathLine(Location loc1, Location loc2) {
+    public boolean drawPathLine(Location loc1, Location loc2) {
         if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
-            return;
+            return false;
         }
         Polyline line = new Polyline();
         List<GeoPoint> points = Arrays.asList(MapUtils.makeGeoPoint(loc1), MapUtils.makeGeoPoint(loc2));
@@ -402,6 +407,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
         mMap.getOverlayManager().add(line);
 
         mPathLines.add(line);
+        return true;
     }
 
     /**

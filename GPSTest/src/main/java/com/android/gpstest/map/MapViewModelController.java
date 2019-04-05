@@ -29,7 +29,15 @@ public class MapViewModelController {
 
         void addGroundTruthMarker(Location location);
 
-        void drawPathLine(Location loc1, Location loc2);
+        /**
+         * Draws a path line on the map between the two points if the distance between the two points
+         * exceeds a threshold
+         * @param loc1
+         * @param loc2
+         * @return true if the line was drawn, or false if the distance between the points didn't
+         * exceed the threshold and the line was not drawn
+         */
+        boolean drawPathLine(Location loc1, Location loc2);
 
         void removePathLines();
     }
@@ -106,10 +114,13 @@ public class MapViewModelController {
             Location lastLocation = null;
             // Restore the path lines on the map
             for (Pair<Location, MeasuredError> pair : mViewModel.getLocationErrorPairs()) {
+                boolean drawn = false;
                 if (lastLocation != null) {
-                    mMap.drawPathLine(lastLocation, pair.first);
+                    drawn = mMap.drawPathLine(lastLocation, pair.first);
                 }
-                lastLocation = pair.first;
+                if (lastLocation == null || drawn) {
+                    lastLocation = pair.first;
+                }
             }
         }
     }
