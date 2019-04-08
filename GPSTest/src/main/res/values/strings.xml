@@ -218,10 +218,10 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Beidou B1C carrier frequency</b>
-        - B1C is now shown correctly for Beidou satellites in CF column.\n&#8226;\u0020
-        <b>Option for turning off background GNSS use</b>
-        - If enabled, will turn off GNSS when using the Home and Multitasking buttons to leave app.\n&#8226;\u0020
+        <b>Accuracy mode</b>
+        - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
+        <b>Improved support for certain satellites</b>
+        - New Galileo satellites, CF labels for EGNOS and MSAS SBAS.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
