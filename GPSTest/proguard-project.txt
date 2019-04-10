@@ -24,3 +24,8 @@
 
 # Keep all GPSTest Android classes
 -keep class com.android.gpstest.** { *; }
+
+# for SlidingUpPanelLayout and compiling with API 28 (see https://github.com/barbeau/gpstest/issues/273)
+-dontwarn com.sothree.**
+-keep class com.sothree.**
+-keep interface com.sothree.**
