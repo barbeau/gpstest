@@ -52,11 +52,13 @@ public class CarrierFreqUtils {
                 } else if (carrierFrequencyMhz >= 1242.0000f && carrierFrequencyMhz <= 1252.000f) {
                     // Actual range is 1242.9375 - 1251.6875, but allow padding for float comparisons - #103
                     return "L2";
-                } else if (carrierFrequencyMhz >= 1200.0000f && carrierFrequencyMhz <= 1210.000f) {
+                } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14f, TOLERANCE_MHZ)) {
                     // Exact range is unclear - appears to be 1202.025 - 1207.14 - #103
                     return "L3";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                     return "L5";
+                } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
+                    return "L1-C";
                 }
                 break;
             case BEIDOU:

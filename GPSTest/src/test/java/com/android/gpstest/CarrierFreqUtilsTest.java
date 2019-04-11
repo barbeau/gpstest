@@ -61,14 +61,14 @@ public class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.GLONASS, 1, 1251.6875f);
         assertEquals("L2",label);
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.GLONASS, 1, 1202.025f);
-        assertEquals("L3",label);
-
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.GLONASS, 1, 1207.14f);
         assertEquals("L3",label);
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.GLONASS, 1, 	1176.45f);
         assertEquals("L5",label);
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.GLONASS, 1, 	1575.420f);
+        assertEquals("L1-C",label);
 
         // QZSS
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.QZSS, 1, 	1575.42f);
