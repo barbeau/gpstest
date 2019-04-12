@@ -1,7 +1,6 @@
 language: android
 jdk: oraclejdk8
-# Use the Travis Container-Based Infrastructure
-sudo: false
+sudo: required
 
 cache:
   directories:
@@ -35,3 +34,12 @@ android:
 
 script:
   - ./gradlew assembleGoogleDebug assembleOsmdroidDebug test -PdisablePreDex
+
+# Transifex client configuration - https://docs.transifex.com/integrations/github#section-integrating-with-travis-ci
+after_success:
+- pip install virtualenv
+- virtualenv ~/env
+- source ~/env/bin/activate
+- pip install transifex-client
+- sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
+- tx push -s
