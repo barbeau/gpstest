@@ -1,5 +1,6 @@
 [main]
 host = https://www.transifex.com
+lang_map = de_DE: de_rDE, zh-Hans: zh-rCN
 
 [gpstest-android.strings-xml]
 file_filter = GPSTest/src/main/res/values-<lang>/strings.xml
