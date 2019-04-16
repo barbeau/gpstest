@@ -15,15 +15,23 @@
  */
 package com.android.gpstest;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
+
 import com.android.gpstest.util.LocationUtils;
-import com.android.gpstest.util.MathUtils;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.assertEquals;
+import java.util.Locale;
+
+import androidx.test.runner.AndroidJUnit4;
+
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+@RunWith(AndroidJUnit4.class)
 public class LocationUtilsTest {
 
     /**
@@ -31,6 +39,9 @@ public class LocationUtilsTest {
      */
     @Test
     public void testIsValidLatitude() {
+        // Test English
+        setLocale("en", "US");
+
         // Good latitudes
         assertTrue(LocationUtils.isValidLatitude("0.0"));
         assertTrue(LocationUtils.isValidLatitude("1"));
@@ -44,6 +55,23 @@ public class LocationUtilsTest {
         assertFalse(LocationUtils.isValidLatitude("abcd"));
         assertFalse(LocationUtils.isValidLatitude("-90.1"));
         assertFalse(LocationUtils.isValidLatitude("90.1"));
+
+        // Test German
+        setLocale("de", "DE");
+
+        // Good latitudes
+        assertTrue(LocationUtils.isValidLatitude("0,0"));
+        assertTrue(LocationUtils.isValidLatitude("1"));
+        assertTrue(LocationUtils.isValidLatitude("-82,0"));
+        assertTrue(LocationUtils.isValidLatitude("-90,0"));
+        assertTrue(LocationUtils.isValidLatitude("82,0"));
+        assertTrue(LocationUtils.isValidLatitude("90,0"));
+
+        // Bad latitudes
+        assertFalse(LocationUtils.isValidLatitude("NaN"));
+        assertFalse(LocationUtils.isValidLatitude("abcd"));
+        assertFalse(LocationUtils.isValidLatitude("-90,1"));
+        assertFalse(LocationUtils.isValidLatitude("90,1"));
     }
 
     /**
@@ -51,6 +79,9 @@ public class LocationUtilsTest {
      */
     @Test
     public void testIsValidLongitude() {
+        // Test English
+        setLocale("en", "US");
+
         // Good longitudes
         assertTrue(LocationUtils.isValidLongitude("0.0"));
         assertTrue(LocationUtils.isValidLongitude("1"));
@@ -67,6 +98,26 @@ public class LocationUtilsTest {
         assertFalse(LocationUtils.isValidLongitude("abcd"));
         assertFalse(LocationUtils.isValidLongitude("-180.1"));
         assertFalse(LocationUtils.isValidLongitude("180.1"));
+
+        // Test German
+        setLocale("de", "DE");
+
+        // Good longitudes
+        assertTrue(LocationUtils.isValidLongitude("0.0"));
+        assertTrue(LocationUtils.isValidLongitude("1"));
+        assertTrue(LocationUtils.isValidLongitude("-82,0"));
+        assertTrue(LocationUtils.isValidLongitude("-90,0"));
+        assertTrue(LocationUtils.isValidLongitude("82,0"));
+        assertTrue(LocationUtils.isValidLongitude("90,0"));
+        assertTrue(LocationUtils.isValidLongitude("-90,1"));
+        assertTrue(LocationUtils.isValidLongitude("90,1"));
+        assertTrue(LocationUtils.isValidLongitude("-180,0"));
+        assertTrue(LocationUtils.isValidLongitude("180,0"));
+
+        // Bad longitudes
+        assertFalse(LocationUtils.isValidLongitude("abcd"));
+        assertFalse(LocationUtils.isValidLongitude("-180,1"));
+        assertFalse(LocationUtils.isValidLongitude("180,1"));
     }
 
     /**
@@ -74,6 +125,9 @@ public class LocationUtilsTest {
      */
     @Test
     public void testIsValidAltitude() {
+        // Test English
+        setLocale("en", "US");
+
         // Good altitudes
         assertTrue(LocationUtils.isValidAltitude("0.0"));
         assertTrue(LocationUtils.isValidAltitude("1"));
@@ -84,5 +138,30 @@ public class LocationUtilsTest {
 
         // Bad altitudes
         assertFalse(LocationUtils.isValidAltitude("abcd"));
+
+        // Test German
+        setLocale("de", "DE");
+
+        // Good altitudes
+        assertTrue(LocationUtils.isValidAltitude("0,0"));
+        assertTrue(LocationUtils.isValidAltitude("1"));
+        assertTrue(LocationUtils.isValidAltitude("-10,0"));
+        assertTrue(LocationUtils.isValidAltitude("-10,0"));
+        assertTrue(LocationUtils.isValidAltitude("1000,0"));
+        assertTrue(LocationUtils.isValidAltitude("-1000,0"));
+
+        // Bad altitudes
+        assertFalse(LocationUtils.isValidAltitude("abcd"));
+    }
+
+    private void setLocale(String language, String country) {
+        Locale locale = new Locale(language, country);
+        // Update locale for date formatters
+        Locale.setDefault(locale);
+        // Update locale for app resources
+        Resources res = getTargetContext().getResources();
+        Configuration config = res.getConfiguration();
+        config.locale = locale;
+        res.updateConfiguration(config, res.getDisplayMetrics());
     }
 }

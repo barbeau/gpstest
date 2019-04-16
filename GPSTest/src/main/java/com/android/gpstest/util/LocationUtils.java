@@ -19,6 +19,8 @@ import android.location.Location;
 import android.os.Build;
 import android.os.SystemClock;
 
+import java.text.NumberFormat;
+
 public class LocationUtils {
 
     /**
@@ -67,7 +69,7 @@ public class LocationUtils {
     public static boolean isValidLatitude(String latitude) {
         double latitudeDouble;
         try {
-            latitudeDouble = Double.parseDouble(latitude);
+            latitudeDouble = NumberFormat.getInstance().parse(latitude).doubleValue();
         } catch (Exception e) {
             return false;
         }
@@ -82,7 +84,7 @@ public class LocationUtils {
     public static boolean isValidLongitude(String longitude) {
         double longitudeDouble;
         try {
-            longitudeDouble = Double.parseDouble(longitude);
+            longitudeDouble = NumberFormat.getInstance().parse(longitude).doubleValue();
         } catch (Exception e) {
             return false;
         }
@@ -97,7 +99,7 @@ public class LocationUtils {
     public static boolean isValidAltitude(String altitude) {
         double altitudeDouble;
         try {
-            altitudeDouble = Double.parseDouble(altitude);
+            altitudeDouble = NumberFormat.getInstance().parse(altitude).doubleValue();
         } catch (Exception e) {
             return false;
         }

@@ -19,6 +19,8 @@ package com.android.gpstest.util;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 /**
  * A utility class containing arithmetic and geometry helper methods.
@@ -163,5 +165,20 @@ public class MathUtils {
     public static String fromBase64(String base64) throws UnsupportedEncodingException {
         byte[] data = Base64.decode(base64, Base64.DEFAULT);
         return new String(data, "UTF-8");
+    }
+
+    /**
+     * Converts the provided string input to a double, and handles locale issues such as commas
+     * instead of periods.  Does NOT validate input.
+     * @param input string version of double to be converted
+     * @return double value of the input string, or null if there is a parsing error
+     */
+    public static Double toDouble(String input) {
+        try {
+            return NumberFormat.getInstance().parse(input).doubleValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

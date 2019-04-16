@@ -352,12 +352,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         Location groundTruthLocation = new Location("ground_truth");
 
         if (!isEmpty(mLatText.getEditText().getText().toString()) && !isEmpty(mLongText.getEditText().getText().toString())) {
-            groundTruthLocation.setLatitude(Double.valueOf(mLatText.getEditText().getText().toString()));
-            groundTruthLocation.setLongitude(Double.valueOf(mLongText.getEditText().getText().toString()));
+            groundTruthLocation.setLatitude(MathUtils.toDouble(mLatText.getEditText().getText().toString()));
+            groundTruthLocation.setLongitude(MathUtils.toDouble(mLongText.getEditText().getText().toString()));
         }
         if (!isEmpty(mAltText.getEditText().getText().toString())) {
             // Use altitude for measuring vertical error
-            groundTruthLocation.setAltitude(Double.valueOf(mAltText.getEditText().getText().toString()));
+            groundTruthLocation.setAltitude(MathUtils.toDouble(mAltText.getEditText().getText().toString()));
         }
         mViewModel.setGroundTruthLocation(groundTruthLocation);
         mViewModel.setBenchmarkCardCollapsed(true);
