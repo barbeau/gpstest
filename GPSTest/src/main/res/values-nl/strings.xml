@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-/*
+/* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau, Dennis Dolman
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
     <string name="gps_status_title">Status</string>
     <string name="gps_map_title">Kaart</string>
     <string name="gps_sky_title">Hemel</string>
+    <string name="gps_accuracy_title">Nauwkeurigheid</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Hulp data importeren</string>
@@ -63,30 +64,29 @@
     <string name="gps_latitude_label">Breedtegraad:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
     <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
-
     <string name="gps_longitude_label">Lengtegraad:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Tijd:</string>
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
-	<string name="gps_altitude_value_feet">%1$.1f ft</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Hoogte (MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
-	<string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Acc:</string>
-	<string name="gps_accuracy_value_meters">%1$.1f m</string>
-	<string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
-	<string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
     <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Snelheid:</string>
     <string name="gps_speed_value_meters_sec">%1$.1f m/sec</string>
-	<string name="gps_speed_value_kilometers_hour">%1$.1f km/u</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/u</string>
     <string name="gps_speed_value_miles_hour">%1$.1f m/u</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
     <string name="gps_speed_acc_value_meters_sec">%1$.1f m/sec</string>
-	<string name="gps_speed_acc_value_km_hour">%1$.1f km/u</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/u</string>
     <string name="gps_speed_acc_value_miles_hour">%1$.1f m/u</string>
     <string name="gps_bearing_label">Bearing:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
@@ -101,7 +101,7 @@
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
-	<string name="sbas_flag_image_label">SBAS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
@@ -119,15 +119,40 @@
     <string name="enable_gps_positive_button">GPS inschakelen</string>
     <string name="enable_gps_negative_button">Nee</string>
     <string name="gps_set_location_listener">GPS gestart met interval = %1$ss, min. afst. = %2$sm</string>
-    
     <string name="clear_assist_warning_title">Verwijder hulp data?</string>
     <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulp data automatisch te herladen. Als jouw apparaat handmatige invoer niet ondersteund, zal GPS bij geen enkele andere app meer werken voordat dit voltooid is. Weet je het zeker??</string>
     <string name="never_ask_again">Niet meer vragen</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
-	<string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellieten niet beschikbaar</string>
-    <string name="sbas_not_available">Satellite-based Augmentation System (SBAS)  satellieten niet beschikbaar</string>	    
+    <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellieten niet beschikbaar</string>
+    <string name="sbas_not_available">Satellite-based Augmentation System (SBAS)  satellieten niet beschikbaar</string>
     <string name="menu_option_sort_by">Sortering</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Jouw breedtegraad</string>
+    <string name="ground_truth_longitude">Jouw lengtegraad</string>
+    <string name="ground_truth_altitude">Je hoogte in WGS84 (Optioneel)</string>
+    <string name="set_ground_truth_title">Meet nauwkeurigheid</string>
+    <string name="set_ground_truth_subtitle">Tap op de kaart of type je locatie in</string>
+    <string name="save">Opslaan</string>
+    <string name="edit">Aanpassen</string>
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="ground_truth_marker_title">Je echte locatie</string>
+    <string name="ground_truth_invalid_location_title">Onjuiste locatie</string>
+    <string name="ground_truth_invalid_lat">De breedtegraad moet in decimale graden liggen tussen -90 en 90
+</string>
+    <string name="ground_truth_invalid_long">De Lengtegraad moet in decimale graden liggen tussen -180 en 180</string>
+    <string name="ground_truth_invalid_alt"> In WGS84 moet de hoogte in meters uitgedrukt worden.</string>
+
+    <string name="horizontal_error_label">Fout</string>
+    <string name="measured_error_graph_label">Meetwaarde fout</string>
+    <string name="estimated_accuracy_graph_label">Nauwkeurigheid geschat door hardware</string>
+    <string name="horizontal_vertical_error_label">H/V Fout</string>
+    <string name="avg_error_label">avg %1$dfixes</string>
+    <string name="benchmark_header_error_divider">/</string>
+    <string name="benchmark_error">%1$.2f</string>
+    <string name="fix_number">Fix #</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
@@ -151,8 +176,8 @@
     <string name="sky_legend_shape_galileo">Galileo (Europese Unie)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    
-	<string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
+
+    <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Europese Unie)</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
@@ -180,11 +205,9 @@
     <!-- Permissions -->
     <string name="title_location_permission">Locatie permissie vereist!</string>
     <string name="text_location_permission">GPSTest heeft toegang nodig tot jouw locatie om GNSS data te tonen</string>
-    <string name="second_text_location_permission"> Als je \"Nooit meer vragen"\ selecteert , moet je de app opnieuw installeren of toegang geven via de systeem instellingen. </string>
     <string name="ok">Oke</string>
     <string name="exit">Afsluiten</string>
 
-	
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complimenten, kudo\'s of bug reports zijn welkom!\n\n\n</string>
@@ -244,6 +267,9 @@
     <string name="pref_gps_min_distance_dialog_title">Vul een min. afstand in, in meters</string>
     <string name="pref_gps_min_distance_invalid_entry">de minimale afstand moet een nummer zijn</string>
 
+    <string name="pref_stop_gnss_in_background_title">Stop GNSS in de achtergrond</string>
+    <string name="pref_stop_gnss_in_background_summary">Indien ingeschakeld, stopt GNSS altijd wanneer de GPStest op de achtergrond draait. (bijvoorbeeld wanneer je de knop \'Start\' of \'Multitasking\' gebruikt om van app te wisselen)</string>
+
     <string name="pref_analyze_gps_accuracy_title">Analyseer GNSS nauwkeurigheid</string>
     <string name="pref_analyze_gps_accuracy_summary">Gebruik GPStest om GNSS fouten te meten
     </string>
@@ -275,16 +301,20 @@
     <string name="pref_dark_theme_title">Gebruik het donkere thema</string>
     <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de tekst een lichte kleur.
 	</string>
+
     <string name="pref_dms_mode_title">Gebruik DMS formaat</string>
     <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden inplaats van decimale graden</string>
-	<string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
+
+    <string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
     <string name="preferences_preferred_distance_units_option_feet">Voet</string>
+
     <string name="preferences_preferred_speed_units_title">Voorkeurs snelheidseenheden</string>
     <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per seconden</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per uur</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Mijlen per uur</string>
-     <!-- Units -->
+
+    <!-- Units -->
     <string name="feet_abbreviation">ft</string>
     <string name="meters_abbreviation">m</string>
 
