@@ -24,7 +24,6 @@
     <string name="gps_status_title">状态</string>
     <string name="gps_map_title">地图</string>
     <string name="gps_sky_title">天空</string>
-
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">修改辅助数据</string>
     <string name="force_xtra_injection">导入XTRA数据</string>
@@ -186,14 +185,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>北斗B1C运营频率</b>
-        - 现在，B1C将会展示在北斗卫星的CF栏中。\n&#8226;\u0020
-        <b>关闭后台运行的选项</b>
-        - 启用后，当应用处于后台时将不会启用GPS。\n&#8226;\u0020
-        <b>Bug修复</b>
-        - 请见 http://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->
