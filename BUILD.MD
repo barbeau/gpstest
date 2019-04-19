@@ -51,3 +51,33 @@ To build the release build, run:
 If Gradle is running as a daemon, you'll be prompted for the keystore/key password via a popup dialog box. If you're not running Gradle as a daemon, command will prompt for your passwords (See https://github.com/barbeau/gpstest/issues/87).
 
 If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease -D org.gradle.daemon=false`.
+
+## Troubleshooting
+
+### When importing to Android Studio, I get an error "You are using an old, unsupported version of Gradle..."
+
+If you're using Android Studio v0.4.2 or lower, when importing, please be sure to select the "settings.gradle" file in the root, **NOT** the project directory.
+You will get the above error if you select the project directory / name of the project.
+
+### I get build errors for the Android Support libraries or Google APIs
+
+Open Android SDK Manager, and under the "Extras" category make sure you've installed both the "Android Support Repository" (in addition to the "Android Support library") as well as the
+ "Google Repository".  Also, make sure you have the Google API installed for the API level that you're working with in the "/build.gradle" file,
+ including the "Android SDK Build-tools" version (at the top of the "Tools" category in the Android SDK Manager) that
+ matches the compileSdkVersion and buildToolsVersion numbers in /GPSTest/build.gradle.
+
+### I get the import gradle project error - “Cause: unexpected end of block data”
+
+Make sure you have the Google API installed for the API level that you're working with in the `/build.gradle` file,
+ including the "Android SDK Build-tools" version (at the top of the "Tools" category in the Android SDK Manager) that
+ matches the `compileSdkVersion` and `buildToolsVersion` numbers in `/GPSTest/build.gradle`.
+
+### Android Studio or Gradle can't find my Android SDK, or the API Levels that I have installed
+
+Make sure that you're consistently using the same Android SDK throughout Android Studio and your environmental variables.
+Android Studio comes bundled with an Android SDK, and can get confused if you're pointing to this SDK within Android Studio
+but have your environmental variables pointed elsewhere.  Click "File->Project Structure", and then under "Android SDK"
+make sure you "Android SDK Location" is the correct location of your Android SDK.
+
+Also, make sure you've set the "ANDROID_HOME" environmental variable to your Android SDK location and
+the "JAVA_HOME" environmental variables to point to your JDK folder.
