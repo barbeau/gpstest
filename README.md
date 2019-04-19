@@ -43,7 +43,7 @@ GPSTest is licensed under [Apache v2.0](https://www.apache.org/licenses/LICENSE-
 
 You can open and build this project using [Android Studio](https://developer.android.com/studio).  For more details, see our [Build documentation](BUILD.MD).
 
-### Contributing
+## Contributing
 
 We welcome contributions to the project!  Please see our [Contributing Guide](.github/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
 
