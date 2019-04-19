@@ -1,39 +1,47 @@
 language: android
-jdk: oraclejdk8
-sudo: required
+
+jdk:
+- oraclejdk8
+
+before_install:
+# Install SDK license so Android Gradle plugin can install deps.
+- mkdir "$ANDROID_HOME/licenses" || true
+- echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
+- echo "24333f8a63b6825ea9c5514f83c2829b004d1fee" >> "$ANDROID_HOME/licenses/android-sdk-license"
+# Install the rest of tools (e.g., avdmanager)
+- sdkmanager tools
+# Install the system image
+- sdkmanager "system-images;android-18;default;armeabi-v7a"
+# Create and start emulator for the script. Meant to race the install task.
+- echo no | avdmanager create avd --force -n test -k "system-images;android-18;default;armeabi-v7a"
+- $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+
+install: ./gradlew clean assemble assembleGoogleTest assembleOsmdroidTest --stacktrace
+
+before_script:
+- android-wait-for-emulator
+- adb shell input keyevent 82
+
+script: ./gradlew check connectedCheck -PdisablePreDex --stacktrace
+
+branches:
+  except:
+  - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+before_cache:
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
-
-env:
-  global:
-    - ANDROID_API_LEVEL=28
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-    - ANDROID_ABI=armeabi-v7a
-    - ANDROID_TAG=google_apis
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
-
-android:
-  components:
-    - tools # to get the new `repository-11.xml`
-    - platform-tools
-    - tools # to install Android SDK tools 25.1.x
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    # For Google APIs
-    - addon-google_apis-google-$ANDROID_API_LEVEL
-    # Google Play Services
-    - extra-google-google_play_services
-    # Support library
-    - extra-android-support
-    # Latest artifacts in local repository
-    - extra-google-m2repository
-    - extra-android-m2repository
-
-script:
-  - ./gradlew assembleGoogleDebug assembleOsmdroidDebug test -PdisablePreDex
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/.android/build-cache
 
 # Transifex client configuration - https://docs.transifex.com/integrations/github#section-integrating-with-travis-ci
 after_success:
