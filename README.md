@@ -9,7 +9,7 @@ The #1 open-source global navigation satellite system (GNSS) testing app
       alt="Get it on F-Droid"
       height="80">](https://f-droid.org/packages/com.android.gpstest.osmdroid/)
 
-It supports the following satellite systems:
+It supports dual-frequency¹ GNSS for:
 
 * GPS (USA Navstar)
 * GLONASS (Russia)
@@ -24,6 +24,8 @@ It supports the following satellite systems:
     * System for Differential Corrections and Monitoring (SDCM) (Russia)
     * Satellite Navigation Augmentation System (SNAS) (China)
     * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
+    
+¹***Dual-frequency GNSS requires device hardware support and Android 8.0 Oreo or higher. See [Dual-frequency GNSS on Android](https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c) for more details.***.
 
 Questions?  Check out the [FAQ](FAQ.md), our [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 
