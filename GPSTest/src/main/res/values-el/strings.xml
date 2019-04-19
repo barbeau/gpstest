@@ -1,6 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-/*
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau, Jim
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -22,6 +24,7 @@
     <string name="gps_status_title">Κατάσταση</string>
     <string name="gps_map_title">Χάρτης</string>
     <string name="gps_sky_title">Ουρανός</string>
+    <string name="gps_accuracy_title">Ακρίβεια</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Τροποποιήστε τα δεδομένα βοήθειας</string>
@@ -56,33 +59,33 @@
     <string name="mode_map">Χάρτης</string>
     <string name="mode_satellite">Δορυφόρος</string>
 
-    <string name="gps_altitude_value_meters">%1$.1f μτ.</string>
-    <string name="gps_altitude_value_feet">%1$.1f πδ.</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f μτ.</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f πδ.</string>
-    <string name="gps_accuracy_value_meters">%1$.1f μτ.</string>
-    <string name="gps_accuracy_value_feet">%1$.1f πδ.</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f μτ.</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f πδ.</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f μ/δευτ.</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f χλμ/ω</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f μιλ/ω</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f μ/δευτ.</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f χλμ/ω</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f μιλ/ω</string>
-
     <string name="gps_latitude_label">Γ. Πλάτος:</string>
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00B0%2$d\'%3$d\"</string>
     <string name="gps_longitude_label">Γ. Μήκος:</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Ωρα:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Υψος:</string>
+    <string name="gps_altitude_value_meters">%1$.1f μτ.</string>
+    <string name="gps_altitude_value_feet">%1$.1f πδ.</string>
     <string name="gps_altitude_msl_label">Υψος (MSL):</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f μτ.</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f πδ.</string>
     <string name="gps_accuracy_label">Ακρίβεια:</string>
     <string name="gps_hor_and_vert_accuracy_label">Κ/Ο Ακρίβεια:</string>
+    <string name="gps_accuracy_value_meters">%1$.1f μτ.</string>
+    <string name="gps_accuracy_value_feet">%1$.1f πδ.</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f μτ.</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f πδ.</string>
     <string name="gps_speed_label">Ταχύτητα:</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f μ/δευτ.</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f χλμ/ω</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f μιλ/ω</string>
     <string name="gps_speed_acc_label">S. Ταχύτητα:</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f μ/δευτ.</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f χλμ/ω</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f μιλ/ω</string>
     <string name="gps_bearing_label">Αξονας:</string>
     <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
@@ -96,6 +99,7 @@
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
@@ -118,6 +122,34 @@
     <string name="never_ask_again">Να μην ερωτηθώ ξανά</string>
     <string name="yes">ΝΑΙ</string>
     <string name="no">ΟΧΙ</string>
+    <string name="gnss_not_available">Παγκόσμιο Δορυφορικό Σύστημα Πλοήγησης (GNSS) μη διαθέσιμοι δορυφόροι</string>
+    <string name="sbas_not_available">Δορυφορικό Σύστημα Επαυξημένης Πραγματικότητας (SBAS) μη διαθέσιμοι δορυφόροι</string>
+    <string name="menu_option_sort_by">Ταξινόμηση κατά</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Το γεωγραφικό πλάτος σας</string>
+    <string name="ground_truth_longitude">Το γεωγραφικό μήκος σας</string>
+    <string name="ground_truth_altitude">Το υψόμετρο σας σε μορφή WGS84 (προαιρετικά)</string>
+    <string name="set_ground_truth_title">Μέτρηση ακριβείας</string>
+    <string name="set_ground_truth_subtitle">Πατήστε πάνω στο χάρτη ή πληκτρολογήστε την τοποθεσία σας</string>
+    <string name="save">Αποθήκευση</string>
+    <string name="edit">Επεξεργασία</string>
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="ground_truth_marker_title">Η πραγματική τοποθεσία σας</string>
+    <string name="ground_truth_invalid_location_title">Εσφαλμένη τοποθεσία</string>
+    <string name="ground_truth_invalid_lat">Το γεωγραφικό πλάτος πρέπει να είναι σε δεκαδικές μοίρες μεταξύ -90 και 90</string>
+    <string name="ground_truth_invalid_long">Το γεωγραφικό μήκος πρέπει να είναι σε δεκαδικές μοίρες μεταξύ -180 και 180</string>
+    <string name="ground_truth_invalid_alt">Το ύψος πρέπει να είναι της μορφής WGS84 σε μέτρα</string>
+
+    <string name="horizontal_error_label">Σφάλμα</string>
+    <string name="measured_error_graph_label">Σφάλμα μέτρησης</string>
+    <string name="estimated_accuracy_graph_label">Ακρίβεια υπολογισμένη από κεραία</string>
+    <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
+    <string name="avg_error_label">%1$d σημεία περίπου</string>
+    <string name="benchmark_header_error_divider">/</string>
+    <string name="benchmark_error">%1$.2f</string>
+    <string name="fix_number">Κλείδωμα #</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
@@ -140,15 +172,17 @@
     <string name="sky_legend_shape_glonass">GLONASS (ΡΩΣΙΑ)</string>
     <string name="sky_legend_shape_galileo">Galileo (ΕΥΡΩΠΑΙΚΗ ΕΝΩΣΗ)</string>
     <string name="sky_legend_shape_qzss">QZSS (ΙΑΠΩΝΙΑ)</string>
-    <string name="sky_legend_shape_sbas_title">Δορυφορικά συστήματα επεκτάσεως (SBAS)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (ΚΙΝΑ)</string>
-    <string name="sky_legend_shape_gagan">GAGAN (ΙΝΔΙΑ)</string>
+
+    <string name="sky_legend_shape_sbas_title">Δορυφορικά συστήματα επεκτάσεως (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (Αμερική)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Ευρωπαική Ενωση)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (ΙΝΔΙΑ)</string>
     <string name="sky_legend_shape_msas">MSAS (Ιαπωνία)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Ρωσσία)</string>
     <string name="sky_legend_shape_snas">SNAS (Κίνα)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+
     <string name="sky_legend_shape_availability_title">Διαθεσιμότητα Σήματος</string>
     <string name="sky_legend_shape_not_in_view">Εκτός ορατότητας της συσκευής</string>
     <string name="sky_legend_shape_in_view">Σε ορατότητα</string>
@@ -165,39 +199,19 @@
 
     <string name="gnss_status_unknown">Άγνωστη επιστροφή κατάστασης</string>
 
+    <!-- Permissions -->
+    <string name="title_location_permission">Χρειάζεται άδεια τοποθεσίας</string>
+    <string name="text_location_permission">Το GPSTest πρέπει να γνωρίζει την τοποθεσία σας για να εμφανίσει δεδομένα στοιχεία GNSS. Εαν επιλέξετε \"Να μη ζητηθεί ξανά\" θα πρέπει να εγκαταστήσετε την εφαρμογή πάλι απο την αρχή ή να ρυθμίσετε τα δικαιώματα της εφαρμογής απο τις ρυθμίσεις της συσκευής.</string>
+    <string name="ok">ΕΝΤΑΞΕΙ</string>
+    <string name="exit">ΕΞΟΔΟΣ</string>
+
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Σχόλιο</string>
     <string name="feedback_body">Παράπονα, kudos, ή προβλήματα είναι καλοδεχούμενα!\n\n\n</string>
     <string name="feedback_error">Δεν είναι δυνατή η αποστολή σχολίων: δεν βρέθηκε σχετική εφαρμογή.</string>
-    <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gnss_not_available">Παγκόσμιο Δορυφορικό Σύστημα Πλοήγησης (GNSS) μη διαθέσιμοι δορυφόροι</string>
-    <string name="sbas_not_available">Δορυφορικό Σύστημα Επαυξημένης Πραγματικότητας (SBAS) μη διαθέσιμοι δορυφόροι</string>
-    <string name="menu_option_sort_by">Ταξινόμηση κατά</string>
 
-    <string name="text_location_permission">Το GPSTest πρέπει να γνωρίζει την τοποθεσία σας για να εμφανίσει δεδομένα στοιχεία GNSS. Εαν επιλέξετε \"Να μη ζητηθεί ξανά\" θα πρέπει να εγκαταστήσετε την εφαρμογή πάλι απο την αρχή ή να ρυθμίσετε τα δικαιώματα της εφαρμογής απο τις ρυθμίσεις της συσκευής.</string>
-
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Διαχωρισμένες λίστες GNSS και SBAS</b>
-        - Οι σχηματισμοί των SBAS έχουν τώρα δική τους κατάσταση εμφάνισης. Δείτε λεπτομέρειες.\n&#8226;\u0020
-        <b>Ταξινόμηση Δορυφόρων</b>
-        - Αλλάξτε τη σειρά των Δορυφόρων με βάση την κατάστασή τους\n&#8226;\u0020
-        <b>Υποστήριξη DMS</b>
-        - Επιλογή απο ρυθμίσεις για προβολή γ.πλατ. &amp; γ.μήκος σε μοίρες/λεπτά/δευτερόλεπτα\n&#8226;\u0020
-        <b>Ρυθμιζόμενες μονάδες μέτρησης ταχύτητας και απόστασης</b>
-        - Επιλογή απο ρυθμίσεις για να αλλάξετε τις μονάδες μέτρησης\n&#8226;\u0020
-        <b>Κοινοποίηση πολλαπλών μορφών τοποθεσίας</b>
-        - Πλέον υποστηρίζεται το Wikimedia Foundation GeoHack\n&#8226;\u0020
-        <b>Δικαιώματα εκτέλεσης</b>
-        - Μόνο κατά την πρώτη έναρξη της εφαρμογής ζητάμε μερικές παραχωρήσεις δικαιωμάτων\n&#8226;\u0020
-        <b>Ελληνική &amp; Δανέζικη μετάφραση</b>
-        - Ευχαριστούμε τους Jim &amp; Dennis!\n&#8226;\u0020
-        <b>Διορθώσεις σφαλμάτων</b>
-        - Δείτε εδώ http://bit.ly/gpstest-releases
-    </string>
-
-    <!-- Units -->
-    <string name="feet_abbreviation">πδ.</string>
-    <string name="meters_abbreviation">μτ.</string>
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->
@@ -230,6 +244,9 @@
     <string name="pref_gps_min_distance_dialog_title">Πληκτρολογήστε ελάχιστη απόσταση, σε μέτρα</string>
     <string name="pref_gps_min_distance_invalid_entry">Ελάχιστη απόσταση πρέπει να είναι αριθμός</string>
 
+    <string name="pref_stop_gnss_in_background_title">Σταμάτημα του GNSS στο παρασκήνιο</string>
+    <string name="pref_stop_gnss_in_background_summary">Αν είναι ενεργοποιημένο, θα σταματήσει πάντα το GNSS κατά την τοποθέτηση της εφαρμογής στο παρασκήνιο (για παράδειγμα, όταν χρησιμοποιείτε το κουμπί Home ή το κουμπί Multitasking για να αλλάξετε εφαρμογές)</string>
+
     <string name="pref_analyze_gps_accuracy_title">Ανάλυση ακριβείας GNSS</string>
     <string name="pref_analyze_gps_accuracy_summary">Χρησιμοποιήστε το Benchmark GPS για να μετρήσετε το σφάλμα GNSS</string>
 
@@ -256,13 +273,21 @@
     <string name="pref_dark_theme_title">Αλλαγή Εμφάνισης</string>
     <string name="pref_dark_theme_summary">Θέμα πιο σκοτεινό με φωτεινά γράμματα</string>
 
+    <string name="pref_dms_mode_title">Χρήση της μορφής DMS</string>
+    <string name="pref_dms_mode_summary">Εμφάνιση γεωγραφικού πλάτους και γεωγραφικού μήκους σε μοίρες, λεπτά και δευτερόλεπτα αντί μοίρες δεκαδικών</string>
+
     <string name="preferences_preferred_distance_units_title">Προτιμώμενη μονάδα μέτρησης απόστασης</string>
     <string name="preferences_preferred_distance_units_option_meters">Μέτρα</string>
     <string name="preferences_preferred_distance_units_option_feet">Πόδια</string>
+
     <string name="preferences_preferred_speed_units_title">Προτιμώμενη μονάδα μέτρησης ταχύτητας</string>
     <string name="preferences_preferred_speed_units_option_meters_per_second">Μέτρα ανα δευτερόλεπτο</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Χιλιόμετρα ανα ώρα</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Μίλια ανα ώρα</string>
+
+    <!-- Units -->
+    <string name="feet_abbreviation">πδ.</string>
+    <string name="meters_abbreviation">μτ.</string>
 
     <!-- Help -->
     <string name="title_help">Βοήθεια</string>
