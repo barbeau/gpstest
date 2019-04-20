@@ -16,13 +16,13 @@ before_install:
 - echo no | avdmanager create avd --force -n test -k "system-images;android-18;default;armeabi-v7a"
 - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
-install: ./gradlew clean assemble assembleGoogleAndroidTest assembleOsmdroidAndroidTest --stacktrace
+install: ./gradlew clean assemble assembleAndroidTest --stacktrace
 
 before_script:
 - android-wait-for-emulator
 - adb shell input keyevent 82
 
-script: ./gradlew check connectedCheck -PdisablePreDex --stacktrace
+script: ./gradlew check connectedCheck --stacktrace
 
 branches:
   except:
