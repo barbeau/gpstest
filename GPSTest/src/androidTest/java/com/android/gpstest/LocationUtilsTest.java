@@ -103,7 +103,7 @@ public class LocationUtilsTest {
         setLocale("de", "DE");
 
         // Good longitudes
-        assertTrue(LocationUtils.isValidLongitude("0.0"));
+        assertTrue(LocationUtils.isValidLongitude("0,0"));
         assertTrue(LocationUtils.isValidLongitude("1"));
         assertTrue(LocationUtils.isValidLongitude("-82,0"));
         assertTrue(LocationUtils.isValidLongitude("-90,0"));
