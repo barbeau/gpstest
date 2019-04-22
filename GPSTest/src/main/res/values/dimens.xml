@@ -11,6 +11,28 @@
     <dimen name="status_margin">5dp</dimen>
     <dimen name="column_padding">3dp</dimen>
 
+    <!-- Map view -->
+    <dimen name="map_card_outer_margin">10dp</dimen>
+    <dimen name="map_motion_outer_margin">26dp</dimen>
+    <dimen name="map_card_inner_margin">16dp</dimen>
+    <dimen name="ground_truth_motion_layout_height">270dp</dimen>
+    <dimen name="ground_truth_cardview_height">285dp</dimen>
+    <dimen name="ground_truth_cardview_height_collapsed">132dp</dimen>
+    <dimen name="map_card_top_margin_collapsed">10dp</dimen>
+    <dimen name="ground_truth_text_size_expanded">11sp</dimen>
+    <dimen name="ground_truth_text_size_collapsed">10sp</dimen>
+    <dimen name="ground_truth_sliding_header_bottom_margin">10dp</dimen>
+    <dimen name="ground_truth_sliding_header_handle_bottom_margin">3dp</dimen>
+    <dimen name="ground_truth_sliding_panel_card_elevation">2dp</dimen>
+    <dimen name="ground_truth_sliding_header_height">110dp</dimen>
+    <dimen name="ground_truth_sliding_header_divider_margin">3sp</dimen>
+    <dimen name="ground_truth_sliding_header_error_text_size">48sp</dimen>
+    <!-- To include vertical error on narrower devices, text size can be max 22sp -->
+    <dimen name="ground_truth_sliding_header_vert_text_size">22sp</dimen>
+    <dimen name="ground_truth_sliding_header_vert_divider_top_margin">32sp</dimen>
+    <dimen name="ground_truth_sliding_header_vert_top_margin">34sp</dimen>
+    <dimen name="ground_truth_sliding_header_corner_radius">24dp</dimen>
+
     <!-- Sky view -->
     <dimen name="sky_legend_text_size_large">14sp</dimen>
     <dimen name="sky_legend_text_size_small">10sp</dimen>

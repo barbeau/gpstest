@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_panel_header"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/ground_truth_sliding_header_height"
+    android:background="@drawable/sliding_panel_header_background"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/ground_truth_sliding_header_error_text_size"
+        android:textStyle="bold"
+        tools:text="10.23" />
+
+    <TextView
+        android:id="@+id/divider_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_divider_top_margin"
+        android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
+        android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
+        app:layout_constraintStart_toEndOf="@id/error"
+        app:layout_constraintBottom_toBottomOf="@id/error"
+        android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
+        android:textColor="@android:color/white"
+        android:text="@string/benchmark_header_error_divider"/>
+
+    <TextView
+        android:id="@+id/vert_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_top_margin"
+        android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
+        android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
+        app:layout_constraintBottom_toBottomOf="@id/error"
+        app:layout_constraintStart_toEndOf="@id/divider_left"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
+        android:textStyle="bold"
+        tools:text="10.65" />
+
+    <TextView
+        android:id="@+id/error_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vert_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/meters_abbreviation"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/error_label"
+        style="@style/TextAppearance.MaterialComponents.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/error"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/horizontal_error_label"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="14sp"/>
+
+    <View
+        android:id="@+id/divider_middle"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/header_text_faded_color"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/avg_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider_middle"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/ground_truth_sliding_header_error_text_size"
+        android:textStyle="bold"
+        tools:text="10.82" />
+
+    <TextView
+        android:id="@+id/divider_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_divider_top_margin"
+        android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
+        android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
+        app:layout_constraintStart_toEndOf="@id/avg_error"
+        app:layout_constraintBottom_toBottomOf="@id/avg_error"
+        android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
+        android:textColor="@android:color/white"
+        android:text="@string/benchmark_header_error_divider"/>
+
+    <TextView
+        android:id="@+id/avg_vert_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_vert_top_margin"
+        android:layout_marginStart="@dimen/ground_truth_sliding_header_divider_margin"
+        android:layout_marginLeft="@dimen/ground_truth_sliding_header_divider_margin"
+        app:layout_constraintBottom_toBottomOf="@id/avg_error"
+        app:layout_constraintStart_toEndOf="@id/divider_right"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/ground_truth_sliding_header_vert_text_size"
+        android:textStyle="bold"
+        tools:text="10.92" />
+
+    <TextView
+        android:id="@+id/avg_error_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginRight="5sp"
+        android:layout_marginTop="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/avg_vert_error"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="@string/meters_abbreviation"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/avg_error_label"
+        style="@style/TextAppearance.MaterialComponents.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toTopOf="@+id/avg_error"
+        app:layout_constraintStart_toEndOf="@id/divider_middle"
+        app:layout_constraintTop_toTopOf="parent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/header_text_faded_color"
+        android:textIsSelectable="false"
+        android:textSize="14sp"/>
+
+    <ImageView
+        android:id="@+id/drawer_handle"
+        android:layout_width="25dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/ground_truth_sliding_header_handle_bottom_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/drawer_handle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

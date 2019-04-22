@@ -1,0 +1,18 @@
+[main]
+host = https://www.transifex.com
+lang_map = de_DE: de-rDE, zh-Hans: zh-rCN, cs_CZ: cs-CZ
+
+[gpstest-android.strings-xml]
+file_filter = GPSTest/src/main/res/values-<lang>/strings.xml
+minimum_perc = 0
+source_file = GPSTest/src/main/res/values/strings.xml
+source_lang = en_US
+type = ANDROID
+
+[gpstest-android.arrays-xml]
+file_filter = GPSTest/src/main/res/values-<lang>/arrays.xml
+minimum_perc = 0
+source_file = GPSTest/src/main/res/values/arrays.xml
+source_lang = en_US
+type = ANDROID
+

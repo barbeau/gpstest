@@ -24,6 +24,7 @@
     <string name="gps_status_title">Status</string>
     <string name="gps_map_title">Map</string>
     <string name="gps_sky_title">Sky</string>
+    <string name="gps_accuracy_title">Accuracy</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modify assist data</string>
@@ -74,8 +75,8 @@
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
-    <string name="gps_accuracy_label">Acc:</string>
-    <string name="gps_hor_and_vert_accuracy_label">H/V Acc:</string>
+    <string name="gps_accuracy_label">E Acc:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
@@ -128,6 +129,31 @@
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellites not available</string>
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satellites not available</string>
     <string name="menu_option_sort_by">Sort by</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Your latitude</string>
+    <string name="ground_truth_longitude">Your longitude</string>
+    <string name="ground_truth_altitude">Your altitude in WGS84 (Optional)</string>
+    <string name="set_ground_truth_title">Measure accuracy</string>
+    <string name="set_ground_truth_subtitle">Tap on map or type your real location</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="ground_truth_marker_title">Your real location</string>
+    <string name="ground_truth_invalid_location_title">Invalid location</string>
+    <string name="ground_truth_invalid_lat">Latitude must be in decimal degrees between -90 and 90</string>
+    <string name="ground_truth_invalid_long">Longitude must be in decimal degrees between -180 and 180</string>
+    <string name="ground_truth_invalid_alt">Altitude must be in WGS84 in meters</string>
+
+    <string name="horizontal_error_label">Error</string>
+    <string name="measured_error_graph_label">Measured error</string>
+    <string name="estimated_accuracy_graph_label">Accuracy estimated by hardware</string>
+    <string name="horizontal_vertical_error_label">H/V Error</string>
+    <string name="avg_error_label">avg %1$d fixes</string>
+    <string name="benchmark_header_error_divider">/</string>
+    <string name="benchmark_error">%1$.2f</string>
+    <string name="fix_number">Fix #</string>
 
     <!-- Sky view -->
     <string name="sky_legend_cn0_low">10</string>
@@ -192,10 +218,10 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Beidou B1C carrier frequency</b>
-        - B1C is now shown correctly for Beidou satellites in CF column.\n&#8226;\u0020
-        <b>Option for turning off background GNSS use</b>
-        - If enabled, will turn off GNSS when using the Home and Multitasking buttons to leave app.\n&#8226;\u0020
+        <b>Accuracy view</b>
+        - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
+        <b>Improved support for certain satellites</b>
+        - New Galileo satellites, CF labels for SBAS (EGNOS and MSAS) and GLONASS (CDMA L1 and L3).\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
@@ -330,14 +356,14 @@
         <b>ID or PRN</b>
         - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
         <b>CF</b>
-        - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices)\n&#8226;\u0020
+        - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices). The new GLONASS CDMA signal for L1 is shown as "L1-C".\n&#8226;\u0020
         <b>SNR</b>
         - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
         - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flags</b>
         - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
-        for the satellite, (U) if the satellite was used in the latest fix\n\n
+        for the satellite, (U) if the satellite was used in calculation of the most recent position fix.  For SBAS, the Android spec does not specify if (U) refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.\n\n
 
         <b>*** Sky View ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
@@ -362,11 +388,15 @@
         &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
         &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
+        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
+        <b>Vertical error</b>
+        - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
+
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
         &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
-        &#8226;\u0020 Chinese translation provided by wangkf\n
+        &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 German translation provided by SIRSteiner\n
         &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
         &#8226;\u0020 Greek translation provided by Jimmy Golfi\n

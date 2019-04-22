@@ -16,6 +16,12 @@
  */
 package com.android.gpstest.util;
 
+import android.util.Base64;
+
+import java.io.UnsupportedEncodingException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 /**
  * A utility class containing arithmetic and geometry helper methods.
  *
@@ -130,5 +136,49 @@ public class MathUtils {
      */
     public static boolean isValidFloat(float value) {
         return value != 0.0f && !Float.isNaN(value);
+    }
+
+    /**
+     * Clamps a value between the given positive min and max.  If abs(value) is less than
+     * min, then min is returned.  If abs(value) is greater than max, then max is returned.
+     * If abs(value) is between min and max, then abs(value) is returned.
+     *
+     * @param min   minimum allowed value
+     * @param value value to be evaluated
+     * @param max   maximum allowed value
+     * @return clamped value between the min and max
+     */
+    public static double clamp(double min, double value, double max) {
+        value = Math.abs(value);
+        if (value >= min && value <= max) {
+            return value;
+        } else {
+            return (value < min ? value : max);
+        }
+    }
+
+    /**
+     * Converts the provided base 64 string to UTF-8
+     * @param base64 the base 64 string to convert to UTF-8
+     * @return the input string converted to UTF-8
+     */
+    public static String fromBase64(String base64) throws UnsupportedEncodingException {
+        byte[] data = Base64.decode(base64, Base64.DEFAULT);
+        return new String(data, "UTF-8");
+    }
+
+    /**
+     * Converts the provided string input to a double, and handles locale issues such as commas
+     * instead of periods.  Does NOT validate input.
+     * @param input string version of double to be converted
+     * @return double value of the input string, or null if there is a parsing error
+     */
+    public static Double toDouble(String input) {
+        try {
+            return NumberFormat.getInstance().parse(input).doubleValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -49,11 +49,11 @@
     <string name="send_location">場所を送信</string>
     <string name="set_fix_frequency">周波数を設定する</string>
     <string name="force_time_injection_success">時間データを注入しました。</string>
-    <string name="force_time_injection_failure">デバイスは時間データを注入をサポートしていません。
+    <string name="force_time_injection_failure">デバイスは時間データの注入をサポートしていません。
     </string>
 
     <string name="force_xtra_injection_success">XTRAデータを注入しました。</string>
-    <string name="force_xtra_injection_failure">デバイスはXTRAデータを注入をサポートしていません。
+    <string name="force_xtra_injection_failure">デバイスはXTRAデータの注入をサポートしていません。
     </string>
 
     <string name="zoom_in">ズームイン</string>
@@ -71,11 +71,11 @@
     <string name="gps_altitude_label">高度:</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_value_feet">%1$.1f ft</string>
-    <string name="gps_altitude_msl_label">高度 (平均海水面):</string>
+    <string name="gps_altitude_msl_label">高度(MSL):</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
     <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">精度:</string>
-    <string name="gps_hor_and_vert_accuracy_label">水平/垂直 精度:</string>
+    <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_accuracy_value_meters">%1$.1f m</string>
     <string name="gps_accuracy_value_feet">%1$.1f ft</string>
     <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
@@ -94,9 +94,9 @@
     <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># 衛星:</string>
     <string name="gps_num_sats_value">%1$d/%2$d</string>
-    <string name="pdop_label">精度低下率:</string>
+    <string name="pdop_label">PDOP:</string>
     <string name="pdop_value">%1$.1f</string>
-    <string name="hvdop_label">水平/垂直 精度低下率:</string>
+    <string name="hvdop_label">H/V PDOP:</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
@@ -113,14 +113,14 @@
     <string name="gps_flags_column_label">フラグ</string>
     <string name="gps_not_supported">システム設定を確認してください - デバイスがGNSS/GPSをサポートしていないようです。</string>
     <string name="install">インストール</string>
-    <string name="no_thanks">結構</string>
+    <string name="no_thanks">いいえ</string>
     <string name="please_install_google_maps">Googleマップが必要です</string>
     <string name="enable_gps_message">GPSは無効です。今すぐ有効にしますか？</string>
     <string name="enable_gps_positive_button">GPSを有効にする</string>
     <string name="enable_gps_negative_button">いいえ</string>
     <string name="gps_set_location_listener">時間間隔は%1$ss、最小距離は%2$smでGPSを開始しました</string>
     <string name="clear_assist_warning_title">アシストデータを削除しますか？</string>
-    <string name="clear_assist_warning">一部のデバイスは24時間でアシストデータを自動更新する。デバイスは手動注入をサポートしていない場合、自動更新が完了するまで、GPSはどのアプリでも作動しません。実行しますか？</string>
+    <string name="clear_assist_warning">一部のデバイスは24時間でアシストデータを自動更新します。デバイスが手動注入をサポートしていない場合、自動更新が完了するまで、GPSはどのアプリでも作動しません。実行しますか？</string>
     <string name="never_ask_again">今後表示しない</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
@@ -172,20 +172,20 @@
 
     <string name="gnss_measurement_status_loc_disabled">GNSSプロバイダまたは場所は無効になっており、有効になるまで更新しません</string>
     <string name="gnss_measurement_status_not_supported">デバイスはGNSS測定の追跡をサポートしていません</string>
-    <string name="gnss_measurement_status_ready">GNSSの測定が正常に追跡されている</string>
+    <string name="gnss_measurement_status_ready">GNSSナビゲーションメッセージが正常に追跡されています</string>
 
     <string name="gnss_status_unknown">不明な状態コールバック</string>
 
     <!-- Permissions -->
     <string name="title_location_permission">位置情報の権限が必要です</string>
-    <string name="text_location_permission">GNSSデータを表示するには、GPSTestが位置情報の権限が必要です。「今後表示しない」を選択した場合は、アプリを再インストールするか、システム設定で位置情報の権限を有効にする必要があります。</string>
+    <string name="text_location_permission">GNSSデータを表示するには、位置情報の権限が必要です。「今後表示しない」を選択した場合は、アプリを再インストールするか、システム設定で位置情報の権限を有効にする必要があります。</string>
     <string name="ok">はい</string>
     <string name="exit">終了</string>
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: フィードバック</string>
     <string name="feedback_body">不満、称賛、バグ報告は歓迎です！\n\n\n</string>
-    <string name="feedback_error">フィードバックを送信できない：適切なアプリが見つかりません。
+    <string name="feedback_error">フィードバックを送信できません：適切なアプリが見つかりません。
     </string>
 
     <!-- What's New -->
@@ -208,7 +208,7 @@
     <string name="pref_map_type_dialog_title">地図の種類を選択</string>
 
     <string name="pref_rotate_map_with_compass_title">コンパスで地図を回転する</string>
-    <string name="pref_rotate_map_with_compass_summary">あなたの方向に基づいて地図の向きを変更する</string>
+    <string name="pref_rotate_map_with_compass_summary">あなたの方向に合わせて地図の向きを変更する</string>
 
     <string name="pref_tilt_map_with_sensors_title">デバイスによる地図を傾斜する</string>
     <string name="pref_tilt_map_with_sensors_summary">デバイスを持ち上げたときに一人称マップビューに変更する</string>
@@ -223,7 +223,7 @@
     <string name="pref_gps_min_time_invalid_entry">間隔は数字でなければなりません</string>
 
     <string name="pref_use_gnss_apis_title">GNSS APIsを使用する</string>
-    <string name="pref_use_gnss_apis_summary">Android 7.0以上で利用できます。チェックを外すと、従来のGPSStatus.Listenerを使用する。</string>
+    <string name="pref_use_gnss_apis_summary">Android 7.0以上で利用できます。チェックを外すと、従来のGPSStatus.Listenerを使用します。</string>
 
     <string name="pref_gps_min_distance_title">最小距離</string>
     <string name="pref_gps_min_distance_summary">GNSS修正の最小距離間隔（メートル単位）</string>
@@ -237,10 +237,10 @@
     <string name="pref_analyze_gps_accuracy_summary">GPS Benckmarkを使用してGNSSエラーを測定する</string>
 
     <string name="pref_display_category_title">画面</string>
-    <string name="pref_keep_screen_on_title">画面をオンにまま</string>
-    <string name="pref_keep_screen_on_summary">画面をオンにままする</string>
-    <string name="pref_true_north_title">真の北に向き</string>
-    <string name="pref_true_north_summary">コンパスは磁北の代わりに真の北に向き</string>
+    <string name="pref_keep_screen_on_title">画面をオンのまま</string>
+    <string name="pref_keep_screen_on_summary">画面をオンのままにする</string>
+    <string name="pref_true_north_title">真北の向き</string>
+    <string name="pref_true_north_summary">コンパスは磁北の代わりに真北を指す</string>
 
     <string name="pref_output_category_title">Androidモニター出力</string>
     <string name="pref_nmea_output_title">NMEA</string>
@@ -349,7 +349,7 @@
         &#8226;\u0020 <b>Mike Lockwood</b> - v1.xのオリジナル開発者\n
         &#8226;\u0020 <b>Sean Barbeau</b> - v2.x以降の開発者\n
         &#8226;\u0020 GPSTestアイコンは、Apache v2.0の下でGoogleによってライセンスされたMaterial Designの「サテライト」アイコンから派生したものです。 他のMaterial DesignアイコンもApache v2.0で使用されています。\n
-        &#8226;\u0020 中国語翻訳は wangkf によって提供\n
+        &#8226;\u0020 中国語翻訳は wangkf, liuyunli, SakuraSa233 &amp; Skimige によって提供\n
         &#8226;\u0020 ドイツ語翻訳は Ronny Steiner によって提供\n
         &#8226;\u0020 オランダ語翻訳は Dennis Dolman によって提供\n
         &#8226;\u0020 ギリシャ語翻訳は Jimmy Golfi によって提供\n
