@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <string name="app_name">GPSTest</string>
+
+    <!-- Fragments -->
+    <string name="gps_status_title">POLOHA</string>
+    <string name="gps_map_title">MAPA</string>
+    <string name="gps_sky_title">KOMPAS</string>
+    <string name="gps_accuracy_title">PŘESNOST</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">Upravit pomocné údaje</string>
+    <string name="force_xtra_injection">Vložit XTRA údaje</string>
+    <string name="force_time_injection">Vložit časové údaje</string>
+    <string name="delete_aiding_data">Vymazat pomocné údaje</string>
+    <string name="navdrawer_item_settings">Nastavení</string>
+    <string name="navdrawer_item_help">Nápověda</string>
+    <string name="navdrawer_item_send_feedback">Zpětná vazba</string>
+    <string name="navdrawer_item_open_source">Navštívit GitHub</string>
+
+    <string name="navigation_drawer_open">Otevřít navigaci</string>
+    <string name="navigation_drawer_close">Zavřít navigaci</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">Spustit</string>
+    <string name="gps_pause">Pozastavit</string>
+
+    <string name="delete_aiding_data_success">Pomocné údaje úspěšně vymazány.</string>
+    <string name="delete_aiding_data_failure">Zařízení nepodporuje vymazání pomocných údajů.</string>
+    <string name="gps_switch">VYP/ZAP</string>
+    <string name="send_location">Odeslat polohu</string>
+    <string name="set_fix_frequency">Nastavit frekvenci</string>
+    <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
+    <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>
+
+    <string name="force_xtra_injection_success">XTRA údaje úspěšně vloženy.</string>
+    <string name="force_xtra_injection_failure">Zařízení nepodporuje vkládání XTRA údajů.</string>
+
+    <string name="zoom_in">Zvětšit</string>
+    <string name="zoom_out">Zmenšit</string>
+    <string name="mode_map">Mapa</string>
+    <string name="mode_satellite">Satelit</string>
+
+    <string name="gps_latitude_label">Zem. šířka:</string>
+    <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
+    <string name="gps_longitude_label">Zem. délka:</string>
+    <string name="gps_longitude_value">%1$.7f\u00B0</string>
+    <string name="gps_fix_time_label">Čas:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Výška (GEOID):</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
+    <string name="gps_altitude_msl_label">Výška (MSL):</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
+    <string name="gps_accuracy_label">Přesnost:</string>
+    <string name="gps_hor_and_vert_accuracy_label">Přesnost (H/V):</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
+    <string name="gps_speed_label">Rychlost:</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_speed_acc_label">Přesnost (R):</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_bearing_label">Poloha (S):</string>
+    <string name="gps_bearing_value">%1$.1f\u00B0</string>
+    <string name="gps_bearing_acc_label">Přesnost (S):</string>
+    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
+    <string name="gps_num_sats_label">Satelity:</string>
+    <string name="gps_num_sats_value">%1$d/%2$d</string>
+    <string name="pdop_label">PDOP:</string>
+    <string name="pdop_value">%1$.1f</string>
+    <string name="hvdop_label">H/V DOP:</string>
+    <string name="hvdop_value">%1$.1f/%2$.1f</string>
+
+    <string name="gps_prn_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="gps_carrier_column_label">CF</string>
+    <string name="gps_snr_column_label">SNR</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">Průměr</string>
+    <string name="gps_elevation_column_label">Elev</string>
+    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
+    <string name="gps_azimuth_column_label">Azim</string>
+    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
+    <string name="gps_flags_column_label">Stav</string>
+    <string name="gps_not_supported">Zařízení pravděpodobně nepodporuje GNNS/GPS. Zkontrolujte nastavení systému.</string>
+    <string name="install">Instalovat</string>
+    <string name="no_thanks">NE, děkuji</string>
+    <string name="please_install_google_maps">Karta MAPA vyžaduje službu Mapy Google.</string>
+    <string name="enable_gps_message">GPS není povolena. Povolit nyní?</string>
+    <string name="enable_gps_positive_button">Povolit GPS</string>
+    <string name="enable_gps_negative_button">Ne</string>
+    <string name="gps_set_location_listener">Spustit GPS s intervalem = %1$ss, min. vzdálenost = %2$sm.</string>
+    <string name="clear_assist_warning_title">Vymazat pomocné údaje?</string>
+    <string name="clear_assist_warning">Některá zařízení potřebují 24 hod. k automatickému obnovení dat. Pokud vaše zařízení nepodporuje ruční vkládání, GPS nemusí pracovat pro žádnou aplikaci, dokud nedojde k dokončení automatického obnovení. Jste si jistí?</string>
+    <string name="never_ask_again">Znovu se nedotazovat</string>
+    <string name="yes">ANO</string>
+    <string name="no">NE</string>
+    <string name="gnss_not_available">GNSS satelity (Global Navigation Satellite System) nejsou dostupné.</string>
+    <string name="sbas_not_available">SBAS satelity (Satellite-based Augmentation System) nejsou dostupné.</string>
+    <string name="menu_option_sort_by">Pořadí v seznamu podle</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Zeměpisná šířka</string>
+    <string name="ground_truth_longitude">Zeměpisná délka</string>
+    <string name="ground_truth_altitude">Nadmořská výška (WGS84)</string>
+    <string name="set_ground_truth_title">Přesnost měření</string>
+    <string name="set_ground_truth_subtitle">Klikněte na mapu nebo zadejte svou skutečnou polohu.</string>
+    <string name="save">Uložit</string>
+    <string name="edit">Upravit</string>
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="ground_truth_marker_title">Skutečná poloha</string>
+    <string name="ground_truth_invalid_location_title">Neplatná poloha</string>
+    <string name="ground_truth_invalid_lat">Hodnota zeměpisné šířky musí být ve stupních od -90° do +90° .</string>
+    <string name="ground_truth_invalid_long">Hodnota zeměpisné délky musí být ve stupních od -180° do +180°.</string>
+    <string name="ground_truth_invalid_alt">Hodnota nadmořské výšky (WGS84) musí být v metrech.</string>
+
+    <string name="horizontal_error_label">Chyba</string>
+    <string name="measured_error_graph_label">Chyba měření</string>
+    <string name="estimated_accuracy_graph_label">Přesnost odhadnuta HW</string>
+    <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
+    <string name="avg_error_label">Průměr %1$d opraven</string>
+    <string name="benchmark_header_error_divider">/</string>
+    <string name="benchmark_error">%1$.2f</string>
+    <string name="fix_number">Průměr</string>
+
+    <!-- Sky view -->
+    <string name="sky_legend_cn0_low">10</string>
+    <string name="sky_legend_cn0_low_middle">18</string>
+    <string name="sky_legend_cn0_middle">27</string>
+    <string name="sky_legend_cn0_middle_high">36</string>
+    <string name="sky_legend_cn0_high">45</string>
+    <string name="sky_legend_cn0_units">(dB-Hz)</string>
+
+    <string name="sky_legend_snr_low">0</string>
+    <string name="sky_legend_snr_low_middle">7</string>
+    <string name="sky_legend_snr_middle">15</string>
+    <string name="sky_legend_snr_middle_high">22</string>
+    <string name="sky_legend_snr_high">30</string>
+    <string name="sky_legend_snr_units">(dB)</string>
+
+    <string name="sky_legend_title">Popis</string>
+    <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
+    <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
+    <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
+
+    <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (European Union)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (India)</string>
+    <string name="sky_legend_shape_msas">MSAS (Japan)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
+    <string name="sky_legend_shape_snas">SNAS (China)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+
+    <string name="sky_legend_shape_availability_title">Dostupnost signálu</string>
+    <string name="sky_legend_shape_not_in_view">Satelity, které nejsou v zorném poli zařízení</string>
+    <string name="sky_legend_shape_in_view">Satelity, které jsou v zorném poli zařízení</string>
+    <string name="sky_legend_shape_used_in_fix"> Satelity, které jsou připojené pro stanovení polohy</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">Poskytování GNSS nebo polohy je zakázáno. Pro aktualizaci polohy povolte GPS.</string>
+    <string name="gnss_nav_msg_status_not_supported">Zařízení nepodporuje navigační zprávy GNSS.</string>
+    <string name="gnss_nav_msg_status_ready">Navigační zprávy GNSS úspěšně vytvořeny.</string>
+
+    <string name="gnss_measurement_status_loc_disabled">Poskytování GNSS nebo polohy je zakázáno. Pro aktualizaci polohy povolte GPS.</string>
+    <string name="gnss_measurement_status_not_supported">Zařízení nepodporuje protokoly měření GNSS.</string>
+    <string name="gnss_measurement_status_ready">Protokoly měření GNSS úspěšně vytvořeny.</string>
+
+    <string name="gnss_status_unknown">Neznámý stav</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">Vyžadováno oprávnění pro určení polohy.</string>
+    <string name="text_location_permission">Aplikace GPSTest vyžaduje přístup k poloze pro zobrazení dat GNSS. Jestliže jste vybrali \"Znovu se nedotazovat\" bude potřeba přeinstalovat aplikaci nebo povolit požadované oprávnění v nastavení systému.</string>
+    <string name="ok">OK</string>
+    <string name="exit">KONEC</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Zpětná vazba</string>
+    <string name="feedback_body">Zprávy o chybách jsou vítány!\n\n\n</string>
+    <string name="feedback_error">Nelze odeslat zpětnou vazbu: Nebyla nalezena žádná vhodná aplikace pro odeslání zprávy.</string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">Co je nového?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Accuracy view</b>
+         - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
+        <b>Improved support for certain satellites</b>
+         - New Galileo satellites, CF labels for SBAS (EGNOS and MSAS) and GLONASS (CDMA L1 and L3).\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - See http://bit.ly/gpstest-releases</string>
+    <string name="main_help_close">Zavřít</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">Nastavení</string>
+    <string name="pref_map_category_title">Mapa</string>
+    <string name="pref_map_type_title">Typ mapy</string>
+    <string name="pref_map_type_summary">Nastavte typ zobrazení mapy.</string>
+    <string name="pref_map_type_dialog_title">Vyberte typ zobrazení mapy</string>
+
+    <string name="pref_rotate_map_with_compass_title">Otáčet mapu</string>
+    <string name="pref_rotate_map_with_compass_summary">Změňte orientaci zobrazení mapy pomocí zařízení.</string>
+
+    <string name="pref_tilt_map_with_sensors_title">Naklápět mapu</string>
+    <string name="pref_tilt_map_with_sensors_summary">Změňte úhel zobrazení mapy pomocí zařízení.</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">Automatické spuštění GNSS</string>
+    <string name="pref_auto_start_gps_summary">Nastavte automatické spuštění GNSS při spouštění aplikace.</string>
+
+    <string name="pref_gps_min_time_title">Interval</string>
+    <string name="pref_gps_min_time_summary">Nastavte čas mezi připojením GNSS v sekundách.</string>
+    <string name="pref_gps_min_time_dialog_title">Zadejte interval v sekundách</string>
+    <string name="pref_gps_min_time_invalid_entry">Interval musí být číslo.</string>
+
+    <string name="pref_use_gnss_apis_title">Použít pro GNSS rozhraní API</string>
+    <string name="pref_use_gnss_apis_summary">Použijte jen pro Android 7.0 a vyšší. Pokud není zaškrtnuto, je použit starší modul GPSStatus.Listener.</string>
+
+    <string name="pref_gps_min_distance_title">Minimální vzdálenost</string>
+    <string name="pref_gps_min_distance_summary">Nastavte min. vzdálenost mezi připojením GNSS v metrech.</string>
+    <string name="pref_gps_min_distance_dialog_title">Zadejte min. vzdálenost v metrech</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. vzdálenost musí být číslo.</string>
+
+    <string name="pref_stop_gnss_in_background_title">Zastavit GNSS</string>
+    <string name="pref_stop_gnss_in_background_summary">Povolte zastavení GNSS při spuštění aplikace na pozadí (např. při použití tlačítka Domů nebo Multitasking pro přepínání aplikací).</string>
+
+    <string name="pref_analyze_gps_accuracy_title">Analyzovat přesnost GNSS</string>
+    <string name="pref_analyze_gps_accuracy_summary">Použijte aplikaci GPS Benchmark pro měření přesnosti GNSS.</string>
+
+    <string name="pref_display_category_title">Zobrazení</string>
+    <string name="pref_keep_screen_on_title">Zapnout obrazovku</string>
+    <string name="pref_keep_screen_on_summary">Zamezte vypnutí obrazovky.</string>
+    <string name="pref_true_north_title">Zobrazit pravý sever</string>
+    <string name="pref_true_north_summary">Zobrazte v kompasu pravý sever místo magnetického.</string>
+
+    <string name="pref_output_category_title">Výstup pro Android Monitor</string>
+    <string name="pref_nmea_output_title">Protokoly NMEA</string>
+    <string name="pref_nmea_output_summary">Použijte protokoly NMEA pro přihlášeni v Android Studiu.</string>
+    <string name="pref_nmea_timestamp_output_title">Časová značka NMEA</string>
+    <string name="pref_nmea_timestamp_output_summary">Použijte časovou značku NMEA ve výstupu.</string>
+    <string name="pref_measurement_output_title">Protokoly měření GNSS</string>
+    <string name="pref_measurement_output_summary">Použijte protokoly měření GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
+    <string name="pref_navigation_message_output_title">Navigační zprávy GNSS</string>
+    <string name="pref_navigation_message_output_summary">Použijte navigační zprávy GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
+
+    <string name="pref_about_category_title">O aplikaci</string>
+    <string name="pref_show_tutorial_title">Zobrazit průvodce aplikací</string>
+    <string name="pref_show_tutorial_summary">Zobrazte průvodce pro použití aplikace.</string>
+
+    <string name="pref_dark_theme_title">Použít tmavé téma</string>
+    <string name="pref_dark_theme_summary">Nastavte tmavou barvu pozadí.</string>
+
+    <string name="pref_dms_mode_title">Použít DMS formát</string>
+    <string name="pref_dms_mode_summary">Zobrazte zeměpisnou šířku a délku ve stupních, minutách a sekundách místo v desetinnách stupňů.</string>
+
+    <string name="preferences_preferred_distance_units_title">Jednotky vzdálenosti</string>
+    <string name="preferences_preferred_distance_units_option_meters">Metr</string>
+    <string name="preferences_preferred_distance_units_option_feet">Stopa</string>
+
+    <string name="preferences_preferred_speed_units_title">Jednotky rychlosti</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Metr za sekundu</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilomentr za hodinu</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Míle za hodinu</string>
+
+    <!-- Units -->
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
+
+    <!-- Help -->
+    <string name="title_help">Nápověda</string>
+
+    <string name="help_text">
+
+        <b>Často kladené otázky (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Zobrazení stavu ***</b>\n\n&#8226;\u0020
+
+        <b>Zem. šířka</b>
+        - latitude - zeměpisná šířka v desetinných stupních (WGS84)\n&#8226;\u0020
+        <b>Zem. délka</b>
+        - longitude - zeměpisná délka v desetinných stupních (WGS84)\n&#8226;\u0020
+        <b>Výška (GEOID)</b>
+        - alt - nadmořská výška v metrech při střední hladině světových oceánů (WGS84)\n&#8226;\u0020
+        <b>Výška (MSL)</b>
+         - alt (MSL) - nadmořská výška v metrech při střední hladině moře (vyžadována podpora NMEA)\n&#8226;\u0020
+        <b>Přesnost</b>
+         - acc - přesnost polohy\n&#8226;\u0020
+        <b>Přesnost (H/V)</b>
+         - h/v acc - horizontální / vertikální přesnost polohy (pro vertikální přesnost polohy je vyžadován Android 8.0 a vyšší)\n&#8226;\u0020
+        <b>Rychlost</b>
+         - speed - rychlost nad zemí v metrech za sekundu\n&#8226;\u0020
+        <b>Přesnost (R)</b>
+         - s. acc - přesnost rychlosti v metrech za sekundu\n&#8226;\u0020
+        <b>Poloha (S)</b>
+         - bearing - horizontální poloha směru k cíli (směr pohybu zařízení) ve stupních (0° - 360°) \n&#8226;\u0020
+        <b>Přesnost (S)</b>
+         - b. acc - přesnost polohy směru k cíli ve stupních\n&#8226;\u0020
+        <b>Satelity</b>
+        - # sats - počet připojených satelitů / počet viditelných satelitů\n&#8226;\u0020
+        <b>PDOP</b>
+        - position (3D) dilution of precision - 3D poměr přesnosti polohy (vyžadována podpora NMEA)
+\n&#8226;\u0020
+        <b>H/V DOP</b>
+       - horizontal / vertical dilution of precision - 2D (H/V) poměr přesnosti polohy (vyžadována podpora NMEA)\n&#8226;\u0020
+        <b>TTFF</b>
+        - time to first fix - čas prvního připojení\n&#8226;\u0020
+        <b>ID (PRN)</b>
+        - identifier of this satellite (pseudorandom noise for GPS) - identifikátor satelitu\n&#8226;\u0020
+        <b>CF</b>
+         - carrier frequency - označení nosiče kmitočtu (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení)\n&#8226;\u0020
+        <b>SNR</b>
+        - signal-to-noise ratio - síla úrovně signálu (vyžadován Android M a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+       <b>C/N0</b>
+        - carrier-to-noise density - síla úrovně signálu (vyžadován Android N a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Elev</b> 
+         - elevation - výškový úhel ve stupních (Elevace)\n&#8226;\u0020
+        <b>Azim</b> 
+         - azimuth - směrový úhel ve stupních (Azimut)\n&#8226;\u0020
+        <b>Stav</b>
+         - (E) - pokud zařízení přijímá efemeridové údaje pro satelit
+         - (A) - pokud zařízení přijímá almanachové údaje pro satelit
+         - (U) - pokud byl připojený satelit použit při výpočtu poslední polohy. 
+
+Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
+
+       <b>*** Zobrazení kompasu ***</b>\n\n&#8226;\u0020
+
+       <b>GPS (USA Navstar)</b>
+        - kruh\n&#8226;\u0020
+       <b>GLONASS (Russia)</b>
+        - čtverec\n&#8226;\u0020
+       <b>Galileo (European Union)</b>
+         - trojúhelník\n&#8226;\u0020
+       <b>QZSS (Japan)</b>
+         - šestiúhelník\n&#8226;\u0020
+       <b>BeiDou/COMPASS (China)</b>
+         - pětiúhelník\n&#8226;\u0020
+       <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+         - kosočtverec\n\n
+
+         &#8226;\u0020 Transparentní zobrazení - nepřipojené satelity, které nejsou v zorném poli zařízení\n
+         &#8226;\u0020 Zobrazení s tenkým obrysem - nepřipojené satelity, které jsou v zorném poli zařízení\n
+         &#8226;\u0020 Zobrazení se silným obrysem - připojené satelity, které jsou v zorném poli zařízení\n\n
+
+        &#8226;\u0020 Rozsah hodnoty SNR je od 0 dB (červená b.) do 30 dB (zelená b.) - Android 6.0 a nižší. \n
+        &#8226;\u0020 Rozsah hodnoty SNR je od 10 dB (červená b.) do 45 dB (zelená b.) - Android 7.0 a vyšší. \n
+        &#8226;\u0020 Rozsah hodnoty C/N0 je od 10 dB-Hz (červená b.) do 45 dB-Hz (zelená b.) - Android 7.0 a vyšší. \n
+        &#8226;\u0020 Jestliže neexistuje žádná hodnota pro SNR nebo C/N0 (tj. satelit není v zorném poli zařízení), bude mít transparentní zobrazení se světle šedou barvou. \n\n
+
+        <b>*** Zobrazení přesnosti ***</b>\n\n&#8226;\u0020
+
+        <b>Vertikální chyba</b>
+         - Na rozdíl od chyby horizontálního měření, může mít chyba vertikálního měření hodnotu kladnou nebo zápornou. Pro zobrazení hodnoty vertikální a průměrné vertikální chyby se výpočet provádí pomocí naměřených absolutních hodnot chyby.\n\n
+
+      <b>*** Poděkování ***</b>\n\n
+
+       &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
+       &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
+
+       &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0. Other Google material design icons are also used under Apache v2.0.\n
+
+       &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+       &#8226;\u0020 German translation provided by SIRSteiner\n
+       &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
+       &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
+       &#8226;\u0020 Japanese translation provided by SakuraSa233\n
+       &#8226;\u0020 Czech translation provided by llzn.cz\n
+</string>
+</resources>
