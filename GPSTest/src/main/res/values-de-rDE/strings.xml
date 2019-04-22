@@ -217,13 +217,12 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Genauigkeitsansicht</b>
-        - Die reale Position einstellen und die GNSS-Genauigkeit messen.\n&#8226;\u0020
-        <b>Verbesserter Support f\u00fcr einige Satelliten</b>
-        - Neue Galileo-Satelliten, CF-Label f\u00fcr SBAS (EGNOS und MSAS) und GLONASS (CDMA L1 und L3).\n&#8226;\u0020
-        <b>Fehlerbehebungen</b>
-        - Siehe http://bit.ly/gpstest-releases
+    <string name="main_help_whatsnew"><li><b>Genauigkeitsansicht</b>
+        \nDie reale Position einstellen und die GNSS-Genauigkeit messen.</li>
+        \n<li><b>Verbesserter Support für einige Satelliten</b>
+            \nNeue Galileo-Satelliten, CF-Label für SBAS (EGNOS und MSAS) und GLONASS (CDMA L1 und L3).</li>
+        \n<li><b>Fehlerbehebungen</b>
+        \nSiehe http://bit.ly/gpstest-releases</li>
     </string>
     <string name="main_help_close">Schließen</string>
 
@@ -319,72 +318,57 @@
 
     <!-- Help -->
     <string name="title_help">Hilfe</string>
-    <string name="help_text">
-        <b>H\u00e4ufig gestellte Fragen (FAQ)</b>
-        https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-        <b>*** Status-Ansicht ***</b>\n
-        <b>&#8226; Breite/L\u00e4nge</b>
-        Koordinaten der Position in Dezimalgrad (WGS 84)
-        <b>&#8226; H\u00f6he</b>
-        Meter \u00fcber den WGS 84 Ellipsoid
-        <b>&#8226; H\u00f6he (MSL)</b>
-        Meter \u00fcber den mittleren Meeresspiegel (ben\u00f6tigt NMEA-Support)
-        <b>&#8226; Acc</b>
-        Gesch\u00e4tzte horizontale Genauigkeit des Standortes (Radius in Meter mit 68% Wahrscheinlichkeit). Mit anderen Worten: Wenn Du einen Kreis mit dem angegebenen Radius um den Standort zeichnest, dann besteht eine Wahrscheinlichkeit von 68%, dass sich der reale Standort innerhalb des Kreises befindet.
-        <b>&#8226; H/V-Acc</b>
-        Horizontale und vertikale Genauigkeit des Standortes mit 68% Wahrscheinlichkeit. Die horizontale Genauigkeit ist definiert wie im vorherigen Acc-Feld. Die vertikale Genauigkeit ist ab Android 8.0 verf\u00fcgbar. Beispiel: Wenn Alt = 150 m und V-Acc = 20, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale H\u00f6he zwischen 130 m und 170 m liegt.
-        <b>&#8226; v</b>
-        Geschwindigkeit in m/s
-        <b>&#8226; v-Acc</b>
-        Gesch\u00e4tzte Genauigkeit der Geschwindigkeit mit 68% Wahrscheinlichkeit in m/s. Beispiel: Wenn v = 5 m/s und v-Acc = 1 m/s, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale Geschwindigkeit zwischen 4 m/s und 6 m/s liegt.
-        <b>&#8226; Kurs</b>
-        Die horizontale Bewegungsrichtung des Ger\u00e4tes in Grad unabh\u00e4ngig der Ger\u00e4telage.
-        <b>&#8226; Kurs-Acc</b>
-        Gesch\u00e4tzte Genauigkeit des Kurses mit 68% Wahrscheinlichkeit in Grad. Beispiel: Wenn der Kurs 60\u00B0 und Kurs-Acc 10\u00B0 betragen, dann besteht eine 68%ige Wahrscheinlichkeit, dass der reale Kurs zwischen 50\u00B0 und 70\u00B0 liegt.
-        <b>&#8226; # Sats</b>
-        Anzahl der Satelliten a/b, wobei a die Anzahl der Satelliten mit Fix und b die Satelliten im Sichtfeld sind
-        <b>&#8226; PDOP</b>
-        3D-Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit
-        <b>&#8226; H/V-DOP</b>
-        Horizontale/vertikale Positionsgenauigkeit (ben\u00f6tigt NMEA-Support), h\u00f6here Werte bedeuten eine geringere Genauigkeit
-        <b>&#8226; TTFF</b>
-        Time to first fix, Zeit bis zum ersten Fix
-        <b>&#8226; ID oder PRN</b>
-        Kennung des Satelliten (bei GPS entspricht dies der PRN-Nummer)
-        <b>&#8226; CF</b>
-        Tr\u00e4gerkennung (z.B. \"L1\") des empfangenen Signals. Bei einer unbekannten Frequenz wird statt der Kennung die Frequenz in MHz angezeigt (verf\u00fcgbar ab Android 8.0, wird nicht von jedem Ger\u00e4t unterst\u00fctzt)
-        <b>&#8226; SNR</b>
-        Signal-Rausch-Verh\u00e4ltnis auch Rauschabstand genannt (verf\u00fcgbar bis Android 6), Details siehe http://bit.ly/SNR-CN0
-        <b>&#8226; C/N\u2080</b>
-        Verh\u00e4ltnis von Tr\u00e4ger- und Rauschleistung (verf\u00fcgbar ab Android 7), Details siehe http://bit.ly/SNR-CN0
-        <b>&#8226; Flags</b>
-        E=Ephemeridendaten des Satelliten vorhanden\nA=Almanachdaten des Satelliten vorhanden\nU=Dieser Satellit wurde beim letzten Fix verwendet\n\n
-        <b>*** Himmel-Ansicht ***</b>\n
-        <b>&#8226; Symbole</b>
-        Kreise: GPS (USA Navstar)\nQuadrate: GLONASS (Russland)\nDreiecke: Galileo (Europ\u00e4ische Union)\nSechsecke: QZSS (Japan)\nF\u00fcnfecke: BeiDou/COMPASS (China)\nKaros: SBAS (WAAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)
-        <b>&#8226; Transparente Satellitensymbole</b>
-        Satellit befindet sich nicht im Sichtfeld
-        <b>&#8226; Satellitensymbole mit d\u00fcnnem Umriss</b>
-        Satellit befindet sich im Sichtfeld, wurde aber beim Fix nicht verwendet
-        <b>&#8226; Satellitensymbole mit fettem Umriss</b>
-        Satellit wurde beim Fix verwendet
-        <b>&#8226; Farben</b>
-        Der zu erwartende SNR-Bereich liegt zwischen 0 dB (rot) und 30 dB (gr\u00fcn) bei Android-Versionen vor 7.0\n
-        Der zu erwartende SNR-Bereich liegt zwischen 10 dB (rot) und 45 dB (gr\u00fcn) ab Android 7.0\n
-        Der zu erwartende C/N\u2080-Bereich liegt zwischen 10 dB-Hz (rot) und 45 dB-Hz (gr\u00fcn) ab Android 7.0\n
-        Sind weder SNR- noch C/N\u2080-Werte f\u00fcr einen Satelliten vorhanden (z.B. wenn er sich nicht im Sichtfeld des Ger\u00e4tes befindet), wird er in heller transparenter grauer Farbe dargestellt.\n\n
-        <b>*** Genauigkeitsansicht ***</b>\n
-        <b>&#8226; Vertikale Abweichung</b>
-        Die gemessene vertikale Abweichung kann im Gegensatz zur horizontalen Abweichung sowohl positiv als auch negativ sein. Die vertikale und durchschnittliche vertikale Abweichung werden mit Hilfe der absoluten Werte der Messung berechnet.\n\n
-        <b>*** GPSTest-Logo ***</b>\n
-        Das GPSTest-Logo ist abgeleitet vom Satellit-Symbol des Android Material Designs und von Google unter Apache v2.0 lizenziert. Andere verwendete Google-Materialdesign-Symbole sind auch unter Apache v2.0 lizenziert.\n\n
-        <b>*** Danksagungen ***</b>\n
-        <b>&#8226; Mike Lockwood:</b> urspr\u00fcnglicher Entwickler f\u00fcr Version 1.x
-        <b>&#8226; Sean Barbeau:</b> Entwickler der Versionen ab 2.0
-        <b>&#8226; wangkf, liuyunli, SakuraSa233 &amp; Skimige:</b> chinesische \u00dcbersetzung
-        <b>&#8226; Ronny Steiner:</b> deutsche \u00dcbersetzung
-        <b>&#8226; Dennis Dolman:</b> holl\u00e4ndische \u00dcbersetzung
-        <b>&#8226; Jimmy Golfi:</b> griechische \u00dcbersetzung
-        <b>&#8226; SakuraSa233:</b> japanische \u00dcbersetzung
+    <string name="help_text"><b><big>Häufig gestellte Fragen (FAQ)</big></b>
+        \n\nSiehe GitHub-Projektseite (englisch) https://github.com/barbeau/gpstest/blob/master/FAQ.md
+        \n\n<b><big>Status-Ansicht</big></b>
+        \n\n<li><b>Breite/Länge:</b> Koordinaten der Position in Dezimalgrad (WGS 84)</li>
+        \n<li><b>Höhe:</b> Meter über dem WGS 84 Ellipsoid</li>
+        \n<li><b>Höhe (MSL):</b> Meter über dem mittleren Meeresspiegel (benötigt NMEA-Support)</li>
+        \n<li><b>Acc:</b> Geschätzte horizontale Genauigkeit des Standortes (Radius in Meter mit 68% Wahrscheinlichkeit). Mit anderen Worten: Wenn Du einen Kreis mit dem angegebenen Radius um den Standort zeichnest, dann besteht eine Wahrscheinlichkeit von 68%, dass sich der reale Standort innerhalb des Kreises befindet.</li>
+        \n<li><b>H/V-Acc:</b> Horizontale und vertikale Genauigkeit des Standortes mit 68% Wahrscheinlichkeit. Die horizontale Genauigkeit ist definiert wie im vorherigen Acc-Feld. Die vertikale Genauigkeit ist ab Android 8.0 verfügbar. Beispiel: Wenn Alt = 150 m und V-Acc = 20, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale Höhe zwischen 130 m und 170 m liegt.</li>
+        \n<li><b>v:</b> Geschwindigkeit in m/s</li>
+        \n<li><b>v-Acc:</b> Geschätzte Genauigkeit der Geschwindigkeit mit 68% Wahrscheinlichkeit in m/s. Beispiel: Wenn v = 5 m/s und v-Acc = 1 m/s, dann besteht eine 68%ige Wahrscheinlichkeit, dass die reale Geschwindigkeit zwischen 4 m/s und 6 m/s liegt.</li>
+        \n<li><b>Kurs:</b> Die horizontale Bewegungsrichtung des Gerätes in Grad unabhängig der Gerätelage.</li>
+        \n<li><b>Kurs-Acc:</b> Geschätzte Genauigkeit des Kurses mit 68% Wahrscheinlichkeit in Grad. Beispiel: Wenn der Kurs 60\u00B0 und Kurs-Acc 10\u00B0 betragen, dann besteht eine 68%ige Wahrscheinlichkeit, dass der reale Kurs zwischen 50\u00B0 und 70\u00B0 liegt.</li>
+        \n<li><b># Sats:</b> Anzahl der Satelliten a/b, wobei a die Anzahl der Satelliten mit Fix und b die Satelliten im Sichtfeld sind</li>
+        \n<li><b>PDOP:</b> 3D-Positionsgenauigkeit (benötigt NMEA-Support), höhere Werte bedeuten eine geringere Genauigkeit</li>
+        \n<li><b>H/V-DOP:</b> Horizontale/vertikale Positionsgenauigkeit (benötigt NMEA-Support), höhere Werte bedeuten eine geringere Genauigkeit</li>
+        \n<li><b>TTFF:</b> Time to first fix, Zeit bis zum ersten Fix</li>
+        \n<li><b>ID oder PRN:</b> Kennung des Satelliten (bei GPS entspricht dies der PRN-Nummer)</li>
+        \n<li><b>CF:</b> Trägerkennung (z.B. \"L1\") des empfangenen Signals. Bei einer unbekannten Frequenz wird statt der Kennung die Frequenz in MHz angezeigt (verfügbar ab Android 8.0, wird nicht von jedem Gerät unterstützt)</li>
+        \n<li><b>SNR:</b> Signal-Rausch-Verhältnis auch Rauschabstand genannt (verfügbar bis Android 6), Details siehe http://bit.ly/SNR-CN0</li>
+        \n<li><b>C/N\u2080:</b> Verhältnis von Träger- und Rauschleistung (verfügbar ab Android 7), Details siehe http://bit.ly/SNR-CN0</li>
+        \n<li><b>Flags:</b>
+        \nE=Ephemeridendaten des Satelliten vorhanden
+        \nA=Almanachdaten des Satelliten vorhanden
+        \nU=Dieser Satellit wurde beim letzten Fix verwendet</li>
+        \n\n<b><big>Himmel-Ansicht</big></b>
+        \n\n<li><b>Symbole:</b>
+        \nKreise = GPS (USA Navstar)
+        \nQuadrate = GLONASS (Russland)
+        \nDreiecke = Galileo (Europäische Union)
+        \nSechsecke = QZSS (Japan)
+        \nFünfecke = BeiDou/COMPASS (China)
+        \nKaros = SBAS (WAAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</li>
+        \n<li><b>Transparente Satellitensymbole:</b> Satellit befindet sich nicht im Sichtfeld</li>
+        \n<li><b>Satellitensymbole mit dünnem Umriss:</b> Satellit befindet sich im Sichtfeld, wurde aber beim Fix nicht verwendet</li>
+        \n<li><b>Satellitensymbole mit fettem Umriss:</b> Satellit wurde beim Fix verwendet</li>
+        \n<li><b>Farben:</b>
+        \nDer zu erwartende SNR-Bereich liegt zwischen 0 dB (rot) und 30 dB (grün) bei Android-Versionen vor 7.0
+        \nDer zu erwartende SNR-Bereich liegt zwischen 10 dB (rot) und 45 dB (grün) ab Android 7.0
+        \nDer zu erwartende C/N\u2080-Bereich liegt zwischen 10 dB-Hz (rot) und 45 dB-Hz (grün) ab Android 7.0
+        \nSind weder SNR- noch C/N\u2080-Werte für einen Satelliten vorhanden (z.B. wenn er sich nicht im Sichtfeld des Ger\u00e4tes befindet), wird er in heller transparenter grauer Farbe dargestellt.</li>
+        \n\n<b><big>Genauigkeitsansicht</big></b>
+        \n\n<li><b>Vertikale Abweichung:</b> Die gemessene vertikale Abweichung kann im Gegensatz zur horizontalen Abweichung sowohl positiv als auch negativ sein. Die vertikale und durchschnittliche vertikale Abweichung werden mit Hilfe der absoluten Werte der Messung berechnet.</li>
+        \n\n<b><big>Danksagungen</big></b>
+        \n\n<li><b>Mike Lockwood:</b> ursprünglicher Entwickler für Version 1.x</li>
+        \n<li><b>Sean Barbeau:</b> Entwickler der Versionen ab 2.0</li>
+        \n<li><b>wangkf, liuyunli, SakuraSa233 &amp; Skimige:</b> chinesische Übersetzung</li>
+        \n<li><b>Ronny Steiner:</b> deutsche Übersetzung</li>
+        \n<li><b>Dennis Dolman:</b> holländische Übersetzung</li>
+        \n<li><b>Jimmy Golfi:</b> griechische Übersetzung</li>
+        \n<li><b>SakuraSa233:</b> japanische Übersetzung</li>
+        \n\n<b><big>GPSTest-Logo</big></b>
+        \n\nDas GPSTest-Logo ist abgeleitet vom Satellit-Symbol des Android Material Designs und von Google unter Apache v2.0 lizenziert. Andere verwendete Google-Materialdesign-Symbole sind auch unter Apache v2.0 lizenziert.
     </string>
 </resources>
