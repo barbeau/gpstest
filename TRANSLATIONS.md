@@ -6,6 +6,7 @@ Users have contributed translations in the following languages:
 * German
 * Greek
 * Japanese
+* Czech
 
 We would love help improving the existing translations, or adding a new translation.
 
