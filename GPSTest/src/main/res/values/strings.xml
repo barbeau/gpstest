@@ -146,6 +146,8 @@
     <string name="ground_truth_invalid_long">Longitude must be in decimal degrees between -180 and 180</string>
     <string name="ground_truth_invalid_alt">Altitude must be in WGS84 in meters</string>
 
+    <string name="horizontal_error_title">Horizontal Error</string>
+    <string name="vertical_error_title">Vertical Error</string>
     <string name="horizontal_error_label">Error</string>
     <string name="measured_error_graph_label">Measured error</string>
     <string name="estimated_accuracy_graph_label">Accuracy estimated by hardware</string>
@@ -401,5 +403,6 @@
         &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
         &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
         &#8226;\u0020 Japanese translation provided by SakuraSa233\n
+        &#8226;\u0020 Czech translation provided by llzn.cz\n
     </string>
 </resources>
