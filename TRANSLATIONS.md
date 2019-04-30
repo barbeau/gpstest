@@ -17,6 +17,12 @@ We use Transifex, which is free for open-source projects:
 
 [Here](https://docs.transifex.com/getting-started-1/translators) are some instructions for getting started with Transifex.  Please note that if you contribute a translation, you will be expected to keep it up-to-date as the app changes.  The developer will notify you via GitHub or email when new strings in the English files are available for translation, and then you can follow the above process for contributing improvements (but by editing existing translation files instead of creating new files).
 
+As mentioned [here](https://docs.transifex.com/faq/all#what-kind-of-notifications-can-i-get-for-the-projects-i-translate), you can register to receive notifications when strings change and are ready for translation:
+
+>To watch a project, select it from your dashboard and click the Watch icon in the header, above the Translate or Live button.
+
+See also the [Notifications documentation](https://docs.transifex.com/tracking/notifications).
+
 ## Example translation
 
 You can see a sample translation for Dutch in the following files:
