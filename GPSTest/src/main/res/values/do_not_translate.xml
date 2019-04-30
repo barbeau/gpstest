@@ -20,6 +20,51 @@
 <resources>
     <!-- Strings in this file should NOT be translated -->
 
+    <!-- Values and units display - Status -->
+    <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
+    <string name="gps_longitude_value">%1$.7f\u00B0</string>
+    <string name="gps_altitude_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_value_feet">%1$.1f ft</string>
+    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
+    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
+    <string name="gps_accuracy_value_meters">%1$.1f m</string>
+    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
+    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
+    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
+    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
+    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
+    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
+    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
+    <string name="gps_bearing_value">%1$.1f\u00B0</string>
+    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
+    <string name="gps_num_sats_value">%1$d/%2$d</string>
+    <string name="pdop_value">%1$.1f</string>
+    <string name="hvdop_value">%1$.1f/%2$.1f</string>
+    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
+    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
+
+    <!-- Values and units display - Sky View -->
+    <string name="sky_legend_cn0_low">10</string>
+    <string name="sky_legend_cn0_low_middle">18</string>
+    <string name="sky_legend_cn0_middle">27</string>
+    <string name="sky_legend_cn0_middle_high">36</string>
+    <string name="sky_legend_cn0_high">45</string>
+    <string name="sky_legend_cn0_units">(dB-Hz)</string>
+    <string name="sky_legend_snr_low">0</string>
+    <string name="sky_legend_snr_low_middle">7</string>
+    <string name="sky_legend_snr_middle">15</string>
+    <string name="sky_legend_snr_middle_high">22</string>
+    <string name="sky_legend_snr_high">30</string>
+    <string name="sky_legend_snr_units">(dB)</string>
+
+    <!-- Values and units display - Accuracy View -->
+    <string name="benchmark_lat_long">%1$.7f</string>
+    <string name="benchmark_alt">%1$.1f</string>
+    <string name="benchmark_error">%1$.2f</string>
+
     <!-- Preference keys -->
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
 
@@ -58,6 +103,15 @@
     <string name="pref_gps_min_time_default_sec">1</string>
     <string name="pref_gps_min_distance_default_meters">0</string>
 
+    <!-- The contants in map_type_entries and below match those in GoogleMap object:
+    https://developers.google.com/maps/documentation/android/reference/com/google/android/gms/maps/GoogleMap -->
+    <string-array name="map_type_values">
+        <item>1</item>
+        <item>4</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
     <!-- Send location URLs -->
     <string name="geohack_url">https://tools.wmflabs.org/geohack/geohack.php?params=</string>
 
@@ -95,4 +149,16 @@
     <string name="capability_value_not_supported">NOT_SUPPORTED</string>
     <string name="capability_value_supported">SUPPORTED</string>
     <string name="capability_value_location_disabled">LOCATION_DISABLED</string>
+
+    <!-- Unit preferences-->
+    <string-array name="preferred_distance_units_options">
+        <item>@string/preferences_preferred_distance_units_option_meters</item>
+        <item>@string/preferences_preferred_distance_units_option_feet</item>
+    </string-array>
+
+    <string-array name="preferred_speed_units_options">
+        <item>@string/preferences_preferred_speed_units_option_meters_per_second</item>
+        <item>@string/preferences_preferred_speed_units_option_kilometers_per_hour</item>
+        <item>@string/preferences_preferred_speed_units_option_miles_per_hour</item>
+    </string-array>
 </resources>
