@@ -127,7 +127,6 @@
     <string name="estimated_accuracy_graph_label">Accuracy estimated by hardware</string>
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$d fixes</string>
-    <string name="benchmark_header_error_divider">/</string>
     <string name="fix_number">Fix #</string>
 
     <!-- Sky view -->
