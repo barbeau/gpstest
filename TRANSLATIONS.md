@@ -7,6 +7,8 @@ Users have contributed translations in the following languages:
 * Greek
 * Japanese
 * Czech
+* Italian
+* Russian
 
 We would love help improving the existing translations, or adding a new translation.
 

@@ -220,6 +220,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private BenchmarkController mBenchmarkController;
 
+    private String mInitialLanguage;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -231,12 +233,15 @@ public class GpsTestActivity extends AppCompatActivity
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         mActivity = this;
+        // Reset the activity title to make sure dynamic locale changes are shown
+        UIUtils.resetActivityTitle(this);
 
         saveInstanceState(savedInstanceState);
 
         // Set the default values from the XML file if this is the first
         // execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        mInitialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
 
         // If we have a large screen, show all the fragments in one layout
         // TODO - Fix large screen layouts (see #122)
@@ -305,6 +310,19 @@ public class GpsTestActivity extends AppCompatActivity
             // loop if user selects "Don't ask again") in system permission prompt
             showLocationPermissionDialog();
         }
+        // If the language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
+        String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
+        if (!currentLanguage.equals(mInitialLanguage)) {
+            mInitialLanguage = currentLanguage;
+            Intent i = new Intent(this, GpsTestActivity.class);
+            startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        // For dynamically changing the locale
+        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
     }
 
     private void initAccuracy() {

@@ -18,8 +18,8 @@ package com.android.gpstest.util;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -41,6 +41,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_SNR;
@@ -391,5 +392,21 @@ public class UIUtils {
                 .setPositiveButton(R.string.ok, (dialog, id) -> { })
                 .create()
                 .show();
+    }
+
+    /**
+     * Resets the activity title so the locale is updated
+     *
+     * @param a the activity to reset the title for
+     */
+    public static void resetActivityTitle(Activity a) {
+        try {
+            ActivityInfo info = a.getPackageManager().getActivityInfo(a.getComponentName(), GET_META_DATA);
+            if (info.labelRes != 0) {
+                a.setTitle(info.labelRes);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

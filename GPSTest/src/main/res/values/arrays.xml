@@ -46,6 +46,19 @@
         <item>3</item>
     </string-array>
 
+    <!-- Supported languages -->
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>Chinese</item>
+        <item>Czech</item>
+        <item>Dutch</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Italian</item>
+        <item>Japanese</item>
+        <item>Russian</item>
+    </string-array>
+
     <!-- Units -->
     <string-array name="preferred_distance_units_options">
         <item>@string/preferences_preferred_distance_units_option_meters</item>

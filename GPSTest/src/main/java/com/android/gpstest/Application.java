@@ -16,8 +16,12 @@
 
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
+
+import com.android.gpstest.lang.LocaleManager;
 
 /**
  * Holds application-wide state
@@ -38,6 +42,12 @@ public class Application extends android.app.Application {
         return get().mPrefs;
     }
 
+    private static LocaleManager mLocaleManager;
+
+    public static LocaleManager getLocaleManager() {
+        return mLocaleManager;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -55,5 +65,17 @@ public class Application extends android.app.Application {
     public void onTerminate() {
         super.onTerminate();
         mApp = null;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        mLocaleManager = new LocaleManager(base);
+        super.attachBaseContext(mLocaleManager.setLocale(base));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mLocaleManager.setLocale(this);
     }
 }

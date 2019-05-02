@@ -53,6 +53,7 @@
     <string name="pref_key_dms_mode">dms_mode</string>
     <string name="pref_key_preferred_distance_units">preference_distance_units</string>
     <string name="pref_key_preferred_speed_units">preference_speed_units</string>
+    <string name="pref_key_language">preference_language</string>
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>
@@ -95,4 +96,16 @@
     <string name="capability_value_not_supported">NOT_SUPPORTED</string>
     <string name="capability_value_supported">SUPPORTED</string>
     <string name="capability_value_location_disabled">LOCATION_DISABLED</string>
+
+    <string-array name="language_values">
+        <item>en</item>
+        <item>zh</item>
+        <item>cs</item>
+        <item>nl</item>
+        <item>de</item>
+        <item>el</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ru</item>
+    </string-array>
 </resources>

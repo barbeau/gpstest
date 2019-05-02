@@ -12,6 +12,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
 import com.android.gpstest.util.LocaleUtils;
 
 import java.util.Locale;
@@ -19,11 +21,10 @@ import java.util.Locale;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
 import static android.os.Build.VERSION_CODES.N;
 
+/**
+ * Dynamically changes the app locale
+ */
 public class LocaleManager {
-
-    public static final  String LANGUAGE_ENGLISH = "en";
-    public static final  String LANGUAGE_GERMAN = "de";
-    private static final String LANGUAGE_KEY = "language_key";
 
     private final SharedPreferences prefs;
 
@@ -32,7 +33,11 @@ public class LocaleManager {
     }
 
     public Context setLocale(Context c) {
-        return updateResources(c, getLanguage());
+        if (!prefs.contains(c.getString(R.string.pref_key_language))) {
+            // User hasn't set the language manually, so use the default context and locale
+            return c;
+        }
+        return updateResources(c, getLanguage(c));
     }
 
     public Context setNewLocale(Context c, String language) {
@@ -40,15 +45,16 @@ public class LocaleManager {
         return updateResources(c, language);
     }
 
-    public String getLanguage() {
-        return prefs.getString(LANGUAGE_KEY, LANGUAGE_ENGLISH);
+    String getLanguage(Context c) {
+        return prefs.getString(c.getString(R.string.pref_key_language),
+                c.getResources().getStringArray(R.array.language_values)[0]); // Default is English
     }
 
     @SuppressLint("ApplySharedPref")
     private void persistLanguage(String language) {
         // use commit() instead of apply(), because sometimes we kill the application process immediately
         // which will prevent apply() to finish
-        prefs.edit().putString(LANGUAGE_KEY, language).commit();
+        prefs.edit().putString(Application.get().getString(R.string.pref_key_language), language).commit();
     }
 
     private Context updateResources(Context context, String language) {
