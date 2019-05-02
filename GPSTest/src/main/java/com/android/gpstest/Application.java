@@ -19,6 +19,8 @@ package com.android.gpstest;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.android.gpstest.ar.Vector3;
+
 /**
  * Holds application-wide state
  *
@@ -37,6 +39,15 @@ public class Application extends android.app.Application {
     public static SharedPreferences getPrefs() {
         return get().mPrefs;
     }
+
+    /**
+     * Default value for 'south' in phone coords when the app starts
+     */
+    public static final Vector3 INITIAL_SOUTH = new Vector3(0, -1, 0);
+    /**
+     * Default value for 'down' in phone coords when the app starts
+     */
+    public static final Vector3 INITIAL_DOWN = new Vector3(0, -1, -9);
 
     @Override
     public void onCreate() {

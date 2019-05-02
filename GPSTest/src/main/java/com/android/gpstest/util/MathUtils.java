@@ -28,6 +28,11 @@ import java.text.ParseException;
  */
 public class MathUtils {
 
+    public static final float PI = (float) Math.PI;
+    public static final float TWO_PI = 2f * PI;
+    public static final float DEGREES_TO_RADIANS = PI / 180;
+    public static final float RADIANS_TO_DEGREES = 180 / PI;
+
     /**
      * Calculates {@code a mod b} in a way that respects negative values (for example,
      * {@code mod(-1, 5) == 4}, rather than {@code -1}).

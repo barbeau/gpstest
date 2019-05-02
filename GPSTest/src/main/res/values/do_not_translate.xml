@@ -99,6 +99,9 @@
     <string name="pref_key_dms_mode">dms_mode</string>
     <string name="pref_key_preferred_distance_units">preference_distance_units</string>
     <string name="pref_key_preferred_speed_units">preference_speed_units</string>
+    <string name="pref_key_rotate_horizon">preference_rotate_horizon</string>
+    <string name="pref_key_reverse_magnetic_z">preference_reverse_magnetic_z</string>
+
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>

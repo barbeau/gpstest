@@ -17,4 +17,7 @@
     <declare-styleable name="ScrimInsetsView">
         <attr name="obaInsetForeground" format="reference|color"/>
     </declare-styleable>
+    <declare-styleable name="ButtonLayerView">
+        <attr name="fade_time" format="integer" />
+    </declare-styleable>
 </resources>
