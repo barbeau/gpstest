@@ -315,11 +315,22 @@ public class GpsTestActivity extends AppCompatActivity
             String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
             if (!currentLanguage.equals(mInitialLanguage)) {
                 mInitialLanguage = currentLanguage;
-                Intent i = new Intent(this, GpsTestActivity.class);
-                startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+                recreateApp();
             }
         }
         mBenchmarkController.onResume();
+    }
+
+    /**
+     * Destroys and recreates the main activity in a new process.  If we don't use a new process,
+     * the map state and Accuracy ground truth location TextViews get messed up with mixed locales
+     * and partial state retention.
+     */
+    void recreateApp() {
+        Intent i = new Intent(this, GpsTestActivity.class);
+        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        // Restart process to destroy and recreate everything
+        System.exit(0);
     }
 
     @Override
