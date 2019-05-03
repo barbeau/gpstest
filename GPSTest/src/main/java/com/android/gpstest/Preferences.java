@@ -16,6 +16,7 @@
 
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.UIUtils;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -55,6 +57,8 @@ public class Preferences extends PreferenceActivity implements
 
     ListPreference preferredSpeedUnits;
 
+    ListPreference language;
+
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class Preferences extends PreferenceActivity implements
         addPreferencesFromResource(R.xml.preferences);
 
         mActionBar.setTitle(getTitle());
+
+        UIUtils.resetActivityTitle(this);
 
         prefAnalyzeGpsAccuracy = this
                 .findPreference(getString(R.string.pref_key_analyze_gps_accuracy));
@@ -150,10 +156,18 @@ public class Preferences extends PreferenceActivity implements
         });
 
         preferredDistanceUnits = (ListPreference) findPreference(
-                getString(R.string.pref_key_preferred_distance_units));
+                getString(R.string.pref_key_preferred_distance_units_v2));
 
         preferredSpeedUnits = (ListPreference) findPreference(
-                getString(R.string.pref_key_preferred_speed_units));
+                getString(R.string.pref_key_preferred_speed_units_v2));
+
+        language = (ListPreference) findPreference(getString(R.string.pref_key_language));
+        language.setOnPreferenceChangeListener((preference, newValue) -> {
+            Application.getLocaleManager().setNewLocale(Application.get(), newValue.toString());
+            // Destroy and recreate Activity
+            recreate();
+            return true;
+        });
 
         // Remove preference for rotating map if needed
         if (!GpsTestUtil.isRotationVectorSensorSupported(this) || !BuildConfig.FLAVOR.equals("google")) {
@@ -181,21 +195,33 @@ public class Preferences extends PreferenceActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units));
-        changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units));
+        changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units_v2));
+        changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units_v2));
+        changePreferenceSummary(getString(R.string.pref_key_language));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units))) {
+        if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units_v2))) {
             // Change the preferred distance units description
             changePreferenceSummary(key);
         } else {
-            if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units))) {
+            if (key.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units_v2))) {
                 // Change the preferred speed units description
                 changePreferenceSummary(key);
+            } else {
+                if (key.equalsIgnoreCase(getString(R.string.pref_key_language))) {
+                    // Change the preferred language description
+                    changePreferenceSummary(key);
+                }
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        // For dynamically changing the locale
+        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
     }
 
     /**
@@ -238,11 +264,30 @@ public class Preferences extends PreferenceActivity implements
      * @param prefKey preference key that triggers a change in summary
      */
     private void changePreferenceSummary(String prefKey) {
-        // Change the current region summary and server API URL summary
-        if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units))) {
-            preferredDistanceUnits.setSummary(preferredDistanceUnits.getValue());
-        } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units))) {
-            preferredSpeedUnits.setSummary(preferredSpeedUnits.getValue());
+        if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units_v2))) {
+            String[] values = Application.get().getResources().getStringArray(R.array.preferred_distance_units_values);
+            String[] entries = Application.get().getResources().getStringArray(R.array.preferred_distance_units_entries);
+            for (int i = 0; i < values.length; i++) {
+                if (values[i].equals(preferredDistanceUnits.getValue())) {
+                    preferredDistanceUnits.setSummary(entries[i]);
+                }
+            }
+        } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units_v2))) {
+            String[] values = Application.get().getResources().getStringArray(R.array.preferred_speed_units_values);
+            String[] entries = Application.get().getResources().getStringArray(R.array.preferred_speed_units_entries);
+            for (int i = 0; i < values.length; i++) {
+                if (values[i].equals(preferredSpeedUnits.getValue())) {
+                    preferredSpeedUnits.setSummary(entries[i]);
+                }
+            }
+        } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_language))) {
+            String[] values = Application.get().getResources().getStringArray(R.array.language_values);
+            String[] entries = Application.get().getResources().getStringArray(R.array.language_entries);
+            for (int i = 0; i < values.length; i++) {
+                if (values[i].equals(language.getValue())) {
+                    language.setSummary(entries[i]);
+                }
+            }
         }
     }
 }

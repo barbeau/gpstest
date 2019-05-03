@@ -38,6 +38,11 @@ interface BenchmarkController extends GpsTestListener {
     boolean onBackPressed();
 
     /**
+     * Called from the hosting Activity when it is resumed (e.g., to refresh settings)
+     */
+    void onResume();
+
+    /**
      * Show the Benchmark views
      */
     void show();

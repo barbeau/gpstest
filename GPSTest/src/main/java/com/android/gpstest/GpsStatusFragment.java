@@ -116,9 +116,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private String mTtff = "";
 
-    private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
-    private static final String METERS_PER_SECOND = Application.get().getString(R.string.preferences_preferred_speed_units_option_meters_per_second);
-    private static final String KILOMETERS_PER_HOUR = Application.get().getString(R.string.preferences_preferred_speed_units_option_kilometers_per_hour);
+    private static final String METERS = Application.get().getResources().getStringArray(R.array.preferred_distance_units_values)[0];
+    private static final String METERS_PER_SECOND = Application.get().getResources().getStringArray(R.array.preferred_speed_units_values)[0];
+    private static final String KILOMETERS_PER_HOUR = Application.get().getResources().getStringArray(R.array.preferred_speed_units_values)[1];
 
     String mPrefDistanceUnits;
     String mPrefSpeedUnits;
@@ -649,9 +649,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         Application app = Application.get();
 
         mPrefDistanceUnits = settings
-                .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
+                .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
         mPrefSpeedUnits = settings
-                .getString(app.getString(R.string.pref_key_preferred_speed_units), METERS_PER_SECOND);
+                .getString(app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND);
     }
 
     /**
