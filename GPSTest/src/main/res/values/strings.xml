@@ -63,42 +63,20 @@
     <string name="mode_satellite">Satellite</string>
 
     <string name="gps_latitude_label">Lat:</string>
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Long:</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Time:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Alt:</string>
-    <string name="gps_altitude_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">E Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f m</string>
-    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Speed:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">Bearing:</string>
-    <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
-    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># Sats:</string>
-    <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
-    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">H/V DOP:</string>
-    <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
@@ -108,9 +86,7 @@
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">Please check system settings - device doesn\'t seem to support GNSS/GPS.</string>
     <string name="install">Install</string>
@@ -138,8 +114,6 @@
     <string name="set_ground_truth_subtitle">Tap on map or type your real location</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
-    <string name="benchmark_lat_long">%1$.7f</string>
-    <string name="benchmark_alt">%1$.1f</string>
     <string name="ground_truth_marker_title">Your real location</string>
     <string name="ground_truth_invalid_location_title">Invalid location</string>
     <string name="ground_truth_invalid_lat">Latitude must be in decimal degrees between -90 and 90</string>
@@ -153,25 +127,9 @@
     <string name="estimated_accuracy_graph_label">Accuracy estimated by hardware</string>
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$d fixes</string>
-    <string name="benchmark_header_error_divider">/</string>
-    <string name="benchmark_error">%1$.2f</string>
     <string name="fix_number">Fix #</string>
 
     <!-- Sky view -->
-    <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_low_middle">18</string>
-    <string name="sky_legend_cn0_middle">27</string>
-    <string name="sky_legend_cn0_middle_high">36</string>
-    <string name="sky_legend_cn0_high">45</string>
-    <string name="sky_legend_cn0_units">(dB-Hz)</string>
-
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
-
     <string name="sky_legend_title">Legend</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>

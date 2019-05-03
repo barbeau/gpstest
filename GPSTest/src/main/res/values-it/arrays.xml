@@ -20,39 +20,26 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>Constellation</item>
-        <item>Carrier Frequency</item>
-        <item>Signal Strength</item>
-        <item>Used in Fix</item>
-        <item>Constellation, Carrier Frequency</item>
-        <item>Constellation, Signal Strength</item>
-        <item>Constellation, Used in Fix</item>
+        <item>Costellazione</item>
+        <item>Frequenza</item>
+        <item>Intensità Segnale</item>
+        <item>Utilizzato per localizzazione</item>
+        <item>Costellazione, Frequenza</item>
+        <item>Costellazione, Intensità Segnale</item>
+        <item>Costellazione, Utilizzato per Localizzazione</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>Map View</item>
-        <item>Hybrid View</item>
-        <item>Satellite View</item>
-        <item>Terrain View</item>
-    </string-array>
-
-    <!-- Supported languages -->
-    <string-array name="language_entries">
-        <item>English</item>
-        <item>Chinese</item>
-        <item>Czech</item>
-        <item>Dutch</item>
-        <item>German</item>
-        <item>Greek</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Russian</item>
+        <item>Mappa</item>
+        <item>Ibrida</item>
+        <item>Satellite</item>
+        <item>Terreno</item>
     </string-array>
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>What\'s New?</item>
-        <item>About</item>
+        <item>Novità</item>
+        <item>Informazioni</item>
     </string-array>
 </resources>
