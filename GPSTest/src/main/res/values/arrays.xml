@@ -37,7 +37,7 @@
         <item>Terrain View</item>
     </string-array>
 
-    <!-- Supported languages -->
+    <!-- Supported languages, must stay in-order with language_values -->
     <string-array name="language_entries">
         <item>English</item>
         <item>Chinese</item>
