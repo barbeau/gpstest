@@ -16,9 +16,12 @@
 
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
+import com.android.gpstest.lang.LocaleManager;
 import com.android.gpstest.ar.Vector3;
 
 /**
@@ -32,14 +35,6 @@ public class Application extends android.app.Application {
 
     private SharedPreferences mPrefs;
 
-    public static Application get() {
-        return mApp;
-    }
-
-    public static SharedPreferences getPrefs() {
-        return get().mPrefs;
-    }
-
     /**
      * Default value for 'south' in phone coords when the app starts
      */
@@ -48,6 +43,20 @@ public class Application extends android.app.Application {
      * Default value for 'down' in phone coords when the app starts
      */
     public static final Vector3 INITIAL_DOWN = new Vector3(0, -1, -9);
+
+    public static Application get() {
+        return mApp;
+    }
+
+    public static SharedPreferences getPrefs() {
+        return get().mPrefs;
+    }
+
+    private static LocaleManager mLocaleManager;
+
+    public static LocaleManager getLocaleManager() {
+        return mLocaleManager;
+    }
 
     @Override
     public void onCreate() {
@@ -66,5 +75,17 @@ public class Application extends android.app.Application {
     public void onTerminate() {
         super.onTerminate();
         mApp = null;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        mLocaleManager = new LocaleManager(base);
+        super.attachBaseContext(mLocaleManager.setLocale(base));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mLocaleManager.setLocale(this);
     }
 }

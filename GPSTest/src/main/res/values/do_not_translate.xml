@@ -97,11 +97,11 @@
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
     <string name="pref_key_dms_mode">dms_mode</string>
-    <string name="pref_key_preferred_distance_units">preference_distance_units</string>
-    <string name="pref_key_preferred_speed_units">preference_speed_units</string>
+    <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>
+    <string name="pref_key_preferred_speed_units_v2">preference_speed_units_v2</string>
+    <string name="pref_key_language">preference_language</string>
     <string name="pref_key_rotate_horizon">preference_rotate_horizon</string>
     <string name="pref_key_reverse_magnetic_z">preference_reverse_magnetic_z</string>
-
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>
@@ -155,14 +155,38 @@
     <string name="capability_value_location_disabled">LOCATION_DISABLED</string>
 
     <!-- Unit preferences-->
-    <string-array name="preferred_distance_units_options">
+    <string-array name="preferred_distance_units_entries">
         <item>@string/preferences_preferred_distance_units_option_meters</item>
         <item>@string/preferences_preferred_distance_units_option_feet</item>
     </string-array>
 
-    <string-array name="preferred_speed_units_options">
+    <string-array name="preferred_distance_units_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="preferred_speed_units_entries">
         <item>@string/preferences_preferred_speed_units_option_meters_per_second</item>
         <item>@string/preferences_preferred_speed_units_option_kilometers_per_hour</item>
         <item>@string/preferences_preferred_speed_units_option_miles_per_hour</item>
+    </string-array>
+
+    <string-array name="preferred_speed_units_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Supported languages, must stay in-order with language_entries -->
+    <string-array name="language_values">
+        <item>en</item>
+        <item>zh</item>
+        <item>cs</item>
+        <item>nl</item>
+        <item>de</item>
+        <item>el</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ru</item>
     </string-array>
 </resources>

@@ -106,7 +106,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     String mPrefDistanceUnits;
 
-    private static final String METERS = Application.get().getString(R.string.preferences_preferred_distance_units_option_meters);
+    private static final String METERS = Application.get().getResources().getStringArray(R.array.preferred_distance_units_values)[0];
 
     BenchmarkViewModel mViewModel;
 
@@ -260,9 +260,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAvgErrorUnit = v.findViewById(R.id.avg_error_unit);
         mErrorChart = v.findViewById(R.id.error_chart);
         mVertErrorChart = v.findViewById(R.id.vert_error_chart);
-        setupUnitPreferences();
         initChart(mErrorChart);
         initChart(mVertErrorChart);
+        setupUnitPreferences();
         mVerticalErrorCardView = v.findViewById(R.id.vert_error_layout);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
 
@@ -417,6 +417,17 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
 
+        YAxis leftAxis = errorChart.getAxisLeft();
+        //leftAxis.setTypeface(tfLight);
+        leftAxis.setTextColor(mChartTextColor);
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setDrawGridLines(true);
+
+        YAxis rightAxis = errorChart.getAxisRight();
+        rightAxis.setEnabled(false);
+    }
+
+    private void initChartUnits(LineChart errorChart) {
         String unit;
         if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
             unit = Application.get().getString(R.string.meters_abbreviation);
@@ -425,16 +436,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
 
         DistanceValueFormatter formatter = new DistanceValueFormatter(unit);
-
-        YAxis leftAxis = errorChart.getAxisLeft();
-        //leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(mChartTextColor);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setValueFormatter(formatter);
-
-        YAxis rightAxis = errorChart.getAxisRight();
-        rightAxis.setEnabled(false);
+        errorChart.getAxisLeft().setValueFormatter(formatter);
     }
 
     private void resetError() {
@@ -485,6 +487,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        setupUnitPreferences();
     }
 
     public void show() {
@@ -724,8 +731,17 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         SharedPreferences settings = Application.getPrefs();
         Application app = Application.get();
 
-        mPrefDistanceUnits = settings
-                .getString(app.getString(R.string.pref_key_preferred_distance_units), METERS);
+        String prefDistanceUnits = settings
+                .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
+        if (mPrefDistanceUnits != null && !prefDistanceUnits.equals(mPrefDistanceUnits)) {
+            // Units have changed since the graphs were originally initialized - reload data
+            mPrefDistanceUnits = prefDistanceUnits;
+            restoreGraphData();
+        } else {
+            mPrefDistanceUnits = prefDistanceUnits;
+        }
+        initChartUnits(mErrorChart);
+        initChartUnits(mVertErrorChart);
     }
 
     private void setupSlidingPanel() {
