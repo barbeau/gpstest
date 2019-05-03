@@ -17,7 +17,14 @@
     <declare-styleable name="ScrimInsetsView">
         <attr name="obaInsetForeground" format="reference|color"/>
     </declare-styleable>
+    <!-- AR -->
     <declare-styleable name="ButtonLayerView">
         <attr name="fade_time" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="PreferencesButton">
+        <attr name="pref_key" format="string" />
+        <attr name="image_on" format="reference" />
+        <attr name="image_off" format="reference" />
+        <attr name="default_value" format="boolean" />
     </declare-styleable>
 </resources>

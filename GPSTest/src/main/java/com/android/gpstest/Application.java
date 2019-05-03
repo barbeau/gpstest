@@ -21,8 +21,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
-import com.android.gpstest.lang.LocaleManager;
 import com.android.gpstest.ar.Vector3;
+import com.android.gpstest.lang.LocaleManager;
 
 /**
  * Holds application-wide state
