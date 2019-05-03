@@ -310,12 +310,14 @@ public class GpsTestActivity extends AppCompatActivity
             // loop if user selects "Don't ask again") in system permission prompt
             showLocationPermissionDialog();
         }
-        // If the language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
-        String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
-        if (!currentLanguage.equals(mInitialLanguage)) {
-            mInitialLanguage = currentLanguage;
-            Intent i = new Intent(this, GpsTestActivity.class);
-            startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
+        if (Application.getPrefs().contains(getString(R.string.pref_key_language))) {
+            String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
+            if (!currentLanguage.equals(mInitialLanguage)) {
+                mInitialLanguage = currentLanguage;
+                Intent i = new Intent(this, GpsTestActivity.class);
+                startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+            }
         }
     }
 
