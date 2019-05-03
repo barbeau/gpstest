@@ -278,6 +278,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAltText = v.findViewById(R.id.ground_truth_alt);
         mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
             @Override
+            public void onTransitionTrigger(MotionLayout motionLayout, int triggerId, boolean positive, float progress) {
+            }
+
+            @Override
+            public void onTransitionStarted(MotionLayout motionLayout, int startId, int endId) {
+            }
+
+            @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
             }
 

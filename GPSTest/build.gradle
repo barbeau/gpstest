@@ -151,7 +151,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
 

@@ -21,7 +21,7 @@
         motion:constraintSetEnd="@+id/collapsed"
         motion:constraintSetStart="@+id/expanded"
         motion:duration="250"
-        motion:interpolator="easeInOut">
+        motion:motionInterpolator="easeInOut">
     </Transition>
 
     <ConstraintSet android:id="@+id/expanded">
@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/set_ground_truth2">
         </Constraint>
         <Constraint
@@ -55,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/status_margin"
             motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/ground_truth_lat">
         </Constraint>
         <Constraint
@@ -62,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/ground_truth_long">
         </Constraint>
         <Constraint
