@@ -84,6 +84,7 @@ import androidx.fragment.app.FragmentManager;
 
 import static android.content.Intent.createChooser;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_AR;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
@@ -151,6 +152,8 @@ public class GpsTestActivity extends AppCompatActivity
     private GpsSkyFragment mSkyFragment;
 
     private GpsMapFragment mAccuracyFragment;
+
+    private ArFragment mArFragment;
 
     // Holds sensor data
     private static float[] mRotationMatrix = new float[16];
@@ -503,6 +506,12 @@ public class GpsTestActivity extends AppCompatActivity
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
+            case NAVDRAWER_ITEM_AR:
+                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_AR) {
+                    showArFragment();
+                    mCurrentNavDrawerPosition = item;
+                }
+                break;
             case NAVDRAWER_ITEM_INJECT_XTRA_DATA:
                 forceXtraInjection();
                 break;
@@ -555,6 +564,7 @@ public class GpsTestActivity extends AppCompatActivity
         hideMapFragment();
         hideSkyFragment();
         hideAccuracyFragment();
+        hideArFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
@@ -596,6 +606,7 @@ public class GpsTestActivity extends AppCompatActivity
         hideStatusFragment();
         hideSkyFragment();
         hideAccuracyFragment();
+        hideArFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
@@ -639,6 +650,7 @@ public class GpsTestActivity extends AppCompatActivity
         hideStatusFragment();
         hideMapFragment();
         hideAccuracyFragment();
+        hideArFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
@@ -680,6 +692,7 @@ public class GpsTestActivity extends AppCompatActivity
         hideStatusFragment();
         hideMapFragment();
         hideSkyFragment();
+        hideArFragment();
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
@@ -713,6 +726,48 @@ public class GpsTestActivity extends AppCompatActivity
         mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
         if (mAccuracyFragment != null && !mAccuracyFragment.isHidden()) {
             fm.beginTransaction().hide(mAccuracyFragment).commit();
+        }
+    }
+
+    private void showArFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        /**
+         * Hide everything that shouldn't be shown
+         */
+        hideStatusFragment();
+        hideMapFragment();
+        hideSkyFragment();
+        hideAccuracyFragment();
+        if (mBenchmarkController != null) {
+            mBenchmarkController.hide();
+        }
+
+        /**
+         * Show fragment (we use show instead of replace to keep the map state)
+         */
+        if (mArFragment == null) {
+            // First check to see if an instance of fragment already exists
+            mArFragment = (ArFragment) fm.findFragmentByTag(ArFragment.TAG);
+
+            if (mArFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new ArFragment");
+                mArFragment = new ArFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, mArFragment, ArFragment.TAG)
+                        .commit();
+            }
+        }
+
+        getSupportFragmentManager().beginTransaction().show(mArFragment).commit();
+        setTitle(getResources().getString(R.string.gps_ar_title));
+    }
+
+    private void hideArFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        mArFragment = (ArFragment) fm.findFragmentByTag(ArFragment.TAG);
+        if (mArFragment != null && !mArFragment.isHidden()) {
+            fm.beginTransaction().hide(mArFragment).commit();
         }
     }
 
