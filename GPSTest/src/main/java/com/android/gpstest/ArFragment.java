@@ -19,6 +19,7 @@ package com.android.gpstest;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.hardware.SensorManager;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
@@ -41,6 +42,8 @@ import com.android.gpstest.ar.AstronomerModelImpl;
 import com.android.gpstest.ar.ButtonLayerView;
 import com.android.gpstest.ar.ControllerGroup;
 import com.android.gpstest.ar.FullscreenControlsManager;
+import com.android.gpstest.ar.GridLayer;
+import com.android.gpstest.ar.HorizonLayer;
 import com.android.gpstest.ar.LatLong;
 import com.android.gpstest.ar.LayerManager;
 import com.android.gpstest.ar.LocationController;
@@ -88,7 +91,6 @@ public class ArFragment extends Fragment implements GpsTestListener {
         ArRenderer renderer = new ArRenderer(getActivity().getResources());
         skyView.setRenderer(renderer);
         model = new AstronomerModelImpl(magneticDeclinationCalculator);
-        layerManager = new LayerManager(Application.getPrefs());
         controller = new ControllerGroup(
                 new SensorOrientationController((SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE)),
                 new LocationController((LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)));
@@ -99,10 +101,23 @@ public class ArFragment extends Fragment implements GpsTestListener {
                 new RendererModelUpdateClosure(model, rendererController, Application.getPrefs()));
 
         Log.i(TAG, "Setting layers @ " + System.currentTimeMillis());
+        Resources resources = getActivity().getResources();
+        layerManager = new LayerManager(Application.getPrefs());
+        layerManager.initialize();
         layerManager.registerWithRenderer(rendererController);
+        //        layerManager.addLayer(new NewStarsLayer(assetManager, resources));
+//        layerManager.addLayer(new NewMessierLayer(assetManager, resources));
+//        layerManager.addLayer(new NewConstellationsLayer(assetManager, resources));
+//        layerManager.addLayer(new PlanetsLayer(model, resources, preferences));
+//        layerManager.addLayer(new MeteorShowerLayer(model, resources));
+        layerManager.addLayer(new GridLayer(resources, 24, 19));
+        layerManager.addLayer(new HorizonLayer(model, resources));
+//        layerManager.addLayer(new EclipticLayer(resources));
+//        layerManager.addLayer(new SkyGradientLayer(model, resources));
+
         Log.i(TAG, "Set up controllers @ " + System.currentTimeMillis());
         controller.setModel(model);
-        wireUpScreenControls(v); // TODO(johntaylor) move these?
+        wireUpScreenControls(v);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
