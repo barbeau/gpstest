@@ -14,7 +14,6 @@
 
 package com.android.gpstest.ar;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.gpstest.util.MiscUtils;
@@ -37,9 +36,8 @@ public class ControllerGroup implements Controller {
     private boolean usingAutoMode = true;
     private AstronomerModel model;
 
-    // TODO(jontayler): inject everything else.
-    ControllerGroup(Context context, SensorOrientationController sensorOrientationController,
-                    LocationController locationController) {
+    public ControllerGroup(SensorOrientationController sensorOrientationController,
+                           LocationController locationController) {
         addController(locationController);
         this.sensorOrientationController = sensorOrientationController;
         addController(sensorOrientationController);

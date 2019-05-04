@@ -17,11 +17,14 @@
 
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.SensorManager;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsStatus;
 import android.location.Location;
+import android.location.LocationManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,11 +37,17 @@ import android.widget.ImageButton;
 
 import com.android.gpstest.ar.ArRenderer;
 import com.android.gpstest.ar.AstronomerModel;
+import com.android.gpstest.ar.AstronomerModelImpl;
 import com.android.gpstest.ar.ButtonLayerView;
 import com.android.gpstest.ar.ControllerGroup;
 import com.android.gpstest.ar.FullscreenControlsManager;
+import com.android.gpstest.ar.LatLong;
 import com.android.gpstest.ar.LayerManager;
+import com.android.gpstest.ar.LocationController;
+import com.android.gpstest.ar.MagneticDeclinationCalculator;
+import com.android.gpstest.ar.RealMagneticDeclinationCalculator;
 import com.android.gpstest.ar.RendererController;
+import com.android.gpstest.ar.SensorOrientationController;
 import com.android.gpstest.ar.Vector3;
 import com.android.gpstest.ar.touch.DragRotateZoomGestureDetector;
 import com.android.gpstest.ar.touch.GestureInterpreter;
@@ -66,6 +75,7 @@ public class ArFragment extends Fragment implements GpsTestListener {
     private GestureDetector gestureDetector;
     private DragRotateZoomGestureDetector dragZoomRotateDetector;
     private boolean searchMode = false;
+    private MagneticDeclinationCalculator magneticDeclinationCalculator = new RealMagneticDeclinationCalculator();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +87,11 @@ public class ArFragment extends Fragment implements GpsTestListener {
         skyView.setEGLConfigChooser(false);
         ArRenderer renderer = new ArRenderer(getActivity().getResources());
         skyView.setRenderer(renderer);
+        model = new AstronomerModelImpl(magneticDeclinationCalculator);
+        layerManager = new LayerManager(Application.getPrefs());
+        controller = new ControllerGroup(
+                new SensorOrientationController((SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE)),
+                new LocationController((LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE)));
 
         rendererController = new RendererController(renderer, skyView);
         // The renderer will now call back every frame to get model updates.
@@ -100,6 +115,9 @@ public class ArFragment extends Fragment implements GpsTestListener {
     }
 
     public void onLocationChanged(Location loc) {
+        magneticDeclinationCalculator.setLocationAndTime(
+                new LatLong(loc.getLatitude(), loc.getLongitude()),
+                System.currentTimeMillis());
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {

@@ -14,7 +14,6 @@
 
 package com.android.gpstest.ar;
 
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -39,11 +38,9 @@ public class LocationController extends AbstractController implements LocationLi
     private static final String TAG = MiscUtils.getTag(LocationController.class);
     private static final float MIN_DIST_TO_SHOW_TOAST_DEGS = 0.01f;
 
-    private Context context;
     private LocationManager locationManager;
 
-    public LocationController(Context context, LocationManager locationManager) {
-        this.context = context;
+    public LocationController(LocationManager locationManager) {
         if (locationManager != null) {
             Log.d(TAG, "Got location Manager");
         } else {
