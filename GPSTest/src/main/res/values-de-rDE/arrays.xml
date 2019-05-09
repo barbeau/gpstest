@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-    <!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
 ** Copyright 2012, Sean J. Barbeau
@@ -35,6 +34,19 @@
         <item>Hybridansicht</item>
         <item>Satellitenansicht</item>
         <item>Geländeansicht</item>
+    </string-array>
+
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>Englisch</item>
+        <item>Chinesisch</item>
+        <item>Tschechisch</item>
+        <item>Niederländisch</item>
+        <item>Deutsch</item>
+        <item>Griechisch</item>
+        <item>Italienisch</item>
+        <item>Japanisch</item>
+        <item>Russisch</item>
     </string-array>
 
     <!-- Help -->

@@ -45,17 +45,14 @@
 
     <string name="delete_aiding_data_success">GPS-Hilfsdaten erfolgreich gelöscht.</string>
     <string name="delete_aiding_data_failure">Das Gerät unterstützt nicht das Löschen der GPS-Hilfsdaten.</string>
-
     <string name="gps_switch">Aus/Ein</string>
     <string name="send_location">Standort senden</string>
     <string name="set_fix_frequency">Fix-Häufigkeit einstellen</string>
     <string name="force_time_injection_success">Zeit-Daten erfolgreich geladen.</string>
     <string name="force_time_injection_failure">Das Gerät unterstützt nicht das Laden der Zeit-Daten.</string>
 
-
     <string name="force_xtra_injection_success">XTRA-Daten erfolgreich geladen.</string>
     <string name="force_xtra_injection_failure">Das Gerät unterstützt nicht das Laden der XTRA-Daten.</string>
-
 
     <string name="zoom_in">Vergrößern</string>
     <string name="zoom_out">Verkleinern</string>
@@ -63,42 +60,20 @@
     <string name="mode_satellite">Satellit</string>
 
     <string name="gps_latitude_label">Breite:</string>
-    <string name="gps_latitude_value">%1$.7f\u00b0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00b0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Länge:</string>
-    <string name="gps_longitude_value">%1$.7f\u00b0</string>
     <string name="gps_fix_time_label">Zeit:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Höhe:</string>
-    <string name="gps_altitude_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Höhe (MSL):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V-Acc:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f m</string>
-    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">v:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">v-Acc:</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">Kurs:</string>
-    <string name="gps_bearing_value">%1$.1f\u00b0</string>
     <string name="gps_bearing_acc_label">Kurs-Acc:</string>
-    <string name="gps_bearing_acc_value">%1$.1f\u00b0</string>
     <string name="gps_num_sats_label"># Sats:</string>
-    <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
-    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">H/V-DOP:</string>
-    <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
@@ -108,9 +83,7 @@
     <string name="gps_cn0_column_label">C/N\u2080</string>
     <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00b0</string>
     <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00b0</string>
     <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">Bitte die Systemeinstellungen kontrollieren. das Gerät scheint GNSS/GPS nicht zu unterstützen.</string>
     <string name="install">Installieren</string>
@@ -120,7 +93,6 @@
     <string name="enable_gps_positive_button">GPS einschalten</string>
     <string name="enable_gps_negative_button">Nein</string>
     <string name="gps_set_location_listener">GPS mit Intervall = %1$s s und min. Distanz = %2$s m gestartet</string>
-
     <string name="clear_assist_warning_title">Hilfsdaten löschen?</string>
     <string name="clear_assist_warning">Manche Geräte benötigen eventuell 24 h zum automatischen Aktualisieren der Hilfsdaten. Wenn das Gerät das manuelle Laden der Hilfsdaten nicht unterstützt, funktioniert das GPS u.U. erst wieder nach Abschluss des automatischen Aktualisierens. Hilfsdaten wirklich löschen?</string>
     <string name="never_ask_again">Nicht noch einmal fragen</string>
@@ -138,8 +110,6 @@
     <string name="set_ground_truth_subtitle">Bitte auf die Karte tippen oder die reale Position eingeben</string>
     <string name="save">Speichern</string>
     <string name="edit">Bearbeiten</string>
-    <string name="benchmark_lat_long">%1$.7f</string>
-    <string name="benchmark_alt">%1$.1f</string>
     <string name="ground_truth_marker_title">Reale Position</string>
     <string name="ground_truth_invalid_location_title">Falsche Eingabe</string>
     <string name="ground_truth_invalid_lat">Breitengrad bitte in Dezimalgrad angeben. Der Wert muss zwischen -90 und 90 liegen.</string>
@@ -153,25 +123,9 @@
     <string name="estimated_accuracy_graph_label">Geschätzte Genauigkeit der Hardware</string>
     <string name="horizontal_vertical_error_label">H/V-Abweichung</string>
     <string name="avg_error_label">avg %1$d Fixes</string>
-    <string name="benchmark_header_error_divider">/</string>
-    <string name="benchmark_error">%1$.2f</string>
     <string name="fix_number">Fix #</string>
 
     <!-- Sky view -->
-    <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_low_middle">18</string>
-    <string name="sky_legend_cn0_middle">27</string>
-    <string name="sky_legend_cn0_middle_high">36</string>
-    <string name="sky_legend_cn0_high">45</string>
-    <string name="sky_legend_cn0_units">(dB-Hz)</string>
-
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
-
     <string name="sky_legend_title">Legende</string>
     <string name="sky_legend_shape_gnss_title">Globale Navigationssatellitensysteme (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
@@ -216,7 +170,6 @@
     <string name="feedback_body">Beschwerden, Lob oder Fehlerberichte sind willkommen!\n\n\n</string>
     <string name="feedback_error">Feedback kann nicht gesendet werden, da keine geeignete App gefunden wurde.</string>
 
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
     <string name="main_help_whatsnew"><li><b>Genauigkeitsansicht</b>
@@ -238,12 +191,8 @@
     <string name="pref_rotate_map_with_compass_title">Karte mit Kompass drehen</string>
     <string name="pref_rotate_map_with_compass_summary">Kartenausrichtung entsprechend Geräteausrichtung</string>
 
-
-
     <string name="pref_tilt_map_with_sensors_title">Karte mit Gerät kippen</string>
     <string name="pref_tilt_map_with_sensors_summary">Kartenperspektive der Blickhöhe anpassen</string>
-
-
 
     <string name="pref_gps_category_title">GNSS</string>
     <string name="pref_auto_start_gps_title">GNSS automatisch starten</string>
@@ -257,28 +206,22 @@
     <string name="pref_use_gnss_apis_title">GNSS-APIs verwenden</string>
     <string name="pref_use_gnss_apis_summary">Wenn deaktiviert, wird der veraltete GPSStatus.Listener verwendet (Verfügbar ab Android 7.0)</string>
 
-
-
     <string name="pref_gps_min_distance_title">Mindestabstand</string>
     <string name="pref_gps_min_distance_summary">Minimale Distanz zwischen den Positionsanzeigen in Meter</string>
-
     <string name="pref_gps_min_distance_dialog_title">Mindestabstand in Meter eingeben</string>
     <string name="pref_gps_min_distance_invalid_entry">Der Eingabewert muss eine Zahl sein</string>
 
     <string name="pref_stop_gnss_in_background_title">GNSS im Hintergrund anhalten</string>
     <string name="pref_stop_gnss_in_background_summary">Wenn aktiviert, wird GNSS immer angehalten, wenn die App in den Hintergrund rückt (z.B. beim Drücken der Home- oder Multitasking-Tasten)</string>
 
-
     <string name="pref_analyze_gps_accuracy_title">GNSS-Genauigkeit analysieren</string>
     <string name="pref_analyze_gps_accuracy_summary">Die App GPS Benchmark zum Messen von GNSS-Fehlern verwenden</string>
-
 
     <string name="pref_display_category_title">Anzeige</string>
     <string name="pref_keep_screen_on_title">Display immer an</string>
     <string name="pref_keep_screen_on_summary">Verhindert das Abschalten der Anzeige</string>
     <string name="pref_true_north_title">Nach geographischem Nordpol ausrichten</string>
     <string name="pref_true_north_summary">Der Kompass wird am geographischen statt magnetischen Nordpol ausgerichtet</string>
-
 
     <string name="pref_output_category_title">Android Monitor Ausgabe</string>
     <string name="pref_nmea_output_title">NMEA</string>
@@ -287,12 +230,8 @@
     <string name="pref_nmea_timestamp_output_summary">NMEA-Zeitstempel zusätzlich ausgeben</string>
     <string name="pref_measurement_output_title">Messungen</string>
     <string name="pref_measurement_output_summary">Protokolliert die GNSS-Messungen in Android Studio (Android 7.0 und höher)</string>
-
-
     <string name="pref_navigation_message_output_title">Navigationsnachrichten</string>
     <string name="pref_navigation_message_output_summary">Protokolliert GNSS-Navigationsnachrichten in Android Studio (Android 7.0 und höher)</string>
-
-
 
     <string name="pref_about_category_title">Über GPSTest</string>
     <string name="pref_show_tutorial_title">Tutorial ansehen</string>
@@ -300,7 +239,6 @@
 
     <string name="pref_dark_theme_title">Dunkles Theme verwenden</string>
     <string name="pref_dark_theme_summary">Stellt den Hintergrund in einer dunklen Farbe und den Text in einer hellen Farbe dar</string>
-
 
     <string name="pref_dms_mode_title">Sexagesimal-Format verwenden</string>
     <string name="pref_dms_mode_summary">Breite und Länge in Grad, Minuten und Sekunden statt dezimal anzeigen</string>
@@ -314,12 +252,17 @@
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometer pro Stunde</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Meilen pro Stunde</string>
 
+    <string name="pref_language_title">Sprache</string>
+    <string name="pref_language_summary">Sprache dieser App manuell einstellen</string>
+    <string name="pref_language_dialog_title">Sprache auswählen</string>
+
     <!-- Units -->
     <string name="feet_abbreviation">ft</string>
     <string name="meters_abbreviation">m</string>
 
     <!-- Help -->
     <string name="title_help">Hilfe</string>
+
     <string name="help_text"><b><big>Häufig gestellte Fragen (FAQ)</big></b>
         \n\nSiehe GitHub-Projektseite (englisch) https://github.com/barbeau/gpstest/blob/master/FAQ.md
         \n\n<b><big>Status-Ansicht</big></b>
