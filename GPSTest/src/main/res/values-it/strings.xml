@@ -27,11 +27,11 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modifica i dati di assistenza</string>
-    <string name="force_xtra_injection">Importa dati XTRA</string>
-    <string name="force_time_injection">Importa dati temporali</string>
-    <string name="delete_aiding_data">Rimuovi i dati di assistenza</string>
+    <string name="force_xtra_injection">Inserisci dati XTRA</string>
+    <string name="force_time_injection">Inserisci dati temporali</string>
+    <string name="delete_aiding_data">Rimuovi dati di assistenza</string>
     <string name="navdrawer_item_settings">Impostazioni</string>
-    <string name="navdrawer_item_help">Aiuto</string>
+    <string name="navdrawer_item_help">Informazioni</string>
     <string name="navdrawer_item_send_feedback">Invia feedback</string>
     <string name="navdrawer_item_open_source">Visitaci su GitHub</string>
 
@@ -48,22 +48,22 @@
     <string name="send_location">Invia Posizione</string>
     <string name="set_fix_frequency">Imposta Frequenza di localizzazione</string>
     <string name="force_time_injection_success">Dati temporali inseriti con successo</string>
-    <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento dei dati temporali.</string>
+    <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento dei dati temporali</string>
 
-    <string name="force_xtra_injection_success">Dati XTRA inseriti con successo.</string>
-    <string name="force_xtra_injection_failure">Il dispositivo non supporta l\'inserimento dei dati XTRA.</string>
+    <string name="force_xtra_injection_success">Dati XTRA inseriti con successo</string>
+    <string name="force_xtra_injection_failure">Il dispositivo non supporta l\'inserimento dei dati XTRA</string>
 
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
     <string name="mode_map">Mappa</string>
     <string name="mode_satellite">Satellite</string>
 
-    <string name="gps_latitude_label">Latitudine:</string>
-    <string name="gps_longitude_label">Longitudine:</string>
+    <string name="gps_latitude_label">Lat:</string>
+    <string name="gps_longitude_label">Long:</string>
     <string name="gps_fix_time_label">Ora:</string>
-    <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">Altitudine:</string>
-    <string name="gps_altitude_msl_label">Altezza (m.s.l.m.)</string>
+    <string name="gps_ttff_label">TTPL:</string>
+    <string name="gps_altitude_label">Alt:</string>
+    <string name="gps_altitude_msl_label">Alt (m.s.l.m.):</string>
     <string name="gps_accuracy_label">Prec. stim.:</string>
     <string name="gps_hor_and_vert_accuracy_label">Prec. V/O stim.:</string>
     <string name="gps_speed_label">Velocità:</string>
@@ -122,8 +122,6 @@
     <string name="estimated_accuracy_graph_label">Precisione stimata dal dispositivo</string>
     <string name="horizontal_vertical_error_label">Errore O/V</string>
     <string name="avg_error_label">media %1$d segnali</string>
-    <string name="benchmark_header_error_divider">/</string>
-    <string name="benchmark_error">%1$.2f</string>
     <string name="fix_number">n° Segnali</string>
 
     <!-- Sky view -->

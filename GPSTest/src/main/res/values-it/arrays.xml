@@ -22,7 +22,7 @@
         <item>Costellazione</item>
         <item>Frequenza</item>
         <item>Intensità Segnale</item>
-        <item>Utilizzato per localizzazione</item>
+        <item>Utilizzato per Localizzazione</item>
         <item>Costellazione, Frequenza</item>
         <item>Costellazione, Intensità Segnale</item>
         <item>Costellazione, Utilizzato per Localizzazione</item>
@@ -34,6 +34,19 @@
         <item>Ibrida</item>
         <item>Satellite</item>
         <item>Terreno</item>
+    </string-array>
+
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>Inglese</item>
+        <item>Cinese</item>
+        <item>Ceco</item>
+        <item>Olandese</item>
+        <item>Tedesco</item>
+        <item>Greco</item>
+        <item>Italiano</item>
+        <item>Giapponese</item>
+        <item>Russo</item>
     </string-array>
 
     <!-- Help -->
