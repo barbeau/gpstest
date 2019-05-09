@@ -60,42 +60,20 @@
     <string name="mode_satellite">Satelit</string>
 
     <string name="gps_latitude_label">Zem. šířka:</string>
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">Zem. délka:</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Čas:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Výška (GEOID):</string>
-    <string name="gps_altitude_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">Výška (MSL):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">Přesnost:</string>
     <string name="gps_hor_and_vert_accuracy_label">Přesnost (H/V):</string>
-    <string name="gps_accuracy_value_meters">%1$.1f m</string>
-    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">Rychlost:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">Přesnost (R):</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">Poloha (S):</string>
-    <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">Přesnost (S):</string>
-    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label">Satelity:</string>
-    <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
-    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">H/V DOP:</string>
-    <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
@@ -105,9 +83,7 @@
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">Průměr</string>
     <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">Stav</string>
     <string name="gps_not_supported">Zařízení pravděpodobně nepodporuje GNNS/GPS. Zkontrolujte nastavení systému.</string>
     <string name="install">Instalovat</string>
@@ -134,38 +110,22 @@
     <string name="set_ground_truth_subtitle">Klikněte na mapu nebo zadejte svou skutečnou polohu.</string>
     <string name="save">Uložit</string>
     <string name="edit">Upravit</string>
-    <string name="benchmark_lat_long">%1$.7f</string>
-    <string name="benchmark_alt">%1$.1f</string>
     <string name="ground_truth_marker_title">Skutečná poloha</string>
     <string name="ground_truth_invalid_location_title">Neplatná poloha</string>
     <string name="ground_truth_invalid_lat">Hodnota zeměpisné šířky musí být ve stupních od -90° do +90° .</string>
     <string name="ground_truth_invalid_long">Hodnota zeměpisné délky musí být ve stupních od -180° do +180°.</string>
     <string name="ground_truth_invalid_alt">Hodnota nadmořské výšky (WGS84) musí být v metrech.</string>
 
+    <string name="horizontal_error_title">Horizontální chyba</string>
+    <string name="vertical_error_title">Vertikální chyba</string>
     <string name="horizontal_error_label">Chyba</string>
     <string name="measured_error_graph_label">Chyba měření</string>
     <string name="estimated_accuracy_graph_label">Přesnost odhadnuta HW</string>
     <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
     <string name="avg_error_label">Průměr %1$d opraven</string>
-    <string name="benchmark_header_error_divider">/</string>
-    <string name="benchmark_error">%1$.2f</string>
     <string name="fix_number">Průměr</string>
 
     <!-- Sky view -->
-    <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_low_middle">18</string>
-    <string name="sky_legend_cn0_middle">27</string>
-    <string name="sky_legend_cn0_middle_high">36</string>
-    <string name="sky_legend_cn0_high">45</string>
-    <string name="sky_legend_cn0_units">(dB-Hz)</string>
-
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
-
     <string name="sky_legend_title">Popis</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
@@ -292,6 +252,10 @@
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilomentr za hodinu</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Míle za hodinu</string>
 
+    <string name="pref_language_title">Jazyk</string>
+    <string name="pref_language_summary">Nastavte jazyk prostředí aplikace.</string>
+    <string name="pref_language_dialog_title">Vyberte jazyk</string>
+
     <!-- Units -->
     <string name="feet_abbreviation">ft</string>
     <string name="meters_abbreviation">m</string>
@@ -300,101 +264,89 @@
     <string name="title_help">Nápověda</string>
 
     <string name="help_text">
-
         <b>Často kladené otázky (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
         <b>*** Zobrazení stavu ***</b>\n\n&#8226;\u0020
-
         <b>Zem. šířka</b>
-        - latitude - zeměpisná šířka v desetinných stupních (WGS84)\n&#8226;\u0020
+        - Zeměpisná šířka v desetinných stupních. (WGS84)\n&#8226;\u0020
         <b>Zem. délka</b>
-        - longitude - zeměpisná délka v desetinných stupních (WGS84)\n&#8226;\u0020
+        - Zeměpisná délka v desetinných stupních. (WGS84)\n&#8226;\u0020
         <b>Výška (GEOID)</b>
-        - alt - nadmořská výška v metrech při střední hladině světových oceánů (WGS84)\n&#8226;\u0020
+        - Nadmořská výška v metrech při střední hladině světových oceánů (WGS84).\n&#8226;\u0020
         <b>Výška (MSL)</b>
-         - alt (MSL) - nadmořská výška v metrech při střední hladině moře (vyžadována podpora NMEA)\n&#8226;\u0020
+        - Nadmořská výška v metrech při střední hladině moře (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>Přesnost</b>
-         - acc - přesnost polohy\n&#8226;\u0020
+        - Odhadovaná přesnost horizontální polohy (poloměr v metrech, spolehlivost 68%). Jinými slovy, pokud nakreslíte kruh v této zeměpisné šířce a délce s poloměrem rovným přesnosti, pak existuje 68% pravděpodobnost, že skutečná poloha je uvnitř kruhu.\n&#8226;\u0020
         <b>Přesnost (H/V)</b>
-         - h/v acc - horizontální / vertikální přesnost polohy (pro vertikální přesnost polohy je vyžadován Android 8.0 a vyšší)\n&#8226;\u0020
+        - Odhadovaná přesnost horizontální a vertikální polohy (spolehlivost 68%). Přesnost horizontální polohy je definována výše. Pro přesnost vertikální polohy je vyžadován Android 8.0 a vyšší. Příklad přesnosti vertikální polohy: je-li nadmořská výška (GEOID) 150 m a přesnost vertikální polohy 20 m, pak existuje 68% pravděpodobnost skutečné výšky mezi 130 m a 170 m.\n&#8226;\u0020
         <b>Rychlost</b>
-         - speed - rychlost nad zemí v metrech za sekundu\n&#8226;\u0020
+        - Rychlost nad zemí v metrech za sekundu.\n&#8226;\u0020
         <b>Přesnost (R)</b>
-         - s. acc - přesnost rychlosti v metrech za sekundu\n&#8226;\u0020
+        - Odhadovaná přesnost rychlosti polohy v metrech za sekundu (spolehlivost 68%).  Příklad přesnosti rychlosti: je-li rychlost 5 m/s a přesnost rychlosti 1 m/s, pak existuje 68% pravděpodobnost skutečné rychlosti mezi 4 m/s a 6 m/s.\n&#8226;\u0020
         <b>Poloha (S)</b>
-         - bearing - horizontální poloha směru k cíli (směr pohybu zařízení) ve stupních (0° - 360°) \n&#8226;\u0020
+        - Horizontální poloha směru k cíli (směr pohybu zařízení) ve stupních (0° - 360°), nesouvisí s orientací zařízení.\n&#8226;\u0020
         <b>Přesnost (S)</b>
-         - b. acc - přesnost polohy směru k cíli ve stupních\n&#8226;\u0020
+        - Odhadovaná přesnost polohy směru k cíli ve stupních (spolehlivost 68%). Příklad přesnosti polohy: je-li poloha směru k cíli 60° a přesnost polohy 10°, pak existuje 68% pravděpodobnost skutečné polohy mezi 50° a 70°.\n&#8226;\u0020
         <b>Satelity</b>
-        - # sats - počet připojených satelitů / počet viditelných satelitů\n&#8226;\u0020
+        - Počet připojených satelitů / Počet viditelných satelitů.\n&#8226;\u0020
         <b>PDOP</b>
-        - position (3D) dilution of precision - 3D poměr přesnosti polohy (vyžadována podpora NMEA)
-\n&#8226;\u0020
+        - 3D poměr přesnosti polohy (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>H/V DOP</b>
-       - horizontal / vertical dilution of precision - 2D (H/V) poměr přesnosti polohy (vyžadována podpora NMEA)\n&#8226;\u0020
+        - 2D (H/V) poměr přesnosti polohy (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>TTFF</b>
-        - time to first fix - čas prvního připojení\n&#8226;\u0020
-        <b>ID (PRN)</b>
-        - identifier of this satellite (pseudorandom noise for GPS) - identifikátor satelitu\n&#8226;\u0020
+        - Čas prvního připojení.\n&#8226;\u0020
+        <b>ID or PRN</b>
+        - Identifikátor satelitu.\n&#8226;\u0020
         <b>CF</b>
-         - carrier frequency - označení nosiče kmitočtu (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení)\n&#8226;\u0020
+        - Označení nosiče kmitočtu sledovaného signálu (např. \"L1\"). Pokud je kmitočet neznámý, je zobrazen jako neupravený kmitočet v MHz (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení). Nový signál GLONASS CDMA pro \"L1\" je zobrazen jako \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - signal-to-noise ratio - síla úrovně signálu (vyžadován Android M a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
-       <b>C/N0</b>
-        - carrier-to-noise density - síla úrovně signálu (vyžadován Android N a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>Elev</b> 
-         - elevation - výškový úhel ve stupních (Elevace)\n&#8226;\u0020
-        <b>Azim</b> 
-         - azimuth - směrový úhel ve stupních (Azimut)\n&#8226;\u0020
+        - Síla úrovně signálu (vyžadován Android M a nižší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Síla úrovně signálu (vyžadován Android N a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Elev</b>
+        - Výškový úhel (Elevace) ve stupních.\n&#8226;\u0020
+        <b>Azim</b>
+        - Směrový úhel (Azimut) ve stupních.\n&#8226;\u0020
         <b>Stav</b>
-         - (E) - pokud zařízení přijímá efemeridové údaje pro satelit
-         - (A) - pokud zařízení přijímá almanachové údaje pro satelit
-         - (U) - pokud byl připojený satelit použit při výpočtu poslední polohy. 
+        - (E) pokud zařízení přijímá efemeridové údaje pro satelit, (A) pokud zařízení přijímá almanachové údaje pro satelit, (U) pokud byl připojený satelit použit při výpočtu poslední polohy.  Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
 
-Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
-
-       <b>*** Zobrazení kompasu ***</b>\n\n&#8226;\u0020
-
-       <b>GPS (USA Navstar)</b>
+        <b>*** Zobrazení kompasu ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
         - kruh\n&#8226;\u0020
-       <b>GLONASS (Russia)</b>
+        <b>GLONASS (Russia)</b>
         - čtverec\n&#8226;\u0020
-       <b>Galileo (European Union)</b>
-         - trojúhelník\n&#8226;\u0020
-       <b>QZSS (Japan)</b>
-         - šestiúhelník\n&#8226;\u0020
-       <b>BeiDou/COMPASS (China)</b>
-         - pětiúhelník\n&#8226;\u0020
-       <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
-         - kosočtverec\n\n
+        <b>Galileo (European Union)</b>
+        - trojúhelník\n&#8226;\u0020
+        <b>QZSS (Japan)</b>
+        - šestiúhelník\n&#8226;\u0020
+        <b>BeiDou/COMPASS (China)</b>
+        - pětiúhelník\n&#8226;\u0020
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        - kosočtverec\n\n
 
-         &#8226;\u0020 Transparentní zobrazení - nepřipojené satelity, které nejsou v zorném poli zařízení\n
-         &#8226;\u0020 Zobrazení s tenkým obrysem - nepřipojené satelity, které jsou v zorném poli zařízení\n
-         &#8226;\u0020 Zobrazení se silným obrysem - připojené satelity, které jsou v zorném poli zařízení\n\n
+        &#8226;\u0020 Transparentní zobrazení - nepřipojené satelity, které nejsou v zorném poli zařízení\\n
+        &#8226;\u0020 Zobrazení s tenkým obrysem - nepřipojené satelity, které jsou v zorném poli zařízení\n
+        &#8226;\u0020 Zobrazení se silným obrysem - připojené satelity pro stanovení polohy, které jsou v zorném poli zařízení\n\n
 
-        &#8226;\u0020 Rozsah hodnoty SNR je od 0 dB (červená b.) do 30 dB (zelená b.) - Android 6.0 a nižší. \n
-        &#8226;\u0020 Rozsah hodnoty SNR je od 10 dB (červená b.) do 45 dB (zelená b.) - Android 7.0 a vyšší. \n
-        &#8226;\u0020 Rozsah hodnoty C/N0 je od 10 dB-Hz (červená b.) do 45 dB-Hz (zelená b.) - Android 7.0 a vyšší. \n
-        &#8226;\u0020 Jestliže neexistuje žádná hodnota pro SNR nebo C/N0 (tj. satelit není v zorném poli zařízení), bude mít transparentní zobrazení se světle šedou barvou. \n\n
+        &#8226;\u0020 Rozsah hodnoty SNR je od 0 dB (červené ozn.) do 30 dB (zelené ozn.) - vyžadován Android 6.0 a nižší. \n
+        &#8226;\u0020 Rozsah hodnoty SNR je od 10 dB (červené ozn.) do 45 dB (zelené ozn.) - vyžadován Android 7.0 a vyšší. \n
+        &#8226;\u0020 Rozsah hodnoty C/N0 je od 10 dB-Hz (červené ozn.) do 45 dB-Hz (zelené ozn.) - vyžadován Android 7.0 a vyšší. \n
+        &#8226;\u0020 Jestliže neexistuje žádná hodnota pro SNR nebo C/N0 (tj. satelit není v zorném poli zařízení), bude mít transparentní zobrazení světle šedou barvou. \n\n
 
         <b>*** Zobrazení přesnosti ***</b>\n\n&#8226;\u0020
-
         <b>Vertikální chyba</b>
-         - Na rozdíl od chyby horizontálního měření, může mít chyba vertikálního měření hodnotu kladnou nebo zápornou. Pro zobrazení hodnoty vertikální a průměrné vertikální chyby se výpočet provádí pomocí naměřených absolutních hodnot chyby.\n\n
+        - Na rozdíl od chyby horizontálního měření, může mít chyba vertikálního měření hodnotu kladnou nebo zápornou. Pro zobrazení hodnoty vertikální a průměrné vertikální chyby se výpočet provádí pomocí naměřených absolutních hodnot chyby.\n\n
 
-      <b>*** Poděkování ***</b>\n\n
-
-       &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
-       &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
-
-       &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0. Other Google material design icons are also used under Apache v2.0.\n
-
-       &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-       &#8226;\u0020 German translation provided by SIRSteiner\n
-       &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
-       &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
-       &#8226;\u0020 Japanese translation provided by SakuraSa233\n
-       &#8226;\u0020 Czech translation provided by llzn.cz\n
-</string>
+        <b>*** Poděkování ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
+        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
+        &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 German translation provided by SIRSteiner\n
+        &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
+        &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
+        &#8226;\u0020 Japanese translation provided by SakuraSa233\n
+        &#8226;\u0020 Czech translation provided by llzn.cz\n
+    </string>
 </resources>

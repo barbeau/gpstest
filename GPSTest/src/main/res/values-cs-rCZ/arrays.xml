@@ -37,6 +37,19 @@
         <item>Terénní mapa</item>
     </string-array>
 
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>Angličtina</item>
+        <item>Čínština</item>
+        <item>Čeština</item>
+        <item>Holandština</item>
+        <item>Němčina</item>
+        <item>Řečtina</item>
+        <item>Italština</item>
+        <item>Japonština</item>
+        <item>Ruština</item>
+    </string-array>
+
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Co je nového?</item>
