@@ -24,6 +24,7 @@
     <string name="gps_status_title">状態</string>
     <string name="gps_map_title">マップ</string>
     <string name="gps_sky_title">スカイ</string>
+    <string name="gps_accuracy_title">精度</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">アシストデータを変更</string>
@@ -62,42 +63,20 @@
     <string name="mode_satellite">衛星</string>
 
     <string name="gps_latitude_label">緯度:</string>
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_label">経度:</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">時間:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">高度:</string>
-    <string name="gps_altitude_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_label">高度(MSL):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f ft</string>
     <string name="gps_accuracy_label">精度:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f m</string>
-    <string name="gps_accuracy_value_feet">%1$.1f ft</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f m</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f ft</string>
     <string name="gps_speed_label">速度:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f km/h</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f mph</string>
     <string name="gps_speed_acc_label">速度精度:</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f m/s</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f km/h</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f mph</string>
     <string name="gps_bearing_label">方位:</string>
-    <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">方位精度:</string>
-    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># 衛星:</string>
-    <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
-    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">H/V PDOP:</string>
-    <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
@@ -107,9 +86,7 @@
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">平均</string>
     <string name="gps_elevation_column_label">仰角</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">方位角</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">フラグ</string>
     <string name="gps_not_supported">システム設定を確認してください - デバイスがGNSS/GPSをサポートしていないようです。</string>
     <string name="install">インストール</string>
@@ -128,21 +105,21 @@
     <string name="sbas_not_available">衛星航法補強システム（SBAS）衛星は利用できません</string>
     <string name="menu_option_sort_by">並び替え</string>
 
+    <!-- Map view -->
+    <string name="ground_truth_latitude">緯度</string>
+    <string name="ground_truth_longitude">経度</string>
+    <string name="ground_truth_altitude">WGS84座標系（オプション）</string>
+    <string name="set_ground_truth_title">測定精度</string>
+    <string name="save">保存</string>
+    <string name="edit">編集</string>
+    <string name="ground_truth_marker_title">あなたのいる場所</string>
+    <string name="ground_truth_invalid_location_title">無効な場所</string>
+    <string name="horizontal_error_title">水平誤差</string>
+    <string name="vertical_error_title">垂直誤差</string>
+    <string name="horizontal_error_label">誤差</string>
+    <string name="measured_error_graph_label">測定誤差</string>
+    <string name="horizontal_vertical_error_label">H/V誤差</string>
     <!-- Sky view -->
-    <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_low_middle">18</string>
-    <string name="sky_legend_cn0_middle">27</string>
-    <string name="sky_legend_cn0_middle_high">36</string>
-    <string name="sky_legend_cn0_high">45</string>
-    <string name="sky_legend_cn0_units">(dB-Hz)</string>
-
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
-
     <string name="sky_legend_title">凡例</string>
     <string name="sky_legend_shape_gnss_title">衛星測位システム（GNSS）</string>
     <string name="sky_legend_shape_navstar">全地球測位システム（アメリカ）</string>
@@ -189,22 +166,14 @@
     </string>
 
     <!-- What's New -->
-    <string name="main_help_whatsnew_title">新しいもの</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>北斗B1Cキャリア周波数</b>
-        - B1Cは、CF列の北斗衛星に対して正しく表示されるになりました。\n&#8226;\u0020
-        <b>バックグラウンドGNSSの使用をオフにするオプション</b>
-        - 有効にすると、アプリを終了するときにGNSSがオフになります。\n&#8226;\u0020
-        <b>バグの修正</b>
-        - http://bit.ly/gpstest-releases
-    </string>
+    <string name="main_help_whatsnew_title">更新履歴</string>
     <string name="main_help_close">閉じる</string>
 
     <!-- Preferences -->
     <string name="pref_title">設定</string>
     <string name="pref_map_category_title">マップ</string>
     <string name="pref_map_type_title">地図の種類</string>
-    <string name="pref_map_type_summary">表示されているマップタイルの種類を設定します</string>
+    <string name="pref_map_type_summary">表示されているマップタイルの種類を設定する</string>
     <string name="pref_map_type_dialog_title">地図の種類を選択</string>
 
     <string name="pref_rotate_map_with_compass_title">コンパスで地図を回転する</string>
@@ -223,7 +192,7 @@
     <string name="pref_gps_min_time_invalid_entry">間隔は数字でなければなりません</string>
 
     <string name="pref_use_gnss_apis_title">GNSS APIsを使用する</string>
-    <string name="pref_use_gnss_apis_summary">Android 7.0以上で利用できます。チェックを外すと、従来のGPSStatus.Listenerを使用します。</string>
+    <string name="pref_use_gnss_apis_summary">従来のGPSStatus.Listenerを使用する(Android 7.0以上)</string>
 
     <string name="pref_gps_min_distance_title">最小距離</string>
     <string name="pref_gps_min_distance_summary">GNSS修正の最小距離間隔（メートル単位）</string>
@@ -231,7 +200,7 @@
     <string name="pref_gps_min_distance_invalid_entry">最小距離は数字でなければなりません</string>
 
     <string name="pref_stop_gnss_in_background_title">バックグラウンドでGNSSを停止する</string>
-    <string name="pref_stop_gnss_in_background_summary">有効にすると、アプリがバックグラウンドに置かれたときにGNSSが常に停止します。</string>
+    <string name="pref_stop_gnss_in_background_summary">アプリがバックグラウンドに置かれたときにGNSSを常に停止する</string>
 
     <string name="pref_analyze_gps_accuracy_title">GNSSの精度を分析する</string>
     <string name="pref_analyze_gps_accuracy_summary">GPS Benckmarkを使用してGNSSエラーを測定する</string>
@@ -256,7 +225,7 @@
     <string name="pref_show_tutorial_title">マニュアルを表示</string>
     <string name="pref_show_tutorial_summary">アプリの使用方法を表示します</string>
 
-    <string name="pref_dark_theme_title">暗いテーマを使う</string>
+    <string name="pref_dark_theme_title">暗いテーマを使用する</string>
     <string name="pref_dark_theme_summary">背景に暗い色を、テキストに薄い色を付ける</string>
 
     <string name="pref_dms_mode_title">DMS形式を使用する</string>
@@ -278,80 +247,4 @@
     <!-- Help -->
     <string name="title_help">ヘルプ</string>
 
-    <string name="help_text">
-        <b>よくある質問 (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-
-        <b>*** 状態 ***</b>\n\n&#8226;\u0020
-        <b>緯度</b>
-        - 十进法で (WGS 84)\n&#8226;\u0020
-        <b>经度</b>
-        - 十进法で (WGS 84)\n&#8226;\u0020
-        <b>高度</b>
-        - WGS 84の楕円体でメートルの単位\n&#8226;\u0020
-        <b>高度（平均海水面）</b>
-        - 平均海水面でメートルの単位(NMEAサポートが必要)\n&#8226;\u0020
-        <b>精度</b>
-        - 位置の推定水平精度（メートル半径内で68％確率）。言い換えれば、この位置の緯度と経度を中心とする円を描画し、その半径が精度と等しい場合、真の位置が円の内側にある確率は68％です。\n&#8226;\u0020
-        <b>水平/垂直 精度</b>
-        - 位置の水平および垂直の推定精度は、いつも68％の信頼度で算出されます。水平精度は上記の精度フィールドと同じです。垂直精度はAndroid 8.0以降で利用可能です。垂直精度の例 - 高度が150で垂直精度が20の場合、真の高度が130〜170メートルの確率は68％です。\n&#8226;\u0020
-        <b>速度</b>
-        - 地上での速度（m/s）\n&#8226;\u0020
-        <b>速度精度</b>
-        - 推定速度精度は68％確率で。例えば、速度が5で、速度精度が1である場合、真の速度が毎秒4~6メートルの確率は68％である。\n&#8226;\u0020
-        <b>方位</b>
-        - デバイスの水平移動方向（0〜360度）で、デバイスの向きには関係ありません。\n&#8226;\u0020
-        <b>方位精度</b>
-        - 推定方位精度は68％確率で。例えば、方位が60で方位精度が10の場合、真の方位は50〜70度の確率は68％です。\n&#8226;\u0020
-        <b># 衛星</b>
-        - # 修正に使用される衛星 / # 見える衛星\n&#8226;\u0020
-        <b>PDOP</b>
-        - 3D位置精度低下率（NMEAサポートが必要）\n&#8226;\u0020
-        <b>水平/垂直 DOP</b>
-        - 水平/垂直位置精度低下率（NMEAサポートが必要）\n&#8226;\u0020
-        <b>TTFF</b>
-        - GPS初期位置算出時間\n&#8226;\u0020
-        <b>IDかPRN</b>
-        - この衛星の識別子（GPSの疑似雑音）\n&#8226;\u0020
-        <b>CF</b>
-        - 追跡された信号のキャリア周波数のラベル（例えば、「L1」）。 未知の周波数の場合は、未処理でMHzで表示します（Android 8.0以降で利用可能ですが、すべてのデバイスでサポートされていません）\n&#8226;\u0020
-        <b>SNR</b>
-        - 信号対雑音比（Android M及びその以下） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>C/N0</b>
-        - 搬送波雑音電力密度比（Android M及びその以降） (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>フラグ</b>
-        - （E）装置が衛星のエフェメリスデータを有する場合、（A）デバイスは衛星に関するアルマナックデータを有する場合、（U）衛星が最新の修正で使用された場合\n\n
-
-        <b>*** スカイビュー ***</b>\n\n&#8226;\u0020
-        <b>全地球測位システム（アメリカ）</b>
-        - 円\n&#8226;\u0020
-        <b>GLONASS（ロシア）</b>
-        - 四角形\n&#8226;\u0020
-        <b>ガリレオ（EU）</b>
-        - 三角形\n&#8226;\u0020
-        <b>準天頂衛星システム（日本）</b>
-        - 六角形\n&#8226;\u0020
-        <b>北斗衛星導航系統（中国）</b>
-        - 五角形\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
-        - ダイヤモンド\n\n
-
-        &#8226;\u0020 透明な衛星 - 見えない\n
-        &#8226;\u0020 細いアウトライン - 見えるが使用されない\n
-        &#8226;\u0020 太字のアウトライン - 修正に使用中\n\n
-
-        &#8226;\u0020 Android 7.0以下の場合、期待されるSNRの範囲は0 dB（赤）〜30 dB（緑）です。 \n
-        &#8226;\u0020 Android 7.0以降の場合、期待されるSNRの範囲は10 dB（赤）〜45 dB（緑）です。\n
-        &#8226;\u0020 Android 7.0以降の場合、C/N0の範囲は10 dB-Hz（赤）〜45 dB-Hz（緑）です。\n
-        &#8226;\u0020 衛星のSNR値またはC/N0値がない場合（すなわち、装置の視野にない場合）、それは透明な明るい灰色にする。 \n\n
-
-        <b>*** 了承 ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - v1.xのオリジナル開発者\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - v2.x以降の開発者\n
-        &#8226;\u0020 GPSTestアイコンは、Apache v2.0の下でGoogleによってライセンスされたMaterial Designの「サテライト」アイコンから派生したものです。 他のMaterial DesignアイコンもApache v2.0で使用されています。\n
-        &#8226;\u0020 中国語翻訳は wangkf, liuyunli, SakuraSa233 &amp; Skimige によって提供\n
-        &#8226;\u0020 ドイツ語翻訳は Ronny Steiner によって提供\n
-        &#8226;\u0020 オランダ語翻訳は Dennis Dolman によって提供\n
-        &#8226;\u0020 ギリシャ語翻訳は Jimmy Golfi によって提供\n
-    </string>
 </resources>

@@ -39,7 +39,7 @@
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>新しいもの</item>
+        <item>更新履歴</item>
         <item>アプリについて</item>
     </string-array>
 </resources>
