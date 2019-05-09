@@ -60,42 +60,20 @@
     <string name="mode_satellite">Δορυφόρος</string>
 
     <string name="gps_latitude_label">Γ. Πλάτος:</string>
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
-    <string name="gps_lat_lon_dms_value">%1$d\u00B0%2$d\'%3$d\"</string>
     <string name="gps_longitude_label">Γ. Μήκος:</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_fix_time_label">Ωρα:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Υψος:</string>
-    <string name="gps_altitude_value_meters">%1$.1f μτ.</string>
-    <string name="gps_altitude_value_feet">%1$.1f πδ.</string>
     <string name="gps_altitude_msl_label">Υψος (MSL):</string>
-    <string name="gps_altitude_msl_value_meters">%1$.1f μτ.</string>
-    <string name="gps_altitude_msl_value_feet">%1$.1f πδ.</string>
     <string name="gps_accuracy_label">Ακρίβεια:</string>
     <string name="gps_hor_and_vert_accuracy_label">Κ/Ο Ακρίβεια:</string>
-    <string name="gps_accuracy_value_meters">%1$.1f μτ.</string>
-    <string name="gps_accuracy_value_feet">%1$.1f πδ.</string>
-    <string name="gps_hor_and_vert_accuracy_value_meters">%1$.1f/%2$.1f μτ.</string>
-    <string name="gps_hor_and_vert_accuracy_value_feet">%1$.1f/%2$.1f πδ.</string>
     <string name="gps_speed_label">Ταχύτητα:</string>
-    <string name="gps_speed_value_meters_sec">%1$.1f μ/δευτ.</string>
-    <string name="gps_speed_value_kilometers_hour">%1$.1f χλμ/ω</string>
-    <string name="gps_speed_value_miles_hour">%1$.1f μιλ/ω</string>
     <string name="gps_speed_acc_label">S. Ταχύτητα:</string>
-    <string name="gps_speed_acc_value_meters_sec">%1$.1f μ/δευτ.</string>
-    <string name="gps_speed_acc_value_km_hour">%1$.1f χλμ/ω</string>
-    <string name="gps_speed_acc_value_miles_hour">%1$.1f μιλ/ω</string>
     <string name="gps_bearing_label">Αξονας:</string>
-    <string name="gps_bearing_value">%1$.1f\u00B0</string>
     <string name="gps_bearing_acc_label">B. Acc:</string>
-    <string name="gps_bearing_acc_value">%1$.1f\u00B0</string>
     <string name="gps_num_sats_label"># Δορυφόροι:</string>
-    <string name="gps_num_sats_value">%1$d/%2$d</string>
     <string name="pdop_label">PDOP:</string>
-    <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_label">Κ/Ο DOP:</string>
-    <string name="hvdop_value">%1$.1f/%2$.1f</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
@@ -105,9 +83,7 @@
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">Προσέγγιση</string>
     <string name="gps_elevation_column_label">Ανύψωση</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_label">Αζιμ.</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="gps_flags_column_label">Σημαίες</string>
     <string name="gps_not_supported">Μη υποστηριζόμενος δέκτης GPS. Τερματισμός&#8230;</string>
     <string name="install">Εγκατάσταση</string>
@@ -134,8 +110,6 @@
     <string name="set_ground_truth_subtitle">Πατήστε πάνω στο χάρτη ή πληκτρολογήστε την τοποθεσία σας</string>
     <string name="save">Αποθήκευση</string>
     <string name="edit">Επεξεργασία</string>
-    <string name="benchmark_lat_long">%1$.7f</string>
-    <string name="benchmark_alt">%1$.1f</string>
     <string name="ground_truth_marker_title">Η πραγματική τοποθεσία σας</string>
     <string name="ground_truth_invalid_location_title">Εσφαλμένη τοποθεσία</string>
     <string name="ground_truth_invalid_lat">Το γεωγραφικό πλάτος πρέπει να είναι σε δεκαδικές μοίρες μεταξύ -90 και 90</string>
@@ -147,25 +121,9 @@
     <string name="estimated_accuracy_graph_label">Ακρίβεια υπολογισμένη από κεραία</string>
     <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
     <string name="avg_error_label">%1$d σημεία περίπου</string>
-    <string name="benchmark_header_error_divider">/</string>
-    <string name="benchmark_error">%1$.2f</string>
     <string name="fix_number">Κλείδωμα #</string>
 
     <!-- Sky view -->
-    <string name="sky_legend_cn0_low">10</string>
-    <string name="sky_legend_cn0_low_middle">18</string>
-    <string name="sky_legend_cn0_middle">27</string>
-    <string name="sky_legend_cn0_middle_high">36</string>
-    <string name="sky_legend_cn0_high">45</string>
-    <string name="sky_legend_cn0_units">(dB-Hz)</string>
-
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
-
     <string name="sky_legend_title">Τυπικό</string>
     <string name="sky_legend_shape_gnss_title">Παγκόσμια δορυφορικά συστήματα πλοήγησης (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (ΑΜΕΡΙΚΗ)</string>
@@ -292,81 +250,4 @@
     <!-- Help -->
     <string name="title_help">Βοήθεια</string>
 
-    <string name="help_text">
-        <b>Συχνές Ερωτήσεις - Απαντήσεις (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-
-        <b>*** Προβολή Κατάστασης ***</b>\n\n&#8226;\u0020
-        <b>Γεωγραφικό πλάτος</b>
-        - Σε δεκαδικές μοίρες (WGS 84)\n&#8226;\u0020
-        <b>Γεωγραφικό μήκος</b>
-        - Σε δεκαδικές μοίρες (WGS 84)\n&#8226;\u0020
-        <b>Υψόμετρο</b>
-        - Μέτρα πάνω απο WGS 84 ελλιψοειδές\n&#8226;\u0020
-        <b>Υψόμετρο (MSL)</b>
-        - Μέτρα πάνω απο το επίπεδο της θάλασσας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
-        <b>Ακρίβεια</b>
-        - Εκτιμώμενη οριζόντια ακρίβεια της θέσης (ακτίνα σε μέτρα έως και πιθανότητα 68%). Με άλλα λόγια, εάν σχεδιάσετε έναν κύκλο με κέντρο γεωγραφικού πλάτους και γεωγραφικού μήκους και με ακτίνα ίση με την ακρίβεια, τότε υπάρχει πιθανότητα 68% ότι η πραγματική θέση βρίσκεται μέσα στον κύκλο.\n&#8226;\u0020
-        <b>Κ/Ο Ακρίβεια</b>
-        - Η οριζόντια και κάθετη ακρίβεια της θέσης, κατά πιθανότητα 68% ακριβείας. Η οριζόντια ακρίβεια ορίζει το ίδιο με το πεδίο Ακρίβειας θέσης παραπάνω. Η κάθετη ακρίβεια είναι διαθέσιμη σε Android 8.0 Oreo και πάνω. Παράδειγμα κατακόρυφης ακρίβειας - εάν το Υψόμετρο είναι 150 και ο Κάθετος άξονας είναι 20 τότε υπάρχει πιθανότητα 68% του πραγματικού υψομέτρου μεταξύ 130 και 170 μέτρων.\n&#8226;\u0020
-        <b>Ταχύτητα</b>
-        - Ταχύτητα σε μέτρα/δευτερόλεπτο πάνω απο το έδαφος\n&#8226;\u0020
-        <b>Ακρίβεια ταχύτητας</b>
-        - Υπολογισμένη ακρίβεια ταχύτητας του στίγματος με πιθανότητες 68%, σε μέτρα ανα δευτερόλεπτο. Για παράδειγμα, εάν η ταχύτητα είναι 5, και η ακριβής ταχύτητα είναι, τότε υπάρχει πιθανότητα 68% της πραγματικής ταχύτητας να είναι μεταξύ 4 και 6 μέτρων ανα δευτερόλεπτο.\n&#8226;\u0020
-        <b>Αξονας</b>
-        - Η οριζόντια κατεύθυνση κίνησης της συσκευής (σε μοίρες 0-360), και δεν σχετίζεται με τον προσανατολισμό της συσκευής.\n&#8226;\u0020
-        <b>Ακρίβεια Αξονα</b>
-        - Υπολογισμένη ακρίβεια του άξονα με πιθανότητα του στίγματος κατά 68%, σε μοίρες μέτρησης. Για παράδειγμα, εάν ο άξονας είναι 60 και η ακρίβεια του άξονα είναι 10, τότε υπάρχει πιθανότητα 68% του πραγματικού άξονα θέσης να είναι μεταξύ 50 και 70 βαθμών.\n&#8226;\u0020
-        <b># Δορυφόροι</b>
-        - # δορυφόροι που χρησιμοποιούνται για την επιδιόρθωση / # δορυφόροι εν όψει\n&#8226;\u0020
-        <b>PDOP</b>
-        - Θέση (3D) αραίωση της ακρίβειας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
-        <b>Κ/Ο DOP</b>
-        - Οριζόντια / κάθετη αραίωση της ακρίβειας (απαιτείται υποστήριξη NMEAt)\n&#8226;\u0020
-        <b>TTFF</b>
-        - Χρόνο αρχικού κλειδώματος\n&#8226;\u0020
-        <b>ID or PRN</b>
-        - αναγνωριστικό όνομα δορυφόρου (pseudorandom noise for GPS)\n&#8226;\u0020
-        <b>CF</b>
-        - Ετικέτα (π.χ. "L1") για τη συχνότητα φέροντος σήματος που παρακολουθείται. Αν υπάρχει μια άγνωστη συχνότητα, εμφανίζει την ακατέργαστη συχνότητα σε MHz (διαθέσιμη σε Android 8.0+, αλλά δεν υποστηρίζεται σε όλες τις συσκευές)\n&#8226;\u0020
-        <b>SNR</b>
-        - Αναλογία σήματος-θορύβου (Android M και κάτω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>C/N0</b>
-        - Πυκνότητα θορύβου-φορέα (Android N και άνω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>Σημαίες</b>
-        - (Ε) αν η συσκευή έχει δεδομένα ετεροχρονισμού για τον δορυφόρο, (Α) εάν η συσκευή διαθέτει δεδομένα almanac
-         για τον δορυφόρο, (U) εάν ο δορυφόρος χρησιμοποιήθηκε στο τελευταίο κλείδωμα\n\n
-
-        <b>*** Προβολή Ουρανού ***</b>\n\n&#8226;\u0020
-        <b>GPS (Navstar ΑΜΕΡΙΚΗ)</b>
-        - Σχήμα κύκλου\n&#8226;\u0020
-        <b>GLONASS (ΡΩΣΙΑ)</b>
-        - Σχήμα τετράγωνο\n&#8226;\u0020
-        <b>Galileo (ΕΥΡΩΠΑΙΚΗ ΕΝΩΣΗ)</b>
-        - Σχήμα τρίγωνο\n&#8226;\u0020
-        <b>QZSS (ΙΑΠΩΝΙΑ)</b>
-        - Σχήμα εξάγωνο\n&#8226;\u0020
-        <b>BeiDou/COMPASS (ΚΙΝΑ)</b>
-        - Σχήμα πεντάγωνο\n&#8226;\u0020
-        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)</b>
-        - Σχήμα διαμάντι\n\n
-
-        &#8226;\u0020 Διαφανείς δορυφόροι - Χωρίς προβολή\n
-        &#8226;\u0020 Λεπτό περίγραμμα - Προβολή, αλλά δεν χρησιμοποιείται στο κλείδωμα\n
-        &#8226;\u0020 Εντονο περίγραμμα - Χρησιμοποιείται στο κλείδωμα\n\n
-
-        &#8226;\u0020 Αναμενόμενο SNR εύρος είναι απο 0 dB (κόκκινο) εως 30 dB (πράσινο) σε Android εκδόσεις κάτω απο 7.0. \n
-        &#8226;\u0020 Αναμενόμενο SNR εύρος είναι απο 10 dB (κόκκινο) εως 45 dB (πράσινο) σε εκδόσεις Android 7.0 και άνω. \n
-        &#8226;\u0020 Αναμενόμενο C/N0 εύρος είναι απο 10 dB-Hz (κόκκινο) εως 45 dB-Hz (πράσινο) σε εκδόσεις Android 7.0 και άνω. \n
-        &#8226;\u0020 Αν δεν υπάρχει διαθέσιμη SNR ή C/N0 τιμή για ένα δορυφόρο (π.χ., είναι εκτός ορατότητας της συσκευής), θα έχει διαφανές ανοιχτό γκρι χρώμα. \n\n
-
-        <b>*** Γνωστοποιήσεις ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - αρχικός προγραμματιστής έκδοσης v1.x\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - προγραμματιστής έκδοσης v2.x και άνω\n
-        &#8226;\u0020 Το εικονίδιο εκκίνησης του GPSTest προέρχεται από το εικονίδιο Android Satellite Design, το οποίο έχει άδεια χρήσης από την Google σε Apache v2.0. Άλλα εικονίδια σχεδίου υλικού Google χρησιμοποιούνται επίσης σε Apache v2.0.\n
-        &#8226;\u0020 Κινεζική μετάφραση έγινε απο wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-        &#8226;\u0020 Γερμανική μετάφραση έγινε απο Ronny Steiner\n
-        &#8226;\u0020 Ελληνική μετάφραση έγινε απο JimmyGolfi\n
-        &#8226;\u0020 nΙαπωνικά μετάφραση έγινε απο SakuraSa233\n
-    </string>
 </resources>
