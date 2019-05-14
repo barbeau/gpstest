@@ -182,6 +182,8 @@
         - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
         <b>Improved support for certain satellites</b>
         - New Galileo satellites, CF labels for SBAS (EGNOS and MSAS) and GLONASS (CDMA L1 and L3).\n&#8226;\u0020
+        <b>Change app language</b>
+        - New setting to change the language shown in the app for supported translations.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See http://bit.ly/gpstest-releases
     </string>
