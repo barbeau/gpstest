@@ -37,6 +37,19 @@
         <item>地形视图</item>
     </string-array>
 
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>英文</item>
+        <item>中文</item>
+        <item>捷克文</item>
+        <item>荷兰文</item>
+        <item>德文</item>
+        <item>希腊文</item>
+        <item>意大利文</item>
+        <item>日文</item>
+        <item>俄文</item>
+    </string-array>
+
     <!-- Help -->
     <string-array name="main_help_options">
         <item>更新内容</item>

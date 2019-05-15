@@ -175,15 +175,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-<b> Nauwkeurigheids weergave</b>
-- Stel je echte locatie in en meet je GSS nauwkeurigheid \n&#8226;\u0020
-Verbeterde ondersteuning voor een aantal satellieten 
-<b> Improved support for certain satellites</b>
-- Nieuwe Galileo satellieten, CF labels voor SBAS (EGNOS en MSAS) en GLONASS (CDMA L1 en L3).\n&#8226;\u0020
- <b>Bug fixes</b>
- - zie http://bit.ly/gpstest-releases
- </string>
     <string name="main_help_close">Sluiten</string>
 
     <!-- Preferences -->

@@ -18,7 +18,7 @@
 */
 -->
 <resources>
-    <string name="app_name">GPSTest</string>
+    <string name="app_name">定位测试</string>
 
     <!-- Fragments -->
     <string name="gps_status_title">状态</string>
@@ -64,14 +64,14 @@
     <string name="gps_fix_time_label">时间:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">海拔:</string>
-    <string name="gps_altitude_msl_label">海拔(MSL):</string>
+    <string name="gps_altitude_msl_label">（平均海平面）海拔:</string>
     <string name="gps_accuracy_label">精度:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_speed_label">速度:</string>
     <string name="gps_speed_acc_label">速度精度:</string>
     <string name="gps_bearing_label">方位:</string>
     <string name="gps_bearing_acc_label">方位精度:</string>
-    <string name="gps_num_sats_label"># 卫星:</string>
+    <string name="gps_num_sats_label">卫星数量:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
 
@@ -172,13 +172,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
- <b>查看精确度</b>
- - 设定你的真实位置并测定 GNSS 的精确度。\n&#8226;\u0020
- <b>改进某些卫星的支持</b>
- - 新的伽利略卫星，SBAS (EGNOS和MSAS) 和 GLONASS (CDMA L1 和 L3)的 CF 标签。\n&#8226;\u0020
- <b>错误修正</b>
- - 请见 http://bit.ly/gpstest-releases</string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->
@@ -251,6 +244,10 @@
     <string name="preferences_preferred_speed_units_option_meters_per_second">m/s</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">km/h</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">mi/h</string>
+
+    <string name="pref_language_title">语言</string>
+    <string name="pref_language_summary">手动设置程序的显示语言</string>
+    <string name="pref_language_dialog_title">选择语言</string>
 
     <!-- Units -->
     <string name="feet_abbreviation">ft</string>
