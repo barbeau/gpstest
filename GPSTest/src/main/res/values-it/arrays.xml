@@ -52,6 +52,6 @@
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Novità</item>
-        <item>Informazioni</item>
+        <item>Guida pratica</item>
     </string-array>
 </resources>

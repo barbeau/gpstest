@@ -31,7 +31,7 @@
     <string name="force_time_injection">Inserisci dati NTP</string>
     <string name="delete_aiding_data">Rimuovi dati di assistenza</string>
     <string name="navdrawer_item_settings">Impostazioni</string>
-    <string name="navdrawer_item_help">Guida pratica</string>
+    <string name="navdrawer_item_help">Informazioni</string>
     <string name="navdrawer_item_send_feedback">Invia feedback</string>
     <string name="navdrawer_item_open_source">Visitaci su GitHub</string>
 
@@ -106,7 +106,7 @@
     <string name="ground_truth_longitude">Longitudine</string>
     <string name="ground_truth_altitude">Altitudine in WGS84 (Opzionale)</string>
     <string name="set_ground_truth_title">Misura precisione</string>
-    <string name="set_ground_truth_subtitle">Localizza sulla mappa o inserisci la tua posizione attuale</string>
+    <string name="set_ground_truth_subtitle">Localizza o inserisci la tua posizione</string>
     <string name="save">Salva</string>
     <string name="edit">Modifica</string>
     <string name="ground_truth_marker_title">Posizione attuale</string>
@@ -172,10 +172,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Accuracy view</b>
-        - Imposta la tua posizione reale e misura la precisione del GPS.\n&#8226;\u0020
+        <b>Scheda Precisione</b>
+        - Imposta la tua posizione reale e misura la precisione del tuo sistema di geolocalizzazione.\n&#8226;\u0020
         <b>Migliorato il supporto per alcuni satelliti</b>
-        - Nuovi satelliti Galileo, etichette CF per SBAS (EGNOS e MSAS) e GLONASS (CDMA L1 e L3).\n&#8226;\u0020
+        - Aggiunti i nuovi satelliti Galileo, le etichette CF per i satelliti SBAS (EGNOS e MSAS) e GLONASS (CDMA L1 e L3).\n&#8226;\u0020
+        <b>Imposta lingua app</b>
+        - Nuova impostazione per modificare la lingua dell\'app con le traduzioni supportate.\n&#8226;\u0020
         <b>Bug fixes</b>
         - Vedi http://bit.ly/gpstest-releases
     </string>
@@ -196,11 +198,12 @@
 
     <string name="pref_gps_category_title">Geolocalizzazione</string>
     <string name="pref_auto_start_gps_title">Avvio automatico geolocalizzazione</string>
-    <string name="pref_auto_start_gps_summary">Avvia Geolocalizzazione quando apri l\'app</string>
+    <string name="pref_auto_start_gps_summary">Avvia geolocalizzazione quando apri l\'app</string>
 
     <string name="pref_gps_min_time_title">Intervallo</string>
     <string name="pref_gps_min_time_summary">Intervallo geolocalizzazione (in secondi)</string>
-    <string name="pref_gps_min_time_dialog_title">Digita un intervallo (in secondi)</string>
+    <string name="pref_gps_min_time_dialog_title">Digita un intervallo
+(in secondi)</string>
     <string name="pref_gps_min_time_invalid_entry">L\'intervallo deve essere un numero</string>
 
     <string name="pref_use_gnss_apis_title">Usa le API GNSS</string>
@@ -208,11 +211,11 @@
 
     <string name="pref_gps_min_distance_title">Distanza minima</string>
     <string name="pref_gps_min_distance_summary">Distanza minima geolocalizzazione (in metri)</string>
-    <string name="pref_gps_min_distance_dialog_title">Digita una distanza minima (in metri)</string>
+    <string name="pref_gps_min_distance_dialog_title">Digita una distanza minima
+(in metri)</string>
     <string name="pref_gps_min_distance_invalid_entry">La distanza minima deve essere un numero</string>
 
-    <string name="pref_stop_gnss_in_background_title">Disattiva geolocalizzazione
-in background</string>
+    <string name="pref_stop_gnss_in_background_title">Disattiva geolocalizzazione in background</string>
     <string name="pref_stop_gnss_in_background_summary">Se abilitato disattiva il sistema di geolocalizzazione quando l\'app è aperta in background (per esempio, quando premi il tasto Home o Multitasking per cambiare app)</string>
 
     <string name="pref_analyze_gps_accuracy_title">Analizza precisione geolocalizzazione</string>
@@ -228,17 +231,17 @@ in background</string>
     <string name="pref_nmea_output_title">NMEA</string>
     <string name="pref_nmea_output_summary">Invia dati NMEA su Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
-    <string name="pref_nmea_timestamp_output_summary">Includi il NMEA Timestamp nell\'output</string>
+    <string name="pref_nmea_timestamp_output_summary">Includi NMEA Timestamp nell\'output</string>
     <string name="pref_measurement_output_title">Misurazioni</string>
     <string name="pref_measurement_output_summary">Invia misurazioni GNSS su Android Studio (Android 7.0 e superiori)</string>
-    <string name="pref_navigation_message_output_title">Segnali di Navigazione</string>
+    <string name="pref_navigation_message_output_title">Segnali di navigazione</string>
     <string name="pref_navigation_message_output_summary">Invia segnali di navigazione GNSS su Android Studio (Android 7.0 e superiori)</string>
 
     <string name="pref_about_category_title">Notizie</string>
     <string name="pref_show_tutorial_title">Mostra tutorial</string>
     <string name="pref_show_tutorial_summary">Mostra istruzioni di utilizzo dell\'app</string>
 
-    <string name="pref_dark_theme_title">Usa Tema Scuro</string>
+    <string name="pref_dark_theme_title">Usa tema scuro</string>
     <string name="pref_dark_theme_summary">Rende lo sfondo scuro con testo a contrasto</string>
 
     <string name="pref_dms_mode_title">Usa il formato gradi DMS</string>
@@ -268,15 +271,15 @@ in background</string>
         <b>Domande Frequenti (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
-        <b>*** Scheda \"Precisione\" ***</b>\n\n&#8226;\u0020
+        <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
         <b>Lat.</b>
-        - Latitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84)\n&#8226;\u0020
+        - Latitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Long.</b>
-        - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84)\n&#8226;\u0020
+        - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Alt. (WGS84)</b>
-        - Altitudine (espressa in metri rispetto all\'ellissoide WGS84)\n&#8226;\u0020
+        - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Alt. (m s.l.m.)</b>
-        - Altitudine espressa in metri sopra il livello del mare (richiede il supporto NMEA)\n&#8226;\u0020
+        - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
         <b>Precisione</b>
         - Precisione della posizione stimata con il 68% di confidenza (espressa in metri).
 Esempio: se tracciamo una circonferenza centrata alla latitudine e longitudine della posizione stimata dal nostro dispositivo e con un raggio pari al valore della precisione, allora c\'è il 68% di probabilità che la posizione reale sia interna alla circonferenza così tracciata.\n&#8226;\u0020
@@ -285,7 +288,7 @@ Esempio: se tracciamo una circonferenza centrata alla latitudine e longitudine d
 La precisione orizzontale è definita allo stesso modo del campo precisione precedente. La precisione verticale è disponibile su Android 8.0 e successivi.
 Esempio di precisione verticale: se l\'altitudine stimata dal nostro dispositivo è di 150m e la precisione verticale è 20m, allora c\'è il 68% di probabilità che l\'altitudine reale sia compresa tra 130 e 170 metri.\n&#8226;\u0020
         <b>Velocità</b>
-        - Velocità misurata sulla superficie (espressa in metri al secondo)\n&#8226;\u0020
+        - Velocità misurata sulla superficie (espressa in metri al secondo).\n&#8226;\u0020
         <b>Prec. vel.</b>
         - Precisione della velocità stimata con il 68% di confidenza (espressa in metri al secondo).
 Esempio: se la velocità stimata dal nostro dispositivo è di 5m/s e la precisione della velocità è 1m/s, allora c\'è il 68% di probabilità che la velocità reale sia tra 4 e 6 metri al secondo.\n&#8226;\u0020
@@ -296,29 +299,29 @@ Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
         - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).
 Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
         <b>n° Satelliti</b>
-        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista\n&#8226;\u0020
+        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista.\n&#8226;\u0020
         <b>DOP</b>
-        - Diluizione della precisione (richiede il supporto NMEA)\n&#8226;\u0020
+        - Diluizione della precisione. Richiede il supporto NMEA.\n&#8226;\u0020
         <b>DOP o/v</b>
-        - Diluizione della precisione orizzontale e verticale (richiede il supporto NMEA)\n&#8226;\u0020
+        - Diluizione della precisione orizzontale e verticale. Richiede il supporto NMEA.\n&#8226;\u0020
         <b>TTPL</b>
-        - Tempo Trascorso dalla Prima Localizzazione\n&#8226;\u0020
+        - Tempo Trascorso dalla Prima Localizzazione.\n&#8226;\u0020
         <b>ID</b>
-        - Identificativo del satellite (anche indicato con la sigla PRN)\n&#8226;\u0020
+        - Identificativo del satellite (anche indicato con la sigla PRN).\n&#8226;\u0020
         <b>CF</b>
         - Frequenza del segnale agganciato.
 E\' un\'etichetta (es, \"L1\") per indicare la frequenza del segnale agganciato. Se la frequenza è sconosciuta, verrà visualizzato il suo valore in MHz (disponibile su Android 8.0+, non supportato da tutti i dispositivi). Il nuovo segnale L1 del sistema GLONASS CDMA è indicato come \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-Noise Ratio (Android M e precedenti) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Signal-to-Noise Ratio (Android M e precedenti) (http://bit.ly/SNR-CN0).\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-Noise density (Android N e successivi) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Carrier-to-Noise density (Android N e successivi) (http://bit.ly/SNR-CN0).\n&#8226;\u0020
         <b>Dati</b>
         - (E) se il dispositivo ha scarsità di dati per il satellite;
 (A) se il dispositivo ha dati registrati per il satellite;
 (U) se il satellite è stato utilizzato nel posizionamento più recente.
 Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisce ai satelliti usati per il posizionamento oppure per la correzione delle informazioni fornite dagli altri satelliti.\n\n
 
-        <b>*** Scheda \"Bussola\" ***</b>\n\n&#8226;\u0020
+        <b>*** Scheda Bussola ***</b>\n\n&#8226;\u0020
         <b>GPS NAVSTAR (USA)</b>
         - Cerchi\n&#8226;\u0020
         <b>GLONASS (Russia)</b>
@@ -341,7 +344,7 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
         &#8226;\u0020 Il range C/N0 attesovaria tra 10dB-Hz (rosso) e 45dB-Hz (verde) su sistemi Android 7.0 e successivi. \n
         &#8226;\u0020 Se non è presente il valore SNR o C/N0 per un satellite (es. non è in vista del dispositivo), quel satellite avrà un colore grigio chiaro trasparente. \n\n
 
-        <b>*** Scheda \"Precisione\" ***</b>\n\n&#8226;\u0020
+        <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
         <b>Errore verticale</b>
         - Le misurazioni dell\'errore verticale, a differenza di quelle dell\'errore orizzontale, possono essere positive o negative. La scheda Precisione mostra l\'errore verticale e l\'errore verticale medi, calcolati entrambi usando il valore assoluto della misura dell\'errore.\n\n
 
