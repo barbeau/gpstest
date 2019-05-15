@@ -59,18 +59,18 @@
     <string name="mode_map">Mapa</string>
     <string name="mode_satellite">Satelit</string>
 
-    <string name="gps_latitude_label">Zem. šířka:</string>
-    <string name="gps_longitude_label">Zem. délka:</string>
+    <string name="gps_latitude_label">Z. šířka:</string>
+    <string name="gps_longitude_label">Z. délka:</string>
     <string name="gps_fix_time_label">Čas:</string>
     <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">Výška (GEOID):</string>
-    <string name="gps_altitude_msl_label">Výška (MSL):</string>
+    <string name="gps_altitude_label">N. výška (G):</string>
+    <string name="gps_altitude_msl_label">N. výška (M):</string>
     <string name="gps_accuracy_label">Přesnost:</string>
-    <string name="gps_hor_and_vert_accuracy_label">Přesnost (H/V):</string>
+    <string name="gps_hor_and_vert_accuracy_label">Přesn. (H/V):</string>
     <string name="gps_speed_label">Rychlost:</string>
-    <string name="gps_speed_acc_label">Přesnost (R):</string>
+    <string name="gps_speed_acc_label">Přesn. (R):</string>
     <string name="gps_bearing_label">Poloha (S):</string>
-    <string name="gps_bearing_acc_label">Přesnost (S):</string>
+    <string name="gps_bearing_acc_label">Přesn. (S):</string>
     <string name="gps_num_sats_label">Satelity:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
@@ -105,9 +105,9 @@
     <!-- Map view -->
     <string name="ground_truth_latitude">Zeměpisná šířka</string>
     <string name="ground_truth_longitude">Zeměpisná délka</string>
-    <string name="ground_truth_altitude">Nadmořská výška (WGS84)</string>
+    <string name="ground_truth_altitude">Nadmořská výška (nepovinné)</string>
     <string name="set_ground_truth_title">Přesnost měření</string>
-    <string name="set_ground_truth_subtitle">Klikněte na mapu nebo zadejte svou skutečnou polohu.</string>
+    <string name="set_ground_truth_subtitle">Klikněte na mapu nebo zadejte svou polohu.</string>
     <string name="save">Uložit</string>
     <string name="edit">Upravit</string>
     <string name="ground_truth_marker_title">Skutečná poloha</string>
@@ -173,12 +173,15 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Accuracy view</b>
-         - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
-        <b>Improved support for certain satellites</b>
-         - New Galileo satellites, CF labels for SBAS (EGNOS and MSAS) and GLONASS (CDMA L1 and L3).\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - See http://bit.ly/gpstest-releases</string>
+        <b>Přesnost zobrazení polohy</b>
+        - Přidána možnost nastavení skutečné polohy a možnost změřit přesnost GNSS\n&#8226;\u0020
+        <b>Vylepšená podpora některých satelitů</b>
+        - Přidány nové satelity systému Galileo, označení CF pro SBAS (EGNOS a MSAS) a GLONASS (CDMA L1 a L3)\n&#8226;\u0020
+        <b>Výběr jazyka aplikace</b>
+        - Nyní si můžete v aplikaci vybrat jazyk prostředí (jen pro podporované překlady)\n&#8226;\u0020
+        <b>Opravy chyb</b>
+        - Více na: http://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
@@ -272,9 +275,9 @@
         - Zeměpisná šířka v desetinných stupních. (WGS84)\n&#8226;\u0020
         <b>Zem. délka</b>
         - Zeměpisná délka v desetinných stupních. (WGS84)\n&#8226;\u0020
-        <b>Výška (GEOID)</b>
+        <b>Nadm. výška (GEOID)</b>
         - Nadmořská výška v metrech při střední hladině světových oceánů (WGS84).\n&#8226;\u0020
-        <b>Výška (MSL)</b>
+        <b>Nadm. výška (MSL)</b>
         - Nadmořská výška v metrech při střední hladině moře (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>Přesnost</b>
         - Odhadovaná přesnost horizontální polohy (poloměr v metrech, spolehlivost 68%). Jinými slovy, pokud nakreslíte kruh v této zeměpisné šířce a délce s poloměrem rovným přesnosti, pak existuje 68% pravděpodobnost, že skutečná poloha je uvnitř kruhu.\n&#8226;\u0020
