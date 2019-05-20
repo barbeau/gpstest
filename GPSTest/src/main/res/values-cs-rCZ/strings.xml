@@ -63,8 +63,8 @@
     <string name="gps_longitude_label">Z. délka:</string>
     <string name="gps_fix_time_label">Čas:</string>
     <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">N. výška (G):</string>
-    <string name="gps_altitude_msl_label">N. výška (M):</string>
+    <string name="gps_altitude_label">Výška (G):</string>
+    <string name="gps_altitude_msl_label">Výška (M):</string>
     <string name="gps_accuracy_label">Přesnost:</string>
     <string name="gps_hor_and_vert_accuracy_label">Přesn. (H/V):</string>
     <string name="gps_speed_label">Rychlost:</string>
@@ -122,7 +122,7 @@
     <string name="measured_error_graph_label">Chyba měření</string>
     <string name="estimated_accuracy_graph_label">Přesnost odhadnuta HW</string>
     <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
-    <string name="avg_error_label">Průměr %1$d opraven</string>
+    <string name="avg_error_label">Průměr %1$d opr.</string>
     <string name="fix_number">Průměr</string>
 
     <!-- Sky view -->
