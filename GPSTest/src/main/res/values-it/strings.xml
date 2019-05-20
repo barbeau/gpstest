@@ -63,7 +63,7 @@
     <string name="gps_fix_time_label">Ora:</string>
     <string name="gps_ttff_label">TTPL:</string>
     <string name="gps_altitude_label">Alt. (WGS84):</string>
-    <string name="gps_altitude_msl_label">Alt. (m s.l.m.):</string>
+    <string name="gps_altitude_msl_label">Alt. (s.l.m.):</string>
     <string name="gps_accuracy_label">Precisione:</string>
     <string name="gps_hor_and_vert_accuracy_label">Prec. o/v:</string>
     <string name="gps_speed_label">Velocità:</string>
@@ -278,7 +278,7 @@
         - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Alt. (WGS84)</b>
         - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
-        <b>Alt. (m s.l.m.)</b>
+        <b>Alt. (s.l.m.)</b>
         - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
         <b>Precisione</b>
         - Precisione della posizione stimata con il 68% di confidenza (espressa in metri).
