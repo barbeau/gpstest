@@ -151,9 +151,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-beta01"
 
     // Sliding drawer in map view
     implementation 'com.sothree.slidinguppanel:library:3.4.0'

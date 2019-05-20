@@ -34,6 +34,14 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
+import androidx.constraintlayout.motion.widget.MotionScene;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
@@ -52,13 +60,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import static android.text.TextUtils.isEmpty;
 import static android.view.View.GONE;
@@ -93,6 +94,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     TextView mErrorView, mVertErrorView, mAvgErrorView, mAvgVertErrorView, mErrorLabel, mAvgErrorLabel, mLeftDivider, mRightDivider, mErrorUnit, mAvgErrorUnit;
     TextInputLayout mLatText, mLongText, mAltText;
+    Button mSaveGroundTruth;
 
     SlidingUpPanelLayout mSlidingPanel;
 
@@ -272,11 +274,19 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
-        Button saveGroundTruth = v.findViewById(R.id.save);
+        mSaveGroundTruth = v.findViewById(R.id.save);
         mLatText = v.findViewById(R.id.ground_truth_lat);
         mLongText = v.findViewById(R.id.ground_truth_long);
         mAltText = v.findViewById(R.id.ground_truth_alt);
         mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
+            @Override
+            public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
+            }
+
+            @Override
+            public void onTransitionStarted(MotionLayout motionLayout, int i, int i1) {
+            }
+
             @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
             }
@@ -284,32 +294,23 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             @Override
             public void onTransitionCompleted(MotionLayout motionLayout, int currentId) {
                 if (currentId == R.id.expanded) {
-                    saveGroundTruth.setText(Application.get().getString(R.string.save));
-                    mLatText.setEnabled(true);
-                    mLongText.setEnabled(true);
-                    mAltText.setEnabled(true);
-                    mLatText.setFocusable(true);
-                    mLongText.setFocusable(true);
-                    mAltText.setFocusable(true);
+                    onCardExpanded();
                 } else {
-                    // Collapsed
-                    saveGroundTruth.setText(Application.get().getString(R.string.edit));
-                    mLatText.setEnabled(false);
-                    mLongText.setEnabled(false);
-                    mAltText.setEnabled(false);
-                    mLatText.setFocusable(false);
-                    mLongText.setFocusable(false);
-                    mAltText.setFocusable(false);
+                    onCardCollapsed();
                 }
+            }
+
+            @Override
+            public boolean allowsTransition(MotionScene.Transition transition) {
+                return true;
             }
         });
 
-        saveGroundTruth.setOnClickListener(view -> {
+        mSaveGroundTruth.setOnClickListener(view -> {
             if (!mViewModel.getBenchmarkCardCollapsed()) {
                 if (!UIUtils.isValidLocationWithErrorDialog(activity, mLatText.getEditText().getText().toString(), mLongText.getEditText().getText().toString(), mAltText.getEditText().getText().toString())) {
                     return;
                 }
-
                 resetError();
                 saveGroundTruth();
             } else {
@@ -328,6 +329,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             updateGroundTruthEditTexts(mViewModel.getGroundTruthLocation().getValue());
             saveGroundTruth();
             restoreGraphData();
+            onCardCollapsed();
         } else {
             // If there is a saved ground truth value from previous executions, start test using that
             if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
@@ -340,8 +342,35 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 updateGroundTruthEditTexts(groundTruth);
                 resetError();
                 saveGroundTruth();
+                onCardCollapsed();
             }
         }
+    }
+
+    /**
+     * Should be called when the ground truth card state is fully expanded
+     */
+    private void onCardExpanded() {
+        mSaveGroundTruth.setText(Application.get().getString(R.string.save));
+        mLatText.setEnabled(true);
+        mLongText.setEnabled(true);
+        mAltText.setEnabled(true);
+        mLatText.setFocusable(true);
+        mLongText.setFocusable(true);
+        mAltText.setFocusable(true);
+    }
+
+    /**
+     * Should be called when the ground truth card state is fully collapsed
+     */
+    private void onCardCollapsed() {
+        mSaveGroundTruth.setText(Application.get().getString(R.string.edit));
+        mLatText.setEnabled(false);
+        mLongText.setEnabled(false);
+        mAltText.setEnabled(false);
+        mLatText.setFocusable(false);
+        mLongText.setFocusable(false);
+        mAltText.setFocusable(false);
     }
 
     /**

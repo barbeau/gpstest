@@ -21,7 +21,7 @@
         motion:constraintSetEnd="@+id/collapsed"
         motion:constraintSetStart="@+id/expanded"
         motion:duration="250"
-        motion:interpolator="easeInOut">
+        motion:motionInterpolator="easeInOut">
     </Transition>
 
     <ConstraintSet android:id="@+id/expanded">
