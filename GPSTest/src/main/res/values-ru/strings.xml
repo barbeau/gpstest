@@ -77,7 +77,7 @@
     <string name="pdop_label">Сн. т.:</string>
     <string name="hvdop_label">Г/В сн.т.:</string>
 
-    <string name="gps_prn_column_label">Обозн.</string>
+    <string name="gps_prn_column_label">Об.</string>
     <string name="gnss_flag_image_label">ССН</string>
     <string name="sbas_flag_image_label">ССДК</string>
     <string name="gps_carrier_column_label">НЧ</string>
