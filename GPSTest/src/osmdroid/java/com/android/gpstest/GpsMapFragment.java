@@ -31,6 +31,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.android.gpstest.map.MapViewModelController;
 import com.android.gpstest.map.OnMapClickListener;
 import com.android.gpstest.util.MapUtils;
@@ -40,9 +45,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.util.MapTileIndex;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
@@ -54,11 +57,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
 import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
@@ -214,21 +212,22 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
             tileSource = new MapBoxTileSource();
             ((MapBoxTileSource) tileSource).setAccessToken(key);
             ((MapBoxTileSource) tileSource).setMapboxMapid(mapType);
+            mMap.setTileSource(tileSource);
         } else {
             // We're using a Mapbox style, which isn't directly supported by OSMDroid due to a different URL format than Map IDs, so build the URL ourselves
-            tileSource = new OnlineTileSourceBase("MapBox Streets", 1, 19, 256, "",
-                    new String[] { "https://api.mapbox.com/styles/v1/" + MAP_TYPE_STREETS + "/tiles/256/"}) {
-                @Override
-                public String getTileURLString(long pMapTileIndex) {
-                    return getBaseUrl()
-                            + MapTileIndex.getZoom(pMapTileIndex)
-                            + "/" + MapTileIndex.getX(pMapTileIndex)
-                            + "/" + MapTileIndex.getY(pMapTileIndex)
-                            + "@2x?access_token=" + key;
-                }
-            };
+//            tileSource = new OnlineTileSourceBase("MapBox Streets", 1, 19, 256, "",
+//                    new String[] { "https://api.mapbox.com/styles/v1/" + MAP_TYPE_STREETS + "/tiles/256/"}) {
+//                @Override
+//                public String getTileURLString(long pMapTileIndex) {
+//                    return getBaseUrl()
+//                            + MapTileIndex.getZoom(pMapTileIndex)
+//                            + "/" + MapTileIndex.getX(pMapTileIndex)
+//                            + "/" + MapTileIndex.getY(pMapTileIndex)
+//                            + "@2x?access_token=" + key;
+//                }
+//            };
+//            mMap.setTileSource(tileSource);
         }
-        mMap.setTileSource(tileSource);
     }
 
     public void gpsStart() {
