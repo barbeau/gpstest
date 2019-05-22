@@ -229,7 +229,7 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 //            mMap.setTileSource(tileSource);
         } else {
             // Below is commented out due to Mapbox billing - until this is resolved, use default OSMDroid tiles
-            
+
             // We're using a Mapbox style, which isn't directly supported by OSMDroid due to a different URL format than Map IDs, so build the URL ourselves
 //            tileSource = new OnlineTileSourceBase("MapBox Streets", 1, 19, 256, "",
 //                    new String[] { "https://api.mapbox.com/styles/v1/" + MAP_TYPE_STREETS + "/tiles/256/"}) {
