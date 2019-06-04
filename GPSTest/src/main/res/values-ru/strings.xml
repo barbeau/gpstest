@@ -17,8 +17,6 @@
 */
 -->
 <resources>
-    <string name="app_name">GPSTest</string>
-
     <!-- Fragments -->
     <string name="gps_status_title">Состояние</string>
     <string name="gps_map_title">Карта</string>

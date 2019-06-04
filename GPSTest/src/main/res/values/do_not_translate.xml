@@ -19,6 +19,7 @@
 -->
 <resources>
     <!-- Strings in this file should NOT be translated -->
+    <string name="app_name">GPSTest</string>
 
     <!-- Values and units display - Status -->
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
