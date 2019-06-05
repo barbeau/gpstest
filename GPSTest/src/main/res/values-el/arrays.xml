@@ -36,6 +36,19 @@
         <item>Εδαφικός Χάρτης</item>
     </string-array>
 
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>Αγγλικά</item>
+        <item>Κινεζικά</item>
+        <item>Τσέχικα</item>
+        <item>Δανέζικα</item>
+        <item>Γερμανικά</item>
+        <item>Ελληνικά</item>
+        <item>Ιταλικά</item>
+        <item>Ιαπωνικά</item>
+        <item>Ρωσικά</item>
+    </string-array>
+
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Τι νέο υπάρχει;</item>
