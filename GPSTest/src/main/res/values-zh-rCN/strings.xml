@@ -19,10 +19,10 @@
 -->
 <resources>
     <!-- Fragments -->
-    <string name="gps_status_title">状态</string>
-    <string name="gps_map_title">地图</string>
-    <string name="gps_sky_title">天空</string>
-    <string name="gps_accuracy_title">精度</string>
+    <string name="gps_status_title">状态视图</string>
+    <string name="gps_map_title">地图视图</string>
+    <string name="gps_sky_title">天空视图</string>
+    <string name="gps_accuracy_title">精度视图</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">修改辅助数据</string>
@@ -61,8 +61,8 @@
     <string name="gps_longitude_label">经度:</string>
     <string name="gps_fix_time_label">时间:</string>
     <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">海拔:</string>
-    <string name="gps_altitude_msl_label">（平均海平面）海拔:</string>
+    <string name="gps_altitude_label">高度:</string>
+    <string name="gps_altitude_msl_label">高度(MSL):</string>
     <string name="gps_accuracy_label">精度:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_speed_label">速度:</string>
@@ -83,16 +83,16 @@
     <string name="gps_elevation_column_label">高度角</string>
     <string name="gps_azimuth_column_label">方位角</string>
     <string name="gps_flags_column_label">标识</string>
-    <string name="gps_not_supported">请检查系统设置 - 设备似乎并不支持GNSS/GPS。</string>
+    <string name="gps_not_supported">请检查系统设置或者设备不支持GNSS/GPS。</string>
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
-    <string name="please_install_google_maps">此地图栏需要 Google 地图</string>
-    <string name="enable_gps_message">GPS已被禁用。要启用吗？</string>
+    <string name="please_install_google_maps">地图视图需要安装 Google 地图</string>
+    <string name="enable_gps_message">GPS已被禁用，要启用吗？</string>
     <string name="enable_gps_positive_button">启用GPS</string>
     <string name="enable_gps_negative_button">不启用</string>
     <string name="gps_set_location_listener">已以时间间隔为 %1$ss，最小距离为 %2$sm 启动 GPS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
-    <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。你确认吗?</string>
+    <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。确定要继续吗?</string>
     <string name="never_ask_again">不再询问</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -103,7 +103,7 @@
     <!-- Map view -->
     <string name="ground_truth_latitude">当前纬度</string>
     <string name="ground_truth_longitude">当前经度</string>
-    <string name="ground_truth_altitude">WGS84 中的纬度（可选）</string>
+    <string name="ground_truth_altitude">基于 WGS84 的纬度（可选）</string>
     <string name="set_ground_truth_title">测量精度</string>
     <string name="set_ground_truth_subtitle">请在地图上选取或者输入你的真实位置</string>
     <string name="save">保存</string>
