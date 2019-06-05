@@ -21,11 +21,11 @@
     <string-array name="sort_sats">
         <item>Costellazione</item>
         <item>Frequenza</item>
-        <item>Intensità Segnale</item>
-        <item>Utilizzato per Localizzazione</item>
+        <item>Intensità segnale</item>
+        <item>Utilizzato per geolocalizzazione</item>
         <item>Costellazione, Frequenza</item>
-        <item>Costellazione, Intensità Segnale</item>
-        <item>Costellazione, Utilizzato per Localizzazione</item>
+        <item>Costellazione, Intensità segnale</item>
+        <item>Costellazione, Utilizzato per geolocalizzazione</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
