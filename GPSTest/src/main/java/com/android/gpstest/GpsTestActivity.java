@@ -18,6 +18,7 @@
 package com.android.gpstest;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -62,16 +63,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.gpstest.map.MapConstants;
-import com.android.gpstest.util.GpsTestUtil;
-import com.android.gpstest.util.LocationUtils;
-import com.android.gpstest.util.MathUtils;
-import com.android.gpstest.util.PermissionUtils;
-import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.util.UIUtils;
-
-import java.util.ArrayList;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -81,6 +72,16 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+
+import com.android.gpstest.map.MapConstants;
+import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.LocationUtils;
+import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.PermissionUtils;
+import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.util.UIUtils;
+
+import java.util.ArrayList;
 
 import static android.content.Intent.createChooser;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
@@ -795,6 +796,7 @@ public class GpsTestActivity extends AppCompatActivity
         mGpsTestListeners.add(listener);
     }
 
+    @SuppressLint("MissingPermission")
     private synchronized void gpsStart() {
         if (mLocationManager == null || mProvider == null) {
             return;
@@ -874,6 +876,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.N)
     private void addGnssStatusListener() {
         mGnssStatusListener = new GnssStatus.Callback() {
@@ -913,6 +916,7 @@ public class GpsTestActivity extends AppCompatActivity
         mLocationManager.registerGnssStatusCallback(mGnssStatusListener);
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addGnssMeasurementsListener() {
         mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
@@ -962,8 +966,10 @@ public class GpsTestActivity extends AppCompatActivity
         mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
     }
 
+    @SuppressLint("MissingPermission")
     private void addLegacyStatusListener() {
         mLegacyStatusListener = new GpsStatus.Listener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onGpsStatusChanged(int event) {
                 mLegacyStatus = mLocationManager.getGpsStatus(mLegacyStatus);
@@ -1028,6 +1034,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addNmeaListenerAndroidN() {
         if (mOnNmeaMessageListener == null) {
@@ -1048,6 +1055,7 @@ public class GpsTestActivity extends AppCompatActivity
         mLocationManager.addNmeaListener(mOnNmeaMessageListener);
     }
 
+    @SuppressLint("MissingPermission")
     private void addLegacyNmeaListener() {
         if (mLegacyNmeaListener == null) {
             mLegacyNmeaListener = new GpsStatus.NmeaListener() {
@@ -1154,6 +1162,7 @@ public class GpsTestActivity extends AppCompatActivity
                 .show();
     }
 
+    @SuppressLint("MissingPermission")
     private void checkTimeAndDistance(SharedPreferences settings) {
         double tempMinTimeDouble = Double
                 .valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
