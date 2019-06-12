@@ -28,6 +28,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import com.android.gpstest.Application;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteName;
@@ -35,11 +37,10 @@ import com.android.gpstest.model.SbasType;
 
 import java.lang.reflect.InvocationTargetException;
 
-import androidx.annotation.RequiresApi;
-
 import static com.android.gpstest.model.GnssType.BEIDOU;
 import static com.android.gpstest.model.GnssType.GALILEO;
 import static com.android.gpstest.model.GnssType.GLONASS;
+import static com.android.gpstest.model.GnssType.IRNSS;
 import static com.android.gpstest.model.GnssType.NAVSTAR;
 import static com.android.gpstest.model.GnssType.QZSS;
 import static com.android.gpstest.model.GnssType.SBAS;
@@ -124,6 +125,8 @@ public class GpsTestUtil {
                 return QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GALILEO;
+            case GnssStatus.CONSTELLATION_IRNSS:
+                return IRNSS;
             case GnssStatus.CONSTELLATION_SBAS:
                 return SBAS;
             case GnssStatus.CONSTELLATION_UNKNOWN:
@@ -187,6 +190,8 @@ public class GpsTestUtil {
             case QZSS:
                 return SatelliteName.UNKNOWN;
             case GALILEO:
+                return SatelliteName.UNKNOWN;
+            case IRNSS:
                 return SatelliteName.UNKNOWN;
             case SBAS:
                 if (svid == 120) {

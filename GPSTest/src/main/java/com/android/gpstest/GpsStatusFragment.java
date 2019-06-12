@@ -41,6 +41,13 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.gpstest.model.ConstellationType;
 import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
@@ -57,13 +64,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
@@ -859,6 +859,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     case GALILEO:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagEU);
+                        break;
+                    case IRNSS:
+                        v.getFlag().setVisibility(View.VISIBLE);
+                        v.getFlag().setImageDrawable(mFlagIndia);
                         break;
                     case SBAS:
                         setSbasFlag(sats.get(dataRow), v.getFlag());
