@@ -299,8 +299,7 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_india"
-                    card_view:srcCompat="@drawable/ic_flag_india" />
+                    app:srcCompat="@drawable/ic_flag_india" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line16b"
@@ -458,8 +457,7 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_gagan"
-                    card_view:srcCompat="@drawable/ic_flag_india" />
+                    app:srcCompat="@drawable/ic_flag_india" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line6b"
