@@ -50,6 +50,7 @@
     <dimen name="cn0_textview_min_left_margin">13dp</dimen>
 
     <dimen name="sky_legend_shape_size">14dp</dimen>
+    <dimen name="sky_legend_shape_oval_height">10dp</dimen>
     <dimen name="sky_legend_shape_small_line">5dp</dimen>
 
     <!-- Below values are only included as placeholders to satisfy #221 MissingDefaultResource

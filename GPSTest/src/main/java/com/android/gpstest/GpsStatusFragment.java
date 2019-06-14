@@ -162,7 +162,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
         mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
         mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
-        mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_gagan);
+        mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_india);
         mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
         mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
 

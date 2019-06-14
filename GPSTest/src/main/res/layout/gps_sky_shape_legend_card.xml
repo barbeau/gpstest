@@ -270,6 +270,53 @@
                     android:layout_margin="5dp"
                     android:text="@string/sky_legend_shape_qzss" />
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_oval"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_oval_height"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/circle" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line16a"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <ImageView
+                    android:id="@+id/legend_flag_irnss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light"
+                    android:padding="1dp"
+                    app:srcCompat="@drawable/ic_flag_india"
+                    card_view:srcCompat="@drawable/ic_flag_india" />
+
+                <View
+                    android:id="@+id/sky_legend_shape_line16b"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <TextView
+                    android:id="@+id/sky_irnss_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_shape_irnss" />
+            </TableRow>
         </TableLayout>
 
         <TextView
@@ -411,7 +458,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_gagan" />
+                    app:srcCompat="@drawable/ic_flag_gagan"
+                    card_view:srcCompat="@drawable/ic_flag_india" />
 
                 <View
                     android:id="@+id/sky_legend_shape_line6b"
