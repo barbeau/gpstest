@@ -59,8 +59,8 @@ android {
             release {
                 storeFile file(props['key.store'])
                 keyAlias props['key.alias']
-                storePassword "askmelater"
-                keyPassword "askmelater"
+                storePassword props['key.storepassword']
+                keyPassword props['key.keypassword']
             }
         }
     } else {
@@ -100,50 +100,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources true
-    }
-}
-
-/**
- * Ask for keystore/key passwords on the command line or popup UI when running release builds
- */
-task askForPasswords << {
-    def console = System.console()
-    def storePw
-    def keyPw
-
-    if (console) {
-        // Must create String because System.readPassword() returns char[]
-        // (and assigning that below fails silently)
-        storePw = new String(console.readPassword("\nKeystore password: "))
-        keyPw = new String(console.readPassword("Key password: "))
-    } else {
-        // Gradle is running as a daemon - prompt user to enter passwords via popup UI (#87)
-        new SwingBuilder().edt {
-            dialog(modal: true, title: 'Enter credentials', alwaysOnTop: true, resizable: true,
-                    locationRelativeTo: null, pack: true, show: true
-            ) {
-                vbox {
-                    label(text: "Keystore passphrase:")
-                    textField id: "storeText", input = passwordField()
-                    label(text: "Key passphrase:")
-                    textField id: "keyText", input = passwordField()
-                    button(defaultButton: true, text: 'OK', actionPerformed: {
-                        storePw = storeText.text;
-                        keyPw = keyText.text;
-                        dispose();
-                    })
-                }
-            }
-        }
-    }
-
-    android.signingConfigs.release.storePassword = storePw
-    android.signingConfigs.release.keyPassword = keyPw
-}
-
-tasks.whenTaskAdded { theTask ->
-    if (theTask.name.matches("\\bpackage\\w+Release\\b")) {
-        theTask.dependsOn "askForPasswords"
     }
 }
 
