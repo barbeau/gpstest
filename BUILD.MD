@@ -36,10 +36,9 @@ The "secure.properties" file (in the location specified in gradle.properties) ha
 
 ```
 key.store=<full_path_to_keystore_file>
-```
-
-```
 key.alias=<key_alias_name>
+key.storepassword=yourKeystorePassword
+key.keypassword=yourKeyPassword
 ```
 
 Note that the paths in these files always use the Unix path separator  `/`, even on Windows. If you use the Windows path separator `\` you will get the error `No value has been specified for property 'signingConfig.keyAlias'.`
@@ -47,10 +46,6 @@ Note that the paths in these files always use the Unix path separator  `/`, even
 To build the release build, run:
 
 `gradlew assembleRelease`
-
-If Gradle is running as a daemon, you'll be prompted for the keystore/key password via a popup dialog box. If you're not running Gradle as a daemon, command will prompt for your passwords (See https://github.com/barbeau/gpstest/issues/87).
-
-If you want to force Gradle to not run as a daemon, use `gradlew assembleRelease -D org.gradle.daemon=false`.
 
 ## Troubleshooting
 
