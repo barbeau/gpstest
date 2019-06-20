@@ -9,6 +9,7 @@ Users have contributed translations in the following languages:
 * Czech
 * Italian
 * Russian
+* Spanish
 
 We would love help improving the existing translations, or adding a new translation.
 

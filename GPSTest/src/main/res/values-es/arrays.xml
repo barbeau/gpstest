@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
 ** Copyright 2012, Sean J. Barbeau
@@ -20,40 +19,39 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>Constellation</item>
-        <item>Carrier Frequency</item>
-        <item>Signal Strength</item>
-        <item>Used in Fix</item>
-        <item>Constellation, Carrier Frequency</item>
-        <item>Constellation, Signal Strength</item>
-        <item>Constellation, Used in Fix</item>
+        <item>Constelación</item>
+        <item>Frecuencia de la Señal</item>
+        <item>Fuerza de la señal</item>
+        <item>Usado en la fijación</item>
+        <item>Constelación, Frecuencia de la señal</item>
+        <item>Constelación, Fuerza de la señal</item>
+        <item>Constelación, usado en la fijación</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>Map View</item>
-        <item>Hybrid View</item>
-        <item>Satellite View</item>
-        <item>Terrain View</item>
+        <item>Vista del Mapa</item>
+        <item>Vista híbrida</item>
+        <item>Vista de satélites</item>
+        <item>Vista del terreno</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_values -->
     <string-array name="language_entries">
-        <item>English</item>
-        <item>Chinese</item>
-        <item>Czech</item>
-        <item>Dutch</item>
-        <item>German</item>
-        <item>Greek</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Russian</item>
-        <item>Spanish</item>
+        <item>Inglés</item>
+        <item>Chino</item>
+        <item>Checo</item>
+        <item>Holandés</item>
+        <item>Alemán</item>
+        <item>Griego</item>
+        <item>Italiano</item>
+        <item>Japonés</item>
+        <item>Ruso</item>
     </string-array>
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>What\'s New?</item>
-        <item>About</item>
+        <item>Que hay de nuevo?</item>
+        <item>Acerca de</item>
     </string-array>
 </resources>
