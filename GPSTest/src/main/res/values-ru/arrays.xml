@@ -36,19 +36,6 @@
         <item>Рельеф</item>
     </string-array>
 
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>Английский</item>
-        <item>Китайский</item>
-        <item>Чешский</item>
-        <item>Нидерландский</item>
-        <item>Немецкий</item>
-        <item>Греческий</item>
-        <item>Итальянский</item>
-        <item>Японский</item>
-        <item>Русский</item>
-    </string-array>
-
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Что нового?</item>

@@ -36,19 +36,6 @@
         <item>Vista del terreno</item>
     </string-array>
 
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>Inglés</item>
-        <item>Chino</item>
-        <item>Checo</item>
-        <item>Holandés</item>
-        <item>Alemán</item>
-        <item>Griego</item>
-        <item>Italiano</item>
-        <item>Japonés</item>
-        <item>Ruso</item>
-    </string-array>
-
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Que hay de nuevo?</item>

@@ -176,6 +176,20 @@
         <item>3</item>
     </string-array>
 
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>中文</item>
+        <item>Čeština</item>
+        <item>Nederlands</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Italiano</item>
+        <item>日本人</item>
+        <item>Русский</item>
+        <item>Español</item>
+    </string-array>
+
     <!-- Supported languages, must stay in-order with language_entries -->
     <string-array name="language_values">
         <item>en</item>

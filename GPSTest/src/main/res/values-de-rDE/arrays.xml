@@ -36,19 +36,6 @@
         <item>Geländeansicht</item>
     </string-array>
 
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>Englisch</item>
-        <item>Chinesisch</item>
-        <item>Tschechisch</item>
-        <item>Niederländisch</item>
-        <item>Deutsch</item>
-        <item>Griechisch</item>
-        <item>Italienisch</item>
-        <item>Japanisch</item>
-        <item>Russisch</item>
-    </string-array>
-
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Was ist neu?</item>

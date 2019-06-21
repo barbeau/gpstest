@@ -36,19 +36,6 @@
         <item>Terreno</item>
     </string-array>
 
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>Inglese</item>
-        <item>Cinese</item>
-        <item>Ceco</item>
-        <item>Olandese</item>
-        <item>Tedesco</item>
-        <item>Greco</item>
-        <item>Italiano</item>
-        <item>Giapponese</item>
-        <item>Russo</item>
-    </string-array>
-
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Novità</item>
