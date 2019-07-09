@@ -41,6 +41,13 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.gpstest.model.ConstellationType;
 import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
@@ -57,13 +64,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
@@ -239,21 +239,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
      * @param location
      */
     private void updateLocationAccuracies(Location location) {
-        if (GpsTestUtil.isVerticalAccuracySupported()) {
+        if (GpsTestUtil.isVerticalAccuracySupported(location)) {
             mHorVertAccuracyLabelView.setText(R.string.gps_hor_and_vert_accuracy_label);
-            if (location.hasAccuracy() || location.hasVerticalAccuracy()) {
-                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
-                            location.getAccuracy(),
-                            location.getVerticalAccuracyMeters()));
-                } else {
-                    // Feet
-                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_feet,
-                            UIUtils.toFeet(location.getAccuracy()),
-                            UIUtils.toFeet(location.getVerticalAccuracyMeters())));
-                }
+            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
+                        location.getAccuracy(),
+                        location.getVerticalAccuracyMeters()));
             } else {
-                mHorVertAccuracyView.setText("");
+                // Feet
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_feet,
+                        UIUtils.toFeet(location.getAccuracy()),
+                        UIUtils.toFeet(location.getVerticalAccuracyMeters())));
             }
         } else {
             if (location.hasAccuracy()) {

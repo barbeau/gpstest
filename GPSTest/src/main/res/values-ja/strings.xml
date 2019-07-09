@@ -238,10 +238,6 @@
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">km/h</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">mi/h</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">ヘルプ</string>
 

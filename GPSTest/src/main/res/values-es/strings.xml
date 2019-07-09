@@ -261,10 +261,6 @@ esté sujetando el dispositivo</string>
     <string name="pref_language_summary">Definir manualmente el idioma mostrado en la app</string>
     <string name="pref_language_dialog_title">Seleccionar idioma</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">pies</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">Ayuda</string>
 

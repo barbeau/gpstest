@@ -274,10 +274,6 @@
     <string name="pref_language_summary">Устанавливает язык приложения вручную</string>
     <string name="pref_language_dialog_title">Выберите язык</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">фут.</string>
-    <string name="meters_abbreviation">м</string>
-
     <!-- Help -->
     <string name="title_help">Помощь</string>
 

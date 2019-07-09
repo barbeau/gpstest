@@ -46,6 +46,8 @@
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
     <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
 
     <!-- Values and units display - Sky View -->
     <string name="sky_legend_cn0_low">10</string>

@@ -257,10 +257,6 @@
     <string name="pref_language_summary">Ρυθμίζει χειροκίνητα τη γλώσσα που εμφανίζεται στην εφαρμογή</string>
     <string name="pref_language_dialog_title">Επιλέξτε γλώσσα</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">πδ.</string>
-    <string name="meters_abbreviation">μτ.</string>
-
     <!-- Help -->
     <string name="title_help">Βοήθεια</string>
 

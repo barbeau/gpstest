@@ -258,10 +258,6 @@
     <string name="pref_language_summary">Imposta manualmente la lingua dell\'app</string>
     <string name="pref_language_dialog_title">Scegli la lingua</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">Informazioni</string>
 

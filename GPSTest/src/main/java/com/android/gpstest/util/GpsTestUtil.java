@@ -24,9 +24,12 @@ import android.hardware.SensorManager;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.model.GnssType;
@@ -34,8 +37,6 @@ import com.android.gpstest.model.SatelliteName;
 import com.android.gpstest.model.SbasType;
 
 import java.lang.reflect.InvocationTargetException;
-
-import androidx.annotation.RequiresApi;
 
 import static com.android.gpstest.model.GnssType.BEIDOU;
 import static com.android.gpstest.model.GnssType.GALILEO;
@@ -257,12 +258,14 @@ public class GpsTestUtil {
     }
 
     /**
-     * Returns true if the platform supports providing vertical accuracy values, false if it does not
+     * Returns true if the platform supports providing vertical accuracy values and this location
+     * has vertical accuracy information, false if it does not
      *
-     * @return true if the platform supports providing vertical accuracy values, false if it does not
+     * @return true if the platform supports providing vertical accuracy values and this location
+     *  has vertical accuracy information, false if it does not
      */
-    public static boolean isVerticalAccuracySupported() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    public static boolean isVerticalAccuracySupported(Location location) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && location.hasVerticalAccuracy();
     }
 
     /**

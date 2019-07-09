@@ -257,10 +257,6 @@
     <string name="pref_language_summary">Nastavte jazyk prostředí aplikace.</string>
     <string name="pref_language_dialog_title">Vyberte jazyk</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">Nápověda</string>
 
