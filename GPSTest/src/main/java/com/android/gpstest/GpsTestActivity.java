@@ -437,7 +437,7 @@ public class GpsTestActivity extends AppCompatActivity
             removeGnssMeasurementsListener();
         }
         // Check if the user has chosen to stop GNSS whenever app is in background
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_stop_gnss_in_background), false)) {
+        if (!isChangingConfigurations() && Application.getPrefs().getBoolean(getString(R.string.pref_key_stop_gnss_in_background), false)) {
             gpsStop();
         }
 
