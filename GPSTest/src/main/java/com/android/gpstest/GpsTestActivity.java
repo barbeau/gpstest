@@ -35,6 +35,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssNavigationMessage;
@@ -80,6 +82,7 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
+import com.felhr.usbserial.UsbSerialDevice;
 
 import java.util.ArrayList;
 
@@ -223,6 +226,10 @@ public class GpsTestActivity extends AppCompatActivity
 
     private String mInitialLanguage;
 
+    UsbDevice mUsbDevice;
+    UsbDeviceConnection mUsbConnection;
+    UsbSerialDevice mSerial;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -293,6 +300,13 @@ public class GpsTestActivity extends AppCompatActivity
                 (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
     }
 
+    private void setupSerialOverUsb() {
+        mSerial = UsbSerialDevice.createUsbSerialDevice(mUsbDevice, mUsbConnection);
+        if (mSerial != null) {
+            mSerial.open();
+        }
+    }
+
      @Override
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
@@ -320,6 +334,8 @@ public class GpsTestActivity extends AppCompatActivity
             }
         }
         mBenchmarkController.onResume();
+
+        setupSerialOverUsb();
     }
 
     /**
@@ -439,6 +455,10 @@ public class GpsTestActivity extends AppCompatActivity
         // Check if the user has chosen to stop GNSS whenever app is in background
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_stop_gnss_in_background), false)) {
             gpsStop();
+        }
+
+        if (mSerial != null) {
+            mSerial.close();
         }
 
         super.onPause();
@@ -1047,6 +1067,7 @@ public class GpsTestActivity extends AppCompatActivity
                     if (mLogNmea) {
                         writeNmeaToLog(message,
                                 mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
+                        mSerial.write(message.getBytes());
                     }
                     PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
                 }
