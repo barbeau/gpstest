@@ -247,10 +247,6 @@
     <string name="pref_language_summary">手动设置程序的显示语言</string>
     <string name="pref_language_dialog_title">选择语言</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">帮助</string>
 
