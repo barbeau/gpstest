@@ -23,6 +23,7 @@
 package com.android.gpstest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -35,17 +36,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.gpstest.util.UIUtils;
-import com.android.gpstest.view.ScrimInsetsScrollView;
-
-import java.util.ArrayList;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+
+import com.android.gpstest.util.UIUtils;
+import com.android.gpstest.view.ScrimInsetsScrollView;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -171,11 +172,14 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Read in the flag indicating whether or not the user has demonstrated awareness of the
-        // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = Application.getPrefs();
 
-        if (savedInstanceState != null) {
+        Intent intent = getActivity().getIntent();
+        if (intent != null && intent.getAction().equals(Application.get().getString(R.string.show_radar_intent))) {
+            // If another app (e.g., BenchMap) passed in a ground truth location, show the Accuracy view
+            mCurrentSelectedPosition = NAVDRAWER_ITEM_ACCURACY;
+            Log.d(TAG, "Using Accuracy position due to RADAR intent = " + mCurrentSelectedPosition);
+        } else if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             Log.d(TAG, "Using position from savedInstanceState = " + mCurrentSelectedPosition);
         } else {

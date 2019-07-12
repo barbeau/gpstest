@@ -334,12 +334,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         } else {
             // If a RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
             Intent intent = activity.getIntent();
-            if (intent != null && intent.getAction().equals("com.google.android.radar.SHOW_RADAR")) {
+            if (intent != null && intent.getAction().equals(Application.get().getString(R.string.show_radar_intent))) {
                 Location groundTruth = new Location("ground_truth");
-                groundTruth.setLatitude(intent.getDoubleExtra("latitude", Double.NaN));
-                groundTruth.setLongitude(intent.getDoubleExtra("longitude", Double.NaN));
-                if (intent.hasExtra("altitude")) {
-                    groundTruth.setAltitude(intent.getDoubleExtra("altitude", Double.NaN));
+                groundTruth.setLatitude(intent.getFloatExtra(Application.get().getString(R.string.radar_lat_key), Float.NaN));
+                groundTruth.setLongitude(intent.getFloatExtra(Application.get().getString(R.string.radar_lon_key), Float.NaN));
+                if (intent.hasExtra(Application.get().getString(R.string.radar_alt_key))) {
+                    groundTruth.setAltitude(intent.getFloatExtra(Application.get().getString(R.string.radar_alt_key), Float.NaN));
                 }
                 restoreGroundTruth(groundTruth);
             } else if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
