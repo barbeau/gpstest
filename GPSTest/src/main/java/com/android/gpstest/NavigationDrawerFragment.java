@@ -23,7 +23,6 @@
 package com.android.gpstest;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -174,8 +173,7 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         SharedPreferences sp = Application.getPrefs();
 
-        Intent intent = getActivity().getIntent();
-        if (intent != null && intent.getAction().equals(Application.get().getString(R.string.show_radar_intent))) {
+        if (IOUtils.isShowRadarIntent(getActivity().getIntent())) {
             // If another app (e.g., BenchMap) passed in a ground truth location, show the Accuracy view
             mCurrentSelectedPosition = NAVDRAWER_ITEM_ACCURACY;
             Log.d(TAG, "Using Accuracy position due to RADAR intent = " + mCurrentSelectedPosition);

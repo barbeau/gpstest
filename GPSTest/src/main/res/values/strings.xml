@@ -126,6 +126,8 @@
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$d fixes</string>
     <string name="fix_number">Fix #</string>
+    <string name="show_radar_valid_location">Ground truth location set by another app</string>
+    <string name="show_radar_invalid_location">The ground truth location provided by another app is invalid</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legend</string>

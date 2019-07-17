@@ -16,7 +16,6 @@
 package com.android.gpstest;
 
 import android.animation.LayoutTransition;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -34,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -332,19 +332,19 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             restoreGraphData();
             onCardCollapsed();
         } else {
-            // If a RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
-            Intent intent = activity.getIntent();
-            if (intent != null && intent.getAction().equals(Application.get().getString(R.string.show_radar_intent))) {
-                Location groundTruth = new Location("ground_truth");
-                groundTruth.setLatitude(intent.getFloatExtra(Application.get().getString(R.string.radar_lat_key), Float.NaN));
-                groundTruth.setLongitude(intent.getFloatExtra(Application.get().getString(R.string.radar_lon_key), Float.NaN));
-                if (intent.hasExtra(Application.get().getString(R.string.radar_alt_key))) {
-                    groundTruth.setAltitude(intent.getFloatExtra(Application.get().getString(R.string.radar_alt_key), Float.NaN));
+            Location groundTruth;
+            // If a SHOW_RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
+            if (IOUtils.isShowRadarIntent(activity.getIntent())) {
+                groundTruth = IOUtils.getLocationFromIntent(activity.getIntent());
+                if (groundTruth != null) {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
+                    restoreGroundTruth(groundTruth);
+                } else {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_invalid_location), Toast.LENGTH_LONG).show();
                 }
-                restoreGroundTruth(groundTruth);
             } else if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
                 // If there is a saved ground truth value from previous executions, start test using that
-                Location groundTruth = new Location("ground_truth");
+                groundTruth = new Location("ground_truth");
                 groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN));
                 groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN));
                 if (Application.getPrefs().contains(GROUND_TRUTH_ALT)) {
