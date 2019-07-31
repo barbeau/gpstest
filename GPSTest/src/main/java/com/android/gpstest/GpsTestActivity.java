@@ -21,7 +21,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -1140,23 +1139,17 @@ public class GpsTestActivity extends AppCompatActivity
      * Ask the user if they want to enable GPS
      */
     private void promptEnableGps() {
-        new AlertDialog.Builder(this)
+        new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setMessage(getString(R.string.enable_gps_message))
                 .setPositiveButton(getString(R.string.enable_gps_positive_button),
-                        new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(
-                                        Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                startActivity(intent);
-                            }
+                        (dialog, which) -> {
+                            Intent intent = new Intent(
+                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
                         }
                 )
                 .setNegativeButton(getString(R.string.enable_gps_negative_button),
-                        new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
+                        (dialog, which) -> {
                         }
                 )
                 .show();
