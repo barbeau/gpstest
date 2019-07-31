@@ -15,15 +15,16 @@
  */
 package com.android.gpstest;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.android.gpstest.util.GpsTestUtil;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.gpstest.util.GpsTestUtil;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -66,5 +67,11 @@ public class HelpActivity extends AppCompatActivity {
         versionView.setText(version.toString());
 
         helpView.setText(R.string.help_text);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        // For dynamically changing the locale
+        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
     }
 }
