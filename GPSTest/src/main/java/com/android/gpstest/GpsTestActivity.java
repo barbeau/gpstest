@@ -268,6 +268,14 @@ public class GpsTestActivity extends AppCompatActivity
         setupNavigationDrawer();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // If another app is passing in a ground truth location, recreate the activity to initialize an existing instance
+        if (IOUtils.isShowRadarIntent(intent)) {
+            recreateApp(intent);
+        }
+    }
+
     /**
      * Save instance state locally so we can use it after the permission callback
      * @param savedInstanceState instance state to save
@@ -315,7 +323,7 @@ public class GpsTestActivity extends AppCompatActivity
             String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
             if (!currentLanguage.equals(mInitialLanguage)) {
                 mInitialLanguage = currentLanguage;
-                recreateApp();
+                recreateApp(null);
             }
         }
         mBenchmarkController.onResume();
@@ -325,9 +333,15 @@ public class GpsTestActivity extends AppCompatActivity
      * Destroys and recreates the main activity in a new process.  If we don't use a new process,
      * the map state and Accuracy ground truth location TextViews get messed up with mixed locales
      * and partial state retention.
+     * @param currentIntent the Intent to pass to the re-created app, or null if there is no intent to pass
      */
-    void recreateApp() {
+    void recreateApp(Intent currentIntent) {
         Intent i = new Intent(this, GpsTestActivity.class);
+        if (IOUtils.isShowRadarIntent(currentIntent)) {
+            // If we're creating the app because we got a SHOW_RADAR intent, copy over the intent action and extras
+            i.setAction(currentIntent.getAction());
+            i.putExtras(currentIntent.getExtras());
+        }
         startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         // Restart process to destroy and recreate everything
         System.exit(0);

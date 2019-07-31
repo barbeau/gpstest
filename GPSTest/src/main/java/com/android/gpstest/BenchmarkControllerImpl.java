@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -331,20 +332,39 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             restoreGraphData();
             onCardCollapsed();
         } else {
-            // If there is a saved ground truth value from previous executions, start test using that
-            if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
-                Location groundTruth = new Location("ground_truth");
+            Location groundTruth;
+            // If a SHOW_RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
+            if (IOUtils.isShowRadarIntent(activity.getIntent())) {
+                groundTruth = IOUtils.getLocationFromIntent(activity.getIntent());
+                if (groundTruth != null) {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
+                    restoreGroundTruth(groundTruth);
+                } else {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_invalid_location), Toast.LENGTH_LONG).show();
+                }
+            } else if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
+                // If there is a saved ground truth value from previous executions, start test using that
+                groundTruth = new Location("ground_truth");
                 groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN));
                 groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN));
                 if (Application.getPrefs().contains(GROUND_TRUTH_ALT)) {
                     groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN));
                 }
-                updateGroundTruthEditTexts(groundTruth);
-                resetError();
-                saveGroundTruth();
-                onCardCollapsed();
+                restoreGroundTruth(groundTruth);
             }
         }
+    }
+
+    /**
+     * Initializes a test with a pre-existing ground truth location (e.g., from an Intent or preferences)
+     *
+     * @param location location to use as the ground truth location
+     */
+    private void restoreGroundTruth(Location location) {
+        updateGroundTruthEditTexts(location);
+        resetError();
+        saveGroundTruth();
+        onCardCollapsed();
     }
 
     /**
