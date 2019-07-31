@@ -103,5 +103,16 @@ class IOUtilsTest {
         assertEquals(28.0527222, locationNullAltitude.latitude, delta)
         assertEquals(-82.433100, locationNullAltitude.longitude, delta)
         assertFalse(locationNullAltitude.hasAltitude())
+
+        // double values for lat and lon, float for altitude (BenchMap config as of July 31, 2019)
+        val intentDoubleWithFloatAltitude = Intent("com.google.android.radar.SHOW_RADAR")
+        intentDoubleWithFloatAltitude.putExtra("latitude", 28.0527222)
+        intentDoubleWithFloatAltitude.putExtra("longitude", -82.4331001)
+        intentDoubleWithFloatAltitude.putExtra("altitude", 20.3f)
+
+        val locationDoubleWithFloatAltitude = IOUtils.getLocationFromIntent(intentDoubleWithFloatAltitude)
+        assertEquals(28.0527222, locationDoubleWithFloatAltitude.latitude, delta)
+        assertEquals(-82.433100, locationDoubleWithFloatAltitude.longitude, delta)
+        assertEquals(20.3, locationDoubleWithFloatAltitude.altitude, delta)
     }
 }
