@@ -896,14 +896,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
                 if (sats.get(dataRow).getElevationDegrees() != NO_DATA) {
                     v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
-                            sats.get(dataRow).getElevationDegrees()));
+                            sats.get(dataRow).getElevationDegrees()).replace(".0", "").replace(",0", ""));
                 } else {
                     v.getElevation().setText("");
                 }
 
                 if (sats.get(dataRow).getAzimuthDegrees() != NO_DATA) {
                     v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
-                            sats.get(dataRow).getAzimuthDegrees()));
+                            sats.get(dataRow).getAzimuthDegrees()).replace(".0", "").replace(",0", ""));
                 } else {
                     v.getAzimuth().setText("");
                 }
