@@ -196,6 +196,8 @@
         <item>日本語</item>
         <item>Русский</item>
         <item>Español</item>
+        <item>Indonesia</item>
+        <item>Polskie</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -210,5 +212,7 @@
         <item>ja</item>
         <item>ru</item>
         <item>es</item>
+        <item>in</item>
+        <item>pl</item>
     </string-array>
 </resources>
