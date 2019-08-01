@@ -63,6 +63,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -1153,7 +1154,7 @@ public class GpsTestActivity extends AppCompatActivity
      * Ask the user if they want to enable GPS
      */
     private void promptEnableGps() {
-        new androidx.appcompat.app.AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.enable_gps_message))
                 .setPositiveButton(getString(R.string.enable_gps_positive_button),
                         (dialog, which) -> {
@@ -1502,8 +1503,8 @@ public class GpsTestActivity extends AppCompatActivity
         TextView textView = (TextView) getLayoutInflater().inflate(R.layout.whats_new_dialog, null);
         textView.setText(R.string.main_help_whatsnew);
 
-        androidx.appcompat.app.AlertDialog.Builder builder
-                = new androidx.appcompat.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(this);
         builder.setTitle(R.string.main_help_whatsnew_title);
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(textView);
@@ -1519,7 +1520,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressWarnings("deprecation")
     private Dialog createHelpDialog() {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.title_help);
         int options = R.array.main_help_options;
         builder.setItems(options,
@@ -1555,7 +1556,7 @@ public class GpsTestActivity extends AppCompatActivity
         Drawable icon = getResources().getDrawable(R.drawable.ic_delete);
         DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
 
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.clear_assist_warning_title)
                 .setIcon(icon)
                 .setCancelable(false)
@@ -1586,7 +1587,7 @@ public class GpsTestActivity extends AppCompatActivity
      * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
      */
     private void showLocationPermissionDialog() {
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.title_location_permission)
                 .setMessage(R.string.text_location_permission)
                 .setCancelable(false)
