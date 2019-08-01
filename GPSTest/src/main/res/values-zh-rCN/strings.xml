@@ -122,7 +122,6 @@
     <string name="horizontal_vertical_error_label">H/V 误差</string>
     <string name="avg_error_label">平均%1$d修正</string>
     <string name="fix_number">修正 #</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">图例</string>
     <string name="sky_legend_shape_gnss_title">全球卫星导航系统（GNSS）</string>

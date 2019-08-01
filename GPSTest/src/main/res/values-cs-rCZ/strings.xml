@@ -122,6 +122,8 @@
     <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
     <string name="avg_error_label">Průměr %1$d opr.</string>
     <string name="fix_number">Průměr</string>
+    <string name="show_radar_valid_location">Skutečná poloha stanovená jinou aplikací</string>
+    <string name="show_radar_invalid_location">Skutečná poloha stanovená jinou aplikací je neplatná</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Popis</string>

@@ -29,7 +29,7 @@
     <string name="force_time_injection">Inserisci dati NTP</string>
     <string name="delete_aiding_data">Rimuovi dati di assistenza</string>
     <string name="navdrawer_item_settings">Impostazioni</string>
-    <string name="navdrawer_item_help">Informazioni</string>
+    <string name="navdrawer_item_help">Guida pratica</string>
     <string name="navdrawer_item_send_feedback">Invia feedback</string>
     <string name="navdrawer_item_open_source">Visitaci su GitHub</string>
 
@@ -121,7 +121,6 @@
     <string name="horizontal_vertical_error_label">Errore o/v</string>
     <string name="avg_error_label">Media %1$d s. </string>
     <string name="fix_number">n° segnali</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
     <string name="sky_legend_shape_gnss_title">Sistema Globale di Navigazione Satellitare (GNSS)</string>
@@ -353,5 +352,5 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
         &#8226;\u0020 Traduzione giapponese a cura di SakuraSa233\n
         &#8226;\u0020 Traduzione ceca a cura di LLZN\n
         &#8226;\u0020 Traduzione italiana a cura di Giolly90\n
-    </string>
+        &#8226;\u0020 Traduzione spagnola a cura di Sergi Pellicer\n</string>
 </resources>
