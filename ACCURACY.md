@@ -34,9 +34,9 @@ For example, if you add this code to your Android app, it will set the ground tr
 ~~~
 public void startShowRadar(double lat, double lon, float alt) {
     Intent intent = new Intent("com.google.android.radar.SHOW_RADAR"); 
-    intent.putExtra("latitude", lat); // double
-    intent.putExtra("longitude", lon); // double
-    intent.putExtra("altitude", alt); // float or double
+    intent.putExtra("latitude", lat); // double, in decimal degrees
+    intent.putExtra("longitude", lon); // double, in decimal degrees
+    intent.putExtra("altitude", alt); // float or double, in meters above the WGS84 ellipsoid
     if (intent.resolveActivity(getPackageManager()) != null) { 
         startActivity(intent);
     }
