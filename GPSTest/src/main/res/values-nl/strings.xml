@@ -79,8 +79,8 @@
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">DF</string>
-    <string name="gps_snr_column_label">SNR</string>
-    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_snr_column_label">S/N</string>
+    <string name="gps_cn0_column_label">D/R0</string>
     <string name="gps_avg_cn0_label">Gem</string>
     <string name="gps_elevation_column_label">Hoogte</string>
     <string name="gps_azimuth_column_label">Azim.</string>
@@ -118,10 +118,10 @@
     <string name="ground_truth_invalid_long">De lengtegraad moet in decimale graden liggen tussen -180 en 180</string>
     <string name="ground_truth_invalid_alt">De hoogte moet (volgens WGS84) in meters uitgedrukt worden.</string>
 
-    <string name="horizontal_error_title">Horizontale fout</string>
-    <string name="vertical_error_title">Verticale fout</string>
+    <string name="horizontal_error_title">Horizontale afwijking</string>
+    <string name="vertical_error_title">Verticale afwijking</string>
     <string name="horizontal_error_label">Afwijking</string>
-    <string name="measured_error_graph_label">Gemeten fout</string>
+    <string name="measured_error_graph_label">Gemeten afwijking</string>
     <string name="estimated_accuracy_graph_label">Nauwkeurigheid geschat door hardware</string>
     <string name="horizontal_vertical_error_label">H/V-afwijking</string>
     <string name="avg_error_label">Gemid. over %1$d fixes</string>
@@ -247,7 +247,7 @@
         Studio (Android 7.0 en hoger)
     </string>
 
-    <string name="pref_about_category_title">Over</string>
+    <string name="pref_about_category_title">FAQ</string>
     <string name="pref_show_tutorial_title">Handleiding bekijken</string>
     <string name="pref_show_tutorial_summary">Toon instructies over het gebruik van deze app</string>
 
@@ -256,15 +256,15 @@
 	</string>
 
     <string name="pref_dms_mode_title">Gebruik GMS-formaat</string>
-    <string name="pref_dms_mode_summary">Toon de hoogte- en breedtegraad in graden, minuten en seconden (GMS) in plaats van decimale graden (DG)</string>
+    <string name="pref_dms_mode_summary">Toon de lengte- en breedtegraden in graden, minuten en seconden (GMS) in plaats van decimale graden (DG)</string>
 
     <string name="preferences_preferred_distance_units_title">Voorkeurseenheid voor afstand</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
-    <string name="preferences_preferred_distance_units_option_feet">Voet</string>
+    <string name="preferences_preferred_distance_units_option_feet">Voeten</string>
 
     <string name="preferences_preferred_speed_units_title">Voorkeurseenheid voor snelheid</string>
-    <string name="preferences_preferred_speed_units_option_meters_per_second">Meter per seconde (m/s)</string>
-    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometer per uur (km/h)</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per seconde (m/s)</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per uur (km/h)</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Mijlen per uur (mph)</string>
 
     <string name="pref_language_title">Taal</string>
@@ -280,25 +280,25 @@
 
         <b>*** Status weergave ***</b>\n\n&#8226;\u0020
         <b>Breedtegraad</b>
-        - In decimale graden (WGS 84)\n&#8226;\u0020
+        - In decimale graden (WGS 84) (in het Engels Latitude) \n&#8226;\u0020
         <b>Lengtegraad</b>
-        - In decimale graden (WGS 84)\n&#8226;\u0020
+        - In decimale graden (WGS 84) (in het Engels Longitude) \n&#8226;\u0020
         <b>Hoogte</b>
         - Meters boven de WGS 84 ellipsoïde\n&#8226;\u0020
         <b>Hoogte (GZN)</b>
-        - Meters boven het Gemiddeld ZeeNiveau (Vereist NMEA ondersteuning). Dit is NIET precies gelijk aan NAP (Nieuw Amsterdams Pijl)\n&#8226;\u0020
+        - Meters boven het Gemiddeld ZeeNiveau (Vereist NMEA ondersteuning). Dit is NIET precies gelijk aan NAP (Nieuw Amsterdams Pijl) (in het Engels Altitude above Mean Sea Level - Alt. MSL)\n&#8226;\u0020
         <b>Nauwk.</b>
 - Geschatte horizontale nauwkeurigheid van de positie (radius in meters met 68% zekerheid). In andere woorden, als je een cirkel tekent in het midden van deze breedte- en lengtegraad, met een radius gelijk aan deze nauwkeurigheid, dan is er een kans van 68% dat je daadwerkelijke positie zich binnen deze cirkel bevind.\n&#8226;\u0020
         <b>H/V Nauwk.</b>
-- Geschatte horizontale- en verticalenauwkeurigheid van de positie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Nauwk. hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 (Oreo) en hoger. Een rekenvoorbeeld met verticaal nauwkeurigheid: als hoogte 150 m is en verticale nauwkeurigheid 20 m is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt.\n&#8226;\u0020
+- Geschatte horizontale- en verticale- nauwkeurigheid van de positie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Nauwk. hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 (Oreo) en hoger. Een rekenvoorbeeld met verticaal nauwkeurigheid: als hoogte 150 m is en verticale nauwkeurigheid 20 m is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt.\n&#8226;\u0020
         <b>Snelheid</b>
         - Snelheid in meters per seconde over de grond\n&#8226;\u0020
         <b>Snelh. Nauwk.</b>
-- Geschatte bewegingssnelheidsnauwkeurigheid met 68% zekerheid, in meter per seconde. Als snelheid bijvoorbeeld 5 m/s is en snelheid nauwkeurigheid 1 m/s is, is er een kans van 68% dat de werkelijke snelheid tussen 4 en 6 meter per seconde ligt.\n&#8226;\u0020
+- Geschatte bewegingssnelheidsnauwkeurigheid met 68% zekerheid, in meters per seconde. Als snelheid bijvoorbeeld 5 m/s is en snelheid nauwkeurigheid 1 m/s is, is er een kans van 68% dat de werkelijke snelheid tussen 4 en 6 meter per seconde ligt.\n&#8226;\u0020
         <b>Peiling</b>
-- De horizontale beweegrichting van het apparaat (in graden 0-360) en is niet gerelateerd aan de oriëntatie van het apparaat.\n&#8226;\u0020
+- De horizontale beweegrichting van het apparaat (in graden 0-360) en is niet gerelateerd aan de oriëntatie van het apparaat. (in the Engles Bearing)\n&#8226;\u0020
         <b>P. Nauwk.</b>
-        - Geschatte nauwkeurigheid van peiling bij 68% zekerheid, in graden. Als bijvoorbeeld de peiling 60 is en peiling nauwkeurigheid 10 m, dan is er een zekerheid van 68% dat het ware peil tussen 50 en 70 graden ligt. \n&#8226;\u0020
+        - Geschatte nauwkeurigheid van peiling bij 68% zekerheid, in graden. Als bijvoorbeeld de peiling 60 is en peiling nauwkeurigheid 10 m, dan is er een zekerheid van 68% dat het ware peil tussen 50 en 70 graden ligt. (in het Engels Bearing accuracy)\n&#8226;\u0020
         <b>#Sat</b>
         -  Aantal satellieten gebruikt in de fix / Aantal satellieten in zicht\n&#8226;\u0020
         <b>PDOP</b>
@@ -306,18 +306,18 @@
         <b>H/V DOP</b>
         - Horizontale / verticale \'dilution of precision\' (verdunning van nauwkeurigheid) (vereist NMEA ondersteuning)\n&#8226;\u0020
         <b>TTEF</b>
-        - Tijd tot de eerste fix\n&#8226;\u0020
+        - Tijd tot de eerste fix (in het Engels Time To First Fix TTFF)\n&#8226;\u0020
         <b>ID of PRN</b>
         - Identificator van deze satelliet (bij GPS wordt pseudo-willekeurige ruis gebruikt om deze te bepalen)\n&#8226;\u0020
         <b>DF</b>
-- Label (bijv. \"L1\") voor DraaggolfFrequentie van het signaal dat wordt gevolgd. Als er een onbekende frequentie is, wordt de onbewerkte frequentie in MHz weergegeven (beschikbaar op Android 8.0+, maar niet op alle apparaten) \n&#8226;\u0020
-        <b>SNR</b>
-        - Signal-to-noise ratio (Signaal tot ruis verhouding)(Android M en lager) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>C/N0</b>
-        - Carrier-to-noise dichtheid (Android N en hoger) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+- Label (bijv. \"L1\") voor DraaggolfFrequentie van het signaal dat wordt gevolgd (in het Engels Carrier Frequency CF). Als er een onbekende frequentie is, wordt de onbewerkte frequentie in MHz weergegeven (beschikbaar op Android 8.0+, maar niet op alle apparaten) \n&#8226;\u0020
+        <b>S/R</b>
+        - Signaal tot ruis verhouding (in het Engles Signal-to-Noise ratio) (Android M en lager) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>D/R0</b>
+        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 voor Carrier-to-noise density) (Android N en hoger) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flaggen</b>
         - (E) als het apparaat efemeride-gegevens heeft voor deze satelliet, (A) als het apparaat almanakgegevens
-heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening voor de meest recente locatiebepaling. Voor SBAS definiëren de Android specificaties niet of (G) verweist naar pseudo-afstanden tot de satelliet worden gebruikt in de locatiebepaling of dat de correctie-gegevens van die satelliet worden gebruik in de berekening. Het is daarom niet voor GPSTest om aan te geven of SBAS ook echt wordt gebruikt.\n\n
+heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening voor de meest recente locatiebepaling. Voor SBAS definiëren de Android specificaties niet of (G) verwijst naar het gebruik van pseudo-afstanden tot de satelliet in de locatiebepaling of dat de correctie-gegevens van die satelliet worden gebruik in de berekening. Het is daarom niet mogelijk voor GPSTest om aan te geven of SBAS ook echt wordt gebruikt.\n\n
 
         <b>*** Hemel weergave - Uitleg ***</b>\n\n&#8226;\u0020
         <b>GPS (VS Navstar)</b>
@@ -330,7 +330,7 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
         - Zeshoeken\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Vijfhoeken\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCA</b>
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
         - Diamanten\n\n
 
         &#8226;\u0020 Transparante satellieten  - niet in zicht\n
