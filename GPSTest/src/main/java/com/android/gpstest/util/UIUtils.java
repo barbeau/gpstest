@@ -279,16 +279,16 @@ public class UIUtils {
 
         body.append("\n\n\n");
 
-        Intent send = new Intent(Intent.ACTION_SEND);
-        send.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+        Intent sendemail = new Intent(Intent.ACTION_SEND);
+        sendemail.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
 
         String subject = context.getString(R.string.feedback_subject);
 
-        send.putExtra(Intent.EXTRA_SUBJECT, subject);
-        send.putExtra(Intent.EXTRA_TEXT, body.toString());
-        send.setType("message/rfc822");
+        sendemail.putExtra(Intent.EXTRA_SUBJECT, subject);
+        sendemail.putExtra(Intent.EXTRA_TEXT, body.toString());
+        sendemail.setType("message/rfc822");
         try {
-            context.startActivity(Intent.createChooser(send, subject));
+            context.startActivity(sendemail));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
                     .show();
