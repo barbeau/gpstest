@@ -122,7 +122,6 @@
     <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
     <string name="avg_error_label">%1$d σημεία περίπου</string>
     <string name="fix_number">Κλείδωμα #</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">Τυπικό</string>
     <string name="sky_legend_shape_gnss_title">Παγκόσμια δορυφορικά συστήματα πλοήγησης (GNSS)</string>
@@ -170,16 +169,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-<b>Προβολή ακρίβειας</b>
-- Ορίστε την πραγματική θέση σας και μετρήστε την ακρίβεια GNSS.\n&#8226;\u0020
-<b>Βελτιωμένη υποστήριξη για ορισμένους δορυφόρους</b>
-- Νέοι δορυφόροι Galileo, ετικέτες CF για SBAS (EGNOS και MSAS) και GLONASS (CDMA L1 και L3).\n&#8226;\u0020
-<b>Αλλαγή γλώσσας εφαρμογής</b>
-- Νέα ρύθμιση για να αλλάξετε τη γλώσσα που εμφανίζεται στην εφαρμογή για τις υποστηριζόμενες μεταφράσεις.\n&#8226;\u0020
-<b>Διόρθωση σφαλμάτων</b>
-- Δείτε εδώ http://bit.ly/gpstest-releases
-</string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->

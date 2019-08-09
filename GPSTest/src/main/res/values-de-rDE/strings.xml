@@ -122,7 +122,6 @@
     <string name="horizontal_vertical_error_label">H/V-Abweichung</string>
     <string name="avg_error_label">avg %1$d Fixes</string>
     <string name="fix_number">Fix #</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">Legende</string>
     <string name="sky_legend_shape_gnss_title">Globale Navigationssatellitensysteme (GNSS)</string>
@@ -170,15 +169,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
-    <string name="main_help_whatsnew"><li><b>Genauigkeitsansicht</b>
-\nDie reale Position einstellen und die GNSS-Genauigkeit messen.</li>
-\n<li><b>Verbesserter Support für einige Satelliten</b>
-\nNeue Galileo-Satelliten, CF-Label für SBAS (EGNOS und MSAS) und GLONASS (CDMA L1 und L3).</li>
-\n<li><b>App-Sprache änderbar</b>
-\nNeue Einstellung zum Ändern der Sprache für die unterstützten Übersetzungen.</li>
-\n<li><b>Fehlerbehebungen</b>
-\nSiehe http://bit.ly/gpstest-releases</li>
-    </string>
     <string name="main_help_close">Schließen</string>
 
     <!-- Preferences -->

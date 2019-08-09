@@ -172,16 +172,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Přesnost zobrazení polohy</b>
-        - Přidána možnost nastavení skutečné polohy a možnost změřit přesnost GNSS\n&#8226;\u0020
-        <b>Vylepšená podpora některých satelitů</b>
-        - Přidány nové satelity systému Galileo, označení CF pro SBAS (EGNOS a MSAS) a GLONASS (CDMA L1 a L3)\n&#8226;\u0020
-        <b>Výběr jazyka aplikace</b>
-        - Nyní si můžete v aplikaci vybrat jazyk prostředí (jen pro podporované překlady)\n&#8226;\u0020
-        <b>Opravy chyb</b>
-        - Více na: http://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
