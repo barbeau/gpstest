@@ -122,6 +122,9 @@
     <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
     <string name="avg_error_label">%1$d σημεία περίπου</string>
     <string name="fix_number">Κλείδωμα #</string>
+    <string name="show_radar_valid_location">Ορισμός πραγματικής θέσης εδάφους απο άλλη εφαρμογή</string>
+    <string name="show_radar_invalid_location">Η πραγματική θέση εδάφους που δόθηκε απο άλλη εφαρμογή δεν είναι έγκυρη</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Τυπικό</string>
     <string name="sky_legend_shape_gnss_title">Παγκόσμια δορυφορικά συστήματα πλοήγησης (GNSS)</string>
@@ -169,6 +172,11 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+<b>Ορισμός ακριβής τοποθεσίας απο BenchMap</b>
+- Χρησιμοποιήστε εφαρμογές απο το BenchMap για να ορίσετε την πραγματική θέση εδάφους.\n&#8226;\u0020
+<b>Διορθώσεις σφαλμάτων</b>
+- Δείτε εδώ http://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->
@@ -250,7 +258,7 @@
     <string name="title_help">Βοήθεια</string>
 
     <string name="help_text">
-        <b>Ερωτήσεις και Απαντήσεις (FAQ)</b>
+        <b>Συχνές Ερωτήσεις Απαντήσεις (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
         <b>*** Προβολή Κατάστασης ***</b>\n\n&#8226;\u0020
@@ -261,76 +269,79 @@
         <b>Υψόμετρο</b>
         - Μέτρα πάνω από το ελλειψοειδές WGS 84\n&#8226;\u0020
         <b>Υψόμετρο (MSL)</b>
-        - Μέτρα πάνω απο το ύψος στάθμης της θάλασσας (χρειάζεται υποστήριξη NMEA)\n&#8226;\u0020
+        - Μέτρα πάνω από το επίπεδο Μέσης Θάλασσας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
         <b>Ακρίβεια</b>
-        - Εκτιμώμενη οριζόντια ακρίβεια της θέσης (ακτίνα σε μέτρα 68% εμπιστοσύνης). Με άλλα λόγια, εάν σχεδιάσετε έναν κύκλο με κέντρο το γεωγραφικό πλάτος και το γεωγραφικό μήκος αυτής της θέσης και με ακτίνα ίση με την ακρίβεια, τότε υπάρχει πιθανότητα 68% ότι η πραγματική θέση βρίσκεται εντός του κύκλου.\n&#8226;\u0020
+        - Εκτιμώμενη οριζόντια ακρίβεια της θέσης (ακτίνα σε μέτρα 68% κατά προσέγγιση). Με άλλα λόγια, αν σχεδιάσετε έναν κύκλο με κέντρο στο γεωγραφικό πλάτος και το γεωγραφικό μήκος αυτής της τοποθεσίας και με ακτίνα ίση με την ακρίβεια, τότε υπάρχει πιθανότητα 68% ότι η πραγματική θέση βρίσκεται εντόςε του κύκλου.\n&#8226;\u0020
         <b>H/V Ακρίβεια</b>
-        - Εκτιμώμενη οριζόντια και κάθετη ακρίβεια της θέσης, τόσο στην εμπιστοσύνη 68%. Η οριζόντια ακρίβεια ορίζει το ίδιο με το πεδίο Ακρίβειας παραπάνω. Η κάθετη ακρίβεια είναι διαθέσιμη στο Android 8.0 Oreo και άνω. Παράδειγμα κατακόρυφης ακρίβειας - εάν το Υψόμετρο είναι 150 και η κάθετη ακρίβεια είναι 20, τότε υπάρχει πιθανότητα 68% του πραγματικού υψομέτρου μεταξύ 130 και 170 μέτρων.\n&#8226;\u0020
+        - Εκτιμώμενη οριζόντια και κάθετη ακρίβεια της θέσης, τόσο και κατα την προσέγγιση 68%. Η οριζόντια ακρίβεια ορίζει το ίδιο με το πεδίο Ακρίβειας παραπάνω. Η κάθετη ακρίβεια είναι διαθέσιμη στο Android 8.0 Oreo και σε υψηλότερη. Παράδειγμα κατακόρυφης ακρίβειας - αν το Υψόμετρο είναι 150 και η Κάθετη Ακρίβεια είναι 20 τότε υπάρχει πιθανότητα 68% του πραγματικού υψομέτρου να είναι μεταξύ των 130 και 170 μέτρων.\n&#8226;\u0020
         <b>Ταχύτητα</b>
-        - Ταχύτητα, σε μέτρα/ανα δευτερόλεπτο πάνω απο το έδαφος\n&#8226;\u0020
-        <b>Ακρίβεια Ταχύτητας</b>
-        - Εκτιμώμενη ακρίβεια ταχύτητας αυτής της θέσης με εμπιστοσύνη 68%, σε μέτρα ανά δευτερόλεπτο. Για παράδειγμα, εάν η ταχύτητα είναι 5 και η ταχύτητα ακρίβειας είναι 1, τότε υπάρχει πιθανότητα 68% της πραγματικής ταχύτητας να είναι μεταξύ 4 και 6 μέτρων ανά δευτερόλεπτο.\n&#8226;\u0020
-        <b>Bearing</b>
-        - The horizontal direction of travel of the device (in degrees 0-360), and is not related to the device orientation.\n&#8226;\u0020
-        <b>B. Acc</b>
-        - Estimated bearing accuracy of this location at 68% confidence, in degrees. For example, if Bearing is 60, and Bearing Acc is 10, then there is a 68% probability of the true bearing being between 50 and 70 degrees.\n&#8226;\u0020
-        <b># Sats</b>
-        - # satellites used in fix / # satellites in view\n&#8226;\u0020
+        - Ταχύτητα, σε μέτρα/δευτερόλεπτο πάνω από το έδαφος\n&#8226;\u0020
+        <b>Ακριβής Ταχύτητα</b>
+        - Εκτιμώμενη ακρίβεια ταχύτητας αυτής της θέσης κατά προσέγγιση 68%, σε μέτρα ανά δευτερόλεπτο. Για παράδειγμα, εάν η ταχύτητα είναι 5 και η ταχύτητα Ακριβείας είναι 1, υπάρχει πιθανότητα 68% της πραγματικής ταχύτητας να είναι μεταξύ 4 και 6 μέτρων ανά δευτερόλεπτο.\n&#8226;\u0020
+        <b>Αξονας</b>
+        - Η οριζόντια κατεύθυνση κίνησης της συσκευής (σε μοίρες 0-360) και δεν σχετίζεται με τον προσανατολισμό της συσκευής.\n&#8226;\u0020
+        <b>Ακρίβεια Αξονα</b>
+        - Εκτιμώμενη ακρίβεια φέρουσας αυτής της θέσης κατά προσέγγιση 68%, σε μοίρες. Για παράδειγμα, εάν ο Αξονας είναι 60 και η Ακρίβεια Αξονας είναι 10, τότε υπάρχει πιθανότητα 68% του πραγματικού άξονα να είναι μεταξύ 50 και 70 μοιρών.\n&#8226;\u0020
+        <b># Δορυφόροι</b>
+        - # δορυφόροι που χρησιμοποιούνται για κλείδωμα / # δορυφόροι για προβολή\n&#8226;\u0020
         <b>PDOP</b>
-        - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Θέση (3D) αραίωσης ακρίβειας (απαιτεί υποστήριξη NMEA)\n&#8226;\u0020
         <b>H/V DOP</b>
-        - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Οριζόντια / κάθετη αραίωση της ακρίβειας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
         <b>TTFF</b>
-        - Time to first fix\n&#8226;\u0020
+        - Χρόνος αρχικού κλειδώματος\n&#8226;\u0020
         <b>ID or PRN</b>
-        - identifier of this satellite (pseudorandom noise for GPS)\n&#8226;\u0020
+        - αναγνωριστικό αυτού του δορυφόρου (ψευδοτυχαίο θόρυβο για το GPS)\n&#8226;\u0020
         <b>CF</b>
-        - Label (e.g., \"L1\") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices). The new GLONASS CDMA signal for L1 is shown as \"L1-C\".\n&#8226;\u0020
+        - Ετικέτα (π.χ. \"L1\") για τη συχνότητα μεταφοράς του σήματος που παρακολουθείται. Αν υπάρχει μια άγνωστη συχνότητα, εμφανίζει την ακατέργαστη συχνότητα σε MHz (διαθέσιμη στο Android 8.0+, αλλά δεν υποστηρίζεται σε όλες τις συσκευές). Το νέο σήμα GLONASS CDMA για το L1 εμφανίζεται ως \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Αναλογία σήματος - θορύβου (Android M και κάτω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Πυκνότητα θορύβου φορέα (Android N και άνω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Σημαίες</b>
-        - (E) εάν η συσκευή έχει δεδομένα επικεφαλής για τον δορυφόρο, (A) εάν η συσκευή διαθέτει δεδομένα almanac
-        for the satellite, (U) if the satellite was used in calculation of the most recent position fix.  For SBAS, the Android spec does not specify if (U) refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.\n\n
+        - (Ε) αν η συσκευή έχει δεδομένα ετεροχρονισμού για τον δορυφόρο, (Α) εάν η συσκευή διαθέτει δεδομένα almanac 
+για τον δορυφόρο, (U) εάν ο δορυφόρος χρησιμοποιήθηκε για τον υπολογισμό της πιο πρόσφατης σταθερής θέσης. Για το SBAS, το spec Android δεν καθορίζει εάν το (U) αναφέρεται σε ψευδοαποστάσεις από τον δορυφόρο που χρησιμοποιείται στη λύση θέσης ή σε πληροφορίες διόρθωσης που προέρχονται από αυτόν τον δορυφόρο που χρησιμοποιείται.\n\n
 
-        <b>*** Sky View ***</b>\n\n&#8226;\u0020
+        <b>*** Προβολή Ουρανού ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
-        - Circles\n&#8226;\u0020
+        - Σύμβολο Κύκλου\n&#8226;\u0020
         <b>GLONASS (Russia)</b>
-        - Squares\n&#8226;\u0020
+        - Τετράγωνο Σύμβολο\n&#8226;\u0020
         <b>Galileo (European Union)</b>
-        - Triangles\n&#8226;\u0020
+        - Τριγωνικό Σύμβολο\n&#8226;\u0020
         <b>QZSS (Japan)</b>
-        - Hexagons\n&#8226;\u0020
+        - Εξάγωνο Σύμβολο\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
-        - Pentagons\n&#8226;\u0020
+        - Πεντάγωνο Σύμβολο\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
-        - Diamonds\n\n
+        - Σύμβολο Διαμαντιού\n\n
 
-        &#8226;\u0020 Transparent satellites - Not in view\n
-        &#8226;\u0020 Thin outline - In view but not used in fix\n
-        &#8226;\u0020 Bold outline - Used in fix\n\n
+        &#8226;\u0020 Διαφανείς Δορυφόροι - Εκτός Προβολής\n
+        &#8226;\u0020 Λεπτό περίγραμμα - Σε προβολή αλλα εκτός κλειδώματος\n
+        &#8226;\u0020 Έντονο περίγραμμα - Εμφανίζονται στο κλείδωμα\n\n
 
-        &#8226;\u0020 Expected SNR range is 0 dB (red) to 30 dB (green) on Android versions less than 7.0. \n
-        &#8226;\u0020 Expected SNR range is 10 dB (red) to 45 dB (green) on Android 7.0 and higher. \n
-        &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
-        &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
+        &#8226;\u0020 Το αναμενόμενο εύρος SNR είναι απο 0 dB (κόκκινο) έως 30 dB (πράσινο) σε εκδόσεις Android μικρότερη από 7.0. \n
+        &#8226;\u0020 Το αναμενόμενο εύρος SNR είναι απο 10 dB (κόκκινο) έως 45 dB (πράσινο) στο Android 7.0 και νεότερες. \n
+        &#8226;\u0020 Η αναμενόμενη περιοχή C/N0 είναι απο 10 dB-Hz (κόκκινο) έως 45 dB-Hz (πράσινο) στο Android 7.0 και νεότερες εκδόσεις. \n
+        &#8226;\u0020 Εάν δεν υπάρχει τιμή SNR ή C/N0 για έναν δορυφόρο (δηλαδή, δεν είναι εν όψει της συσκευής), θα έχει ένα διαφανές ανοιχτό γκρι χρώμα. \n\n
 
-        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
-        <b>Vertical error</b>
-        - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
+        <b>*** Ακρίβεια Προβολής ***</b>\n\n&#8226;\u0020
+        <b>Κάθετη Σφαλμάτωση</b>
+        - Οι μετρήσεις κάθετων σφαλμάτων, σε αντίθεση με τα οριζόντια σφάλματα, μπορεί να είναι θετικές ή αρνητικές. Όταν εμφανίζονται στην προβολή Ακρίβειας, υπολογίζονται και τα δύο κάθετα σφάλματα και το μέσο κάθετο σφάλμα χρησιμοποιώντας την απόλυτη τιμή της μέτρησης σφάλματος.\n\n
 
-        <b>*** Ευχαριστούμε ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - αρχικός προγραμματιστής έκδοσης v1.x\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - προγραμματιστής έκδοσης v2.x και άνω\n
-        &#8226;\u0020 Εικονίδιο GPSTest launcher προέρχεται απο το Android Material Design \"satellite\", κάτω απο την άδεια της Google υπο τον Apache v2.0.  Άλλα εικονίδια σχεδίου υλικού Google χρησιμοποιούνται επίσης στο Apache v2.0.\n
-        &#8226;\u0020 Μεταφράστηκε στα Κινεζικά απο wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-        &#8226;\u0020 Μεταφράστηκε στα Γερμανικά απο SIRSteiner\n
-        &#8226;\u0020 Μεταφράστηκε στα Δανέζικα απο Dennis Dolman\n
-        &#8226;\u0020 Μεταφράστηκε στα Ελληνικά απο Jimmy Golfi\n
-        &#8226;\u0020 Μεταφράστηκε στα Ιαπωνέζικα απο SakuraSa233\n
-        &#8226;\u0020 Μεταφράστηκε στα Τσέχικα απο llzn.cz\n
-        &#8226;\u0020 Μεταφράστηκε στα Ιταλικά απο Giolly90\n
+        <b>*** Ευχαριστούμε για την υποστήριξη ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - αρχικός προγραμματιστής για v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - προγραμματιστής έκδοσης  v2.x και υψηλότερες\n
+        &#8226;\u0020 Το εικονίδιο εκκίνησης του GPSTest προέρχεται από το εικονίδιο δορυφορικής απεικόνισης του Android Material, το οποίο έχει άδεια από την Google σε Apache v2.0.  Άλλα εικονίδια σχεδίου τύπου Material της Google χρησιμοποιούνται επίσης σε Apache v2.0.\n
+        &#8226;\u0020 Κινεζική μετάφραση από τους wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Γερμανική μετάφραση απο τον SIRSteiner\n
+        &#8226;\u0020 Δανέζικη μετάφραση απο τους Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Ελληνική μετάφραση απο τον Jimmy Golfi\n
+        &#8226;\u0020 Ιαπωνική μετάφραση απο τον SakuraSa233\n
+        &#8226;\u0020 Τσέχικη μετάφραση απο τον llzn.cz\n
+        &#8226;\u0020 Ιταλική μετάφραση απο τον Giolly90\n
+        &#8226;\u0020 Ισπανική μετάφραση απο τον Sergi Pellicer\n
+        &#8226;\u0020 Ινδονησιακή μετάφραση απο τον Adiitya Andre90\n
+        &#8226;\u0020 Πολωνική μετάφραση απο τον Adam Wandelt\n
     </string>
 </resources>
