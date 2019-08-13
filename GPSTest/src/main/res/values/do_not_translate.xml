@@ -198,6 +198,7 @@
         <item>Español</item>
         <item>Indonesia</item>
         <item>Polskie</item>
+        <item>Français</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -214,5 +215,6 @@
         <item>es</item>
         <item>in</item>
         <item>pl</item>
+        <item>fr</item>
     </string-array>
 </resources>
