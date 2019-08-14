@@ -291,10 +291,10 @@
         - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
         <b>Alt (MSL)</b>
         - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
-        <b>Acc</b>
-        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle.\n&#8226;\u0020
-        <b>H/V Acc</b>
-        - Estimated horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters.\n&#8226;\u0020
+        <b>E Acc</b>
+        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>E H/V Acc</b>
+        - Estimated horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>Speed</b>
         - Speed, in meters/second over ground\n&#8226;\u0020
         <b>S. Acc</b>
