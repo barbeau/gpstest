@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -267,6 +268,20 @@ public class GpsTestActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         setupNavigationDrawer();
+
+        final String GNSS_SATELLITE_BLACKLIST = "gnss_satellite_blacklist";
+        //Settings.Global.GNSS_SATELLITE_BLACKLIST
+
+        ContentResolver resolver = Application.get().getContentResolver();
+        String blacklist = Settings.Global.getString(
+                resolver,
+                GNSS_SATELLITE_BLACKLIST);
+        if (blacklist == null) {
+            blacklist = "";
+        }
+        Log.d(TAG, String.format("GNSS satellite blacklist: %s", blacklist));
+//        Settings.Global.putString(resolver,
+//                GNSS_SATELLITE_BLACKLIST, "");
     }
 
     @Override
