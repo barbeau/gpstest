@@ -10,6 +10,7 @@
     <!-- Status view -->
     <dimen name="status_margin">5dp</dimen>
     <dimen name="column_padding">3dp</dimen>
+    <dimen name="status_label_right_margin">8dp</dimen>
 
     <!-- Map view -->
     <dimen name="map_card_outer_margin">10dp</dimen>
