@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -180,7 +180,7 @@
         <b>Stel de nauwkeurigheidslocatie in vanuit de app BenchMap</b>
         - Maak gebruik van andere apps zoals BenchMap om je ware grondlocatie in te stellen.\n&#8226;\u0020
         <b>Foutoplossingen</b>
-        - Zie http://bit.ly/gpstest-releases
+        - Zie https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Sluiten</string>
 
@@ -308,9 +308,9 @@
         <b>DF</b>
 - Label (bijv. \"L1\") voor DraaggolfFrequentie van het signaal dat wordt gevolgd (in het Engels CF wat staat voor Carrier Frequency). Als er een onbekende frequentie is, wordt de onbewerkte frequentie in MHz weergegeven (beschikbaar op Android 8.0+, maar niet op alle apparaten) \n&#8226;\u0020
         <b>S/R</b>
-        - Signaal tot ruis verhouding (in het Engels SNR wat staat voor Signal-to-Noise ratio) (Android M en lager) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Signaal tot ruis verhouding (in het Engels SNR wat staat voor Signal-to-Noise ratio) (Android M en lager) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>D/R0</b>
-        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 wat staat voor Carrier-to-noise density) (Android N en hoger) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 wat staat voor Carrier-to-noise density) (Android N en hoger) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flaggen</b>
         - (E) als het apparaat efemeride-gegevens heeft voor deze satelliet, (A) als het apparaat almanakgegevens
 heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening voor de meest recente locatiebepaling. Voor SBAS definiëren de Android specificaties niet of (G) verwijst naar het gebruik van pseudo-afstanden tot de satelliet in de locatiebepaling of dat de correctie-gegevens van die satelliet worden gebruik in de berekening. Het is daarom niet mogelijk voor GPSTest om aan te geven of SBAS ook echt wordt gebruikt.\n\n

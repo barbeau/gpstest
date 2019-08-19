@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -290,9 +290,9 @@
         <b>CF</b>
         - Označení nosiče kmitočtu sledovaného signálu (např. \"L1\"). Pokud je kmitočet neznámý, je zobrazen jako neupravený kmitočet v MHz (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení). Nový signál GLONASS CDMA pro \"L1\" je zobrazen jako \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - Síla úrovně signálu (vyžadován Android M a nižší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Síla úrovně signálu (vyžadován Android M a nižší, více na: https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Síla úrovně signálu (vyžadován Android N a vyšší, více na: http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Síla úrovně signálu (vyžadován Android N a vyšší, více na: https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Elev</b>
         - Výškový úhel (Elevace) ve stupních.\n&#8226;\u0020
         <b>Azim</b>

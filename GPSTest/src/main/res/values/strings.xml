@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -181,7 +181,7 @@
         <b>Set accuracy location from BenchMap</b>
         - Use other apps like BenchMap to set your ground truth location.\n&#8226;\u0020
         <b>Bug fixes</b>
-        - See http://bit.ly/gpstest-releases
+        - See https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Close</string>
 
@@ -316,9 +316,9 @@
         <b>CF</b>
         - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices). The new GLONASS CDMA signal for L1 is shown as "L1-C".\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Signal-to-noise ratio (Android M and lower) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Carrier-to-noise density (Android N and higher) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flags</b>
         - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
         for the satellite, (U) if the satellite was used in calculation of the most recent position fix.  For SBAS, the Android spec does not specify if (U) refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.\n\n
