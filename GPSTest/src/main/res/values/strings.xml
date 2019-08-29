@@ -98,6 +98,9 @@
     <string name="clear_assist_warning_title">Delete assist data?</string>
     <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GPS may not work for any app until the auto-refresh completes. Are you sure?</string>
     <string name="never_ask_again">Never ask again</string>
+    <string name="qr_code_instructions_title">Set locations with QR Codes</string>
+    <string name="qr_code_instructions_text">You can scan a QR Code with a location in the Geo URI format (for example, "geo:28.38434,-87.24334").  Create your own QR Codes at https://zxing.appspot.com/generator/.</string>
+    <string name="never_show_again">Never show again</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellites not available</string>
@@ -353,7 +356,7 @@
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
-        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
+        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0. QR code icon by Austin Andrews from https://materialdesignicons.com/icon/qrcode.\n
         &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 German translation provided by SIRSteiner\n
         &#8226;\u0020 Dutch translation provided by Dennis Dolman, Meteor0id\n

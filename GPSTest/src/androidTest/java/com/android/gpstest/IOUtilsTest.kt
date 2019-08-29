@@ -115,4 +115,41 @@ class IOUtilsTest {
         assertEquals(-82.433100, locationDoubleWithFloatAltitude.longitude, delta)
         assertEquals(20.3, locationDoubleWithFloatAltitude.altitude, delta)
     }
+
+    /**
+     * Tests parsing a location from a Geo URI (RFC 5870)
+     */
+    @Test
+    fun testGetLocationFromGeoUri() {
+        val geoUriLatLon = "geo:37.786971,-122.399677"
+        val result1 = IOUtils.getLocationFromGeoUri(geoUriLatLon)
+        assertEquals(37.786971, result1.latitude)
+        assertEquals(-122.399677, result1.longitude)
+        assertFalse(result1.hasAltitude())
+
+        val geoUriLatLonAlt = "geo:-28.9876,87.1937,15"
+        val result2 = IOUtils.getLocationFromGeoUri(geoUriLatLonAlt)
+        assertEquals(-28.9876, result2.latitude)
+        assertEquals(87.1937, result2.longitude)
+        assertEquals(15.0, result2.altitude)
+
+        val invalidGeoUri = "http://not.a.geo.uri"
+        val result3 = IOUtils.getLocationFromGeoUri(invalidGeoUri)
+        assertNull(result3)
+
+        val invalidLatLon = "geo:-999.9876,999.1937"
+        val result4 = IOUtils.getLocationFromGeoUri(invalidLatLon)
+        assertNull(result4)
+
+        val result5 = IOUtils.getLocationFromGeoUri(null)
+        assertNull(result5)
+
+        val invalidData2 = ""
+        val result6 = IOUtils.getLocationFromGeoUri(invalidData2)
+        assertNull(result6)
+
+        val invalidGeoUri2 = "http://not,a,geo,uri"
+        val result7 = IOUtils.getLocationFromGeoUri(invalidGeoUri2)
+        assertNull(result7)
+    }
 }

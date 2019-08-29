@@ -17,11 +17,18 @@ package com.android.gpstest;
 
 import android.content.Intent;
 import android.location.Location;
+import android.text.TextUtils;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;
 import static com.android.gpstest.util.LocationUtils.isValidLongitude;
 
 public class IOUtils {
+
+    public static final String TAG = "IOUtils";
 
     /**
      * Returns the ground truth location encapsulated in the Intent if the provided Intent has a
@@ -84,5 +91,59 @@ public class IOUtils {
         return intent != null &&
                 intent.getAction() != null &&
                 intent.getAction().equals(Application.get().getString(R.string.show_radar_intent));
+    }
+
+
+    /**
+     * Creates a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84.
+     *
+     * @param lat latitude in WGS84
+     * @param lon longitude in WGS84
+     * @param alt altitude in meters above WGS84 ellipsoid
+     * @return a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84
+     */
+    public static Intent createShowRadarIntent(double lat, double lon, Double alt) {
+        Intent intent = new Intent(Application.get().getString(R.string.show_radar_intent));
+        intent.putExtra(Application.get().getString(R.string.radar_lat_key), lat);
+        intent.putExtra(Application.get().getString(R.string.radar_lon_key), lon);
+        if (alt != null && !Double.isNaN(alt)) {
+            intent.putExtra(Application.get().getString(R.string.radar_alt_key), alt);
+        }
+        return intent;
+    }
+
+    public static void openQrCodeReader(AppCompatActivity activity) {
+        // Open ZXing to scan GEO URI from QR Code
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.initiateScan();
+    }
+
+    /**
+     * Returns a location from the provided Geo URI (RFC 5870) or null if one can't be parsed
+     *
+     * @param geoUri a Geo URI following RFC 5870 (e.g., geo:37.786971,-122.399677)
+     * @return a location from the provided Geo URI (RFC 5870) or null if one can't be parsed
+     */
+    public static Location getLocationFromGeoUri(String geoUri) {
+        if (TextUtils.isEmpty(geoUri) || !geoUri.startsWith(Application.get().getString(R.string.geo_uri_prefix))) {
+            return null;
+        }
+        Location l = null;
+//        try {
+        String[] noPrefix = geoUri.split(":");
+        String[] coords = noPrefix[1].split(",");
+        if (isValidLatitude(Double.valueOf(coords[0])) && isValidLongitude(Double.valueOf(coords[1]))) {
+            l = new Location("Geo URI");
+            l.setLatitude(Double.valueOf(coords[0]));
+            l.setLongitude(Double.valueOf(coords[1]));
+            if (coords.length == 3) {
+                l.setAltitude(Double.valueOf(coords[2]));
+            }
+        }
+//        } catch (Exception e) {
+//            Log.e(TAG, "Not a valid Geo URI - " + geoUri);
+//        }
+
+        return l;
     }
 }

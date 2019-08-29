@@ -75,6 +75,9 @@
     <string name="radar_lon_key">longitude</string>
     <string name="radar_alt_key">altitude</string>
 
+    <!-- Geo URI for parsing location data from QR Codes -->
+    <string name="geo_uri_prefix">geo:</string>
+
     <!-- Preference keys -->
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
 
@@ -105,6 +108,7 @@
     <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
+    <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
     <string name="pref_key_dms_mode">dms_mode</string>
     <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>
     <string name="pref_key_preferred_speed_units_v2">preference_speed_units_v2</string>

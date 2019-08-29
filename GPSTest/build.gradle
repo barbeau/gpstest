@@ -117,6 +117,9 @@ dependencies {
     // Graphs for sliding drawer
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
 
+    // QR Code reader for ground truth locations
+    implementation 'com.google.zxing:android-integration:3.3.0'
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)

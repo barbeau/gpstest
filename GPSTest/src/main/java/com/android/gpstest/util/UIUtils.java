@@ -16,6 +16,7 @@
 package com.android.gpstest.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -26,20 +27,22 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Toast;
-
-import com.android.gpstest.Application;
-import com.android.gpstest.BuildConfig;
-import com.android.gpstest.R;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
+import com.android.gpstest.IOUtils;
+import com.android.gpstest.R;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.concurrent.TimeUnit;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
@@ -392,6 +395,27 @@ public class UIUtils {
                 .setPositiveButton(R.string.ok, (dialog, id) -> { })
                 .create()
                 .show();
+    }
+
+    public static Dialog createQrCodeDialog(AppCompatActivity activity) {
+        View view = activity.getLayoutInflater().inflate(R.layout.qr_code_instructions, null);
+        CheckBox neverShowDialog = view.findViewById(R.id.qr_code_never_show_again);
+
+        neverShowDialog.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            // Save the preference
+            PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_never_show_qr_code_instructions), isChecked);
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(R.string.qr_code_instructions_title)
+                .setCancelable(false)
+                .setView(view)
+                .setPositiveButton(R.string.ok,
+                        (dialog, which) -> {
+                            IOUtils.openQrCodeReader(activity);
+                        }
+                );
+        return builder.create();
     }
 
     /**
