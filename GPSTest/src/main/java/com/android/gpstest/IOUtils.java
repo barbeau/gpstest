@@ -129,7 +129,7 @@ public class IOUtils {
             return null;
         }
         Location l = null;
-//        try {
+
         String[] noPrefix = geoUri.split(":");
         String[] coords = noPrefix[1].split(",");
         if (isValidLatitude(Double.valueOf(coords[0])) && isValidLongitude(Double.valueOf(coords[1]))) {
@@ -140,9 +140,6 @@ public class IOUtils {
                 l.setAltitude(Double.valueOf(coords[2]));
             }
         }
-//        } catch (Exception e) {
-//            Log.e(TAG, "Not a valid Geo URI - " + geoUri);
-//        }
 
         return l;
     }
