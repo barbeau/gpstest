@@ -13,6 +13,18 @@ You can set the ground truth location (i.e., your actual position) for tests in 
 
 GPSTest also supports receiving a ground truth location from another Android app such as [BenchMap](https://play.google.com/store/apps/details?id=com.tsqmadness.bmmaps), an application that allows searching and viewing of National Geodetic Survey / NGS survey stations on an interactive map.
 
+###  QR Codes
+
+You can scan a QR code that has a location embedded in the [Geo URI format (RFC 5870)](https://en.wikipedia.org/wiki/Geo_URI_scheme), which looks like:
+
+`geo:37.786971,-122.399677`
+
+If altitude is included, then:
+
+`geo:37.786971,-122.399677, 15`
+
+You can use the [ZXing QR Code Generator website](https://zxing.appspot.com/generator/) to create your own QR Codes.
+
 ### From BenchMap app
 
 Follow these steps:
