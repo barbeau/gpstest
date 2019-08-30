@@ -414,6 +414,10 @@ public class UIUtils {
                         (dialog, which) -> {
                             IOUtils.openQrCodeReader(activity);
                         }
+                ).setNegativeButton(R.string.not_now,
+                        (dialog, which) -> {
+                            // No op
+                        }
                 );
         return builder.create();
     }
