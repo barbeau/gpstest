@@ -42,6 +42,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.ScrimInsetsScrollView;
 

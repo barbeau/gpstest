@@ -46,6 +46,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;

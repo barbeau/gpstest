@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
+package com.android.gpstest.util;
 
 import android.content.Intent;
 import android.location.Location;
@@ -21,6 +21,8 @@ import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;

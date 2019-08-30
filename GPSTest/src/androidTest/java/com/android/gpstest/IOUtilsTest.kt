@@ -17,6 +17,7 @@ package com.android.gpstest
 
 import android.content.Intent
 import androidx.test.runner.AndroidJUnit4
+import com.android.gpstest.util.IOUtils
 import junit.framework.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -37,7 +37,6 @@ import androidx.fragment.app.Fragment;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
-import com.android.gpstest.IOUtils;
 import com.android.gpstest.R;
 
 import java.math.BigDecimal;
