@@ -118,6 +118,22 @@ class IOUtilsTest {
     }
 
     /**
+     * Tests creating a SHOW_RADAR intent from latitude, longitude, and altitude
+     */
+    @Test
+    fun testCreateShowRadarIntent() {
+        val resultNoAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, null)
+        assertEquals(24.5253, resultNoAltitude.extras["latitude"])
+        assertEquals(87.23434, resultNoAltitude.extras["longitude"])
+        assertFalse(resultNoAltitude.hasExtra("altitude"))
+
+        val resultWithAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, 15.5)
+        assertEquals(24.5253, resultWithAltitude.extras["latitude"])
+        assertEquals(87.23434, resultWithAltitude.extras["longitude"])
+        assertEquals(15.5, resultWithAltitude.extras["altitude"])
+    }
+
+    /**
      * Tests parsing a location from a Geo URI (RFC 5870)
      */
     @Test
