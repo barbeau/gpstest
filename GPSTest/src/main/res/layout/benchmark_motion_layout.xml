@@ -88,6 +88,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:icon="@drawable/ic_qrcode_black_36dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ground_truth_alt"
         app:layout_constraintTop_toTopOf="@+id/save" />
 </androidx.constraintlayout.motion.widget.MotionLayout>
