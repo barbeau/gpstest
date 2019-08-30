@@ -95,13 +95,22 @@ public class IOUtils {
                 intent.getAction().equals(Application.get().getString(R.string.show_radar_intent));
     }
 
+    /**
+     * Creates a SHOW_RADAR intent from the provided Location
+     *
+     * @param location location information to be added to the intent
+     * @return a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84
+     */
+    public static Intent createShowRadarIntent(Location location) {
+        return createShowRadarIntent(location.getLatitude(), location.getLongitude(), location.hasAltitude() ? location.getAltitude() : null);
+    }
 
     /**
      * Creates a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84.
      *
      * @param lat latitude in WGS84
      * @param lon longitude in WGS84
-     * @param alt altitude in meters above WGS84 ellipsoid
+     * @param alt altitude in meters above WGS84 ellipsoid, or null if altitude shouldn't be included
      * @return a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84
      */
     public static Intent createShowRadarIntent(double lat, double lon, Double alt) {

@@ -99,7 +99,8 @@
     <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GPS may not work for any app until the auto-refresh completes. Are you sure?</string>
     <string name="never_ask_again">Never ask again</string>
     <string name="qr_code_instructions_title">Scan a QR Code</string>
-    <string name="qr_code_instructions_text">Import a ground truth location using QR Codes in the Geo URI format (geo:28.38434,-87.24334).  Create your own QR Codes at https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_instructions_text">Import a ground truth location using a QR Code in the Geo URI format (geo:28.38434,-87.24334).  Create your own QR Codes at https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Couldn\'t read a Geo URI from the QR code</string>
     <string name="never_show_again">Never show again</string>
     <string name="not_now">Not now</string>
     <string name="yes">YES</string>
@@ -130,8 +131,8 @@
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$d fixes</string>
     <string name="fix_number">Fix #</string>
-    <string name="show_radar_valid_location">Ground truth location set by another app</string>
-    <string name="show_radar_invalid_location">The ground truth location provided by another app is invalid</string>
+    <string name="show_radar_valid_location">Ground truth location imported!</string>
+    <string name="show_radar_invalid_location">The imported ground truth location is invalid</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legend</string>

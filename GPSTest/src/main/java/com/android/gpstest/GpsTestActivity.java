@@ -339,7 +339,16 @@ public class GpsTestActivity extends AppCompatActivity
         // See if this result was a scanned QR Code with a ground truth location
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null) {
-            // TODO - handle scan result
+            String geoUri = scanResult.getContents();
+            Location l = IOUtils.getLocationFromGeoUri(geoUri);
+            if (l != null) {
+                // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
+                Intent showRadar = IOUtils.createShowRadarIntent(l);
+                recreateApp(showRadar);
+            } else {
+                Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 

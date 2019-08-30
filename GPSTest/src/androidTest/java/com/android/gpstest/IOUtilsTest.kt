@@ -16,6 +16,7 @@
 package com.android.gpstest
 
 import android.content.Intent
+import android.location.Location
 import androidx.test.runner.AndroidJUnit4
 import com.android.gpstest.util.IOUtils
 import junit.framework.Assert.*
@@ -131,6 +132,26 @@ class IOUtilsTest {
         assertEquals(24.5253, resultWithAltitude.extras["latitude"])
         assertEquals(87.23434, resultWithAltitude.extras["longitude"])
         assertEquals(15.5, resultWithAltitude.extras["altitude"])
+
+        val locationNoAltitude = Location("TestNoAltitude")
+        locationNoAltitude.latitude = -20.8373
+        locationNoAltitude.longitude = -120.8273
+
+        val resultFromLocationNoAltitude = IOUtils.createShowRadarIntent(locationNoAltitude)
+        assertEquals(-20.8373, resultFromLocationNoAltitude.extras["latitude"])
+        assertEquals(-120.8273, resultFromLocationNoAltitude.extras["longitude"])
+        assertFalse(resultNoAltitude.hasExtra("altitude"))
+
+        val locationWithAltitude = Location("TestWithAltitude")
+        locationWithAltitude.latitude = -26.8373
+        locationWithAltitude.longitude = -126.8273
+        locationWithAltitude.altitude = -13.5
+
+        val resultFromLocationWithAltitude = IOUtils.createShowRadarIntent(locationWithAltitude)
+        assertEquals(-26.8373, resultFromLocationWithAltitude.extras["latitude"])
+        assertEquals(-126.8273, resultFromLocationWithAltitude.extras["longitude"])
+        assertEquals(-13.5, resultFromLocationWithAltitude.extras["altitude"])
+
     }
 
     /**
