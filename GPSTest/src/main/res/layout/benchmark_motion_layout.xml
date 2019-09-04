@@ -69,10 +69,10 @@
             android:id="@+id/ground_truth_alt_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:hint="@string/ground_truth_altitude"
             android:inputType="numberDecimal|numberSigned"
             android:singleLine="true"
-            android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -81,4 +81,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/qr_code"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        app:icon="@drawable/ic_qrcode_black_36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/save"
+        app:layout_constraintEnd_toEndOf="@+id/ground_truth_alt"
+        app:layout_constraintTop_toTopOf="@+id/save" />
 </androidx.constraintlayout.motion.widget.MotionLayout>

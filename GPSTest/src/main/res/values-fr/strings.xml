@@ -172,11 +172,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-<b> Trouvez votre position précise avec BenchMap</b>
-- Utilisez une application comme BenchMap pour trouver votre réelle position terrestre\n&#8226;\u0020
-<b>Correction des bugs</b>
-- Consultez https://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Fermer</string>
 
     <!-- Preferences -->

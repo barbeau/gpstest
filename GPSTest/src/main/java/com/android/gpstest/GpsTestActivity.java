@@ -62,6 +62,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,11 +76,14 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
@@ -328,6 +332,24 @@ public class GpsTestActivity extends AppCompatActivity
             }
         }
         mBenchmarkController.onResume();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // See if this result was a scanned QR Code with a ground truth location
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null) {
+            String geoUri = scanResult.getContents();
+            Location l = IOUtils.getLocationFromGeoUri(geoUri);
+            if (l != null) {
+                // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
+                Intent showRadar = IOUtils.createShowRadarIntent(l);
+                recreateApp(showRadar);
+            } else {
+                Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /**

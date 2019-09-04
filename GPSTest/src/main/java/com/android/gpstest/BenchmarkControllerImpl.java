@@ -46,6 +46,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
@@ -58,6 +59,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -96,6 +98,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     TextView mErrorView, mVertErrorView, mAvgErrorView, mAvgVertErrorView, mErrorLabel, mAvgErrorLabel, mLeftDivider, mRightDivider, mErrorUnit, mAvgErrorUnit;
     TextInputLayout mLatText, mLongText, mAltText;
     Button mSaveGroundTruth;
+    MaterialButton mQrCode;
 
     SlidingUpPanelLayout mSlidingPanel;
 
@@ -276,6 +279,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
         mSaveGroundTruth = v.findViewById(R.id.save);
+        mQrCode = v.findViewById(R.id.qr_code);
         mLatText = v.findViewById(R.id.ground_truth_lat);
         mLongText = v.findViewById(R.id.ground_truth_long);
         mAltText = v.findViewById(R.id.ground_truth_alt);
@@ -316,6 +320,15 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 saveGroundTruth();
             } else {
                 editGroundTruth();
+            }
+        });
+
+        mQrCode.setOnClickListener(view -> {
+            if (!Application.getPrefs().getBoolean(
+                    Application.get().getString(R.string.pref_key_never_show_qr_code_instructions), false)) {
+                UIUtils.createQrCodeDialog(activity).show();
+            } else {
+                IOUtils.openQrCodeReader(activity);
             }
         });
 
