@@ -100,6 +100,13 @@ public class CarrierFreqUtils {
                     return "E6";
                 }
                 break;
+            case IRNSS:
+                if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
+                    return "L5";
+                } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 2492.028f, TOLERANCE_MHZ)) {
+                    return "S";
+                }
+                break;
             case SBAS:
                 if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
                     // EGNOS - https://gssc.esa.int/navipedia/index.php/EGNOS_Space_Segment

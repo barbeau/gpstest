@@ -41,6 +41,7 @@ import java.lang.reflect.InvocationTargetException;
 import static com.android.gpstest.model.GnssType.BEIDOU;
 import static com.android.gpstest.model.GnssType.GALILEO;
 import static com.android.gpstest.model.GnssType.GLONASS;
+import static com.android.gpstest.model.GnssType.IRNSS;
 import static com.android.gpstest.model.GnssType.NAVSTAR;
 import static com.android.gpstest.model.GnssType.QZSS;
 import static com.android.gpstest.model.GnssType.SBAS;
@@ -57,6 +58,8 @@ public class GpsTestUtil {
     private static final String NM_OUTPUT_TAG = "GpsOutputNav";
 
     private static StringBuilder mNmeaOutput = new StringBuilder();
+
+    private static final int CONSTELLATION_IRNSS_TEMP = 7;
 
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
@@ -125,6 +128,12 @@ public class GpsTestUtil {
                 return QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GALILEO;
+            case CONSTELLATION_IRNSS_TEMP:
+                // FIX ME - We can't use the GnssStatus.CONSTELLATION_IRNSS Android SDK constant in
+                // this switch statement until this Android bug is fixed - https://issuetracker.google.com/issues/134611316
+                // For now, we define CONSTELLATION_IRNSS_TEMP to be the same value of 7 so we can
+                // still support IRNSS.
+                return IRNSS;
             case GnssStatus.CONSTELLATION_SBAS:
                 return SBAS;
             case GnssStatus.CONSTELLATION_UNKNOWN:
@@ -188,6 +197,8 @@ public class GpsTestUtil {
             case QZSS:
                 return SatelliteName.UNKNOWN;
             case GALILEO:
+                return SatelliteName.UNKNOWN;
+            case IRNSS:
                 return SatelliteName.UNKNOWN;
             case SBAS:
                 if (svid == 120) {

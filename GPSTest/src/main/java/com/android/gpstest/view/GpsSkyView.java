@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.GpsSatellite;
@@ -18,6 +19,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+
 import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
@@ -26,10 +31,6 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 /**
 * View that shows satellite positions on a circle representing the sky
@@ -467,6 +468,10 @@ public class GpsSkyView extends View implements GpsTestListener {
                 break;
             case GALILEO:
                 drawTriangle(c, x, y, fillPaint, strokePaint);
+                break;
+            case IRNSS:
+                drawOval(c, x, y, fillPaint, strokePaint);
+                break;
 //            case GAGAN:
 //                // SBAS
 //                drawDiamond(c, x, y, fillPaint, strokePaint);
@@ -578,6 +583,13 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         c.drawPath(path, fillPaint);
         c.drawPath(path, strokePaint);
+    }
+
+    private void drawOval(Canvas c, float x, float y, Paint fillPaint, Paint strokePaint) {
+        RectF rect = new RectF(x - SAT_RADIUS * 1.5f, y - SAT_RADIUS, x + SAT_RADIUS * 1.5f, y + SAT_RADIUS);
+
+        c.drawOval(rect, fillPaint);
+        c.drawOval(rect, strokePaint);
     }
 
     private Paint getSatellitePaint(Paint base, float snrCn0) {

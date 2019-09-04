@@ -34,17 +34,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.GpsSkyView;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
@@ -240,6 +240,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line14b));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line15a));
         mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line15b));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line16a));
+        mLegendLines.add(v.findViewById(R.id.sky_legend_shape_line16b));
 
         // Shape Legend shapes
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_circle));
@@ -247,6 +249,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_pentagon));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_triangle));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_hexagon1));
+        mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_oval));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond1));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond2));
         mLegendShapes.add((ImageView) v.findViewById(R.id.sky_legend_diamond3));

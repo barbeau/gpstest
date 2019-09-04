@@ -122,6 +122,13 @@ public class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.BEIDOU, 1, 	1268.52f);
         assertEquals("B3",label);
 
+        // IRNSS
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.IRNSS, 1, 1176.45f);
+        assertEquals("L5", label);
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.IRNSS, 1, 2492.028f);
+        assertEquals("S", label);
+
         // GAGAN (SBAS)
         label = CarrierFreqUtils.getCarrierFrequencyLabel(GnssType.SBAS, 127, 	1575.42f);
         assertEquals("L1",label);
