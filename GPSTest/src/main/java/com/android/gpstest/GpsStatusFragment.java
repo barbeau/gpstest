@@ -239,21 +239,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
      * @param location
      */
     private void updateLocationAccuracies(Location location) {
-        if (GpsTestUtil.isVerticalAccuracySupported()) {
+        if (GpsTestUtil.isVerticalAccuracySupported(location)) {
             mHorVertAccuracyLabelView.setText(R.string.gps_hor_and_vert_accuracy_label);
-            if (location.hasAccuracy() || location.hasVerticalAccuracy()) {
-                if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
-                            location.getAccuracy(),
-                            location.getVerticalAccuracyMeters()));
-                } else {
-                    // Feet
-                    mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_feet,
-                            UIUtils.toFeet(location.getAccuracy()),
-                            UIUtils.toFeet(location.getVerticalAccuracyMeters())));
-                }
+            if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
+                        location.getAccuracy(),
+                        location.getVerticalAccuracyMeters()));
             } else {
-                mHorVertAccuracyView.setText("");
+                // Feet
+                mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_feet,
+                        UIUtils.toFeet(location.getAccuracy()),
+                        UIUtils.toFeet(location.getVerticalAccuracyMeters())));
             }
         } else {
             if (location.hasAccuracy()) {
@@ -904,14 +900,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
                 if (sats.get(dataRow).getElevationDegrees() != NO_DATA) {
                     v.getElevation().setText(mRes.getString(R.string.gps_elevation_column_value,
-                            sats.get(dataRow).getElevationDegrees()));
+                            sats.get(dataRow).getElevationDegrees()).replace(".0", "").replace(",0", ""));
                 } else {
                     v.getElevation().setText("");
                 }
 
                 if (sats.get(dataRow).getAzimuthDegrees() != NO_DATA) {
                     v.getAzimuth().setText(mRes.getString(R.string.gps_azimuth_column_value,
-                            sats.get(dataRow).getAzimuthDegrees()));
+                            sats.get(dataRow).getAzimuthDegrees()).replace(".0", "").replace(",0", ""));
                 } else {
                     v.getAzimuth().setText("");
                 }

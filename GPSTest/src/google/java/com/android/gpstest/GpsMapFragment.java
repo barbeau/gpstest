@@ -17,7 +17,6 @@
 
 package com.android.gpstest;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,6 +32,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 
 import com.android.gpstest.map.MapViewModelController;
 import com.android.gpstest.map.OnMapClickListener;
@@ -56,8 +58,6 @@ import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import androidx.annotation.RequiresApi;
 
 import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
 import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;

@@ -25,5 +25,5 @@ You can also reach us via:
 
 * Email - barbeaudev (at) gmail.com
 * Posting a messsage on the [gpstest_android Google Group](https://groups.google.com/forum/#!forum/gpstest_android)
-* Filing a issue on the [GPSTest Github issue tracker](https://github.com/barbeau/gpstest/blob/master/CONTRIBUTING.md#issue-tracker)
+* Filing a issue on the [GPSTest Github issue tracker](https://github.com/barbeau/gpstest/blob/master/.github/CONTRIBUTING.md#issue-tracker)
 * Posting a message to the [GPSTest Slack group](https://gpstest.slack.com).  Join via [this link](https://gpstest-android.herokuapp.com/).

@@ -37,19 +37,6 @@
         <item>Terrain View</item>
     </string-array>
 
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>English</item>
-        <item>Chinese</item>
-        <item>Czech</item>
-        <item>Dutch</item>
-        <item>German</item>
-        <item>Greek</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Russian</item>
-    </string-array>
-
     <!-- Help -->
     <string-array name="main_help_options">
         <item>What\'s New?</item>

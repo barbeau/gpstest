@@ -73,7 +73,17 @@ public class LocationUtils {
         } catch (Exception e) {
             return false;
         }
-        return latitudeDouble >= -90.0d && latitudeDouble <= 90.0d;
+        return isValidLatitude(latitudeDouble);
+    }
+
+    /**
+     * Returns true if the provided latitude is a valid latitude value, false if it is not
+     *
+     * @param latitude the latitude value to validate
+     * @return true if the provided latitude is a valid latitude value, false if it is not
+     */
+    public static boolean isValidLatitude(double latitude) {
+        return latitude >= -90.0d && latitude <= 90.0d;
     }
 
     /**
@@ -88,7 +98,17 @@ public class LocationUtils {
         } catch (Exception e) {
             return false;
         }
-        return longitudeDouble >= -180.0d && longitudeDouble <= 180.0d;
+        return isValidLongitude(longitudeDouble);
+    }
+
+    /**
+     * Returns true if the provided longitude is a valid longitude value, false if it is not
+     *
+     * @param longitude the longitude value to validate
+     * @return true if the provided longitude is a valid longitude value, false if it is not
+     */
+    public static boolean isValidLongitude(double longitude) {
+        return longitude >= -180.0d && longitude <= 180.0d;
     }
 
     /**

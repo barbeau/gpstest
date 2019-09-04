@@ -58,7 +58,7 @@
                             android:id="@+id/latitude_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_latitude_label" />
                         <TextView
                             android:id="@+id/latitude"
@@ -67,7 +67,7 @@
                             android:id="@+id/fix_time_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_fix_time_label" />
                         <TextView
                             android:id="@+id/fix_time"
@@ -79,7 +79,7 @@
                             android:id="@+id/longitude_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_longitude_label" />
                         <TextView
                             android:id="@+id/longitude"
@@ -88,7 +88,7 @@
                             android:id="@+id/gps_ttff_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_ttff_label" />
                         <TextView
                             android:id="@+id/ttff"
@@ -100,7 +100,7 @@
                             android:id="@+id/altitude_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_altitude_label" />
                         <TextView
                             android:id="@+id/altitude"
@@ -109,7 +109,7 @@
                             android:id="@+id/hor_vert_accuracy_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_accuracy_label" />
                         <TextView
                             android:id="@+id/hor_vert_accuracy"
@@ -121,7 +121,7 @@
                             android:id="@+id/altitude_msl_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_altitude_msl_label" />
                         <TextView
                             android:id="@+id/altitude_msl"
@@ -130,7 +130,7 @@
                             android:id="@+id/num_sats_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_num_sats_label" />
                         <TextView
                             android:id="@+id/num_sats"
@@ -142,7 +142,7 @@
                             android:id="@+id/speed_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_speed_label" />
                         <TextView
                             android:id="@+id/speed"
@@ -151,7 +151,7 @@
                             android:id="@+id/bearing_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_bearing_label" />
                         <TextView
                             android:id="@+id/bearing"
@@ -165,7 +165,7 @@
                             android:id="@+id/speed_acc_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_speed_acc_label" />
                         <TextView
                             android:id="@+id/speed_acc"
@@ -174,7 +174,7 @@
                             android:id="@+id/bearing_acc_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/gps_bearing_acc_label" />
                         <TextView
                             android:id="@+id/bearing_acc"
@@ -186,7 +186,7 @@
                             android:id="@+id/pdop_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/pdop_label"
                             android:visibility="gone" />
                         <TextView
@@ -197,7 +197,7 @@
                             android:id="@+id/hvdop_label"
                             style="@style/info_label"
                             android:layout_gravity="right"
-                            android:layout_marginRight="8dip"
+                            android:layout_marginRight="@dimen/status_label_right_margin"
                             android:text="@string/hvdop_label"
                             android:visibility="gone" />
                         <TextView

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008-2013 The Android Open Source Project,
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2008-2013 The Android Open Source Project,
      Sean J. Barbeau
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,41 +15,45 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.android.gpstest">
+    package="com.android.gpstest">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-            android:name=".Application"
-            android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher"
-            android:theme="@style/AppTheme">
+        android:name=".Application"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme">
 
-        <activity android:name=".GpsTestActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".GpsTestActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.google.android.radar.SHOW_RADAR" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".Preferences"
-                android:label="@string/pref_title">
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+            android:name=".Preferences"
+            android:label="@string/pref_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
-                android:name=".HelpActivity"
-                android:label="@string/title_help"
-                android:parentActivityName=".GpsTestActivity">
+            android:name=".HelpActivity"
+            android:label="@string/title_help"
+            android:parentActivityName=".GpsTestActivity">
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.android.gpstest.GpsTestActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.gpstest.GpsTestActivity" />
         </activity>
     </application>
 </manifest>

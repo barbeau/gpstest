@@ -44,8 +44,9 @@ import com.android.gpstest.util.MathUtils;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.util.MapTileIndex;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
@@ -204,29 +205,24 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
     private void setMapBoxTileSource(String mapType) throws UnsupportedEncodingException {
         // To prevent web scrapers from easily finding the key, we store it encoded
-        final String keyBase64 = "cGsuZXlKMUlqb2lZbUZ5WW1WaGRTSXNJbUVpT2lKamFuUjJjRE40YW1veGVteGpORE50TW5kblkyd3djWFpuSW4wLm1OQ3N6OWxXWVNZWVRfZDVaX19ZTWc=";
+        final String keyBase64 = "amdXY2VockFndXc2R1R1U3dQTmk=";
         final String key = MathUtils.fromBase64(keyBase64);
 
         final ITileSource tileSource;
         if (mapType.equals(MAP_TYPE_SATELLITE)) {
-            tileSource = new MapBoxTileSource();
-            ((MapBoxTileSource) tileSource).setAccessToken(key);
-            ((MapBoxTileSource) tileSource).setMapboxMapid(mapType);
+            // Use the Maptiler format
+            tileSource = new OnlineTileSourceBase("Maptiler Satellite Hybrid", 1, 19, 256, "",
+                    new String[]{"https://api.maptiler.com/maps/hybrid/"}) {
+                @Override
+                public String getTileURLString(long pMapTileIndex) {
+                    return getBaseUrl()
+                            + MapTileIndex.getZoom(pMapTileIndex)
+                            + "/" + MapTileIndex.getX(pMapTileIndex)
+                            + "/" + MapTileIndex.getY(pMapTileIndex)
+                            + "@2x.jpg?key=" + key;
+                }
+            };
             mMap.setTileSource(tileSource);
-
-            // Or we could use the Maptiler format
-//            tileSource = new OnlineTileSourceBase("Maptiler Satellite Hybrid", 1, 19, 256, "",
-//                    new String[] { "https://api.maptiler.com/maps/hybrid/256/"}) {
-//                @Override
-//                public String getTileURLString(long pMapTileIndex) {
-//                    return getBaseUrl()
-//                            + MapTileIndex.getZoom(pMapTileIndex)
-//                            + "/" + MapTileIndex.getX(pMapTileIndex)
-//                            + "/" + MapTileIndex.getY(pMapTileIndex)
-//                            + "@2x.jpg?key=" + key;
-//                }
-//            };
-//            mMap.setTileSource(tileSource);
         } else {
             // Below is commented out due to Mapbox billing - until this is resolved, use default OSMDroid tiles
 

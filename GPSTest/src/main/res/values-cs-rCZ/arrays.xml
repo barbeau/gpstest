@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,19 +35,6 @@
         <item>Hybridní mapa</item>
         <item>Satelitní mapa</item>
         <item>Terénní mapa</item>
-    </string-array>
-
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>Angličtina</item>
-        <item>Čínština</item>
-        <item>Čeština</item>
-        <item>Holandština</item>
-        <item>Němčina</item>
-        <item>Řečtina</item>
-        <item>Italština</item>
-        <item>Japonština</item>
-        <item>Ruština</item>
     </string-array>
 
     <!-- Help -->

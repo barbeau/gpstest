@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -98,6 +98,11 @@
     <string name="clear_assist_warning_title">Delete assist data?</string>
     <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GPS may not work for any app until the auto-refresh completes. Are you sure?</string>
     <string name="never_ask_again">Never ask again</string>
+    <string name="qr_code_instructions_title">Scan a QR Code</string>
+    <string name="qr_code_instructions_text">Import a ground truth location using a QR Code in the Geo URI format (geo:28.38434,-87.24334).  Create your own QR Codes at https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Couldn\'t read a Geo URI from the QR code</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="not_now">Not now</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellites not available</string>
@@ -126,6 +131,8 @@
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">avg %1$d fixes</string>
     <string name="fix_number">Fix #</string>
+    <string name="show_radar_valid_location">Ground truth location imported!</string>
+    <string name="show_radar_invalid_location">The imported ground truth location is invalid</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legend</string>
@@ -177,14 +184,10 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Accuracy view</b>
-        - Set your real location and measure GNSS accuracy.\n&#8226;\u0020
-        <b>Improved support for certain satellites</b>
-        - New Galileo satellites, CF labels for SBAS (EGNOS and MSAS) and GLONASS (CDMA L1 and L3).\n&#8226;\u0020
-        <b>Change app language</b>
-        - New setting to change the language shown in the app for supported translations.\n&#8226;\u0020
+        <b>Set accuracy location from BenchMap</b>
+        - Use other apps like BenchMap to set your ground truth location.\n&#8226;\u0020
         <b>Bug fixes</b>
-        - See http://bit.ly/gpstest-releases
+        - See https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Close</string>
 
@@ -278,10 +281,6 @@
     <string name="pref_language_summary">Manually sets the language shown in the app</string>
     <string name="pref_language_dialog_title">Choose language</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
     <string name="title_help">Help</string>
 
@@ -298,10 +297,10 @@
         - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
         <b>Alt (MSL)</b>
         - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
-        <b>Acc</b>
-        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle.\n&#8226;\u0020
-        <b>H/V Acc</b>
-        - Estimated horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters.\n&#8226;\u0020
+        <b>E Acc</b>
+        - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>E H/V Acc</b>
+        - Estimated horizontal and vertical accuracy of the location, both at the 68% confidence. Horizontal accuracy is defined the same as Acc field above. Vertical accuracy is available on Android 8.0 Oreo and higher. Vertical accuracy example - if Alt is 150, and V Acc is 20 then there is a 68% probability of the true altitude being between 130 and 170 meters. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>Speed</b>
         - Speed, in meters/second over ground\n&#8226;\u0020
         <b>S. Acc</b>
@@ -323,9 +322,9 @@
         <b>CF</b>
         - Label (e.g., "L1") for carrier frequency of signal being tracked. If an unknown frequency, it shows the raw frequency in MHz (available on Android 8.0+, but not supported on all devices). The new GLONASS CDMA signal for L1 is shown as "L1-C".\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-noise ratio (Android M and lower) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Signal-to-noise ratio (Android M and lower) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-noise density (Android N and higher) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Carrier-to-noise density (Android N and higher) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flags</b>
         - (E) if the device has ephemeris data for the satellite, (A) if the device has almanac data
         for the satellite, (U) if the satellite was used in calculation of the most recent position fix.  For SBAS, the Android spec does not specify if (U) refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.\n\n
@@ -360,13 +359,17 @@
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
-        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
+        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0. QR code icon by Austin Andrews from https://materialdesignicons.com/icon/qrcode.\n
         &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 German translation provided by SIRSteiner\n
-        &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
+        &#8226;\u0020 Dutch translation provided by Dennis Dolman, Meteor0id\n
         &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
         &#8226;\u0020 Japanese translation provided by SakuraSa233\n
         &#8226;\u0020 Czech translation provided by llzn.cz\n
         &#8226;\u0020 Italian translation provided by Giolly90\n
+        &#8226;\u0020 Spanish translation provided by Sergi Pellicer\n
+        &#8226;\u0020 Indonesian translation provided by Adiitya Andre90\n
+        &#8226;\u0020 Polish translation provided by Adam Wandelt\n
+        &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
     </string>
 </resources>

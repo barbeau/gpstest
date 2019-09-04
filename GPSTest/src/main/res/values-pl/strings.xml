@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     https://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Fragments -->
+    <string name="gps_status_title">Status</string>
+    <string name="gps_map_title">Mapa</string>
+    <string name="gps_sky_title">Niebo</string>
+    <string name="gps_accuracy_title">Dokładność</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">Zmodyfikuj dane pomocnicze</string>
+    <string name="force_xtra_injection">Wprowadź dane XTRA</string>
+    <string name="force_time_injection">Wprowadź dane czasowe</string>
+    <string name="delete_aiding_data">Wyczyść dane pomocnicze</string>
+    <string name="navdrawer_item_settings">Ustawienia</string>
+    <string name="navdrawer_item_help">Pomoc</string>
+    <string name="navdrawer_item_send_feedback">Przekaż opinię</string>
+    <string name="navdrawer_item_open_source">Odwiedź nas na GitHubie</string>
+
+    <string name="navigation_drawer_open">Otwórz szufladę nawigacyjną</string>
+    <string name="navigation_drawer_close">Zamknij szufladę nawigacyjną</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">Start</string>
+    <string name="gps_pause">Pauza</string>
+
+    <string name="delete_aiding_data_success">Pomyślnie usunięto dane pomocnicze.</string>
+    <string name="delete_aiding_data_failure">Urządzenie nie wspiera usuwania danych pomocniczych.</string>
+    <string name="gps_switch">Wyłącz/Włącz</string>
+    <string name="send_location">Wyślij lokalizację</string>
+    <string name="set_fix_frequency">Ustaw częstotliwość aktualnej pozycji</string>
+    <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
+    <string name="force_time_injection_failure">Urządzenie nie wspiera wprowadzania danych czasowych.</string>
+
+    <string name="force_xtra_injection_success">Pomyślnie wprowadzono dane XTRA.</string>
+    <string name="force_xtra_injection_failure">Urządzenie nie wspiera wprowadzania danych XTRA.</string>
+
+    <string name="zoom_in">Powiększ</string>
+    <string name="zoom_out">Pomniejsz</string>
+    <string name="mode_map">Mapa</string>
+    <string name="mode_satellite">Satelita</string>
+
+    <string name="gps_latitude_label">Szer. geograficzna:</string>
+    <string name="gps_longitude_label">Dług. geograficzna:</string>
+    <string name="gps_fix_time_label">Czas:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Wys:</string>
+    <string name="gps_altitude_msl_label">Wys (MSL):</string>
+    <string name="gps_accuracy_label">E Dokł:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E Poz/Pio Dokł:</string>
+    <string name="gps_speed_label">Prędkość:</string>
+    <string name="gps_speed_acc_label">P. Dokł:</string>
+    <string name="gps_bearing_label">Kierunek:</string>
+    <string name="gps_bearing_acc_label">K. Dokł:</string>
+    <string name="gps_num_sats_label"># Satelity:</string>
+    <string name="pdop_label">PDOP:</string>
+    <string name="hvdop_label">Poz/Pio DOP:</string>
+
+    <string name="gps_prn_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="gps_carrier_column_label">CF</string>
+    <string name="gps_snr_column_label">SNR</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">Śred</string>
+    <string name="gps_elevation_column_label">Podw</string>
+    <string name="gps_azimuth_column_label">Azym</string>
+    <string name="gps_flags_column_label">Flagi</string>
+    <string name="gps_not_supported">Proszę sprawdzić ustawienia systemowe - urządzenie może nie wspierać GNSS/GPS</string>
+    <string name="install">Instalacja</string>
+    <string name="no_thanks">Nie dziękuję</string>
+    <string name="please_install_google_maps">Karta Mapy wymaga Map Google</string>
+    <string name="enable_gps_message">GPS jest wyłączony. Włączyć go teraz ?</string>
+    <string name="enable_gps_positive_button">Włącz GPS</string>
+    <string name="enable_gps_negative_button">Nie</string>
+    <string name="gps_set_location_listener">Uruchomiono GPS z interwałem = %1$ss, min. dyst. = %2$sm</string>
+    <string name="clear_assist_warning_title">Usunąć dane pomocznicze ?</string>
+    <string name="clear_assist_warning">Niektóre urządzenia mogą potrzebować 24 godzin do automatycznego odświeżenia danych pomocniczych. Jeśli twoje urządzenie nie wspiera manualnego wprowadzania, GPS może nie działać dla każdej aplikacji dopóki automatyczne odświeżanie nie zakończy się. Czy jesteś tego pewien ?</string>
+    <string name="never_ask_again">Nigdy nie pytaj ponownie</string>
+    <string name="yes">TAK</string>
+    <string name="no">NIE</string>
+    <string name="gnss_not_available">Satelity Globalnego Systemu Nawigacji Satelitarnej (GNSS) nie są dostępne</string>
+    <string name="sbas_not_available">Satelity Systemu Augmentacji (SBAS) nie są dostępne</string>
+    <string name="menu_option_sort_by">Sortuj według</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Twoja szerokość geograficzna</string>
+    <string name="ground_truth_longitude">Twoja długość geograficzna</string>
+    <string name="ground_truth_altitude">Twoja wysokość w WGS84 (Opcjonalne)</string>
+    <string name="set_ground_truth_title">Zmierz dokładność</string>
+    <string name="set_ground_truth_subtitle">Naciśnij na mapę lub wprowadź swoją prawdziwą lokalizację</string>
+    <string name="save">Zapisz</string>
+    <string name="edit">Edytuj</string>
+    <string name="ground_truth_marker_title">Twoja prawdziwa lokalizacja</string>
+    <string name="ground_truth_invalid_location_title">Nieprawidłowa lokalizacja</string>
+    <string name="ground_truth_invalid_lat">Szerokość geograficzna musi być w stopniach dziesiętnych pomiędzy -90 i 90</string>
+    <string name="ground_truth_invalid_long">Długość geograficzna musi być w stopniach dziesiętnych pomiędzy -180 i 180</string>
+    <string name="ground_truth_invalid_alt">Wysokość musi być w WGS84 w metrach</string>
+
+    <string name="horizontal_error_title">Błąd horyzontalny</string>
+    <string name="vertical_error_title">Błąd wertykalny</string>
+    <string name="horizontal_error_label">Błąd</string>
+    <string name="measured_error_graph_label">Zmierzony błąd</string>
+    <string name="estimated_accuracy_graph_label">Dokładność oszacowana przez sprzęt</string>
+    <string name="horizontal_vertical_error_label">Błąd Poz/Pio</string>
+    <string name="avg_error_label">śred %1$d fixów</string>
+    <string name="fix_number">Fix #</string>
+    <!-- Sky view -->
+    <string name="sky_legend_title">Legenda</string>
+    <string name="sky_legend_shape_gnss_title">Globalne Systemy Nawigacji Satelitarnej (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (Rosja)</string>
+    <string name="sky_legend_shape_galileo">Galileo (Unia Europejska)</string>
+    <string name="sky_legend_shape_qzss">QZSS (Japonia)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Chiny)</string>
+
+    <string name="sky_legend_shape_sbas_title">Satelitarne Systemy Augmentacji (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (Unia Europejska)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (Indie)</string>
+    <string name="sky_legend_shape_msas">MSAS (Japonia)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (Rosja)</string>
+    <string name="sky_legend_shape_snas">SNAS (Chiny)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+
+    <string name="sky_legend_shape_availability_title">Dostępność sygnału</string>
+    <string name="sky_legend_shape_not_in_view">Niewidoczne przez urządzenie</string>
+    <string name="sky_legend_shape_in_view">Widoczne</string>
+    <string name="sky_legend_shape_used_in_fix">Używane do określenia pozycji</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">Dostawca GNSS lub lokalizacja jest wyłączona, brak aktualizacji dopóki nie zostaną włączone</string>
+    <string name="gnss_nav_msg_status_not_supported">Urządzenie nie wspiera śledzenia wiadomości nawigacyjnych GNSS</string>
+    <string name="gnss_nav_msg_status_ready">Wiadomości nawigacyjne GNSS są pomyślnie śledzone</string>
+
+    <string name="gnss_measurement_status_loc_disabled">Dostawca GNSS lub lokalizacja jest wyłączona, brak aktualizacji dopóki nie zostaną włączone</string>
+    <string name="gnss_measurement_status_not_supported">Urządzenie nie wspiera śledzenia pomiarów GNSS</string>
+    <string name="gnss_measurement_status_ready">Pomiary GNSS są pomyślnie śledzone</string>
+
+    <string name="gnss_status_unknown">Nieznany status callback</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">Potrzebne uprawnienie lokalizacji</string>
+    <string name="text_location_permission">GPSTest potrzebuje dostępu do twojej lokalizacji, aby pokazać dane z GNSS. Jeśli wybierzesz \"Nigdy nie pytaj ponownie\", będziesz musiał przeinstalować aplikację lub przyznać uprawnienia w ustawieniach systemowych.</string>
+    <string name="ok">OK</string>
+    <string name="exit">WYJDŹ</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Przekaż opinię</string>
+    <string name="feedback_body">Uwagi, pochwały i zgłaszanie błędów jest mile widziane !\n\n\n</string>
+    <string name="feedback_error">Nie można przekazać opinii: nie znaleziono odpowiedniej aplikacji</string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">Co nowego ?</string>
+    <string name="main_help_close">Zamknij</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">Ustawienia</string>
+    <string name="pref_map_category_title">Mapa</string>
+    <string name="pref_map_type_title">Typ mapy</string>
+    <string name="pref_map_type_summary">Ustawia typ pokazywanych kafelków mapy</string>
+    <string name="pref_map_type_dialog_title">Wybierz typ mapy</string>
+
+    <string name="pref_rotate_map_with_compass_title">Obróć mapę za pomocą kompasu</string>
+    <string name="pref_rotate_map_with_compass_summary">Zmień orientację mapy na podstawie twojego kierunku</string>
+
+    <string name="pref_tilt_map_with_sensors_title">Przechyl mapę zgodnie z urządzeniem</string>
+    <string name="pref_tilt_map_with_sensors_summary">Zmień widok na pierwszoosobowy kiedy przytrzymujesz urządzenie</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">Automatyczne włączenie GNSS</string>
+    <string name="pref_auto_start_gps_summary">Włącz GNSS przy włączaniu aplikacji</string>
+
+    <string name="pref_gps_min_time_title">Interwał</string>
+    <string name="pref_gps_min_time_summary">Czas pomiędzy fixami GNSS, w sekundach</string>
+    <string name="pref_gps_min_time_dialog_title">Wprowadź interwał, w sekundach</string>
+    <string name="pref_gps_min_time_invalid_entry">Interwał musi być liczbą</string>
+
+    <string name="pref_use_gnss_apis_title">Użyj API GNSS</string>
+    <string name="pref_use_gnss_apis_summary">Dostępne na Androidzie 7.0 i wyższym. Jeśli odznaczone,
+        będzie używać starego GPSStatus. Słuchacz.
+    </string>
+
+    <string name="pref_gps_min_distance_title">Min. dystans</string>
+    <string name="pref_gps_min_distance_summary">Minimalny dystans pomiędzy fixami GNSS, w metrach</string>
+    <string name="pref_gps_min_distance_dialog_title">Wprowadź min. dystans, w metrach</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. dystans musi być liczbą</string>
+
+    <string name="pref_stop_gnss_in_background_title">Wyłącz GNSS w tle</string>
+    <string name="pref_stop_gnss_in_background_summary">Jeśli włączone, GNSS zostanie wyłączone kiedy aplikacja będzie działać w tle (na przykład, kiedy użyjesz przycisku Home lub przycisku Multitaskingu do przełączania się pomiędzy aplikacjami)
+    </string>
+
+    <string name="pref_analyze_gps_accuracy_title">Analizuj dokładność GNSS</string>
+    <string name="pref_analyze_gps_accuracy_summary">Użyj benchmarku GPS do zmierzenia błędu GNSS</string>
+
+    <string name="pref_display_category_title">Wyświetlacz</string>
+    <string name="pref_keep_screen_on_title">Zostaw włączony ekran</string>
+    <string name="pref_keep_screen_on_summary">Powstrzymuje ekran przed wyłączeniem się</string>
+    <string name="pref_true_north_title">Ustaw kompas na prawdziwą północ</string>
+    <string name="pref_true_north_summary">Kompas będzie wskazywać prawdziwą północ zamiast magnetycznej północy</string>
+
+    <string name="pref_output_category_title">Androidowe wyjście monitora</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_nmea_output_summary">Zapisuje logi z NMEA do Android Studio</string>
+    <string name="pref_nmea_timestamp_output_title">Znacznik czasu NMEA</string>
+    <string name="pref_nmea_timestamp_output_summary">Uwzględnij znacznik czasu NMEA w wyjściu</string>
+    <string name="pref_measurement_output_title">Pomiary</string>
+    <string name="pref_measurement_output_summary">Zapisuje logi z pomiarów GNSS do Android Studio  (Android
+        7.0 lub wyższy)
+    </string>
+    <string name="pref_navigation_message_output_title">Wiadomości nawigacyjne</string>
+    <string name="pref_navigation_message_output_summary">Zapisuje logi z wiadomości nawigacyjnych GNSS do Android
+        Studio (Android 7.0 lub wyższy)
+    </string>
+
+    <string name="pref_about_category_title">O aplikacji</string>
+    <string name="pref_show_tutorial_title">Pokaż samouczek</string>
+    <string name="pref_show_tutorial_summary">Pokazuje instrukcje jak używać aplikacji</string>
+
+    <string name="pref_dark_theme_title">Używaj ciemnego motywu</string>
+    <string name="pref_dark_theme_summary">Zmień kolor tła na ciemny a kolor tekstu na jasny</string>
+
+    <string name="pref_dms_mode_title">Użyj formatu DMS</string>
+    <string name="pref_dms_mode_summary">Pokaż szerokość i długość geograficzną w stopniach, minutach i sekundach zamiast w stopniach dziesiętnych</string>
+
+    <string name="preferences_preferred_distance_units_title">Preferowane jednostki dystansu</string>
+    <string name="preferences_preferred_distance_units_option_meters">Metry</string>
+    <string name="preferences_preferred_distance_units_option_feet">Stopy</string>
+
+    <string name="preferences_preferred_speed_units_title">Preferowane jednostki prędkości</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Metry na sekundę</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometry na godzinę</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Mile na godzinę</string>
+
+    <string name="pref_language_title">Język</string>
+    <string name="pref_language_summary">Ręcznie ustawia język w aplikacji</string>
+    <string name="pref_language_dialog_title">Wybierz język</string>
+
+    <!-- Help -->
+    <string name="title_help">Pomoc</string>
+
+</resources>

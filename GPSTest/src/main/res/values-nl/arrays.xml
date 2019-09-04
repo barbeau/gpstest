@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,25 +21,25 @@
     <!-- Status -->
     <string-array name="sort_sats">
         <item>Constellatie</item>
-        <item>Carrier frequentie</item>
-        <item>Signaal sterkte</item>
+        <item>Draaggolffrequentie</item>
+        <item>Signaalsterkte</item>
         <item>Gebruikt in fix</item>
-        <item>Constellatie, Carrier frequentie</item>
-        <item>Constellatie, Signaal sterkte </item>
+        <item>Constellatie, Draaggolffrequentie</item>
+        <item>Constellatie, Signaalsterkte</item>
         <item>Constellatie, Gebruikt in fix</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>Kaart weergave</item>
-        <item>Hybridge weergave</item>
-        <item>Satelliet weergave</item>
-        <item>Terrein weergave</item>
+        <item>Kaart-weergave</item>
+        <item>Hybride weergave</item>
+        <item>Satelliet-weergave</item>
+        <item>Terrein-weergave</item>
     </string-array>
 
     <!-- Help -->
     <string-array name="main_help_options">
         <item>Wat is er nieuw?</item>
-        <item>Over</item>
+        <item>Over &amp; Uitleg</item>
     </string-array>
 </resources>

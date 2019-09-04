@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -122,7 +122,6 @@
     <string name="horizontal_vertical_error_label">H/V 误差</string>
     <string name="avg_error_label">平均%1$d修正</string>
     <string name="fix_number">修正 #</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">图例</string>
     <string name="sky_legend_shape_gnss_title">全球卫星导航系统（GNSS）</string>
@@ -246,10 +245,6 @@
     <string name="pref_language_title">语言</string>
     <string name="pref_language_summary">手动设置程序的显示语言</string>
     <string name="pref_language_dialog_title">选择语言</string>
-
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
 
     <!-- Help -->
     <string name="title_help">帮助</string>

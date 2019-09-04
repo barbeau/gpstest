@@ -19,26 +19,26 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>Σχηματισμός</item>
-        <item>Φέρουσα Συχνότητα</item>
-        <item>Ισχύς Σήματος</item>
-        <item>Χρησιμοποιούνται σε κλείδωμα θέσης</item>
-        <item>Σχηματισμός, φέρουσα συχνότητα</item>
-        <item>Σχηματισμός, ισχύς σήματος</item>
-        <item>Σχηματισμός, χρησιμοποιείται σε κλείδωμα θέσης</item>
+        <item>Konstelacja</item>
+        <item>Częstotliwość nośna</item>
+        <item>Siła sygnału</item>
+        <item>Używane w określeniu pozycji</item>
+        <item>Konstelacja, częstotliwość nośna</item>
+        <item>Konstelacja, siła sygnału</item>
+        <item>Konstelacja, używane w określeniu pozycji</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>Προβολή Χάρτη</item>
-        <item>Υβριδικός Χάρτης</item>
-        <item>Δορυφορικός Χάρτης</item>
-        <item>Εδαφικός Χάρτης</item>
+        <item>Widok mapy</item>
+        <item>Widok hybrydowy</item>
+        <item>Widok z satelity</item>
+        <item>Widok terenowy</item>
     </string-array>
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>Τι νέο υπάρχει;</item>
-        <item>Περί...</item>
+        <item>Co nowego ?</item>
+        <item>O aplikacji</item>
     </string-array>
 </resources>

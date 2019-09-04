@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.UIUtils;
@@ -57,6 +59,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -95,6 +98,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     TextView mErrorView, mVertErrorView, mAvgErrorView, mAvgVertErrorView, mErrorLabel, mAvgErrorLabel, mLeftDivider, mRightDivider, mErrorUnit, mAvgErrorUnit;
     TextInputLayout mLatText, mLongText, mAltText;
     Button mSaveGroundTruth;
+    MaterialButton mQrCode;
 
     SlidingUpPanelLayout mSlidingPanel;
 
@@ -275,6 +279,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
         mSaveGroundTruth = v.findViewById(R.id.save);
+        mQrCode = v.findViewById(R.id.qr_code);
         mLatText = v.findViewById(R.id.ground_truth_lat);
         mLongText = v.findViewById(R.id.ground_truth_long);
         mAltText = v.findViewById(R.id.ground_truth_alt);
@@ -318,6 +323,15 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             }
         });
 
+        mQrCode.setOnClickListener(view -> {
+            if (!Application.getPrefs().getBoolean(
+                    Application.get().getString(R.string.pref_key_never_show_qr_code_instructions), false)) {
+                UIUtils.createQrCodeDialog(activity).show();
+            } else {
+                IOUtils.openQrCodeReader(activity);
+            }
+        });
+
         setupSlidingPanel();
 
         mViewModel = ViewModelProviders.of(activity).get(BenchmarkViewModel.class);
@@ -331,20 +345,39 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             restoreGraphData();
             onCardCollapsed();
         } else {
-            // If there is a saved ground truth value from previous executions, start test using that
-            if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
-                Location groundTruth = new Location("ground_truth");
+            Location groundTruth;
+            // If a SHOW_RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
+            if (IOUtils.isShowRadarIntent(activity.getIntent())) {
+                groundTruth = IOUtils.getLocationFromIntent(activity.getIntent());
+                if (groundTruth != null) {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
+                    restoreGroundTruth(groundTruth);
+                } else {
+                    Toast.makeText(activity, Application.get().getString(R.string.show_radar_invalid_location), Toast.LENGTH_LONG).show();
+                }
+            } else if (Application.getPrefs().contains(GROUND_TRUTH_LAT)) {
+                // If there is a saved ground truth value from previous executions, start test using that
+                groundTruth = new Location("ground_truth");
                 groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN));
                 groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN));
                 if (Application.getPrefs().contains(GROUND_TRUTH_ALT)) {
                     groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN));
                 }
-                updateGroundTruthEditTexts(groundTruth);
-                resetError();
-                saveGroundTruth();
-                onCardCollapsed();
+                restoreGroundTruth(groundTruth);
             }
         }
+    }
+
+    /**
+     * Initializes a test with a pre-existing ground truth location (e.g., from an Intent or preferences)
+     *
+     * @param location location to use as the ground truth location
+     */
+    private void restoreGroundTruth(Location location) {
+        updateGroundTruthEditTexts(location);
+        resetError();
+        saveGroundTruth();
+        onCardCollapsed();
     }
 
     /**

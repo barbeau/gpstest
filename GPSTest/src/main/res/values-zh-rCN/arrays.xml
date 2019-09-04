@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,19 +35,6 @@
         <item>混合视图</item>
         <item>卫星视图</item>
         <item>地形视图</item>
-    </string-array>
-
-    <!-- Supported languages, must stay in-order with language_values -->
-    <string-array name="language_entries">
-        <item>英文</item>
-        <item>中文</item>
-        <item>捷克文</item>
-        <item>荷兰文</item>
-        <item>德文</item>
-        <item>希腊文</item>
-        <item>意大利文</item>
-        <item>日文</item>
-        <item>俄文</item>
     </string-array>
 
     <!-- Help -->

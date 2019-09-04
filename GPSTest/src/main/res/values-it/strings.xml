@@ -7,7 +7,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -29,7 +29,7 @@
     <string name="force_time_injection">Inserisci dati NTP</string>
     <string name="delete_aiding_data">Rimuovi dati di assistenza</string>
     <string name="navdrawer_item_settings">Impostazioni</string>
-    <string name="navdrawer_item_help">Informazioni</string>
+    <string name="navdrawer_item_help">Guida pratica 1</string>
     <string name="navdrawer_item_send_feedback">Invia feedback</string>
     <string name="navdrawer_item_open_source">Visitaci su GitHub</string>
 
@@ -121,6 +121,8 @@
     <string name="horizontal_vertical_error_label">Errore o/v</string>
     <string name="avg_error_label">Media %1$d s. </string>
     <string name="fix_number">n° segnali</string>
+    <string name="show_radar_valid_location">Posizione reale impostata tramite app alternativa</string>
+    <string name="show_radar_invalid_location">La posizione reale impostata tramite app alternativa non è valida</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
@@ -169,16 +171,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Scheda Precisione</b>
-        - Imposta la tua posizione reale e misura la precisione del tuo sistema di geolocalizzazione.\n&#8226;\u0020
-        <b>Migliorato il supporto per alcuni satelliti</b>
-        - Aggiunti i nuovi satelliti Galileo, le etichette CF per i satelliti SBAS (EGNOS e MSAS) e GLONASS (CDMA L1 e L3).\n&#8226;\u0020
-        <b>Imposta lingua app</b>
-        - Nuova impostazione per modificare la lingua dell\'app con le traduzioni supportate.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - Vedi http://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
@@ -258,104 +250,7 @@
     <string name="pref_language_summary">Imposta manualmente la lingua dell\'app</string>
     <string name="pref_language_dialog_title">Scegli la lingua</string>
 
-    <!-- Units -->
-    <string name="feet_abbreviation">ft</string>
-    <string name="meters_abbreviation">m</string>
-
     <!-- Help -->
-    <string name="title_help">Informazioni</string>
+    <string name="title_help">Informazioni 2</string>
 
-    <string name="help_text">
-        <b>Domande Frequenti (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-
-        <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
-        <b>Lat.</b>
-        - Latitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
-        <b>Long.</b>
-        - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
-        <b>Alt. (WGS84)</b>
-        - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
-        <b>Alt. (s.l.m.)</b>
-        - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
-        <b>Precisione</b>
-        - Precisione della posizione stimata con il 68% di confidenza (espressa in metri).
-Esempio: se tracciamo una circonferenza centrata alla latitudine e longitudine della posizione stimata dal nostro dispositivo e con un raggio pari al valore della precisione, allora c\'è il 68% di probabilità che la posizione reale sia interna alla circonferenza così tracciata.\n&#8226;\u0020
-        <b>Prec. o/v</b>
-        - Precisione della posizione orizzontale e verticale stimate, entrambe con il 68% di confidenza (espressa in metri).
-La precisione orizzontale è definita allo stesso modo del campo precisione precedente. La precisione verticale è disponibile su Android 8.0 e successivi.
-Esempio di precisione verticale: se l\'altitudine stimata dal nostro dispositivo è di 150m e la precisione verticale è 20m, allora c\'è il 68% di probabilità che l\'altitudine reale sia compresa tra 130 e 170 metri.\n&#8226;\u0020
-        <b>Velocità</b>
-        - Velocità misurata sulla superficie (espressa in metri al secondo).\n&#8226;\u0020
-        <b>Prec. vel.</b>
-        - Precisione della velocità stimata con il 68% di confidenza (espressa in metri al secondo).
-Esempio: se la velocità stimata dal nostro dispositivo è di 5m/s e la precisione della velocità è 1m/s, allora c\'è il 68% di probabilità che la velocità reale sia tra 4 e 6 metri al secondo.\n&#8226;\u0020
-        <b>Direzione</b>
-        - Direzione orizzontale di spostamento del dispositivo (espressa in gradi: 0-360°).
-Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
-        <b>Prec. dir.</b>
-        - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).
-Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
-        <b>n° Satelliti</b>
-        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista.\n&#8226;\u0020
-        <b>DOP</b>
-        - Diluizione della precisione. Richiede il supporto NMEA.\n&#8226;\u0020
-        <b>DOP o/v</b>
-        - Diluizione della precisione orizzontale e verticale. Richiede il supporto NMEA.\n&#8226;\u0020
-        <b>TTPL</b>
-        - Tempo Trascorso dalla Prima Localizzazione.\n&#8226;\u0020
-        <b>ID</b>
-        - Identificativo del satellite (anche indicato con la sigla PRN).\n&#8226;\u0020
-        <b>CF</b>
-        - Frequenza del segnale agganciato.
-E\' un\'etichetta (es, \"L1\") per indicare la frequenza del segnale agganciato. Se la frequenza è sconosciuta, verrà visualizzato il suo valore in MHz (disponibile su Android 8.0+, non supportato da tutti i dispositivi). Il nuovo segnale L1 del sistema GLONASS CDMA è indicato come \"L1-C\".\n&#8226;\u0020
-        <b>SNR</b>
-        - Signal-to-Noise Ratio (Android M e precedenti) (http://bit.ly/SNR-CN0).\n&#8226;\u0020
-        <b>C/N0</b>
-        - Carrier-to-Noise density (Android N e successivi) (http://bit.ly/SNR-CN0).\n&#8226;\u0020
-        <b>Dati</b>
-        - (E) se il dispositivo ha scarsità di dati per il satellite;
-(A) se il dispositivo ha dati registrati per il satellite;
-(U) se il satellite è stato utilizzato nel posizionamento più recente.
-Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisce ai satelliti usati per il posizionamento oppure per la correzione delle informazioni fornite dagli altri satelliti.\n\n
-
-        <b>*** Scheda Bussola ***</b>\n\n&#8226;\u0020
-        <b>GPS NAVSTAR (USA)</b>
-        - Cerchi\n&#8226;\u0020
-        <b>GLONASS (Russia)</b>
-        - Quadrati\n&#8226;\u0020
-        <b>Galileo (UE)</b>
-        - Triangoli\n&#8226;\u0020
-        <b>BeiDou/COMPASS (Cina)</b>
-        - Pentagoni\n&#8226;\u0020
-        <b>QZSS (Giappone)</b>
-        - Esagoni\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
-        - Rombi\n\n
-
-        &#8226;\u0020 Satelliti trasparenti - Non in vista\n
-        &#8226;\u0020 Bordo sottile - In vista ma non usati per il posizionamento\n
-        &#8226;\u0020 Bordo spesso - Usati per il posizionamento\n\n
-
-        &#8226;\u0020 Il range atteso per l\'SNR varia tra 0dB (rosso) e 30dB (verde) su sistemi precedenti ad Android 7.0. \n
-        &#8226;\u0020 Il range atteso per l\'SNR varia tra 10dB (rosso) e 45dB (verde) su sistemi Android 7.0 e successivi. \n
-        &#8226;\u0020 Il range C/N0 attesovaria tra 10dB-Hz (rosso) e 45dB-Hz (verde) su sistemi Android 7.0 e successivi. \n
-        &#8226;\u0020 Se non è presente il valore SNR o C/N0 per un satellite (es. non è in vista del dispositivo), quel satellite avrà un colore grigio chiaro trasparente. \n\n
-
-        <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
-        <b>Errore verticale</b>
-        - Le misurazioni dell\'errore verticale, a differenza di quelle dell\'errore orizzontale, possono essere positive o negative. La scheda Precisione mostra l\'errore verticale e l\'errore verticale medi, calcolati entrambi usando il valore assoluto della misura dell\'errore.\n\n
-
-        <b>*** Riconoscimenti ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - sviluppatore originale della versione v1.x\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - sviluppatore della versione v2.x e successive\n
-        &#8226;\u0020 L\'icona di GPSTest è tratta dall\'icona \"satellite\" di Android Material Design, autorizzata da Google in base al regolamento Apache v2.0.  Anche le altre icone di Google material design sono utilizzate in base al regolamento Apache v2.0.\n
-        &#8226;\u0020 Traduzione cinese a cura di wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-        &#8226;\u0020 Traduzione tedesca a cura di SIRSteiner\n
-        &#8226;\u0020 Traduzione olndese a cura di Dennis Dolman\n
-        &#8226;\u0020 Traduzione greca a cura di Jimmy Golfi\n
-        &#8226;\u0020 Traduzione giapponese a cura di SakuraSa233\n
-        &#8226;\u0020 Traduzione ceca a cura di LLZN\n
-        &#8226;\u0020 Traduzione italiana a cura di Giolly90\n
-    </string>
 </resources>

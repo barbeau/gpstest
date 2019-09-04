@@ -8,7 +8,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     http://www.apache.org/licenses/LICENSE-2.0
+**     https://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,6 +46,8 @@
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
     <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
     <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
+    <string name="feet_abbreviation">ft</string>
+    <string name="meters_abbreviation">m</string>
 
     <!-- Values and units display - Sky View -->
     <string name="sky_legend_cn0_low">10</string>
@@ -66,6 +68,15 @@
     <string name="benchmark_alt">%1$.1f</string>
     <string name="benchmark_error">%1$.2f</string>
     <string name="benchmark_header_error_divider">/</string>
+
+    <!-- RADAR intent used by apps like BenchMap to set the ground truth location in GPSTest -->
+    <string name="show_radar_intent">com.google.android.radar.SHOW_RADAR</string>
+    <string name="radar_lat_key">latitude</string>
+    <string name="radar_lon_key">longitude</string>
+    <string name="radar_alt_key">altitude</string>
+
+    <!-- Geo URI for parsing location data from QR Codes -->
+    <string name="geo_uri_prefix">geo:</string>
 
     <!-- Preference keys -->
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
@@ -97,6 +108,7 @@
     <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
+    <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
     <string name="pref_key_dms_mode">dms_mode</string>
     <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>
     <string name="pref_key_preferred_speed_units_v2">preference_speed_units_v2</string>
@@ -176,6 +188,23 @@
         <item>3</item>
     </string-array>
 
+    <!-- Supported languages, must stay in-order with language_values -->
+    <string-array name="language_entries">
+        <item>English</item>
+        <item>中文</item>
+        <item>Čeština</item>
+        <item>Nederlands</item>
+        <item>Deutsch</item>
+        <item>Ελληνικά</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Русский</item>
+        <item>Español</item>
+        <item>Indonesia</item>
+        <item>Polskie</item>
+        <item>Français</item>
+    </string-array>
+
     <!-- Supported languages, must stay in-order with language_entries -->
     <string-array name="language_values">
         <item>en</item>
@@ -187,5 +216,9 @@
         <item>it</item>
         <item>ja</item>
         <item>ru</item>
+        <item>es</item>
+        <item>in</item>
+        <item>pl</item>
+        <item>fr</item>
     </string-array>
 </resources>
