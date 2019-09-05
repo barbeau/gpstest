@@ -6,6 +6,10 @@ GPSTest allows you to measure the GNSS accuracy of your device.  For more detail
 
 You can set the ground truth location (i.e., your actual position) for tests in GPSTest several ways.
 
+Note that the input should always be in WGS84 to match GNSS data. If you have location information in an alternate datum (e.g., NAD83, NAVD88), it needs to be converted to WGS84 first.
+
+See the GPS World article ["Datums, feet and GNSS vectors: The 2022 NGS upgrade"](https://www.gpsworld.com/datums-feet-and-gnss-vectors-the-2022-ngs-upgrade/) for more information about conversions.
+
 ### Manual
 
 * Type in a latitude, longitude, and altitude (optional)
