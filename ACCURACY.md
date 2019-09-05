@@ -21,7 +21,7 @@ You can scan a QR code that has a location embedded in the [Geo URI format (RFC 
 
 If altitude is included, then:
 
-`geo:37.786971,-122.399677, 15`
+`geo:37.786971,-122.399677,15`
 
 You can use the [ZXing QR Code Generator website](https://zxing.appspot.com/generator/) to create your own QR Codes.
 
