@@ -279,7 +279,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (blacklist == null) {
             blacklist = "";
         }
-        Log.d(TAG, String.format("GNSS satellite blacklist: %s", blacklist));
+        Log.d(TAG, "GNSS satellite blacklist: " + blacklist);
 //        Settings.Global.putString(resolver,
 //                GNSS_SATELLITE_BLACKLIST, "");
     }
