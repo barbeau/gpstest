@@ -307,7 +307,7 @@ public class GpsTestUtil {
      *                  to
      *                  log
      */
-    public static void writeNmeaToLog(String nmea, long timestamp) {
+    public static void writeNmeaToAndroidStudio(String nmea, long timestamp) {
         mNmeaOutput.setLength(0);
         if (timestamp != Long.MIN_VALUE) {
             mNmeaOutput.append(timestamp);
@@ -321,7 +321,7 @@ public class GpsTestUtil {
      * Outputs the provided GNSS navigation message to log
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeNavMessageToLog(GnssNavigationMessage message) {
+    public static void writeNavMessageToAndroidStudio(GnssNavigationMessage message) {
         Log.d(NM_OUTPUT_TAG, message.toString());
     }
 
@@ -329,7 +329,7 @@ public class GpsTestUtil {
      * Outputs the provided GNSS measurement to log
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeGnssMeasurementToLog(GnssMeasurement measurement) {
+    public static void writeGnssMeasurementToAndroidStudio(GnssMeasurement measurement) {
         Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
     }
 

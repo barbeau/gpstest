@@ -74,6 +74,7 @@ import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.gpstest.io.FileLogger;
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.IOUtils;
@@ -99,9 +100,9 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_F
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
-import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToLog;
-import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToLog;
-import static com.android.gpstest.util.GpsTestUtil.writeNmeaToLog;
+import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToAndroidStudio;
+import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToAndroidStudio;
+import static com.android.gpstest.util.GpsTestUtil.writeNmeaToAndroidStudio;
 
 public class GpsTestActivity extends AppCompatActivity
         implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -174,9 +175,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteGnssMeasurementToLog;
 
-    boolean mLogNmea;
+    boolean mLogNmeaAndroidMonitor;
 
-    boolean mWriteNmeaTimestampToLog;
+    boolean mWriteNmeaTimestampToLogAndroidMonitor;
 
     private Switch mSwitch;  // GPS on/off switch
 
@@ -227,6 +228,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private String mInitialLanguage;
 
+    private FileLogger mFileLogger;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -271,6 +274,11 @@ public class GpsTestActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
 
         setupNavigationDrawer();
+
+        mFileLogger = new FileLogger(getApplicationContext());
+        mFileLogger.startNewLog();
+
+        // TODO - Add file write permission dialog
     }
 
     @Override
@@ -963,8 +971,9 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteGnssMeasurementToLog) {
                     for (GnssMeasurement m : event.getMeasurements()) {
-                        writeGnssMeasurementToLog(m);
+                        writeGnssMeasurementToAndroidStudio(m);
                     }
+                    mFileLogger.onGnssMeasurementsReceived(event);
                 }
             }
 
@@ -1074,18 +1083,16 @@ public class GpsTestActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addNmeaListenerAndroidN() {
         if (mOnNmeaMessageListener == null) {
-            mOnNmeaMessageListener = new OnNmeaMessageListener() {
-                @Override
-                public void onNmeaMessage(String message, long timestamp) {
-                    for (GpsTestListener listener : mGpsTestListeners) {
-                        listener.onNmeaMessage(message, timestamp);
-                    }
-                    if (mLogNmea) {
-                        writeNmeaToLog(message,
-                                mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
-                    }
-                    PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
+            mOnNmeaMessageListener = (message, timestamp) -> {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onNmeaMessage(message, timestamp);
                 }
+                if (mLogNmeaAndroidMonitor) {
+                    writeNmeaToAndroidStudio(message,
+                            mWriteNmeaTimestampToLogAndroidMonitor ? timestamp : Long.MIN_VALUE);
+                    mFileLogger.onNmeaReceived(timestamp, message);
+                }
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
         }
         mLocationManager.addNmeaListener(mOnNmeaMessageListener);
@@ -1094,17 +1101,15 @@ public class GpsTestActivity extends AppCompatActivity
     @SuppressLint("MissingPermission")
     private void addLegacyNmeaListener() {
         if (mLegacyNmeaListener == null) {
-            mLegacyNmeaListener = new GpsStatus.NmeaListener() {
-                @Override
-                public void onNmeaReceived(long timestamp, String nmea) {
-                    for (GpsTestListener listener : mGpsTestListeners) {
-                        listener.onNmeaMessage(nmea, timestamp);
-                    }
-                    if (mLogNmea) {
-                        writeNmeaToLog(nmea, mWriteNmeaTimestampToLog ? timestamp : Long.MIN_VALUE);
-                    }
-                    PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
+            mLegacyNmeaListener = (timestamp, nmea) -> {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onNmeaMessage(nmea, timestamp);
                 }
+                if (mLogNmeaAndroidMonitor) {
+                    writeNmeaToAndroidStudio(nmea, mWriteNmeaTimestampToLogAndroidMonitor ? timestamp : Long.MIN_VALUE);
+                    mFileLogger.onNmeaReceived(timestamp, nmea);
+                }
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
         }
         mLocationManager.addNmeaListener(mLegacyNmeaListener);
@@ -1128,7 +1133,8 @@ public class GpsTestActivity extends AppCompatActivity
             mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
                 @Override
                 public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
-                    writeNavMessageToLog(event);
+                    writeNavMessageToAndroidStudio(event);
+                    mFileLogger.onGnssNavigationMessageReceived(event);
                 }
 
                 @Override
@@ -1253,8 +1259,8 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkNmeaLog(SharedPreferences settings) {
-        mLogNmea = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
-        mWriteNmeaTimestampToLog = settings
+        mLogNmeaAndroidMonitor = settings.getBoolean(getString(R.string.pref_key_nmea_output), true);
+        mWriteNmeaTimestampToLogAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_nmea_timestamp_output), true);
     }
 
@@ -1275,6 +1281,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
         }
+        mFileLogger.close();
         super.onDestroy();
     }
 
@@ -1348,6 +1355,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onLocationChanged(location);
+            mFileLogger.onLocationChanged(location);
         }
     }
 
