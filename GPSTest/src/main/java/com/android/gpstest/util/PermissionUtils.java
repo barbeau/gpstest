@@ -15,10 +15,12 @@
  */
 package com.android.gpstest.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class PermissionUtils {
@@ -40,5 +42,18 @@ public class PermissionUtils {
             }
         }
         return true;
+    }
+
+    public static void requestFileWritePermission(Activity activity) {
+        final String[] REQUIRED_PERMISSIONS = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        final int FILE_WRITE_PERMISSION_REQUEST = 2;
+        if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
+            // No-op
+        } else {
+            // Request permissions from the user
+            ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, FILE_WRITE_PERMISSION_REQUEST);
+        }
     }
 }

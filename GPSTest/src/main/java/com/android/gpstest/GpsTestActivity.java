@@ -278,7 +278,8 @@ public class GpsTestActivity extends AppCompatActivity
         mFileLogger = new FileLogger(getApplicationContext());
         mFileLogger.startNewLog();
 
-        // TODO - Add file write permission dialog
+        // TODO - Move this to when the user changes the Setting
+        PermissionUtils.requestFileWritePermission(this);
     }
 
     @Override

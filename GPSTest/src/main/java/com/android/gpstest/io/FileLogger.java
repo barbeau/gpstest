@@ -55,7 +55,7 @@ public class FileLogger {
     private static final String ERROR_WRITING_FILE = "Problem writing to file.";
     private static final String COMMENT_START = "# ";
     private static final char RECORD_DELIMITER = ',';
-    private static final String VERSION_TAG = "Version: ";
+    private static final String VERSION_TAG = "GPSTest version: ";
 
     private static final int MAX_FILES_STORED = 100;
     private static final int MINIMUM_USABLE_FILE_SIZE_BYTES = 1000;
@@ -170,10 +170,12 @@ public class FileLogger {
                 writer.write("  Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)");
                 writer.newLine();
                 writer.write(COMMENT_START);
-                writer.write("NMEA sentence format:");
                 writer.newLine();
                 writer.write(COMMENT_START);
-                writer.write("  See https://www.gpsinformation.org/dale/nmea.htm");
+                writer.write("NMEA format (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):");
+                writer.newLine();
+                writer.write(COMMENT_START);
+                writer.write("  NMEA,[NMEA sentence],timestamp");
                 writer.newLine();
                 writer.write(COMMENT_START);
                 writer.newLine();
@@ -331,7 +333,7 @@ public class FileLogger {
             if (mFileWriter == null) {
                 return;
             }
-            String nmeaStream = String.format(Locale.US, "NMEA,%s,%d", s, timestamp);
+            String nmeaStream = "NMEA," + s.trim() + "," + timestamp;
             try {
                 mFileWriter.write(nmeaStream);
                 mFileWriter.newLine();
