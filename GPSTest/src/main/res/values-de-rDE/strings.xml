@@ -213,15 +213,15 @@
     <string name="pref_true_north_title">Nach geographischem Nordpol ausrichten</string>
     <string name="pref_true_north_summary">Der Kompass wird am geographischen statt magnetischen Nordpol ausgerichtet</string>
 
-    <string name="pref_output_category_title">Android Monitor Ausgabe</string>
+    <string name="pref_as_output_category_title">Android Monitor Ausgabe</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">NMEA-Datensätze in Android Studio protokollieren</string>
+    <string name="pref_as_nmea_output_summary">NMEA-Datensätze in Android Studio protokollieren</string>
     <string name="pref_nmea_timestamp_output_title">NMEA-Zeitstempel</string>
     <string name="pref_nmea_timestamp_output_summary">NMEA-Zeitstempel zusätzlich ausgeben</string>
     <string name="pref_measurement_output_title">Messungen</string>
-    <string name="pref_measurement_output_summary">Protokolliert die GNSS-Messungen in Android Studio (Android 7.0 und höher)</string>
+    <string name="pref_as_measurement_output_summary">Protokolliert die GNSS-Messungen in Android Studio (Android 7.0 und höher)</string>
     <string name="pref_navigation_message_output_title">Navigationsnachrichten</string>
-    <string name="pref_navigation_message_output_summary">Protokolliert GNSS-Navigationsnachrichten in Android Studio (Android 7.0 und höher)</string>
+    <string name="pref_as_navigation_message_output_summary">Protokolliert GNSS-Navigationsnachrichten in Android Studio (Android 7.0 und höher)</string>
 
     <string name="pref_about_category_title">Über GPSTest</string>
     <string name="pref_show_tutorial_title">Tutorial ansehen</string>

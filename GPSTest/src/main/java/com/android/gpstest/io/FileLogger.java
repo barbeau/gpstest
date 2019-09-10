@@ -33,6 +33,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
@@ -52,7 +55,6 @@ public class FileLogger {
 
     private static final String TAG = "FileLogger";
     private static final String FILE_PREFIX = "gnss_log";
-    private static final String ERROR_WRITING_FILE = "Problem writing to file.";
     private static final String COMMENT_START = "# ";
     private static final char RECORD_DELIMITER = ',';
     private static final String VERSION_TAG = "GPSTest version: ";
@@ -65,6 +67,7 @@ public class FileLogger {
     private final Object mFileLock = new Object();
     private BufferedWriter mFileWriter;
     private File mFile;
+    private boolean mIsStarted = false;
 
     public FileLogger(Context context) {
         mContext = context;
@@ -180,7 +183,7 @@ public class FileLogger {
                 writer.write(COMMENT_START);
                 writer.newLine();
             } catch (IOException e) {
-                logException("Count not initialize file: " + currentFilePath, e);
+                logException(Application.get().getString(R.string.could_not_initialize_file, currentFilePath), e);
                 return;
             }
 
@@ -188,14 +191,14 @@ public class FileLogger {
                 try {
                     mFileWriter.close();
                 } catch (IOException e) {
-                    logException("Unable to close all file streams.", e);
+                    logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
                     return;
                 }
             }
 
             mFile = currentFile;
             mFileWriter = writer;
-            Toast.makeText(mContext, "File opened: " + currentFilePath, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
 
             // To make sure that files do not fill up the external storage:
             // - Remove all empty files
@@ -212,7 +215,17 @@ public class FileLogger {
                     existingFiles[i].delete();
                 }
             }
+            mIsStarted = true;
         }
+    }
+
+    /**
+     * Returns true if the logger is already started, or false if it is not
+     *
+     * @return
+     */
+    public synchronized boolean isStarted() {
+        return mIsStarted;
     }
 
     /**
@@ -244,6 +257,7 @@ public class FileLogger {
                 mFileWriter.flush();
                 mFileWriter.close();
                 mFileWriter = null;
+                mIsStarted = false;
             } catch (IOException e) {
                 logException("Unable to close all file streams.", e);
                 return;
@@ -272,7 +286,7 @@ public class FileLogger {
                     mFileWriter.write(locationStream);
                     mFileWriter.newLine();
                 } catch (IOException e) {
-                    logException(ERROR_WRITING_FILE, e);
+                    logException(Application.get().getString(R.string.error_writing_file), e);
                 }
             }
         }
@@ -289,7 +303,7 @@ public class FileLogger {
                 try {
                     writeGnssMeasurementToFile(gnssClock, measurement);
                 } catch (IOException e) {
-                    logException(ERROR_WRITING_FILE, e);
+                    logException(Application.get().getString(R.string.error_writing_file), e);
                 }
             }
         }
@@ -323,7 +337,7 @@ public class FileLogger {
                 mFileWriter.write(builder.toString());
                 mFileWriter.newLine();
             } catch (IOException e) {
-                logException(ERROR_WRITING_FILE, e);
+                logException(Application.get().getString(R.string.error_writing_file), e);
             }
         }
     }
@@ -338,7 +352,7 @@ public class FileLogger {
                 mFileWriter.write(nmeaStream);
                 mFileWriter.newLine();
             } catch (IOException e) {
-                logException(ERROR_WRITING_FILE, e);
+                logException(Application.get().getString(R.string.error_writing_file), e);
             }
         }
     }

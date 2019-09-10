@@ -216,15 +216,15 @@
     <string name="pref_true_north_title">Zobrazit pravý sever</string>
     <string name="pref_true_north_summary">Zobrazte v kompasu pravý sever místo magnetického.</string>
 
-    <string name="pref_output_category_title">Výstup pro Android Monitor</string>
+    <string name="pref_as_output_category_title">Výstup pro Android Monitor</string>
     <string name="pref_nmea_output_title">Protokoly NMEA</string>
-    <string name="pref_nmea_output_summary">Použijte protokoly NMEA pro přihlášeni v Android Studiu.</string>
+    <string name="pref_as_nmea_output_summary">Použijte protokoly NMEA pro přihlášeni v Android Studiu.</string>
     <string name="pref_nmea_timestamp_output_title">Časová značka NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Použijte časovou značku NMEA ve výstupu.</string>
     <string name="pref_measurement_output_title">Protokoly měření GNSS</string>
-    <string name="pref_measurement_output_summary">Použijte protokoly měření GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
+    <string name="pref_as_measurement_output_summary">Použijte protokoly měření GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
     <string name="pref_navigation_message_output_title">Navigační zprávy GNSS</string>
-    <string name="pref_navigation_message_output_summary">Použijte navigační zprávy GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
+    <string name="pref_as_navigation_message_output_summary">Použijte navigační zprávy GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
 
     <string name="pref_about_category_title">O aplikaci</string>
     <string name="pref_show_tutorial_title">Zobrazit průvodce aplikací</string>

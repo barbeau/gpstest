@@ -243,19 +243,40 @@
     <string name="pref_true_north_summary">Compass will face true north instead of magnetic north
     </string>
 
-    <string name="pref_output_category_title">Android Monitor Output</string>
+    <!-- Output category -->
+    <string name="pref_output_category_title">Logging and Output</string>
+    <string name="pref_output_category_summary">Log NMEA, raw measurements, or navigation messsages to files or Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">Logs NMEA sentences to Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Logs NMEA sentences to Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
     <string name="pref_nmea_timestamp_output_summary">Include NMEA timestamp in output</string>
     <string name="pref_measurement_output_title">Measurements</string>
-    <string name="pref_measurement_output_summary">Logs GNSS measurements to Android Studio (Android
+    <string name="pref_as_measurement_output_summary">Logs GNSS measurements to Android Studio (Android
         7.0 and up)
     </string>
     <string name="pref_navigation_message_output_title">Navigation Messages</string>
-    <string name="pref_navigation_message_output_summary">Logs GNSS navigation messages to Android
+    <string name="pref_as_navigation_message_output_summary">Logs GNSS navigation messages to Android
         Studio (Android 7.0 and up)
     </string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">File Output</string>
+    <string name="pref_file_nmea_output_summary">Logs NMEA sentences to a file</string>
+    <string name="pref_file_measurement_output_summary">Logs GNSS measurements to a file (Android
+        7.0 and up)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to a file (Android 7.0 and up)
+    </string>
+    <string name="pref_file_location_output_title">Location</string>
+    <string name="pref_file_location_output_summary">Logs location fix details to a file</string>
+
+    <string name="logging_to_new_file">Logging to new file: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>
+    <string name="could_not_initialize_file">Count not initialize file: %1$s</string>
+    <string name="error_writing_file">Problem writing to file.</string>
 
     <string name="pref_about_category_title">About</string>
     <string name="pref_show_tutorial_title">Show tutorial</string>

@@ -217,15 +217,15 @@ esté sujetando el dispositivo</string>
     <string name="pref_true_north_title">La brújula apunta al Norte Real</string>
     <string name="pref_true_north_summary">La brújula apuntará al norte real en lugar del norte magnético</string>
 
-    <string name="pref_output_category_title">Salida de monitor Android</string>
+    <string name="pref_as_output_category_title">Salida de monitor Android</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">Registra las sentencias NMEA en Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Registra las sentencias NMEA en Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Marca de tiempo NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Incluir marca de tiempo NMEA en la salida</string>
     <string name="pref_measurement_output_title">Mediciones</string>
-    <string name="pref_measurement_output_summary">Registra las mediciones GNSS en Android Studio (Android 7.0 o superior)</string>
+    <string name="pref_as_measurement_output_summary">Registra las mediciones GNSS en Android Studio (Android 7.0 o superior)</string>
     <string name="pref_navigation_message_output_title">Mensajes de navegación</string>
-    <string name="pref_navigation_message_output_summary">Registra los mensajes de navegación GNSS en Android Studio (Android 7.0 o superior)</string>
+    <string name="pref_as_navigation_message_output_summary">Registra los mensajes de navegación GNSS en Android Studio (Android 7.0 o superior)</string>
 
     <string name="pref_about_category_title">Acerca de</string>
     <string name="pref_show_tutorial_title">Mostrar tutorial</string>
