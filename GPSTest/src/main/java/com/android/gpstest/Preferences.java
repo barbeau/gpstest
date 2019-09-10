@@ -63,6 +63,7 @@ public class Preferences extends PreferenceActivity implements
     CheckBoxPreference chkLogFileNmea;
     CheckBoxPreference chkLogFileNavMessages;
     CheckBoxPreference chkLogFileMeasurements;
+    CheckBoxPreference chkLogFileLocation;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -207,6 +208,11 @@ public class Preferences extends PreferenceActivity implements
         });
         chkLogFileMeasurements = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_measurement_output));
         chkLogFileMeasurements.setOnPreferenceChangeListener((preference, newValue) -> {
+            PermissionUtils.requestFileWritePermission(Preferences.this);
+            return true;
+        });
+        chkLogFileLocation = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_location_output));
+        chkLogFileLocation.setOnPreferenceChangeListener((preference, newValue) -> {
             PermissionUtils.requestFileWritePermission(Preferences.this);
             return true;
         });
