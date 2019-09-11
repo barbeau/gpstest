@@ -48,6 +48,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -173,11 +174,21 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mFaceTrueNorth;
 
-    boolean mWriteGnssMeasurementToLog;
+    boolean mWriteNmeaToAndroidMonitor;
 
-    boolean mLogNmeaAndroidMonitor;
+    boolean mWriteNmeaTimestampToAndroidMonitor;
 
-    boolean mWriteNmeaTimestampToLogAndroidMonitor;
+    boolean mWriteNavMessageToAndroidMonitor;
+
+    boolean mWriteRawMeasurementToAndroidMonitor;
+
+    boolean mWriteNmeaToFile;
+
+    boolean mWriteNavMessageToFile;
+
+    boolean mWriteRawMeasurementsToFile;
+
+    boolean mWriteLocationToFile;
 
     private Switch mSwitch;  // GPS on/off switch
 
@@ -453,7 +464,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkTrueNorth(settings);
 
-        checkNmeaLog(settings);
+        checkNmeaOutput(settings);
+        checkLocationOutput(settings);
 
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
@@ -970,14 +982,14 @@ public class GpsTestActivity extends AppCompatActivity
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssMeasurementsReceived(event);
                 }
-                if (mWriteGnssMeasurementToLog) {
+                if (mWriteRawMeasurementToAndroidMonitor) {
                     for (GnssMeasurement m : event.getMeasurements()) {
                         writeGnssMeasurementToAndroidStudio(m);
                     }
-                    if (Application.getPrefs().getBoolean(getString(R.string.pref_key_file_measurement_output), false) &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        mFileLogger.onGnssMeasurementsReceived(event);
-                    }
+                }
+                if (mWriteRawMeasurementsToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    mFileLogger.onGnssMeasurementsReceived(event);
                 }
             }
 
@@ -1003,12 +1015,9 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
                 if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    new Handler(Looper.getMainLooper()).postDelayed(
+                            () -> runOnUiThread(() ->
+                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
                 }
             }
         };
@@ -1091,13 +1100,13 @@ public class GpsTestActivity extends AppCompatActivity
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onNmeaMessage(message, timestamp);
                 }
-                if (mLogNmeaAndroidMonitor) {
+                if (mWriteNmeaToAndroidMonitor) {
                     writeNmeaToAndroidStudio(message,
-                            mWriteNmeaTimestampToLogAndroidMonitor ? timestamp : Long.MIN_VALUE);
-                    if (Application.getPrefs().getBoolean(getString(R.string.pref_key_file_nmea_output), false) &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        mFileLogger.onNmeaReceived(timestamp, message);
-                    }
+                            mWriteNmeaTimestampToAndroidMonitor ? timestamp : Long.MIN_VALUE);
+                }
+                if (mWriteNmeaToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    mFileLogger.onNmeaReceived(timestamp, message);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1112,12 +1121,12 @@ public class GpsTestActivity extends AppCompatActivity
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onNmeaMessage(nmea, timestamp);
                 }
-                if (mLogNmeaAndroidMonitor) {
-                    writeNmeaToAndroidStudio(nmea, mWriteNmeaTimestampToLogAndroidMonitor ? timestamp : Long.MIN_VALUE);
-                    if (Application.getPrefs().getBoolean(getString(R.string.pref_key_file_nmea_output), false) &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        mFileLogger.onNmeaReceived(timestamp, nmea);
-                    }
+                if (mWriteNmeaToAndroidMonitor) {
+                    writeNmeaToAndroidStudio(nmea, mWriteNmeaTimestampToAndroidMonitor ? timestamp : Long.MIN_VALUE);
+                }
+                if (mWriteNmeaToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    mFileLogger.onNmeaReceived(timestamp, nmea);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1143,8 +1152,10 @@ public class GpsTestActivity extends AppCompatActivity
             mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
                 @Override
                 public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
-                    writeNavMessageToAndroidStudio(event);
-                    if (Application.getPrefs().getBoolean(getString(R.string.pref_key_file_navigation_message_output), false) &&
+                    if (mWriteNavMessageToAndroidMonitor) {
+                        writeNavMessageToAndroidStudio(event);
+                    }
+                    if (mWriteNavMessageToFile &&
                             PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
                         mFileLogger.onGnssNavigationMessageReceived(event);
                     }
@@ -1171,12 +1182,10 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                     Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
                     if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        // Delay this toast so it's not overwritten by other toasts
+                        new Handler(Looper.getMainLooper()).postDelayed(
+                                () -> runOnUiThread(() ->
+                                        Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
                     }
                 }
             };
@@ -1263,33 +1272,40 @@ public class GpsTestActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
-        // TODO - move in-line preference checks for file logs to this method
-        mWriteGnssMeasurementToLog = settings
+        mWriteRawMeasurementToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
+        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
 
-        if (mWriteGnssMeasurementToLog) {
+        if (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile) {
             addGnssMeasurementsListener();
         }
     }
 
-    private void checkNmeaLog(SharedPreferences settings) {
-        // TODO - move in-line preference checks for file logs to this method
-        mLogNmeaAndroidMonitor = settings.getBoolean(getString(R.string.pref_key_as_nmea_output), true);
-        mWriteNmeaTimestampToLogAndroidMonitor = settings
+    private void checkNmeaOutput(SharedPreferences settings) {
+        mWriteNmeaToAndroidMonitor = settings.getBoolean(getString(R.string.pref_key_as_nmea_output), true);
+        mWriteNmeaTimestampToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_nmea_timestamp_output), true);
+        mWriteNmeaToFile = settings
+                .getBoolean(getString(R.string.pref_key_file_nmea_output), false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkNavMessageOutput(SharedPreferences settings) {
-        // TODO - move in-line preference checks for file logs to this method
-        boolean logNavMessage = settings
+        mWriteNavMessageToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_navigation_message_output), false);
+        mWriteNavMessageToFile = settings
+                .getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
 
-        if (logNavMessage) {
+        if (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile) {
             addNavMessageListener();
         } else {
             removeNavMessageListener();
         }
+    }
+
+    private void checkLocationOutput(SharedPreferences settings) {
+        mWriteLocationToFile = settings
+                .getBoolean(getString(R.string.pref_key_file_location_output), false);
     }
 
     @Override
@@ -1371,7 +1387,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onLocationChanged(location);
-            if (Application.getPrefs().getBoolean(getString(R.string.pref_key_file_location_output), false) &&
+            if (mWriteLocationToFile &&
                     PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
                 mFileLogger.onLocationChanged(location);
             }
