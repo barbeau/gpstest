@@ -178,7 +178,7 @@ public class FileLogger {
                 writer.write("NMEA format (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):");
                 writer.newLine();
                 writer.write(COMMENT_START);
-                writer.write("  NMEA,[NMEA sentence],timestamp");
+                writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
                 writer.newLine();
                 writer.write(COMMENT_START);
                 writer.newLine();
