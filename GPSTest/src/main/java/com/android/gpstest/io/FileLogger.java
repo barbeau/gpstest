@@ -34,7 +34,9 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.util.GpsTestUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -119,24 +121,34 @@ public class FileLogger {
                 String model = Build.MODEL;
 
                 String versionString = "";
+                int versionCode = 0;
                 try {
                     PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
                     versionString = info.versionName;
+                    versionCode = info.versionCode;
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                String fileVersion =
-                        versionString
-                                + " Platform: "
-                                + Build.VERSION.RELEASE
-                                + " "
-                                + "Manufacturer: "
-                                + manufacturer
-                                + " "
-                                + "Model: "
-                                + model;
-                writer.write(fileVersion);
+                StringBuilder version = new StringBuilder();
+                // Version info
+                version.append("v")
+                        .append(versionString)
+                        .append(" (")
+                        .append(versionCode)
+                        .append("-" + BuildConfig.FLAVOR + "), ");
+
+                version.append("Manufacturer: " + manufacturer + ", ");
+                version.append("Model: " + model + ", ");
+
+                version.append(GpsTestUtil.getGnssHardwareYear() + ", ");
+
+                String versionRelease = Build.VERSION.RELEASE;
+                version.append("Platform: " + versionRelease + ", ");
+                int apiLevel = Build.VERSION.SDK_INT;
+                version.append("API Level: " + apiLevel + " ");
+
+                writer.write(version.toString());
                 writer.newLine();
                 writer.write(COMMENT_START);
                 writer.newLine();
