@@ -332,10 +332,6 @@ public class GpsTestActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
 
-        if (PermissionUtils.hasGrantedFileWritePermission(this) && !mFileLogger.isStarted()) {
-            mFileLogger.startNewLog();
-        }
-
         if (!mUserDeniedPermission) {
             requestPermissionAndInit(this);
         } else {
@@ -473,6 +469,12 @@ public class GpsTestActivity extends AppCompatActivity
 
         if (GpsTestUtil.isGnssStatusListenerSupported()) {
             checkNavMessageOutput(settings);
+        }
+
+        if (PermissionUtils.hasGrantedFileWritePermission(this) && !mFileLogger.isStarted() &&
+                (mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile)) {
+            // User has granted permissions and has chosen to log at least one data type
+            mFileLogger.startNewLog();
         }
 
         autoShowWhatsNew();
