@@ -8,7 +8,7 @@
             android:key="@string/pref_key_dark_theme"
             android:title="@string/pref_dark_theme_title"
             android:summary="@string/pref_dark_theme_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="false" />
         <ListPreference
             android:key="@string/pref_key_language"
             android:title="@string/pref_language_title"
@@ -20,116 +20,145 @@
             android:key="@string/pref_key_keep_screen_on"
             android:title="@string/pref_keep_screen_on_title"
             android:summary="@string/pref_keep_screen_on_summary"
-            android:defaultValue="true"/>
+            android:defaultValue="true" />
         <CheckBoxPreference
             android:key="@string/pref_key_true_north"
             android:title="@string/pref_true_north_title"
             android:summary="@string/pref_true_north_summary"
-            android:defaultValue="true"/>
+            android:defaultValue="true" />
         <CheckBoxPreference
             android:key="@string/pref_key_dms_mode"
             android:title="@string/pref_dms_mode_title"
             android:summary="@string/pref_dms_mode_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="false" />
         <ListPreference
             android:key="@string/pref_key_preferred_distance_units_v2"
             android:title="@string/preferences_preferred_distance_units_title"
             android:entries="@array/preferred_distance_units_entries"
             android:entryValues="@array/preferred_distance_units_values"
-            android:defaultValue="1">
-        </ListPreference>
+            android:defaultValue="1"></ListPreference>
         <ListPreference
             android:key="@string/pref_key_preferred_speed_units_v2"
             android:title="@string/preferences_preferred_speed_units_title"
             android:entries="@array/preferred_speed_units_entries"
             android:entryValues="@array/preferred_speed_units_values"
-            android:defaultValue="1">
-        </ListPreference>
+            android:defaultValue="1"></ListPreference>
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/pref_map_category_title"
-            android:key="@string/pref_key_map_category">
+        android:title="@string/pref_map_category_title"
+        android:key="@string/pref_key_map_category">
         <ListPreference
-                android:key="@string/pref_key_map_type"
-                android:title="@string/pref_map_type_title"
-                android:summary="@string/pref_map_type_summary"
-                android:dialogTitle="@string/pref_map_type_dialog_title"
-                android:entries="@array/map_type_entries"
-                android:entryValues="@array/map_type_values"
-                android:defaultValue="1"/>
+            android:key="@string/pref_key_map_type"
+            android:title="@string/pref_map_type_title"
+            android:summary="@string/pref_map_type_summary"
+            android:dialogTitle="@string/pref_map_type_dialog_title"
+            android:entries="@array/map_type_entries"
+            android:entryValues="@array/map_type_values"
+            android:defaultValue="1" />
         <CheckBoxPreference
-                android:key="@string/pref_key_rotate_map_with_compass"
-                android:title="@string/pref_rotate_map_with_compass_title"
-                android:summary="@string/pref_rotate_map_with_compass_summary"
-                android:defaultValue="true"/>
+            android:key="@string/pref_key_rotate_map_with_compass"
+            android:title="@string/pref_rotate_map_with_compass_title"
+            android:summary="@string/pref_rotate_map_with_compass_summary"
+            android:defaultValue="true" />
         <CheckBoxPreference
-                android:key="@string/pref_key_tilt_map_with_sensors"
-                android:title="@string/pref_tilt_map_with_sensors_title"
-                android:summary="@string/pref_tilt_map_with_sensors_summary"
-                android:dependency="@string/pref_key_rotate_map_with_compass"
-                android:defaultValue="true"/>
+            android:key="@string/pref_key_tilt_map_with_sensors"
+            android:title="@string/pref_tilt_map_with_sensors_title"
+            android:summary="@string/pref_tilt_map_with_sensors_summary"
+            android:dependency="@string/pref_key_rotate_map_with_compass"
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
-            android:title="@string/pref_gps_category_title"
-            android:key="@string/pref_key_gps_category">
+        android:title="@string/pref_gps_category_title"
+        android:key="@string/pref_key_gps_category">
         <CheckBoxPreference
-                android:key="@string/pref_key_auto_start_gps"
-                android:title="@string/pref_auto_start_gps_title"
-                android:summary="@string/pref_auto_start_gps_summary"
-                android:defaultValue="true"/>
+            android:key="@string/pref_key_auto_start_gps"
+            android:title="@string/pref_auto_start_gps_title"
+            android:summary="@string/pref_auto_start_gps_summary"
+            android:defaultValue="true" />
         <EditTextPreference
-                android:key="@string/pref_key_gps_min_time"
-                android:title="@string/pref_gps_min_time_title"
-                android:summary="@string/pref_gps_min_time_summary"
-                android:dialogTitle="@string/pref_gps_min_time_dialog_title"
-                android:defaultValue="@string/pref_gps_min_time_default_sec"/>
+            android:key="@string/pref_key_gps_min_time"
+            android:title="@string/pref_gps_min_time_title"
+            android:summary="@string/pref_gps_min_time_summary"
+            android:dialogTitle="@string/pref_gps_min_time_dialog_title"
+            android:defaultValue="@string/pref_gps_min_time_default_sec" />
         <EditTextPreference
-                android:key="@string/pref_key_gps_min_distance"
-                android:title="@string/pref_gps_min_distance_title"
-                android:summary="@string/pref_gps_min_distance_summary"
-                android:dialogTitle="@string/pref_gps_min_distance_dialog_title"
-                android:defaultValue="@string/pref_gps_min_distance_default_meters"/>
+            android:key="@string/pref_key_gps_min_distance"
+            android:title="@string/pref_gps_min_distance_title"
+            android:summary="@string/pref_gps_min_distance_summary"
+            android:dialogTitle="@string/pref_gps_min_distance_dialog_title"
+            android:defaultValue="@string/pref_gps_min_distance_default_meters" />
         <CheckBoxPreference
-                android:key="@string/pref_key_use_gnss_apis"
-                android:title="@string/pref_use_gnss_apis_title"
-                android:summary="@string/pref_use_gnss_apis_summary"
-                android:defaultValue="true"/>
+            android:key="@string/pref_key_use_gnss_apis"
+            android:title="@string/pref_use_gnss_apis_title"
+            android:summary="@string/pref_use_gnss_apis_summary"
+            android:defaultValue="true" />
         <CheckBoxPreference
             android:key="@string/pref_key_stop_gnss_in_background"
             android:title="@string/pref_stop_gnss_in_background_title"
             android:summary="@string/pref_stop_gnss_in_background_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="false" />
         <Preference
-                android:key="@string/pref_key_analyze_gps_accuracy"
-                android:title="@string/pref_analyze_gps_accuracy_title"
-                android:summary="@string/pref_analyze_gps_accuracy_summary">
-        </Preference>
+            android:key="@string/pref_key_analyze_gps_accuracy"
+            android:title="@string/pref_analyze_gps_accuracy_title"
+            android:summary="@string/pref_analyze_gps_accuracy_summary"></Preference>
     </PreferenceCategory>
 
-    <PreferenceCategory
+    <PreferenceCategory android:title="@string/pref_output_category_title">
+        <PreferenceScreen
             android:title="@string/pref_output_category_title"
-            android:key="@string/pref_key_android_monitor_category">
-        <CheckBoxPreference
-                android:key="@string/pref_key_nmea_output"
-                android:title="@string/pref_nmea_output_title"
-                android:summary="@string/pref_nmea_output_summary"
-                android:defaultValue="true"/>
-        <CheckBoxPreference
-                android:key="@string/pref_key_nmea_timestamp_output"
-                android:title="@string/pref_nmea_timestamp_output_title"
-                android:summary="@string/pref_nmea_timestamp_output_summary"
-                android:defaultValue="true"/>
-        <CheckBoxPreference
-                android:key="@string/pref_key_navigation_message_output"
-                android:title="@string/pref_navigation_message_output_title"
-                android:summary="@string/pref_navigation_message_output_summary"
-                android:defaultValue="false"/>
-        <CheckBoxPreference
-                android:key="@string/pref_key_measurement_output"
-                android:title="@string/pref_measurement_output_title"
-                android:summary="@string/pref_measurement_output_summary"
-                android:defaultValue="false"/>
+            android:summary="@string/pref_output_category_summary">
+
+            <PreferenceCategory
+                android:title="@string/pref_file_output_category_title"
+                android:key="@string/pref_key_file_output_category">
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_nmea_output"
+                    android:title="@string/pref_nmea_output_title"
+                    android:summary="@string/pref_file_nmea_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_navigation_message_output"
+                    android:title="@string/pref_navigation_message_output_title"
+                    android:summary="@string/pref_file_navigation_message_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_measurement_output"
+                    android:title="@string/pref_measurement_output_title"
+                    android:summary="@string/pref_file_measurement_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_location_output"
+                    android:title="@string/pref_file_location_output_title"
+                    android:summary="@string/pref_file_location_output_summary"
+                    android:defaultValue="false" />
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_as_output_category_title"
+                android:key="@string/pref_key_as_android_monitor_category">
+                <CheckBoxPreference
+                    android:key="@string/pref_key_as_nmea_output"
+                    android:title="@string/pref_nmea_output_title"
+                    android:summary="@string/pref_as_nmea_output_summary"
+                    android:defaultValue="true" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_as_nmea_timestamp_output"
+                    android:title="@string/pref_nmea_timestamp_output_title"
+                    android:summary="@string/pref_nmea_timestamp_output_summary"
+                    android:defaultValue="true" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_as_navigation_message_output"
+                    android:title="@string/pref_navigation_message_output_title"
+                    android:summary="@string/pref_as_navigation_message_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_as_measurement_output"
+                    android:title="@string/pref_measurement_output_title"
+                    android:summary="@string/pref_as_measurement_output_summary"
+                    android:defaultValue="false" />
+            </PreferenceCategory>
+        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

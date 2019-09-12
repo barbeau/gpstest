@@ -15,13 +15,20 @@
  */
 package com.android.gpstest.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class PermissionUtils {
+
+    private static final String[] FILE_WRITE_REQUIRED_PERMISSIONS = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+    private static final int FILE_WRITE_PERMISSION_REQUEST = 2;
 
     /**
      * Returns true if all of the provided permissions in requiredPermissions have been granted, or false if they have not
@@ -40,5 +47,30 @@ public class PermissionUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * Requestes the permissions required for writing files.  This is a no-op if the permission is already granted,
+     * otherwise it prompts the user to grant the file writing permissions.
+     *
+     * @param activity
+     */
+    public static void requestFileWritePermission(Activity activity) {
+        if (hasGrantedFileWritePermission(activity)) {
+            // No-op
+        } else {
+            // Request permissions from the user
+            ActivityCompat.requestPermissions(activity, FILE_WRITE_REQUIRED_PERMISSIONS, FILE_WRITE_PERMISSION_REQUEST);
+        }
+    }
+
+    /**
+     * Returns true if the user has granted file write permissions, and false if they have not
+     *
+     * @param activity
+     * @return true if the user has granted file write permissions, and false if they have not
+     */
+    public static boolean hasGrantedFileWritePermission(Activity activity) {
+        return PermissionUtils.hasGrantedPermissions(activity, FILE_WRITE_REQUIRED_PERMISSIONS);
     }
 }

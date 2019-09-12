@@ -97,11 +97,17 @@
     <string name="pref_key_keep_screen_on">keep_screen_on</string>
     <string name="pref_key_true_north">true_north</string>
 
-    <string name="pref_key_android_monitor_category">android_monitor_category</string>
-    <string name="pref_key_nmea_output">nmea_output</string>
-    <string name="pref_key_nmea_timestamp_output">nmea_timestamp_output</string>
-    <string name="pref_key_measurement_output">measurement_output</string>
-    <string name="pref_key_navigation_message_output">navigation_message_output</string>
+    <string name="pref_key_as_android_monitor_category">android_monitor_category</string>
+    <string name="pref_key_as_nmea_output">nmea_output</string>
+    <string name="pref_key_as_nmea_timestamp_output">nmea_timestamp_output</string>
+    <string name="pref_key_as_measurement_output">measurement_output</string>
+    <string name="pref_key_as_navigation_message_output">navigation_message_output</string>
+
+    <string name="pref_key_file_output_category">file_output_category</string>
+    <string name="pref_key_file_nmea_output">file_nmea_output</string>
+    <string name="pref_key_file_measurement_output">file_measurement_output</string>
+    <string name="pref_key_file_navigation_message_output">file_navigation_message_output</string>
+    <string name="pref_key_file_location_output">file_location_output</string>
 
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>

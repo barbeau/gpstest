@@ -235,8 +235,8 @@ public class UIUtils {
         if (!TextUtils.isEmpty(location)) {
             body.append("Location: " + location + "\n");
         }
-        
-        body.append(GpsTestUtil.getGnssHardwareYear());
+
+        body.append(GpsTestUtil.getGnssHardwareYear() + "\n");
 
         // Raw GNSS measurement capability
         int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);

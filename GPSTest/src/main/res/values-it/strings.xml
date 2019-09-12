@@ -217,15 +217,15 @@
     <string name="pref_true_north_title">Nord geografico</string>
     <string name="pref_true_north_summary">La bussola mostrerà il Nord geografico al posto del Nord magnetico</string>
 
-    <string name="pref_output_category_title">Android Monitor Output</string>
+    <string name="pref_as_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">Invia dati NMEA su Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Invia dati NMEA su Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
     <string name="pref_nmea_timestamp_output_summary">Includi NMEA Timestamp nell\'output</string>
     <string name="pref_measurement_output_title">Misurazioni</string>
-    <string name="pref_measurement_output_summary">Invia misurazioni GNSS su Android Studio (Android 7.0 e superiori)</string>
+    <string name="pref_as_measurement_output_summary">Invia misurazioni GNSS su Android Studio (Android 7.0 e superiori)</string>
     <string name="pref_navigation_message_output_title">Segnali di navigazione</string>
-    <string name="pref_navigation_message_output_summary">Invia segnali di navigazione GNSS su Android Studio (Android 7.0 e superiori)</string>
+    <string name="pref_as_navigation_message_output_summary">Invia segnali di navigazione GNSS su Android Studio (Android 7.0 e superiori)</string>
 
     <string name="pref_about_category_title">Notizie</string>
     <string name="pref_show_tutorial_title">Mostra tutorial</string>

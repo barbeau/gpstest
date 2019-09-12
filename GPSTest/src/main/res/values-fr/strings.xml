@@ -221,16 +221,16 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_true_north_title">Oriente le Compas sur le Nord Vrai</string>
     <string name="pref_true_north_summary">Le Compas s\'orientera sur le Nord Vrai plutôt que sur le Nord Magnétique</string>
 
-    <string name="pref_output_category_title">Android Monitor Output</string>
+    <string name="pref_as_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">Enregistre les messages NMEA sur Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Enregistre les messages NMEA sur Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Horodatage NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Inclus l\'horodatage NMEA dans la sortie</string>
     <string name="pref_measurement_output_title">Mesures</string>
-    <string name="pref_measurement_output_summary">Enregistre les mesures GNSS sur Android Studio (Android
+    <string name="pref_as_measurement_output_summary">Enregistre les mesures GNSS sur Android Studio (Android
 7.0 et supérieurs)</string>
     <string name="pref_navigation_message_output_title">Messages de navigation</string>
-    <string name="pref_navigation_message_output_summary">Enregistre les messages de navigation GNSS sur Android Studio
+    <string name="pref_as_navigation_message_output_summary">Enregistre les messages de navigation GNSS sur Android Studio
  (Android 7.0 et supérieurs)</string>
 
     <string name="pref_about_category_title">A propos</string>

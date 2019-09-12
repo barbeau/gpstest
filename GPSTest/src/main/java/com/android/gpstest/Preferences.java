@@ -35,10 +35,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.gpstest.util.GpsTestUtil;
-import com.android.gpstest.util.UIUtils;
-
 import androidx.appcompat.widget.Toolbar;
+
+import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.PermissionUtils;
+import com.android.gpstest.util.UIUtils;
 
 public class Preferences extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -58,6 +59,11 @@ public class Preferences extends PreferenceActivity implements
     ListPreference preferredSpeedUnits;
 
     ListPreference language;
+
+    CheckBoxPreference chkLogFileNmea;
+    CheckBoxPreference chkLogFileNavMessages;
+    CheckBoxPreference chkLogFileMeasurements;
+    CheckBoxPreference chkLogFileLocation;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -188,6 +194,28 @@ public class Preferences extends PreferenceActivity implements
                     getString(R.string.pref_key_map_category));
             mMapCategory.removePreference(checkBoxMapType);
         }
+
+        // If the user chooses to enable any of the file writing preferences, request permission
+        chkLogFileNmea = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_nmea_output));
+        chkLogFileNmea.setOnPreferenceChangeListener((preference, newValue) -> {
+            PermissionUtils.requestFileWritePermission(Preferences.this);
+            return true;
+        });
+        chkLogFileNavMessages = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_navigation_message_output));
+        chkLogFileNavMessages.setOnPreferenceChangeListener((preference, newValue) -> {
+            PermissionUtils.requestFileWritePermission(Preferences.this);
+            return true;
+        });
+        chkLogFileMeasurements = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_measurement_output));
+        chkLogFileMeasurements.setOnPreferenceChangeListener((preference, newValue) -> {
+            PermissionUtils.requestFileWritePermission(Preferences.this);
+            return true;
+        });
+        chkLogFileLocation = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_location_output));
+        chkLogFileLocation.setOnPreferenceChangeListener((preference, newValue) -> {
+            PermissionUtils.requestFileWritePermission(Preferences.this);
+            return true;
+        });
 
         Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
     }

@@ -229,17 +229,17 @@
     <string name="pref_true_north_title">Kompas op ware-noorden</string>
     <string name="pref_true_north_summary">Het kompas zal op het ware noorden richten in plaats van het magnetische noorden</string>
 
-    <string name="pref_output_category_title">Android Monitor Output</string>
+    <string name="pref_as_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_output_summary">Schrijf NMEA-sentences naar Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Schrijf NMEA-sentences naar Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA-tijdstempel</string>
     <string name="pref_nmea_timestamp_output_summary">Voeg de NMEA tijdstempel toe in de output</string>
     <string name="pref_measurement_output_title">Meetwaarden</string>
-    <string name="pref_measurement_output_summary">Log GNSS-meetwaarden naar Android Studio (Android
+    <string name="pref_as_measurement_output_summary">Log GNSS-meetwaarden naar Android Studio (Android
         7.0 en hoger)
     </string>
     <string name="pref_navigation_message_output_title">Navigatieberichten</string>
-    <string name="pref_navigation_message_output_summary">Schrijf GNSS-navigatieberichten naar Android
+    <string name="pref_as_navigation_message_output_summary">Schrijf GNSS-navigatieberichten naar Android
         Studio (Android 7.0 en hoger)
     </string>
 
