@@ -16,6 +16,7 @@ It supports dual-frequency¹ GNSS for:
 * QZSS (Japan)
 * BeiDou/COMPASS (China)
 * Galileo (European Union)
+* IRNSS (India)
 * Various satellite-based augmentation systems (SBAS):
     * Wide Area Augmentation System (WAAS) (USA)
     * European Geostationary Navigation Overlay Service (EGNOS) (European Union)
