@@ -111,7 +111,6 @@
 
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
-    <string name="pref_key_analyze_gps_accuracy">analyze_gps_accuracy</string>
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
     <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
@@ -141,10 +140,6 @@
     <string name="force_time_injection_command">force_time_injection</string>
     <string name="force_xtra_injection_command">force_xtra_injection</string>
 
-    <string name="gps_benchmark_package_name">com.gpsbenchmark.android</string>
-    <string name="gps_benchmark_url">
-        https://play.google.com/store/apps/details?id=com.gpsbenchmark.android
-    </string>
     <!-- Open-source link for Github project -->
     <string name="open_source_github">https://github.com/barbeau/gpstest</string>
 

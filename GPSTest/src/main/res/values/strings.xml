@@ -232,10 +232,6 @@
     <string name="pref_stop_gnss_in_background_summary">If enabled will always stop GNSS when the app is put into the background (for example, when using the Home button or Multitasking button to switch apps)
     </string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analyze GNSS Accuracy</string>
-    <string name="pref_analyze_gps_accuracy_summary">Use GPS Benchmark to measure GNSS error
-    </string>
-
     <string name="pref_display_category_title">Display</string>
     <string name="pref_keep_screen_on_title">Keep Screen On</string>
     <string name="pref_keep_screen_on_summary">Prevents the screen from turning off</string>

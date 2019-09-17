@@ -99,10 +99,6 @@
             android:title="@string/pref_stop_gnss_in_background_title"
             android:summary="@string/pref_stop_gnss_in_background_summary"
             android:defaultValue="false" />
-        <Preference
-            android:key="@string/pref_key_analyze_gps_accuracy"
-            android:title="@string/pref_analyze_gps_accuracy_title"
-            android:summary="@string/pref_analyze_gps_accuracy_summary"></Preference>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_output_category_title">
