@@ -125,7 +125,6 @@
     <string name="sky_legend_shape_galileo">ガリレオ（EU）</string>
     <string name="sky_legend_shape_qzss">準天頂衛星システム（日本）</string>
     <string name="sky_legend_shape_beidou">北斗衛星導航系統（中国）</string>
-
     <string name="sky_legend_shape_sbas_title">衛星航法補強システム（SBAS）</string>
     <string name="sky_legend_shape_waas">WAAS（アメリカ）</string>
     <string name="sky_legend_shape_egnos">EGNOS（EU）</string>
@@ -209,16 +208,11 @@
     <string name="pref_true_north_title">真北の向き</string>
     <string name="pref_true_north_summary">コンパスは磁北の代わりに真北を指す</string>
 
-    <string name="pref_as_output_category_title">Androidモニター出力</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Android StudioにNMEAを記録する</string>
     <string name="pref_nmea_timestamp_output_title">NMEAタイムスタンプ</string>
     <string name="pref_nmea_timestamp_output_summary">出力にNMEAタイムスタンプを含める</string>
     <string name="pref_measurement_output_title">測定値</string>
-    <string name="pref_as_measurement_output_summary">Android StudioにGNSS測定値を記録する（Android 7.0以降）</string>
     <string name="pref_navigation_message_output_title">ナビゲーションメッセージ</string>
-    <string name="pref_as_navigation_message_output_summary">Android StudioにGNSSナビゲーションメッセージを記録する（Android 7.0以降）</string>
-
     <string name="pref_about_category_title">アプリについて</string>
     <string name="pref_show_tutorial_title">マニュアルを表示</string>
     <string name="pref_show_tutorial_summary">アプリの使用方法を表示します</string>

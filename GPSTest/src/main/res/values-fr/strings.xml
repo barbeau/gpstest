@@ -94,6 +94,9 @@
     <string name="clear_assist_warning">Certains matériels peuvent prendre 24 heures pour rafraichir automatiquement les données d\'assistance. Si votre matériel ne supporte pas l\'injection manuelle, le GPS peut ne pas fonctionner pour les applications jusqu\'à ce que le rafraichissement automatique soit terminé.
 Êtes vous sûr?</string>
     <string name="never_ask_again">Ne plus me demander</string>
+    <string name="qr_code_instructions_title">Scannez le code QR</string>
+    <string name="never_show_again">Ne plus afficher</string>
+    <string name="not_now">Pas maintenant</string>
     <string name="yes">OUI</string>
     <string name="no">NON</string>
     <string name="gnss_not_available">Les satellites du Global Navigation Satellite System (GNSS) ne sont pas disponibles</string>
@@ -122,8 +125,8 @@
     <string name="horizontal_vertical_error_label">H/V erreur</string>
     <string name="avg_error_label">moy %1$d fixes</string>
     <string name="fix_number">Fix #</string>
-    <string name="show_radar_valid_location">Positionnement réel fourni par une autre application</string>
-    <string name="show_radar_invalid_location">Le positionnement réel fourni par une autre application est invalid</string>
+    <string name="show_radar_valid_location">La localisation réelle a été importée !</string>
+    <string name="show_radar_invalid_location">La localisation réelle importée est invalide</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Légende</string>
@@ -133,6 +136,7 @@
     <string name="sky_legend_shape_galileo">Galileo  Union Européenne)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japon)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Chine)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (Inde)</string>
 
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
@@ -172,6 +176,12 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Fixe la précision de la localisation avec BenchMap</b>
+        - Utilisez une application comme BenchMap pour fixer votre localisation réelle.\n&#8226;\u0020
+        <b>Bug corrigés</b>
+        - Visitez https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Fermer</string>
 
     <!-- Preferences -->
@@ -221,18 +231,11 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_true_north_title">Oriente le Compas sur le Nord Vrai</string>
     <string name="pref_true_north_summary">Le Compas s\'orientera sur le Nord Vrai plutôt que sur le Nord Magnétique</string>
 
-    <string name="pref_as_output_category_title">Android Monitor Output</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Enregistre les messages NMEA sur Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Horodatage NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Inclus l\'horodatage NMEA dans la sortie</string>
     <string name="pref_measurement_output_title">Mesures</string>
-    <string name="pref_as_measurement_output_summary">Enregistre les mesures GNSS sur Android Studio (Android
-7.0 et supérieurs)</string>
     <string name="pref_navigation_message_output_title">Messages de navigation</string>
-    <string name="pref_as_navigation_message_output_summary">Enregistre les messages de navigation GNSS sur Android Studio
- (Android 7.0 et supérieurs)</string>
-
     <string name="pref_about_category_title">A propos</string>
     <string name="pref_show_tutorial_title">Montrer le tutoriel</string>
     <string name="pref_show_tutorial_summary">Montre les instructions pour utiliser l\'application</string>

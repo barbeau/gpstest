@@ -97,6 +97,11 @@
     <string name="clear_assist_warning_title">Verwijder hulp-gegevens?</string>
     <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulpgegevens automatisch te herladen. Als je apparaat handmatige invoer niet ondersteunt, zal locatiebepaling bij geen enkele andere app meer werken voordat dit voltooid is. Weet je het zeker?</string>
     <string name="never_ask_again">Niet meer vragen</string>
+    <string name="qr_code_instructions_title">Scan een QR-code</string>
+    <string name="qr_code_instructions_text">Importeer een ware locatie op de grond door middel van een QR-code in Geo-URI formaat (geo:28.38434,-87.24334). Creëer je eigen QR-codes via https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Kon geen Geo-URI aflezen uit de QR-code</string>
+    <string name="never_show_again">Nooit opnieuw weergeven</string>
+    <string name="not_now">Niet nu</string>
     <string name="yes">JA</string>
     <string name="no">NEE</string>
     <string name="gnss_not_available">Er zijn geen satellieten van het het Mondiale Navigatie-SatellietSysteem (GNSS) beschikbaar</string>
@@ -126,8 +131,8 @@
     <string name="horizontal_vertical_error_label">H/V-afwijking</string>
     <string name="avg_error_label">Gemid. over %1$d fixes</string>
     <string name="fix_number">Aantal Fixes</string>
-    <string name="show_radar_valid_location">Ware locatie op de grond ingesteld door een andere app</string>
-    <string name="show_radar_invalid_location">De ware locatie op de grond, zoals aangeboden door een andere app, is ongeldig</string>
+    <string name="show_radar_valid_location">Ware locatie op de grond succesvol geïmporteerd.</string>
+    <string name="show_radar_invalid_location">De geïmporteerde ware locatie op de grond is ongeldig</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
@@ -137,6 +142,7 @@
     <string name="sky_legend_shape_galileo">Galileo (Europese Unie)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
 
     <string name="sky_legend_shape_sbas_title">Satelliet-gebaseerde AanvullingsSystemen (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (VS)</string>
@@ -229,19 +235,36 @@
     <string name="pref_true_north_title">Kompas op ware-noorden</string>
     <string name="pref_true_north_summary">Het kompas zal op het ware noorden richten in plaats van het magnetische noorden</string>
 
-    <string name="pref_as_output_category_title">Android Monitor Output</string>
+    <!-- Output category -->
+    <string name="pref_output_category_title">Loggen en uitvoer</string>
+    <string name="pref_output_category_summary">Log NMEA, rauwe metingen, of navigatieberichten naar bestanden of Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android Monitor-uitvoer</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Schrijf NMEA-sentences naar Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA-tijdstempel</string>
     <string name="pref_nmea_timestamp_output_summary">Voeg de NMEA tijdstempel toe in de output</string>
     <string name="pref_measurement_output_title">Meetwaarden</string>
-    <string name="pref_as_measurement_output_summary">Log GNSS-meetwaarden naar Android Studio (Android
+    <string name="pref_as_measurement_output_summary">Logt GNSS-metingen naar Android Studio (Android
         7.0 en hoger)
     </string>
     <string name="pref_navigation_message_output_title">Navigatieberichten</string>
-    <string name="pref_as_navigation_message_output_summary">Schrijf GNSS-navigatieberichten naar Android
-        Studio (Android 7.0 en hoger)
+    <string name="pref_as_navigation_message_output_summary">Logt GNSS-navigatieberichten naar Android Studio (Android 7.7 en hoger)</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Bestandsuitvoer</string>
+    <string name="pref_file_measurement_output_summary">Logt GNSS-meetingen naar een bestand (Android
+        7.0 en hoger)
     </string>
+    <string name="pref_file_navigation_message_output_summary">Logt GNSS-navigatieberichten naar een bastand (Android 7.0 en hoger)
+    </string>
+    <string name="pref_file_location_output_title">Localizatie</string>
+    <string name="pref_file_location_output_summary">Logt locatie-fix details naar een bestand</string>
+
+    <string name="logging_to_new_file">Aan het loggen naar nieuw bestand: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Kon niet alle bestandsstromen sluiten.</string>
+    <string name="could_not_initialize_file">Kon het bestand %1$s niet initialiseren.</string>
+    <string name="error_writing_file">Probleem met schrijven naar bestand.</string>
 
     <string name="pref_about_category_title">FAQ</string>
     <string name="pref_show_tutorial_title">Handleiding bekijken</string>
@@ -308,9 +331,9 @@
         <b>DF</b>
 - Label (bijv. \"L1\") voor DraaggolfFrequentie van het signaal dat wordt gevolgd (in het Engels CF wat staat voor Carrier Frequency). Als er een onbekende frequentie is, wordt de onbewerkte frequentie in MHz weergegeven (beschikbaar op Android 8.0+, maar niet op alle apparaten) Het nieuwe GLOSNASS-CDMA-signaal voor \"L1\" wordt weergegeven als \"L1-C\".\n&#8226;\u0020
         <b>S/R</b>
-        - Signaal tot ruis verhouding (in het Engels SNR wat staat voor Signal-to-Noise ratio) (Android M en lager) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Signaal tot ruis verhouding (in het Engels SNR wat staat voor Signal-to-Noise ratio) (Android M en lager) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>D/R0</b>
-        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 wat staat voor Carrier-to-noise density) (Android N en hoger) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 wat staat voor Carrier-to-noise density) (Android N en hoger) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flaggen</b>
         - (E) als het apparaat efemeride-gegevens heeft voor deze satelliet, (A) als het apparaat almanakgegevens
 heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening voor de meest recente locatiebepaling. Voor SBAS definiëren de Android specificaties niet of (G) verwijst naar het gebruik van pseudo-afstanden tot de satelliet in de locatiebepaling of dat de correctie-gegevens van die satelliet worden gebruik in de berekening. Het is daarom niet mogelijk voor GPSTest om aan te geven of SBAS ook echt wordt gebruikt.\n\n
@@ -346,7 +369,7 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
 <b>*** Erkenningen ***</b>\n\n
 &#8226;\u0020 <b>Mike Lockwood</b> - oorspronkelijke ontwikkelaar voor v1.x\n
 &#8226;\u0020 <b>Sean Barbeau</b> - ontwikkelaar voor v2.x en hoger\n
-&#8226;\u0020 Het GPSTest pictogram is afgeleid uit de Android Material Design \"satelliet-pictogram\", licentie van Google onder Apache v2.0. Andere \'Google material design\'-pictogrammen wordt ook gebruikt onder Apache v2.0.\n
+&#8226;\u0020 Het GPSTest pictogram is afgeleid uit de Android Material Design \"satelliet-pictogram\", licentie van Google onder Apache v2.0. Andere \'Google material design\'-pictogrammen door Austin Andrews van https://materialdesignicons.com/icon/qrcode worden gebruikt onder Apache v2.0 licentie.\n
 &#8226;\u0020 Chinese vertaaling aangeboden door wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
 &#8226;\u0020 Duitse vertaling aangeboden door SIRSteiner\n
 &#8226;\u0020 Nederlandse vertaling aangeboden door Dennis Dolman &amp; Niels Lancel\n

@@ -97,6 +97,11 @@
     <string name="clear_assist_warning_title">Удалить всп. сведения?</string>
     <string name="clear_assist_warning">Некоторым устройствам может потребоваться 24 часа чтобы автоматически обновить вспомогательную информацию. Если ваше устройство не поддерживает ручное внесение данных, GPS может перестать работать во всех приложениях до завершения автоматического обновления данных. Удалить вспомогательную информацию?</string>
     <string name="never_ask_again">Больше не спрашивать</string>
+    <string name="qr_code_instructions_title">Сканировать QR код</string>
+    <string name="qr_code_instructions_text">Внести текущее местоположение QR кодом в формате Geo URI (geo:28.38434,-87.24334). Создать собственный QR код через https://zxing.appspot.com/generator/</string>
+    <string name="qr_code_cannot_read_code">Не удалось прочитать Geo URI из QR кода</string>
+    <string name="never_show_again">Больше не показывать</string>
+    <string name="not_now">Не сейчас</string>
     <string name="yes">ДА</string>
     <string name="no">НЕТ</string>
     <string name="gnss_not_available">Недоступны спутники спутниковой системы навигации (ССН)</string>
@@ -125,6 +130,9 @@
     <string name="horizontal_vertical_error_label">Г/В погрешность</string>
     <string name="avg_error_label">ср. %1$d опред.</string>
     <string name="fix_number">Опред. #</string>
+    <string name="show_radar_valid_location">Текущее местоположение внесено!</string>
+    <string name="show_radar_invalid_location">Внесённое текущее местоположение некорректно</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Условные обозначения</string>
     <string name="sky_legend_shape_gnss_title">Спутниковые системы навигации (ССН)</string>
@@ -133,6 +141,7 @@
     <string name="sky_legend_shape_galileo">Галилео (Европейский союз)</string>
     <string name="sky_legend_shape_qzss">QZSS (Япония)</string>
     <string name="sky_legend_shape_beidou">Бэйдоу/COMPASS (Китай)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (Индия)</string>
 
     <string name="sky_legend_shape_sbas_title">Спутниковые системы дифференциальной коррекции (ССДК)</string>
     <string name="sky_legend_shape_waas">WAAS (США)</string>
@@ -173,6 +182,12 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Что нового?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Установить точность местоположения через BenchMap</b>
+        - Возможность использовать приложения подобные BenchMap для определения действительного местоположения.\n&#8226;\u0020
+        <b>Исправления</b>
+        - Смотреть здесь: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Закрыть</string>
 
     <!-- Preferences -->
@@ -225,19 +240,40 @@
     <string name="pref_true_north_summary">Компас будет указывать на географический север, вместо магнитного
     </string>
 
-    <string name="pref_as_output_category_title">Android Monitor Output</string>
+    <!-- Output category -->
+    <string name="pref_output_category_title">Журналирование и Вывод</string>
+    <string name="pref_output_category_summary">Записывать NMEA, исходные измерения или навигационные сообщения в файлы или Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Вывод в Android Monitor</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Записывать NMEA выражения в Android Studio</string>
+    <string name="pref_as_nmea_output_summary">Записывает NMEA заключения в Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA время</string>
     <string name="pref_nmea_timestamp_output_summary">Включать вренные отметки NMEA в вывод</string>
     <string name="pref_measurement_output_title">Запись замеров</string>
-    <string name="pref_as_measurement_output_summary">Записывать замеры ССН в Android Studio (Android
-        7.0 и следующие)
-    </string>
+    <string name="pref_as_measurement_output_summary">Записывает измерения ССН в Android Studio (Android
+ 7.0 и выше)
+</string>
     <string name="pref_navigation_message_output_title">Навигационные сообщения</string>
-    <string name="pref_as_navigation_message_output_summary">Записывать навигационные сообщения ССН в Android
-        Studio (Android 7.0 и следующие)
-    </string>
+    <string name="pref_as_navigation_message_output_summary">Записывает навигационные сообщения ССН в Android
+ Studio (Android 7.0 и выше)
+</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Вывод в файл</string>
+    <string name="pref_file_nmea_output_summary">Записывает NMEA заключения в файл</string>
+    <string name="pref_file_measurement_output_summary">Записывает измерения ССН в файл (Android
+ 7.0 и выше)
+</string>
+    <string name="pref_file_navigation_message_output_summary">Записывает навигационные сообщения ССН в файл (Android 7.0 и выше)
+</string>
+    <string name="pref_file_location_output_title">Местоположение</string>
+    <string name="pref_file_location_output_summary">Записывает подробности фиксации местоположения в файл</string>
+
+    <string name="logging_to_new_file">Журналирование в новый файл: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Не удаётся закрыть все файловые потоки.</string>
+    <string name="could_not_initialize_file">Не удалось инициализировать файл: %1$s</string>
+    <string name="error_writing_file">Запись в файл затруднена</string>
 
     <string name="pref_about_category_title">О приложении</string>
     <string name="pref_show_tutorial_title">Показать инструкцию</string>
@@ -266,4 +302,91 @@
     <!-- Help -->
     <string name="title_help">Помощь</string>
 
+    <string name="help_text">
+        <b>Вопросы и ответы (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Просмотр состояния ***</b>\n\n&#8226;\u0020
+        <b>Шир.</b>
+        - Широта в десятичных градусах (WGS 84)\n&#8226;\u0020
+        <b>Долг.</b>
+        - Долгота в десятичных градусах (WGS 84)\n&#8226;\u0020
+        <b>Выс.</b>
+        - Высота в метрах над эллипсоидом WGS 84\n&#8226;\u0020
+        <b>В. (НУМ)</b>
+        - Высота в метрах над уровнем моря (требуется поддежрка NMEA)\n&#8226;\u0020
+        <b>Погр.</b>
+        - Оценка горизонтальной погрешности (радиус в метрах в пределах 68% точности). Другими словами, если вы нарисуете окружность с центром в данных координатах, и радиусом равным погрешности, в таком случае с вероятностью в 68% действительное местонахождение находится в пределах этой окружности. Подробнее https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Г/В П.</b>
+        - Оценка горизонтальной и вертикальной погрешности, обе в пределах 68% точности. Горизонтальная погрешность определяется как сказано выше. Возможность определения вертикальной погрешности доступна в Android 8.0 Oreo и следующих. Для примера - если высота 150, а вертикальная погрешность 20 тогда с вероятностью в 68% действительная высота будет от 130 до 170 метров. Подробнее https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Скор.</b>
+        - Скорость, в метрах в секунду над поверхностью\n&#8226;\u0020
+        <b>П. ск.</b>
+        - Оценка погрешности определения скорости в данной точке с точностью в 68%, в метрах в секунду. Например, если указана скорость 5, и погрешность 1, тогда с вероятностью в 68% действительной скоростью является от 4 до 6 метров в секунду.\n&#8226;\u0020
+        <b>Пеленг</b>
+        - Горизонтальное направление перемещения устройства (в градусах от 0 до 360), не относится к ориентации устройства.\n&#8226;\u0020
+        <b>Погр. П.</b>
+        - Оценка погрешности определения направления в данной точке с точностью в 68%, в градусах. Например, если указан пеленг 60, и погрешность пеленга 10, тогда с вероятностью в 68% действительное направление находится в пределах от 50 до 70 градусов.\n&#8226;\u0020
+        <b># Сп.</b>
+        - число спутников используемых в определении координат / число спутников в зоне видимости\n&#8226;\u0020
+        <b>Сн. т.</b>
+        - Снижение точности положения (3D) (требуется поддержка NMEA)\n&#8226;\u0020
+        <b>Г/В сн.т.</b>
+        - Горизонтальное / вертикальное снижение точности (требует поддержки NMEA)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Время до первого определения координат(fix)\n&#8226;\u0020
+        <b>Об.</b>
+        - Обозначение данного спутника (псевдослучайный шум в случае с GPS)\n&#8226;\u0020
+        <b>НЧ (CF)</b>
+        - Метка (например, \"L1\") для несущей частоты отслеживаемого сигнала. При незнакомой частоте, отображается в МГц (доступно на Android 8.0+, но не на всех устройствах). Новый сигнал МДКР(CDMA) системы ГЛОНАСС для частоты L1 показывается как \"L1-C\".\n&#8226;\u0020
+        <b>ОСШ (SNR)</b>
+        - Отношение Сигнал-Шум  (Android M и предыдущие) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>ОНПШ (C/N0)</b>
+        - Отношение несущей к плотности шума (Android N и следующие) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Отм.</b>
+        - Отметки, (E) - если устройство имеет Эфемериды спутника, (A) - если на устройстве есть Альманах спутника, (U) - если спутник использован в последней фиксации определения координат.  Для ССДК(SBAS), описание Android не указывает когда (U) ссылается на псевдорасстояние от спутника, использованное в вычислении местоположения или для коррекции информации поступающей от этого спутника.\n\n
+
+        <b>*** Небосвод ***</b>\n\n&#8226;\u0020
+        <b>GPS (США Navstar)</b>
+        - Круги\n&#8226;\u0020
+        <b>ГЛОНАСС (Россия)</b>
+        - Квадраты\n&#8226;\u0020
+        <b>Галилео (Европейский союз)</b>
+        - Треугольники\n&#8226;\u0020
+        <b>QZSS (Япония)</b>
+        - Шестигранники\n&#8226;\u0020
+        <b>Бэйдоу/COMPASS (Китай)</b>
+        - Пятиугольники\n&#8226;\u0020
+        <b>ССДК(SBAS) (WAAS, EGNOS, GAGAN, MSAS, СДКМ, SNAS, SACCSA)</b>
+        - Ромбы\n\n
+
+        &#8226;\u0020 Прозрачные спутники - вне поля зрения\n
+        &#8226;\u0020 Тонкий контур - в поле зрения, но не используется в определении координат\n
+        &#8226;\u0020 Толстый контур - используется в определении координат\n\n
+
+        &#8226;\u0020 Ожидаемый диапазон ОСШ(SNR) от 0 дБ (красный) до 30 дБ (зелёный) в Android до версии 7.0. \n
+        &#8226;\u0020 Ожидаемый диапазон ОСШ(SNR) от 10 дБ (красный) до 45 дБ (зелёный) в Android 7.0 и следующих. \n
+        &#8226;\u0020 Ожидаемый диапазон ОНПШ(C/N0) от 10 дБ-Гц (красный) до 45 дБ-Гц (зелёный) в Android 7.0 и следующих. \n
+        &#8226;\u0020 Если не указано значение ОСШ(SNR) или ОНСПШ(C/N0) для спутника (то есть, спутник вне зоны видимости устройства), будет отображено прозрачным светло-серым цветом. \n\n
+
+        <b>*** Точность ***</b>\n\n&#8226;\u0020
+        <b>Вертикальная погрешность</b>
+        - Замеры вертикальной погрешности, в отличие от горизонтальной, могут быть положительными и отрицательными.  В отображении погрешности, вертикальная погрешность и средняя вертикальная погрешность, расчитываются в абсолютных значениях измерения погрешности.\n\n
+
+        <b>*** Авторы программы ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - первоначальный разработчик версии 1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - разработчик версии 2.x и следующих версий\n
+        &#8226;\u0020 Пиктограмма GPSTest создана с использованием пиктограммы Android Material Design \"спутник\"(\"sattelite\"), выпущенной компанией Google под лицензией Apache v2.0.  Остальные пиктограммы \"Google material design\" также используются по лицензии Apache v2.0. Иконка QR кода от Austin Andrews из https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Китайский перевод предоставлен: wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Немецкий перевод предоставлен SIRSteiner\n
+        &#8226;\u0020 Нидерландский перевод предоставлен Dennis Dolman\n
+        &#8226;\u0020 Грецкий перевод предоставлен Jimmy Golfi\n
+        &#8226;\u0020 Японский перевод предоставлен SakuraSa233\n
+        &#8226;\u0020 Чешский перевод предоставлен llzn.cz\n
+        &#8226;\u0020 Итальянский перевод предоставлен Giolly90\n
+        &#8226;\u0020 Испанский перевод предоставлен Sergi Pellicer\n
+        &#8226;\u0020 Индонезийский перевод предоставлен Adiitya Andre90\n
+        &#8226;\u0020 Польский перевод предоставлен Adam Wandelt\n
+        &#8226;\u0020 Французский перевод предоставлен Olivier Merlin &amp; Jérémy Belloir\n
+</string>
 </resources>

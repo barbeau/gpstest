@@ -133,7 +133,6 @@
     <string name="sky_legend_shape_galileo">Galileo (Uni Eropa)</string>
     <string name="sky_legend_shape_qzss">QZSS (Jepang)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Cina)</string>
-
     <string name="sky_legend_shape_sbas_title">Sistem Augmentasi berdasarkan Satelit (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (AS)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Uni Eropa)</string>
@@ -227,20 +226,11 @@
     <string name="pref_true_north_summary">Mengarahkan kompas ke arah utara yang sebenarnya daripada arah utara magnet
     </string>
 
-    <string name="pref_as_output_category_title">Pemantau Keluaran Android</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Mencatat kalimat pada NMEA ke Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Stampel waktu NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Menyertakan stempel waktu NMEA pada keluaran</string>
     <string name="pref_measurement_output_title">Pengukuran</string>
-    <string name="pref_as_measurement_output_summary">Mencatat pengukuran GNSS ke Android Studio (Android
-        7.0 ke atas)
-    </string>
     <string name="pref_navigation_message_output_title">Pesan Navigasi</string>
-    <string name="pref_as_navigation_message_output_summary">Mencatat pesan navigasi GNSS ke Android
-        Studio (Android 7.0 ke atas)
-    </string>
-
     <string name="pref_about_category_title">Tentang</string>
     <string name="pref_show_tutorial_title">Tampilkan tutorial</string>
     <string name="pref_show_tutorial_summary">Menampilkan petunjuk menggunakan aplikasi</string>

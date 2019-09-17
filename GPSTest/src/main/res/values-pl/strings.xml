@@ -129,7 +129,6 @@
     <string name="sky_legend_shape_galileo">Galileo (Unia Europejska)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japonia)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Chiny)</string>
-
     <string name="sky_legend_shape_sbas_title">Satelitarne Systemy Augmentacji (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Unia Europejska)</string>
@@ -215,20 +214,11 @@
     <string name="pref_true_north_title">Ustaw kompas na prawdziwą północ</string>
     <string name="pref_true_north_summary">Kompas będzie wskazywać prawdziwą północ zamiast magnetycznej północy</string>
 
-    <string name="pref_as_output_category_title">Androidowe wyjście monitora</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Zapisuje logi z NMEA do Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Znacznik czasu NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Uwzględnij znacznik czasu NMEA w wyjściu</string>
     <string name="pref_measurement_output_title">Pomiary</string>
-    <string name="pref_as_measurement_output_summary">Zapisuje logi z pomiarów GNSS do Android Studio  (Android
-        7.0 lub wyższy)
-    </string>
     <string name="pref_navigation_message_output_title">Wiadomości nawigacyjne</string>
-    <string name="pref_as_navigation_message_output_summary">Zapisuje logi z wiadomości nawigacyjnych GNSS do Android
-        Studio (Android 7.0 lub wyższy)
-    </string>
-
     <string name="pref_about_category_title">O aplikacji</string>
     <string name="pref_show_tutorial_title">Pokaż samouczek</string>
     <string name="pref_show_tutorial_summary">Pokazuje instrukcje jak używać aplikacji</string>

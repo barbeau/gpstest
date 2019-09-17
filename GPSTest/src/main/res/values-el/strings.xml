@@ -122,9 +122,6 @@
     <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
     <string name="avg_error_label">%1$d σημεία περίπου</string>
     <string name="fix_number">Κλείδωμα #</string>
-    <string name="show_radar_valid_location">Ορισμός πραγματικής θέσης εδάφους απο άλλη εφαρμογή</string>
-    <string name="show_radar_invalid_location">Η πραγματική θέση εδάφους που δόθηκε απο άλλη εφαρμογή δεν είναι έγκυρη</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">Τυπικό</string>
     <string name="sky_legend_shape_gnss_title">Παγκόσμια δορυφορικά συστήματα πλοήγησης (GNSS)</string>
@@ -133,7 +130,6 @@
     <string name="sky_legend_shape_galileo">Galileo (ΕΥΡΩΠΑΙΚΗ ΕΝΩΣΗ)</string>
     <string name="sky_legend_shape_qzss">QZSS (ΙΑΠΩΝΙΑ)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (ΚΙΝΑ)</string>
-
     <string name="sky_legend_shape_sbas_title">Δορυφορικά συστήματα επεκτάσεως (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (Αμερική)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Ευρωπαική Ενωση)</string>
@@ -216,16 +212,11 @@
     <string name="pref_true_north_title">Πυξίδα προς το Βορρά</string>
     <string name="pref_true_north_summary">Η πυξίδα θα ακολουθεί τον αληθινό βορρά αντί του μαγνητικού βορρά</string>
 
-    <string name="pref_as_output_category_title">Εξοδος οθόνης Android</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_as_nmea_output_summary">Καταγραφή στοιχείων NMEA στο Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Χρονικό Στίγμα</string>
     <string name="pref_nmea_timestamp_output_summary">Να περιλαμβάνονται τα χρονικά στίγματα NMEA στο αρχείο εξόδου</string>
     <string name="pref_measurement_output_title">Μετρήσεις</string>
-    <string name="pref_as_measurement_output_summary">Καταγραφή μετρήσεων GNSS στο Android Studio (Android 7.0 και άνω)</string>
     <string name="pref_navigation_message_output_title">Μηνύματα πλοήγησης</string>
-    <string name="pref_as_navigation_message_output_summary">Καταγραφή μηνυμάτων πλοήγησης GNSS στο Android Studio (Android 7.0 και άνω)</string>
-
     <string name="pref_about_category_title">Περί</string>
     <string name="pref_show_tutorial_title">Εμφάνιση Οδηγιών</string>
     <string name="pref_show_tutorial_summary">Δείχνει οδηγίες χρήσης για την εφαρμογή</string>

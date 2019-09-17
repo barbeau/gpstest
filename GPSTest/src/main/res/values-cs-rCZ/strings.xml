@@ -122,9 +122,6 @@
     <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
     <string name="avg_error_label">Průměr %1$d opr.</string>
     <string name="fix_number">Průměr</string>
-    <string name="show_radar_valid_location">Skutečná poloha stanovená jinou aplikací</string>
-    <string name="show_radar_invalid_location">Skutečná poloha stanovená jinou aplikací je neplatná</string>
-
     <!-- Sky view -->
     <string name="sky_legend_title">Popis</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
@@ -133,7 +130,6 @@
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (European Union)</string>
@@ -216,16 +212,11 @@
     <string name="pref_true_north_title">Zobrazit pravý sever</string>
     <string name="pref_true_north_summary">Zobrazte v kompasu pravý sever místo magnetického.</string>
 
-    <string name="pref_as_output_category_title">Výstup pro Android Monitor</string>
     <string name="pref_nmea_output_title">Protokoly NMEA</string>
-    <string name="pref_as_nmea_output_summary">Použijte protokoly NMEA pro přihlášeni v Android Studiu.</string>
     <string name="pref_nmea_timestamp_output_title">Časová značka NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Použijte časovou značku NMEA ve výstupu.</string>
     <string name="pref_measurement_output_title">Protokoly měření GNSS</string>
-    <string name="pref_as_measurement_output_summary">Použijte protokoly měření GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
     <string name="pref_navigation_message_output_title">Navigační zprávy GNSS</string>
-    <string name="pref_as_navigation_message_output_summary">Použijte navigační zprávy GNSS pro Android Studio (vyžadován Android 7.0 a vyšší).</string>
-
     <string name="pref_about_category_title">O aplikaci</string>
     <string name="pref_show_tutorial_title">Zobrazit průvodce aplikací</string>
     <string name="pref_show_tutorial_summary">Zobrazte průvodce pro použití aplikace.</string>
