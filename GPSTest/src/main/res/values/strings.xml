@@ -187,7 +187,7 @@
         <b>Support for IRNSS</b>
         - On IRNSS-compatible devices you can now see signals from the Indian GNSS.\n&#8226;\u0020
         <b>Log data to files</b>
-        - Enable file logging in Settings for NMEA, raw measurments, navigation messages, and location fixes. See http://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        - Enable file logging in Settings for NMEA, raw measurements, navigation messages, and location fixes. See http://bit.ly/gpstest-file for details.\n&#8226;\u0020
         <b>Scan QR codes to set your Accuracy location</b>
         - Comparing devices side-by-side? Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n&#8226;\u0020
         <b>Bug fixes</b>
