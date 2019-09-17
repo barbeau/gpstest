@@ -184,8 +184,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Set accuracy location from BenchMap</b>
-        - Use other apps like BenchMap to set your ground truth location.\n&#8226;\u0020
+        <b>Support for IRNSS</b>
+        - On IRNSS-compatible devices you can now see signals from the Indian GNSS.\n&#8226;\u0020
+        <b>Log data to files</b>
+        - Enable file logging in Settings for NMEA, raw measurments, navigation messages, and location fixes. See http://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        <b>Scan QR codes to set your Accuracy location</b>
+        - Comparing devices side-by-side? Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
@@ -357,6 +361,8 @@
         - Hexagons\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n&#8226;\u0020
+        <b>IRNSS (India)</b>
+        - Ovals\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
         - Diamonds\n\n
 
@@ -372,6 +378,11 @@
         <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
         <b>Vertical error</b>
         - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
+
+        &#8226;\u0020Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n\n
+
+        <b>*** File Logging ***</b>\n\n
+        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See http://bit.ly/gpstest-file for details.\n\n
 
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
