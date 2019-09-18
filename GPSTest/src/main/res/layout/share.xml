@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/location_copy"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="?attr/actionModeCopyDrawable"
+        app:iconTint="@color/body_text_1_dark"
+        tools:layout_editor_absoluteX="274dp"
+        tools:layout_editor_absoluteY="66dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/location_share"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="?android:attr/actionModeShareDrawable"
+        app:iconTint="@color/body_text_1_dark"
+        tools:layout_editor_absoluteX="333dp"
+        tools:layout_editor_absoluteY="66dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/location_share2"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="?android:attr/actionModeShareDrawable"
+        app:iconTint="@color/body_text_1_dark"
+        tools:layout_editor_absoluteX="333dp"
+        tools:layout_editor_absoluteY="222dp" />
+
+    <TextView
+        android:id="@+id/location_value"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2019-02-04 12:20:20"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="235dp" />
+
+    <TextView
+        android:id="@+id/location_label"
+        style="@style/TextAppearance.MaterialComponents.Overline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log file:"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="208dp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="121dp">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decimal degrees" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DMS" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/log_file_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location:"
+        style="@style/TextAppearance.MaterialComponents.Overline"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="50dp" />
+
+    <TextView
+        android:id="@+id/log_file_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="28.3748343,-82.38475"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        tools:layout_editor_absoluteX="59dp"
+        tools:layout_editor_absoluteY="77dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/geo_hack_url"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View location on GeoHack"
+        tools:layout_editor_absoluteX="90dp"
+        tools:layout_editor_absoluteY="321dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
