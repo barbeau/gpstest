@@ -22,7 +22,17 @@
         android:layout_height="40dp"
         app:icon="?android:attr/actionModeShareDrawable"
         app:iconTint="@color/body_text_1_dark"
-        tools:layout_editor_absoluteX="333dp"
+        tools:layout_editor_absoluteX="371dp"
+        tools:layout_editor_absoluteY="66dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/location_geohack"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:icon="@android:drawable/ic_menu_mapmode"
+        app:iconTint="@color/body_text_1_dark"
+        tools:layout_editor_absoluteX="320dp"
         tools:layout_editor_absoluteY="66dp" />
 
     <com.google.android.material.button.MaterialButton
