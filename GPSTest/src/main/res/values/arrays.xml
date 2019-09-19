@@ -37,6 +37,18 @@
         <item>Terrain View</item>
     </string-array>
 
+    <string-array name="preferred_display_mode_options">
+        <item>@string/preferences_preferred_display_mode_option_dd</item>
+        <item>@string/preferences_preferred_display_mode_option_dms</item>
+        <item>@string/preferences_preferred_display_mode_option_ddm</item>
+    </string-array>
+
+    <string-array name="preferred_display_mode_options_values">
+        <item>dd</item>
+        <item>dms</item>
+        <item>ddm</item>
+    </string-array>
+
     <!-- Help -->
     <string-array name="main_help_options">
         <item>What\'s New?</item>

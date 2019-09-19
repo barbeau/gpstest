@@ -347,14 +347,27 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
         mTTFFView.setText(mTtff);
 
-        boolean showDMS = Application.getPrefs().getBoolean(getString(R.string.pref_key_dms_mode), false);
-        if (showDMS) {
-            mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude()));
-            mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude()));
-        } else {
-            mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
-            mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+        String gpsDisplayMode = Application.getPrefs().getString(getString(R.string.pref_key_preferred_display_mode), "dd");
+
+        switch (gpsDisplayMode) {
+            case "dd":
+                mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
+                mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+                break;
+            case "dms":
+                mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), "lat"));
+                mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), "lon"));
+                break;
+            case "ddm":
+                mLatitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), "lat"));
+                mLongitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), "lon"));
+                break;
+            default:
+                mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
+                mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
+                break;
         }
+
         mFixTime = location.getTime();
 
         if (location.hasAltitude()) {
