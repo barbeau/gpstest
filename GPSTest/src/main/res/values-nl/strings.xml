@@ -274,10 +274,7 @@
     <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de tekst een lichte kleur.
 	</string>
 
-    <string name="pref_dms_mode_title">Gebruik GMS-formaat</string>
-    <string name="pref_dms_mode_summary">Toon de lengte- en breedtegraden in graden, minuten en seconden (GMS) in plaats van decimale graden (DG)</string>
-
-    <string name="preferences_preferred_distance_units_title">Voorkeurseenheid voor afstand</string>
+    <string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
     <string name="preferences_preferred_distance_units_option_feet">Voeten</string>
 
@@ -363,9 +360,9 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
 
 <b>*** Nauwkeurigheids-weergave***\n\n&#8226;\u0020</b>
  <b>Vertical afwijking</b>
-- Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.  
+- Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.
 
-        
+
 <b>*** Erkenningen ***</b>\n\n
 &#8226;\u0020 <b>Mike Lockwood</b> - oorspronkelijke ontwikkelaar voor v1.x\n
 &#8226;\u0020 <b>Sean Barbeau</b> - ontwikkelaar voor v2.x en hoger\n

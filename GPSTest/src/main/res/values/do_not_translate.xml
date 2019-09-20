@@ -25,6 +25,10 @@
     <string name="gps_latitude_value">%1$.7f\u00B0</string>
     <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
     <string name="gps_longitude_value">%1$.7f\u00B0</string>
+    <string name="gps_lat_dms_value">%1$s\t\u2007%2$02d\u00B0 %3$2d\' %4$05.2f\"</string>
+    <string name="gps_lon_dms_value">%1$s\t%2$03d\u00B0 %3$2d\' %4$05.2f\"</string>
+    <string name="gps_lat_ddm_value">%1$s\t\u2007%2$02d\u00B0 %3$06.3f</string>
+    <string name="gps_lon_ddm_value">%1$s\t%2$03d\u00B0 %3$06.3f</string>
     <string name="gps_altitude_value_meters">%1$.1f m</string>
     <string name="gps_altitude_value_feet">%1$.1f ft</string>
     <string name="gps_altitude_msl_value_meters">%1$.1f m</string>
@@ -113,8 +117,9 @@
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>
     <string name="pref_key_dark_theme">dark_theme</string>
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
+    <string name="pref_key_coordinate_format">coordinate_format</string>
+
     <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
-    <string name="pref_key_dms_mode">dms_mode</string>
     <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>
     <string name="pref_key_preferred_speed_units_v2">preference_speed_units_v2</string>
     <string name="pref_key_language">preference_language</string>
@@ -222,4 +227,22 @@
         <item>pl</item>
         <item>fr</item>
     </string-array>
+
+
+    <!-- Coordinate formats -->
+    <string-array name="preferred_coordinate_format_entries">
+        <item>@string/preferences_coordinate_format_dd</item>
+        <item>@string/preferences_coordinate_format_dms</item>
+        <item>@string/preferences_coordinate_format_ddm</item>
+    </string-array>
+
+    <string-array name="preferred_coordinate_format_values">
+        <item>@string/preferences_coordinate_format_dd_key</item>
+        <item>@string/preferences_coordinate_format_dms_key</item>
+        <item>@string/preferences_coordinate_format_ddm_key</item>
+    </string-array>
+
+    <string name="preferences_coordinate_format_dd_key">dd</string>
+    <string name="preferences_coordinate_format_dms_key">dms</string>
+    <string name="preferences_coordinate_format_ddm_key">ddm</string>
 </resources>

@@ -220,8 +220,6 @@
     <string name="pref_dark_theme_title">暗いテーマを使用する</string>
     <string name="pref_dark_theme_summary">背景に暗い色を、テキストに薄い色を付ける</string>
 
-    <string name="pref_dms_mode_title">DMS形式を使用する</string>
-    <string name="pref_dms_mode_summary">緯度と経度を度、分、秒で表示する</string>
 
     <string name="preferences_preferred_distance_units_title">距離単位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>

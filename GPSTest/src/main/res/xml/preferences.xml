@@ -26,11 +26,14 @@
             android:title="@string/pref_true_north_title"
             android:summary="@string/pref_true_north_summary"
             android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="@string/pref_key_dms_mode"
-            android:title="@string/pref_dms_mode_title"
-            android:summary="@string/pref_dms_mode_summary"
-            android:defaultValue="false" />
+        <ListPreference
+            android:key="@string/pref_key_coordinate_format"
+            android:title="@string/pref_coordinate_format_title"
+            android:summary="@string/pref_coordinate_format_summary"
+            android:dialogTitle="@string/pref_coordinate_format_title"
+            android:entries="@array/preferred_coordinate_format_entries"
+            android:entryValues="@array/preferred_coordinate_format_values"
+            android:defaultValue="@string/preferences_coordinate_format_dd_key" />
         <ListPreference
             android:key="@string/pref_key_preferred_distance_units_v2"
             android:title="@string/preferences_preferred_distance_units_title"

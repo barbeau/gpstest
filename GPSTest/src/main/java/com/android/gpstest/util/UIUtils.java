@@ -56,6 +56,9 @@ import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_SNR;
 
 public class UIUtils {
 
+    public static final String COORDINATE_LATITUDE = "lat";
+    public static final String COORDINATE_LONGITUDE = "lon";
+
     /**
      * Formats a view so it is ignored for accessible access
      */
@@ -299,17 +302,50 @@ public class UIUtils {
 
     /**
      * Returns the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
-     * @param latOrLon latitude or longitude to convert to DMS format
+     * @param coordinate latitude or longitude to convert to DMS format
      * @return the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
      */
-    public static String getDMSFromLocation(Context context, double latOrLon) {
-        BigDecimal loc = new BigDecimal(latOrLon);
+    public static String getDMSFromLocation(Context context, double coordinate, String latOrLon) {
+        BigDecimal loc = new BigDecimal(coordinate);
         BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
         BigDecimal minTemp = loc.subtract(degrees).multiply((new BigDecimal(60))).abs();
         BigDecimal minutes = minTemp.setScale(0, RoundingMode.DOWN);
-        BigDecimal seconds = minTemp.subtract(minutes).multiply(new BigDecimal(60)).setScale(0, RoundingMode.DOWN);
+        BigDecimal seconds = minTemp.subtract(minutes).multiply(new BigDecimal(60)).setScale(2, RoundingMode.HALF_UP);
 
-        return context.getString(R.string.gps_lat_lon_dms_value, degrees.intValue(), minutes.intValue(), seconds.intValue());
+        String hemisphere;
+        int output_string;
+        if (latOrLon.equals(UIUtils.COORDINATE_LATITUDE)) {
+            hemisphere = (coordinate < 0 ? "S" : "N");
+            output_string = R.string.gps_lat_dms_value;
+        } else {
+            hemisphere = (coordinate < 0 ? "W" : "E");
+            output_string = R.string.gps_lon_dms_value;
+        }
+
+        return context.getString(output_string, hemisphere, degrees.abs().intValue(), minutes.intValue(), seconds.floatValue());
+    }
+
+    /**
+     * Returns the provided latitude or longitude value in Decimal Degree Minutes (DDM) format
+     *
+     * @param coordinate latitude or longitude to convert to DDM format
+     * @param latOrLon   lat or lon to format hemisphere
+     * @return the provided latitude or longitude value in Decimal Degree Minutes (DDM) format
+     */
+    public static String getDDMFromLocation(Context context, double coordinate, String latOrLon) {
+        BigDecimal loc = new BigDecimal(coordinate);
+        BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
+        BigDecimal minutes = loc.subtract(degrees).multiply((new BigDecimal(60))).abs().setScale(3, RoundingMode.HALF_UP);
+        String hemisphere;
+        int output_string;
+        if (latOrLon.equals(COORDINATE_LATITUDE)) {
+            hemisphere = (coordinate < 0 ? "S" : "N");
+            output_string = R.string.gps_lat_ddm_value;
+        } else {
+            hemisphere = (coordinate < 0 ? "W" : "E");
+            output_string = R.string.gps_lon_ddm_value;
+        }
+        return context.getString(output_string, hemisphere, degrees.abs().intValue(), minutes.floatValue());
     }
 
     /**
