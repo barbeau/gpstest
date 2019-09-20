@@ -291,7 +291,7 @@
     </string>
 
     <string name="pref_preferred_coordinate_format_title">Coordinate format</string>
-    <string name="pref_preferred_coordinate_format_summary">Sets the display format of the GPS coordinates shown</string>
+    <string name="pref_preferred_coordinate_format_summary">Display GNSS coordinates in decimal degrees, DMS, or degrees minutes decimal seconds</string>
     <string name="preferences_preferred_display_mode_option_dd">Decimal Degrees</string>
     <string name="preferences_preferred_display_mode_option_dms">Degrees, Minutes, Decimal Seconds</string>
     <string name="preferences_preferred_display_mode_option_ddm">Degrees, Decimal Minutes</string>
