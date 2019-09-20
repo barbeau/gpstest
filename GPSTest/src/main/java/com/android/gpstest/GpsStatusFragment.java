@@ -347,22 +347,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
         mTTFFView.setText(mTtff);
 
-        String gpsDisplayMode = Application.getPrefs().getString(getString(R.string.pref_key_preferred_display_mode), "dd");
-
-        switch (gpsDisplayMode) {
+        String coordinateFormat = Application.getPrefs().getString(getString(R.string.pref_key_coordinate_format), getString(R.string.preferences_coordinate_format_dd_key));
+        switch (coordinateFormat) {
+            // Constants below must match string values in do_not_translate.xml
             case "dd":
+                // Decimal degrees
                 mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
                 mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
                 break;
             case "dms":
-                mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), "lat"));
-                mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), "lon"));
+                // Degrees minutes seconds
+                mLatitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE));
+                mLongitudeView.setText(UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE));
                 break;
             case "ddm":
-                mLatitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), "lat"));
-                mLongitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), "lon"));
+                // Degrees decimal minutes
+                mLatitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE));
+                mLongitudeView.setText(UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE));
                 break;
             default:
+                // Decimal degrees
                 mLatitudeView.setText(mRes.getString(R.string.gps_latitude_value, location.getLatitude()));
                 mLongitudeView.setText(mRes.getString(R.string.gps_longitude_value, location.getLongitude()));
                 break;

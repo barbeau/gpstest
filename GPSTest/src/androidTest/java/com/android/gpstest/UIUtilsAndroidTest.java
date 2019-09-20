@@ -38,13 +38,13 @@ public class UIUtilsAndroidTest {
         // Test German
         setLocale("de", "DE");
 
-        String dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583, "lat");
+        String dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583, UIUtils.COORDINATE_LATITUDE);
         assertEquals("S\t\u200742° 51' 12,90\"", dms);
 
         // Test English
         setLocale("en", "US");
 
-        dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583, "lat");
+        dms = UIUtils.getDMSFromLocation(getTargetContext(), -42.853583, UIUtils.COORDINATE_LATITUDE);
         assertEquals("S\t\u200742° 51' 12.90\"", dms);
     }
 
@@ -53,13 +53,13 @@ public class UIUtilsAndroidTest {
         // Test German
         setLocale("de", "DE");
 
-        String dms = UIUtils.getDMSFromLocation(getTargetContext(), 47.64896, "lon");
+        String dms = UIUtils.getDMSFromLocation(getTargetContext(), 47.64896, UIUtils.COORDINATE_LONGITUDE);
         assertEquals("E\t047° 38' 56,26\"", dms);
 
         // Test English
         setLocale("en", "US");
 
-        dms = UIUtils.getDMSFromLocation(getTargetContext(), 47.64896, "lon");
+        dms = UIUtils.getDMSFromLocation(getTargetContext(), 47.64896, UIUtils.COORDINATE_LONGITUDE);
         assertEquals("E\t047° 38' 56.26\"", dms);
     }
 
@@ -68,13 +68,13 @@ public class UIUtilsAndroidTest {
         // Test German
         setLocale("de", "DE");
 
-        String ddm = UIUtils.getDDMFromLocation(getTargetContext(), 24.15346, "lat");
+        String ddm = UIUtils.getDDMFromLocation(getTargetContext(), 24.15346, UIUtils.COORDINATE_LATITUDE);
         assertEquals("N\t\u200724° 09,208", ddm);
 
         // Test English
         setLocale("en", "US");
 
-        ddm = UIUtils.getDDMFromLocation(getTargetContext(), 24.15346, "lat");
+        ddm = UIUtils.getDDMFromLocation(getTargetContext(), 24.15346, UIUtils.COORDINATE_LATITUDE);
         assertEquals("N\t\u200724° 09.208", ddm);
     }
 
@@ -83,13 +83,13 @@ public class UIUtilsAndroidTest {
         // Test English
         setLocale("en", "US");
 
-        String ddm = UIUtils.getDDMFromLocation(getTargetContext(), -150.94523, "lon");
+        String ddm = UIUtils.getDDMFromLocation(getTargetContext(), -150.94523, UIUtils.COORDINATE_LONGITUDE);
         assertEquals("W\t150° 56.714", ddm);
 
         // Test German
         setLocale("de", "DE");
 
-        ddm = UIUtils.getDDMFromLocation(getTargetContext(), -150.94523, "lon");
+        ddm = UIUtils.getDDMFromLocation(getTargetContext(), -150.94523, UIUtils.COORDINATE_LONGITUDE);
         assertEquals("W\t150° 56,714", ddm);
     }
 

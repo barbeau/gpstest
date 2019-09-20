@@ -56,6 +56,9 @@ import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_SNR;
 
 public class UIUtils {
 
+    public static final String COORDINATE_LATITUDE = "lat";
+    public static final String COORDINATE_LONGITUDE = "lon";
+
     /**
      * Formats a view so it is ignored for accessible access
      */
@@ -311,7 +314,7 @@ public class UIUtils {
 
         String hemisphere;
         int output_string;
-        if (latOrLon.equals("lat")) {
+        if (latOrLon.equals(UIUtils.COORDINATE_LATITUDE)) {
             hemisphere = (coordinate < 0 ? "S" : "N");
             output_string = R.string.gps_lat_dms_value;
         } else {
@@ -335,7 +338,7 @@ public class UIUtils {
         BigDecimal minutes = loc.subtract(degrees).multiply((new BigDecimal(60))).abs().setScale(3, RoundingMode.HALF_UP);
         String hemisphere;
         int output_string;
-        if (latOrLon.equals("lat")) {
+        if (latOrLon.equals(COORDINATE_LATITUDE)) {
             hemisphere = (coordinate < 0 ? "S" : "N");
             output_string = R.string.gps_lat_ddm_value;
         } else {
