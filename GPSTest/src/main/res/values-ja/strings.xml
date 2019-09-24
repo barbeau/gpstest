@@ -45,7 +45,7 @@
     <string name="delete_aiding_data_failure">デバイスはアシストデータの削除をサポートしていません。
     </string>
     <string name="gps_switch">オフ/オン</string>
-    <string name="send_location">場所を送信</string>
+    <string name="share">場所を送信</string>
     <string name="set_fix_frequency">周波数を設定する</string>
     <string name="force_time_injection_success">時間データを注入しました。</string>
     <string name="force_time_injection_failure">デバイスは時間データの注入をサポートしていません。

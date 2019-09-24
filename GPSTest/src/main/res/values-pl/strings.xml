@@ -43,7 +43,7 @@
     <string name="delete_aiding_data_success">Pomyślnie usunięto dane pomocnicze.</string>
     <string name="delete_aiding_data_failure">Urządzenie nie wspiera usuwania danych pomocniczych.</string>
     <string name="gps_switch">Wyłącz/Włącz</string>
-    <string name="send_location">Wyślij lokalizację</string>
+    <string name="share">Wyślij lokalizację</string>
     <string name="set_fix_frequency">Ustaw częstotliwość aktualnej pozycji</string>
     <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
     <string name="force_time_injection_failure">Urządzenie nie wspiera wprowadzania danych czasowych.</string>

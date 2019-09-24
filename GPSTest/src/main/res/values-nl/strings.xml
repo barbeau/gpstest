@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_success">GNSS-hulpgegevens succesvol verwijderd</string>
     <string name="delete_aiding_data_failure">Het apparaat ondersteunt het verwijderen van hulpgegevens niet</string>
     <string name="gps_switch">Aan/uit</string>
-    <string name="send_location">Verzend locatie</string>
+    <string name="share">Verzend locatie</string>
     <string name="set_fix_frequency">Fix-frequentie instellen </string>
     <string name="force_time_injection_success">NTP-gegevens succesvol ingeladen</string>
     <string name="force_time_injection_failure">Apparaat ondersteunt het importeren van NTP-gegevens niet.

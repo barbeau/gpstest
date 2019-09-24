@@ -457,6 +457,20 @@ public class UIUtils {
         return builder.create();
     }
 
+    public static Dialog createShareDialog(AppCompatActivity activity) {
+        View view = activity.getLayoutInflater().inflate(R.layout.share, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(R.string.share)
+                .setCancelable(false)
+                .setView(view)
+                .setPositiveButton(R.string.main_help_close,
+                        (dialog, which) -> {
+                            // No-op
+                        }
+                );
+        return builder.create();
+    }
+
     /**
      * Resets the activity title so the locale is updated
      *

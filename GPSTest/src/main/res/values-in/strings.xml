@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_failure">Perangkat tidak mendukung penghapusan data bantuan.
     </string>
     <string name="gps_switch">Mati/Hidup</string>
-    <string name="send_location">Kirim Lokasi</string>
+    <string name="share">Kirim Lokasi</string>
     <string name="set_fix_frequency">Atur Frekuensi Perbaikan</string>
     <string name="force_time_injection_success">Data waktu berhasil di-injek.</string>
     <string name="force_time_injection_failure">Perangkat tidak mendukung injeksi data waktu.

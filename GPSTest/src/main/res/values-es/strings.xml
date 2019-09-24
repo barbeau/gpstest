@@ -43,7 +43,7 @@
     <string name="delete_aiding_data_success">Datos de asistencia borrados</string>
     <string name="delete_aiding_data_failure">El dispositivo no permite borrar los datos de asistencia</string>
     <string name="gps_switch">Off/On</string>
-    <string name="send_location">Enviar ubicación</string>
+    <string name="share">Enviar ubicación</string>
     <string name="set_fix_frequency">Fijar frecuencia</string>
     <string name="force_time_injection_success">Datos de tiempo insertados correctamente</string>
     <string name="force_time_injection_failure">El dispositivo no permite insertar los datos de tiempo</string>

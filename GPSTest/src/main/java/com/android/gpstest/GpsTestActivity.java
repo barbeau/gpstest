@@ -89,7 +89,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-import static android.content.Intent.createChooser;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
@@ -1356,7 +1355,7 @@ public class GpsTestActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
 
-        item = menu.findItem(R.id.send_location);
+        item = menu.findItem(R.id.share);
         if (item != null) {
             item.setVisible(mLastLocation != null);
         }
@@ -1371,8 +1370,8 @@ public class GpsTestActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.gps_switch:
                 return true;
-            case R.id.send_location:
-                sendLocation();
+            case R.id.share:
+                share();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1513,16 +1512,17 @@ public class GpsTestActivity extends AppCompatActivity
                 mLastLocation.getTime());
     }
 
-    private void sendLocation() {
-        if (mLastLocation != null) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            String geohackUrl = Application.get().getString(R.string.geohack_url) +
-                    mLastLocation.getLatitude() + ";" +
-                    mLastLocation.getLongitude();
-            intent.putExtra(Intent.EXTRA_TEXT, geohackUrl);
-            intent.setType("text/plain");
-            startActivity(createChooser(intent, getString(R.string.send_location)));
-        }
+    private void share() {
+        UIUtils.createShareDialog(this).show();
+//        if (mLastLocation != null) {
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            String geohackUrl = Application.get().getString(R.string.geohack_url) +
+//                    mLastLocation.getLatitude() + ";" +
+//                    mLastLocation.getLongitude();
+//            intent.putExtra(Intent.EXTRA_TEXT, geohackUrl);
+//            intent.setType("text/plain");
+//            startActivity(createChooser(intent, getString(R.string.share)));
+//        }
     }
 
     /**
