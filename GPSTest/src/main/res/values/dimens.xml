@@ -61,4 +61,8 @@
     of devices, see the other values-* folders. -->
     <dimen name="min_column_width">42dp</dimen>
     <dimen name="status_text_size">13sp</dimen>
+
+    <!-- Share layout dimensions -->
+    <dimen name="button_margin">16dp</dimen>
+    <dimen name="button_size">28dp</dimen>
 </resources>
