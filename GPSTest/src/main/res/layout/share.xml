@@ -11,7 +11,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="6dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -115,12 +114,11 @@
         app:layout_constraintTop_toBottomOf="@id/location_share_layout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/log_file_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="10dp"
         app:layout_constraintTop_toBottomOf="@id/divider">
 
         <TextView
@@ -134,15 +132,15 @@
 
         <TextView
             android:id="@+id/log_file_name"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp"
             android:text="2019-02-04 12:20:20"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            app:layout_constraintTop_toBottomOf="@id/log_file_label"
+            app:layout_constraintBottom_toTopOf="@id/log_share"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/log_share" />
+            app:layout_constraintTop_toBottomOf="@id/log_file_label" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/log_browse"
