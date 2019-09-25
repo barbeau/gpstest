@@ -94,6 +94,17 @@
             app:icon="@drawable/ic_map"
             app:iconTint="@color/body_text_1_dark"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/location_launch_app" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/location_launch_app"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin"
+            app:icon="@drawable/ic_map"
+            app:iconTint="@color/body_text_1_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/location_share" />
 
         <com.google.android.material.button.MaterialButton
