@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:textIsSelectable="true"
             android:text="28.3748343,-82.38475"
             app:layout_constraintTop_toBottomOf="@id/location_label"
             app:layout_constraintStart_toStartOf="parent" />
@@ -72,7 +73,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_copy"
-            style="@style/Widget.MaterialComponents.Button"
+            style="@style/Widget.AppTheme.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
@@ -83,7 +84,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_geohack"
-            style="@style/Widget.MaterialComponents.Button"
+            style="@style/Widget.AppTheme.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
@@ -94,7 +95,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_share"
-            style="@style/Widget.MaterialComponents.Button"
+            style="@style/Widget.AppTheme.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
@@ -145,7 +146,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/log_browse"
-            style="@style/Widget.MaterialComponents.Button"
+            style="@style/Widget.AppTheme.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
@@ -156,7 +157,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/log_share"
-            style="@style/Widget.MaterialComponents.Button.Icon"
+            style="@style/Widget.AppTheme.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
