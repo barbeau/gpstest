@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
-            app:icon="@drawable/ic_map"
+            app:icon="@drawable/ic_content_copy_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/location_geohack" />
 
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
-            app:icon="@drawable/ic_map"
+            app:icon="@drawable/ic_public_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/location_launch_app" />
 
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/button_margin"
-            app:icon="@drawable/ic_map"
+            app:icon="@drawable/ic_open_in_new_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/location_share" />
 
