@@ -463,7 +463,7 @@ public class UIUtils {
                 .setTitle(R.string.share)
                 .setCancelable(false)
                 .setView(view)
-                .setPositiveButton(R.string.main_help_close,
+                .setNeutralButton(R.string.main_help_close,
                         (dialog, which) -> {
                             // No-op
                         }
