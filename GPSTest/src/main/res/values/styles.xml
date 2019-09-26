@@ -111,5 +111,12 @@
         <item name="iconPadding">0dp</item>
         <item name="iconTint">@color/colorAccent</item>
     </style>
+
+    <!-- Give our chips a style that matches our theme better -->
+    <style name="Widget.AppTheme.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:minWidth">0dp</item>
+        <item name="chipBackgroundColor">@color/bg_chip_state_list</item>
+        <item name="android:textColor">@color/bg_chip_text_state_list</item>
+    </style>
 </resources>
 

@@ -55,19 +55,19 @@
                 android:clipChildren="false">
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    style="@style/Widget.AppTheme.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Decimal degrees" />
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    style="@style/Widget.AppTheme.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="DMS" />
 
                 <com.google.android.material.chip.Chip
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    style="@style/Widget.AppTheme.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Degrees Decimal Minutes" />
