@@ -190,4 +190,23 @@ class IOUtilsTest {
         val result7 = IOUtils.getLocationFromGeoUri(invalidGeoUri2)
         assertNull(result7)
     }
+
+    /**
+     * Tests creating a Geo URI (RFC 5870) from a location
+     */
+    @Test
+    fun testCreateGeoUri() {
+        val l = Location("geouri-no-alt")
+        l.latitude = 28.12345
+        l.longitude = -82.1345
+        val geoUri = IOUtils.createGeoUri(l)
+        assertEquals("geo:28.12345,-82.1345", geoUri)
+
+        val lAlt = Location("geouri-with-alt")
+        lAlt.latitude = 28.12345
+        lAlt.longitude = -82.1345
+        lAlt.altitude = 104.2
+        val geoUriWithAlt = IOUtils.createGeoUri(lAlt)
+        assertEquals("geo:28.12345,-82.1345,104.2", geoUriWithAlt)
+    }
 }

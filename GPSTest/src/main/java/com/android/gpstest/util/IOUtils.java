@@ -154,4 +154,23 @@ public class IOUtils {
 
         return l;
     }
+
+    /**
+     * Returns a Geo URI (RFC 5870) from the provided location, or null if one can't be created
+     *
+     * @param location
+     * @return a Geo URI (RFC 5870) from the provided location, or null if one can't be created
+     */
+    public static String createGeoUri(Location location) {
+        if (location == null) {
+            return null;
+        }
+        String geoUri = Application.get().getString(R.string.geo_uri_prefix);
+        geoUri += location.getLatitude() + ",";
+        geoUri += location.getLongitude();
+        if (location.hasAltitude()) {
+            geoUri += "," + location.getAltitude();
+        }
+        return geoUri;
+    }
 }

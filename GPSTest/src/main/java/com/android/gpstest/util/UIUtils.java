@@ -18,16 +18,21 @@ package com.android.gpstest.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -38,11 +43,14 @@ import androidx.fragment.app.Fragment;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Intent.createChooser;
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
@@ -293,7 +301,7 @@ public class UIUtils {
         send.putExtra(Intent.EXTRA_TEXT, body.toString());
         send.setType("message/rfc822");
         try {
-            context.startActivity(Intent.createChooser(send, subject));
+            context.startActivity(createChooser(send, subject));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
                     .show();
@@ -457,8 +465,121 @@ public class UIUtils {
         return builder.create();
     }
 
-    public static Dialog createShareDialog(AppCompatActivity activity) {
+    public static Dialog createShareDialog(AppCompatActivity activity, Location location) {
         View view = activity.getLayoutInflater().inflate(R.layout.share, null);
+        TextView locationValue = view.findViewById(R.id.location_value);
+        MaterialButton locationCopy = view.findViewById(R.id.location_copy);
+        MaterialButton locationGeohack = view.findViewById(R.id.location_geohack);
+        MaterialButton locationLaunchApp = view.findViewById(R.id.location_launch_app);
+        MaterialButton locationShare = view.findViewById(R.id.location_share);
+        MaterialButton logBrowse = view.findViewById(R.id.log_browse);
+        MaterialButton logShare = view.findViewById(R.id.log_share);
+        Chip chipDecimalDegrees = view.findViewById(R.id.chip_decimal_degrees);
+        Chip chipDMS = view.findViewById(R.id.chip_dms);
+        Chip chipDegreesDecimalMin = view.findViewById(R.id.chip_degrees_decimal_minutes);
+
+        // TODO - check preference and set chips for coordinate format
+        chipDecimalDegrees.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+
+            }
+        });
+        chipDMS.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+
+            }
+        });
+        chipDegreesDecimalMin.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+
+            }
+        });
+
+        // TODO - set location value text view, set format according to chip preference
+
+        locationCopy.setOnClickListener(v -> {
+            // Build location string to share
+
+            // TODO - Move this to utility method and use it to set Share textview - use Locale?
+            String locationString = location.getLatitude() + "," + location.getLongitude();
+            if (location.hasAltitude()) {
+                locationString += "," + location.getAltitude();
+            }
+
+            // Set the location string on the clipboard
+            ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(Application.get().getString(R.string.pref_file_location_output_title), locationString);
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+        });
+        locationGeohack.setOnClickListener(v -> {
+            // Open the browser to the GeoHack site with lots of coordinate conversions
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String geohackUrl = Application.get().getString(R.string.geohack_url) +
+                        location.getLatitude() + ";" +
+                        location.getLongitude();
+                intent.setData(Uri.parse(geohackUrl));
+                activity.startActivity(intent);
+            }
+        });
+        locationLaunchApp.setOnClickListener(v -> {
+            // Open the location in another app
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(IOUtils.createGeoUri(location)));
+                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                    activity.startActivity(intent);
+                }
+            }
+        });
+        locationShare.setOnClickListener(v -> {
+            // Send the location as a Geo URI (e.g., in an email)
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String geoUri = IOUtils.createGeoUri(location);
+                intent.putExtra(Intent.EXTRA_TEXT, geoUri);
+                intent.setType("text/plain");
+                activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
+            }
+        });
+
+        logBrowse.setOnClickListener(v -> {
+            // TODO - setup file browse and send
+        });
+
+        // File browse
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        //intent.setType("file/*");
+//        intent.setType("text/*");
+//        startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+
+//        @Override
+//        public void onActivityResult(int requestCode, int resultCode,
+//        Intent resultData) {
+//
+//            // The ACTION_OPEN_DOCUMENT intent was sent with the request code
+//            // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
+//            // response to some other intent, and the code below shouldn't run at all.
+//
+//            if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+//                // The document selected by the user won't be returned in the intent.
+//                // Instead, a URI to that document will be contained in the return intent
+//                // provided to this method as a parameter.
+//                // Pull that URI using resultData.getData().
+//                Uri uri = null;
+//                if (resultData != null) {
+//                    uri = resultData.getData();
+//                    Log.i(TAG, "Uri: " + uri.toString());
+//                    showImage(uri);
+//                }
+//            }
+//        }
+
+        logShare.setOnClickListener(v -> {
+            // TODO - Send the log file
+        });
+
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setTitle(R.string.share)
                 .setCancelable(false)
