@@ -209,4 +209,23 @@ class IOUtilsTest {
         val geoUriWithAlt = IOUtils.createGeoUri(lAlt)
         assertEquals("geo:28.12345,-82.1345,104.2", geoUriWithAlt)
     }
+
+    /**
+     * Tests creating a plain text location string to be shared (e.g., via clipboard)
+     */
+    @Test
+    fun testCreateLocationShare() {
+        val l = Location("share-no-alt")
+        l.latitude = 28.12345
+        l.longitude = -82.1345
+        val shareString = IOUtils.createLocationShare(l)
+        assertEquals("28.12345,-82.1345", shareString)
+
+        val lAlt = Location("share-with-alt")
+        lAlt.latitude = 28.12345
+        lAlt.longitude = -82.1345
+        lAlt.altitude = 104.2
+        val shareStringWithAlt = IOUtils.createLocationShare(lAlt)
+        assertEquals("28.12345,-82.1345,104.2", shareStringWithAlt)
+    }
 }

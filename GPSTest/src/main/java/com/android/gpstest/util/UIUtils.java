@@ -18,8 +18,6 @@ package com.android.gpstest.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -498,19 +496,9 @@ public class UIUtils {
         // TODO - set location value text view, set format according to chip preference
 
         locationCopy.setOnClickListener(v -> {
-            // Build location string to share
-
-            // TODO - Move this to utility method and use it to set Share textview - use Locale?
-            String locationString = location.getLatitude() + "," + location.getLongitude();
-            if (location.hasAltitude()) {
-                locationString += "," + location.getAltitude();
-            }
-
-            // Set the location string on the clipboard
-            ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(Application.get().getString(R.string.pref_file_location_output_title), locationString);
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+            // Copy to clipboard
+            String locationString = IOUtils.createLocationShare(location);
+            IOUtils.copyToClipboard(locationString);
         });
         locationGeohack.setOnClickListener(v -> {
             // Open the browser to the GeoHack site with lots of coordinate conversions

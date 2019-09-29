@@ -15,9 +15,13 @@
  */
 package com.android.gpstest.util;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -172,5 +176,31 @@ public class IOUtils {
             geoUri += "," + location.getAltitude();
         }
         return geoUri;
+    }
+
+    /**
+     * Copies the provided location string to the clipboard and shows a Toast to the user
+     *
+     * @param location the location string to copy to the clipboard
+     */
+    public static void copyToClipboard(String location) {
+        ClipboardManager clipboard = (ClipboardManager) Application.get().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(Application.get().getString(R.string.pref_file_location_output_title), location);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(Application.get(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Returns a string to be shared as plain text (e.g., via clipboard)
+     *
+     * @param location
+     * @return a string to be shared as plain text (e.g., via clipboard)
+     */
+    public static String createLocationShare(Location location) {
+        String locationString = location.getLatitude() + "," + location.getLongitude();
+        if (location.hasAltitude()) {
+            locationString += "," + location.getAltitude();
+        }
+        return locationString;
     }
 }
