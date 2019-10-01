@@ -41,6 +41,7 @@ import androidx.fragment.app.Fragment;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.io.FileLogger;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 
@@ -64,6 +65,8 @@ public class UIUtils {
 
     public static final String COORDINATE_LATITUDE = "lat";
     public static final String COORDINATE_LONGITUDE = "lon";
+
+    public static int PICKFILE_REQUEST_CODE = 101;
 
     /**
      * Formats a view so it is ignored for accessible access
@@ -463,7 +466,17 @@ public class UIUtils {
         return builder.create();
     }
 
-    public static Dialog createShareDialog(AppCompatActivity activity, Location location) {
+    /**
+     * Creates a dialog for sharing location and files
+     *
+     * @param activity
+     * @param location
+     * @param fileLogger
+     * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
+     * @return a dialog for sharing location and files
+     */
+    public static Dialog createShareDialog(AppCompatActivity activity, Location location,
+                                           FileLogger fileLogger, Uri alternateFileUri) {
         View view = activity.getLayoutInflater().inflate(R.layout.share, null);
         TextView locationValue = view.findViewById(R.id.location_value);
         MaterialButton locationCopy = view.findViewById(R.id.location_copy);
@@ -493,12 +506,18 @@ public class UIUtils {
             }
         });
 
+        // TODO - hide file settings and show info textview if logged is turned off
+
         // TODO - set location value text view, set format according to chip preference
+        locationValue.setText(IOUtils.createLocationShare(location));
 
         locationCopy.setOnClickListener(v -> {
             // Copy to clipboard
-            String locationString = IOUtils.createLocationShare(location);
-            IOUtils.copyToClipboard(locationString);
+            if (location != null) {
+                String locationString = IOUtils.createLocationShare(location);
+                IOUtils.copyToClipboard(locationString);
+                Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+            }
         });
         locationGeohack.setOnClickListener(v -> {
             // Open the browser to the GeoHack site with lots of coordinate conversions
@@ -533,44 +552,27 @@ public class UIUtils {
         });
 
         logBrowse.setOnClickListener(v -> {
-            // TODO - setup file browse and send
+            // File browse
+            Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getBaseDirectory());
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setDataAndType(uri, "text/txt");
+            intent.putExtra(Application.get().getString(R.string.key_location_intent), location);
+            activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
         });
 
-        // File browse
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        //intent.setType("file/*");
-//        intent.setType("text/*");
-//        startActivityForResult(intent, PICKFILE_REQUEST_CODE);
-
-//        @Override
-//        public void onActivityResult(int requestCode, int resultCode,
-//        Intent resultData) {
-//
-//            // The ACTION_OPEN_DOCUMENT intent was sent with the request code
-//            // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
-//            // response to some other intent, and the code below shouldn't run at all.
-//
-//            if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-//                // The document selected by the user won't be returned in the intent.
-//                // Instead, a URI to that document will be contained in the return intent
-//                // provided to this method as a parameter.
-//                // Pull that URI using resultData.getData().
-//                Uri uri = null;
-//                if (resultData != null) {
-//                    uri = resultData.getData();
-//                    Log.i(TAG, "Uri: " + uri.toString());
-//                    showImage(uri);
-//                }
-//            }
-//        }
-
         logShare.setOnClickListener(v -> {
-            // TODO - Send the log file
+            // Send the log file
+            if (alternateFileUri == null) {
+                // Send the log file currently being logged to by the FileLogger
+                fileLogger.send(activity);
+            } else {
+                // Send the log file selected by the user using the File Browse button
+                IOUtils.sendLogFile(activity, alternateFileUri);
+            }
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setTitle(R.string.share)
-                .setCancelable(false)
                 .setView(view)
                 .setNeutralButton(R.string.main_help_close,
                         (dialog, which) -> {

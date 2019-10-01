@@ -15,19 +15,24 @@
  */
 package com.android.gpstest.util;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.text.TextUtils;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.google.zxing.integration.android.IntentIntegrator;
+
+import java.io.File;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;
 import static com.android.gpstest.util.LocationUtils.isValidLongitude;
@@ -179,7 +184,7 @@ public class IOUtils {
     }
 
     /**
-     * Copies the provided location string to the clipboard and shows a Toast to the user
+     * Copies the provided location string to the clipboard
      *
      * @param location the location string to copy to the clipboard
      */
@@ -187,7 +192,6 @@ public class IOUtils {
         ClipboardManager clipboard = (ClipboardManager) Application.get().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(Application.get().getString(R.string.pref_file_location_output_title), location);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(Application.get(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -197,10 +201,40 @@ public class IOUtils {
      * @return a string to be shared as plain text (e.g., via clipboard)
      */
     public static String createLocationShare(Location location) {
+        if (location == null) {
+            return null;
+        }
         String locationString = location.getLatitude() + "," + location.getLongitude();
         if (location.hasAltitude()) {
             locationString += "," + location.getAltitude();
         }
         return locationString;
+    }
+
+    /**
+     * Sends the specified file via the ACTION_SEND Intent
+     *
+     * @param activity
+     * @param fileUri  Android URI for the File to be attached
+     */
+    public static void sendLogFile(Activity activity, android.net.Uri fileUri) {
+        Log.d(TAG, "Sending " + fileUri);
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("*/*");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "GnssLog from GPSTest");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        activity.startActivity(Intent.createChooser(emailIntent, Application.get().getString(R.string.send_log)));
+    }
+
+    /**
+     * Returns an Android URI for the provided File that can be used to attach the file to a message via ACTION_SEND Intent
+     *
+     * @param context
+     * @param file
+     * @return an Android URI for the provided File that can be used to attach the file to a message via ACTION_SEND Intent
+     */
+    public static android.net.Uri getUriFromFile(Context context, File file) {
+        return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
     }
 }

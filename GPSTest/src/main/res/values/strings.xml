@@ -47,6 +47,7 @@
     <string name="gps_switch">Off/On</string>
     <string name="share">Share</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
+    <string name="send_log">"Send log…"</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
     <string name="force_time_injection_failure">Device does not support injecting time data.

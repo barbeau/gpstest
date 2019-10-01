@@ -351,18 +351,27 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // See if this result was a scanned QR Code with a ground truth location
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            String geoUri = scanResult.getContents();
-            Location l = IOUtils.getLocationFromGeoUri(geoUri);
-            if (l != null) {
-                // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
-                Intent showRadar = IOUtils.createShowRadarIntent(l);
-                recreateApp(showRadar);
-            } else {
-                Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
-                        Toast.LENGTH_LONG).show();
+        if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // User picked a file to share from the Share dialog - update the dialog
+            if (data != null) {
+                Uri uri = data.getData();
+                Log.i(TAG, "Uri: " + uri.toString());
+                UIUtils.createShareDialog(this, data.getExtras().getParcelable(Application.get().getString(R.string.key_location_intent)), mFileLogger, uri);
+            }
+        } else {
+            // See if this result was a scanned QR Code with a ground truth location
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (scanResult != null) {
+                String geoUri = scanResult.getContents();
+                Location l = IOUtils.getLocationFromGeoUri(geoUri);
+                if (l != null) {
+                    // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
+                    Intent showRadar = IOUtils.createShowRadarIntent(l);
+                    recreateApp(showRadar);
+                } else {
+                    Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -1513,7 +1522,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void share() {
-        UIUtils.createShareDialog(this, mLastLocation).show();
+        UIUtils.createShareDialog(this, mLastLocation, mFileLogger, null).show();
     }
 
     /**
