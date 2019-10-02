@@ -212,6 +212,21 @@ public class IOUtils {
     }
 
     /**
+     * Returns a string to be shared as plain text (e.g., via clipboard) based on the provided
+     * pre-formatted latitude, longitude, and (optionally) altitude
+     *
+     * @return a string to be shared as plain text (e.g., via clipboard) based on the provided
+     * * pre-formatted latitude, longitude, and (optionally) altitude
+     */
+    public static String createLocationShare(String latitude, String longitude, String altitude) {
+        String locationString = latitude + "," + longitude;
+        if (!TextUtils.isEmpty(altitude)) {
+            locationString += "," + altitude;
+        }
+        return locationString;
+    }
+
+    /**
      * Sends the specified file via the ACTION_SEND Intent
      *
      * @param activity

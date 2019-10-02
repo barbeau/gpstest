@@ -499,32 +499,62 @@ public class UIUtils {
         Chip chipDMS = view.findViewById(R.id.chip_dms);
         Chip chipDegreesDecimalMin = view.findViewById(R.id.chip_degrees_decimal_minutes);
 
-        // TODO - check preference and set chips for coordinate format
+        // Check selected coordinate format and show in UI
+        String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
+        switch (coordinateFormat) {
+            // Constants below must match string values in do_not_translate.xml
+            case "dd":
+                // Decimal degrees
+                locationValue.setText(IOUtils.createLocationShare(location));
+                chipDecimalDegrees.setChecked(true);
+                break;
+            case "dms":
+                // Degrees minutes seconds
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() ? Double.toString(location.getAltitude()) : null));
+                chipDMS.setChecked(true);
+                break;
+            case "ddm":
+                // Degrees decimal minutes
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() ? Double.toString(location.getAltitude()) : null));
+                chipDegreesDecimalMin.setChecked(true);
+                break;
+            default:
+                // Decimal degrees
+                locationValue.setText(IOUtils.createLocationShare(location));
+                chipDecimalDegrees.setChecked(true);
+                break;
+        }
+
         chipDecimalDegrees.setOnCheckedChangeListener((view1, isChecked) -> {
             if (isChecked) {
-
+                locationValue.setText(IOUtils.createLocationShare(location));
             }
         });
         chipDMS.setOnCheckedChangeListener((view1, isChecked) -> {
             if (isChecked) {
-
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() ? Double.toString(location.getAltitude()) : null));
             }
         });
         chipDegreesDecimalMin.setOnCheckedChangeListener((view1, isChecked) -> {
             if (isChecked) {
-
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() ? Double.toString(location.getAltitude()) : null));
             }
         });
 
         // TODO - hide file settings and show info textview if logged is turned off
 
-        // TODO - set location value text view, set format according to chip preference
-        locationValue.setText(IOUtils.createLocationShare(location));
-
         locationCopy.setOnClickListener(v -> {
             // Copy to clipboard
             if (location != null) {
-                String locationString = IOUtils.createLocationShare(location);
+                String locationString = locationValue.getText().toString();
                 IOUtils.copyToClipboard(locationString);
                 Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
             }
