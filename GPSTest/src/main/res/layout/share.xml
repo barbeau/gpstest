@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:clipChildren="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,8 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/button_margin"
             android:textIsSelectable="true"
-            android:text="28.3748343,-82.38475"
+            tools:text="28.3748343,-82.38475"
             app:layout_constraintTop_toBottomOf="@id/location_label"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -151,7 +153,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="16dp"
-            android:text="2019-02-04 12:20:20"
+            android:layout_marginEnd="@dimen/button_margin"
+            android:textIsSelectable="true"
+            tools:text="2019-02-04 12:20:20"
             app:layout_constraintBottom_toTopOf="@id/log_share"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/log_file_label" />

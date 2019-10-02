@@ -478,7 +478,17 @@ public class UIUtils {
     public static Dialog createShareDialog(AppCompatActivity activity, Location location,
                                            FileLogger fileLogger, Uri alternateFileUri) {
         View view = activity.getLayoutInflater().inflate(R.layout.share, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(R.string.share)
+                .setView(view)
+                .setNeutralButton(R.string.main_help_close,
+                        (dialog, which) -> {
+                            // No-op
+                        }
+                );
+        AlertDialog dialog = builder.create();
         TextView locationValue = view.findViewById(R.id.location_value);
+        TextView fileName = view.findViewById(R.id.log_file_name);
         MaterialButton locationCopy = view.findViewById(R.id.location_copy);
         MaterialButton locationGeohack = view.findViewById(R.id.location_geohack);
         MaterialButton locationLaunchApp = view.findViewById(R.id.location_launch_app);
@@ -551,12 +561,26 @@ public class UIUtils {
             }
         });
 
+        // Set the log file name
+        if (alternateFileUri == null) {
+            // Set the log file currently being logged to by the FileLogger
+            fileName.setText(fileLogger.getFile().getName());
+        } else {
+            // Set the log file selected by the user using the File Browse button
+            String lastPathSegment = alternateFileUri.getLastPathSegment();
+            // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
+            String[] parts = lastPathSegment.split("/");
+            fileName.setText(parts[1]);
+        }
+
         logBrowse.setOnClickListener(v -> {
             // File browse
             Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getFile());
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setDataAndType(uri, "text/plain");
+            intent.setData(uri);
             activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+            // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
+            dialog.dismiss();
         });
 
         logShare.setOnClickListener(v -> {
@@ -567,18 +591,11 @@ public class UIUtils {
             } else {
                 // Send the log file selected by the user using the File Browse button
                 IOUtils.sendLogFile(activity, alternateFileUri);
+
             }
         });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(R.string.share)
-                .setView(view)
-                .setNeutralButton(R.string.main_help_close,
-                        (dialog, which) -> {
-                            // No-op
-                        }
-                );
-        return builder.create();
+        return dialog;
     }
 
     /**
