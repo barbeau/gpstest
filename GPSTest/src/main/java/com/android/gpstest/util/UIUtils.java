@@ -553,10 +553,9 @@ public class UIUtils {
 
         logBrowse.setOnClickListener(v -> {
             // File browse
-            Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getBaseDirectory());
+            Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getFile());
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setDataAndType(uri, "text/txt");
-            intent.putExtra(Application.get().getString(R.string.key_location_intent), location);
+            intent.setDataAndType(uri, "text/plain");
             activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
         });
 

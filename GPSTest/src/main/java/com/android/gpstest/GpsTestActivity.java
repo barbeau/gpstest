@@ -356,7 +356,7 @@ public class GpsTestActivity extends AppCompatActivity
             if (data != null) {
                 Uri uri = data.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
-                UIUtils.createShareDialog(this, data.getExtras().getParcelable(Application.get().getString(R.string.key_location_intent)), mFileLogger, uri);
+                UIUtils.createShareDialog(this, mLastLocation, mFileLogger, uri);
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location

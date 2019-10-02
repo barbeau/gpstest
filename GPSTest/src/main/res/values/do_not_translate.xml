@@ -82,9 +82,6 @@
     <!-- Geo URI for parsing location data from QR Codes -->
     <string name="geo_uri_prefix">geo:</string>
 
-    <!-- Key for passing locations via Intents -->
-    <string name="key_location_intent">location</string>
-
     <!-- Preference keys -->
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
 

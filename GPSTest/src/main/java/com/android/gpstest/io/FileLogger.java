@@ -72,14 +72,13 @@ public class FileLogger {
     private BufferedWriter mFileWriter;
     private File mFile;
     private boolean mIsStarted = false;
-    private File mBaseDirectory = null;
 
     public FileLogger(Context context) {
         mContext = context;
     }
 
-    public File getBaseDirectory() {
-        return mBaseDirectory;
+    public File getFile() {
+        return mFile;
     }
 
     /**
@@ -92,7 +91,6 @@ public class FileLogger {
             if (Environment.MEDIA_MOUNTED.equals(state)) {
                 baseDirectory = new File(Environment.getExternalStorageDirectory(), FILE_PREFIX);
                 baseDirectory.mkdirs();
-                mBaseDirectory = baseDirectory;
             } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
                 logError("Cannot write to external storage.");
                 return;
