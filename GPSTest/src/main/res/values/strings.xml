@@ -48,6 +48,9 @@
     <string name="share">Share</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
+    <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
+    <string name="no_location">Try sharing your location after getting a GNSS fix</string>
+    <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
     <string name="force_time_injection_failure">Device does not support injecting time data.

@@ -198,14 +198,16 @@ public class IOUtils {
      * Returns a string to be shared as plain text (e.g., via clipboard)
      *
      * @param location
+     * @param includeAltitude true if altitude should be included in the output, false if it should
+     *                        not.  If the location doesn't have an altitude this variable has no effect.
      * @return a string to be shared as plain text (e.g., via clipboard)
      */
-    public static String createLocationShare(Location location) {
+    public static String createLocationShare(Location location, boolean includeAltitude) {
         if (location == null) {
             return null;
         }
         String locationString = location.getLatitude() + "," + location.getLongitude();
-        if (location.hasAltitude()) {
+        if (location.hasAltitude() && includeAltitude) {
             locationString += "," + location.getAltitude();
         }
         return locationString;

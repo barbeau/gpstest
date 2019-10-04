@@ -37,12 +37,25 @@
             app:layout_constraintTop_toBottomOf="@id/location_label"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/no_location"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/button_margin"
+            android:textIsSelectable="true"
+            android:text="@string/no_location"
+            app:layout_constraintTop_toBottomOf="@id/location_label"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <HorizontalScrollView
+            android:id="@+id/scroll_coordinate_format"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@id/location_value"
-            app:layout_constraintBottom_toTopOf="@id/location_share"
+            app:layout_constraintBottom_toTopOf="@id/include_altitude"
             app:layout_constraintStart_toStartOf="parent"
             android:clipChildren="false">
 
@@ -51,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="10dp"
                 app:singleLine="true"
                 app:singleSelection="true"
                 android:clipChildren="false">
@@ -78,6 +91,16 @@
                     android:text="Degrees Decimal Minutes" />
             </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
+
+        <CheckBox
+            android:id="@+id/include_altitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/button_margin"
+            android:text="@string/include_altitude"
+            app:layout_constraintTop_toBottomOf="@id/scroll_coordinate_format"
+            app:layout_constraintBottom_toTopOf="@id/location_share"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_copy"
@@ -152,10 +175,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/button_margin"
             android:layout_marginEnd="@dimen/button_margin"
             android:textIsSelectable="true"
-            tools:text="2019-02-04 12:20:20"
+            tools:text="gnss_log_2019-02-04_12_20_20"
+            app:layout_constraintBottom_toTopOf="@id/log_share"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/log_file_label" />
+
+        <TextView
+            android:id="@+id/log_instructions"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/button_margin"
+            android:text="@string/log_instructions"
             app:layout_constraintBottom_toTopOf="@id/log_share"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/log_file_label" />

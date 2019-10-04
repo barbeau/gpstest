@@ -215,17 +215,24 @@ class IOUtilsTest {
      */
     @Test
     fun testCreateLocationShare() {
+        val lat = 28.12345
+        val lon = -82.1345
+        val alt = 104.2
+
         val l = Location("share-no-alt")
-        l.latitude = 28.12345
-        l.longitude = -82.1345
-        val shareString = IOUtils.createLocationShare(l)
+        l.latitude = lat
+        l.longitude = lon
+        val shareString = IOUtils.createLocationShare(l, true)
         assertEquals("28.12345,-82.1345", shareString)
 
         val lAlt = Location("share-with-alt")
-        lAlt.latitude = 28.12345
-        lAlt.longitude = -82.1345
-        lAlt.altitude = 104.2
-        val shareStringWithAlt = IOUtils.createLocationShare(lAlt)
+        lAlt.latitude = lat
+        lAlt.longitude = lon
+        lAlt.altitude = alt
+        val shareStringWithAlt = IOUtils.createLocationShare(lAlt, true)
         assertEquals("28.12345,-82.1345,104.2", shareStringWithAlt)
+
+        val shareStringAltRemoved = IOUtils.createLocationShare(lAlt, false)
+        assertEquals("28.12345,-82.1345", shareStringAltRemoved)
     }
 }

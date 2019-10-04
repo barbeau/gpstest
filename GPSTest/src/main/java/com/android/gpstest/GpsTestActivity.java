@@ -356,7 +356,7 @@ public class GpsTestActivity extends AppCompatActivity
             if (data != null) {
                 Uri uri = data.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
-                UIUtils.createShareDialog(this, mLastLocation, mFileLogger, uri).show();
+                UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, uri).show();
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -480,7 +480,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         if (PermissionUtils.hasGrantedFileWritePermission(this) && !mFileLogger.isStarted() &&
-                (mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile)) {
+                isFileLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
             mFileLogger.startNewLog();
         }
@@ -509,6 +509,10 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         super.onPause();
+    }
+
+    private boolean isFileLoggingEnabled() {
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -1284,7 +1288,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
         mWriteRawMeasurementToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
-        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
+        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_measurement_output), false);
 
         if (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile) {
             addGnssMeasurementsListener();
@@ -1366,7 +1370,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         item = menu.findItem(R.id.share);
         if (item != null) {
-            item.setVisible(mLastLocation != null);
+            item.setVisible(mLastLocation != null || isFileLoggingEnabled());
         }
 
         return true;
@@ -1522,7 +1526,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void share() {
-        UIUtils.createShareDialog(this, mLastLocation, mFileLogger, null).show();
+        UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, null).show();
     }
 
     /**
