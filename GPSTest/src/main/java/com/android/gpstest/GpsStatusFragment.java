@@ -40,10 +40,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +56,7 @@ import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.NmeaUtils;
 import com.android.gpstest.util.PreferenceUtils;
@@ -89,6 +92,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
             mSbasNotAvailableView;
+
+    private CardView mLocationCard;
+
+    private Location mLocation;
 
     private TableRow mSpeedBearingAccuracyRow;
 
@@ -165,6 +172,19 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_india);
         mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
         mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
+
+        mLocationCard = v.findViewById(R.id.status_location_card);
+        mLocationCard.setOnClickListener(view -> {
+            // Copy location to clipboard
+            if (mLocation != null) {
+                boolean includeAltitude = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
+                String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
+                String formattedLocation = UIUtils.formatLocationForDisplay(mLocation, null, includeAltitude,
+                        null, null, null, coordinateFormat);
+                IOUtils.copyToClipboard(formattedLocation);
+                Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+            }
+        });
 
         // GNSS
         LinearLayoutManager llmGnss = new LinearLayoutManager(getContext());
@@ -343,6 +363,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return;
         }
+
+        // Cache location for copy to clipboard operation
+        mLocation = location;
 
         // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
         mTTFFView.setText(mTtff);

@@ -526,7 +526,7 @@ public class UIUtils {
 
         // Check selected coordinate format and show in UI
         String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
-        setLocationViewByFormat(location, locationValue, includeAltitude.isChecked(), chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat);
+        formatLocationForDisplay(location, locationValue, includeAltitude.isChecked(), chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat);
 
         // Change the location text when the user toggles the altitude checkbox
         includeAltitude.setOnCheckedChangeListener((view1, isChecked) -> {
@@ -538,7 +538,7 @@ public class UIUtils {
             } else if (chipDegreesDecimalMin.isChecked()) {
                 format = "ddm";
             }
-            setLocationViewByFormat(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format);
+            formatLocationForDisplay(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format);
             PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), isChecked);
         });
 
@@ -651,34 +651,60 @@ public class UIUtils {
         return dialog;
     }
 
-    private static void setLocationViewByFormat(Location location, TextView locationValue, boolean includeAltitude, Chip chipDecimalDegrees, Chip chipDMS, Chip chipDegreesDecimalMin, String coordinateFormat) {
+    /**
+     * Returns the provided location based on the provided coordinate format, and sets the provided Views (locationValue, chips) accordingly if views are provided,
+     * and returns the string value.
+     *
+     * @param location              location to be formatted
+     * @param locationValue         View to be set with the selected coordinateFormat
+     * @param includeAltitude       true if altitude should be included, false if it should not
+     * @param chipDecimalDegrees    View to be set as checked if "dd" is the coordinateFormat
+     * @param chipDMS               View to be set as checked if "dms" is the coordinateFormat
+     * @param chipDegreesDecimalMin View to be set as checked if "ddm" is the coordinateFormat
+     * @param coordinateFormat      dd, dms, or ddm
+     * @return the provided location based on the provided coordinate format
+     */
+    public static String formatLocationForDisplay(Location location, TextView locationValue, boolean includeAltitude, Chip chipDecimalDegrees, Chip chipDMS, Chip chipDegreesDecimalMin, String coordinateFormat) {
+        String formattedLocation;
         switch (coordinateFormat) {
             // Constants below must match string values in do_not_translate.xml
             case "dd":
                 // Decimal degrees
-                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude));
-                chipDecimalDegrees.setChecked(true);
+                formattedLocation = IOUtils.createLocationShare(location, includeAltitude);
+                if (chipDecimalDegrees != null) {
+                    chipDecimalDegrees.setChecked(true);
+                }
                 break;
             case "dms":
                 // Degrees minutes seconds
-                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
                         UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null));
-                chipDMS.setChecked(true);
+                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                if (chipDMS != null) {
+                    chipDMS.setChecked(true);
+                }
                 break;
             case "ddm":
                 // Degrees decimal minutes
-                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
                         UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null));
-                chipDegreesDecimalMin.setChecked(true);
+                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                if (chipDegreesDecimalMin != null) {
+                    chipDegreesDecimalMin.setChecked(true);
+                }
                 break;
             default:
                 // Decimal degrees
-                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude));
-                chipDecimalDegrees.setChecked(true);
+                formattedLocation = IOUtils.createLocationShare(location, includeAltitude);
+                if (chipDecimalDegrees != null) {
+                    chipDecimalDegrees.setChecked(true);
+                }
                 break;
         }
+        if (locationValue != null) {
+            locationValue.setText(formattedLocation);
+        }
+        return formattedLocation;
     }
 
     /**
