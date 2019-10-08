@@ -247,8 +247,8 @@ public class FileLogger {
     }
 
     /**
-     * Send the current log via email or other options selected from a pop menu shown to the user. A
-     * new log is started when calling this function.
+     * Send the current log via email or other options selected from the chooser shown to the user. The
+     * current log is closed when calling this method.
      * @param activity Activity used to open the chooser to send the file
      */
     public void send(Activity activity) {
