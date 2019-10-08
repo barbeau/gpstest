@@ -199,15 +199,18 @@ class IOUtilsTest {
         val l = Location("geouri-no-alt")
         l.latitude = 28.12345
         l.longitude = -82.1345
-        val geoUri = IOUtils.createGeoUri(l)
+        val geoUri = IOUtils.createGeoUri(l, true)
         assertEquals("geo:28.12345,-82.1345", geoUri)
 
         val lAlt = Location("geouri-with-alt")
         lAlt.latitude = 28.12345
         lAlt.longitude = -82.1345
         lAlt.altitude = 104.2
-        val geoUriWithAlt = IOUtils.createGeoUri(lAlt)
+        val geoUriWithAlt = IOUtils.createGeoUri(lAlt, true)
         assertEquals("geo:28.12345,-82.1345,104.2", geoUriWithAlt)
+
+        val geoUriAltExcluded = IOUtils.createGeoUri(lAlt, false)
+        assertEquals("geo:28.12345,-82.1345", geoUriAltExcluded)
     }
 
     /**

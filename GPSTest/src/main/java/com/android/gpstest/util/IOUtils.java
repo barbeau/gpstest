@@ -168,16 +168,17 @@ public class IOUtils {
      * Returns a Geo URI (RFC 5870) from the provided location, or null if one can't be created
      *
      * @param location
+     * @param includeAltitude true if altitude should be included in the Geo URI, false if it should be omitted. If the location doesn't have an altitude value this parameter has no effect.
      * @return a Geo URI (RFC 5870) from the provided location, or null if one can't be created
      */
-    public static String createGeoUri(Location location) {
+    public static String createGeoUri(Location location, boolean includeAltitude) {
         if (location == null) {
             return null;
         }
         String geoUri = Application.get().getString(R.string.geo_uri_prefix);
         geoUri += location.getLatitude() + ",";
         geoUri += location.getLongitude();
-        if (location.hasAltitude()) {
+        if (location.hasAltitude() && includeAltitude) {
             geoUri += "," + location.getAltitude();
         }
         return geoUri;

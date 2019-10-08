@@ -585,7 +585,7 @@ public class UIUtils {
             // Open the location in another app
             if (location != null) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(IOUtils.createGeoUri(location)));
+                intent.setData(Uri.parse(IOUtils.createGeoUri(location, includeAltitude.isChecked())));
                 if (intent.resolveActivity(activity.getPackageManager()) != null) {
                     activity.startActivity(intent);
                 }
@@ -595,7 +595,7 @@ public class UIUtils {
             // Send the location as a Geo URI (e.g., in an email)
             if (location != null) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                String geoUri = IOUtils.createGeoUri(location);
+                String geoUri = IOUtils.createGeoUri(location, includeAltitude.isChecked());
                 intent.putExtra(Intent.EXTRA_TEXT, geoUri);
                 intent.setType("text/plain");
                 activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
