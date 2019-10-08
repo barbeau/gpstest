@@ -23,11 +23,14 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -38,11 +41,16 @@ import androidx.fragment.app.Fragment;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.io.FileLogger;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Intent.createChooser;
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
@@ -58,6 +66,8 @@ public class UIUtils {
 
     public static final String COORDINATE_LATITUDE = "lat";
     public static final String COORDINATE_LONGITUDE = "lon";
+
+    public static int PICKFILE_REQUEST_CODE = 101;
 
     /**
      * Formats a view so it is ignored for accessible access
@@ -293,7 +303,7 @@ public class UIUtils {
         send.putExtra(Intent.EXTRA_TEXT, body.toString());
         send.setType("message/rfc822");
         try {
-            context.startActivity(Intent.createChooser(send, subject));
+            context.startActivity(createChooser(send, subject));
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, R.string.feedback_error, Toast.LENGTH_LONG)
                     .show();
@@ -455,6 +465,220 @@ public class UIUtils {
                         }
                 );
         return builder.create();
+    }
+
+    /**
+     * Creates a dialog for sharing location and files
+     *
+     * @param activity
+     * @param location
+     * @param loggingEnabled true if logging is enabled, false if it is not
+     * @param fileLogger the file logger being used to log files
+     * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
+     * @return a dialog for sharing location and files
+     */
+    public static Dialog createShareDialog(AppCompatActivity activity, Location location,
+                                           boolean loggingEnabled, FileLogger fileLogger,
+                                           Uri alternateFileUri) {
+        View view = activity.getLayoutInflater().inflate(R.layout.share, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(R.string.share)
+                .setView(view)
+                .setNeutralButton(R.string.main_help_close,
+                        (dialog, which) -> {
+                            // No-op
+                        }
+                );
+        AlertDialog dialog = builder.create();
+        TextView locationValue = view.findViewById(R.id.location_value);
+        TextView fileName = view.findViewById(R.id.log_file_name);
+        CheckBox includeAltitude = view.findViewById(R.id.include_altitude);
+        TextView noLocation = view.findViewById(R.id.no_location);
+        TextView logInstructions = view.findViewById(R.id.log_instructions);
+        MaterialButton locationCopy = view.findViewById(R.id.location_copy);
+        MaterialButton locationGeohack = view.findViewById(R.id.location_geohack);
+        MaterialButton locationLaunchApp = view.findViewById(R.id.location_launch_app);
+        MaterialButton locationShare = view.findViewById(R.id.location_share);
+        MaterialButton logBrowse = view.findViewById(R.id.log_browse);
+        MaterialButton logShare = view.findViewById(R.id.log_share);
+        ChipGroup chipGroup = view.findViewById(R.id.coordinate_format_group);
+        Chip chipDecimalDegrees = view.findViewById(R.id.chip_decimal_degrees);
+        Chip chipDMS = view.findViewById(R.id.chip_dms);
+        Chip chipDegreesDecimalMin = view.findViewById(R.id.chip_degrees_decimal_minutes);
+
+        if (location == null) {
+            // No location - Hide the location info
+            locationValue.setVisibility(View.GONE);
+            includeAltitude.setVisibility(View.GONE);
+            chipGroup.setVisibility(View.GONE);
+            locationCopy.setVisibility(View.GONE);
+            locationGeohack.setVisibility(View.GONE);
+            locationLaunchApp.setVisibility(View.GONE);
+            locationShare.setVisibility(View.GONE);
+        } else {
+            // We have a location - Hide the "no location" message
+            noLocation.setVisibility(View.GONE);
+        }
+
+        // Set default state of include altitude view
+        boolean includeAltitudePref = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
+        includeAltitude.setChecked(includeAltitudePref);
+
+        // Check selected coordinate format and show in UI
+        String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
+        setLocationViewByFormat(location, locationValue, includeAltitude.isChecked(), chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat);
+
+        // Change the location text when the user toggles the altitude checkbox
+        includeAltitude.setOnCheckedChangeListener((view1, isChecked) -> {
+            String format = "dd";
+            if (chipDecimalDegrees.isChecked()) {
+                format = "dd";
+            } else if (chipDMS.isChecked()) {
+                format = "dms";
+            } else if (chipDegreesDecimalMin.isChecked()) {
+                format = "ddm";
+            }
+            setLocationViewByFormat(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format);
+            PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), isChecked);
+        });
+
+        chipDecimalDegrees.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude.isChecked()));
+            }
+        });
+        chipDMS.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+            }
+        });
+        chipDegreesDecimalMin.setOnCheckedChangeListener((view1, isChecked) -> {
+            if (isChecked) {
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+            }
+        });
+
+        locationCopy.setOnClickListener(v -> {
+            // Copy to clipboard
+            if (location != null) {
+                String locationString = locationValue.getText().toString();
+                IOUtils.copyToClipboard(locationString);
+                Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+            }
+        });
+        locationGeohack.setOnClickListener(v -> {
+            // Open the browser to the GeoHack site with lots of coordinate conversions
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                String geohackUrl = Application.get().getString(R.string.geohack_url) +
+                        location.getLatitude() + ";" +
+                        location.getLongitude();
+                intent.setData(Uri.parse(geohackUrl));
+                activity.startActivity(intent);
+            }
+        });
+        locationLaunchApp.setOnClickListener(v -> {
+            // Open the location in another app
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(IOUtils.createGeoUri(location, includeAltitude.isChecked())));
+                if (intent.resolveActivity(activity.getPackageManager()) != null) {
+                    activity.startActivity(intent);
+                }
+            }
+        });
+        locationShare.setOnClickListener(v -> {
+            // Send the location as a Geo URI (e.g., in an email)
+            if (location != null) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                String geoUri = IOUtils.createGeoUri(location, includeAltitude.isChecked());
+                intent.putExtra(Intent.EXTRA_TEXT, geoUri);
+                intent.setType("text/plain");
+                activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
+            }
+        });
+
+        if (loggingEnabled) {
+            // Hide the logging instructions
+            logInstructions.setVisibility(View.GONE);
+        } else {
+            // Hide the logging and file views
+            fileName.setVisibility(View.GONE);
+            logBrowse.setVisibility(View.GONE);
+            logShare.setVisibility(View.GONE);
+        }
+
+        // Set the log file name
+        if (loggingEnabled) {
+            if (alternateFileUri == null) {
+                // Set the log file currently being logged to by the FileLogger
+                fileName.setText(fileLogger.getFile().getName());
+            } else {
+                // Set the log file selected by the user using the File Browse button
+                String lastPathSegment = alternateFileUri.getLastPathSegment();
+                // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
+                String[] parts = lastPathSegment.split("/");
+                fileName.setText(parts[1]);
+            }
+        }
+
+        logBrowse.setOnClickListener(v -> {
+            // File browse
+            Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getFile());
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setData(uri);
+            activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
+            // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
+            dialog.dismiss();
+        });
+
+        logShare.setOnClickListener(v -> {
+            // Send the log file
+            if (alternateFileUri == null) {
+                // Send the log file currently being logged to by the FileLogger
+                fileLogger.send(activity);
+            } else {
+                // Send the log file selected by the user using the File Browse button
+                IOUtils.sendLogFile(activity, alternateFileUri);
+
+            }
+        });
+
+        return dialog;
+    }
+
+    private static void setLocationViewByFormat(Location location, TextView locationValue, boolean includeAltitude, Chip chipDecimalDegrees, Chip chipDMS, Chip chipDegreesDecimalMin, String coordinateFormat) {
+        switch (coordinateFormat) {
+            // Constants below must match string values in do_not_translate.xml
+            case "dd":
+                // Decimal degrees
+                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude));
+                chipDecimalDegrees.setChecked(true);
+                break;
+            case "dms":
+                // Degrees minutes seconds
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null));
+                chipDMS.setChecked(true);
+                break;
+            case "ddm":
+                // Degrees decimal minutes
+                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null));
+                chipDegreesDecimalMin.setChecked(true);
+                break;
+            default:
+                // Decimal degrees
+                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude));
+                chipDecimalDegrees.setChecked(true);
+                break;
+        }
     }
 
     /**

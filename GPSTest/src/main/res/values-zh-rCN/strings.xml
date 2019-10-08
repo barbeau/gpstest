@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_success">已成功删除辅助数据。</string>
     <string name="delete_aiding_data_failure">设备不支持删除辅助数据。</string>
     <string name="gps_switch">开关</string>
-    <string name="send_location">发送位置</string>
+    <string name="share">发送位置</string>
     <string name="set_fix_frequency">设置固定频率</string>
     <string name="force_time_injection_success">已成功导入时间数据。</string>
     <string name="force_time_injection_failure">设备不支持导入时间数据。</string>

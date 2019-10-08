@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_success">Επιτυχής διαγραφή δεδομένων βοήθειας.</string>
     <string name="delete_aiding_data_failure">Αδυναμία διαγραφής δεδομένων βοήθειας (μη υποστήριξη).</string>
     <string name="gps_switch">Κλειστό/Ανοιχτό</string>
-    <string name="send_location">Αποστολή τοποθεσίας</string>
+    <string name="share">Αποστολή τοποθεσίας</string>
     <string name="set_fix_frequency">Ορίστε συχνότητα σταθεροποίησης</string>
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
     <string name="force_time_injection_failure">Αδυναμία εισαγωγής δεδομένων ώρας (μη υποστήριξη).</string>

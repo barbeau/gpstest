@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_success">Pomocné údaje úspěšně vymazány.</string>
     <string name="delete_aiding_data_failure">Zařízení nepodporuje vymazání pomocných údajů.</string>
     <string name="gps_switch">VYP/ZAP</string>
-    <string name="send_location">Odeslat polohu</string>
+    <string name="share">Odeslat polohu</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
     <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>

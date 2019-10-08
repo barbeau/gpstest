@@ -43,7 +43,7 @@
     <string name="delete_aiding_data_success">Dati di assistenza rimossi con successo</string>
     <string name="delete_aiding_data_failure">Il dispositivo non supporta la rimozione dei dati di assistenza</string>
     <string name="gps_switch">Off/On</string>
-    <string name="send_location">Invia Posizione</string>
+    <string name="share">Invia Posizione</string>
     <string name="set_fix_frequency">Imposta Frequenza di localizzazione</string>
     <string name="force_time_injection_success">Dati temporali NTP inseriti con successo</string>
     <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento di dati temporali NTP</string>

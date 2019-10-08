@@ -89,7 +89,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
 
-import static android.content.Intent.createChooser;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
@@ -352,18 +351,27 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // See if this result was a scanned QR Code with a ground truth location
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null) {
-            String geoUri = scanResult.getContents();
-            Location l = IOUtils.getLocationFromGeoUri(geoUri);
-            if (l != null) {
-                // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
-                Intent showRadar = IOUtils.createShowRadarIntent(l);
-                recreateApp(showRadar);
-            } else {
-                Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
-                        Toast.LENGTH_LONG).show();
+        if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // User picked a file to share from the Share dialog - update the dialog
+            if (data != null) {
+                Uri uri = data.getData();
+                Log.i(TAG, "Uri: " + uri.toString());
+                UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, uri).show();
+            }
+        } else {
+            // See if this result was a scanned QR Code with a ground truth location
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (scanResult != null) {
+                String geoUri = scanResult.getContents();
+                Location l = IOUtils.getLocationFromGeoUri(geoUri);
+                if (l != null) {
+                    // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
+                    Intent showRadar = IOUtils.createShowRadarIntent(l);
+                    recreateApp(showRadar);
+                } else {
+                    Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
+                            Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -472,7 +480,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         if (PermissionUtils.hasGrantedFileWritePermission(this) && !mFileLogger.isStarted() &&
-                (mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile)) {
+                isFileLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
             mFileLogger.startNewLog();
         }
@@ -501,6 +509,10 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         super.onPause();
+    }
+
+    private boolean isFileLoggingEnabled() {
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -1276,7 +1288,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
         mWriteRawMeasurementToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
-        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
+        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_measurement_output), false);
 
         if (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile) {
             addGnssMeasurementsListener();
@@ -1356,9 +1368,9 @@ public class GpsTestActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item;
 
-        item = menu.findItem(R.id.send_location);
+        item = menu.findItem(R.id.share);
         if (item != null) {
-            item.setVisible(mLastLocation != null);
+            item.setVisible(mLastLocation != null || isFileLoggingEnabled());
         }
 
         return true;
@@ -1371,8 +1383,8 @@ public class GpsTestActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.gps_switch:
                 return true;
-            case R.id.send_location:
-                sendLocation();
+            case R.id.share:
+                share();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -1513,16 +1525,8 @@ public class GpsTestActivity extends AppCompatActivity
                 mLastLocation.getTime());
     }
 
-    private void sendLocation() {
-        if (mLastLocation != null) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            String geohackUrl = Application.get().getString(R.string.geohack_url) +
-                    mLastLocation.getLatitude() + ";" +
-                    mLastLocation.getLongitude();
-            intent.putExtra(Intent.EXTRA_TEXT, geohackUrl);
-            intent.setType("text/plain");
-            startActivity(createChooser(intent, getString(R.string.send_location)));
-        }
+    private void share() {
+        UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, null).show();
     }
 
     /**

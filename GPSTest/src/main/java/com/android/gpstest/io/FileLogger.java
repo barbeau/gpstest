@@ -16,6 +16,7 @@
 
 package com.android.gpstest.io;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -37,6 +38,7 @@ import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,6 +75,10 @@ public class FileLogger {
 
     public FileLogger(Context context) {
         mContext = context;
+    }
+
+    public File getFile() {
+        return mFile;
     }
 
     /**
@@ -241,26 +247,17 @@ public class FileLogger {
     }
 
     /**
-     * Send the current log via email or other options selected from a pop menu shown to the user. A
-     * new log is started when calling this function.
+     * Send the current log via email or other options selected from the chooser shown to the user. The
+     * current log is closed when calling this method.
+     * @param activity Activity used to open the chooser to send the file
      */
-    public void send() {
-        // TODO - implement sending the file?
-
-//    if (mFile == null) {
-//      return;
-//    }
-//
-//    Intent emailIntent = new Intent(Intent.ACTION_SEND);
-//    emailIntent.setType("*/*");
-//    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "SensorLog");
-//    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
-//    // attach the file
-//    Uri fileURI =
-//        FileProvider.getUriForFile(mContext, BuildConfig.APPLICATION_ID + ".provider", mFile);
-//    emailIntent.putExtra(Intent.EXTRA_STREAM, fileURI);
-//    getUiComponent().startActivity(Intent.createChooser(emailIntent, "Send log.."));
-//    close();
+    public void send(Activity activity) {
+        if (mFile == null) {
+            return;
+        }
+        android.net.Uri uri = IOUtils.getUriFromFile(mContext, mFile);
+        IOUtils.sendLogFile(activity, uri);
+        close();
     }
 
     public void close() {

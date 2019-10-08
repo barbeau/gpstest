@@ -44,7 +44,7 @@
     <string name="delete_aiding_data_success">GPS-Hilfsdaten erfolgreich gelöscht.</string>
     <string name="delete_aiding_data_failure">Das Gerät unterstützt nicht das Löschen der GPS-Hilfsdaten.</string>
     <string name="gps_switch">Aus/Ein</string>
-    <string name="send_location">Standort senden</string>
+    <string name="share">Standort senden</string>
     <string name="set_fix_frequency">Fix-Häufigkeit einstellen</string>
     <string name="force_time_injection_success">Zeit-Daten erfolgreich geladen.</string>
     <string name="force_time_injection_failure">Das Gerät unterstützt nicht das Laden der Zeit-Daten.</string>

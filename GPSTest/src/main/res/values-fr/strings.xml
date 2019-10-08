@@ -43,7 +43,7 @@
     <string name="delete_aiding_data_success">Données d\'assistance effacées</string>
     <string name="delete_aiding_data_failure">Le matériel ne supporte pas l\'effacement des données d\'assistance</string>
     <string name="gps_switch">Off/On</string>
-    <string name="send_location">Envoi de la position</string>
+    <string name="share">Envoi de la position</string>
     <string name="set_fix_frequency">Force la Fréquence de Verrouillage</string>
     <string name="force_time_injection_success">Données horaires importées</string>
     <string name="force_time_injection_failure">Le matériel ne supporte pas l\'injection de données horaires</string>
