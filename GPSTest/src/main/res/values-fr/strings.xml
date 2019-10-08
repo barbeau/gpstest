@@ -43,7 +43,6 @@
     <string name="delete_aiding_data_success">Données d\'assistance effacées</string>
     <string name="delete_aiding_data_failure">Le matériel ne supporte pas l\'effacement des données d\'assistance</string>
     <string name="gps_switch">Off/On</string>
-    <string name="share">Envoi de la position</string>
     <string name="set_fix_frequency">Force la Fréquence de Verrouillage</string>
     <string name="force_time_injection_success">Données horaires importées</string>
     <string name="force_time_injection_failure">Le matériel ne supporte pas l\'injection de données horaires</string>
@@ -86,15 +85,12 @@
     <string name="install">Installer</string>
     <string name="no_thanks">Non merci</string>
     <string name="please_install_google_maps">L\'onglet Carte nécessite Google Maps</string>
-    <string name="enable_gps_message">Le GPS est désactivé. L\'activer maintenant ?</string>
-    <string name="enable_gps_positive_button">Activer GPS</string>
     <string name="enable_gps_negative_button">Non</string>
-    <string name="gps_set_location_listener">GPS démarré avec un intervalle = %1$ss, min. dist = %2$sm </string>
     <string name="clear_assist_warning_title">Effacer les données d\'assistance?</string>
-    <string name="clear_assist_warning">Certains matériels peuvent prendre 24 heures pour rafraichir automatiquement les données d\'assistance. Si votre matériel ne supporte pas l\'injection manuelle, le GPS peut ne pas fonctionner pour les applications jusqu\'à ce que le rafraichissement automatique soit terminé.
-Êtes vous sûr?</string>
     <string name="never_ask_again">Ne plus me demander</string>
     <string name="qr_code_instructions_title">Scannez le code QR</string>
+    <string name="qr_code_instructions_text">Importer votre localisation réelle en utilisant un QR Code dans un format Geo URI  (geo:28.38434,-87.24334).  Créer votre propre QR Codes sur le site https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Impossible de lire le Geo URI depuis le QR code</string>
     <string name="never_show_again">Ne plus afficher</string>
     <string name="not_now">Pas maintenant</string>
     <string name="yes">OUI</string>
@@ -177,10 +173,14 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Fixe la précision de la localisation avec BenchMap</b>
-        - Utilisez une application comme BenchMap pour fixer votre localisation réelle.\n&#8226;\u0020
-        <b>Bug corrigés</b>
-        - Visitez https://bit.ly/gpstest-releases
+        <b>Accepte le IRNSS</b>
+        - Sur les équipements compatibles IRNSS vous pouvez maintenant voir les satellites Indiens GNSS.\n&#8226;\u0020
+        <b>Enregistrement des données dans un fichier</b>
+        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter http://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
+        <b>Scanner un QR codes pour améliorer la précision de la localisation</b>
+        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter http://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
+        <b>Erreurs corrigées</b>
+        - Consulter https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Fermer</string>
 
@@ -222,20 +222,47 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_stop_gnss_in_background_title">Arrêt du GNSS en arrière plan</string>
     <string name="pref_stop_gnss_in_background_summary">Si activé, cela arrête le service GNSS lorsque l\'application est placée en arrière plan (par exemple, lorsque l\'on utilise le bouton Home ou le Multitache pour basculer entre applications)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analyse la précision du GNSS</string>
-    <string name="pref_analyze_gps_accuracy_summary">Utilise GPS Banchmark pour mesurer les erreurs GNSS</string>
-
     <string name="pref_display_category_title">Affichage</string>
     <string name="pref_keep_screen_on_title">Garder l\'écran allumé</string>
     <string name="pref_keep_screen_on_summary">Empêche l\'écran de s\'éteindre</string>
     <string name="pref_true_north_title">Oriente le Compas sur le Nord Vrai</string>
     <string name="pref_true_north_summary">Le Compas s\'orientera sur le Nord Vrai plutôt que sur le Nord Magnétique</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Archivage et Destination</string>
+    <string name="pref_output_category_summary">Archivage des mesures brutes ou des messages de navigation NMEA,  dans un fichier ou vers Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Sortie vers Android Monitor</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Archive les traces NMEA vers Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Horodatage NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Inclus l\'horodatage NMEA dans la sortie</string>
     <string name="pref_measurement_output_title">Mesures</string>
+    <string name="pref_as_measurement_output_summary">Archive les mesures GNSS vers Android Studio (Android
+        7.0 et plus)
+    </string>
     <string name="pref_navigation_message_output_title">Messages de navigation</string>
+    <string name="pref_as_navigation_message_output_summary">Archives les messages de navigation GNSS vers Android
+        Studio (Android 7.0 et plus)
+    </string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Sortie dans un fichier</string>
+    <string name="pref_file_nmea_output_summary">Archive les traces NMEA dans un fichier</string>
+    <string name="pref_file_measurement_output_summary">Archive les mesures GNSS dans un fichier (Android
+7.0 et plus)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Archives les messages de navigation GNSS dans un fichier (Android 7.0 et plus)
+    </string>
+    <string name="pref_file_location_output_title">Localisation</string>
+    <string name="pref_file_location_output_summary">Archive les détails du verrouillage de la localisation dans un fichier </string>
+
+    <string name="logging_to_new_file">Archivage dans un nouveau fichier: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Impossible de fermer tous les fichiers de flux</string>
+    <string name="could_not_initialize_file">Impossible d\'initialiser le fichier: %1$s</string>
+    <string name="error_writing_file">Il y a un problème pour écrire dans le fichier.</string>
+
     <string name="pref_about_category_title">A propos</string>
     <string name="pref_show_tutorial_title">Montrer le tutoriel</string>
     <string name="pref_show_tutorial_summary">Montre les instructions pour utiliser l\'application</string>
@@ -243,8 +270,11 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_dark_theme_title">Utilise le thème sombre</string>
     <string name="pref_dark_theme_summary">Donne à l\'arrière plan une couleur sombre et au texte une couleur claire</string>
 
-    <string name="pref_dms_mode_title">Utilise un format DMS</string>
-    <string name="pref_dms_mode_summary">Montre latitude et longitude en degrés, minutes et secondes plutôt qu\'en degrés décimaux</string>
+    <string name="pref_coordinate_format_title">Format des coordonnées</string>
+    <string name="pref_coordinate_format_summary">Affichage en degrés décimaux, DMS ou degrés décimal et minutes</string>
+    <string name="preferences_coordinate_format_dd">Degrés décimaux</string>
+    <string name="preferences_coordinate_format_dms">Degrés, Minutes, Secondes Décimales </string>
+    <string name="preferences_coordinate_format_ddm">Degrés, Minutes Décimales</string>
 
     <string name="preferences_preferred_distance_units_title">Unités de distance préférées</string>
     <string name="preferences_preferred_distance_units_option_meters">Mètres</string>
@@ -262,4 +292,98 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <!-- Help -->
     <string name="title_help">Aide</string>
 
+    <string name="help_text">
+        <b>Questions Fréquemment Posées  (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Vue Données ***</b>\n\n&#8226;\u0020
+        <b>Latitude</b>
+        - En degrés décimaux  (WGS 84)\n&#8226;\u0020
+        <b>Longitude</b>
+        - En degrés décimaux  (WGS 84)\n&#8226;\u0020
+        <b>Alt</b>
+        - En mètres au dessus de l’ellipsoïde WGS 84\n&#8226;\u0020
+        <b>Alt (MSL)</b>
+        - En mètres au dessus du niveau moyen de la mer (nécessite le support NMEA )\n&#8226;\u0020
+        <b>Préc</b>
+        - Précision horizontale estimée du positionnement (rayon en mètres à 68% confiance). En d\'autres termes, si vous tracez un cercle centré sur la latitude et longitude avec un rayon égal à la précision, il y a 68% de probabilité que la localisation réelle est à l\'intérieur du cercle. Pour les détails voir https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>H/V Préc</b>
+        - Précision horizontale et verticale estimées du positionnement, les 2 avec 68% de confiance. La précision horizontale est définie comme au dessus. La précision verticale est disponible sur Android 8.0 Oreo et sup. Exemple de précision verticale- Si l\'altitude est de 150, et V Préc est à 20 alors il y a 68% de probabilité que la véritable altitude est comprise entre 130 et 170 mètres. Pour les détails voir https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Vitesse</b>
+        - Vitesse, en mètres/seconde au dessus du sol\n&#8226;\u0020
+        <b>V. Préc</b>
+        - Précision estimée de la vitesse de cette localisation avec 68% de confiance, en mètres par seconde. Par exemple, si la vitesse est de 5, et Speed Acc est de 1, alors il y a 68% de probabilité que la vitesse réelle est comprise entre 4 et 6 mètres par second.\n&#8226;\u0020
+        <b>Azimut</b>
+        - Direction horizontale de déplacement du matériel (en degrés 0-360), ne dépend pas de l\'orientation du matériel.\n&#8226;\u0020
+        <b>Az. Préc</b>
+        - Précision estimée de l\'azimut de ce positionnement avec 68% de confiance, en degré. Par exemple, si l\'azimut est de 60 et que la précision est à 10, il y a une probabilité de 68% que l\'azimut Vrai soit entre 50 et 70 degrés.\n&#8226;\u0020
+        <b># Sats</b>
+        - nombre de satellites utilisés dans le positionnement / nombre de satellites visibles\n&#8226;\u0020
+        <b>PDOP</b>
+        - Position (3D) Dilution Of Precision (nécessite le support du NMEA )\n&#8226;\u0020
+        <b>H/V DOP</b>
+        - Horizontal / Vertical Dilution Of Precision (nécessite le support du NMEA)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Temps du premier Fix\n&#8226;\u0020
+        <b>Num ou PRN</b>
+        - identifiant du satellite ou Bruit Pseudo-aléatoire du GPS\\n&#8226;\u0020
+        <b>CF</b>
+        - Label (e.g., \"L1\") pour la fréquence de la porteuse du signal utilisé. Si la fréquence est inconnue il montre la fréquence en MHz (disponible sur Android 8.0+, mais tous les matériels ne le supporte pas). Le nouveau signal GLONASS CDMA pour L1 est indiqué comme \"L1-C\".\n&#8226;\u0020
+        <b>S/B</b>
+        - Signal sur bruit (Android M et inf.) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Porteuse sur densité de bruit (Android N et sup.)(https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Flags</b>
+        - (E) si le matériel a des données éphémérides, (A) si le matériel a des données d\'almanach pour le satellite, (U) si le satellite était utilisé dans le plus récent positionnement. Pour SBAS, les spécifications Android n\'indiquent pas si (U) fait référence aux pseudo écarts depuis les satellites utilisés dans le positionnement ou aux informations de venant de ce satellite.\\n\n
+
+        <b>*** Vue ciel ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
+        - Cercles\n&#8226;\u0020
+        <b>GLONASS (Russie)</b>
+        - Carrés\n&#8226;\u0020
+        <b>Galileo (Union Européenne)</b>
+        - Triangles\n&#8226;\u0020
+        <b>QZSS (Japon)</b>
+        - Hexagones\n&#8226;\u0020
+        <b>BeiDou/COMPASS (Chine)</b>
+        - Pentagones\n&#8226;\u0020
+        <b>IRNSS (Inde)</b>
+        - Ovales\n&#8226;\u0020
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        - Diamants\n\n
+
+        &#8226;\u0020 Satellites Transparents - Pas en visibilité\n
+        &#8226;\u0020 Contours fins - Visibles mais pas utilisés\n
+        &#8226;\u0020 Contours épais - Utilisés\n\n
+
+        &#8226;\u0020 S/B attendu entre 0 dB (rouge) à 30 dB (vert) sur Android inf. à 7.0.\n
+        &#8226;\u0020 S/B attendu entre 10 dB (rouge) à 45 dB (vert) sur Android sup. à 7.0.\n
+        &#8226;\u0020 C/N0 attendu entre 10 dB-Hz (rouge) à 45 dB-Hz (vert) sur Android sup. à 7.0.\n
+        &#8226;\u0020 S\'il n\'y a pas de valeur SNR ou C/N0 pour un satellite (i.e., il n\'est pas vu par le matériel), il aura une couleur gris clair transparent.\n\n
+
+        <b>*** Vue Précision ***</b>\n\n&#8226;\u0020
+        <b>Erreur Verticale</b>
+        - Les mesures d\'erreurs Vertical, contrairement aux erreurs horizontales, peuvent être positive ou négative. Quand elles sont visualisées dans la vue Précision, les erreurs verticales, et les moyennes des erreurs verticales, sont toutes les 2 calculées avec les valeurs absolues des mesures d\'erreur.\n\n
+
+        &#8226;\u0020Forcer votre localisation réelle rapidement en utilisant un QR codes. Voir http://bit.ly/gpstest-qr-codes pour les détails.\n\n
+
+        <b>*** Archivage sur fichier ***</b>\n\n
+        &#8226;\u0020Autorise l\'archivage dur fichier dans Paramètres pour les mesures brutes, les messages de navigation et les localisations pour le système NMEA. Voir http://bit.ly/gpstest-file pour les détails.\n\n
+
+        <b>*** Remerciements ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - développeur initial pour la  v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - développeur pour la v2.x rt sup.\n
+        &#8226;\u0020 L’icône de GPSTest est dérivé de l’icône Android Material Design \"satellite\", sous licence Apache v2.0. Les autres icônes Google sont utilisés sous licence Apache v2.0. L’icône du QR code est de  Austin Andrews depuis https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Traduction Chinoise faite par  wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Traduction Allemande faite par SIRSteiner\n
+        &#8226;\u0020 Traduction Hollandaise faite par Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Traduction Grecque faite par Jimmy Golfi\n
+        &#8226;\u0020 Traduction Japonaise faite par SakuraSa233\n
+        &#8226;\u0020 Traduction Tcheque faite par llzn.cz\n
+        &#8226;\u0020 Traduction Italienne faite par Giolly90\n
+        &#8226;\u0020 Traduction Espagnole faite par Sergi Pellicer\n
+        &#8226;\u0020 Traduction Indonésienne faite par Adiitya Andre90\n
+        &#8226;\u0020 Traduction Polonaise faite par Adam Wandelt\n
+        &#8226;\u0020 Traduction Française faite par Olivier Merlin &amp; Jérémy Belloir\n
+    </string>
 </resources>

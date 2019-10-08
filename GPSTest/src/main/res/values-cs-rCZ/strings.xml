@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_success">Pomocné údaje úspěšně vymazány.</string>
     <string name="delete_aiding_data_failure">Zařízení nepodporuje vymazání pomocných údajů.</string>
     <string name="gps_switch">VYP/ZAP</string>
-    <string name="share">Odeslat polohu</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
     <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>
@@ -87,12 +86,8 @@
     <string name="install">Instalovat</string>
     <string name="no_thanks">NE, děkuji</string>
     <string name="please_install_google_maps">Karta MAPA vyžaduje službu Mapy Google.</string>
-    <string name="enable_gps_message">GPS není povolena. Povolit nyní?</string>
-    <string name="enable_gps_positive_button">Povolit GPS</string>
     <string name="enable_gps_negative_button">Ne</string>
-    <string name="gps_set_location_listener">Spustit GPS s intervalem = %1$ss, min. vzdálenost = %2$sm.</string>
     <string name="clear_assist_warning_title">Vymazat pomocné údaje?</string>
-    <string name="clear_assist_warning">Některá zařízení potřebují 24 hod. k automatickému obnovení dat. Pokud vaše zařízení nepodporuje ruční vkládání, GPS nemusí pracovat pro žádnou aplikaci, dokud nedojde k dokončení automatického obnovení. Jste si jistí?</string>
     <string name="never_ask_again">Znovu se nedotazovat</string>
     <string name="yes">ANO</string>
     <string name="no">NE</string>
@@ -203,9 +198,6 @@
     <string name="pref_stop_gnss_in_background_title">Zastavit GNSS</string>
     <string name="pref_stop_gnss_in_background_summary">Povolte zastavení GNSS při spuštění aplikace na pozadí (např. při použití tlačítka Domů nebo Multitasking pro přepínání aplikací).</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analyzovat přesnost GNSS</string>
-    <string name="pref_analyze_gps_accuracy_summary">Použijte aplikaci GPS Benchmark pro měření přesnosti GNSS.</string>
-
     <string name="pref_display_category_title">Zobrazení</string>
     <string name="pref_keep_screen_on_title">Zapnout obrazovku</string>
     <string name="pref_keep_screen_on_summary">Zamezte vypnutí obrazovky.</string>
@@ -223,9 +215,6 @@
 
     <string name="pref_dark_theme_title">Použít tmavé téma</string>
     <string name="pref_dark_theme_summary">Nastavte tmavou barvu pozadí.</string>
-
-    <string name="pref_dms_mode_title">Použít DMS formát</string>
-    <string name="pref_dms_mode_summary">Zobrazte zeměpisnou šířku a délku ve stupních, minutách a sekundách místo v desetinnách stupňů.</string>
 
     <string name="preferences_preferred_distance_units_title">Jednotky vzdálenosti</string>
     <string name="preferences_preferred_distance_units_option_meters">Metr</string>

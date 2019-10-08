@@ -43,7 +43,6 @@
     <string name="delete_aiding_data_success">Datos de asistencia borrados</string>
     <string name="delete_aiding_data_failure">El dispositivo no permite borrar los datos de asistencia</string>
     <string name="gps_switch">Off/On</string>
-    <string name="share">Enviar ubicación</string>
     <string name="set_fix_frequency">Fijar frecuencia</string>
     <string name="force_time_injection_success">Datos de tiempo insertados correctamente</string>
     <string name="force_time_injection_failure">El dispositivo no permite insertar los datos de tiempo</string>
@@ -86,13 +85,8 @@
     <string name="install">Instalar</string>
     <string name="no_thanks">No, gracias</string>
     <string name="please_install_google_maps">La pestaña \'Mapa\' requiere Google Maps</string>
-    <string name="enable_gps_message">El GPS está deshabilitado. Habilitar ahora?</string>
-    <string name="enable_gps_positive_button">Habilitar GPS</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">GPS iniciado con intervalo = %1$ss, min. dist. = %2$sm
-    </string>
     <string name="clear_assist_warning_title">Borrar datos de asistencia?</string>
-    <string name="clear_assist_warning">Algunos dispositivos pueden tardar 24 horas en actualizar automáticamente los datos de asistencia. Si su dispositivo no admite la inserción manual, es posible que el GPS no funcione con ninguna aplicación hasta que se complete la actualización automática. ¿Está seguro?</string>
     <string name="never_ask_again">No volver a preguntar</string>
     <string name="yes">SI</string>
     <string name="no">NO</string>
@@ -207,9 +201,6 @@ esté sujetando el dispositivo</string>
     <string name="pref_stop_gnss_in_background_title">Parar GNSS en segundo plano</string>
     <string name="pref_stop_gnss_in_background_summary">Si está activado siempre se parará GNSS cuando la app está en segundo plano (por ejemplo, cuando se usa el botón Home o el Multitarea para cambiar de app)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analizar Precisión GNSS</string>
-    <string name="pref_analyze_gps_accuracy_summary">Utilice GPS Benchmark para medir el error GNSS</string>
-
     <string name="pref_display_category_title">Pantalla</string>
     <string name="pref_keep_screen_on_title">Mantener Pantalla Encendida</string>
     <string name="pref_keep_screen_on_summary">Evita que la pantalla se apague</string>
@@ -227,9 +218,6 @@ esté sujetando el dispositivo</string>
 
     <string name="pref_dark_theme_title">Usar tema oscuro</string>
     <string name="pref_dark_theme_summary">Dar al fondo un color oscuro y al texto un color claro</string>
-
-    <string name="pref_dms_mode_title">Usar formato DMS</string>
-    <string name="pref_dms_mode_summary">Mostrar latitud y longitud en grados, minutos y segundos en lugar de grados decimales</string>
 
     <string name="preferences_preferred_distance_units_title">Unidades de distancia preferidas</string>
     <string name="preferences_preferred_distance_units_option_meters">Metros</string>

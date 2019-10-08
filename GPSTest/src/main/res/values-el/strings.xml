@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_success">Επιτυχής διαγραφή δεδομένων βοήθειας.</string>
     <string name="delete_aiding_data_failure">Αδυναμία διαγραφής δεδομένων βοήθειας (μη υποστήριξη).</string>
     <string name="gps_switch">Κλειστό/Ανοιχτό</string>
-    <string name="share">Αποστολή τοποθεσίας</string>
     <string name="set_fix_frequency">Ορίστε συχνότητα σταθεροποίησης</string>
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
     <string name="force_time_injection_failure">Αδυναμία εισαγωγής δεδομένων ώρας (μη υποστήριξη).</string>
@@ -87,12 +86,8 @@
     <string name="install">Εγκατάσταση</string>
     <string name="no_thanks">Οχι ευχαριστώ</string>
     <string name="please_install_google_maps">Η καρτέλα Χάρτης απαιτεί τους Χάρτες Google</string>
-    <string name="enable_gps_message">Ανενεργό GPS. Ενεργοποίηση τώρα;</string>
-    <string name="enable_gps_positive_button">Ενεργοποίηση GPS</string>
     <string name="enable_gps_negative_button">Οχι</string>
-    <string name="gps_set_location_listener">Εναρξη δέκτη GPS = %1$ss, min. dist. = %2$sm</string>
     <string name="clear_assist_warning_title">Διαγραφή βοηθητικών δεδομένων;</string>
-    <string name="clear_assist_warning">Μερικές συσκευές χρειάζονται έως και 24 ώρες για να ανανεώσουν τα βοηθητικά δεδομένα. Εάν η συσκευή σας δεν υποστηρίζει χειροκίνητη εισαγωγή δεδομένων, το GPS μπορεί να μην λειτουργεί για καμία εφαρμογή μέχρι να ολοκληρωθεί η αυτόματη ανανέωση. Είστε σίγουροι;</string>
     <string name="never_ask_again">Να μην ερωτηθώ ξανά</string>
     <string name="yes">ΝΑΙ</string>
     <string name="no">ΟΧΙ</string>
@@ -203,9 +198,6 @@
     <string name="pref_stop_gnss_in_background_title">Σταμάτημα του GNSS στο παρασκήνιο</string>
     <string name="pref_stop_gnss_in_background_summary">Αν είναι ενεργοποιημένο, θα σταματήσει πάντα το GNSS κατά την τοποθέτηση της εφαρμογής στο παρασκήνιο (για παράδειγμα, όταν χρησιμοποιείτε το κουμπί Home ή το κουμπί Multitasking για να αλλάξετε εφαρμογές)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Ανάλυση ακριβείας GNSS</string>
-    <string name="pref_analyze_gps_accuracy_summary">Χρησιμοποιήστε το Benchmark GPS για να μετρήσετε το σφάλμα GNSS</string>
-
     <string name="pref_display_category_title">Προβολή</string>
     <string name="pref_keep_screen_on_title">Διατήρηση της Οθόνης πάντα ανοιχτή</string>
     <string name="pref_keep_screen_on_summary">Αποτρέπει το σβήσιμο της οθόνης</string>
@@ -223,9 +215,6 @@
 
     <string name="pref_dark_theme_title">Αλλαγή Εμφάνισης</string>
     <string name="pref_dark_theme_summary">Θέμα πιο σκοτεινό με φωτεινά γράμματα</string>
-
-    <string name="pref_dms_mode_title">Χρήση της μορφής DMS</string>
-    <string name="pref_dms_mode_summary">Εμφάνιση γεωγραφικού πλάτους και γεωγραφικού μήκους σε μοίρες, λεπτά και δευτερόλεπτα αντί μοίρες δεκαδικών</string>
 
     <string name="preferences_preferred_distance_units_title">Προτιμώμενη μονάδα μέτρησης απόστασης</string>
     <string name="preferences_preferred_distance_units_option_meters">Μέτρα</string>

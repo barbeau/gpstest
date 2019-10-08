@@ -22,10 +22,10 @@
         <item>Konstelasi</item>
         <item>Frekuensi Karir</item>
         <item>Kekuatan Sinyal</item>
-        <item>Digunakan dalam Perbaikan</item>
+        <item>Digunakan untuk Perbaikan</item>
         <item>Konstelasi, Frekuensi Karir</item>
         <item>Konstelasi, Kekuatan Sinyal</item>
-        <item>Konstelasi, Digunakan dalam Perbaikan</item>
+        <item>Konstelasi, Digunakan untuk Perbaikan</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
@@ -38,7 +38,7 @@
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>Apa Yang Baru?</item>
+        <item>Apa yang Baru?</item>
         <item>Tentang</item>
     </string-array>
 </resources>

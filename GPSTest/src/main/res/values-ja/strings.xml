@@ -45,7 +45,6 @@
     <string name="delete_aiding_data_failure">デバイスはアシストデータの削除をサポートしていません。
     </string>
     <string name="gps_switch">オフ/オン</string>
-    <string name="share">場所を送信</string>
     <string name="set_fix_frequency">周波数を設定する</string>
     <string name="force_time_injection_success">時間データを注入しました。</string>
     <string name="force_time_injection_failure">デバイスは時間データの注入をサポートしていません。
@@ -90,12 +89,8 @@
     <string name="install">インストール</string>
     <string name="no_thanks">いいえ</string>
     <string name="please_install_google_maps">Googleマップが必要です</string>
-    <string name="enable_gps_message">GPSは無効です。今すぐ有効にしますか？</string>
-    <string name="enable_gps_positive_button">GPSを有効にする</string>
     <string name="enable_gps_negative_button">いいえ</string>
-    <string name="gps_set_location_listener">時間間隔は%1$ss、最小距離は%2$smでGPSを開始しました</string>
     <string name="clear_assist_warning_title">アシストデータを削除しますか？</string>
-    <string name="clear_assist_warning">一部のデバイスは24時間でアシストデータを自動更新します。デバイスが手動注入をサポートしていない場合、自動更新が完了するまで、GPSはどのアプリでも作動しません。実行しますか？</string>
     <string name="never_ask_again">今後表示しない</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
@@ -199,9 +194,6 @@
     <string name="pref_stop_gnss_in_background_title">バックグラウンドでGNSSを停止する</string>
     <string name="pref_stop_gnss_in_background_summary">アプリがバックグラウンドに置かれたときにGNSSを常に停止する</string>
 
-    <string name="pref_analyze_gps_accuracy_title">GNSSの精度を分析する</string>
-    <string name="pref_analyze_gps_accuracy_summary">GPS Benckmarkを使用してGNSSエラーを測定する</string>
-
     <string name="pref_display_category_title">画面</string>
     <string name="pref_keep_screen_on_title">画面をオンのまま</string>
     <string name="pref_keep_screen_on_summary">画面をオンのままにする</string>
@@ -219,7 +211,6 @@
 
     <string name="pref_dark_theme_title">暗いテーマを使用する</string>
     <string name="pref_dark_theme_summary">背景に暗い色を、テキストに薄い色を付ける</string>
-
 
     <string name="preferences_preferred_distance_units_title">距離単位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>

@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_failure">Устройство не поддерживает удаление вспомогательных сведений.
     </string>
     <string name="gps_switch">Вкл/Выкл</string>
-    <string name="share">Отправить местоположение</string>
     <string name="set_fix_frequency">Установить частоту фиксации</string>
     <string name="force_time_injection_success">Успешно внесены сведения о времени.</string>
     <string name="force_time_injection_failure">Устройство не поддерживает внесение сведений о времени.
@@ -89,13 +88,8 @@
     <string name="install">Установить</string>
     <string name="no_thanks">Спасибо, не надо</string>
     <string name="please_install_google_maps">Для работы Карт требуется Google Maps</string>
-    <string name="enable_gps_message">GPS отключена. Включить?</string>
-    <string name="enable_gps_positive_button">Включить GPS</string>
     <string name="enable_gps_negative_button">Нет</string>
-    <string name="gps_set_location_listener">Запущена GPS с интервалом = %1$sс, мин. расст. = %2$sм
-    </string>
     <string name="clear_assist_warning_title">Удалить всп. сведения?</string>
-    <string name="clear_assist_warning">Некоторым устройствам может потребоваться 24 часа чтобы автоматически обновить вспомогательную информацию. Если ваше устройство не поддерживает ручное внесение данных, GPS может перестать работать во всех приложениях до завершения автоматического обновления данных. Удалить вспомогательную информацию?</string>
     <string name="never_ask_again">Больше не спрашивать</string>
     <string name="qr_code_instructions_title">Сканировать QR код</string>
     <string name="qr_code_instructions_text">Внести текущее местоположение QR кодом в формате Geo URI (geo:28.38434,-87.24334). Создать собственный QR код через https://zxing.appspot.com/generator/</string>
@@ -182,12 +176,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Что нового?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Установить точность местоположения через BenchMap</b>
-        - Возможность использовать приложения подобные BenchMap для определения действительного местоположения.\n&#8226;\u0020
-        <b>Исправления</b>
-        - Смотреть здесь: https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Закрыть</string>
 
     <!-- Preferences -->
@@ -227,10 +215,6 @@
 
     <string name="pref_stop_gnss_in_background_title">Отключать навигацию в фоне</string>
     <string name="pref_stop_gnss_in_background_summary">Если отмечено, приложение, перейдя в фоновый режим, отключит навигацию (например, если вы нажали кнопку Дом или перешли в другое приложение)
-    </string>
-
-    <string name="pref_analyze_gps_accuracy_title">Анализировать погрешность ССН</string>
-    <string name="pref_analyze_gps_accuracy_summary">Использовать GPS Benchmark для измерения погрешности работы ССН
     </string>
 
     <string name="pref_display_category_title">Отображение</string>
@@ -282,9 +266,6 @@
     <string name="pref_dark_theme_title">Использовать тёмное оформление</string>
     <string name="pref_dark_theme_summary">Сделать фон тёмным, а текст светлым цветом
     </string>
-
-    <string name="pref_dms_mode_title">Координаты в минутах и секундах</string>
-    <string name="pref_dms_mode_summary">Показывать широту и доготу в градусах, минутах и секундах вместо десятичных градусов</string>
 
     <string name="preferences_preferred_distance_units_title">Измерение протяжённости</string>
     <string name="preferences_preferred_distance_units_option_meters">Метры</string>

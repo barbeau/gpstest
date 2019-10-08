@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_success">GNSS-hulpgegevens succesvol verwijderd</string>
     <string name="delete_aiding_data_failure">Het apparaat ondersteunt het verwijderen van hulpgegevens niet</string>
     <string name="gps_switch">Aan/uit</string>
-    <string name="share">Verzend locatie</string>
     <string name="set_fix_frequency">Fix-frequentie instellen </string>
     <string name="force_time_injection_success">NTP-gegevens succesvol ingeladen</string>
     <string name="force_time_injection_failure">Apparaat ondersteunt het importeren van NTP-gegevens niet.
@@ -89,13 +88,8 @@
     <string name="install">Installeren</string>
     <string name="no_thanks">Nee, bedankt</string>
     <string name="please_install_google_maps">Om de kaart te bekijken is Google Maps benodigd</string>
-    <string name="enable_gps_message">Locatiebepaling is uitgeschakeld. Nu inschakelen?</string>
-    <string name="enable_gps_positive_button">Locatiebepaling inschakelen</string>
     <string name="enable_gps_negative_button">Nee</string>
-    <string name="gps_set_location_listener">Locatiebepaling gestart met interval = %1$s s, minimale afstand = %2$s m
-</string>
     <string name="clear_assist_warning_title">Verwijder hulp-gegevens?</string>
-    <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulpgegevens automatisch te herladen. Als je apparaat handmatige invoer niet ondersteunt, zal locatiebepaling bij geen enkele andere app meer werken voordat dit voltooid is. Weet je het zeker?</string>
     <string name="never_ask_again">Niet meer vragen</string>
     <string name="qr_code_instructions_title">Scan een QR-code</string>
     <string name="qr_code_instructions_text">Importeer een ware locatie op de grond door middel van een QR-code in Geo-URI formaat (geo:28.38434,-87.24334). Creëer je eigen QR-codes via https://zxing.appspot.com/generator/.</string>
@@ -183,10 +177,14 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Stel de nauwkeurigheidslocatie in vanuit de app BenchMap</b>
-        - Maak gebruik van andere apps zoals BenchMap om je ware grondlocatie in te stellen.\n&#8226;\u0020
+        <b>Ondersteuning voor IRNSS</b>
+        - Je kunt vanaf nu op IRNSS-ondersteunende apparaten signalen van de Indische GNSS ontvangen.\n&#8226;\u0020
+        <b>Gegevens loggen naar bestanden</b>
+        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        <b>Scan QR-codes om je ware locatie in te stellen</b>
+        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie http://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
         <b>Foutoplossingen</b>
-        - Zie http://bit.ly/gpstest-releases
+        - Zie https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Sluiten</string>
 
@@ -225,10 +223,6 @@
     <string name="pref_stop_gnss_in_background_title">Stop GNSS in de achtergrond</string>
     <string name="pref_stop_gnss_in_background_summary">Indien ingeschakeld, stopt GNSS altijd wanneer deze app in de achtergrond geplaatst wordt (bijvoorbeeld wanneer je de knop \'Home\' of \'Overzicht\' gebruikt om van app te wisselen)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">GNSS-nauwkeurigheid analyseren</string>
-    <string name="pref_analyze_gps_accuracy_summary">Gebruik GPSTest om GNSS-afwijkingen te meten
-    </string>
-
     <string name="pref_display_category_title">Scherm</string>
     <string name="pref_keep_screen_on_title">Ingeschakeld houden</string>
     <string name="pref_keep_screen_on_summary">Voorkom dat het scherm uitschakelt</string>
@@ -242,6 +236,7 @@
     <!-- Android Monitor Output -->
     <string name="pref_as_output_category_title">Android Monitor-uitvoer</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Log NMEA-berichten naar Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA-tijdstempel</string>
     <string name="pref_nmea_timestamp_output_summary">Voeg de NMEA tijdstempel toe in de output</string>
     <string name="pref_measurement_output_title">Meetwaarden</string>
@@ -253,6 +248,7 @@
 
     <!-- File Output -->
     <string name="pref_file_output_category_title">Bestandsuitvoer</string>
+    <string name="pref_file_nmea_output_summary">Log NMEA-berichten naar een bestand</string>
     <string name="pref_file_measurement_output_summary">Logt GNSS-meetingen naar een bestand (Android
         7.0 en hoger)
     </string>
@@ -274,7 +270,13 @@
     <string name="pref_dark_theme_summary">Geef de achtergrond een donkere kleur en de tekst een lichte kleur.
 	</string>
 
-    <string name="preferences_preferred_distance_units_title">Voorkeurs afstandseenheden</string>
+    <string name="pref_coordinate_format_title">Coördinaat-formaat</string>
+    <string name="pref_coordinate_format_summary">Geef weer als decimale graden, graden minuten seconden of graden decimale minuten</string>
+    <string name="preferences_coordinate_format_dd">Decimale graden</string>
+    <string name="preferences_coordinate_format_dms">Graden, minuten, decimale seconden</string>
+    <string name="preferences_coordinate_format_ddm">Graden, decimale minuten</string>
+
+    <string name="preferences_preferred_distance_units_title">Voorkeurseenheid voor afstand</string>
     <string name="preferences_preferred_distance_units_option_meters">Meters</string>
     <string name="preferences_preferred_distance_units_option_feet">Voeten</string>
 
@@ -346,7 +348,9 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
         - Zeshoeken\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Vijfhoeken\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        <b>IRNSS (India)</b>
+        - Ovalen\n&#8226;\u0020
+         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
         - Diamanten\n\n
 
         &#8226;\u0020 Transparante satellieten  - niet in zicht\n
@@ -358,12 +362,14 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
         &#8226;\u0020 Verwachtte D/R0 domein is 10 (rood) tot 45 dB-Hz (groen) op Android 7.0 en hoger. \n
         &#8226;\u0020 Als er geen S/R of D/R0 waarde is voor een satelliet (bijv. als hij niet in zicht is van je apparaat), zal hij een transparante licht grijze kleur hebben.\n\n
 
-<b>*** Nauwkeurigheids-weergave***\n\n&#8226;\u0020</b>
+<b>*** Nauwkeurigheids-weergave***</b>\n\n&#8226;\u0020
  <b>Vertical afwijking</b>
-- Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.
-
-
-<b>*** Erkenningen ***</b>\n\n
+- Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.\n\n
+        
+*** Bestandsloggen ***\n\n
+ &#8226;\u0020Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file voor details.\n\n
+        
+*** Erkenningen ***\n\n
 &#8226;\u0020 <b>Mike Lockwood</b> - oorspronkelijke ontwikkelaar voor v1.x\n
 &#8226;\u0020 <b>Sean Barbeau</b> - ontwikkelaar voor v2.x en hoger\n
 &#8226;\u0020 Het GPSTest pictogram is afgeleid uit de Android Material Design \"satelliet-pictogram\", licentie van Google onder Apache v2.0. Andere \'Google material design\'-pictogrammen door Austin Andrews van https://materialdesignicons.com/icon/qrcode worden gebruikt onder Apache v2.0 licentie.\n

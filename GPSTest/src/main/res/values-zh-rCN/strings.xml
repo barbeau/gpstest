@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_success">已成功删除辅助数据。</string>
     <string name="delete_aiding_data_failure">设备不支持删除辅助数据。</string>
     <string name="gps_switch">开关</string>
-    <string name="share">发送位置</string>
     <string name="set_fix_frequency">设置固定频率</string>
     <string name="force_time_injection_success">已成功导入时间数据。</string>
     <string name="force_time_injection_failure">设备不支持导入时间数据。</string>
@@ -87,12 +86,8 @@
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
     <string name="please_install_google_maps">地图视图需要安装 Google 地图</string>
-    <string name="enable_gps_message">GPS已被禁用，要启用吗？</string>
-    <string name="enable_gps_positive_button">启用GPS</string>
     <string name="enable_gps_negative_button">不启用</string>
-    <string name="gps_set_location_listener">已以时间间隔为 %1$ss，最小距离为 %2$sm 启动 GPS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
-    <string name="clear_assist_warning">一些设备可能需要花费24小时来自动刷新辅助数据。如果你的设备不支持手动导入，GPS在直到自动刷新完成时都将对所有应用不可用。确定要继续吗?</string>
     <string name="never_ask_again">不再询问</string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -203,9 +198,6 @@
     <string name="pref_stop_gnss_in_background_title">后台停止 GNSS</string>
     <string name="pref_stop_gnss_in_background_summary">启用后，当本应用处于后台时将不会启用GNSS</string>
 
-    <string name="pref_analyze_gps_accuracy_title">分析GNSS精确度</string>
-    <string name="pref_analyze_gps_accuracy_summary">使用GPS Benchmark测量GNSS错误</string>
-
     <string name="pref_display_category_title">显示</string>
     <string name="pref_keep_screen_on_title">保持亮屏</string>
     <string name="pref_keep_screen_on_summary">阻止屏幕关闭</string>
@@ -223,9 +215,6 @@
 
     <string name="pref_dark_theme_title">使用暗色主题</string>
     <string name="pref_dark_theme_summary">为背景铺上暗色而文字显示为亮色</string>
-
-    <string name="pref_dms_mode_title">使用 DMS 格式</string>
-    <string name="pref_dms_mode_summary">使用度分秒来显示经纬度</string>
 
     <string name="preferences_preferred_distance_units_title">距离单位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>

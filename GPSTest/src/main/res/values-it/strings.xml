@@ -43,8 +43,7 @@
     <string name="delete_aiding_data_success">Dati di assistenza rimossi con successo</string>
     <string name="delete_aiding_data_failure">Il dispositivo non supporta la rimozione dei dati di assistenza</string>
     <string name="gps_switch">Off/On</string>
-    <string name="share">Invia Posizione</string>
-    <string name="set_fix_frequency">Imposta Frequenza di localizzazione</string>
+    <string name="set_fix_frequency">Imposta Frequenza di geolocalizzazione</string>
     <string name="force_time_injection_success">Dati temporali NTP inseriti con successo</string>
     <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento di dati temporali NTP</string>
 
@@ -60,7 +59,7 @@
     <string name="gps_longitude_label">Long.:</string>
     <string name="gps_fix_time_label">Ora:</string>
     <string name="gps_ttff_label">TTPL:</string>
-    <string name="gps_altitude_label">Alt. (WGS84):</string>
+    <string name="gps_altitude_label">Alt.:</string>
     <string name="gps_altitude_msl_label">Alt. (s.l.m.):</string>
     <string name="gps_accuracy_label">Precisione:</string>
     <string name="gps_hor_and_vert_accuracy_label">Prec. o/v:</string>
@@ -86,14 +85,10 @@
     <string name="install">Installa</string>
     <string name="no_thanks">No, grazie</string>
     <string name="please_install_google_maps">La mappa richiede Google Maps</string>
-    <string name="enable_gps_message">Geolocalizzazione disattivata. Attivarla?</string>
-    <string name="enable_gps_positive_button">Attiva</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">GPS attivato. Intervallo = %1$ss, distanza minima = %2$sm</string>
     <string name="clear_assist_warning_title">Cancellare dati di assistenza?</string>
-    <string name="clear_assist_warning">Alcuni dispositivi possono impiegare 24 ore per aggiornare in automatico i dati di assistenza. Se il tuo dispositivo non supporta l\'inserimento manuale, il GPS potrebbe non funzionare in nessuna app finché l\'aggiornamento automatico non sarà completato. Vuoi procedere?</string>
     <string name="never_ask_again">Non chiedere più</string>
-    <string name="qr_code_instructions_title">Scansiona un QR Code (Codice QR)</string>
+    <string name="qr_code_instructions_title">Scansiona un QR Code</string>
     <string name="qr_code_instructions_text">Importa la posizione reale con l\'utilizzo di un QR Code nel formato Geo URI (es.: geo:28.38434,-87.24334).
 Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Impossibile leggere il riferimento Geo URI dal QR Code</string>
@@ -156,12 +151,12 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">Geolocalizzazione disabilitata o nessun satellite agganciato</string>
-    <string name="gnss_nav_msg_status_not_supported">Il dispositivo non supporta il tracciamento dei segnali di navigazione GNSS</string>
-    <string name="gnss_nav_msg_status_ready">I segnali di navigazione GNSS vengono tracciati correttamente</string>
+    <string name="gnss_nav_msg_status_not_supported">Il dispositivo non supporta la registrazione dei messaggi di navigazione GNSS</string>
+    <string name="gnss_nav_msg_status_ready">I segnali di navigazione GNSS vengono registrati correttamente</string>
 
     <string name="gnss_measurement_status_loc_disabled">La geolocalizzazione è disabilitata, nessun aggiornamento fino all\'attivazione</string>
-    <string name="gnss_measurement_status_not_supported">Il dispositivo non supporta il tracciamento delle misurazioni GNSS</string>
-    <string name="gnss_measurement_status_ready">Le misurazioni GNSS vengono tracciate correttamente</string>
+    <string name="gnss_measurement_status_not_supported">Il dispositivo non supporta la registrazione delle misurazioni GNSS</string>
+    <string name="gnss_measurement_status_ready">Le misurazioni GNSS vengono registrate correttamente</string>
 
     <string name="gnss_status_unknown">Stato di callback sconosciuto</string>
 
@@ -179,10 +174,14 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Imposta la tua posizione con BenchMap</b>
-        - Usa altre app (es.BenchMap) per impostare la tua posizione reale.\n&#8226;\u0020
+        <b>Supporto per IRNSS</b>
+        - Possibilità di vedere i segnali del sistema GNSS Indiano su tutti i device compatibili con IRNSS.\n&#8226;\u0020
+        <b>Registra dati</b>
+        - Abilita la registrazione dei dati nel menù Impostazioni per i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione. Per maggiori informazioni: http://bit.ly/gpstest-file.\n&#8226;\u0020
+        <b>Scansione QR Code per impostare la posizione reale</b>
+        - Imposta la tua posizione reale in modo rapido utilizzando i codici QR. Per maggiori informazioni: http://bit.ly/gpstest-qr-codes.\n&#8226;\u0020
         <b>Bug fixes</b>
-        - Vedi: https://bit.ly/gpstest-releases
+        - Per maggiori informazioni: https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Chiudi</string>
 
@@ -221,20 +220,48 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_stop_gnss_in_background_title">Disattiva geolocalizzazione in background</string>
     <string name="pref_stop_gnss_in_background_summary">Se abilitato disattiva il sistema di geolocalizzazione quando l\'app è aperta in background (per esempio, quando premi il tasto Home o Multitasking per cambiare app)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analizza precisione geolocalizzazione</string>
-    <string name="pref_analyze_gps_accuracy_summary">Scarica l\'app GPS Benchmark per misurare la precisione del tuo sistema di geolocalizzazione</string>
-
     <string name="pref_display_category_title">Schermo</string>
     <string name="pref_keep_screen_on_title">Tieni lo schermo acceso</string>
     <string name="pref_keep_screen_on_summary">Impedisce allo schermo di spegnersi</string>
     <string name="pref_true_north_title">Nord geografico</string>
     <string name="pref_true_north_summary">La bussola mostrerà il Nord geografico al posto del Nord magnetico</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Registra dati</string>
+    <string name="pref_output_category_summary">Registra dati NMEA, misurazioni di base o messaggi di navigazione su File o Android Studio.</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Registra su Android Studio</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Registra dati NMEA su Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
     <string name="pref_nmea_timestamp_output_summary">Includi NMEA Timestamp nell\'output</string>
     <string name="pref_measurement_output_title">Misurazioni</string>
-    <string name="pref_navigation_message_output_title">Segnali di navigazione</string>
+    <string name="pref_as_measurement_output_summary">Registra misurazioni GNSS su Android Studio (Android
+        7.0 e successivi)
+    </string>
+    <string name="pref_navigation_message_output_title">Messaggi di navigazione</string>
+    <string name="pref_as_navigation_message_output_summary">Registra messaggi di navigazione GNSS su Android Studio (Android
+        7.0 e successivi)
+    </string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Registra su File</string>
+    <string name="pref_file_nmea_output_summary">Registra dati NMEA su File</string>
+    <string name="pref_file_measurement_output_summary">Registra misurazioni GNSS su File (Android
+        7.0 e successivi)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Registra messaggi di navigazione GNSS su File (Android
+        7.0 e successivi)
+    </string>
+    <string name="pref_file_location_output_title">Segnali di localizzazione</string>
+    <string name="pref_file_location_output_summary">Registra dettagli relativi ai segnali di localizzazione su File</string>
+
+    <string name="logging_to_new_file">Registrazione su nuovo File in corso: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Impossibile chiudere tutti i flussi di lavoro.</string>
+    <string name="could_not_initialize_file">Il conteggio non inizializza il File: %1$s</string>
+    <string name="error_writing_file">Problema di scrittura su File.</string>
+
     <string name="pref_about_category_title">Notizie</string>
     <string name="pref_show_tutorial_title">Mostra tutorial</string>
     <string name="pref_show_tutorial_summary">Mostra istruzioni di utilizzo dell\'app</string>
@@ -242,8 +269,11 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_dark_theme_title">Usa tema scuro</string>
     <string name="pref_dark_theme_summary">Rende lo sfondo scuro con testo a contrasto</string>
 
-    <string name="pref_dms_mode_title">Usa il formato gradi DMS</string>
-    <string name="pref_dms_mode_summary">Mostra la latitudine e la longitudine in gradi, minuti e secondi invece che in gradi decimali</string>
+    <string name="pref_coordinate_format_title">Formato delle coordinate</string>
+    <string name="pref_coordinate_format_summary">Mostra in DD (gradi decimali), DMS (gradi minuti secondi), o DM (gradi minuti decimali)</string>
+    <string name="preferences_coordinate_format_dd">DD (gradi decimali)</string>
+    <string name="preferences_coordinate_format_dms">DMS (gradi minuti secondi)</string>
+    <string name="preferences_coordinate_format_ddm">DM (gradi minuti decimali)</string>
 
     <string name="preferences_preferred_distance_units_title">Unità preferita per distanza</string>
     <string name="preferences_preferred_distance_units_option_meters">Metri</string>
@@ -270,7 +300,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
         - Latitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Long.</b>
         - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
-        <b>Alt. (WGS84)</b>
+        <b>Alt.</b>
         - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Alt. (s.l.m.)</b>
         - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
@@ -291,7 +321,8 @@ Esempio: se la velocità stimata dal nostro dispositivo è di 5m/s e la precisio
         - Direzione orizzontale di spostamento del dispositivo (espressa in gradi: 0-360°).
 Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
         <b>Prec. dir.</b>
-        - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
+        - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).
+Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
         <b>n° Sat.</b>
         - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista.\n&#8226;\u0020
         <b>DOP</b>
@@ -301,15 +332,15 @@ Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
         <b>TTPL</b>
         - Tempo Trascorso dalla Prima Localizzazione.\n&#8226;\u0020
         <b>ID/PRN</b>
-        - Identificativo del satellite (anche indicato con la sigla PRN)\n&#8226;\u0020
+        - Identificativo del satellite (anche indicato con la sigla PRN).\n&#8226;\u0020
         <b>CF</b>
         - Frequenza del segnale agganciato.
 E\' un\'etichetta (es, \"L1\") per indicare la frequenza del segnale agganciato. Se la frequenza è sconosciuta, verrà visualizzato il suo valore in MHz (disponibile su Android 8.0+, non supportato da tutti i dispositivi). Il nuovo segnale L1 del sistema GLONASS CDMA è indicato come \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - Signal-to-Noise Ratio (Android M e precedenti)
+        - Signal-to-Noise Ratio (Android M e precedenti).
 Per ulteriori informazioni: https://bit.ly/SNR-CN0.\n&#8226;\u0020
         <b>C/N0</b>
-        - Carrier-to-Noise density (Android N e successivi)
+        - Carrier-to-Noise density (Android N e successivi).
 Per ulteriori informazioni: https://bit.ly/SNR-CN0.\n&#8226;\u0020
         <b>Dati</b>
         - (E) se il dispositivo ha scarsità di dati per il satellite;
@@ -324,10 +355,12 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
         - Quadrati\n&#8226;\u0020
         <b>Galileo (Unione Europea)</b>
         - Triangoli\n&#8226;\u0020
-        <b>BeiDou/COMPASS (Cina)</b>
+        <b>BEIDOU COMPASS (Cina)</b>
         - Pentagoni\n&#8226;\u0020
         <b>QZSS (Giappone)</b>
         - Esagoni\n&#8226;\u0020
+        <b>IRNSS (India)</b>
+        - Ovals\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
         - Rombi\n\n
 
@@ -337,24 +370,30 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
 
         &#8226;\u0020 Il range atteso per l\'SNR varia tra 0dB (rosso) e 30dB (verde) su sistemi precedenti ad Android 7.0.\n
         &#8226;\u0020 Il range atteso per l\'SNR varia tra 10dB (rosso) e 45dB (verde) su sistemi Android 7.0 e successivi.\n
-        &#8226;\u0020 Il range C/N0 attesovaria tra 10dB-Hz (rosso) e 45dB-Hz (verde) su sistemi Android 7.0 e successivi.\n
-        &#8226;\u0020 Se non è presente il valore SNR o C/N0 per un satellite (es. non è in vista del dispositivo), quel satellite avrà un colore grigio chiaro trasparente.\n\n
+        &#8226;\u0020 Il range atteso per C/N0 varia tra 10dB-Hz (rosso) e 45dB-Hz (verde) su sistemi Android 7.0 e successivi.\n
+        &#8226;\u0020 Se non è presente il valore SNR o C/N0 per un satellite (es. non è in vista del dispositivo), quel satellite avrà un colore grigio chiaro/trasparente.\n\n
 
         <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
-        <b>Errore verticale</b>
+        <b>Errore Verticale</b>
         - Le misurazioni dell\'errore verticale, a differenza di quelle dell\'errore orizzontale, possono essere positive o negative. La scheda Precisione mostra l\'errore verticale e l\'errore verticale medi, calcolati entrambi usando il valore assoluto della misura dell\'errore.\n\n
+
+        &#8226;\u0020 Imposta rapidamente la tua posizione reale utilizzando i QR Code.
+Per ulteriori informazioni: http://bit.ly/gpstest-qr-codes for details.\n\n
+
+        <b>*** Registro attività ***</b>\n\n
+        &#8226;\u0020 Abilita il registro attività dal menù Impostazioni. Verranno registrati i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione.
+Per ulteriori informazioni: http://bit.ly/gpstest-file for details.\n\n
 
         <b>*** Riconoscimenti ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - sviluppatore originale della versione v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - sviluppatore della versione v2.x e successive\n
-        &#8226;\u0020 L\'icona di GPSTest è tratta dall\'icona \"satellite\" di Android Material Design, autorizzata da Google in base al regolamento Apache v2.0. Anche le altre icone di Google material design sono utilizzate in base al regolamento Apache v2.0.
-L\'icona \"QR Code\" di Austin Andrews è tratta da https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 L\'icona di GPSTest è tratta dall\'icona \"satellite\" di Android Material Design, autorizzata da Google in base al regolamento Apache v2.0. Anche le altre icone di Google material design sono utilizzate in base al regolamento Apache v2.0. L\'icona \"QR Code\" di Austin Andrews è tratta da: https://materialdesignicons.com/icon/qrcode.\n
         &#8226;\u0020 Traduzione in cinese a cura di wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 Traduzione in tedesco a cura di SIRSteiner\n
-        &#8226;\u0020 Traduzione in olndese a cura di Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Traduzione in olandese a cura di Dennis Dolman, Meteor0id\n
         &#8226;\u0020 Traduzione in greco a cura di Jimmy Golfi\n
         &#8226;\u0020 Traduzione in giapponese a cura di SakuraSa233\n
-        &#8226;\u0020 Traduzione in ceco a cura di LLZN\n
+        &#8226;\u0020 Traduzione in ceco a cura di llzn\n
         &#8226;\u0020 Traduzione in italiano a cura di Giolly90\n
         &#8226;\u0020 Traduzione in spagnolo a cura di Sergi Pellicer\n
         &#8226;\u0020 Traduzione in indonesiano a cura di Adiitya Andre90\n

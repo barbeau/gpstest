@@ -44,7 +44,6 @@
     <string name="delete_aiding_data_success">GPS-Hilfsdaten erfolgreich gelöscht.</string>
     <string name="delete_aiding_data_failure">Das Gerät unterstützt nicht das Löschen der GPS-Hilfsdaten.</string>
     <string name="gps_switch">Aus/Ein</string>
-    <string name="share">Standort senden</string>
     <string name="set_fix_frequency">Fix-Häufigkeit einstellen</string>
     <string name="force_time_injection_success">Zeit-Daten erfolgreich geladen.</string>
     <string name="force_time_injection_failure">Das Gerät unterstützt nicht das Laden der Zeit-Daten.</string>
@@ -87,12 +86,8 @@
     <string name="install">Installieren</string>
     <string name="no_thanks">Nein danke</string>
     <string name="please_install_google_maps">Die Kartenansicht benötigt Google Maps.</string>
-    <string name="enable_gps_message">GPS ist ausgeschaltet. Jetzt einschalten?</string>
-    <string name="enable_gps_positive_button">GPS einschalten</string>
     <string name="enable_gps_negative_button">Nein</string>
-    <string name="gps_set_location_listener">GPS mit Intervall = %1$s s und min. Distanz = %2$s m gestartet</string>
     <string name="clear_assist_warning_title">Hilfsdaten löschen?</string>
-    <string name="clear_assist_warning">Manche Geräte benötigen eventuell 24 h zum automatischen Aktualisieren der Hilfsdaten. Wenn das Gerät das manuelle Laden der Hilfsdaten nicht unterstützt, funktioniert das GPS u.U. erst wieder nach Abschluss des automatischen Aktualisierens. Hilfsdaten wirklich löschen?</string>
     <string name="never_ask_again">Nicht noch einmal fragen</string>
     <string name="yes">JA</string>
     <string name="no">NEIN</string>
@@ -203,9 +198,6 @@
     <string name="pref_stop_gnss_in_background_title">GNSS im Hintergrund anhalten</string>
     <string name="pref_stop_gnss_in_background_summary">Wenn aktiviert, wird GNSS immer angehalten, wenn die App in den Hintergrund rückt (z.B. beim Drücken der Home- oder Multitasking-Tasten)</string>
 
-    <string name="pref_analyze_gps_accuracy_title">GNSS-Genauigkeit analysieren</string>
-    <string name="pref_analyze_gps_accuracy_summary">Die App GPS Benchmark zum Messen von GNSS-Fehlern verwenden</string>
-
     <string name="pref_display_category_title">Anzeige</string>
     <string name="pref_keep_screen_on_title">Display immer an</string>
     <string name="pref_keep_screen_on_summary">Verhindert das Abschalten der Anzeige</string>
@@ -223,9 +215,6 @@
 
     <string name="pref_dark_theme_title">Dunkles Theme verwenden</string>
     <string name="pref_dark_theme_summary">Stellt den Hintergrund in einer dunklen Farbe und den Text in einer hellen Farbe dar</string>
-
-    <string name="pref_dms_mode_title">Sexagesimal-Format verwenden</string>
-    <string name="pref_dms_mode_summary">Breite und Länge in Grad, Minuten und Sekunden statt dezimal anzeigen</string>
 
     <string name="preferences_preferred_distance_units_title">Bevorzugte Entfernungseinheit</string>
     <string name="preferences_preferred_distance_units_option_meters">Meter</string>

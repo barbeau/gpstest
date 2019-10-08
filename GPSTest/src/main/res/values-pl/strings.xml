@@ -43,7 +43,6 @@
     <string name="delete_aiding_data_success">Pomyślnie usunięto dane pomocnicze.</string>
     <string name="delete_aiding_data_failure">Urządzenie nie wspiera usuwania danych pomocniczych.</string>
     <string name="gps_switch">Wyłącz/Włącz</string>
-    <string name="share">Wyślij lokalizację</string>
     <string name="set_fix_frequency">Ustaw częstotliwość aktualnej pozycji</string>
     <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
     <string name="force_time_injection_failure">Urządzenie nie wspiera wprowadzania danych czasowych.</string>
@@ -86,12 +85,8 @@
     <string name="install">Instalacja</string>
     <string name="no_thanks">Nie dziękuję</string>
     <string name="please_install_google_maps">Karta Mapy wymaga Map Google</string>
-    <string name="enable_gps_message">GPS jest wyłączony. Włączyć go teraz ?</string>
-    <string name="enable_gps_positive_button">Włącz GPS</string>
     <string name="enable_gps_negative_button">Nie</string>
-    <string name="gps_set_location_listener">Uruchomiono GPS z interwałem = %1$ss, min. dyst. = %2$sm</string>
     <string name="clear_assist_warning_title">Usunąć dane pomocznicze ?</string>
-    <string name="clear_assist_warning">Niektóre urządzenia mogą potrzebować 24 godzin do automatycznego odświeżenia danych pomocniczych. Jeśli twoje urządzenie nie wspiera manualnego wprowadzania, GPS może nie działać dla każdej aplikacji dopóki automatyczne odświeżanie nie zakończy się. Czy jesteś tego pewien ?</string>
     <string name="never_ask_again">Nigdy nie pytaj ponownie</string>
     <string name="yes">TAK</string>
     <string name="no">NIE</string>
@@ -205,9 +200,6 @@
     <string name="pref_stop_gnss_in_background_summary">Jeśli włączone, GNSS zostanie wyłączone kiedy aplikacja będzie działać w tle (na przykład, kiedy użyjesz przycisku Home lub przycisku Multitaskingu do przełączania się pomiędzy aplikacjami)
     </string>
 
-    <string name="pref_analyze_gps_accuracy_title">Analizuj dokładność GNSS</string>
-    <string name="pref_analyze_gps_accuracy_summary">Użyj benchmarku GPS do zmierzenia błędu GNSS</string>
-
     <string name="pref_display_category_title">Wyświetlacz</string>
     <string name="pref_keep_screen_on_title">Zostaw włączony ekran</string>
     <string name="pref_keep_screen_on_summary">Powstrzymuje ekran przed wyłączeniem się</string>
@@ -225,9 +217,6 @@
 
     <string name="pref_dark_theme_title">Używaj ciemnego motywu</string>
     <string name="pref_dark_theme_summary">Zmień kolor tła na ciemny a kolor tekstu na jasny</string>
-
-    <string name="pref_dms_mode_title">Użyj formatu DMS</string>
-    <string name="pref_dms_mode_summary">Pokaż szerokość i długość geograficzną w stopniach, minutach i sekundach zamiast w stopniach dziesiętnych</string>
 
     <string name="preferences_preferred_distance_units_title">Preferowane jednostki dystansu</string>
     <string name="preferences_preferred_distance_units_option_meters">Metry</string>
