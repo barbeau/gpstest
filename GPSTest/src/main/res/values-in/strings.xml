@@ -44,12 +44,18 @@
     <string name="delete_aiding_data_failure">Perangkat tidak mendukung penghapusan data bantuan.
     </string>
     <string name="gps_switch">Nonaktif/Aktif</string>
+    <string name="share">Bagikan</string>
+    <string name="copied_to_clipboard">Lokasi disalin ke clipboard</string>
+    <string name="send_log">Kirim pencatatan…</string>
+    <string name="log_instructions">Aktifkan pencatatan NMEA, pengukuran dasar, pesan navigasi, dan lainnya di Setelan</string>
+    <string name="no_location">Mencoba membagikan lokasi anda setelah mendapat perbaikan GNSS</string>
+    <string name="include_altitude">Termasuk ketinggian</string>
     <string name="set_fix_frequency">Atur Frekuensi Perbaikan</string>
     <string name="force_time_injection_success">Data waktu berhasil diinjek.</string>
     <string name="force_time_injection_failure">Perangkat tidak mendukung injeksi data waktu.
     </string>
 
-    <string name="force_xtra_injection_success">Data XTRA berhasil di-injek.</string>
+    <string name="force_xtra_injection_success">Data XTRA berhasil diinjek.</string>
     <string name="force_xtra_injection_failure">Perangkat tidak mendukung injeksi data XTRA.
     </string>
 
@@ -60,24 +66,24 @@
 
     <string name="gps_latitude_label">Lintang:</string>
     <string name="gps_longitude_label">Bujur:</string>
-    <string name="gps_fix_time_label">Waktu</string>
+    <string name="gps_fix_time_label">Waktu:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Ketinggian:</string>
     <string name="gps_altitude_msl_label">Ketinggian (DPL):</string>
     <string name="gps_accuracy_label">Akurasi:</string>
-    <string name="gps_hor_and_vert_accuracy_label">Akrs. H/V:</string>
+    <string name="gps_hor_and_vert_accuracy_label">Akurasi H/V:</string>
     <string name="gps_speed_label">Kecapatan:</string>
-    <string name="gps_speed_acc_label">Akrs. Kec:</string>
+    <string name="gps_speed_acc_label">Akurasi Kec:</string>
     <string name="gps_bearing_label">Bantalan:</string>
-    <string name="gps_bearing_acc_label">Akrs. Ban:</string>
-    <string name="gps_num_sats_label"># Stlt:</string>
+    <string name="gps_bearing_acc_label">Akurasi Ban:</string>
+    <string name="gps_num_sats_label"># Satelit:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">DOP H/V:</string>
 
     <string name="gps_prn_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gps_carrier_column_label">FK</string>
+    <string name="gps_carrier_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">Avg</string>
@@ -88,8 +94,13 @@
     <string name="install">Pasang</string>
     <string name="no_thanks">Tidak, terima kasih</string>
     <string name="please_install_google_maps">Tab Peta membutuhkan Google Maps</string>
+    <string name="enable_gps_message">GPS/GNSS tidak aktif. Aktifkan sekarang?</string>
+    <string name="enable_gps_positive_button">Aktifkan GPS/GNSS</string>
     <string name="enable_gps_negative_button">Tidak</string>
+    <string name="gps_set_location_listener">GPS dimulai dalam selang = %1$sd, minimal jarak. = %2$sm
+    </string>
     <string name="clear_assist_warning_title">Hapus data bantuan?</string>
+    <string name="clear_assist_warning">Beberapa perangkat mungkin perlu 24 jam untuk me-refresh data bantuan secara otomatis. Bila perangkat anda tidak mendukung injeksi manual, GPS mungkin tidak bekerja untuk beberapa apl sampai refresh otomatis selesai. Apakah anda yakin?</string>
     <string name="never_ask_again">Jangan tanya lagi</string>
     <string name="qr_code_instructions_title">Pindai Kode QR</string>
     <string name="qr_code_instructions_text">Impor ketepatan lokasi permukaan tanah menggunakan Kode QR dalam format Geo URI (geo:28.38434,-87.24334).  Buat Kode QR anda di https://zxing.appspot.com/generator/.</string>
@@ -103,38 +114,42 @@
     <string name="menu_option_sort_by">Urutkan dengan</string>
 
     <!-- Map view -->
-    <string name="ground_truth_latitude">Pos. lintang anda</string>
-    <string name="ground_truth_longitude">Pos. bujur anda</string>
+    <string name="ground_truth_latitude">Posisi lintang anda</string>
+    <string name="ground_truth_longitude">Posisi bujur anda</string>
     <string name="ground_truth_altitude">Ketinggian anda dalam WGS84 (Opsional)</string>
     <string name="set_ground_truth_title">Mengukur akurasi</string>
-    <string name="set_ground_truth_subtitle">Ketuk pada peta atau ketik lokasi real anda</string>
+    <string name="set_ground_truth_subtitle">Ketuk pada peta atau ketikkan lokasi real anda</string>
     <string name="save">Simpan</string>
     <string name="edit">Edit</string>
     <string name="ground_truth_marker_title">Lokasi real anda</string>
     <string name="ground_truth_invalid_location_title">Lokasi tidak valid</string>
     <string name="ground_truth_invalid_lat">Garis lintang harus dalam derajat desimal antara -90 dan 90</string>
     <string name="ground_truth_invalid_long">Garis bujur harus dalam derajat desimal antara -180 dan 180</string>
-    <string name="ground_truth_invalid_alt">Ketinggian harus dengan WGS84 dengan meter</string>
+    <string name="ground_truth_invalid_alt">Ketinggian harus dengan WGS84 dalam meter</string>
 
     <string name="horizontal_error_title">Kesalahan Horizontal</string>
     <string name="vertical_error_title">Kesalahan Vertikal</string>
     <string name="horizontal_error_label">Kesalahan</string>
     <string name="measured_error_graph_label">Kesalahan diukur</string>
-    <string name="estimated_accuracy_graph_label">Akurasi diperkirakan oleh perangkat keras</string>
+    <string name="estimated_accuracy_graph_label">Akurasi yang diperkirakan perangkat keras</string>
     <string name="horizontal_vertical_error_label">Kesalahan H/V</string>
-    <string name="avg_error_label">rata-rata %1$d perbaikan</string>
+    <string name="avg_error_label">%1$d perbaikan rata-rata</string>
     <string name="fix_number">Perbaikan #</string>
-    <string name="show_radar_valid_location">Ketepatan lokasi permukaan tanah diimpor</string>
+    <string name="show_radar_valid_location">Ketepatan lokasi permukaan tanah diimpor!</string>
+    <string name="show_radar_invalid_location">Ketepatan lokasi permukaan yang diimpor tidak valid</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
     <string name="sky_legend_shape_gnss_title">Sistem Satelit Navigasi Global (GNSS)</string>
-    <string name="sky_legend_shape_navstar">NAVSTAR GPS (AS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Rusia)</string>
     <string name="sky_legend_shape_galileo">Galileo (Uni Eropa)</string>
     <string name="sky_legend_shape_qzss">QZSS (Jepang)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Cina)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+
     <string name="sky_legend_shape_sbas_title">Sistem Augmentasi berdasarkan Satelit (SBAS)</string>
-    <string name="sky_legend_shape_waas">WAAS (AS)</string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Uni Eropa)</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Jepang)</string>
@@ -152,14 +167,14 @@
     <string name="gnss_nav_msg_status_not_supported">Perangkat tidak mendukung pelacakan Pesan Navigasi GNSS</string>
     <string name="gnss_nav_msg_status_ready">Pesan Navigasi GNSS telah berhasil dilacak</string>
 
-    <string name="gnss_measurement_status_loc_disabled">Penyedia GNSS atau Lokasi di-nonaktifkan, pembaruan tidak akan tersedia sampai penyedia di-aktifkan</string>
+    <string name="gnss_measurement_status_loc_disabled">Penyedia GNSS atau Lokasi dinonaktifkan, pembaruan tidak akan tersedia sampai penyedia di-aktifkan</string>
     <string name="gnss_measurement_status_not_supported">Perangkat tidak mendukung pelacakan Pengukuran GNSS </string>
     <string name="gnss_measurement_status_ready">Pengukuran GNSS telah berhasil dilacak</string>
 
     <string name="gnss_status_unknown">Status callback tidak diketahui</string>
 
     <!-- Permissions -->
-    <string name="title_location_permission">Butuh izn lokasi</string>
+    <string name="title_location_permission">Izin lokasi dibutuhkan</string>
     <string name="text_location_permission">GPSTest membutuhkan akses ke lokasi anda untuk menampilkan data GNSS. Bila anda memilih \"Jangan tanya lagi\" anda perlu memasang aplikasi kembali atau aktifkan izin melalui setelan sistem.</string>
     <string name="ok">OK</string>
     <string name="exit">KELUAR</string>
@@ -172,13 +187,29 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Apa yang Baru?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Mendukung IRNSS</b>
+        - Pada perangkat yang kopetibel dengan IRNSS anda sekarang dapat melihat sinyal GNSS India.\n&#8226;\u0020
+        <b>Pencatatan data ke dalam file</b>
+        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat http://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
+        <b>Penigkatan opsi berbagi</b>
+        - Bagikan lokasi anda dalam berbagai cara (clipboard, website GeoHack, buka di apl lain, bagikan dengan email/pesan) dan juga kirim file pencatatan dengan email.\n&#8226;\u0020
+        <b>Salin cepat ke clipboard</b>
+        - Cukup ketuk pada kartu utama Status lokasi untuk menyalin lokasi anda ke dalam clipboard.\n&#8226;\u0020
+        <b>Mendukung format Derajat Desimal Menit</b>
+        - Ubah format ke dalam geocaching yang terkenal ini di Setelan.\n&#8226;\u0020
+        <b>Pindai kode QR untuk mengatur Akurasi lokasi anda</b>
+        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - Lihat https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Tutup</string>
 
     <!-- Preferences -->
     <string name="pref_title">Setelan</string>
     <string name="pref_map_category_title">Peta</string>
     <string name="pref_map_type_title">Jenis Peta</string>
-    <string name="pref_map_type_summary">Menyetel jenis petak pada peta yang ditampilkan</string>
+    <string name="pref_map_type_summary">Mengatur jenis petak pada peta yang ditampilkan</string>
     <string name="pref_map_type_dialog_title">Pilih Jenis Peta</string>
 
     <string name="pref_rotate_map_with_compass_title">Putar Peta dengan Kompas</string>
@@ -201,7 +232,7 @@
     <string name="pref_gps_min_time_invalid_entry">Selang waktu harus berupa angka</string>
 
     <string name="pref_use_gnss_apis_title">Gunakan API GNSS</string>
-    <string name="pref_use_gnss_apis_summary">Tersedia pada Android 7.0 dan lebih tinggi. Bila di-nonaktifkan,
+    <string name="pref_use_gnss_apis_summary">Tersedia pada Android 7.0 dan lebih tinggi. Bila dinonaktifkan,
         akan menggunakan GPSStatus.Listener yang lama.
     </string>
 
@@ -222,11 +253,41 @@
     <string name="pref_true_north_summary">Mengarahkan kompas ke arah utara yang sebenarnya daripada arah utara magnet
     </string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Pencatatan dan Keluaran</string>
+    <string name="pref_output_category_summary">Pencatatan NMEA, pengukuran dasar ,ataupesan navigasi ke dalam file atau Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Monitor Keluaran Android</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Mencatat kalimat pada NMEA ke Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Stampel waktu NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Menyertakan stempel waktu NMEA pada keluaran</string>
     <string name="pref_measurement_output_title">Pengukuran</string>
+    <string name="pref_as_measurement_output_summary">Mencatat pengukuran GNSS ke Android Studio (Android
+        7.0 ke atas)
+    </string>
     <string name="pref_navigation_message_output_title">Pesan Navigasi</string>
+    <string name="pref_as_navigation_message_output_summary">Mencatat pesan navigasi GNSS ke Android
+        Studio (Android 7.0 ke atas)
+    </string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">File keluaran</string>
+    <string name="pref_file_nmea_output_summary">Mencatat kalimat pada NMEA ke dalam file</string>
+    <string name="pref_file_measurement_output_summary">Mencatat pengukuran GNSS ke dalam file (Android
+        7.0 ke atas)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Mencatat pesan navigasi GNSS ke dalam file (Android 7.0 ke atas)
+    </string>
+    <string name="pref_file_location_output_title">Lokasi</string>
+    <string name="pref_file_location_output_summary">Mencatat rincian perbaikan loaksi ke dalam file</string>
+
+    <string name="logging_to_new_file">Mencatat ke file baru: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Tidak dapat menutup seluruh stream file.</string>
+    <string name="could_not_initialize_file">Penghitungan file tidak menginisialisasi: %1$s</string>
+    <string name="error_writing_file">Masalah dalam menulis ke dalam file.</string>
+
     <string name="pref_about_category_title">Tentang</string>
     <string name="pref_show_tutorial_title">Tampilkan tutorial</string>
     <string name="pref_show_tutorial_summary">Menampilkan petunjuk menggunakan aplikasi</string>
@@ -234,6 +295,12 @@
     <string name="pref_dark_theme_title">Gunakan Tema Gelap</string>
     <string name="pref_dark_theme_summary">Memberi warna gelap pada latar belakang dan warna terang pada teks
     </string>
+
+    <string name="pref_coordinate_format_title">Format koordinat</string>
+    <string name="pref_coordinate_format_summary">Tampilkan dalam derajat desimal, DMS, atau derajat desimal menit</string>
+    <string name="preferences_coordinate_format_dd">Derajat desimal</string>
+    <string name="preferences_coordinate_format_dms">Derajat, Menit, Desimal Detik</string>
+    <string name="preferences_coordinate_format_ddm">Derajat, Desimal Menit</string>
 
     <string name="preferences_preferred_distance_units_title">Satuan jarak yang disukai</string>
     <string name="preferences_preferred_distance_units_option_meters">Meter</string>
@@ -245,10 +312,105 @@
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Mil per jam</string>
 
     <string name="pref_language_title">Bahasa</string>
-    <string name="pref_language_summary">Memilih manual bahasa dalam aplikasi</string>
+    <string name="pref_language_summary">Mengatur bahasa dalam aplikasi secara manual</string>
     <string name="pref_language_dialog_title">Pilih Bahasa</string>
 
     <!-- Help -->
     <string name="title_help">Bantuan</string>
 
+    <string name="help_text">
+        <b>Pertannyaan yang Sering Diajukan (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Tampilan Status ***</b>\n\n&#8226;\u0020
+        <b>Lintang</b>
+        - Dalam derajat desimal (WGS 84)\n&#8226;\u0020
+        <b>Bujur</b>
+        - Dalam derajat desimal (WGS 84)\n&#8226;\u0020
+        <b>Ketinggian</b>
+        - Meter di atas ellipsoid WGS 84\n&#8226;\u0020
+        <b>Ketinggian (DPL)</b>
+        - Meter Di atas Permukaan Laut (membutuhkan dukungan NMEA)\n&#8226;\u0020
+        <b>Akurasi</b>
+        - Akurasi lokasi horizontal yang diperkirakan (radius dalam 68% meter pasti). Dengan kata lain, bila anda membuat lingkaran terpusat di titik lintang dan bujur lokasi, dan dalam radius yang sama dengan akurasi, kemudian ada 68% kemungkinan bila lokasi aslinya berada di dalam lingkaran. Untuk detailnya lihat https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Akurasi H/V</b>
+        - Akurasi lokasi horizontal dan vertikal yang diperkirakan, keduanya dalam 68% kepastian. Akurasi horizontal sama definisinya seperti pada kotak Akurasi di atas. Akurasi vertikal tersedia pada Android 8.0 Oreo dan lebih tinggi. Contoh akurasi vertikal - bila Ketinggian 150 dan Akurasi Vertikalnya 20, kemudian ada 68% kemungkinan bila ketinggian aslinya berada antara 130 dan 170 meter. Untuk detailnya lihat https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Kecepatan</b>
+        - Kecepatan, dalam meter/detik di atas tanah\n&#8226;\u0020
+        <b>Akurasi Kecepatan</b>
+        - Akurasi kecepatan diperkirakan lokasi ini 68% pasti, dalam meter per detik. Contoh, bila Kecepatan adalah 5, dan Akurasi Kecepatan adalah 1, kemudian ada 68% kemungkinan bila kecepatan aslinya berada antara 4 dan 6 meter per detik.\n&#8226;\u0020
+        <b>Bantalan</b>
+        - Arah horizontal perangkat menghadap (dalam derajat 0-360), dan tidak berhubungan dengan orientasi perangkat.\n&#8226;\u0020
+        <b>Akurasi Bantalan</b>
+        - Akurasi bantalan diperkirakan lokasi 68% pasti, dalam derajat. Contoh, bila Bantalan 60 dan Akuarsi Bantalan 10, kemudian ada 68% kemungkinan bila bantalan pastinya berada antara 50 dan 70 derajat.\n&#8226;\u0020
+        <b># Satelit</b>
+        - # satelit digunakan untuk perbaikan / # satelit terlihat\n&#8226;\u0020
+        <b>PDOP</b>
+        - Posisi (3D) dilusi presisi (membutuhkan dukungan NMEA)\n&#8226;\u0020
+        <b>H/V DOP</b>
+        - Horizontal / vertikal dilusi presisi (membutuhkan dukungan NMEA)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Waktu untuk perbaikan pertama\n&#8226;\u0020
+        <b>ID atau PRN</b>
+        - pengidentifikasi satelit ini (pseudorandom noise untuk GPS)\n&#8226;\u0020
+        <b>CF</b>
+        - Label (cth., \"L1\") untuk sinyal frekuensi karir yang terlacak. bila frekuensi tidak diketahui, menampilkan frekuensi dasar dalam MHz (tersedia pada Android 8.0+, namun tidak didukung di semua perangkat). Sinyal CDMA GLONASS yang baru untuk L1 di tampilkan sebagai \"L1-C\".\n&#8226;\u0020
+        <b>SNR</b>
+        - Signal-to-noise ratio (Android M dan lebih rendah) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Carrier-to-noise density (Android N dan lebih tinggi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Flag</b>
+        - (E) bila perangkat memiliki data epimeris untuk satelit, (A) bila perangkat memiliki data almanac
+        untuk satelit, (U) bila satelit digunakan dalam penghitungan perbaikan paling kini.  Untuk SBAS, spek Android tidak menspesifik bila (U) mengacu ke pseudorange dari satelit yang digunakan untuk solusi posisi atau untuk megoreksi informasi yang berasal dari satelit yang digunakan.\n\n
+
+        <b>*** Tampilan Langit ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
+        - Lingkaran\n&#8226;\u0020
+        <b>GLONASS (Rusia)</b>
+        - Kotak\n&#8226;\u0020
+        <b>Galileo (Uni Eropa)</b>
+        - Segi tiga\n&#8226;\u0020
+        <b>QZSS (Japan)</b>
+        - Segi enam\n&#8226;\u0020
+        <b>BeiDou/COMPASS (China)</b>
+        - Segi lima\n&#8226;\u0020
+        <b>IRNSS (India)</b>
+        - Oval\n&#8226;\u0020
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        - Diamond\n\n
+
+        &#8226;\u0020 Satelit transparan - Tidak terlihat\n
+        &#8226;\u0020 Garis tipis - Terlihat namun tidak digunakan untuk perbaikan\n
+        &#8226;\u0020 Garis tebal - Digunakan untuk perbaikan\n\n
+
+        &#8226;\u0020 Rentang SNR yang diharapkan 0 dB (merah) sampai 30 dB (hijau) pada Android di bawah versi 7.0. \n
+        &#8226;\u0020 Rentang SNR yang diharapkan 10 dB (merah) sampai 45 dB (hijau) pada Android 7.0 dan lebih tinggi. \n
+        &#8226;\u0020 Rentang C/N0 yang diharapkan 10 dB-Hz (merah) sampai 45 dB-Hz (hijau) pada Android 7.0 dan lebih tinggi. \n
+        &#8226;\u0020 Bila tidak ada nilai SNR atau C/N0 untuk sebuah satelit (cth., satelit tidak terlihat oleh perangkat), akan berwarna abu-abu cerah transparan. \n\n
+
+        <b>*** Tampilan Akurasi ***</b>\n\n&#8226;\u0020
+        <b>Kesalahan vertikal</b>
+        - Penghitungan kesalahan vertikal, tidak seperti kesalahan horizontal, dapat berupa positif atau negatif.  Ketika tampilan Akurasi ditampilkan, kesalahan vertikal dan rata-rata kesalahan vertikal, keduanya dihitung menggunakan nilai absolut dari penghitungan kesalahan.\n\n
+
+        &#8226;\u0020Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes for details.\n\n
+
+        <b>*** Pencatatan File ***</b>\n\n
+        &#8226;\u0020Aktifkan pencatatan file penghitungan dasar, pesan nav dan perbaikan lokasi NMEA di Setelan. Lihat http://bit.ly/gpstest-file for details.\n\n
+
+        <b>*** Ucapan Terima Kasih ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - pengembang asli untuk v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - pengembang untuk  v2.x dan lebih tinggi\n
+        &#8226;\u0020 Ikon peluncur GPSTest berasal dari ikon \"satelit\" Android Material Design, lisensi oleh Google dibawah Apache v2.0. Ikon material design Google yang lain juga dilisensi dibawah Apache v2.0. Ikon kode QR oleh  Austin Andrews dari https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Terjemahan China oleh wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Terjemahan Jermanoleh SIRSteiner\n
+        &#8226;\u0020 Terjemahan Belanda oleh Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Terjemahan Yunani oleh Jimmy Golfi\n
+        &#8226;\u0020 Terjemahan Jepang oleh SakuraSa233\n
+        &#8226;\u0020 Terjemahan Ceko oleh llzn.cz\n
+        &#8226;\u0020 Terjemahan Italia oleh Giolly90\n
+        &#8226;\u0020 Terjemahan Spanyol oleh Sergi Pellicer\n
+        &#8226;\u0020 Terjemahan Indonesia oleh Adiitya Andre\n
+        &#8226;\u0020 Terjemahan Polandia oleh Adam Wandelt\n
+        &#8226;\u0020 Terjemahan Francis oleh Olivier Merlin &amp; Jérémy Belloir\n
+    </string>
 </resources>
