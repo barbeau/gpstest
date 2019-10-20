@@ -180,9 +180,9 @@
         <b>Ondersteuning voor IRNSS</b>
         - Je kunt vanaf nu op IRNSS-ondersteunende apparaten signalen van de Indische GNSS ontvangen.\n&#8226;\u0020
         <b>Gegevens loggen naar bestanden</b>
-        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie https://bit.ly/gpstest-file for details.\n&#8226;\u0020
         <b>Scan QR-codes om je ware locatie in te stellen</b>
-        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie http://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
+        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie https://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
         <b>Foutoplossingen</b>
         - Zie https://bit.ly/gpstest-releases
     </string>
@@ -367,7 +367,7 @@ heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening v
 - Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.\n\n
         
 *** Bestandsloggen ***\n\n
- &#8226;\u0020Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file voor details.\n\n
+ &#8226;\u0020Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie https://bit.ly/gpstest-file voor details.\n\n
         
 *** Erkenningen ***\n\n
 &#8226;\u0020 <b>Mike Lockwood</b> - oorspronkelijke ontwikkelaar voor v1.x\n
