@@ -368,7 +368,7 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
         &#8226;\u0020Forcer votre localisation réelle rapidement en utilisant un QR codes. Voir https://bit.ly/gpstest-qr-codes pour les détails.\n\n
 
         <b>*** Archivage sur fichier ***</b>\n\n
-        &#8226;\u0020Autorise l\'archivage dur fichier dans Paramètres pour les mesures brutes, les messages de navigation et les localisations pour le système NMEA. Voir http://bit.ly/gpstest-file pour les détails.\n\n
+        &#8226;\u0020Autorise l\'archivage dur fichier dans Paramètres pour les mesures brutes, les messages de navigation et les localisations pour le système NMEA. Voir https://bit.ly/gpstest-file pour les détails.\n\n
 
         <b>*** Remerciements ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - développeur initial pour la  v1.x\n
