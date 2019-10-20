@@ -176,9 +176,9 @@
         <b>Accepte le IRNSS</b>
         - Sur les équipements compatibles IRNSS vous pouvez maintenant voir les satellites Indiens GNSS.\n&#8226;\u0020
         <b>Enregistrement des données dans un fichier</b>
-        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter http://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
+        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter https://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
         <b>Scanner un QR codes pour améliorer la précision de la localisation</b>
-        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter http://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
+        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter https://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
         <b>Erreurs corrigées</b>
         - Consulter https://bit.ly/gpstest-releases
     </string>
@@ -365,7 +365,7 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
         <b>Erreur Verticale</b>
         - Les mesures d\'erreurs Vertical, contrairement aux erreurs horizontales, peuvent être positive ou négative. Quand elles sont visualisées dans la vue Précision, les erreurs verticales, et les moyennes des erreurs verticales, sont toutes les 2 calculées avec les valeurs absolues des mesures d\'erreur.\n\n
 
-        &#8226;\u0020Forcer votre localisation réelle rapidement en utilisant un QR codes. Voir http://bit.ly/gpstest-qr-codes pour les détails.\n\n
+        &#8226;\u0020Forcer votre localisation réelle rapidement en utilisant un QR codes. Voir https://bit.ly/gpstest-qr-codes pour les détails.\n\n
 
         <b>*** Archivage sur fichier ***</b>\n\n
         &#8226;\u0020Autorise l\'archivage dur fichier dans Paramètres pour les mesures brutes, les messages de navigation et les localisations pour le système NMEA. Voir http://bit.ly/gpstest-file pour les détails.\n\n
