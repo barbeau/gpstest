@@ -191,7 +191,7 @@
         <b>Mendukung IRNSS</b>
         - Pada perangkat yang kopetibel dengan IRNSS anda sekarang dapat melihat sinyal GNSS India.\n&#8226;\u0020
         <b>Pencatatan data ke dalam file</b>
-        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat http://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
+        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat https://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
         <b>Penigkatan opsi berbagi</b>
         - Bagikan lokasi anda dalam berbagai cara (clipboard, website GeoHack, buka di apl lain, bagikan dengan email/pesan) dan juga kirim file pencatatan dengan email.\n&#8226;\u0020
         <b>Salin cepat ke clipboard</b>
@@ -199,7 +199,7 @@
         <b>Mendukung format Derajat Desimal Menit</b>
         - Ubah format ke dalam geocaching yang terkenal ini di Setelan.\n&#8226;\u0020
         <b>Pindai kode QR untuk mengatur Akurasi lokasi anda</b>
-        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
+        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat https://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
         <b>Bug fixes</b>
         - Lihat https://bit.ly/gpstest-releases
     </string>
@@ -392,10 +392,10 @@
         <b>Kesalahan vertikal</b>
         - Penghitungan kesalahan vertikal, tidak seperti kesalahan horizontal, dapat berupa positif atau negatif.  Ketika tampilan Akurasi ditampilkan, kesalahan vertikal dan rata-rata kesalahan vertikal, keduanya dihitung menggunakan nilai absolut dari penghitungan kesalahan.\n\n
 
-        &#8226;\u0020Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes for details.\n\n
+        &#8226;\u0020Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat https://bit.ly/gpstest-qr-codes for details.\n\n
 
         <b>*** Pencatatan File ***</b>\n\n
-        &#8226;\u0020Aktifkan pencatatan file penghitungan dasar, pesan nav dan perbaikan lokasi NMEA di Setelan. Lihat http://bit.ly/gpstest-file for details.\n\n
+        &#8226;\u0020Aktifkan pencatatan file penghitungan dasar, pesan nav dan perbaikan lokasi NMEA di Setelan. Lihat https://bit.ly/gpstest-file for details.\n\n
 
         <b>*** Ucapan Terima Kasih ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - pengembang asli untuk v1.x\n
