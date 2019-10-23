@@ -17,7 +17,7 @@ package com.android.gpstest.model
 
 /**
  * Mirrors the GnssStatus class (https://developer.android.com/reference/android/location/GnssStatus),
- * but uses internal GnssType and SbasType values for GNSS and SBAS constellations, respectively
+ * but uses internal GnssType and SbasType values for GNSS and SBAS constellations
  */
 data class SatelliteStatus (
         val svid: Int,

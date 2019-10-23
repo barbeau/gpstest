@@ -295,8 +295,19 @@ public class GpsTestUtil {
      * @return a unique key to identify this satellite using a combination of both the svid and
      * constellation type
      */
-    public static String createGnssSatelliteKey(int svid, int constellationType) {
-        return String.valueOf(svid) + " " + String.valueOf(constellationType);
+    public static String createGnssSatelliteKey(int svid, GnssType gnssType) {
+        return svid + " " + gnssType;
+    }
+
+    /**
+     * Creates a unique key to identify a particular signal, or GnssStatus, from a satellite using a
+     * combination of both the svid and constellation type and carrier frequency
+     *
+     * @return a unique key to identify a particular signal, or GnssStatus, from a satellite using a
+     * combination of both the svid and constellation type and carrier frequency
+     */
+    public static String createGnssStatusKey(int svid, GnssType gnssType, String carrierLabel) {
+        return svid + " " + gnssType + " " + carrierLabel;
     }
 
 

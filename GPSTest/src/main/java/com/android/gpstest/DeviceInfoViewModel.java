@@ -15,115 +15,153 @@
  */
 package com.android.gpstest;
 
-import android.app.Application;
-import android.location.GnssStatus;
-import android.location.GpsStatus;
-import android.location.Location;
-import android.os.Build;
-import android.util.Pair;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.model.Satellite;
+import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.util.CarrierFreqUtils;
+import com.android.gpstest.util.GpsTestUtil;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 
 /**
  * View model that holds device properties
  */
 public class DeviceInfoViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Boolean> mAllowGroundTruthEdit = new MutableLiveData<>(true);
+    private MutableLiveData<Map<String, Satellite>> mGnssSatellites = new MutableLiveData<>();
 
-    private boolean mBenchmarkCardCollapsed = false;
+    private MutableLiveData<Map<String, Satellite>> mSbasSatellites = new MutableLiveData<>();
 
-    private MutableLiveData<Pair<Location, MeasuredError>> mLocationErrorPair = new MutableLiveData<>();
+    private boolean mIsDualFrequencyInView = false;
 
-    private ArrayList<Pair<Location, MeasuredError>> mLocationErrorPairs = new ArrayList<>();
+    private boolean mIsDualFrequencyInUse = false;
+
+    /**
+     * Map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected as having duplicate carrier frequency data with another signal
+     */
+    private Map<String, SatelliteStatus> mDuplicateCarrierStatuses = new HashMap();
+
+    /**
+     * Map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected with an unknown GNSS frequency
+     */
+    private Map<String, SatelliteStatus> mUnknownCarrierStatuses = new HashMap();
 
     public DeviceInfoViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public void setAllowGroundTruthEdit(boolean allowGroundTruthEdit) {
-        mAllowGroundTruthEdit.setValue(allowGroundTruthEdit);
+    public MutableLiveData<Map<String, Satellite>> getGnssSatellites() {
+        return mGnssSatellites;
     }
 
-    public LiveData<Boolean> getAllowGroundTruthEdit() {
-        return mAllowGroundTruthEdit;
-    }
-
-    public void setBenchmarkCardCollapsed(boolean cardCollapsed) {
-        mBenchmarkCardCollapsed = cardCollapsed;
-    }
-
-    public boolean getBenchmarkCardCollapsed() {
-        return mBenchmarkCardCollapsed;
-    }
-
-    public LiveData<Pair<Location, MeasuredError>> getLocationErrorPair() {
-        return mLocationErrorPair;
+    public MutableLiveData<Map<String, Satellite>> geSbasSatellites() {
+        return mSbasSatellites;
     }
 
     /**
-     * Get history of all location and error pairs from the most recent test
+     * Returns true if this device is viewing multiple signals from the same satellite, false if it is not
      *
-     * @return history of all location and error pairs from the most recent test
+     * @return true if this device is viewing multiple signals from the same satellite, false if it is not
      */
-    public ArrayList<Pair<Location, MeasuredError>> getLocationErrorPairs() {
-        return mLocationErrorPairs;
+    public boolean isDualFrequencyInView() {
+        return mIsDualFrequencyInView;
     }
 
     /**
-     * Adds a new location to the view model and calculates relevate errors
+     * Returns true if this device is using multiple signals from the same satellite, false if it is not
      *
-     * @param status
+     * @return true if this device is using multiple signals from the same satellite, false if it is not
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setGnssStatus(GnssStatus status) {
-//        final int length = status.getSatelliteCount();
-//        int svCount = 0;
-//        while (svCount < length) {
-//            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(svCount), GpsTestUtil.getGnssConstellationType(status.getConstellationType(svCount)),
-//                    status.getCn0DbHz(svCount),
-//                    status.hasAlmanacData(svCount),
-//                    status.hasEphemerisData(svCount),
-//                    status.usedInFix(svCount),
-//                    status.getElevationDegrees(svCount),
-//                    status.getAzimuthDegrees(svCount));
-//            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
-//                if (status.hasCarrierFrequencyHz(svCount)) {
-//                    satStatus.setHasCarrierFrequency(true);
-//                    satStatus.setCarrierFrequencyHz(status.getCarrierFrequencyHz(svCount));
-//                }
-//            }
-//
-//            if (satStatus.getGnssType() == GnssType.SBAS) {
-//                satStatus.setSbasType(GpsTestUtil.getSbasConstellationType(satStatus.getSvid()));
-//                mSbasStatus.add(satStatus);
-//            } else {
-//                mGnssStatus.add(satStatus);
-//            }
-//
-//            if (satStatus.getUsedInFix()) {
-//                mUsedInFixCount++;
-//            }
-//
-//            svCount++;
-//        }
+    public boolean isDualFrequencyInUse() {
+        return mIsDualFrequencyInUse;
     }
 
-    @Deprecated
-    private void updateLegacyStatus(GpsStatus status) {
+    /**
+     * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
+     * into satellites
+     *
+     * @param gnssStatuses a new set of GNSS and SBAS status objects (signals)
+     */
+    public void setStatuses(List<SatelliteStatus> gnssStatuses, List<SatelliteStatus> sbasStatuses) {
+        Map<String, Satellite> gnssSatellites = getSatellitesFromStatuses(gnssStatuses);
+        Map<String, Satellite> sbasSatellites = getSatellitesFromStatuses(sbasStatuses);
 
+        mGnssSatellites.setValue(gnssSatellites);
+        mSbasSatellites.setValue(sbasSatellites);
+    }
+
+    /**
+     * Returns a map with the provided status grouped into satellites
+     * @param allStatuses all statuses for either all GNSS or SBAS constellations
+     * @return a map with the provided status grouped into satellites. The key to the map is the combination of constellation and ID
+     * created using GpsTestUtil.createGnssSatelliteKey().
+     */
+    private Map<String, Satellite> getSatellitesFromStatuses(List<SatelliteStatus> allStatuses) {
+        Map<String, Satellite> satellites = new HashMap<>();
+
+        for (SatelliteStatus s : allStatuses) {
+            String key = GpsTestUtil.createGnssSatelliteKey(s.getSvid(), s.getGnssType());
+            // Get carrier label
+            String carrierLabel;
+            if (GpsTestUtil.isGnssCarrierFrequenciesSupported() && s.getCarrierFrequencyHz() != NO_DATA) {
+                carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s.getGnssType(), s.getSvid(), s.getCarrierFrequencyHz());
+                if (carrierLabel == null) {
+                    carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unknown);
+                    mUnknownCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s.getSvid(), s.getGnssType(), carrierLabel), s);
+                }
+            } else {
+                carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unsupported);
+            }
+
+            Map<String, SatelliteStatus> satStatuses;
+            if (!satellites.containsKey(key)) {
+                // Create new satellite and add signal
+                satStatuses = new HashMap<>();
+                satStatuses.put(carrierLabel, s);
+                Satellite sat = new Satellite(key, satStatuses);
+                satellites.put(key, sat);
+            } else {
+                // Add signal to existing satellite
+                Satellite sat = satellites.get(key);
+                satStatuses = sat.getStatus();
+                if (!satStatuses.containsKey(carrierLabel)) {
+                    // We found another frequency for this satellite
+                    satStatuses.put(carrierLabel, s);
+                    mIsDualFrequencyInView = true;
+                    int frequenciesInUse = 0;
+                    for (SatelliteStatus satelliteStatus : satStatuses.values()) {
+                        if (satelliteStatus.getUsedInFix()) {
+                            frequenciesInUse++;
+                        }
+                    }
+                    if (frequenciesInUse > 1) {
+                        mIsDualFrequencyInUse = true;
+                    }
+                } else {
+                    // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
+                    mDuplicateCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s.getSvid(), s.getGnssType(), carrierLabel), s);
+                }
+            }
+        }
+        return satellites;
     }
 
     public void reset() {
-        // TODO
+        mGnssSatellites.setValue(null);
+        mSbasSatellites.setValue(null);
+        mDuplicateCarrierStatuses = new HashMap<>();
+        mUnknownCarrierStatuses = new HashMap<>();
+        mIsDualFrequencyInView = false;
+        mIsDualFrequencyInUse = false;
     }
 
     /**

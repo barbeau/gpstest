@@ -172,6 +172,9 @@
     <string name="capability_value_supported">SUPPORTED</string>
     <string name="capability_value_location_disabled">LOCATION_DISABLED</string>
 
+    <string name="gnss_carrier_frequency_unknown">unknown</string>
+    <string name="gnss_carrier_frequency_unsupported">unsupported</string>
+
     <!-- Unit preferences-->
     <string-array name="preferred_distance_units_entries">
         <item>@string/preferences_preferred_distance_units_option_meters</item>
