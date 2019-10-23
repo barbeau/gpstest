@@ -68,6 +68,28 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
+     * Returns a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected as having duplicate carrier frequency data with another signal
+     *
+     * @return a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected as having duplicate carrier frequency data with another signal
+     */
+    public Map<String, SatelliteStatus> getDuplicateCarrierStatuses() {
+        return mDuplicateCarrierStatuses;
+    }
+
+    /**
+     * Returns a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected with an unknown GNSS frequency
+     *
+     * @return a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * has been detected with an unknown GNSS frequency
+     */
+    public Map<String, SatelliteStatus> getUnknownCarrierStatuses() {
+        return mUnknownCarrierStatuses;
+    }
+
+    /**
      * Returns true if this device is viewing multiple signals from the same satellite, false if it is not
      *
      * @return true if this device is viewing multiple signals from the same satellite, false if it is not
