@@ -131,14 +131,14 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         Map<String, Satellite> satellites = new HashMap<>();
 
         for (SatelliteStatus s : allStatuses) {
-            String key = GpsTestUtil.createGnssSatelliteKey(s.getSvid(), s.getGnssType());
+            String key = GpsTestUtil.createGnssSatelliteKey(s);
             // Get carrier label
             String carrierLabel;
             if (GpsTestUtil.isGnssCarrierFrequenciesSupported() && s.getCarrierFrequencyHz() != NO_DATA) {
                 carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s.getGnssType(), s.getSvid(), s.getCarrierFrequencyHz());
                 if (carrierLabel == null) {
                     carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unknown);
-                    mUnknownCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s.getSvid(), s.getGnssType(), carrierLabel), s);
+                    mUnknownCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s), s);
                 }
             } else {
                 carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unsupported);
@@ -170,7 +170,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                     }
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
-                    mDuplicateCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s.getSvid(), s.getGnssType(), carrierLabel), s);
+                    mDuplicateCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s), s);
                 }
             }
         }

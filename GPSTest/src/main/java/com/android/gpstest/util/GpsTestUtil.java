@@ -34,6 +34,7 @@ import androidx.annotation.RequiresApi;
 import com.android.gpstest.Application;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteName;
+import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.model.SbasType;
 
 import java.lang.reflect.InvocationTargetException;
@@ -295,8 +296,13 @@ public class GpsTestUtil {
      * @return a unique key to identify this satellite using a combination of both the svid and
      * constellation type
      */
-    public static String createGnssSatelliteKey(int svid, GnssType gnssType) {
-        return svid + " " + gnssType;
+    public static String createGnssSatelliteKey(SatelliteStatus status) {
+        if (status.getGnssType() == SBAS) {
+            return status.getSvid() + " " + status.getGnssType() + " " + status.getSbasType();
+        } else {
+            // GNSS
+            return status.getSvid() + " " + status.getGnssType();
+        }
     }
 
     /**
@@ -306,8 +312,14 @@ public class GpsTestUtil {
      * @return a unique key to identify a particular signal, or GnssStatus, from a satellite using a
      * combination of both the svid and constellation type and carrier frequency
      */
-    public static String createGnssStatusKey(int svid, GnssType gnssType, String carrierLabel) {
-        return svid + " " + gnssType + " " + carrierLabel;
+    public static String createGnssStatusKey(SatelliteStatus status) {
+        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(status.getGnssType(), status.getSvid(), status.getCarrierFrequencyHz());
+        if (status.getGnssType() == SBAS) {
+            return status.getSvid() + " " + status.getGnssType() + " " + status.getSbasType() + " " + carrierLabel;
+        } else {
+            // GNSS
+            return status.getSvid() + " " + status.getGnssType() + " " + carrierLabel;
+        }
     }
 
 
