@@ -55,11 +55,11 @@ import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.CarrierFreqUtils;
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.NmeaUtils;
 import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.SortUtil;
 import com.android.gpstest.util.UIUtils;
 
@@ -259,7 +259,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
      * @param location
      */
     private void updateLocationAccuracies(Location location) {
-        if (GpsTestUtil.isVerticalAccuracySupported(location)) {
+        if (SatelliteUtils.isVerticalAccuracySupported(location)) {
             mHorVertAccuracyLabelView.setText(R.string.gps_hor_and_vert_accuracy_label);
             if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                 mHorVertAccuracyView.setText(mRes.getString(R.string.gps_hor_and_vert_accuracy_value_meters,
@@ -290,7 +290,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
      * @param location
      */
     private void updateSpeedAndBearingAccuracies(Location location) {
-        if (GpsTestUtil.isSpeedAndBearingAccuracySupported()) {
+        if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
             mSpeedBearingAccuracyRow.setVisibility(View.VISIBLE);
             if (location.hasSpeedAccuracy()) {
                 if (mPrefSpeedUnits.equalsIgnoreCase(METERS_PER_SECOND)) {
@@ -550,14 +550,14 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mGnssStatus.clear();
         mSbasStatus.clear();
         while (mSvCount < length) {
-            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), GpsTestUtil.getGnssConstellationType(status.getConstellationType(mSvCount)),
+            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), SatelliteUtils.getGnssConstellationType(status.getConstellationType(mSvCount)),
                     status.getCn0DbHz(mSvCount),
                     status.hasAlmanacData(mSvCount),
                     status.hasEphemerisData(mSvCount),
                     status.usedInFix(mSvCount),
                     status.getElevationDegrees(mSvCount),
                     status.getAzimuthDegrees(mSvCount));
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+            if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
                 if (status.hasCarrierFrequencyHz(mSvCount)) {
                     satStatus.setHasCarrierFrequency(true);
                     satStatus.setCarrierFrequencyHz(status.getCarrierFrequencyHz(mSvCount));
@@ -565,7 +565,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             }
 
             if (satStatus.getGnssType() == GnssType.SBAS) {
-                satStatus.setSbasType(GpsTestUtil.getSbasConstellationType(satStatus.getSvid()));
+                satStatus.setSbasType(SatelliteUtils.getSbasConstellationType(satStatus.getSvid()));
                 mSbasStatus.add(satStatus);
             } else {
                 mGnssStatus.add(satStatus);
@@ -605,7 +605,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
 
-            SatelliteStatus satStatus = new SatelliteStatus(satellite.getPrn(), GpsTestUtil.getGnssType(satellite.getPrn()),
+            SatelliteStatus satStatus = new SatelliteStatus(satellite.getPrn(), SatelliteUtils.getGnssType(satellite.getPrn()),
                     satellite.getSnr(),
                     satellite.hasAlmanac(),
                     satellite.hasEphemeris(),
@@ -614,7 +614,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     satellite.getAzimuth());
 
             if (satStatus.getGnssType() == GnssType.SBAS) {
-                satStatus.setSbasType(GpsTestUtil.getSbasConstellationTypeLegacy(satStatus.getSvid()));
+                satStatus.setSbasType(SatelliteUtils.getSbasConstellationTypeLegacy(satStatus.getSvid()));
                 mSbasStatus.add(satStatus);
             } else {
                 mGnssStatus.add(satStatus);
@@ -839,7 +839,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 } else {
                     v.getFlagHeader().setText(mRes.getString(R.string.sbas_flag_image_label));
                 }
-                if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
                     v.getCarrierFrequency().setVisibility(View.VISIBLE);
                     v.getCarrierFrequency().setText(mRes.getString(R.string.gps_carrier_column_label));
                     v.getCarrierFrequency().setTypeface(v.getCarrierFrequency().getTypeface(), Typeface.BOLD);
@@ -907,7 +907,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         v.getFlag().setVisibility(View.INVISIBLE);
                         break;
                 }
-                if (GpsTestUtil.isGnssCarrierFrequenciesSupported()) {
+                if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
                     if (sats.get(dataRow).getCarrierFrequencyHz() != NO_DATA) {
                         // Convert Hz to MHz
                         float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());

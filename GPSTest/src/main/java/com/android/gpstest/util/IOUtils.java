@@ -20,10 +20,15 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.location.GnssMeasurement;
+import android.location.GnssNavigationMessage;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -33,6 +38,7 @@ import com.android.gpstest.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;
 import static com.android.gpstest.util.LocationUtils.isValidLongitude;
@@ -40,6 +46,14 @@ import static com.android.gpstest.util.LocationUtils.isValidLongitude;
 public class IOUtils {
 
     public static final String TAG = "IOUtils";
+
+    private static final String NMEA_OUTPUT_TAG = "GpsOutputNmea";
+
+    private static final String MEASURE_OUTPUT_TAG = "GpsOutputMeasure";
+
+    private static final String NM_OUTPUT_TAG = "GpsOutputNav";
+
+    private static StringBuilder mNmeaOutput = new StringBuilder();
 
     /**
      * Returns the ground truth location encapsulated in the Intent if the provided Intent has a
@@ -254,5 +268,64 @@ public class IOUtils {
      */
     public static android.net.Uri getUriFromFile(Context context, File file) {
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+    }
+
+    /**
+     * Outputs the provided nmea message and timestamp to log
+     *
+     * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp
+     *                  to
+     *                  log
+     */
+    public static void writeNmeaToAndroidStudio(String nmea, long timestamp) {
+        mNmeaOutput.setLength(0);
+        if (timestamp != Long.MIN_VALUE) {
+            mNmeaOutput.append(timestamp);
+            mNmeaOutput.append(",");
+        }
+        mNmeaOutput.append(nmea);
+        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString());
+    }
+
+    /**
+     * Outputs the provided GNSS navigation message to log
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void writeNavMessageToAndroidStudio(GnssNavigationMessage message) {
+        Log.d(NM_OUTPUT_TAG, message.toString());
+    }
+
+    /**
+     * Outputs the provided GNSS measurement to log
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void writeGnssMeasurementToAndroidStudio(GnssMeasurement measurement) {
+        Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
+    }
+
+    /**
+     * Returns the GNSS hardware year for the device, or null if the year couldn't be determined
+     *
+     * @return the GNSS hardware year for the device, or null if the year couldn't be determined
+     */
+    public static String getGnssHardwareYear() {
+        java.lang.reflect.Method method;
+        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+        try {
+            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
+            int hwYear = (int) method.invoke(locationManager);
+            if (hwYear == 0) {
+                return "GNSS HW Year: " + "2015 or older";
+            } else {
+                return "GNSS HW Year: " + hwYear;
+            }
+        } catch (NoSuchMethodException e) {
+            Log.e(TAG, "No such method exception: ", e);
+        } catch (IllegalAccessException e) {
+            Log.e(TAG, "Illegal Access exception: ", e);
+        } catch (InvocationTargetException e) {
+            Log.e(TAG, "Invocation Target Exception: ", e);
+        }
+        return null;
     }
 }

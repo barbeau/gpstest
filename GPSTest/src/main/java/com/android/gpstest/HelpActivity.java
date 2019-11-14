@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.IOUtils;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class HelpActivity extends AppCompatActivity {
                 .append(versionCode)
                 .append("-" + BuildConfig.FLAVOR + ")\n");
 
-        version.append(GpsTestUtil.getGnssHardwareYear() + "\n");
+        version.append(IOUtils.getGnssHardwareYear() + "\n");
 
         String versionRelease = Build.VERSION.RELEASE;
         version.append("Platform: " + versionRelease + "\n");

@@ -77,12 +77,12 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.gpstest.io.FileLogger;
 import com.android.gpstest.map.MapConstants;
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -100,9 +100,9 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_F
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
-import static com.android.gpstest.util.GpsTestUtil.writeGnssMeasurementToAndroidStudio;
-import static com.android.gpstest.util.GpsTestUtil.writeNavMessageToAndroidStudio;
-import static com.android.gpstest.util.GpsTestUtil.writeNmeaToAndroidStudio;
+import static com.android.gpstest.util.IOUtils.writeGnssMeasurementToAndroidStudio;
+import static com.android.gpstest.util.IOUtils.writeNavMessageToAndroidStudio;
+import static com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio;
 
 public class GpsTestActivity extends AppCompatActivity
         implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -263,7 +263,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         // If we have a large screen, show all the fragments in one layout
         // TODO - Fix large screen layouts (see #122)
-//        if (GpsTestUtil.isLargeScreen(this)) {
+//        if (SatelliteUtils.isLargeScreen(this)) {
 //            setContentView(R.layout.activity_main_large_screen);
 //            mIsLargeScreen = true;
 //        } else {
@@ -471,11 +471,11 @@ public class GpsTestActivity extends AppCompatActivity
         checkNmeaOutput(settings);
         checkLocationOutput(settings);
 
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
         }
 
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             checkNavMessageOutput(settings);
         }
 
@@ -497,10 +497,10 @@ public class GpsTestActivity extends AppCompatActivity
         // Remove status listeners
         removeStatusListener();
         removeNmeaListener();
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeNavMessageListener();
         }
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeGnssMeasurementsListener();
         }
         // Check if the user has chosen to stop GNSS whenever app is in background
@@ -922,7 +922,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void addOrientationSensorListener() {
-        if (GpsTestUtil.isRotationVectorSensorSupported(this)) {
+        if (SatelliteUtils.isRotationVectorSensorSupported(this)) {
             // Use the modern rotation vector sensors
             Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
             mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz
@@ -940,7 +940,7 @@ public class GpsTestActivity extends AppCompatActivity
         SharedPreferences settings = Application.getPrefs();
         boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
 
-        if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
+        if (SatelliteUtils.isGnssStatusListenerSupported() && useGnssApis) {
             addGnssStatusListener();
         } else {
             addLegacyStatusListener();
@@ -1071,7 +1071,7 @@ public class GpsTestActivity extends AppCompatActivity
         SharedPreferences settings = Application.getPrefs();
         boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
 
-        if (GpsTestUtil.isGnssStatusListenerSupported() && useGnssApis) {
+        if (SatelliteUtils.isGnssStatusListenerSupported() && useGnssApis) {
             removeGnssStatusListener();
         } else {
             removeLegacyStatusListener();
@@ -1099,7 +1099,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void addNmeaListener() {
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             addNmeaListenerAndroidN();
         } else {
             addLegacyNmeaListener();
@@ -1149,7 +1149,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void removeNmeaListener() {
-        if (GpsTestUtil.isGnssStatusListenerSupported()) {
+        if (SatelliteUtils.isGnssStatusListenerSupported()) {
             if (mLocationManager != null && mOnNmeaMessageListener != null) {
                 mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
             }

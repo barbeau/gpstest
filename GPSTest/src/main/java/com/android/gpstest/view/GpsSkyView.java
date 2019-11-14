@@ -26,8 +26,8 @@ import androidx.core.content.ContextCompat;
 import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
 
 import java.util.Iterator;
@@ -444,10 +444,10 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         // Change shape based on satellite operator
         GnssType operator;
-        if (GpsTestUtil.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-            operator = GpsTestUtil.getGnssConstellationType(constellationType);
+        if (SatelliteUtils.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
+            operator = SatelliteUtils.getGnssConstellationType(constellationType);
         } else {
-            operator = GpsTestUtil.getGnssType(prn);
+            operator = SatelliteUtils.getGnssType(prn);
         }
         switch (operator) {
             case NAVSTAR:

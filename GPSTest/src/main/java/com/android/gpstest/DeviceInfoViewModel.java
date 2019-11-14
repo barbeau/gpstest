@@ -22,7 +22,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.gpstest.model.Satellite;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.CarrierFreqUtils;
-import com.android.gpstest.util.GpsTestUtil;
+import com.android.gpstest.util.SatelliteUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +44,13 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     private boolean mIsDualFrequencyInUse = false;
 
     /**
-     * Map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected as having duplicate carrier frequency data with another signal
      */
     private Map<String, SatelliteStatus> mDuplicateCarrierStatuses = new HashMap();
 
     /**
-     * Map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected with an unknown GNSS frequency
      */
     private Map<String, SatelliteStatus> mUnknownCarrierStatuses = new HashMap();
@@ -68,10 +68,10 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
-     * Returns a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * Returns a map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected as having duplicate carrier frequency data with another signal
      *
-     * @return a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * @return a map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected as having duplicate carrier frequency data with another signal
      */
     public Map<String, SatelliteStatus> getDuplicateCarrierStatuses() {
@@ -79,10 +79,10 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
-     * Returns a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * Returns a map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected with an unknown GNSS frequency
      *
-     * @return a map of status keys (created using GpsTestUtil.createGnssStatusKey()) to the status that
+     * @return a map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected with an unknown GNSS frequency
      */
     public Map<String, SatelliteStatus> getUnknownCarrierStatuses() {
@@ -125,20 +125,20 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * Returns a map with the provided status grouped into satellites
      * @param allStatuses all statuses for either all GNSS or SBAS constellations
      * @return a map with the provided status grouped into satellites. The key to the map is the combination of constellation and ID
-     * created using GpsTestUtil.createGnssSatelliteKey().
+     * created using SatelliteUtils.createGnssSatelliteKey().
      */
     private Map<String, Satellite> getSatellitesFromStatuses(List<SatelliteStatus> allStatuses) {
         Map<String, Satellite> satellites = new HashMap<>();
 
         for (SatelliteStatus s : allStatuses) {
-            String key = GpsTestUtil.createGnssSatelliteKey(s);
+            String key = SatelliteUtils.createGnssSatelliteKey(s);
             // Get carrier label
             String carrierLabel;
-            if (GpsTestUtil.isGnssCarrierFrequenciesSupported() && s.getCarrierFrequencyHz() != NO_DATA) {
+            if (SatelliteUtils.isGnssCarrierFrequenciesSupported() && s.getCarrierFrequencyHz() != NO_DATA) {
                 carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s.getGnssType(), s.getSvid(), s.getCarrierFrequencyHz());
                 if (carrierLabel == null) {
                     carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unknown);
-                    mUnknownCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s), s);
+                    mUnknownCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
                 }
             } else {
                 carrierLabel = Application.get().getString(R.string.gnss_carrier_frequency_unsupported);
@@ -170,7 +170,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                     }
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
-                    mDuplicateCarrierStatuses.put(GpsTestUtil.createGnssStatusKey(s), s);
+                    mDuplicateCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
                 }
             }
         }
