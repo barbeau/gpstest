@@ -15,7 +15,9 @@
  */
 package com.android.gpstest.util;
 
-import com.android.gpstest.model.GnssType;
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
+import com.android.gpstest.model.SatelliteStatus;
 
 public class CarrierFreqUtils {
 
@@ -23,15 +25,19 @@ public class CarrierFreqUtils {
      * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
      * frequency in MHz, or null if no carrier frequency label is found
      *
-     * @param gnssType constellation type defined in GnssType
-     * @param svid identification number provided by the GnssStatus.getSvid() method
-     * @param carrierFrequencyMhz carrier frequency for the signal in MHz
+     * @param status Satellite signal to get the carrier frequency label for
      * @return the label that should be displayed for a given GNSS constellation, svid, and carrier
-     * frequency in MHz or null if no carrier frequency label is found
+     * frequency in MHz, "unsupported" if CF aren't supported on this device, or "unknown" if no carrier frequency label is found
      */
-    public static String getCarrierFrequencyLabel(GnssType gnssType, int svid, float carrierFrequencyMhz) {
+    public static String getCarrierFrequencyLabel(SatelliteStatus status) {
+        if (!SatelliteUtils.isGnssCarrierFrequenciesSupported() || !status.getHasCarrierFrequency()) {
+            return Application.get().getString(R.string.gnss_carrier_frequency_unsupported);
+        }
+        float carrierFrequencyMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
+        int svid = status.getSvid();
+
         final float TOLERANCE_MHZ = 1f;
-        switch (gnssType) {
+        switch (status.getGnssType()) {
             case NAVSTAR:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                     return "L1";
@@ -156,6 +162,6 @@ public class CarrierFreqUtils {
                 break;
         }
         // Unknown carrier frequency for given constellation and svid
-        return null;
+        return Application.get().getString(R.string.gnss_carrier_frequency_unknown);
     }
 }

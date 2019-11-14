@@ -908,13 +908,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         break;
                 }
                 if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
-                    if (sats.get(dataRow).getCarrierFrequencyHz() != NO_DATA) {
-                        // Convert Hz to MHz
-                        float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());
-                        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats.get(dataRow).getGnssType(),
-                                sats.get(dataRow).getSvid(),
-                                carrierMhz);
-                        if (carrierLabel != null) {
+                    if (sats.get(dataRow).getHasCarrierFrequency()) {
+                        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats.get(dataRow));
+                        if (!carrierLabel.equals(Application.get().getString(R.string.gnss_carrier_frequency_unknown))) {
                             // Make sure it's the normal text size (in case it's previously been
                             // resized to show raw number).  Use another TextView for default text size.
                             v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_PX, v.getSvId().getTextSize());
@@ -923,7 +919,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         } else {
                             // Shrink the size so we can show raw number
                             v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_DIP, 10);
-                            // Show raw number for carrier frequency
+                            // Show raw number for carrier frequency - Convert Hz to MHz
+                            float carrierMhz = MathUtils.toMhz(sats.get(dataRow).getCarrierFrequencyHz());
                             v.getCarrierFrequency().setText(String.format("%.3f", carrierMhz));
                         }
                     } else {

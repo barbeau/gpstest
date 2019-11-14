@@ -290,7 +290,7 @@ public class SatelliteUtils {
      * combination of both the svid and constellation type and carrier frequency
      */
     public static String createGnssStatusKey(SatelliteStatus status) {
-        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(status.getGnssType(), status.getSvid(), status.getCarrierFrequencyHz());
+        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(status);
         if (status.getGnssType() == SBAS) {
             return status.getSvid() + " " + status.getGnssType() + " " + status.getSbasType() + " " + carrierLabel;
         } else {
