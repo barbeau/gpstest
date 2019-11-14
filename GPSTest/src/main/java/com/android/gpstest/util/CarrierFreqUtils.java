@@ -46,11 +46,11 @@ public class CarrierFreqUtils {
                 }
                 break;
             case GLONASS:
-                if (carrierFrequencyMhz >= 1598.0000f && carrierFrequencyMhz <= 1610.000f) {
-                    // Actual range is 1598.0625 MHz to 1609.3125, but allow padding for float comparisons - #103
+                if (carrierFrequencyMhz >= 1598.0f && carrierFrequencyMhz <= 1606.0f) {
+                    // Actual range is 1598.0625 MHz to 1605.375, but allow padding for float comparisons - #103
                     return "L1";
-                } else if (carrierFrequencyMhz >= 1242.0000f && carrierFrequencyMhz <= 1252.000f) {
-                    // Actual range is 1242.9375 - 1251.6875, but allow padding for float comparisons - #103
+                } else if (carrierFrequencyMhz >= 1242.0f && carrierFrequencyMhz <= 1249.0f) {
+                    // Actual range is 1242.9375 MHz to 1248.625, but allow padding for float comparisons - #103
                     return "L2";
                 } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14f, TOLERANCE_MHZ)) {
                     // Exact range is unclear - appears to be 1202.025 - 1207.14 - #103
