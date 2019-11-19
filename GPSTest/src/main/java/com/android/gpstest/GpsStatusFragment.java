@@ -73,6 +73,7 @@ import static android.util.TypedValue.COMPLEX_UNIT_PX;
 import static com.android.gpstest.model.ConstellationType.GNSS;
 import static com.android.gpstest.model.ConstellationType.SBAS;
 import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
@@ -910,7 +911,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
                     if (sats.get(dataRow).getHasCarrierFrequency()) {
                         String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats.get(dataRow));
-                        if (!carrierLabel.equals(Application.get().getString(R.string.gnss_carrier_frequency_unknown))) {
+                        if (!carrierLabel.equals(CF_UNKNOWN)) {
                             // Make sure it's the normal text size (in case it's previously been
                             // resized to show raw number).  Use another TextView for default text size.
                             v.getCarrierFrequency().setTextSize(COMPLEX_UNIT_PX, v.getSvId().getTextSize());

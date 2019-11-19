@@ -15,11 +15,18 @@
  */
 package com.android.gpstest.util;
 
-import com.android.gpstest.Application;
-import com.android.gpstest.R;
 import com.android.gpstest.model.SatelliteStatus;
 
 public class CarrierFreqUtils {
+
+    /**
+     * An unknown carrier frequency that doesn't match any known frequencies
+     */
+    public static String CF_UNKNOWN = "unknown";
+    /**
+     * Carrier frequencies aren't supported by the device for this signal
+     */
+    public static String CF_UNSUPPORTED = "unsupported";
 
     /**
      * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
@@ -31,7 +38,7 @@ public class CarrierFreqUtils {
      */
     public static String getCarrierFrequencyLabel(SatelliteStatus status) {
         if (!SatelliteUtils.isGnssCarrierFrequenciesSupported() || !status.getHasCarrierFrequency()) {
-            return Application.get().getString(R.string.gnss_carrier_frequency_unsupported);
+            return CF_UNSUPPORTED;
         }
         float carrierFrequencyMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
         int svid = status.getSvid();
@@ -134,21 +141,21 @@ public class CarrierFreqUtils {
                         return "L1";
                     }
                 } else if (svid == 133) {
-                    // GnssType.INMARSAT_4F3;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                         return "L5";
                     }
                 } else if (svid == 135) {
-                    // GnssType.GALAXY_15;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                         return "L5";
                     }
                 } else if (svid == 138) {
-                    // GnssType.ANIK;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
@@ -162,6 +169,6 @@ public class CarrierFreqUtils {
                 break;
         }
         // Unknown carrier frequency for given constellation and svid
-        return Application.get().getString(R.string.gnss_carrier_frequency_unknown);
+        return CF_UNKNOWN;
     }
 }

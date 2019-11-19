@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+
 /**
  * View model that holds device properties
  */
@@ -132,7 +134,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
             String key = SatelliteUtils.createGnssSatelliteKey(s);
             // Get carrier label
             String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s);
-            if (carrierLabel.equals(Application.get().getString(R.string.gnss_carrier_frequency_unknown))) {
+            if (carrierLabel.equals(CF_UNKNOWN)) {
                 mUnknownCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
             }
 
