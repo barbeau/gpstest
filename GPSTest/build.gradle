@@ -98,14 +98,21 @@ android {
         unitTests.returnDefaultValues = true
         unitTests.includeAndroidResources true
     }
+
+    // Gradle automatically adds 'android.test.runner' as a dependency.
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-beta01"
 
@@ -125,8 +132,17 @@ dependencies {
     // OSM Droid (fdroid flavor only)
     osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.0'
 
+    //
     // Unit tests
+    //
     testImplementation 'junit:junit:4.12'
+    // Core library
+    androidTestImplementation 'androidx.test:core:1.2.0'
+
+    // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+
+    // Assertions
+    androidTestImplementation "androidx.arch.core:core-testing:2.0.0"
 }

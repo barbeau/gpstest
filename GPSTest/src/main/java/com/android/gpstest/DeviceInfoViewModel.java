@@ -15,6 +15,8 @@
  */
 package com.android.gpstest;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -129,6 +131,10 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      */
     private Map<String, Satellite> getSatellitesFromStatuses(List<SatelliteStatus> allStatuses) {
         Map<String, Satellite> satellites = new HashMap<>();
+
+        if (allStatuses == null) {
+            return satellites;
+        }
 
         for (SatelliteStatus s : allStatuses) {
             String key = SatelliteUtils.createGnssSatelliteKey(s);
