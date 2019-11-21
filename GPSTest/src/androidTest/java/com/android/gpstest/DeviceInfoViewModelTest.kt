@@ -20,8 +20,6 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SatelliteStatus
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -42,38 +40,19 @@ class DeviceInfoViewModelTest {
         val modelNull = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelNull.setStatuses(null, null)
 
-        // GPS L1
-        val gpsL1 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL1.hasCarrierFrequency = true
-        gpsL1.carrierFrequencyHz = 1575420000.0f
-
-        // GPS L5
-        val gpsL5 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL5.hasCarrierFrequency = true
-        gpsL5.carrierFrequencyHz = 1176450000.0f
-
-        // Test GPS L1 - 1 satellite
+        // Test GPS L1 - should be 1 satellite
         val modelGpsL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1.setStatuses(listOf(gpsL1), null)
+        modelGpsL1.setStatuses(listOf(gpsL1()), null)
         assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
 
-        // Test GPS L1 + L5 - 1 satellite
+        // Test GPS L1 + L5 - should be 1 satellite
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1L5.setStatuses(listOf(gpsL1, gpsL5), null)
+        modelGpsL1L5.setStatuses(listOf(gpsL1(), gpsL5()), null)
         assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
+
+        // Test GPS L1 + GLONASS L1 - should be 2 satellites
+        val modelGpsL1GlonassL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        modelGpsL1L5.setStatuses(listOf(gpsL1(), glonassL1variant1()), null)
+        assertEquals(2, modelGpsL1.gnssSatellites.value?.size)
     }
 }

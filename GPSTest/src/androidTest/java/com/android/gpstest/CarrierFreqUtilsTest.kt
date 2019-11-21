@@ -38,186 +38,31 @@ class CarrierFreqUtilsTest {
         var label: String
 
         // NAVSTAR (GPS)
-        // GPS L1
-        val gpsL1 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL1.hasCarrierFrequency = true
-        gpsL1.carrierFrequencyHz = 1575420000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1())
         assertEquals("L1", label)
-
-        // GPS L2
-        val gpsL2 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL2.hasCarrierFrequency = true
-        gpsL2.carrierFrequencyHz = 1227600000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL2)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL2())
         assertEquals("L2", label)
-
-        // GPS L3
-        val gpsL3 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL3.hasCarrierFrequency = true
-        gpsL3.carrierFrequencyHz = 1381050000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL3)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL3())
         assertEquals("L3", label)
-
-        // GPS L4
-        val gpsL4 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL4.hasCarrierFrequency = true
-        gpsL4.carrierFrequencyHz = 1379913000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL4)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL4())
         assertEquals("L4", label)
-
-        // GPS L5
-        val gpsL5 = SatelliteStatus(1,
-                GnssType.NAVSTAR,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        gpsL5.hasCarrierFrequency = true
-        gpsL5.carrierFrequencyHz = 1176450000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL5())
         assertEquals("L5", label)
 
         // GLONASS
-
-        // GLONASS L1
-        val glonassL1 = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL1.hasCarrierFrequency = true
-        glonassL1.carrierFrequencyHz = 1598062500.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1variant1())
         assertEquals("L1", label)
-
-        // GLONASS L1 again
-        val glonassL1again = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL1again.hasCarrierFrequency = true
-        glonassL1again.carrierFrequencyHz = 1605375000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1again)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1variant2())
         assertEquals("L1", label)
-
-        // GLONASS L2
-        val glonassL2 = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL2.hasCarrierFrequency = true
-        glonassL2.carrierFrequencyHz = 1242937500.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL2)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL2variant1())
         assertEquals("L2", label)
-
-        // GLONASS L2
-        val glonassL2again = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL2again.hasCarrierFrequency = true
-        glonassL2again.carrierFrequencyHz = 1248625000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL2again)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL2variant2())
         assertEquals("L2", label)
-
-        // GLONASS L3
-        val glonassL3 = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL3.hasCarrierFrequency = true
-        glonassL3.carrierFrequencyHz = 1207140000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL3)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL3())
         assertEquals("L3", label)
-
-        // GLONASS L5
-        val glonassL5 = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL5.hasCarrierFrequency = true
-        glonassL5.carrierFrequencyHz = 1176450000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL5())
         assertEquals("L5", label)
-
-        // GLONASS L1 CDMA
-        val glonassL1Cdma = SatelliteStatus(1,
-                GnssType.GLONASS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        glonassL1Cdma.hasCarrierFrequency = true
-        glonassL1Cdma.carrierFrequencyHz = 1575420000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1Cdma)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(glonassL1Cdma())
         assertEquals("L1-C", label)
 
         // QZSS
