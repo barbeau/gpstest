@@ -48,11 +48,11 @@ class DeviceInfoViewModelTest {
         // Test GPS L1 + L5 - should be 1 satellite
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL1L5.setStatuses(listOf(gpsL1(), gpsL5()), null)
-        assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
+        assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites
         val modelGpsL1GlonassL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1L5.setStatuses(listOf(gpsL1(), glonassL1variant1()), null)
-        assertEquals(2, modelGpsL1.gnssSatellites.value?.size)
+        modelGpsL1GlonassL1.setStatuses(listOf(gpsL1(), glonassL1variant1()), null)
+        assertEquals(2, modelGpsL1GlonassL1.gnssSatellites.value?.size)
     }
 }
