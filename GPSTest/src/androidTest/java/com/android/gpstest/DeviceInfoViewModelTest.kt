@@ -20,7 +20,7 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -40,19 +40,57 @@ class DeviceInfoViewModelTest {
         val modelNull = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelNull.setStatuses(null, null)
 
-        // Test GPS L1 - should be 1 satellite
+        // Test GPS L1 - should be 1 satellite, no dual-frequency
         val modelGpsL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1.setStatuses(listOf(gpsL1()), null)
+        modelGpsL1.setStatuses(listOf(gpsL1(1, true)), null)
         assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
+        assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
+        assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
+        assertFalse(modelGpsL1.isDualFrequencyInView)
+        assertFalse(modelGpsL1.isDualFrequencyInUse)
 
-        // Test GPS L1 + L5 - should be 1 satellite
+        // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1L5.setStatuses(listOf(gpsL1(), gpsL5()), null)
+        modelGpsL1L5.setStatuses(listOf(gpsL1(1, false), gpsL5(1, true)), null)
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+        assertTrue(modelGpsL1L5.isDualFrequencyInView)
+        assertFalse(modelGpsL1L5.isDualFrequencyInUse)
 
-        // Test GPS L1 + GLONASS L1 - should be 2 satellites
+        modelGpsL1L5.reset();
+
+        // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and use
+        modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(1, true)), null)
+        assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+        assertTrue(modelGpsL1L5.isDualFrequencyInView)
+        assertTrue(modelGpsL1L5.isDualFrequencyInUse)
+
+        modelGpsL1L5.reset();
+
+        // Test GPS L1 + L5 but different satellites - should be 2 satellites, non-primary frequency in view and in use, but not dual-frequency in view or use
+        modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(2, true)), null)
+        assertEquals(2, modelGpsL1L5.gnssSatellites.value?.size)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+        assertFalse(modelGpsL1L5.isDualFrequencyInView)
+        assertFalse(modelGpsL1L5.isDualFrequencyInUse)
+
+        modelGpsL1L5.reset();
+
+        // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
         val modelGpsL1GlonassL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGpsL1GlonassL1.setStatuses(listOf(gpsL1(), glonassL1variant1()), null)
+        modelGpsL1GlonassL1.setStatuses(listOf(gpsL1(1, true), glonassL1variant1()), null)
         assertEquals(2, modelGpsL1GlonassL1.gnssSatellites.value?.size)
+        assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
+        assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInUse)
+        assertFalse(modelGpsL1GlonassL1.isDualFrequencyInView)
+        assertFalse(modelGpsL1GlonassL1.isDualFrequencyInUse)
+
+        // TODO - test dual-frequency with Galileo
+
+        // TODO - test SBAS
     }
 }

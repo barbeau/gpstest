@@ -21,13 +21,13 @@ import com.android.gpstest.model.SatelliteStatus
 /**
  * Returns a status for a GPS NAVSTAR L1 signal
  */
-fun gpsL1(): SatelliteStatus {
-    val gpsL1 = SatelliteStatus(1,
+fun gpsL1(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val gpsL1 = SatelliteStatus(id,
             GnssType.NAVSTAR,
             30f,
             true,
             true,
-            true,
+            usedInFix,
             72f,
             25f);
     gpsL1.hasCarrierFrequency = true
@@ -89,13 +89,13 @@ fun gpsL4(): SatelliteStatus {
 /**
  * Returns a status for a GPS NAVSTAR L5 signal
  */
-fun gpsL5(): SatelliteStatus {
-    val gpsL5 = SatelliteStatus(1,
+fun gpsL5(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val gpsL5 = SatelliteStatus(id,
             GnssType.NAVSTAR,
             30f,
             true,
             true,
-            true,
+            usedInFix,
             72f,
             25f);
     gpsL5.hasCarrierFrequency = true

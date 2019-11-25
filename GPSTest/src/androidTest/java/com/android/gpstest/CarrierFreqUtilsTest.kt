@@ -24,6 +24,8 @@ import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN
 import com.android.gpstest.util.CarrierFreqUtils.CF_UNSUPPORTED
 import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -38,7 +40,7 @@ class CarrierFreqUtilsTest {
         var label: String
 
         // NAVSTAR (GPS)
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1())
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1(1, true))
         assertEquals("L1", label)
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL2())
         assertEquals("L2", label)
@@ -46,7 +48,7 @@ class CarrierFreqUtilsTest {
         assertEquals("L3", label)
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL4())
         assertEquals("L4", label)
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL5())
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL5(1, true))
         assertEquals("L5", label)
 
         // GLONASS
@@ -731,5 +733,26 @@ class CarrierFreqUtilsTest {
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1badCf)
         assertEquals(CF_UNKNOWN, label)
+    }
+
+    /**
+     * Tests detecting if a carrier frequency label is for a primary frequency such as L1 and not
+     * L5
+     */
+    @Test
+    fun testIsPrimaryCarrier() {
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1"))
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("E1"))
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1"))
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1-C"))
+
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("L2"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("L3"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("L4"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("L5"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("E5"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("E5a"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("E5b"))
+        assertFalse(CarrierFreqUtils.isPrimaryCarrier("E6"))
     }
 }

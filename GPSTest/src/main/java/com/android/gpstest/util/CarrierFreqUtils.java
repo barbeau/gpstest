@@ -171,4 +171,18 @@ public class CarrierFreqUtils {
         // Unknown carrier frequency for given constellation and svid
         return CF_UNKNOWN;
     }
+
+    /**
+     * Returns true if the provided carrier frequency label is a primary carrier frequency (e.g., "L1")
+     * (i.e., it is not a secondary frequency such as "L5") or false if it is not a primary carrier
+     * frequency
+     *
+     * @param label carrier frequency label
+     * @return true if the provided carrier frequency label is a primary carrier frequency (e.g., "L1")
+     * * (i.e., it is not a secondary frequency such as "L5") or false if it is not a primary carrier
+     * * frequency
+     */
+    public static boolean isPrimaryCarrier(String label) {
+        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1");
+    }
 }

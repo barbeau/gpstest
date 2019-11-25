@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNSUPPORTED;
 
 /**
  * View model that holds device properties
@@ -44,6 +45,10 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     private boolean mIsDualFrequencyInView = false;
 
     private boolean mIsDualFrequencyInUse = false;
+
+    private boolean mIsNonPrimaryCarrierFreqInView = false;
+
+    private boolean mIsNonPrimaryCarrierFreqInUse = false;
 
     /**
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
@@ -110,6 +115,28 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
+     * Returns true if a non-primary carrier frequency is in view by at least one satellite, or false if
+     * only primary carrier frequencies are in view
+     *
+     * @return true if a non-primary carrier frequency is in use by at least one satellite, or false if
+     * only primary carrier frequencies are in view
+     */
+    public boolean isNonPrimaryCarrierFreqInView() {
+        return mIsNonPrimaryCarrierFreqInUse;
+    }
+
+    /**
+     * Returns true if a non-primary carrier frequency is in use by at least one satellite, or false if
+     * only primary carrier frequencies are in use
+     *
+     * @return true if a non-primary carrier frequency is in use by at least one satellite, or false if
+     * only primary carrier frequencies are in use
+     */
+    public boolean isNonPrimaryCarrierFreqInUse() {
+        return mIsNonPrimaryCarrierFreqInUse;
+    }
+
+    /**
      * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
      * into satellites
      *
@@ -142,6 +169,14 @@ public class DeviceInfoViewModel extends AndroidViewModel {
             String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s);
             if (carrierLabel.equals(CF_UNKNOWN)) {
                 mUnknownCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
+            }
+            // Check if this is a non-primary carrier frequency
+            if (!carrierLabel.equals(CF_UNKNOWN) && !carrierLabel.equals(CF_UNSUPPORTED)
+                    && !CarrierFreqUtils.isPrimaryCarrier(carrierLabel)) {
+                mIsNonPrimaryCarrierFreqInView = true;
+                if (s.getUsedInFix()) {
+                    mIsNonPrimaryCarrierFreqInUse = true;
+                }
             }
 
             Map<String, SatelliteStatus> satStatuses;
@@ -184,6 +219,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         mUnknownCarrierStatuses = new HashMap<>();
         mIsDualFrequencyInView = false;
         mIsDualFrequencyInUse = false;
+        mIsNonPrimaryCarrierFreqInView = false;
+        mIsNonPrimaryCarrierFreqInUse = false;
     }
 
     /**
