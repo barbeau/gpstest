@@ -108,26 +108,26 @@ class DeviceInfoViewModelTest {
         assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInView)
         assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInUse)
 
-        // Test Galileo E1 + E5 - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
-        val modelGalileoE1E5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
-        modelGalileoE1E5.setStatuses(listOf(galileoE1(1, true), galileoE5a(2, true)), null)
-        assertEquals(2, modelGalileoE1E5.gnssSatellites.value?.size)
-        assertTrue(modelGalileoE1E5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGalileoE1E5.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGalileoE1E5.isDualFrequencyPerSatInView)
-        assertFalse(modelGalileoE1E5.isDualFrequencyPerSatInUse)
+        // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
+        val modelGalileoE1E5a = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(2, true)), null)
+        assertEquals(2, modelGalileoE1E5a.gnssSatellites.value?.size)
+        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
+        assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
+        assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
 
-        modelGalileoE1E5.reset()
+        modelGalileoE1E5a.reset()
 
-        // Test Galileo E1 + E5 - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
-        modelGalileoE1E5.setStatuses(listOf(galileoE1(1, true), galileoE5a(1, true)), null)
-        assertEquals(1, modelGalileoE1E5.gnssSatellites.value?.size)
-        assertTrue(modelGalileoE1E5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGalileoE1E5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGalileoE1E5.isDualFrequencyPerSatInView)
-        assertTrue(modelGalileoE1E5.isDualFrequencyPerSatInUse)
+        // Test Galileo E1 + E5a - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
+        modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(1, true)), null)
+        assertEquals(1, modelGalileoE1E5a.gnssSatellites.value?.size)
+        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
+        assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInView)
+        assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
 
-        modelGalileoE1E5.reset()
+        modelGalileoE1E5a.reset()
 
         // TODO - test SBAS
     }
