@@ -221,3 +221,88 @@ fun glonassL1Cdma(): SatelliteStatus {
     glonassL1Cdma.carrierFrequencyHz = 1575420000.0f
     return glonassL1Cdma
 }
+
+/**
+ * Returns a status for a Galileo E1 signal
+ */
+fun galileoE1(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val galileoE1 = SatelliteStatus(id,
+            GnssType.GALILEO,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galileoE1.hasCarrierFrequency = true
+    galileoE1.carrierFrequencyHz = 1575420000.0f
+    return galileoE1
+}
+
+/**
+ * Returns a status for a Galileo E5 signal
+ */
+fun galileoE5(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val galileoE5 = SatelliteStatus(id,
+            GnssType.GALILEO,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galileoE5.hasCarrierFrequency = true
+    galileoE5.carrierFrequencyHz = 1191795000.0f
+    return galileoE5
+}
+
+/**
+ * Returns a status for a Galileo E5a signal
+ */
+fun galileoE5a(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val galileoE5a = SatelliteStatus(id,
+            GnssType.GALILEO,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galileoE5a.hasCarrierFrequency = true
+    galileoE5a.carrierFrequencyHz = 1176450000.0f
+    return galileoE5a
+}
+
+/**
+ * Returns a status for a Galileo E5b signal
+ */
+fun galileoE5b(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val galileoE5b = SatelliteStatus(id,
+            GnssType.GALILEO,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galileoE5b.hasCarrierFrequency = true
+    galileoE5b.carrierFrequencyHz = 1207140000.0f
+    return galileoE5b
+}
+
+/**
+ * Returns a status for a Galileo E6 signal
+ */
+fun galileoE6(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val galileoE6 = SatelliteStatus(id,
+            GnssType.GALILEO,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galileoE6.hasCarrierFrequency = true
+    galileoE6.carrierFrequencyHz = 1278750000.0f
+    return galileoE6
+}

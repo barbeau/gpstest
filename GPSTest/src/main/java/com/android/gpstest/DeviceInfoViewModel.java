@@ -122,7 +122,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * only primary carrier frequencies are in view
      */
     public boolean isNonPrimaryCarrierFreqInView() {
-        return mIsNonPrimaryCarrierFreqInUse;
+        return mIsNonPrimaryCarrierFreqInView;
     }
 
     /**

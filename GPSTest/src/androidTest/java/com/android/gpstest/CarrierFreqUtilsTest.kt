@@ -130,80 +130,15 @@ class CarrierFreqUtilsTest {
         assertEquals("L6", label)
 
         // Galileo
-
-        // Galileo E1
-        val galileoE1 = SatelliteStatus(1,
-                GnssType.GALILEO,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galileoE1.hasCarrierFrequency = true
-        galileoE1.carrierFrequencyHz = 1575420000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE1)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE1(1, true))
         assertEquals("E1", label)
-
-        // Galileo E5
-        val galileoE5 = SatelliteStatus(1,
-                GnssType.GALILEO,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galileoE5.hasCarrierFrequency = true
-        galileoE5.carrierFrequencyHz = 1191795000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5(1, true))
         assertEquals("E5", label)
-
-        // Galileo E5a
-        val galileoE5a = SatelliteStatus(1,
-                GnssType.GALILEO,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galileoE5a.hasCarrierFrequency = true
-        galileoE5a.carrierFrequencyHz = 1176450000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5a)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5a(1, true))
         assertEquals("E5a", label)
-
-        // Galileo E5b
-        val galileoE5b = SatelliteStatus(1,
-                GnssType.GALILEO,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galileoE5b.hasCarrierFrequency = true
-        galileoE5b.carrierFrequencyHz = 1207140000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5b)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE5b(1, true))
         assertEquals("E5b", label)
-
-        // Galileo E6
-        val galileoE6 = SatelliteStatus(1,
-                GnssType.GALILEO,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galileoE6.hasCarrierFrequency = true
-        galileoE6.carrierFrequencyHz = 1278750000.0f
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE6)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galileoE6(1, true))
         assertEquals("E6", label)
 
         // Beidou
