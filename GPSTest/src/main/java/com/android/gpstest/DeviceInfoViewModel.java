@@ -42,9 +42,9 @@ public class DeviceInfoViewModel extends AndroidViewModel {
 
     private MutableLiveData<Map<String, Satellite>> mSbasSatellites = new MutableLiveData<>();
 
-    private boolean mIsDualFrequencyInView = false;
+    private boolean mIsDualFrequencyPerSatInView = false;
 
-    private boolean mIsDualFrequencyInUse = false;
+    private boolean mIsDualFrequencyPerSatInUse = false;
 
     private boolean mIsNonPrimaryCarrierFreqInView = false;
 
@@ -101,8 +101,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      *
      * @return true if this device is viewing multiple signals from the same satellite, false if it is not
      */
-    public boolean isDualFrequencyInView() {
-        return mIsDualFrequencyInView;
+    public boolean isDualFrequencyPerSatInView() {
+        return mIsDualFrequencyPerSatInView;
     }
 
     /**
@@ -110,8 +110,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      *
      * @return true if this device is using multiple signals from the same satellite, false if it is not
      */
-    public boolean isDualFrequencyInUse() {
-        return mIsDualFrequencyInUse;
+    public boolean isDualFrequencyPerSatInUse() {
+        return mIsDualFrequencyPerSatInUse;
     }
 
     /**
@@ -193,7 +193,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                 if (!satStatuses.containsKey(carrierLabel)) {
                     // We found another frequency for this satellite
                     satStatuses.put(carrierLabel, s);
-                    mIsDualFrequencyInView = true;
+                    mIsDualFrequencyPerSatInView = true;
                     int frequenciesInUse = 0;
                     for (SatelliteStatus satelliteStatus : satStatuses.values()) {
                         if (satelliteStatus.getUsedInFix()) {
@@ -201,7 +201,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                         }
                     }
                     if (frequenciesInUse > 1) {
-                        mIsDualFrequencyInUse = true;
+                        mIsDualFrequencyPerSatInUse = true;
                     }
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
@@ -217,8 +217,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         mSbasSatellites.setValue(null);
         mDuplicateCarrierStatuses = new HashMap<>();
         mUnknownCarrierStatuses = new HashMap<>();
-        mIsDualFrequencyInView = false;
-        mIsDualFrequencyInUse = false;
+        mIsDualFrequencyPerSatInView = false;
+        mIsDualFrequencyPerSatInUse = false;
         mIsNonPrimaryCarrierFreqInView = false;
         mIsNonPrimaryCarrierFreqInUse = false;
     }

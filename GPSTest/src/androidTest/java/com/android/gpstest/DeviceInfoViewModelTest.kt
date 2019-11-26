@@ -46,8 +46,8 @@ class DeviceInfoViewModelTest {
         assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGpsL1.isDualFrequencyInView)
-        assertFalse(modelGpsL1.isDualFrequencyInUse)
+        assertFalse(modelGpsL1.isDualFrequencyPerSatInView)
+        assertFalse(modelGpsL1.isDualFrequencyPerSatInUse)
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
@@ -55,8 +55,8 @@ class DeviceInfoViewModelTest {
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGpsL1L5.isDualFrequencyInView)
-        assertFalse(modelGpsL1L5.isDualFrequencyInUse)
+        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
+        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
 
         modelGpsL1L5.reset();
 
@@ -65,8 +65,8 @@ class DeviceInfoViewModelTest {
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGpsL1L5.isDualFrequencyInView)
-        assertTrue(modelGpsL1L5.isDualFrequencyInUse)
+        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
+        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInUse)
 
         modelGpsL1L5.reset();
 
@@ -75,8 +75,8 @@ class DeviceInfoViewModelTest {
         assertEquals(2, modelGpsL1L5.gnssSatellites.value?.size)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
         assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGpsL1L5.isDualFrequencyInView)
-        assertFalse(modelGpsL1L5.isDualFrequencyInUse)
+        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
 
         modelGpsL1L5.reset();
 
@@ -86,8 +86,8 @@ class DeviceInfoViewModelTest {
         assertEquals(2, modelGpsL1GlonassL1.gnssSatellites.value?.size)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGpsL1GlonassL1.isDualFrequencyInView)
-        assertFalse(modelGpsL1GlonassL1.isDualFrequencyInUse)
+        assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInView)
+        assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInUse)
 
         // TODO - test dual-frequency with Galileo
 
