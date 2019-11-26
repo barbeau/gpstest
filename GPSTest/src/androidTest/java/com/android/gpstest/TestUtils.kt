@@ -17,6 +17,7 @@ package com.android.gpstest
 
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.model.SbasType
 
 /**
  * Returns a status for a GPS NAVSTAR L1 signal
@@ -305,4 +306,40 @@ fun galileoE6(id: Int, usedInFix: Boolean): SatelliteStatus {
     galileoE6.hasCarrierFrequency = true
     galileoE6.carrierFrequencyHz = 1278750000.0f
     return galileoE6
+}
+
+/**
+ * Returns a status for a WAAS Galaxy 15 ID 135 L1 signal
+ */
+fun galaxy15_135L1(usedInFix: Boolean): SatelliteStatus {
+    val galaxy15_135L1 = SatelliteStatus(135,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galaxy15_135L1.hasCarrierFrequency = true
+    galaxy15_135L1.carrierFrequencyHz = 1575420000.0f
+    galaxy15_135L1.sbasType = SbasType.WAAS
+    return galaxy15_135L1
+}
+
+/**
+ * Returns a status for a WAAS Galaxy 15 ID 135 L5 signal
+ */
+fun galaxy15_135L5(usedInFix: Boolean): SatelliteStatus {
+    val galaxy15_135L5 = SatelliteStatus(135,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    galaxy15_135L5.hasCarrierFrequency = true
+    galaxy15_135L5.carrierFrequencyHz = 1176450000.0f
+    galaxy15_135L5.sbasType = SbasType.WAAS
+    return galaxy15_135L5
 }

@@ -459,37 +459,9 @@ class CarrierFreqUtilsTest {
         assertEquals("L5", label)
 
         // Galaxy 15 (WAAS)
-
-        // Galaxy 15 - 135 L1
-        val galaxy15_135L1 = SatelliteStatus(135,
-                GnssType.SBAS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galaxy15_135L1.hasCarrierFrequency = true
-        galaxy15_135L1.carrierFrequencyHz = 1575420000.0f
-        galaxy15_135L1.sbasType = SbasType.WAAS
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L1)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L1(true))
         assertEquals("L1", label)
-
-        // Galaxy 15 - 135 L5
-        val galaxy15_135L5 = SatelliteStatus(135,
-                GnssType.SBAS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        galaxy15_135L5.hasCarrierFrequency = true
-        galaxy15_135L5.carrierFrequencyHz = 1176450000.0f
-        galaxy15_135L5.sbasType = SbasType.WAAS
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L5(true))
         assertEquals("L5", label)
 
         // ANIK F1R (WAAS)

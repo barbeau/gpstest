@@ -70,7 +70,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         return mGnssSatellites;
     }
 
-    public MutableLiveData<Map<String, Satellite>> geSbasSatellites() {
+    public MutableLiveData<Map<String, Satellite>> getSbasSatellites() {
         return mSbasSatellites;
     }
 
@@ -140,7 +140,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
      * into satellites
      *
-     * @param gnssStatuses a new set of GNSS and SBAS status objects (signals)
+     * @param gnssStatuses a new set of GNSS status objects (signals)
+     * @param sbasStatuses a new set of SBAS status objects (signals)
      */
     public void setStatuses(List<SatelliteStatus> gnssStatuses, List<SatelliteStatus> sbasStatuses) {
         Map<String, Satellite> gnssSatellites = getSatellitesFromStatuses(gnssStatuses);

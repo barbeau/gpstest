@@ -129,6 +129,23 @@ class DeviceInfoViewModelTest {
 
         modelGalileoE1E5a.reset()
 
-        // TODO - test SBAS
+        // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
+        val modelWaasL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        modelWaasL1L5.setStatuses(null, listOf(galaxy15_135L1(true)))
+        assertEquals(1, modelWaasL1L5.sbasSatellites.value?.size)
+        assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
+        assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
+        assertFalse(modelWaasL1L5.isDualFrequencyPerSatInView)
+        assertFalse(modelWaasL1L5.isDualFrequencyPerSatInUse)
+
+        modelWaasL1L5.reset()
+
+        // Test WAAS SBAS - L1 + L5 - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
+        modelWaasL1L5.setStatuses(null, listOf(galaxy15_135L1(true), galaxy15_135L5(true)))
+        assertEquals(1, modelWaasL1L5.sbasSatellites.value?.size)
+        assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
+        assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
+        assertTrue(modelWaasL1L5.isDualFrequencyPerSatInView)
+        assertTrue(modelWaasL1L5.isDualFrequencyPerSatInUse)
     }
 }
