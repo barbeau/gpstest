@@ -294,14 +294,15 @@ public class UIUtils {
 
         body.append("\n\n\n");
 
-        Intent send = new Intent(Intent.ACTION_SEND);
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        send.setData(Uri.parse("mailto:"));
         send.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
 
         String subject = context.getString(R.string.feedback_subject);
 
         send.putExtra(Intent.EXTRA_SUBJECT, subject);
         send.putExtra(Intent.EXTRA_TEXT, body.toString());
-        send.setType("message/rfc822");
+
         try {
             context.startActivity(createChooser(send, subject));
         } catch (ActivityNotFoundException e) {
