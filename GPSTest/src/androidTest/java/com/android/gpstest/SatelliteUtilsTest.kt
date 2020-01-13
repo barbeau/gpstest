@@ -15,6 +15,7 @@
  */
 package com.android.gpstest
 
+import android.os.Build
 import androidx.test.runner.AndroidJUnit4
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
@@ -112,7 +113,11 @@ class SatelliteUtilsTest {
         gpsL1.carrierFrequencyHz = 1575420000.0f
 
         val gpsL1key = SatelliteUtils.createGnssStatusKey(gpsL1)
-        assertEquals("1 NAVSTAR L1", gpsL1key)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertEquals("1 NAVSTAR L1", gpsL1key)
+        } else {
+            assertEquals("1 NAVSTAR unsupported", gpsL1key)
+        }
 
         // GPS L1 - with CF
         val gpsL1NoCf = SatelliteStatus(1,
@@ -140,6 +145,10 @@ class SatelliteUtilsTest {
         gpsBadCf.carrierFrequencyHz = 9999999.0f
 
         val gpsBadCfKey = SatelliteUtils.createGnssStatusKey(gpsBadCf)
-        assertEquals("1 NAVSTAR unknown", gpsBadCfKey)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertEquals("1 NAVSTAR unknown", gpsBadCfKey)
+        } else {
+            assertEquals("1 NAVSTAR unsupported", gpsBadCfKey)
+        }
     }
 }

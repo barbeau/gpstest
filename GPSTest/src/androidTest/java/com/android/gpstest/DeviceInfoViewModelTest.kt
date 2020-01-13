@@ -17,6 +17,7 @@
 package com.android.gpstest
 
 import android.app.Application
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
@@ -53,40 +54,68 @@ class DeviceInfoViewModelTest {
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL1L5.setStatuses(listOf(gpsL1(1, false), gpsL5(1, true)), null)
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
-        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and use
         modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(1, true)), null)
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
-        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertTrue(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and but not used (only 1 sv in use)
         modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(1, false)), null)
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
-        assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
-        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 but different satellites - should be 2 satellites, non-primary frequency in view and in use, but not dual-frequency in view or use
         modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(2, true)), null)
         assertEquals(2, modelGpsL1L5.gnssSatellites.value?.size)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
-        assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGpsL1L5.reset();
 
@@ -94,10 +123,17 @@ class DeviceInfoViewModelTest {
         val modelGpsL5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL5.setStatuses(listOf(gpsL5(1, false)), null)
         assertEquals(1, modelGpsL5.gnssSatellites.value?.size)
-        assertTrue(modelGpsL5.isNonPrimaryCarrierFreqInView)
-        assertFalse(modelGpsL5.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGpsL5.isDualFrequencyPerSatInView)
-        assertFalse(modelGpsL5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGpsL5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
         val modelGpsL1GlonassL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
@@ -112,20 +148,34 @@ class DeviceInfoViewModelTest {
         val modelGalileoE1E5a = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(2, true)), null)
         assertEquals(2, modelGalileoE1E5a.gnssSatellites.value?.size)
-        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
-        assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
-        assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
+            assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGalileoE1E5a.reset()
 
         // Test Galileo E1 + E5a - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
         modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(1, true)), null)
         assertEquals(1, modelGalileoE1E5a.gnssSatellites.value?.size)
-        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInView)
-        assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
+            assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInView)
+            assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
 
         modelGalileoE1E5a.reset()
 
@@ -143,9 +193,16 @@ class DeviceInfoViewModelTest {
         // Test WAAS SBAS - L1 + L5 - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
         modelWaasL1L5.setStatuses(null, listOf(galaxy15_135L1(true), galaxy15_135L5(true)))
         assertEquals(1, modelWaasL1L5.sbasSatellites.value?.size)
-        assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
-        assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
-        assertTrue(modelWaasL1L5.isDualFrequencyPerSatInView)
-        assertTrue(modelWaasL1L5.isDualFrequencyPerSatInUse)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
+            assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
+            assertTrue(modelWaasL1L5.isDualFrequencyPerSatInView)
+            assertTrue(modelWaasL1L5.isDualFrequencyPerSatInUse)
+        } else {
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
+            assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
+            assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+        }
     }
 }
