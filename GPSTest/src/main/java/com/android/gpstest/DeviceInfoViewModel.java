@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.gpstest.model.ConstellationFamily;
 import com.android.gpstest.model.Satellite;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.CarrierFreqUtils;
@@ -49,6 +50,11 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     private boolean mIsNonPrimaryCarrierFreqInView = false;
 
     private boolean mIsNonPrimaryCarrierFreqInUse = false;
+
+    private MutableLiveData<Integer> mNumSatsInView = new MutableLiveData<>();
+    private MutableLiveData<Integer> mNumSatsUsed = new MutableLiveData<>();
+    private MutableLiveData<Integer> mNumSignalsInView = new MutableLiveData<>();
+    private MutableLiveData<Integer> mNumSignalsUsed = new MutableLiveData<>();
 
     /**
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
@@ -137,6 +143,42 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
+     * Returns the number of satellites that are in view of the device
+     *
+     * @return the number of satellites that are in view of the device
+     */
+    public MutableLiveData<Integer> getNumSatsInView() {
+        return mNumSatsInView;
+    }
+
+    /**
+     * Returns the number of satellites that are broadcasting signals used in the location fix
+     *
+     * @return the number of satellites that are broadcasting signals used in the location fix
+     */
+    public MutableLiveData<Integer> getNumSatsUsed() {
+        return mNumSatsUsed;
+    }
+
+    /**
+     * Returns the number of signals that are in view of the device (L1 and L5 are considered two signals)
+     *
+     * @return the number of signals that are in view of the device (L1 and L5 are considered two signals)
+     */
+    public MutableLiveData<Integer> getNumSignalsInView() {
+        return mNumSignalsInView;
+    }
+
+    /**
+     * Returns the number of signals that were used in the location fix (L1 and L5 are considered two signals)
+     *
+     * @return the number of signals that were used in the location fix (L1 and L5 are considered two signals)
+     */
+    public MutableLiveData<Integer> getNumSignalsUsed() {
+        return mNumSignalsUsed;
+    }
+
+    /**
      * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
      * into satellites
      *
@@ -144,11 +186,16 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * @param sbasStatuses a new set of SBAS status objects (signals)
      */
     public void setStatuses(List<SatelliteStatus> gnssStatuses, List<SatelliteStatus> sbasStatuses) {
-        Map<String, Satellite> gnssSatellites = getSatellitesFromStatuses(gnssStatuses);
-        Map<String, Satellite> sbasSatellites = getSatellitesFromStatuses(sbasStatuses);
+        ConstellationFamily gnssSatellites = getSatellitesFromStatuses(gnssStatuses);
+        ConstellationFamily sbasSatellites = getSatellitesFromStatuses(sbasStatuses);
 
-        mGnssSatellites.setValue(gnssSatellites);
-        mSbasSatellites.setValue(sbasSatellites);
+        mGnssSatellites.setValue(gnssSatellites.getSatellites());
+        mSbasSatellites.setValue(sbasSatellites.getSatellites());
+
+        mNumSignalsInView.setValue((gnssStatuses != null ? gnssStatuses.size() : 0) + (sbasStatuses != null ? sbasStatuses.size() : 0));
+        mNumSignalsUsed.setValue(gnssSatellites.getNumSignalsUsed() + sbasSatellites.getNumSignalsUsed());
+        mNumSatsInView.setValue(gnssSatellites.getSatellites().size() + sbasSatellites.getSatellites().size());
+        mNumSatsUsed.setValue(gnssSatellites.getNumSatsUsed() + sbasSatellites.getNumSatsUsed());
     }
 
     /**
@@ -157,14 +204,20 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * @return a map with the provided status grouped into satellites. The key to the map is the combination of constellation and ID
      * created using SatelliteUtils.createGnssSatelliteKey().
      */
-    private Map<String, Satellite> getSatellitesFromStatuses(List<SatelliteStatus> allStatuses) {
+    private ConstellationFamily getSatellitesFromStatuses(List<SatelliteStatus> allStatuses) {
         Map<String, Satellite> satellites = new HashMap<>();
+        int numSignalsUsed = 0;
+        int numSatsUsed = 0;
 
         if (allStatuses == null) {
-            return satellites;
+            return new ConstellationFamily(satellites, 0,0,0);
         }
 
         for (SatelliteStatus s : allStatuses) {
+            if (s.getUsedInFix()) {
+                numSignalsUsed++;
+            }
+
             String key = SatelliteUtils.createGnssSatelliteKey(s);
             // Get carrier label
             String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s);
@@ -187,6 +240,9 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                 satStatuses.put(carrierLabel, s);
                 Satellite sat = new Satellite(key, satStatuses);
                 satellites.put(key, sat);
+                if (s.getUsedInFix()) {
+                    numSatsUsed++;
+                }
             } else {
                 // Add signal to existing satellite
                 Satellite sat = satellites.get(key);
@@ -204,18 +260,26 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                     if (frequenciesInUse > 1) {
                         mIsDualFrequencyPerSatInUse = true;
                     }
+                    if (frequenciesInUse == 1 && s.getUsedInFix()) {
+                        // The new frequency we just added was the first in use for this satellite
+                        numSatsUsed++;
+                    }
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
                     mDuplicateCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
                 }
             }
         }
-        return satellites;
+        return new ConstellationFamily(satellites, allStatuses.size(), numSignalsUsed, numSatsUsed);
     }
 
     public void reset() {
         mGnssSatellites.setValue(null);
         mSbasSatellites.setValue(null);
+        mNumSatsInView.setValue(null);
+        mNumSatsUsed.setValue(null);
+        mNumSignalsInView.setValue(null);
+        mNumSignalsUsed.setValue(null);
         mDuplicateCarrierStatuses = new HashMap<>();
         mUnknownCarrierStatuses = new HashMap<>();
         mIsDualFrequencyPerSatInView = false;

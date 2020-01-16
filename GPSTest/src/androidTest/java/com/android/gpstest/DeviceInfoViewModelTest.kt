@@ -49,6 +49,10 @@ class DeviceInfoViewModelTest {
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
         assertFalse(modelGpsL1.isDualFrequencyPerSatInView)
         assertFalse(modelGpsL1.isDualFrequencyPerSatInUse)
+        assertEquals(1, modelGpsL1.numSatsInView.value)
+        assertEquals(1, modelGpsL1.numSatsUsed.value)
+        assertEquals(1, modelGpsL1.numSignalsInView.value)
+        assertEquals(1, modelGpsL1.numSignalsUsed.value)
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
