@@ -54,13 +54,13 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected as having duplicate carrier frequency data with another signal
      */
-    private Map<String, SatelliteStatus> mDuplicateCarrierStatuses = new HashMap();
+    private Map<String, SatelliteStatus> mDuplicateCarrierStatuses = new HashMap<>();
 
     /**
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected with an unknown GNSS frequency
      */
-    private Map<String, SatelliteStatus> mUnknownCarrierStatuses = new HashMap();
+    private Map<String, SatelliteStatus> mUnknownCarrierStatuses = new HashMap<>();
 
     public DeviceInfoViewModel(@NonNull Application application) {
         super(application);
