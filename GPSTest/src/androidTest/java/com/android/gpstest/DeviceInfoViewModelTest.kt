@@ -72,8 +72,6 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL1L5.numSatsInView.value)
-            assertEquals(1, modelGpsL1L5.numSatsUsed.value)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
             assertEquals(2, modelGpsL1L5.duplicateCarrierStatuses.size)
         }
@@ -88,11 +86,17 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInUse)
+            assertEquals(1, modelGpsL1L5.numSatsInView.value)
+            assertEquals(1, modelGpsL1L5.numSatsUsed.value)
+            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
+            assertEquals(2, modelGpsL1L5.numSignalsUsed.value)
         } else {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
+            // Because carrier frequency isn't considered, these signals should be detected as duplicates
+            assertEquals(2, modelGpsL1L5.duplicateCarrierStatuses.size)
         }
 
         modelGpsL1L5.reset();
