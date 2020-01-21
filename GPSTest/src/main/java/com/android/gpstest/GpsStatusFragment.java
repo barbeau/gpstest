@@ -47,6 +47,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -130,6 +132,34 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     String mPrefDistanceUnits;
     String mPrefSpeedUnits;
+
+    DeviceInfoViewModel mViewModel;
+
+    private final Observer<Integer> mNumSatsInViewObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable final Integer numSatsInView) {
+            // TODO - this and mNumSatsUsedObserver should probably be combined into one
+            mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mViewModel.getNumSatsUsed().getValue(), numSatsInView));
+        }
+    };
+
+    private final Observer<Integer> mNumSatsUsedObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(@Nullable final Integer numSatsUsed) {
+            // TODO - this and mNumSatsInViewObserver should probably be combined into one
+            mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, numSatsUsed, mViewModel.getNumSatsInView().getValue()));
+        }
+    };
+
+    private final Observer<Integer> mNumSignalsInViewObserver = numSignalsInView -> {
+        // TODO - add number of signals in view to UI
+        // TODO - this and mNumSignalsUsedObserver should probably be combined into one
+    };
+
+    private final Observer<Integer> mNumSignalsUsedObserver = numSignalsUsed -> {
+        // TODO - add number of signals used to UI
+        // TODO - this and mNumSignalsInViewObserver should probably be combined into one
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -215,12 +245,19 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         GpsTestActivity.getInstance().addListener(this);
 
+        mViewModel = ViewModelProviders.of(getActivity()).get(DeviceInfoViewModel.class);
+        mViewModel.getNumSatsInView().observe(getActivity(), mNumSatsInViewObserver);
+        mViewModel.getNumSatsUsed().observe(getActivity(), mNumSatsUsedObserver);
+        mViewModel.getNumSignalsInView().observe(getActivity(), mNumSignalsInViewObserver);
+        mViewModel.getNumSignalsUsed().observe(getActivity(), mNumSignalsUsedObserver);
+
         return v;
     }
 
     private void setStarted(boolean navigating) {
         if (navigating != mNavigating) {
             if (!navigating) {
+                mViewModel.reset();
                 mLatitudeView.setText(EMPTY_LAT_LONG);
                 mLongitudeView.setText(EMPTY_LAT_LONG);
                 mFixTime = 0;
@@ -550,6 +587,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mUsedInFixCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
+        mViewModel.reset();
         while (mSvCount < length) {
             SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), SatelliteUtils.getGnssConstellationType(status.getConstellationType(mSvCount)),
                     status.getCn0DbHz(mSvCount),
@@ -572,14 +610,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mGnssStatus.add(satStatus);
             }
 
-            if (satStatus.getUsedInFix()) {
-                mUsedInFixCount++;
-            }
+            mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
             mSvCount++;
         }
-
-        mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
 
         refreshViews();
     }
