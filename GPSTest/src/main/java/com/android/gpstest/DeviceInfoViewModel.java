@@ -18,6 +18,7 @@ package com.android.gpstest;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
@@ -51,10 +52,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
 
     private boolean mIsNonPrimaryCarrierFreqInUse = false;
 
-    private MutableLiveData<Integer> mNumSatsInView = new MutableLiveData<>();
-    private MutableLiveData<Integer> mNumSatsUsed = new MutableLiveData<>();
-    private MutableLiveData<Integer> mNumSignalsInView = new MutableLiveData<>();
-    private MutableLiveData<Integer> mNumSignalsUsed = new MutableLiveData<>();
+    private MutableLiveData<Pair<Integer, Integer>> mNumSatsUsedInViewPair = new MutableLiveData<>();
+    private MutableLiveData<Pair<Integer, Integer>> mNumSignalsUsedInViewPair = new MutableLiveData<>();
 
     /**
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
@@ -143,39 +142,28 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     }
 
     /**
-     * Returns the number of satellites that are in view of the device
+     * Returns the pair of the number of satellites that are broadcasting signals used in the
+     * location fix (first element) and the number of satellites whose signals are in view (second
+     * element)
      *
-     * @return the number of satellites that are in view of the device
+     * @return the pair of the number of satellites that are broadcasting signals used in the
+     * location fix (first element) and the number of satellites whose signals are in view (second
+     * element)
      */
-    public MutableLiveData<Integer> getNumSatsInView() {
-        return mNumSatsInView;
+    public MutableLiveData<Pair<Integer, Integer>> getNumSatsUsedInViewPair() {
+        return mNumSatsUsedInViewPair;
     }
 
-    /**
-     * Returns the number of satellites that are broadcasting signals used in the location fix
-     *
-     * @return the number of satellites that are broadcasting signals used in the location fix
-     */
-    public MutableLiveData<Integer> getNumSatsUsed() {
-        return mNumSatsUsed;
-    }
 
     /**
-     * Returns the number of signals that are in view of the device (L1 and L5 are considered two signals)
+     * Returns the pair of the number of signals that were used in the location fix (first element)
+     * and the number of signals in view (second element) (L1 and L5 are considered two signals)
      *
-     * @return the number of signals that are in view of the device (L1 and L5 are considered two signals)
+     * @return the pair of the number of signals that were used in the location fix (first element)
+     * and the number of signals in view (second element) (L1 and L5 are considered two signals)
      */
-    public MutableLiveData<Integer> getNumSignalsInView() {
-        return mNumSignalsInView;
-    }
-
-    /**
-     * Returns the number of signals that were used in the location fix (L1 and L5 are considered two signals)
-     *
-     * @return the number of signals that were used in the location fix (L1 and L5 are considered two signals)
-     */
-    public MutableLiveData<Integer> getNumSignalsUsed() {
-        return mNumSignalsUsed;
+    public MutableLiveData<Pair<Integer, Integer>> getNumSignalsUsedInViewPair() {
+        return mNumSignalsUsedInViewPair;
     }
 
     /**
@@ -192,10 +180,13 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         mGnssSatellites.setValue(gnssSatellites.getSatellites());
         mSbasSatellites.setValue(sbasSatellites.getSatellites());
 
-        mNumSignalsInView.setValue((gnssStatuses != null ? gnssStatuses.size() : 0) + (sbasStatuses != null ? sbasStatuses.size() : 0));
-        mNumSignalsUsed.setValue(gnssSatellites.getNumSignalsUsed() + sbasSatellites.getNumSignalsUsed());
-        mNumSatsInView.setValue(gnssSatellites.getSatellites().size() + sbasSatellites.getSatellites().size());
-        mNumSatsUsed.setValue(gnssSatellites.getNumSatsUsed() + sbasSatellites.getNumSatsUsed());
+        int numSignalsUsed = gnssSatellites.getNumSignalsUsed() + sbasSatellites.getNumSignalsUsed();
+        int numSignalsInView = (gnssStatuses != null ? gnssStatuses.size() : 0) + (sbasStatuses != null ? sbasStatuses.size() : 0);
+        mNumSignalsUsedInViewPair.setValue(new Pair<>(numSignalsUsed, numSignalsInView));
+
+        int numSatsUsed = gnssSatellites.getNumSatsUsed() + sbasSatellites.getNumSatsUsed();
+        int numSatsInView = gnssSatellites.getSatellites().size() + sbasSatellites.getSatellites().size();
+        mNumSatsUsedInViewPair.setValue(new Pair<>(numSatsUsed, numSatsInView));
     }
 
     /**
@@ -276,10 +267,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     public void reset() {
         mGnssSatellites.setValue(null);
         mSbasSatellites.setValue(null);
-        mNumSatsInView.setValue(null);
-        mNumSatsUsed.setValue(null);
-        mNumSignalsInView.setValue(null);
-        mNumSignalsUsed.setValue(null);
+        mNumSatsUsedInViewPair.setValue(null);
+        mNumSignalsUsedInViewPair.setValue(null);
         mDuplicateCarrierStatuses = new HashMap<>();
         mUnknownCarrierStatuses = new HashMap<>();
         mIsDualFrequencyPerSatInView = false;

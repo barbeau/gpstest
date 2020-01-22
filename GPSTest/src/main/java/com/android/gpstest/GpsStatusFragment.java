@@ -46,6 +46,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -135,30 +136,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     DeviceInfoViewModel mViewModel;
 
-    private final Observer<Integer> mNumSatsInViewObserver = new Observer<Integer>() {
+    private final Observer<Pair<Integer, Integer>> mNumSatsObserver = new Observer<Pair<Integer, Integer>>() {
         @Override
-        public void onChanged(@Nullable final Integer numSatsInView) {
-            // TODO - this and mNumSatsUsedObserver should probably be combined into one
-            mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mViewModel.getNumSatsUsed().getValue(), numSatsInView));
+        public void onChanged(@Nullable final Pair<Integer, Integer> numSatsUsedInViewPair) {
+            if (numSatsUsedInViewPair != null) {
+                mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, numSatsUsedInViewPair.first, numSatsUsedInViewPair.second));
+            }
         }
     };
 
-    private final Observer<Integer> mNumSatsUsedObserver = new Observer<Integer>() {
-        @Override
-        public void onChanged(@Nullable final Integer numSatsUsed) {
-            // TODO - this and mNumSatsInViewObserver should probably be combined into one
-            mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, numSatsUsed, mViewModel.getNumSatsInView().getValue()));
-        }
-    };
-
-    private final Observer<Integer> mNumSignalsInViewObserver = numSignalsInView -> {
-        // TODO - add number of signals in view to UI
-        // TODO - this and mNumSignalsUsedObserver should probably be combined into one
-    };
-
-    private final Observer<Integer> mNumSignalsUsedObserver = numSignalsUsed -> {
-        // TODO - add number of signals used to UI
-        // TODO - this and mNumSignalsInViewObserver should probably be combined into one
+    private final Observer<Pair<Integer, Integer>> mNumSignalsObserver = numSignalsUsedInViewPair -> {
+        // TODO - add number of signals used and in view to UI
     };
 
     @Override
@@ -246,10 +234,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         GpsTestActivity.getInstance().addListener(this);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(DeviceInfoViewModel.class);
-        mViewModel.getNumSatsInView().observe(getActivity(), mNumSatsInViewObserver);
-        mViewModel.getNumSatsUsed().observe(getActivity(), mNumSatsUsedObserver);
-        mViewModel.getNumSignalsInView().observe(getActivity(), mNumSignalsInViewObserver);
-        mViewModel.getNumSignalsUsed().observe(getActivity(), mNumSignalsUsedObserver);
+        mViewModel.getNumSatsUsedInViewPair().observe(getActivity(), mNumSatsObserver);
+        mViewModel.getNumSignalsUsedInViewPair().observe(getActivity(), mNumSignalsObserver);
 
         return v;
     }
