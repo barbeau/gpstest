@@ -64,7 +64,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Выс.:</string>
     <string name="gps_altitude_msl_label">В.(НУМ):</string>
-    <string name="gps_accuracy_label">Погр.:</string>
     <string name="gps_hor_and_vert_accuracy_label">Г/В П.:</string>
     <string name="gps_speed_label">Скор.:</string>
     <string name="gps_speed_acc_label">П. Ск.:</string>
@@ -176,6 +175,12 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Что нового?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Установить точность местоположения через BenchMap</b>
+        - Возможность использовать приложения подобные BenchMap для определения действительного местоположения.\n&#8226;\u0020
+        <b>Исправления</b>
+        - Смотреть здесь: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Закрыть</string>
 
     <!-- Preferences -->

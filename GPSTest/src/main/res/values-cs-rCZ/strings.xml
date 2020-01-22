@@ -44,6 +44,12 @@
     <string name="delete_aiding_data_success">Pomocné údaje úspěšně vymazány.</string>
     <string name="delete_aiding_data_failure">Zařízení nepodporuje vymazání pomocných údajů.</string>
     <string name="gps_switch">VYP/ZAP</string>
+    <string name="share">Sdílet</string>
+    <string name="copied_to_clipboard">Poloha zkopírována do schránky</string>
+    <string name="send_log">Odesílání protokolu...</string>
+    <string name="log_instructions">Povolte protokolování pro NMEA, prvotní měření, navigační zprávy, atd. v Nastavení.</string>
+    <string name="no_location">Sdílejte Vaší polohu po opravě GNSS.</string>
+    <string name="include_altitude">Zahrnout nadm. výšku</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
     <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>
@@ -62,7 +68,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Výška (G):</string>
     <string name="gps_altitude_msl_label">Výška (M):</string>
-    <string name="gps_accuracy_label">Přesnost:</string>
     <string name="gps_hor_and_vert_accuracy_label">Přesn. (H/V):</string>
     <string name="gps_speed_label">Rychlost:</string>
     <string name="gps_speed_acc_label">Přesn. (R):</string>
@@ -86,9 +91,18 @@
     <string name="install">Instalovat</string>
     <string name="no_thanks">NE, děkuji</string>
     <string name="please_install_google_maps">Karta MAPA vyžaduje službu Mapy Google.</string>
+    <string name="enable_gps_message">GPS/GNSS je zakázáno. Povolit nyní?</string>
+    <string name="enable_gps_positive_button">Povolit GPS/GNSS</string>
     <string name="enable_gps_negative_button">Ne</string>
+    <string name="gps_set_location_listener">Spustit GNSS s intervalem = %1$ss, min. vzdálenost = %2$sm</string>
     <string name="clear_assist_warning_title">Vymazat pomocné údaje?</string>
+    <string name="clear_assist_warning">Některým zařízením může automatické obnovení asistenčních dat trvat až 24 hodin. Pokud Vaše zařízení nepodporuje ruční vložení, nemusí GNSS fungovat pro žádnou aplikaci, dokud nedokončí automatické obnovení. Jste si jistý?</string>
     <string name="never_ask_again">Znovu se nedotazovat</string>
+    <string name="qr_code_instructions_title">Skenovat QR kód</string>
+    <string name="qr_code_instructions_text">Importujte polohu pomocí QR kódu ve formátu Geo URI (geo:28.38434,-87.24334). Vytvořte si vlastní QR kódy. Více na: https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Nelze z QR kódu přečíst Geo URI</string>
+    <string name="never_show_again">Příště nezobrazovat</string>
+    <string name="not_now">Nyní ne</string>
     <string name="yes">ANO</string>
     <string name="no">NE</string>
     <string name="gnss_not_available">GNSS satelity (Global Navigation Satellite System) nejsou dostupné.</string>
@@ -117,6 +131,9 @@
     <string name="horizontal_vertical_error_label">Chyba přesnosti H/V</string>
     <string name="avg_error_label">Průměr %1$d opr.</string>
     <string name="fix_number">Průměr</string>
+    <string name="show_radar_valid_location">Poloha importována!</string>
+    <string name="show_radar_invalid_location">Importovaná poloha je neplatná</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Popis</string>
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
@@ -125,6 +142,8 @@
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (European Union)</string>
@@ -163,6 +182,22 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Support for IRNSS</b>
+        - On IRNSS-compatible devices you can now see signals from the Indian GNSS.\n&#8226;\u0020
+        <b>Log data to files</b>
+        - Enable file logging in Settings for NMEA, raw measurements, navigation messages, and location fixes. See https://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        <b>Improved sharing options</b>
+        - Share your location in multiple ways (clipboard, GeoHack site, open in other apps, share via email/messaging) and send log files via email too.\n&#8226;\u0020
+        <b>Quick copy to clipboard</b>
+        - Simply tap on the main Status location card to copy your location to the clipboard.\n&#8226;\u0020
+        <b>Support for Degrees Decimal Minutes format</b>
+        - Change to this popular geocaching format in Settings.\n&#8226;\u0020
+        <b>Scan QR codes to set your Accuracy location</b>
+        - Comparing devices side-by-side? Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - See https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
@@ -204,17 +239,46 @@
     <string name="pref_true_north_title">Zobrazit pravý sever</string>
     <string name="pref_true_north_summary">Zobrazte v kompasu pravý sever místo magnetického.</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Protokoly a výstup</string>
+    <string name="pref_output_category_summary">Nastavte výstup protokolů do souboru nebo do Android Studio.</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Výstup Android Monitor</string>
     <string name="pref_nmea_output_title">Protokoly NMEA</string>
+    <string name="pref_as_nmea_output_summary">Povolte výstup protokolů NMEA do Android Studio.</string>
     <string name="pref_nmea_timestamp_output_title">Časová značka NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Použijte časovou značku NMEA ve výstupu.</string>
     <string name="pref_measurement_output_title">Protokoly měření GNSS</string>
+    <string name="pref_as_measurement_output_summary">Povolte výstup protokolů měření GNSS do Android Studio (Android 7.0 a vyšší).</string>
     <string name="pref_navigation_message_output_title">Navigační zprávy GNSS</string>
+    <string name="pref_as_navigation_message_output_summary">Povolte výstup navigačních zpráv GNSS do Android Studio (Android 7.0 a vyšší).</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Výstup souboru</string>
+    <string name="pref_file_nmea_output_summary">Povolte výstup protokolů NMEA do souboru.</string>
+    <string name="pref_file_measurement_output_summary">Povolte výstup protokolů měření GNSS do souboru (Android 7.0 a vyšší).</string>
+    <string name="pref_file_navigation_message_output_summary">Povolte výstup navigačních zpráv GNSS do souboru (Android 7.0 a vyšší).</string>
+    <string name="pref_file_location_output_title">Protokoly oprav polohy</string>
+    <string name="pref_file_location_output_summary">Povolte výstup protokolů oprav polohy do souboru.</string>
+
+    <string name="logging_to_new_file">Výstup protokolu do nového souboru: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Nelze zavřít všechny soubory se streamy.</string>
+    <string name="could_not_initialize_file">Nelze inicializovat soubor: %1$s</string>
+    <string name="error_writing_file">Chyba zápisu do souboru.</string>
+
     <string name="pref_about_category_title">O aplikaci</string>
     <string name="pref_show_tutorial_title">Zobrazit průvodce aplikací</string>
     <string name="pref_show_tutorial_summary">Zobrazte průvodce pro použití aplikace.</string>
 
     <string name="pref_dark_theme_title">Použít tmavé téma</string>
     <string name="pref_dark_theme_summary">Nastavte tmavou barvu pozadí.</string>
+
+    <string name="pref_coordinate_format_title">Formát souřadnic</string>
+    <string name="pref_coordinate_format_summary">Nastavte formát souřadnic.</string>
+    <string name="preferences_coordinate_format_dd">Desetiny stupňů</string>
+    <string name="preferences_coordinate_format_dms">Stupně, minuty, desetiny sekund</string>
+    <string name="preferences_coordinate_format_ddm">Stupně, desetiny minut</string>
 
     <string name="preferences_preferred_distance_units_title">Jednotky vzdálenosti</string>
     <string name="preferences_preferred_distance_units_option_meters">Metr</string>

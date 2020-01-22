@@ -61,7 +61,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Alt:</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_accuracy_label">E Préc:</string>
     <string name="gps_hor_and_vert_accuracy_label">E H/V Préc:</string>
     <string name="gps_speed_label">Vitesse :</string>
     <string name="gps_speed_acc_label">V. Préc:</string>
@@ -176,9 +175,9 @@
         <b>Accepte le IRNSS</b>
         - Sur les équipements compatibles IRNSS vous pouvez maintenant voir les satellites Indiens GNSS.\n&#8226;\u0020
         <b>Enregistrement des données dans un fichier</b>
-        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter http://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
+        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter https://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
         <b>Scanner un QR codes pour améliorer la précision de la localisation</b>
-        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter http://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
+        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter https://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
         <b>Erreurs corrigées</b>
         - Consulter https://bit.ly/gpstest-releases
     </string>

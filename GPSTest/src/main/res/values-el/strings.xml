@@ -62,7 +62,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Υψος:</string>
     <string name="gps_altitude_msl_label">Υψος (MSL):</string>
-    <string name="gps_accuracy_label">Ακρίβεια:</string>
     <string name="gps_hor_and_vert_accuracy_label">Κ/Ο Ακρίβεια:</string>
     <string name="gps_speed_label">Ταχύτητα:</string>
     <string name="gps_speed_acc_label">S. Ταχύτητα:</string>
@@ -163,6 +162,11 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+<b>Ορισμός ακριβής τοποθεσίας απο BenchMap</b>
+- Χρησιμοποιήστε εφαρμογές απο το BenchMap για να ορίσετε την πραγματική θέση εδάφους.\n&#8226;\u0020
+<b>Διορθώσεις σφαλμάτων</b>
+- Δείτε εδώ https://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->

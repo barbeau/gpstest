@@ -65,7 +65,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">高度:</string>
     <string name="gps_altitude_msl_label">高度(MSL):</string>
-    <string name="gps_accuracy_label">精度:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_speed_label">速度:</string>
     <string name="gps_speed_acc_label">速度精度:</string>
@@ -159,6 +158,14 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新履歴</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>北斗B1Cキャリア周波数</b>
+        - B1Cは、CF列の北斗衛星に対して正しく表示されるになりました。\n&#8226;\u0020
+        <b>バックグラウンドGNSSの使用をオフにするオプション</b>
+        - 有効にすると、アプリを終了するときにGNSSがオフになります。\n&#8226;\u0020
+        <b>バグの修正</b>
+        - https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">閉じる</string>
 
     <!-- Preferences -->

@@ -7,7 +7,7 @@
 ** you may not use this file except in compliance with the License.
 ** You may obtain a copy of the License at
 **
-**     https://www.apache.org/licenses/LICENSE-2.0
+**     http://www.apache.org/licenses/LICENSE-2.0
 **
 ** Unless required by applicable law or agreed to in writing, software
 ** distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,10 +22,10 @@
         <item>Konstelasi</item>
         <item>Frekuensi Karir</item>
         <item>Kekuatan Sinyal</item>
-        <item>Digunakan untuk Perbaikan</item>
+        <item>Digunakan dalam Perbaikan</item>
         <item>Konstelasi, Frekuensi Karir</item>
         <item>Konstelasi, Kekuatan Sinyal</item>
-        <item>Konstelasi, Digunakan untuk Perbaikan</item>
+        <item>Konstelasi, Digunakan dalam Perbaikan</item>
     </string-array>
 
     <!-- Let the user choose between map views -->

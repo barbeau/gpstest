@@ -44,6 +44,12 @@
     <string name="delete_aiding_data_success">GNSS-hulpgegevens succesvol verwijderd</string>
     <string name="delete_aiding_data_failure">Het apparaat ondersteunt het verwijderen van hulpgegevens niet</string>
     <string name="gps_switch">Aan/uit</string>
+    <string name="share">Delen</string>
+    <string name="copied_to_clipboard">Locatie gekopieerd naar klembord</string>
+    <string name="send_log">Log insturen…</string>
+    <string name="log_instructions">Schakel in de instellingen loggen voor NMEA, rauwe metingen, navigatieberichten en meer in.</string>
+    <string name="no_location">Probeer je locatie te delen nadat je een GNSS fix hebt.</string>
+    <string name="include_altitude">Hoogte meerekenen</string>
     <string name="set_fix_frequency">Fix-frequentie instellen </string>
     <string name="force_time_injection_success">NTP-gegevens succesvol ingeladen</string>
     <string name="force_time_injection_failure">Apparaat ondersteunt het importeren van NTP-gegevens niet.
@@ -64,7 +70,6 @@
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_msl_label">Hoogte(GZN):</string>
-    <string name="gps_accuracy_label">Gesch. Nauwk.:</string>
     <string name="gps_hor_and_vert_accuracy_label">G. H/V Nk.:</string>
     <string name="gps_speed_label">Snelheid:</string>
     <string name="gps_speed_acc_label">Snel. Nauwk.:</string>
@@ -88,8 +93,13 @@
     <string name="install">Installeren</string>
     <string name="no_thanks">Nee, bedankt</string>
     <string name="please_install_google_maps">Om de kaart te bekijken is Google Maps benodigd</string>
+    <string name="enable_gps_message">Locatiebepaling is uitgeschakeld. Nu inschakelen?</string>
+    <string name="enable_gps_positive_button">Locatiebepaling inschakelen</string>
     <string name="enable_gps_negative_button">Nee</string>
+    <string name="gps_set_location_listener">Locatiebepaling gestart met interval = %1$s s, minimale afstand = %2$s m
+</string>
     <string name="clear_assist_warning_title">Verwijder hulp-gegevens?</string>
+    <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulpgegevens automatisch te vernieuwen. Als je apparaat handmatige invoer niet ondersteunt, zal locatiebepaling bij geen enkele andere app meer werken voordat automatisch vernieuwen is voltooid. Weet je het zeker?</string>
     <string name="never_ask_again">Niet meer vragen</string>
     <string name="qr_code_instructions_title">Scan een QR-code</string>
     <string name="qr_code_instructions_text">Importeer een ware locatie op de grond door middel van een QR-code in Geo-URI formaat (geo:28.38434,-87.24334). Creëer je eigen QR-codes via https://zxing.appspot.com/generator/.</string>
@@ -180,9 +190,9 @@
         <b>Ondersteuning voor IRNSS</b>
         - Je kunt vanaf nu op IRNSS-ondersteunende apparaten signalen van de Indische GNSS ontvangen.\n&#8226;\u0020
         <b>Gegevens loggen naar bestanden</b>
-        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file for details.\n&#8226;\u0020
+        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie https://bit.ly/gpstest-file for details.\n&#8226;\u0020
         <b>Scan QR-codes om je ware locatie in te stellen</b>
-        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie http://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
+        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie https://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
         <b>Foutoplossingen</b>
         - Zie https://bit.ly/gpstest-releases
     </string>

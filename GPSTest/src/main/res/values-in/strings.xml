@@ -27,7 +27,7 @@
     <string name="navdrawer_separator_assist_data">Modifikasi data bantuan</string>
     <string name="force_xtra_injection">Injek data XTRA</string>
     <string name="force_time_injection">Injek data waktu</string>
-    <string name="delete_aiding_data">Bersihkan data bantuan</string>
+    <string name="delete_aiding_data">Hapus data bantuan</string>
     <string name="navdrawer_item_settings">Setelan</string>
     <string name="navdrawer_item_help">Bantuan</string>
     <string name="navdrawer_item_send_feedback">Kirim masukan</string>
@@ -70,7 +70,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Ketinggian:</string>
     <string name="gps_altitude_msl_label">Ketinggian (DPL):</string>
-    <string name="gps_accuracy_label">Akurasi:</string>
     <string name="gps_hor_and_vert_accuracy_label">Akurasi H/V:</string>
     <string name="gps_speed_label">Kecapatan:</string>
     <string name="gps_speed_acc_label">Akurasi Kec:</string>
@@ -89,9 +88,9 @@
     <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_flags_column_label">Flag</string>
+    <string name="gps_flags_column_label">Flags</string>
     <string name="gps_not_supported">Mohon periksa setelan sistem - perangkat sepertinya tidak mendukung GNSS/GPS.</string>
-    <string name="install">Pasang</string>
+    <string name="install">Instal</string>
     <string name="no_thanks">Tidak, terima kasih</string>
     <string name="please_install_google_maps">Tab Peta membutuhkan Google Maps</string>
     <string name="enable_gps_message">GPS/GNSS tidak aktif. Aktifkan sekarang?</string>
@@ -131,12 +130,12 @@
     <string name="vertical_error_title">Kesalahan Vertikal</string>
     <string name="horizontal_error_label">Kesalahan</string>
     <string name="measured_error_graph_label">Kesalahan diukur</string>
-    <string name="estimated_accuracy_graph_label">Akurasi yang diperkirakan perangkat keras</string>
+    <string name="estimated_accuracy_graph_label">Akurasi diperkirakan oleh perangkat keras</string>
     <string name="horizontal_vertical_error_label">Kesalahan H/V</string>
-    <string name="avg_error_label">%1$d perbaikan rata-rata</string>
+    <string name="avg_error_label">%1$d rata-rata perbaikan</string>
     <string name="fix_number">Perbaikan #</string>
     <string name="show_radar_valid_location">Ketepatan lokasi permukaan tanah diimpor!</string>
-    <string name="show_radar_invalid_location">Ketepatan lokasi permukaan yang diimpor tidak valid</string>
+    <string name="show_radar_invalid_location">Ketepatan lokasi permukaan tanah yang diimpor tidak valid</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
@@ -160,14 +159,14 @@
     <string name="sky_legend_shape_availability_title">Ketersediaan Sinyal</string>
     <string name="sky_legend_shape_not_in_view">Tidak terlihat perangkat</string>
     <string name="sky_legend_shape_in_view">Terlihat</string>
-    <string name="sky_legend_shape_used_in_fix">Digunakan untuk perbaikan</string>
+    <string name="sky_legend_shape_used_in_fix">Digunakan dalam perbaikan</string>
 
     <!-- GNSS Status callbacks -->
-    <string name="gnss_nav_msg_status_loc_disabled">Penyedia GNSS atau Lokasi di-nonaktifkan, pembaruan tidak akan tersedia sampai penyedia di-aktifkan</string>
+    <string name="gnss_nav_msg_status_loc_disabled">Penyedia GNSS atau Lokasi dinonaktifkan, pembaruan tidak akan tersedia sampai penyedia diaktifkan</string>
     <string name="gnss_nav_msg_status_not_supported">Perangkat tidak mendukung pelacakan Pesan Navigasi GNSS</string>
     <string name="gnss_nav_msg_status_ready">Pesan Navigasi GNSS telah berhasil dilacak</string>
 
-    <string name="gnss_measurement_status_loc_disabled">Penyedia GNSS atau Lokasi dinonaktifkan, pembaruan tidak akan tersedia sampai penyedia di-aktifkan</string>
+    <string name="gnss_measurement_status_loc_disabled">Penyedia GNSS atau Lokasi dinonaktifkan, pembaruan tidak akan tersedia sampai penyedia diaktifkan</string>
     <string name="gnss_measurement_status_not_supported">Perangkat tidak mendukung pelacakan Pengukuran GNSS </string>
     <string name="gnss_measurement_status_ready">Pengukuran GNSS telah berhasil dilacak</string>
 
@@ -189,9 +188,9 @@
     <string name="main_help_whatsnew_title">Apa yang Baru?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Mendukung IRNSS</b>
-        - Pada perangkat yang kopetibel dengan IRNSS anda sekarang dapat melihat sinyal GNSS India.\n&#8226;\u0020
+        - Pada perangkat yang kompetibel dengan IRNSS anda sekarang dapat melihat sinyal GNSS India.\n&#8226;\u0020
         <b>Pencatatan data ke dalam file</b>
-        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat http://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
+        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat https://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
         <b>Penigkatan opsi berbagi</b>
         - Bagikan lokasi anda dalam berbagai cara (clipboard, website GeoHack, buka di apl lain, bagikan dengan email/pesan) dan juga kirim file pencatatan dengan email.\n&#8226;\u0020
         <b>Salin cepat ke clipboard</b>
@@ -199,7 +198,7 @@
         <b>Mendukung format Derajat Desimal Menit</b>
         - Ubah format ke dalam geocaching yang terkenal ini di Setelan.\n&#8226;\u0020
         <b>Pindai kode QR untuk mengatur Akurasi lokasi anda</b>
-        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
+        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat https://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
         <b>Bug fixes</b>
         - Lihat https://bit.ly/gpstest-releases
     </string>
@@ -213,7 +212,7 @@
     <string name="pref_map_type_dialog_title">Pilih Jenis Peta</string>
 
     <string name="pref_rotate_map_with_compass_title">Putar Peta dengan Kompas</string>
-    <string name="pref_rotate_map_with_compass_summary">Mengubah orientasi peta berdasarkan arah
+    <string name="pref_rotate_map_with_compass_summary">Ubah orientasi peta berdasarkan arah
         anda
     </string>
 
@@ -237,7 +236,7 @@
     </string>
 
     <string name="pref_gps_min_distance_title">Jarak Minimal</string>
-    <string name="pref_gps_min_distance_summary">Jarak Minimal antara perbaikan GNSS, dalam meter
+    <string name="pref_gps_min_distance_summary">Jarak minimal antara perbaikan GNSS, dalam meter
     </string>
     <string name="pref_gps_min_distance_dialog_title">Masukan jarak minimal, dalam meter</string>
     <string name="pref_gps_min_distance_invalid_entry">Jarak Minimal harus berupa angka</string>
@@ -249,13 +248,13 @@
     <string name="pref_display_category_title">Tampilan</string>
     <string name="pref_keep_screen_on_title">Jaga Layar Tetap Menyala</string>
     <string name="pref_keep_screen_on_summary">Mencegah layar mati</string>
-    <string name="pref_true_north_title">Arahkan Kompas ke Arah Utara yang Benar</string>
+    <string name="pref_true_north_title">Arahkan Kompas ke Utara yang Benar</string>
     <string name="pref_true_north_summary">Mengarahkan kompas ke arah utara yang sebenarnya daripada arah utara magnet
     </string>
 
     <!-- Output category -->
     <string name="pref_output_category_title">Pencatatan dan Keluaran</string>
-    <string name="pref_output_category_summary">Pencatatan NMEA, pengukuran dasar ,ataupesan navigasi ke dalam file atau Android Studio</string>
+    <string name="pref_output_category_summary">Pencatatan NMEA, pengukuran dasar ,atau pesan navigasi ke dalam file atau Android Studio</string>
 
     <!-- Android Monitor Output -->
     <string name="pref_as_output_category_title">Monitor Keluaran Android</string>
@@ -284,7 +283,7 @@
     <string name="pref_file_location_output_summary">Mencatat rincian perbaikan loaksi ke dalam file</string>
 
     <string name="logging_to_new_file">Mencatat ke file baru: %1$s</string>
-    <string name="unable_to_close_all_file_streams">Tidak dapat menutup seluruh stream file.</string>
+    <string name="unable_to_close_all_file_streams">Tidak dapat menutup semua aliran file.</string>
     <string name="could_not_initialize_file">Penghitungan file tidak menginisialisasi: %1$s</string>
     <string name="error_writing_file">Masalah dalam menulis ke dalam file.</string>
 
@@ -312,7 +311,7 @@
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Mil per jam</string>
 
     <string name="pref_language_title">Bahasa</string>
-    <string name="pref_language_summary">Mengatur bahasa dalam aplikasi secara manual</string>
+    <string name="pref_language_summary">Atur bahasa dalam aplikasi secara manual</string>
     <string name="pref_language_dialog_title">Pilih Bahasa</string>
 
     <!-- Help -->

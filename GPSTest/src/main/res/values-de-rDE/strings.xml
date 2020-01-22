@@ -62,7 +62,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Höhe:</string>
     <string name="gps_altitude_msl_label">Höhe (MSL):</string>
-    <string name="gps_accuracy_label">Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V-Acc:</string>
     <string name="gps_speed_label">v:</string>
     <string name="gps_speed_acc_label">v-Acc:</string>
@@ -163,6 +162,15 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
+    <string name="main_help_whatsnew"><li><b>Genauigkeitsansicht</b>
+\nDie reale Position einstellen und die GNSS-Genauigkeit messen.</li>
+\n<li><b>Verbesserter Support für einige Satelliten</b>
+\nNeue Galileo-Satelliten, CF-Label für SBAS (EGNOS und MSAS) und GLONASS (CDMA L1 und L3).</li>
+\n<li><b>App-Sprache änderbar</b>
+\nNeue Einstellung zum Ändern der Sprache für die unterstützten Übersetzungen.</li>
+\n<li><b>Fehlerbehebungen</b>
+\nSiehe https://bit.ly/gpstest-releases</li>
+    </string>
     <string name="main_help_close">Schließen</string>
 
     <!-- Preferences -->

@@ -61,7 +61,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Alt:</string>
     <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_accuracy_label">E Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
     <string name="gps_speed_label">Velocidad:</string>
     <string name="gps_speed_acc_label">S. Acc:</string>
@@ -162,6 +161,16 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Que hay de nuevo?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Vista de Precisión</b>
+        -Establezca su ubicación real y mida la precisión GNSS.\n&#8226;\u0020
+        <b>Soporte mejorado para ciertos satélites</b>
+        - Nuevos satélites Galileo, etiquetas CF para SBAS (EGNOS y MSAS) y GLONASS (CDMA L1 y L3).\n&#8226;\u0020
+        <b>Cambiar idioma de la aplicación</b>
+        - Nuevo ajuste para cambiar el idioma mostrado en la app para traducciones soportadas.\n&#8226;\u0020
+        <b>Errores corregidos</b>
+        - Ver en https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Cerrar</string>
 
     <!-- Preferences -->

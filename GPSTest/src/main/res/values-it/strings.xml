@@ -67,7 +67,6 @@
     <string name="gps_ttff_label">TTPL:</string>
     <string name="gps_altitude_label">Alt.:</string>
     <string name="gps_altitude_msl_label">Alt. (s.l.m.):</string>
-    <string name="gps_accuracy_label">Precisione:</string>
     <string name="gps_hor_and_vert_accuracy_label">Prec. o/v:</string>
     <string name="gps_speed_label">Velocità:</string>
     <string name="gps_speed_acc_label">Prec. vel.:</string>
@@ -99,7 +98,8 @@
     <string name="clear_assist_warning">Alcuni dispositivi possono impiegare 24 ore per aggiornare in automatico i dati di assistenza. Se il tuo dispositivo non supporta l\'inserimento manuale, il sistema di geolocalizzazione tramite GNSS potrebbe non funzionare in nessuna applicazione finché l\'aggiornamento automatico non sarà completato. Vuoi procedere?</string>
     <string name="never_ask_again">Non chiedere più</string>
     <string name="qr_code_instructions_title">Scansiona un QR Code</string>
-    <string name="qr_code_instructions_text">Importa la posizione reale con l\'utilizzo di un QR Code nel formato Geo URI (es.: geo:28.38434,-87.24334).
+    <string name="qr_code_instructions_text">Importa la posizione reale con l\'utilizzo di un QR Code nel formato Geo URI (es.:
+\"geo:28.38434,-87.24334\").
 Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Impossibile leggere il riferimento Geo URI dal QR Code</string>
     <string name="never_show_again">Non mostrare più</string>
@@ -140,9 +140,9 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="sky_legend_shape_gnss_title">Sistema Globale di Navigazione Satellitare (GNSS)</string>
     <string name="sky_legend_shape_navstar">GPS NAVSTAR (USA)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Russia)</string>
-    <string name="sky_legend_shape_galileo">Galileo (UE)</string>
+    <string name="sky_legend_shape_galileo">GALILEO (UE)</string>
     <string name="sky_legend_shape_qzss">QZSS (Giappone)</string>
-    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Cina)</string>
+    <string name="sky_legend_shape_beidou">BEIDOU/COMPASS (Cina)</string>
     <string name="sky_legend_shape_irnss">IRNSS (India)</string>
 
     <string name="sky_legend_shape_sbas_title">Sistema di Aumento della Precisione tramite Satelliti (SBAS)</string>
@@ -187,7 +187,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
         <b>Supporto per IRNSS</b>
         - Possibilità di vedere i segnali del sistema GNSS Indiano su tutti i device compatibili con IRNSS;\n&#8226;\u0020
         <b>Registra dati</b>
-        - Abilita la registrazione dei dati nel menù Impostazioni per i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione. Per maggiori informazioni: http://bit.ly/gpstest-file for details;\n&#8226;\u0020
+        - Abilita la registrazione dei dati nel menù Impostazioni per i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione. Per maggiori informazioni: https://bit.ly/gpstest-file;\n&#8226;\u0020
         <b>Miglioramento opzioni di condivisione</b>
         - Condividi le tue coordinate in vari modi (copia negli appunti, sito GeoHack, apri in altre app, condividi tramite email/ messaggio), inoltre è possibile inviare il file di registro dati tramite email;\n&#8226;\u0020
         <b>Copia coordinate negli appunti</b>
@@ -195,7 +195,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
         <b>Supporto del formato DM (gradi minuti decimali)</b>
         - Imposta questo popolare formato di geocaching nelle Impostazioni;\n&#8226;\u0020
         <b>Scansione QR Code per impostare la posizione reale</b>
-        -  Imposta la tua posizione reale in modo rapido utilizzando i codici QR. Per maggiori informazioni: http://bit.ly/gpstest-qr-codes for details.\n&#8226;\u0020
+        - Imposta la tua posizione reale in modo rapido utilizzando i codici QR. Per maggiori informazioni: https://bit.ly/gpstest-qr-codes.\n&#8226;\u0020
         <b>Bug fixes</b>
         - Per maggiori informazioni: https://bit.ly/gpstest-releases.
     </string>
@@ -225,7 +225,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_gps_min_time_invalid_entry">L\'intervallo deve essere un numero</string>
 
     <string name="pref_use_gnss_apis_title">Usa le API GNSS</string>
-    <string name="pref_use_gnss_apis_summary">Disponibile con Android 7.0 e successivi. Se disattivato, utilizza le informazioni GPS Legacy</string>
+    <string name="pref_use_gnss_apis_summary">Disponibile con Android 7.0 e successivi. Se disattivato, utilizza le informazioni GNSS Legacy</string>
 
     <string name="pref_gps_min_distance_title">Distanza minima</string>
     <string name="pref_gps_min_distance_summary">Distanza minima geolocalizzazione (in metri)</string>

@@ -19,19 +19,19 @@
 -->
 <resources>
     <!-- Fragments -->
-    <string name="gps_status_title">状态视图</string>
-    <string name="gps_map_title">地图视图</string>
-    <string name="gps_sky_title">天空视图</string>
-    <string name="gps_accuracy_title">精度视图</string>
+    <string name="gps_status_title">状态</string>
+    <string name="gps_map_title">地图</string>
+    <string name="gps_sky_title">卫星</string>
+    <string name="gps_accuracy_title">精度</string>
 
     <!-- Navigation Drawer -->
-    <string name="navdrawer_separator_assist_data">修改辅助数据</string>
+    <string name="navdrawer_separator_assist_data">辅助数据</string>
     <string name="force_xtra_injection">导入XTRA数据</string>
     <string name="force_time_injection">导入时间数据</string>
     <string name="delete_aiding_data">清除辅助数据</string>
     <string name="navdrawer_item_settings">设置</string>
     <string name="navdrawer_item_help">帮助</string>
-    <string name="navdrawer_item_send_feedback">发送反馈</string>
+    <string name="navdrawer_item_send_feedback">反馈</string>
     <string name="navdrawer_item_open_source">GitHub</string>
 
     <string name="navigation_drawer_open">打开导航栏</string>
@@ -44,6 +44,12 @@
     <string name="delete_aiding_data_success">已成功删除辅助数据。</string>
     <string name="delete_aiding_data_failure">设备不支持删除辅助数据。</string>
     <string name="gps_switch">开关</string>
+    <string name="share">分享</string>
+    <string name="copied_to_clipboard">位置已复制到粘贴板</string>
+    <string name="send_log">发送日志</string>
+    <string name="log_instructions">在设置中启用 NMEA、原始测量数据、导航信息等的输出</string>
+    <string name="no_location">在 GNSS 定位成功后分享你的位置</string>
+    <string name="include_altitude">包含高度</string>
     <string name="set_fix_frequency">设置固定频率</string>
     <string name="force_time_injection_success">已成功导入时间数据。</string>
     <string name="force_time_injection_failure">设备不支持导入时间数据。</string>
@@ -62,7 +68,6 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">高度:</string>
     <string name="gps_altitude_msl_label">高度(MSL):</string>
-    <string name="gps_accuracy_label">精度:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_speed_label">速度:</string>
     <string name="gps_speed_acc_label">速度精度:</string>
@@ -86,9 +91,18 @@
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
     <string name="please_install_google_maps">地图视图需要安装 Google 地图</string>
+    <string name="enable_gps_message">GPS/GNSS 已禁用。要启用吗？</string>
+    <string name="enable_gps_positive_button">启用 GPS/GNSS</string>
     <string name="enable_gps_negative_button">不启用</string>
+    <string name="gps_set_location_listener">已以时间间隔 %1$ss，最小距离 %2$sm 启动 GNSS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
+    <string name="clear_assist_warning">一些设备可能需要24小时自动刷新辅助数据。如果你的设备不支持手动导入，在24小时的自动刷新以前任何应用都无法使用 GNSS。你确定要继续吗?</string>
     <string name="never_ask_again">不再询问</string>
+    <string name="qr_code_instructions_title">二维码扫描</string>
+    <string name="qr_code_instructions_text">通过二维码来导入 Geo URL 格式（例：geo:28.38434,-87.24334）的现地位置。可在 https://zxing.appspot.com/generator/ 自行创建二维码。</string>
+    <string name="qr_code_cannot_read_code">二维码中不包含 Geo URL</string>
+    <string name="never_show_again">不再显示</string>
+    <string name="not_now">稍后</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
@@ -117,6 +131,9 @@
     <string name="horizontal_vertical_error_label">H/V 误差</string>
     <string name="avg_error_label">平均%1$d修正</string>
     <string name="fix_number">修正 #</string>
+    <string name="show_radar_valid_location">已导入现地位置</string>
+    <string name="show_radar_invalid_location">导入的现地位置不可用</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">图例</string>
     <string name="sky_legend_shape_gnss_title">全球卫星导航系统（GNSS）</string>
@@ -125,6 +142,8 @@
     <string name="sky_legend_shape_galileo">伽利略定位系统（欧盟）</string>
     <string name="sky_legend_shape_qzss">准天顶卫星系统（日本）</string>
     <string name="sky_legend_shape_beidou">北斗卫星导航系统（中国）</string>
+    <string name="sky_legend_shape_irnss">印度区域导航卫星系统（印度）</string>
+
     <string name="sky_legend_shape_sbas_title">星基增强系统（SBAS）</string>
     <string name="sky_legend_shape_waas">WAAS（美国）</string>
     <string name="sky_legend_shape_egnos">EGNOS（欧盟）</string>
@@ -158,11 +177,18 @@
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: 反馈</string>
-    <string name="feedback_body">我们欢迎任何抱怨、称赞和bug报告！\n\n\n</string>
+    <string name="feedback_body">欢迎任何意见、建议、bug 报告！\n\n\n</string>
     <string name="feedback_error">无法发送反馈: 没有找到合适的应用。</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+ <b>查看精确度</b>
+ - 设定你的真实位置并测定 GNSS 的精确度。\n&#8226;\u0020
+ <b>改进某些卫星的支持</b>
+ - 新的伽利略卫星，SBAS (EGNOS和MSAS) 和 GLONASS (CDMA L1 和 L3)的 CF 标签。\n&#8226;\u0020
+ <b>错误修正</b>
+ - 请见 https://bit.ly/gpstest-releases</string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->
@@ -201,20 +227,53 @@
     <string name="pref_display_category_title">显示</string>
     <string name="pref_keep_screen_on_title">保持亮屏</string>
     <string name="pref_keep_screen_on_summary">阻止屏幕关闭</string>
-    <string name="pref_true_north_title">指南正指向正北</string>
+    <string name="pref_true_north_title">正北朝向</string>
     <string name="pref_true_north_summary">指南针将会指向正北而不是磁北</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">日志与输出</string>
+    <string name="pref_output_category_summary">输出 NMEA、原始测量数据、导航信息至文件或 Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android Monitor 输出</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">输出 NMEA 信息至 Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA 时间戳</string>
     <string name="pref_nmea_timestamp_output_summary">在输出中包括 NMEA 时间戳</string>
     <string name="pref_measurement_output_title">测量数据</string>
+    <string name="pref_as_measurement_output_summary">输出 GNSS 测量数据至 Android Studio
+(Android 7.0 及以上)</string>
     <string name="pref_navigation_message_output_title">导航信息</string>
+    <string name="pref_as_navigation_message_output_summary">输出 GNSS 导航信息至 Android Studio
+(Android 7.0 及以上)</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">文件输出</string>
+    <string name="pref_file_nmea_output_summary">输出 NMEA 信息至文件</string>
+    <string name="pref_file_measurement_output_summary">输出 GNSS 测量数据至文件
+（Android 7.0 及其以上）</string>
+    <string name="pref_file_navigation_message_output_summary">输出 GNSS 导航信息至文件
+（Android 7.0 及其以上）</string>
+    <string name="pref_file_location_output_title">位置</string>
+    <string name="pref_file_location_output_summary">输出定位详情至文件</string>
+
+    <string name="logging_to_new_file">日志写入至: %1$s</string>
+    <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>
+    <string name="could_not_initialize_file">无法初始化文件: %1$s</string>
+    <string name="error_writing_file">文件写入错误</string>
+
     <string name="pref_about_category_title">关于</string>
     <string name="pref_show_tutorial_title">显示手册</string>
     <string name="pref_show_tutorial_summary">显示本应用的使用介绍</string>
 
     <string name="pref_dark_theme_title">使用暗色主题</string>
     <string name="pref_dark_theme_summary">为背景铺上暗色而文字显示为亮色</string>
+
+    <string name="pref_coordinate_format_title">坐标格式</string>
+    <string name="pref_coordinate_format_summary">度分秒等坐标显示格式</string>
+    <string name="preferences_coordinate_format_dd">度</string>
+    <string name="preferences_coordinate_format_dms">度分秒</string>
+    <string name="preferences_coordinate_format_ddm">度分</string>
 
     <string name="preferences_preferred_distance_units_title">距离单位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>
