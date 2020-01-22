@@ -49,10 +49,10 @@ class DeviceInfoViewModelTest {
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
         assertFalse(modelGpsL1.isDualFrequencyPerSatInView)
         assertFalse(modelGpsL1.isDualFrequencyPerSatInUse)
-        assertEquals(1, modelGpsL1.numSatsInView.value)
-        assertEquals(1, modelGpsL1.numSatsUsed.value)
-        assertEquals(1, modelGpsL1.numSignalsInView.value)
-        assertEquals(1, modelGpsL1.numSignalsUsed.value)
+        assertEquals(1, modelGpsL1.numSatsUsedInViewPair.value?.second) // In view
+        assertEquals(1, modelGpsL1.numSatsUsedInViewPair.value?.first) // Used
+        assertEquals(1, modelGpsL1.numSignalsUsedInViewPair.value?.second) // In view
+        assertEquals(1, modelGpsL1.numSignalsUsedInViewPair.value?.first) // Used
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
         val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
@@ -63,10 +63,10 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL1L5.numSatsInView.value)
-            assertEquals(1, modelGpsL1L5.numSatsUsed.value)
-            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
-            assertEquals(1, modelGpsL1L5.numSignalsUsed.value)
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGpsL1L5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
@@ -86,10 +86,10 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL1L5.numSatsInView.value)
-            assertEquals(1, modelGpsL1L5.numSatsUsed.value)
-            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
-            assertEquals(2, modelGpsL1L5.numSignalsUsed.value)
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
@@ -109,10 +109,10 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL1L5.numSatsInView.value)
-            assertEquals(1, modelGpsL1L5.numSatsUsed.value)
-            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
-            assertEquals(1, modelGpsL1L5.numSignalsUsed.value)
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGpsL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGpsL1L5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
@@ -132,19 +132,19 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(2, modelGpsL1L5.numSatsInView.value)
-            assertEquals(2, modelGpsL1L5.numSatsUsed.value)
-            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
-            assertEquals(2, modelGpsL1L5.numSignalsUsed.value)
+            assertEquals(2, modelGpsL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGpsL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL1L5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(2, modelGpsL1L5.numSatsInView.value)
-            assertEquals(2, modelGpsL1L5.numSatsUsed.value)
-            assertEquals(2, modelGpsL1L5.numSignalsInView.value)
-            assertEquals(2, modelGpsL1L5.numSignalsUsed.value)
+            assertEquals(2, modelGpsL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGpsL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGpsL1L5.numSignalsUsedInViewPair.value?.first) // Used
         }
 
         modelGpsL1L5.reset();
@@ -158,19 +158,19 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL5.numSatsInView.value)
-            assertEquals(0, modelGpsL5.numSatsUsed.value)
-            assertEquals(1, modelGpsL5.numSignalsInView.value)
-            assertEquals(0, modelGpsL5.numSignalsUsed.value)
+            assertEquals(1, modelGpsL5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(0, modelGpsL5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(1, modelGpsL5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(0, modelGpsL5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGpsL5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGpsL5.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGpsL5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGpsL5.numSatsInView.value)
-            assertEquals(0, modelGpsL5.numSatsUsed.value)
-            assertEquals(1, modelGpsL5.numSignalsInView.value)
-            assertEquals(0, modelGpsL5.numSignalsUsed.value)
+            assertEquals(1, modelGpsL5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(0, modelGpsL5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(1, modelGpsL5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(0, modelGpsL5.numSignalsUsedInViewPair.value?.first) // Used
         }
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
@@ -181,10 +181,10 @@ class DeviceInfoViewModelTest {
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInUse)
         assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInView)
         assertFalse(modelGpsL1GlonassL1.isDualFrequencyPerSatInUse)
-        assertEquals(2, modelGpsL1GlonassL1.numSatsInView.value)
-        assertEquals(2, modelGpsL1GlonassL1.numSatsUsed.value)
-        assertEquals(2, modelGpsL1GlonassL1.numSignalsInView.value)
-        assertEquals(2, modelGpsL1GlonassL1.numSignalsUsed.value)
+        assertEquals(2, modelGpsL1GlonassL1.numSatsUsedInViewPair.value?.second) // In view
+        assertEquals(2, modelGpsL1GlonassL1.numSatsUsedInViewPair.value?.first) // Used
+        assertEquals(2, modelGpsL1GlonassL1.numSignalsUsedInViewPair.value?.second) // In view
+        assertEquals(2, modelGpsL1GlonassL1.numSignalsUsedInViewPair.value?.first) // Used
 
         // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
         val modelGalileoE1E5a = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
@@ -195,19 +195,19 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
-            assertEquals(2, modelGalileoE1E5a.numSatsInView.value)
-            assertEquals(2, modelGalileoE1E5a.numSatsUsed.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsInView.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsUsed.value)
+            assertEquals(2, modelGalileoE1E5a.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGalileoE1E5a.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
-            assertEquals(2, modelGalileoE1E5a.numSatsInView.value)
-            assertEquals(2, modelGalileoE1E5a.numSatsUsed.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsInView.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsUsed.value)
+            assertEquals(2, modelGalileoE1E5a.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGalileoE1E5a.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.first) // Used
         }
 
         modelGalileoE1E5a.reset()
@@ -220,10 +220,10 @@ class DeviceInfoViewModelTest {
             assertTrue(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInView)
             assertTrue(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelGalileoE1E5a.numSatsInView.value)
-            assertEquals(1, modelGalileoE1E5a.numSatsUsed.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsInView.value)
-            assertEquals(2, modelGalileoE1E5a.numSignalsUsed.value)
+            assertEquals(1, modelGalileoE1E5a.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelGalileoE1E5a.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelGalileoE1E5a.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelGalileoE1E5a.isNonPrimaryCarrierFreqInView)
             assertFalse(modelGalileoE1E5a.isNonPrimaryCarrierFreqInUse)
@@ -243,10 +243,10 @@ class DeviceInfoViewModelTest {
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
         assertFalse(modelWaasL1L5.isDualFrequencyPerSatInView)
         assertFalse(modelWaasL1L5.isDualFrequencyPerSatInUse)
-        assertEquals(1, modelWaasL1L5.numSatsInView.value)
-        assertEquals(1, modelWaasL1L5.numSatsUsed.value)
-        assertEquals(1, modelWaasL1L5.numSignalsInView.value)
-        assertEquals(1, modelWaasL1L5.numSignalsUsed.value)
+        assertEquals(1, modelWaasL1L5.numSatsUsedInViewPair.value?.second) // In view
+        assertEquals(1, modelWaasL1L5.numSatsUsedInViewPair.value?.first) // Used
+        assertEquals(1, modelWaasL1L5.numSignalsUsedInViewPair.value?.second) // In view
+        assertEquals(1, modelWaasL1L5.numSignalsUsedInViewPair.value?.first) // Used
 
         modelWaasL1L5.reset()
 
@@ -258,10 +258,10 @@ class DeviceInfoViewModelTest {
             assertTrue(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
             assertTrue(modelWaasL1L5.isDualFrequencyPerSatInView)
             assertTrue(modelWaasL1L5.isDualFrequencyPerSatInUse)
-            assertEquals(1, modelWaasL1L5.numSatsInView.value)
-            assertEquals(1, modelWaasL1L5.numSatsUsed.value)
-            assertEquals(2, modelWaasL1L5.numSignalsInView.value)
-            assertEquals(2, modelWaasL1L5.numSignalsUsed.value)
+            assertEquals(1, modelWaasL1L5.numSatsUsedInViewPair.value?.second) // In view
+            assertEquals(1, modelWaasL1L5.numSatsUsedInViewPair.value?.first) // Used
+            assertEquals(2, modelWaasL1L5.numSignalsUsedInViewPair.value?.second) // In view
+            assertEquals(2, modelWaasL1L5.numSignalsUsedInViewPair.value?.first) // Used
         } else {
             assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
             assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
