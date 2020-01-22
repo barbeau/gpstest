@@ -73,7 +73,7 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
-            assertEquals(2, modelGpsL1L5.duplicateCarrierStatuses.size)
+            assertEquals(1, modelGpsL1L5.duplicateCarrierStatuses.size)
         }
 
         modelGpsL1L5.reset();
@@ -96,7 +96,7 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
-            assertEquals(2, modelGpsL1L5.duplicateCarrierStatuses.size)
+            assertEquals(1, modelGpsL1L5.duplicateCarrierStatuses.size)
         }
 
         modelGpsL1L5.reset();
@@ -119,7 +119,7 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelGpsL1L5.isDualFrequencyPerSatInUse)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
-            assertEquals(2, modelGpsL1L5.duplicateCarrierStatuses.size)
+            assertEquals(1, modelGpsL1L5.duplicateCarrierStatuses.size)
         }
 
         modelGpsL1L5.reset();
@@ -230,7 +230,7 @@ class DeviceInfoViewModelTest {
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInView)
             assertFalse(modelGalileoE1E5a.isDualFrequencyPerSatInUse)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
-            assertEquals(2, modelGalileoE1E5a.duplicateCarrierStatuses.size)
+            assertEquals(1, modelGalileoE1E5a.duplicateCarrierStatuses.size)
         }
 
         modelGalileoE1E5a.reset()
@@ -268,7 +268,7 @@ class DeviceInfoViewModelTest {
             assertFalse(modelWaasL1L5.isDualFrequencyPerSatInView)
             assertFalse(modelWaasL1L5.isDualFrequencyPerSatInUse)
             // Because carrier frequency isn't considered, these signals should be detected as duplicates
-            assertEquals(2, modelWaasL1L5.duplicateCarrierStatuses.size)
+            assertEquals(1, modelWaasL1L5.duplicateCarrierStatuses.size)
         }
     }
 }
