@@ -34,8 +34,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.PermissionUtils;
+import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
 
 public class Preferences extends PreferenceActivity implements
@@ -146,7 +146,7 @@ public class Preferences extends PreferenceActivity implements
         });
 
         // Remove preference for rotating map if needed
-        if (!GpsTestUtil.isRotationVectorSensorSupported(this) || !BuildConfig.FLAVOR.equals("google")) {
+        if (!SatelliteUtils.isRotationVectorSensorSupported(this) || !BuildConfig.FLAVOR.equals("google")) {
             // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
             CheckBoxPreference checkBoxTiltMap = (CheckBoxPreference) findPreference(
                     getString(R.string.pref_key_tilt_map_with_sensors));

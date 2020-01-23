@@ -37,7 +37,6 @@ import androidx.annotation.RequiresApi;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.IOUtils;
 
 import java.io.BufferedWriter;
@@ -147,7 +146,7 @@ public class FileLogger {
                 version.append("Manufacturer: " + manufacturer + ", ");
                 version.append("Model: " + model + ", ");
 
-                version.append(GpsTestUtil.getGnssHardwareYear() + ", ");
+                version.append(IOUtils.getGnssHardwareYear() + ", ");
 
                 String versionRelease = Build.VERSION.RELEASE;
                 version.append("Platform: " + versionRelease + ", ");

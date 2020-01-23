@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -249,7 +250,7 @@ public class UIUtils {
             body.append("Location: " + location + "\n");
         }
 
-        body.append(GpsTestUtil.getGnssHardwareYear() + "\n");
+        body.append(IOUtils.getGnssHardwareYear() + "\n");
 
         // Raw GNSS measurement capability
         int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
@@ -722,5 +723,15 @@ public class UIUtils {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns true if the app is running on a large screen device, false if it is not
+     *
+     * @return true if the app is running on a large screen device, false if it is not
+     */
+    public static boolean isLargeScreen(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 }

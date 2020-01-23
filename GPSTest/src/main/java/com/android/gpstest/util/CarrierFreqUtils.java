@@ -15,23 +15,36 @@
  */
 package com.android.gpstest.util;
 
-import com.android.gpstest.model.GnssType;
+import com.android.gpstest.model.SatelliteStatus;
 
 public class CarrierFreqUtils {
+
+    /**
+     * An unknown carrier frequency that doesn't match any known frequencies
+     */
+    public static String CF_UNKNOWN = "unknown";
+    /**
+     * Carrier frequencies aren't supported by the device for this signal
+     */
+    public static String CF_UNSUPPORTED = "unsupported";
 
     /**
      * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
      * frequency in MHz, or null if no carrier frequency label is found
      *
-     * @param gnssType constellation type defined in GnssType
-     * @param svid identification number provided by the GnssStatus.getSvid() method
-     * @param carrierFrequencyMhz carrier frequency for the signal in MHz
+     * @param status Satellite signal to get the carrier frequency label for
      * @return the label that should be displayed for a given GNSS constellation, svid, and carrier
-     * frequency in MHz or null if no carrier frequency label is found
+     * frequency in MHz, "unsupported" if CF aren't supported on this device, or "unknown" if no carrier frequency label is found
      */
-    public static String getCarrierFrequencyLabel(GnssType gnssType, int svid, float carrierFrequencyMhz) {
+    public static String getCarrierFrequencyLabel(SatelliteStatus status) {
+        if (!SatelliteUtils.isGnssCarrierFrequenciesSupported() || !status.getHasCarrierFrequency()) {
+            return CF_UNSUPPORTED;
+        }
+        float carrierFrequencyMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
+        int svid = status.getSvid();
+
         final float TOLERANCE_MHZ = 1f;
-        switch (gnssType) {
+        switch (status.getGnssType()) {
             case NAVSTAR:
                 if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                     return "L1";
@@ -128,21 +141,21 @@ public class CarrierFreqUtils {
                         return "L1";
                     }
                 } else if (svid == 133) {
-                    // GnssType.INMARSAT_4F3;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                         return "L5";
                     }
                 } else if (svid == 135) {
-                    // GnssType.GALAXY_15;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
                         return "L5";
                     }
                 } else if (svid == 138) {
-                    // GnssType.ANIK;
+                    // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
@@ -156,6 +169,20 @@ public class CarrierFreqUtils {
                 break;
         }
         // Unknown carrier frequency for given constellation and svid
-        return null;
+        return CF_UNKNOWN;
+    }
+
+    /**
+     * Returns true if the provided carrier frequency label is a primary carrier frequency (e.g., "L1")
+     * (i.e., it is not a secondary frequency such as "L5") or false if it is not a primary carrier
+     * frequency
+     *
+     * @param label carrier frequency label
+     * @return true if the provided carrier frequency label is a primary carrier frequency (e.g., "L1")
+     * * (i.e., it is not a secondary frequency such as "L5") or false if it is not a primary carrier
+     * * frequency
+     */
+    public static boolean isPrimaryCarrier(String label) {
+        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1");
     }
 }

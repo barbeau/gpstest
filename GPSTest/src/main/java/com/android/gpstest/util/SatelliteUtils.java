@@ -18,25 +18,18 @@ package com.android.gpstest.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.location.GnssMeasurement;
-import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.android.gpstest.Application;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteName;
+import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.model.SbasType;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static com.android.gpstest.model.GnssType.BEIDOU;
 import static com.android.gpstest.model.GnssType.GALILEO;
@@ -47,17 +40,12 @@ import static com.android.gpstest.model.GnssType.QZSS;
 import static com.android.gpstest.model.GnssType.SBAS;
 import static com.android.gpstest.model.GnssType.UNKNOWN;
 
-public class GpsTestUtil {
+/**
+ * Utilities to manage GNSS signal and satellite information
+ */
+public class SatelliteUtils {
 
-    private static final String TAG = "GpsTestUtil";
-
-    private static final String NMEA_OUTPUT_TAG = "GpsOutputNmea";
-
-    private static final String MEASURE_OUTPUT_TAG = "GpsOutputMeasure";
-
-    private static final String NM_OUTPUT_TAG = "GpsOutputNav";
-
-    private static StringBuilder mNmeaOutput = new StringBuilder();
+    private static final String TAG = "SatelliteUtils";
 
     private static final int CONSTELLATION_IRNSS_TEMP = 7;
 
@@ -241,16 +229,6 @@ public class GpsTestUtil {
     }
 
     /**
-     * Returns true if the app is running on a large screen device, false if it is not
-     *
-     * @return true if the app is running on a large screen device, false if it is not
-     */
-    public static boolean isLargeScreen(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
-    }
-
-    /**
      * Returns true if the device supports the Gnss status listener, false if it does not
      *
      * @return true if the device supports the Gnss status listener, false if it does not
@@ -295,66 +273,29 @@ public class GpsTestUtil {
      * @return a unique key to identify this satellite using a combination of both the svid and
      * constellation type
      */
-    public static String createGnssSatelliteKey(int svid, int constellationType) {
-        return String.valueOf(svid) + " " + String.valueOf(constellationType);
+    public static String createGnssSatelliteKey(SatelliteStatus status) {
+        if (status.getGnssType() == SBAS) {
+            return status.getSvid() + " " + status.getGnssType() + " " + status.getSbasType();
+        } else {
+            // GNSS
+            return status.getSvid() + " " + status.getGnssType();
+        }
     }
 
-
     /**
-     * Outputs the provided nmea message and timestamp to log
+     * Creates a unique key to identify a particular signal, or GnssStatus, from a satellite using a
+     * combination of both the svid and constellation type and carrier frequency
      *
-     * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp
-     *                  to
-     *                  log
+     * @return a unique key to identify a particular signal, or GnssStatus, from a satellite using a
+     * combination of both the svid and constellation type and carrier frequency
      */
-    public static void writeNmeaToAndroidStudio(String nmea, long timestamp) {
-        mNmeaOutput.setLength(0);
-        if (timestamp != Long.MIN_VALUE) {
-            mNmeaOutput.append(timestamp);
-            mNmeaOutput.append(",");
+    public static String createGnssStatusKey(SatelliteStatus status) {
+        String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(status);
+        if (status.getGnssType() == SBAS) {
+            return status.getSvid() + " " + status.getGnssType() + " " + status.getSbasType() + " " + carrierLabel;
+        } else {
+            // GNSS
+            return status.getSvid() + " " + status.getGnssType() + " " + carrierLabel;
         }
-        mNmeaOutput.append(nmea);
-        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString());
-    }
-
-    /**
-     * Outputs the provided GNSS navigation message to log
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeNavMessageToAndroidStudio(GnssNavigationMessage message) {
-        Log.d(NM_OUTPUT_TAG, message.toString());
-    }
-
-    /**
-     * Outputs the provided GNSS measurement to log
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeGnssMeasurementToAndroidStudio(GnssMeasurement measurement) {
-        Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
-    }
-
-    /**
-     * Returns the GNSS hardware year for the device, or null if the year couldn't be determined
-     * @return the GNSS hardware year for the device, or null if the year couldn't be determined
-     */
-    public static String getGnssHardwareYear() {
-        java.lang.reflect.Method method;
-        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
-        try {
-            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
-            int hwYear = (int) method.invoke(locationManager);
-            if (hwYear == 0) {
-                return "GNSS HW Year: " + "2015 or older";
-            } else {
-                return "GNSS HW Year: " + hwYear;
-            }
-        } catch (NoSuchMethodException e) {
-            Log.e(TAG, "No such method exception: ", e);
-        } catch (IllegalAccessException e) {
-            Log.e(TAG, "Illegal Access exception: ", e);
-        } catch (InvocationTargetException e) {
-            Log.e(TAG, "Invocation Target Exception: ", e);
-        }
-        return null;
     }
 }
