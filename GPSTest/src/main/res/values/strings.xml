@@ -335,7 +335,7 @@
         <b>B. Acc</b>
         - Estimated bearing accuracy of this location at 68% confidence, in degrees. For example, if Bearing is 60, and Bearing Acc is 10, then there is a 68% probability of the true bearing being between 50 and 70 degrees.\n&#8226;\u0020
         <b># Sats</b>
-        - # satellites used in fix / # satellites in view. On dual-frequency devices, a satellite is shown as used if at least one frequency from that satellite is in use.\n&#8226;\u0020
+        - # satellites used in fix / # satellites in view (with valid signal strength values) / # satellites known to device. On dual-frequency devices, a satellite is shown as used if at least one frequency from that satellite is in use, a satellite is shown as in view if at least one signal has a valid signal strength value, and is shown as known to device if there is information about at least one signal from the satellite.\n&#8226;\u0020
         <b>PDOP</b>
         - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
         <b>H/V DOP</b>
