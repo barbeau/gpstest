@@ -17,15 +17,9 @@ package com.android.gpstest.model
 
 /**
  * A container class that holds a group of [satellites] from multiple constellations (e.g., GNSS,
- * SBAS). [satellites] are stored as a map, and the key to the map is the combination of
- * constellation and ID created using SatelliteUtils.createGnssSatelliteKey().
- * Summary statistics on the constellation family such as the number of signals in view
- * ([numSignalsInView]), number of signals used in the fix ([numSignalsUsed], and the number
- * of satellites used in the fix ([numSatsUsed]) (the number of satellites in view is simply the size
- * of [satellites]).
+ * SBAS) and [satelliteMetadata]. [satellites] are stored as a map, and the key to the map is the
+ * combination of constellation and ID created using SatelliteUtils.createGnssSatelliteKey().
  */
 data class ConstellationFamily(
         val satellites: Map<String, Satellite>,
-        val numSignalsInView: Int,
-        val numSignalsUsed: Int,
-        val numSatsUsed: Int)
+        val satelliteMetadata: SatelliteMetadata)
