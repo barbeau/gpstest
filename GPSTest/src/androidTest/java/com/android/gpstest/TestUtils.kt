@@ -17,6 +17,7 @@ package com.android.gpstest
 
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.model.SbasType
 
 /**
@@ -31,6 +32,23 @@ fun gpsL1(id: Int, usedInFix: Boolean): SatelliteStatus {
             usedInFix,
             72f,
             25f);
+    gpsL1.hasCarrierFrequency = true
+    gpsL1.carrierFrequencyHz = 1575420000.0f
+    return gpsL1
+}
+
+/**
+ * Returns a status for a GPS NAVSTAR L1 signal, but with no C/N0 data
+ */
+fun gpsL1NoSignal(id: Int): SatelliteStatus {
+    val gpsL1 = SatelliteStatus(id,
+            GnssType.NAVSTAR,
+            NO_DATA,
+            false,
+            false,
+            false,
+            NO_DATA,
+            NO_DATA);
     gpsL1.hasCarrierFrequency = true
     gpsL1.carrierFrequencyHz = 1575420000.0f
     return gpsL1
