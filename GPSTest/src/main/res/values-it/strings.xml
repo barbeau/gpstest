@@ -183,22 +183,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Supporto per IRNSS</b>
-        - Possibilità di vedere i segnali del sistema GNSS Indiano su tutti i device compatibili con IRNSS;\n&#8226;\u0020
-        <b>Registra dati</b>
-        - Abilita la registrazione dei dati nel menù Impostazioni per i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione. Per maggiori informazioni: https://bit.ly/gpstest-file;\n&#8226;\u0020
-        <b>Miglioramento opzioni di condivisione</b>
-        - Condividi le tue coordinate in vari modi (copia negli appunti, sito GeoHack, apri in altre app, condividi tramite email/ messaggio), inoltre è possibile inviare il file di registro dati tramite email;\n&#8226;\u0020
-        <b>Copia coordinate negli appunti</b>
-        - Clicca sul tab delle coordinate nella Scheda Stato per copiare le tue coordinate negli appunti;\n&#8226;\u0020
-        <b>Supporto del formato DM (gradi minuti decimali)</b>
-        - Imposta questo popolare formato di geocaching nelle Impostazioni;\n&#8226;\u0020
-        <b>Scansione QR Code per impostare la posizione reale</b>
-        - Imposta la tua posizione reale in modo rapido utilizzando i codici QR. Per maggiori informazioni: https://bit.ly/gpstest-qr-codes.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - Per maggiori informazioni: https://bit.ly/gpstest-releases.
-    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->

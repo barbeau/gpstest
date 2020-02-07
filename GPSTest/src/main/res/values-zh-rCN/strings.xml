@@ -182,13 +182,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
- <b>查看精确度</b>
- - 设定你的真实位置并测定 GNSS 的精确度。\n&#8226;\u0020
- <b>改进某些卫星的支持</b>
- - 新的伽利略卫星，SBAS (EGNOS和MSAS) 和 GLONASS (CDMA L1 和 L3)的 CF 标签。\n&#8226;\u0020
- <b>错误修正</b>
- - 请见 https://bit.ly/gpstest-releases</string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->

@@ -171,16 +171,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Accepte le IRNSS</b>
-        - Sur les équipements compatibles IRNSS vous pouvez maintenant voir les satellites Indiens GNSS.\n&#8226;\u0020
-        <b>Enregistrement des données dans un fichier</b>
-        - Autorise l\'enregistrement des données dans Paramétrage pour le système NMEA, mesures brutes, messages de navigation, et corrections de localisation. Consulter https://bit.ly/gpstest-file pour les détails.\n&#8226;\u0020
-        <b>Scanner un QR codes pour améliorer la précision de la localisation</b>
-        - Comparer les équipements au même endroit ? Entrer votre localisation réelle rapidement avec un QR codes. Consulter https://bit.ly/gpstest-qr-codes pour les détails.\n&#8226;\u0020
-        <b>Erreurs corrigées</b>
-        - Consulter https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Fermer</string>
 
     <!-- Preferences -->

@@ -70,9 +70,10 @@
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_msl_label">Hoogte(GZN):</string>
-    <string name="gps_hor_and_vert_accuracy_label">G. H/V Nk.:</string>
+    <string name="gps_accuracy_label">Ges. H. Nauwk.:</string>
+    <string name="gps_hor_and_vert_accuracy_label">Ges. H/V Nk.:</string>
     <string name="gps_speed_label">Snelheid:</string>
-    <string name="gps_speed_acc_label">Snel. Nauwk.:</string>
+    <string name="gps_speed_acc_label">Ges. Snel. Nauwk.:</string>
     <string name="gps_bearing_label">Peiling:</string>
     <string name="gps_bearing_acc_label">P. Nauwk.:</string>
     <string name="gps_num_sats_label">#Sat:</string>
@@ -187,13 +188,9 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Ondersteuning voor IRNSS</b>
-        - Je kunt vanaf nu op IRNSS-ondersteunende apparaten signalen van de Indische GNSS ontvangen.\n&#8226;\u0020
-        <b>Gegevens loggen naar bestanden</b>
-        - Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie https://bit.ly/gpstest-file for details.\n&#8226;\u0020
-        <b>Scan QR-codes om je ware locatie in te stellen</b>
-        - Vergelijk je apparaten zei aan zie? Stel je ware locatie gemakkelijk indoor middel van QR-codes. Zie https://bit.ly/gpstest-qr-codes voor details.\n&#8226;\u0020
-        <b>Foutoplossingen</b>
+        <b>Verbeterde terugkoppelingsmogelijkheid</b>
+        - Geef alleen e-mail-apps weer wanneer als optie om terugkoppeling in te sturen.\n&#8226;\u0020
+        <b>Foutoplossigen</b>
         - Zie https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Sluiten</string>

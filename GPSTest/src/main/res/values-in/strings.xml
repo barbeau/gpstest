@@ -186,22 +186,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Apa yang Baru?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Mendukung IRNSS</b>
-        - Pada perangkat yang kompetibel dengan IRNSS anda sekarang dapat melihat sinyal GNSS India.\n&#8226;\u0020
-        <b>Pencatatan data ke dalam file</b>
-        - Aktifkan pencatatan file penghitungan dasar, pesan navigasi dan perbaikan lokasi NMEA di Setelan. Lihat https://bit.ly/gpstest-file untuk lebih lanjut.\n&#8226;\u0020
-        <b>Penigkatan opsi berbagi</b>
-        - Bagikan lokasi anda dalam berbagai cara (clipboard, website GeoHack, buka di apl lain, bagikan dengan email/pesan) dan juga kirim file pencatatan dengan email.\n&#8226;\u0020
-        <b>Salin cepat ke clipboard</b>
-        - Cukup ketuk pada kartu utama Status lokasi untuk menyalin lokasi anda ke dalam clipboard.\n&#8226;\u0020
-        <b>Mendukung format Derajat Desimal Menit</b>
-        - Ubah format ke dalam geocaching yang terkenal ini di Setelan.\n&#8226;\u0020
-        <b>Pindai kode QR untuk mengatur Akurasi lokasi anda</b>
-        - Membandingkan perangkat yang bersebelahan? Atur lokasi real anda dengan cepat menggunakan kode QR. Lihat https://bit.ly/gpstest-qr-codes untuk lebih lanjut.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - Lihat https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Tutup</string>
 
     <!-- Preferences -->

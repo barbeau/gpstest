@@ -182,22 +182,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Support for IRNSS</b>
-        - On IRNSS-compatible devices you can now see signals from the Indian GNSS.\n&#8226;\u0020
-        <b>Log data to files</b>
-        - Enable file logging in Settings for NMEA, raw measurements, navigation messages, and location fixes. See https://bit.ly/gpstest-file for details.\n&#8226;\u0020
-        <b>Improved sharing options</b>
-        - Share your location in multiple ways (clipboard, GeoHack site, open in other apps, share via email/messaging) and send log files via email too.\n&#8226;\u0020
-        <b>Quick copy to clipboard</b>
-        - Simply tap on the main Status location card to copy your location to the clipboard.\n&#8226;\u0020
-        <b>Support for Degrees Decimal Minutes format</b>
-        - Change to this popular geocaching format in Settings.\n&#8226;\u0020
-        <b>Scan QR codes to set your Accuracy location</b>
-        - Comparing devices side-by-side? Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - See https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
