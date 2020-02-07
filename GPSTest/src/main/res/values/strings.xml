@@ -191,6 +191,8 @@
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Improved feedback</b>
         - Only show email apps when providing feedback.\n&#8226;\u0020
+        <b>Improved \"# Sats\"</b>
+        - now shows \"Used / In View (valid signal strength) / Total\", with correct counts for dual-frequency.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
