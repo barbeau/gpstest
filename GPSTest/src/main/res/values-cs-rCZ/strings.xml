@@ -68,6 +68,7 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Výška (G):</string>
     <string name="gps_altitude_msl_label">Výška (M):</string>
+    <string name="gps_accuracy_label">Přesn. (H):</string>
     <string name="gps_hor_and_vert_accuracy_label">Přesn. (H/V):</string>
     <string name="gps_speed_label">Rychlost:</string>
     <string name="gps_speed_acc_label">Přesn. (R):</string>
@@ -182,6 +183,14 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Vylepšená zpětná vazba</b>
+        - e-mailové aplikace jsou zobrazovány pouze při poskytování zpětné vazby.\n&#8226;\u0020
+        <b>Vylepšené zobrazení satelitů</b>
+        - nyní jsou zobrazeny satelity „Připojené / Viditelné / Známé“ se správnými počty pro duální frekvenci.\n&#8226;\u0020
+        <b>Oprava drobných chyb</b>
+        - více na: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
@@ -286,47 +295,48 @@
 
         <b>*** Zobrazení stavu ***</b>\n\n&#8226;\u0020
         <b>Zem. šířka</b>
-        - Zeměpisná šířka v desetinných stupních. (WGS84)\n&#8226;\u0020
+        - Zeměpisná šířka v desetinách stupňů (WGS84).\n&#8226;\u0020
         <b>Zem. délka</b>
-        - Zeměpisná délka v desetinných stupních. (WGS84)\n&#8226;\u0020
+        - Zeměpisná délka v desetinách stupňů (WGS84).\n&#8226;\u0020
         <b>Nadm. výška (GEOID)</b>
         - Nadmořská výška v metrech při střední hladině světových oceánů (WGS84).\n&#8226;\u0020
         <b>Nadm. výška (MSL)</b>
         - Nadmořská výška v metrech při střední hladině moře (vyžadována podpora NMEA).\n&#8226;\u0020
-        <b>Přesnost</b>
-        - Odhadovaná přesnost horizontální polohy (poloměr v metrech, spolehlivost 68%). Jinými slovy, pokud nakreslíte kruh v této zeměpisné šířce a délce s poloměrem rovným přesnosti, pak existuje 68% pravděpodobnost, že skutečná poloha je uvnitř kruhu.\n&#8226;\u0020
+        <b>Přesnost (H)</b>
+        - Odhadovaná přesnost horizontální polohy (poloměr v metrech, spolehlivost 68%). Jinými slovy, pokud nakreslíte kruh v této zeměpisné šířce a délce s poloměrem rovným přesnosti, pak existuje 68% pravděpodobnost, že skutečná poloha je uvnitř kruhu. Více na: https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389\n&#8226;\u0020
         <b>Přesnost (H/V)</b>
-        - Odhadovaná přesnost horizontální a vertikální polohy (spolehlivost 68%). Přesnost horizontální polohy je definována výše. Pro přesnost vertikální polohy je vyžadován Android 8.0 a vyšší. Příklad přesnosti vertikální polohy: je-li nadmořská výška (GEOID) 150 m a přesnost vertikální polohy 20 m, pak existuje 68% pravděpodobnost skutečné výšky mezi 130 m a 170 m.\n&#8226;\u0020
+        - Odhadovaná přesnost horizontální a vertikální polohy (spolehlivost 68%). Přesnost horizontální polohy je definována výše. Pro přesnost vertikální polohy je vyžadován Android 8.0 a vyšší. Příklad přesnosti vertikální polohy: je-li nadmořská výška (GEOID) 150 m a přesnost vertikální polohy 20 m, pak existuje 68% pravděpodobnost skutečné výšky mezi 130 m a 170 m. Více na: https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389\n&#8226;\u0020
         <b>Rychlost</b>
         - Rychlost nad zemí v metrech za sekundu.\n&#8226;\u0020
         <b>Přesnost (R)</b>
-        - Odhadovaná přesnost rychlosti polohy v metrech za sekundu (spolehlivost 68%).  Příklad přesnosti rychlosti: je-li rychlost 5 m/s a přesnost rychlosti 1 m/s, pak existuje 68% pravděpodobnost skutečné rychlosti mezi 4 m/s a 6 m/s.\n&#8226;\u0020
+        - Odhadovaná přesnost rychlosti polohy v metrech za sekundu (spolehlivost 68%). Příklad přesnosti rychlosti: je-li rychlost 5 m/s a přesnost rychlosti 1 m/s, pak existuje 68% pravděpodobnost skutečné rychlosti mezi 4 m/s a 6 m/s.\n&#8226;\u0020
         <b>Poloha (S)</b>
         - Horizontální poloha směru k cíli (směr pohybu zařízení) ve stupních (0° - 360°), nesouvisí s orientací zařízení.\n&#8226;\u0020
         <b>Přesnost (S)</b>
         - Odhadovaná přesnost polohy směru k cíli ve stupních (spolehlivost 68%). Příklad přesnosti polohy: je-li poloha směru k cíli 60° a přesnost polohy 10°, pak existuje 68% pravděpodobnost skutečné polohy mezi 50° a 70°.\n&#8226;\u0020
         <b>Satelity</b>
-        - Počet připojených satelitů / Počet viditelných satelitů.\n&#8226;\u0020
+        - Počet připojených satelitů / Počet viditelných satelitů / Počet známých satelitů. Na dvoufrekvenčních zařízeních je satelit zobrazen jako připojený, pokud je použita alespoň jedna frekvence tohoto satelitu. Satelit je zobrazen jako viditelný, pokud má alespoň jeden signál s platnou hodnotu síly signálu. Satelit je zobrazen jako známý pro zařízení, pokud existuje informace o alespoň jednom signálu ze satelitu.\n&#8226;\u0020
         <b>PDOP</b>
         - 3D poměr přesnosti polohy (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>H/V DOP</b>
         - 2D (H/V) poměr přesnosti polohy (vyžadována podpora NMEA).\n&#8226;\u0020
         <b>TTFF</b>
         - Čas prvního připojení.\n&#8226;\u0020
-        <b>ID or PRN</b>
-        - Identifikátor satelitu.\n&#8226;\u0020
+        <b>ID nebo PRN</b>
+        - Identifikátor satelitu (PseudoRandom Noise for GPS).\n&#8226;\u0020
         <b>CF</b>
-        - Označení nosiče kmitočtu sledovaného signálu (např. \"L1\"). Pokud je kmitočet neznámý, je zobrazen jako neupravený kmitočet v MHz (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení). Nový signál GLONASS CDMA pro \"L1\" je zobrazen jako \"L1-C\".\n&#8226;\u0020
+        - Označení nosiče kmitočtu sledovaného signálu (např. \\"L1\\"). Pokud je kmitočet neznámý, je zobrazen jako neupravený kmitočet v MHz (vyžadován Android 8.0 a vyšší, nepodporují všechna zařízení). Nový signál GLONASS CDMA pro \\"L1\\" je zobrazen jako \\"L1-C\\".\n&#8226;\u0020
         <b>SNR</b>
-        - Síla úrovně signálu (vyžadován Android M a nižší, více na: https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Síla úrovně signálu (Signal-to-Noise Ratio, vyžadován Android M a nižš). Více na: https://bit.ly/SNR-CN0\n&#8226;\u0020
         <b>C/N0</b>
-        - Síla úrovně signálu (vyžadován Android N a vyšší, více na: https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Síla úrovně signálu (Carrier-to-N0ise density, vyžadován Android N a vyšší). Více na: http://bit.ly/SNR-CN0\n&#8226;\u0020
         <b>Elev</b>
         - Výškový úhel (Elevace) ve stupních.\n&#8226;\u0020
         <b>Azim</b>
         - Směrový úhel (Azimut) ve stupních.\n&#8226;\u0020
         <b>Stav</b>
-        - (E) pokud zařízení přijímá efemeridové údaje pro satelit, (A) pokud zařízení přijímá almanachové údaje pro satelit, (U) pokud byl připojený satelit použit při výpočtu poslední polohy.  Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
+        - (E) pokud zařízení přijímá efemeridové údaje pro satelit, (A) pokud zařízení přijímá almanachové údaje pro satelit, (U) pokud byl připojený satelit použit při výpočtu poslední polohy. 
+        Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
 
         <b>*** Zobrazení kompasu ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
@@ -336,36 +346,46 @@
         <b>Galileo (European Union)</b>
         - trojúhelník\n&#8226;\u0020
         <b>QZSS (Japan)</b>
-        - šestiúhelník\n&#8226;\u0020
+        - Hexagons\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - pětiúhelník\n&#8226;\u0020
+        <b>IRNSS (India)</b>
+        - ovál\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
         - kosočtverec\n\n
 
-        &#8226;\u0020 Transparentní zobrazení - nepřipojené satelity, které nejsou v zorném poli zařízení\\n
+        &#8226;\u0020 Transparentní zobrazení - nepřipojené satelity, které nejsou v zorném poli zařízení\n
         &#8226;\u0020 Zobrazení s tenkým obrysem - nepřipojené satelity, které jsou v zorném poli zařízení\n
         &#8226;\u0020 Zobrazení se silným obrysem - připojené satelity pro stanovení polohy, které jsou v zorném poli zařízení\n\n
 
         &#8226;\u0020 Rozsah hodnoty SNR je od 0 dB (červené ozn.) do 30 dB (zelené ozn.) - vyžadován Android 6.0 a nižší. \n
         &#8226;\u0020 Rozsah hodnoty SNR je od 10 dB (červené ozn.) do 45 dB (zelené ozn.) - vyžadován Android 7.0 a vyšší. \n
         &#8226;\u0020 Rozsah hodnoty C/N0 je od 10 dB-Hz (červené ozn.) do 45 dB-Hz (zelené ozn.) - vyžadován Android 7.0 a vyšší. \n
-        &#8226;\u0020 Jestliže neexistuje žádná hodnota pro SNR nebo C/N0 (tj. satelit není v zorném poli zařízení), bude mít transparentní zobrazení světle šedou barvou. \n\n
+        &#8226;\u0020Jestliže neexistuje žádná hodnota pro SNR nebo C/N0 (tj. satelit není v zorném poli zařízení), bude mít transparentní zobrazení světle šedou barvou. \n\n
 
         <b>*** Zobrazení přesnosti ***</b>\n\n&#8226;\u0020
         <b>Vertikální chyba</b>
         - Na rozdíl od chyby horizontálního měření, může mít chyba vertikálního měření hodnotu kladnou nebo zápornou. Pro zobrazení hodnoty vertikální a průměrné vertikální chyby se výpočet provádí pomocí naměřených absolutních hodnot chyby.\n\n
 
+        &#8226;\u0020Pomocí QR kódů můžete rychle nastavit svou skutečnou polohu. Více na: http://bit.ly/gpstest-qr-codes\n\n
+
+        <b>*** Protokoly a výstup ***</b>\n\n
+        &#8226;\u0020Povolte výstup protokolů NMEA, navigačních zpráv GNSS, protokolů měření GNSS a protokolů oprav polohy. Více na: http://bit.ly/gpstest-file for details\n\n
+
         <b>*** Poděkování ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
-        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0.\n
-       &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-      &#8226;\u0020 German translation provided by SIRSteiner\n
-      &#8226;\u0020 Dutch translation provided by Dennis Dolman\n
-      &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
-      &#8226;\u0020 Japanese translation provided by SakuraSa233\n
-      &#8226;\u0020 Czech translation provided by llzn.cz\n
-      &#8226;\u0020 Italian translation provided by Giolly90\n
-      &#8226;\u0020 Spanish translation provided by Sergi Pellicer\n
+        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0. QR code icon by Austin Andrews from https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 German translation provided by SIRSteiner\n
+        &#8226;\u0020 Dutch translation provided by Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
+        &#8226;\u0020 Japanese translation provided by SakuraSa233\n
+        &#8226;\u0020 Czech translation provided by llzn.cz\n
+        &#8226;\u0020 Italian translation provided by Giolly90\n
+        &#8226;\u0020 Spanish translation provided by Sergi Pellicer\n
+        &#8226;\u0020 Indonesian translation provided by Adiitya Andre90\n
+        &#8226;\u0020 Polish translation provided by Adam Wandelt\n
+        &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
     </string>
 </resources>

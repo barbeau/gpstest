@@ -67,6 +67,7 @@
     <string name="gps_ttff_label">TTPL:</string>
     <string name="gps_altitude_label">Alt.:</string>
     <string name="gps_altitude_msl_label">Alt. (s.l.m.):</string>
+    <string name="gps_accuracy_label">Prec. orizz.:</string>
     <string name="gps_hor_and_vert_accuracy_label">Prec. o/v:</string>
     <string name="gps_speed_label">Velocità:</string>
     <string name="gps_speed_acc_label">Prec. vel.:</string>
@@ -183,6 +184,14 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Miglioramento feedback</b>
+        - Ora appaiono solo le applicazioni mail quando proviamo a condividere un feedback.\n&#8226;\u0020
+        <b>Migliorato il \"Numero Satelliti\"</b>
+        - ora vengono mostrati i satelliti \"Usati / In Vista (valore intensità segnale valido) / Totale\", con un conteggio corretto per i dispositivi dual-frequency.\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - Per maggiori info vedi: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
@@ -304,8 +313,8 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
         - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
         <b>Alt. (s.l.m.)</b>
         - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
-        <b>Precisione</b>
-        - Precisione della posizione stimata con il 68% di confidenza (espressa in metri).
+        <b>Prec. orizz.</b>
+        - Precisione orizzontale della posizione stimata con il 68% di confidenza (espressa in metri).
 Esempio: tracciando una circonferenza centrata nel punto determinato da latitudine e longitudine della posizione stimata dal nostro dispositivo e con un raggio pari al valore della precisione, allora c\'è il 68% di probabilità che la posizione reale sia interna alla circonferenza così tracciata.
 Per ulteriori informazioni: https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>Prec. o/v</b>
@@ -324,7 +333,8 @@ Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
         - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).
 Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
         <b>n° Sat.</b>
-        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista.\n&#8226;\u0020
+        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista (con valori validi di intensità segnale) / Numero di satelliti conosciuti dal dispositivo.
+Sui device a doppia frequenza un satellite appare come \"usato per il posizionamento\" se almeno una frequenza proveniente da quel satellite è in uso; un satellite appare come \"in vista\" se almeno una frequenza ha ha un valore valido di intensità segnale; un satellite appare come \"conosciuto dal dispositivo\" se c\'è almeno un segnale proveniente da quel satellite.\n&#8226;\u0020
         <b>DOP</b>
         - Diluizione della precisione. Richiede il supporto NMEA.\n&#8226;\u0020
         <b>DOP o/v</b>
@@ -378,11 +388,11 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
         - Le misurazioni dell\'errore verticale, a differenza di quelle dell\'errore orizzontale, possono essere positive o negative. La scheda Precisione mostra l\'errore verticale e l\'errore verticale medi, calcolati entrambi usando il valore assoluto della misura dell\'errore.\n\n
 
         &#8226;\u0020 Imposta rapidamente la tua posizione reale utilizzando i QR Code.
-Per ulteriori informazioni: http://bit.ly/gpstest-qr-codes for details.\n\n
+Per ulteriori informazioni: https://bit.ly/gpstest-qr-codes for details.\n\n
 
         <b>*** Registro attività ***</b>\n\n
         &#8226;\u0020 Abilita il registro attività dal menù Impostazioni. Verranno registrati i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione.
-Per ulteriori informazioni: http://bit.ly/gpstest-file for details.\n\n
+Per ulteriori informazioni: https://bit.ly/gpstest-file.\n\n
 
         <b>*** Riconoscimenti ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - sviluppatore originale della versione v1.x\n

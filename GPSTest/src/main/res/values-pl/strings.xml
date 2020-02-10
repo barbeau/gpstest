@@ -43,6 +43,12 @@
     <string name="delete_aiding_data_success">Pomyślnie usunięto dane pomocnicze.</string>
     <string name="delete_aiding_data_failure">Urządzenie nie wspiera usuwania danych pomocniczych.</string>
     <string name="gps_switch">Wyłącz/Włącz</string>
+    <string name="share">Share</string>
+    <string name="copied_to_clipboard">Location copied to clipboard</string>
+    <string name="send_log">"Send log…"</string>
+    <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
+    <string name="no_location">Try sharing your location after getting a GNSS fix</string>
+    <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Ustaw częstotliwość aktualnej pozycji</string>
     <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
     <string name="force_time_injection_failure">Urządzenie nie wspiera wprowadzania danych czasowych.</string>
@@ -85,9 +91,19 @@
     <string name="install">Instalacja</string>
     <string name="no_thanks">Nie dziękuję</string>
     <string name="please_install_google_maps">Karta Mapy wymaga Map Google</string>
+    <string name="enable_gps_message">GPS/GNSS is disabled. Enable it now?</string>
+    <string name="enable_gps_positive_button">Enable GPS/GNSS</string>
     <string name="enable_gps_negative_button">Nie</string>
+    <string name="gps_set_location_listener">Started GNSS with interval = %1$ss, min. dist. = %2$sm
+    </string>
     <string name="clear_assist_warning_title">Usunąć dane pomocznicze ?</string>
+    <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GNSS may not work for any app until the auto-refresh completes. Are you sure?</string>
     <string name="never_ask_again">Nigdy nie pytaj ponownie</string>
+    <string name="qr_code_instructions_title">Scan a QR Code</string>
+    <string name="qr_code_instructions_text">Import a ground truth location using a QR Code in the Geo URI format (geo:28.38434,-87.24334).  Create your own QR Codes at https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Couldn\'t read a Geo URI from the QR code</string>
+    <string name="never_show_again">Never show again</string>
+    <string name="not_now">Not now</string>
     <string name="yes">TAK</string>
     <string name="no">NIE</string>
     <string name="gnss_not_available">Satelity Globalnego Systemu Nawigacji Satelitarnej (GNSS) nie są dostępne</string>
@@ -116,6 +132,9 @@
     <string name="horizontal_vertical_error_label">Błąd Poz/Pio</string>
     <string name="avg_error_label">śred %1$d fixów</string>
     <string name="fix_number">Fix #</string>
+    <string name="show_radar_valid_location">Ground truth location imported!</string>
+    <string name="show_radar_invalid_location">The imported ground truth location is invalid</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
     <string name="sky_legend_shape_gnss_title">Globalne Systemy Nawigacji Satelitarnej (GNSS)</string>
@@ -124,6 +143,8 @@
     <string name="sky_legend_shape_galileo">Galileo (Unia Europejska)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japonia)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Chiny)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+
     <string name="sky_legend_shape_sbas_title">Satelitarne Systemy Augmentacji (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Unia Europejska)</string>
@@ -162,12 +183,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co nowego ?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Improved feedback</b>
-        - Only show email apps when providing feedback.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - See https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Zamknij</string>
 
     <!-- Preferences -->
@@ -212,7 +227,6 @@
     <string name="pref_true_north_title">Ustaw kompas na prawdziwą północ</string>
     <string name="pref_true_north_summary">Kompas będzie wskazywać prawdziwą północ zamiast magnetycznej północy</string>
 
-    <string name="pref_nmea_output_title">NMEA</string>
     <string name="pref_nmea_timestamp_output_title">Znacznik czasu NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Uwzględnij znacznik czasu NMEA w wyjściu</string>
     <string name="pref_measurement_output_title">Pomiary</string>
