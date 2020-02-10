@@ -594,11 +594,17 @@ public class UIUtils {
             }
         });
         locationShare.setOnClickListener(v -> {
-            // Send the location as a Geo URI (e.g., in an email)
+            // Send the location as a Geo URI (e.g., in an email) if the user has decimal degrees
+            // selected, otherwise send plain text version
             if (location != null) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                String geoUri = IOUtils.createGeoUri(location, includeAltitude.isChecked());
-                intent.putExtra(Intent.EXTRA_TEXT, geoUri);
+                String text;
+                if (chipDecimalDegrees.isChecked()) {
+                    text = IOUtils.createGeoUri(location, includeAltitude.isChecked());
+                } else {
+                    text = locationValue.getText().toString();
+                }
+                intent.putExtra(Intent.EXTRA_TEXT, text);
                 intent.setType("text/plain");
                 activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
             }
