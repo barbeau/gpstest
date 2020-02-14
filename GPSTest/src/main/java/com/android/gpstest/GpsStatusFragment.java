@@ -113,7 +113,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private List<SatelliteStatus> mSbasStatus = new ArrayList<>();
 
-    private int mSvCount, mUsedInFixCount;
+    private int mSvCount;
 
     private String mSnrCn0Title;
 
@@ -568,7 +568,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         final int length = status.getSatelliteCount();
         mSvCount = 0;
-        mUsedInFixCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
@@ -616,7 +615,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
         mSvCount = 0;
-        mUsedInFixCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
@@ -636,9 +634,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mSbasStatus.add(satStatus);
             } else {
                 mGnssStatus.add(satStatus);
-            }
-            if (satellite.usedInFix()) {
-                mUsedInFixCount++;
             }
             mSvCount++;
         }
