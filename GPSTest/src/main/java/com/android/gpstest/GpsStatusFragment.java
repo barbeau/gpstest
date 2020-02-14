@@ -593,11 +593,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             } else {
                 mGnssStatus.add(satStatus);
             }
-
-            mViewModel.setStatuses(mGnssStatus, mSbasStatus);
-
             mSvCount++;
         }
+        mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
         refreshViews();
     }
@@ -621,6 +619,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mUsedInFixCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
+        mViewModel.reset();
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
 
@@ -644,7 +643,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSvCount++;
         }
 
-        mNumSats.setText(mRes.getString(R.string.gps_num_sats_value, mUsedInFixCount, mSvCount));
+        mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
         refreshViews();
     }
