@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
-
-import com.android.gpstest.util.MathUtils;
+package com.android.gpstest.util;
 
 import org.junit.Test;
 

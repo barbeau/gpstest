@@ -20,6 +20,7 @@ package com.android.gpstest;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
@@ -96,6 +97,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
             mSbasNotAvailableView;
+
+    private int mDefaultTextColor;
+
+    private final int mErrorTextColor = Color.RED;
 
     private CardView mLocationCard;
 
@@ -272,6 +277,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
             mFixTimeView.setText("");
         } else {
+            // TODO - add check for invalid time and UI explanation for red color, change back to default if valid
+            mFixTimeView.setTextColor(mErrorTextColor);
             mFixTimeView.setText(mDateFormat.format(mFixTime));
         }
     }
@@ -343,6 +350,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         setStarted(gta.mStarted);
 
         setupUnitPreferences();
+
+        // Get default text color
+        mDefaultTextColor = mFixTimeView.getTextColors().getDefaultColor();
     }
 
     @Override
