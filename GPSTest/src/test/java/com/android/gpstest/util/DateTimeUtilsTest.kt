@@ -25,25 +25,25 @@ class DateTimeUtilsTest {
 
     @Test
     fun isTimeValid() {
-        // Valid times within 24 hours of now
+        // Valid times within 5 days of now
         assertTrue(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli()))
-        assertTrue(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() + TimeUnit.HOURS.toMillis(23)))
-        assertTrue(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() - TimeUnit.HOURS.toMillis(23)))
+        assertTrue(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(4)))
+        assertTrue(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(4)))
 
-        // Invalid times more than 24 hours from now (past or future)
-        assertFalse(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() + TimeUnit.HOURS.toMillis(25)))
-        assertFalse(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() - TimeUnit.HOURS.toMillis(25)))
+        // Invalid times more than 5 days  from now (past or future)
+        assertFalse(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(6)))
+        assertFalse(DateTimeUtils.isTimeValid(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(6)))
     }
 
     @Test
     fun isTimeValidLegacy() {
-        // Valid times within 24 hours of now
+        // Valid times within 5 days of now
         assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli()))
-        assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() + TimeUnit.HOURS.toMillis(23)))
-        assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() - TimeUnit.HOURS.toMillis(23)))
+        assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(4)))
+        assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(4)))
 
-        // Invalid times more than 24 hours from now (past or future)
-        assertFalse(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() + TimeUnit.HOURS.toMillis(25)))
-        assertFalse(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() - TimeUnit.HOURS.toMillis(25)))
+        // Invalid times more than 5 days from now (past or future)
+        assertFalse(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(6)))
+        assertFalse(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(6)))
     }
 }

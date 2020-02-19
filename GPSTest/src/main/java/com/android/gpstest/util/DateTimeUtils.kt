@@ -26,23 +26,25 @@ import java.util.concurrent.TimeUnit
  * Utilities for comparing two locations to measure error
  */
 class DateTimeUtils {
+
     companion object {
+        val NUM_DAYS_TIME_VALID = 5
         /**
          * Returns true if the provided UTC time of the fix, in milliseconds since January 1, 1970,
          * is valid, and false if it is not
          */
         fun isTimeValid(time: Long): Boolean {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // If the GPS time is less than one day off system clock time, consider it valid
-                Duration.between(Instant.ofEpochMilli(time), Instant.now()).toHours() < 24
+                // If the GPS time is less than five days different than system clock time, consider it valid
+                Duration.between(Instant.ofEpochMilli(time), Instant.now()).toDays() < NUM_DAYS_TIME_VALID
             } else {
                 isTimeValidLegacy(time)
             }
         }
 
         @VisibleForTesting
-        fun isTimeValidLegacy(time: Long): Boolean {
-            return TimeUnit.MILLISECONDS.toHours(Math.abs(System.currentTimeMillis() - time)) < 24
+        internal fun isTimeValidLegacy(time: Long): Boolean {
+            return TimeUnit.MILLISECONDS.toDays(Math.abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID
         }
     }
 }

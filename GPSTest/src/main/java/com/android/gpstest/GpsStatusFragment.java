@@ -20,7 +20,6 @@ package com.android.gpstest;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
@@ -59,6 +58,7 @@ import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteMetadata;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.CarrierFreqUtils;
+import com.android.gpstest.util.DateTimeUtils;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.NmeaUtils;
@@ -96,11 +96,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mAltitudeMslView, mHorVertAccuracyLabelView, mHorVertAccuracyView,
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
-            mSbasNotAvailableView;
-
-    private int mDefaultTextColor;
-
-    private final int mErrorTextColor = Color.RED;
+            mSbasNotAvailableView, mFixTimeErrorView;
 
     private CardView mLocationCard;
 
@@ -165,6 +161,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mLatitudeView = v.findViewById(R.id.latitude);
         mLongitudeView = v.findViewById(R.id.longitude);
         mFixTimeView = v.findViewById(R.id.fix_time);
+        mFixTimeErrorView = v.findViewById(R.id.fix_time_error);
+        mFixTimeErrorView.setOnClickListener(view -> showTimeErrorDialog(mFixTime));
         mTTFFView = v.findViewById(R.id.ttff);
         mAltitudeView = v.findViewById(R.id.altitude);
         mAltitudeMslView = v.findViewById(R.id.altitude_msl);
@@ -276,10 +274,18 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private void updateFixTime() {
         if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
             mFixTimeView.setText("");
+            mFixTimeErrorView.setText("");
         } else {
-            // TODO - add check for invalid time and UI explanation for red color, change back to default if valid
-            mFixTimeView.setTextColor(mErrorTextColor);
-            mFixTimeView.setText(mDateFormat.format(mFixTime));
+            if (DateTimeUtils.Companion.isTimeValid(mFixTime)) {
+                mFixTimeErrorView.setVisibility(View.GONE);
+                mFixTimeView.setVisibility(View.VISIBLE);
+                mFixTimeView.setText(mDateFormat.format(mFixTime));
+            } else {
+                // Error in fix time
+                mFixTimeErrorView.setVisibility(View.VISIBLE);
+                mFixTimeView.setVisibility(View.GONE);
+                mFixTimeErrorView.setText(mDateFormat.format(mFixTime));
+            }
         }
     }
 
@@ -350,9 +356,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         setStarted(gta.mStarted);
 
         setupUnitPreferences();
-
-        // Get default text color
-        mDefaultTextColor = mFixTimeView.getTextColors().getDefaultColor();
     }
 
     @Override
@@ -744,6 +747,19 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     setSortByClause(index);
                     dialog.dismiss();
                 });
+        AlertDialog dialog = builder.create();
+        dialog.setOwnerActivity(getActivity());
+        dialog.show();
+    }
+
+    private void showTimeErrorDialog(long time) {
+        SimpleDateFormat format = new SimpleDateFormat(
+                DateFormat.is24HourFormat(Application.get().getApplicationContext())
+                        ? "EEE, MMM d yyyy HH:mm:ss z" : "EEE, d MMM yyyy hh:mm:ss z");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.error_time_title);
+        builder.setMessage(getString(R.string.error_time_message, format.format(time), DateTimeUtils.Companion.getNUM_DAYS_TIME_VALID()));
         AlertDialog dialog = builder.create();
         dialog.setOwnerActivity(getActivity());
         dialog.show();
