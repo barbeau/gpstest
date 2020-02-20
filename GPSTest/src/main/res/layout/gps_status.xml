@@ -72,6 +72,11 @@
                         <TextView
                             android:id="@+id/fix_time"
                             style="@style/info_value" />
+
+                        <TextView
+                            android:id="@+id/fix_time_error"
+                            style="@style/info_value_error"
+                            android:visibility="gone" />
                     </TableRow>
 
                     <TableRow>

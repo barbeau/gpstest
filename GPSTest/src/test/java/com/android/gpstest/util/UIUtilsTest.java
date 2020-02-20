@@ -1,6 +1,4 @@
-package com.android.gpstest;
-
-import com.android.gpstest.util.UIUtils;
+package com.android.gpstest.util;
 
 import org.junit.Test;
 

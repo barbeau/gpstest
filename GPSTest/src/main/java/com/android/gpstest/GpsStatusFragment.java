@@ -41,9 +41,18 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.gpstest.model.ConstellationType;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.util.DateTimeUtils;
 import com.android.gpstest.util.GpsTestUtil;
 import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PreferenceUtils;
@@ -54,13 +63,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
@@ -85,7 +87,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mAltitudeMslView, mHorVertAccuracyLabelView, mHorVertAccuracyView,
             mSpeedView, mSpeedAccuracyView, mBearingView, mBearingAccuracyView, mNumSats,
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
-            mSbasNotAvailableView;
+            mSbasNotAvailableView, mFixTimeErrorView;
 
     private TableRow mSpeedBearingAccuracyRow;
 
@@ -133,6 +135,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mLatitudeView = v.findViewById(R.id.latitude);
         mLongitudeView = v.findViewById(R.id.longitude);
         mFixTimeView = v.findViewById(R.id.fix_time);
+        mFixTimeErrorView = v.findViewById(R.id.fix_time_error);
+        mFixTimeErrorView.setOnClickListener(view -> showTimeErrorDialog(mFixTime));
         mTTFFView = v.findViewById(R.id.ttff);
         mAltitudeView = v.findViewById(R.id.altitude);
         mAltitudeMslView = v.findViewById(R.id.altitude_msl);
@@ -228,8 +232,18 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private void updateFixTime() {
         if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
             mFixTimeView.setText("");
+            mFixTimeErrorView.setText("");
         } else {
-            mFixTimeView.setText(mDateFormat.format(mFixTime));
+            if (DateTimeUtils.Companion.isTimeValid(mFixTime)) {
+                mFixTimeErrorView.setVisibility(View.GONE);
+                mFixTimeView.setVisibility(View.VISIBLE);
+                mFixTimeView.setText(mDateFormat.format(mFixTime));
+            } else {
+                // Error in fix time
+                mFixTimeErrorView.setVisibility(View.VISIBLE);
+                mFixTimeView.setVisibility(View.GONE);
+                mFixTimeErrorView.setText(mDateFormat.format(mFixTime));
+            }
         }
     }
 
@@ -684,6 +698,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     setSortByClause(index);
                     dialog.dismiss();
                 });
+        AlertDialog dialog = builder.create();
+        dialog.setOwnerActivity(getActivity());
+        dialog.show();
+    }
+
+    private void showTimeErrorDialog(long time) {
+        java.text.DateFormat format = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.LONG);
+
+        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.error_text_dialog, null);
+        textView.setText(getString(R.string.error_time_message, format.format(time), DateTimeUtils.Companion.getNUM_DAYS_TIME_VALID()));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.error_time_title);
+        builder.setView(textView);
+        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorPrimary));
+        builder.setIcon(drawable);
+        builder.setNeutralButton(R.string.main_help_close,
+                (dialog, which) -> dialog.dismiss()
+        );
         AlertDialog dialog = builder.create();
         dialog.setOwnerActivity(getActivity());
         dialog.show();

@@ -71,6 +71,19 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="info_value_error">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/status_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:background">@drawable/error_text_background</item>
+    </style>
+
     <!-- GNSS Sky view -->
     <style name="sky_legend_label">
         <item name="android:layout_height">wrap_content</item>
