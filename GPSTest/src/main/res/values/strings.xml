@@ -114,7 +114,7 @@
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satellites not available</string>
     <string name="menu_option_sort_by">Sort by</string>
     <string name="error_time_title">Your GNSS time is wrong</string>
-    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\nis more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue. See  for more details.</string>
+    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See http://bit.ly/gps-week-rollover for more info.</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>

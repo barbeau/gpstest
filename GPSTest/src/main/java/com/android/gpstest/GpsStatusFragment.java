@@ -46,6 +46,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -753,13 +754,20 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     }
 
     private void showTimeErrorDialog(long time) {
-        SimpleDateFormat format = new SimpleDateFormat(
-                DateFormat.is24HourFormat(Application.get().getApplicationContext())
-                        ? "EEE, MMM d yyyy HH:mm:ss z" : "EEE, d MMM yyyy hh:mm:ss z");
+        java.text.DateFormat format = SimpleDateFormat.getDateTimeInstance(java.text.DateFormat.LONG, java.text.DateFormat.LONG);
+
+        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.error_text_dialog, null);
+        textView.setText(getString(R.string.error_time_message, format.format(time), DateTimeUtils.Companion.getNUM_DAYS_TIME_VALID()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.error_time_title);
-        builder.setMessage(getString(R.string.error_time_message, format.format(time), DateTimeUtils.Companion.getNUM_DAYS_TIME_VALID()));
+        builder.setView(textView);
+        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
+        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorPrimary));
+        builder.setIcon(drawable);
+        builder.setNeutralButton(R.string.main_help_close,
+                (dialog, which) -> dialog.dismiss()
+        );
         AlertDialog dialog = builder.create();
         dialog.setOwnerActivity(getActivity());
         dialog.show();
