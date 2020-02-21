@@ -108,7 +108,6 @@
     <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
     <string name="sbas_not_available">星基增强系统（SBAS）卫星不可用</string>
     <string name="menu_option_sort_by">分类</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">当前纬度</string>
     <string name="ground_truth_longitude">当前经度</string>

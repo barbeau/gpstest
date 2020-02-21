@@ -110,6 +110,8 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="gnss_not_available">Sistema Globale di Navigazione Satellitare (GNSS)</string>
     <string name="sbas_not_available">Nessun segnale SBAS disponibile</string>
     <string name="menu_option_sort_by">Ordina per</string>
+    <string name="error_time_title">Il tuo orario GNSS è sbagliato</string>
+    <string name="error_time_message">L\'orario fornito dal sistema GNSS: \n\n%1$s\n\n differisce dall\'orario impostato sul device per più di %2$d giorni. Questo può essere causato dal problema conosciuto come \"GPS week rollover issue\". Rivolgiti al produttore del tuo device per maggiori chiarimenti. Per ulteriori informazioni: http://bit.ly/gps-week-rollover.</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Latitudine</string>

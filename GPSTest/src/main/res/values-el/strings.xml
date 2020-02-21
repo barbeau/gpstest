@@ -93,7 +93,6 @@
     <string name="gnss_not_available">Παγκόσμιο Δορυφορικό Σύστημα Πλοήγησης (GNSS) μη διαθέσιμοι δορυφόροι</string>
     <string name="sbas_not_available">Δορυφορικό Σύστημα Επαυξημένης Πραγματικότητας (SBAS) μη διαθέσιμοι δορυφόροι</string>
     <string name="menu_option_sort_by">Ταξινόμηση κατά</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Το γεωγραφικό πλάτος σας</string>
     <string name="ground_truth_longitude">Το γεωγραφικό μήκος σας</string>

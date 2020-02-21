@@ -97,7 +97,6 @@
     <string name="gnss_not_available">Les satellites du Global Navigation Satellite System (GNSS) ne sont pas disponibles</string>
     <string name="sbas_not_available">Les satellites Satellite Based Augmentation System (SBAS) ne sont pas disponibles</string>
     <string name="menu_option_sort_by">Trier par</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Votre latitude</string>
     <string name="ground_truth_longitude">Votre longitude</string>

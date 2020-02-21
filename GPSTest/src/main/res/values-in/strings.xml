@@ -111,7 +111,6 @@
     <string name="gnss_not_available">Satelit GNSS (Sistem Satelit Navigasi Global) tidak tersedia</string>
     <string name="sbas_not_available">Satelit SBAS (Sistem Augmentasi berdasarkan Satelit) tidak tersedia</string>
     <string name="menu_option_sort_by">Urutkan dengan</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Posisi lintang anda</string>
     <string name="ground_truth_longitude">Posisi bujur anda</string>

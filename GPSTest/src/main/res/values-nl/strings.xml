@@ -112,7 +112,6 @@
     <string name="gnss_not_available">Er zijn geen satellieten van het het Mondiale Navigatie-SatellietSysteem (GNSS) beschikbaar</string>
     <string name="sbas_not_available">Er zijn geen satellieten beschikbaar voor het Satelliet-geBaseerd AanvullingsSysteem (SBAS)</string>
     <string name="menu_option_sort_by">Sortering</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Je breedtegraad</string>
     <string name="ground_truth_longitude">Je lengtegraad</string>

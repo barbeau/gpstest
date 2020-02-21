@@ -93,7 +93,6 @@
     <string name="gnss_not_available">Satelliten des Globalen Navigationssatellitensystems (GNSS) nicht verfügbar</string>
     <string name="sbas_not_available">Satelliten des Satellitenbasierten Ergänzungssystems (SBAS) nicht verfügbar</string>
     <string name="menu_option_sort_by">Sortiert nach</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Realer Breitengrad</string>
     <string name="ground_truth_longitude">Realer Längengrad</string>

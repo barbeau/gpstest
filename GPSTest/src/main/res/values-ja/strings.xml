@@ -96,7 +96,6 @@
     <string name="gnss_not_available">衛星測位システム（GNSS）衛星は利用できません</string>
     <string name="sbas_not_available">衛星航法補強システム（SBAS）衛星は利用できません</string>
     <string name="menu_option_sort_by">並び替え</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">緯度</string>
     <string name="ground_truth_longitude">経度</string>

@@ -109,7 +109,6 @@
     <string name="gnss_not_available">GNSS satelity (Global Navigation Satellite System) nejsou dostupné.</string>
     <string name="sbas_not_available">SBAS satelity (Satellite-based Augmentation System) nejsou dostupné.</string>
     <string name="menu_option_sort_by">Pořadí v seznamu podle</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Zeměpisná šířka</string>
     <string name="ground_truth_longitude">Zeměpisná délka</string>
