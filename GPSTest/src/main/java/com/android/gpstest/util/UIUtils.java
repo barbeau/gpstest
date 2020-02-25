@@ -479,7 +479,7 @@ public class UIUtils {
      * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
      * @return a dialog for sharing location and files
      */
-    public static Dialog createShareDialog(AppCompatActivity activity, Location location,
+    public static Dialog createShareDialog(AppCompatActivity activity, final Location location,
                                            boolean loggingEnabled, FileLogger fileLogger,
                                            Uri alternateFileUri) {
         View view = activity.getLayoutInflater().inflate(R.layout.share, null);
@@ -551,16 +551,20 @@ public class UIUtils {
         });
         chipDMS.setOnCheckedChangeListener((view1, isChecked) -> {
             if (isChecked) {
-                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+                if (location != null) {
+                    locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                            location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+                }
             }
         });
         chipDegreesDecimalMin.setOnCheckedChangeListener((view1, isChecked) -> {
             if (isChecked) {
-                locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+                if (location != null) {
+                    locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                            location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
+                }
             }
         });
 
@@ -660,11 +664,11 @@ public class UIUtils {
     }
 
     /**
-     * Returns the provided location based on the provided coordinate format, and sets the provided Views (locationValue, chips) accordingly if views are provided,
-     * and returns the string value.
+     * Returns the provided location based on the provided coordinate format, and sets the provided
+     * Views (textView, chips) accordingly if views are provided, and returns the string value.
      *
      * @param location              location to be formatted
-     * @param locationValue         View to be set with the selected coordinateFormat
+     * @param textView              View to be set with the selected coordinateFormat
      * @param includeAltitude       true if altitude should be included, false if it should not
      * @param chipDecimalDegrees    View to be set as checked if "dd" is the coordinateFormat
      * @param chipDMS               View to be set as checked if "dms" is the coordinateFormat
@@ -672,8 +676,8 @@ public class UIUtils {
      * @param coordinateFormat      dd, dms, or ddm
      * @return the provided location based on the provided coordinate format
      */
-    public static String formatLocationForDisplay(Location location, TextView locationValue, boolean includeAltitude, Chip chipDecimalDegrees, Chip chipDMS, Chip chipDegreesDecimalMin, String coordinateFormat) {
-        String formattedLocation;
+    public static String formatLocationForDisplay(Location location, TextView textView, boolean includeAltitude, Chip chipDecimalDegrees, Chip chipDMS, Chip chipDegreesDecimalMin, String coordinateFormat) {
+        String formattedLocation = "";
         switch (coordinateFormat) {
             // Constants below must match string values in do_not_translate.xml
             case "dd":
@@ -685,18 +689,22 @@ public class UIUtils {
                 break;
             case "dms":
                 // Degrees minutes seconds
-                formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                        UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                if (location != null) {
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                            (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                }
                 if (chipDMS != null) {
                     chipDMS.setChecked(true);
                 }
                 break;
             case "ddm":
                 // Degrees decimal minutes
-                formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                        UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                        (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                if (location != null) {
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                            (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
+                }
                 if (chipDegreesDecimalMin != null) {
                     chipDegreesDecimalMin.setChecked(true);
                 }
@@ -709,8 +717,8 @@ public class UIUtils {
                 }
                 break;
         }
-        if (locationValue != null) {
-            locationValue.setText(formattedLocation);
+        if (textView != null) {
+            textView.setText(formattedLocation);
         }
         return formattedLocation;
     }

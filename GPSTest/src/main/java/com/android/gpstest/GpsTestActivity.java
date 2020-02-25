@@ -351,12 +351,14 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             // User picked a file to share from the Share dialog - update the dialog
             if (data != null) {
                 Uri uri = data.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
-                UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, uri).show();
+                final Location location = mLastLocation;
+                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, uri).show();
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -1526,7 +1528,8 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void share() {
-        UIUtils.createShareDialog(this, mLastLocation, isFileLoggingEnabled(), mFileLogger, null).show();
+        final Location location = mLastLocation;
+        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, null).show();
     }
 
     /**

@@ -29,6 +29,7 @@ import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -197,14 +198,17 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         mLocationCard = v.findViewById(R.id.status_location_card);
         mLocationCard.setOnClickListener(view -> {
+            final Location location = mLocation;
             // Copy location to clipboard
-            if (mLocation != null) {
+            if (location != null) {
                 boolean includeAltitude = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
                 String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
-                String formattedLocation = UIUtils.formatLocationForDisplay(mLocation, null, includeAltitude,
+                String formattedLocation = UIUtils.formatLocationForDisplay(location, null, includeAltitude,
                         null, null, null, coordinateFormat);
-                IOUtils.copyToClipboard(formattedLocation);
-                Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+                if (!TextUtils.isEmpty(formattedLocation)) {
+                    IOUtils.copyToClipboard(formattedLocation);
+                    Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
