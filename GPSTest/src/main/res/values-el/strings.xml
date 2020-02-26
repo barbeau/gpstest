@@ -44,6 +44,12 @@
     <string name="delete_aiding_data_success">Επιτυχής διαγραφή δεδομένων βοήθειας.</string>
     <string name="delete_aiding_data_failure">Αδυναμία διαγραφής δεδομένων βοήθειας (μη υποστήριξη).</string>
     <string name="gps_switch">Κλειστό/Ανοιχτό</string>
+    <string name="share">Κοινοποίηση</string>
+    <string name="copied_to_clipboard">αντιγράφηκε στο πρόχειρο</string>
+    <string name="send_log">αποστολή αρχείου καταγραφής</string>
+    <string name="log_instructions">οδηγίες καταγραφής</string>
+    <string name="no_location">χωρίς θέση στίγματος</string>
+    <string name="include_altitude">να περιλαμβάνεται το υψόμετρο</string>
     <string name="set_fix_frequency">Ορίστε συχνότητα σταθεροποίησης</string>
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
     <string name="force_time_injection_failure">Αδυναμία εισαγωγής δεδομένων ώρας (μη υποστήριξη).</string>
@@ -62,6 +68,7 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Υψος:</string>
     <string name="gps_altitude_msl_label">Υψος (MSL):</string>
+    <string name="gps_accuracy_label">E H Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">Κ/Ο Ακρίβεια:</string>
     <string name="gps_speed_label">Ταχύτητα:</string>
     <string name="gps_speed_acc_label">S. Ταχύτητα:</string>
@@ -85,14 +92,26 @@
     <string name="install">Εγκατάσταση</string>
     <string name="no_thanks">Οχι ευχαριστώ</string>
     <string name="please_install_google_maps">Η καρτέλα Χάρτης απαιτεί τους Χάρτες Google</string>
+    <string name="enable_gps_message">ενεργοποίηση τοποθεσίας</string>
+    <string name="enable_gps_positive_button">Ναι</string>
     <string name="enable_gps_negative_button">Οχι</string>
+    <string name="gps_set_location_listener">Εκκίνηση GNSS με χρονικό διάστημα = %1$ss, ελάχιστη απόσταση = %2$sm</string>
     <string name="clear_assist_warning_title">Διαγραφή βοηθητικών δεδομένων;</string>
+    <string name="clear_assist_warning">καθαρισμός σφάλματος βοηθητικών δεδομένων</string>
     <string name="never_ask_again">Να μην ερωτηθώ ξανά</string>
+    <string name="qr_code_instructions_title">Κωδικός QR</string>
+    <string name="qr_code_instructions_text">Οδηγίες QR</string>
+    <string name="qr_code_cannot_read_code">αδυναμία ανάγνωσης κωδικού QR</string>
+    <string name="never_show_again">να μην εμφανιστεί ξανά</string>
+    <string name="not_now">όχι τώρα</string>
     <string name="yes">ΝΑΙ</string>
     <string name="no">ΟΧΙ</string>
     <string name="gnss_not_available">Παγκόσμιο Δορυφορικό Σύστημα Πλοήγησης (GNSS) μη διαθέσιμοι δορυφόροι</string>
     <string name="sbas_not_available">Δορυφορικό Σύστημα Επαυξημένης Πραγματικότητας (SBAS) μη διαθέσιμοι δορυφόροι</string>
     <string name="menu_option_sort_by">Ταξινόμηση κατά</string>
+    <string name="error_time_title">Σφάλμα Ωρας</string>
+    <string name="error_time_message">Μήνυμα σφάλματος</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Το γεωγραφικό πλάτος σας</string>
     <string name="ground_truth_longitude">Το γεωγραφικό μήκος σας</string>
@@ -115,6 +134,9 @@
     <string name="horizontal_vertical_error_label">Σφάλμα H/V</string>
     <string name="avg_error_label">%1$d σημεία περίπου</string>
     <string name="fix_number">Κλείδωμα #</string>
+    <string name="show_radar_valid_location">Επιτυχής εισαγωγή αληθούς τοποθεσίας εδάφους!</string>
+    <string name="show_radar_invalid_location">Η εισαχθείσα αληθής τοποθεσία εδάφους είναι εσφαλμένη</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Τυπικό</string>
     <string name="sky_legend_shape_gnss_title">Παγκόσμια δορυφορικά συστήματα πλοήγησης (GNSS)</string>
@@ -123,6 +145,8 @@
     <string name="sky_legend_shape_galileo">Galileo (ΕΥΡΩΠΑΙΚΗ ΕΝΩΣΗ)</string>
     <string name="sky_legend_shape_qzss">QZSS (ΙΑΠΩΝΙΑ)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (ΚΙΝΑ)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (Ινδία)</string>
+
     <string name="sky_legend_shape_sbas_title">Δορυφορικά συστήματα επεκτάσεως (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (Αμερική)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Ευρωπαική Ενωση)</string>
@@ -161,6 +185,16 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Βελτιωμένη ανταπόκριση</b>
+        - Εμφάνιση μόνο εφαρμογών e-mail όταν αποστέλλετε τα σχόλιά σας.\n&#8226;\u0020
+        <b>Βελτίωση \"# Δορυφόρων\"</b>
+        - πλέον εμφανίζονται \"Σε χρήση / Σε προβολή (με έγγυρο σήμα) / Συνολικά\", με σωστή μέτρηση για διπλή συχνότητα δορυφόροι.\n&#8226;\u0020
+        <b>Αναγνώριση αδύναμων στίγματων GPS</b>
+        - Ο χρόνος τώρα επισημαίνεται με κόκκινο χρώμα σε συσκευές με λανθασμένους χρόνους λόγω του προβλήματος ανατροπής των αδύναμων στιγμάτων του GPS (http://bit.ly/gps-week-rollover).\n&#8226;\u0020
+        <b>Διορθώσεις σφαλμάτων</b>
+        - Δείτε εδώ https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->
@@ -202,17 +236,46 @@
     <string name="pref_true_north_title">Πυξίδα προς το Βορρά</string>
     <string name="pref_true_north_summary">Η πυξίδα θα ακολουθεί τον αληθινό βορρά αντί του μαγνητικού βορρά</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Καταγραφές και Εξοδος</string>
+    <string name="pref_output_category_summary">Καταγραφή NMEA, πρώτες μετρήσεις ή μηνύματα πλοήγησης σε αρχεία ή στο Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title"> Έξοδος παρακαλούθησης Android</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Καταγραφή NMEA προτάσεων στο Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Χρονικό Στίγμα</string>
     <string name="pref_nmea_timestamp_output_summary">Να περιλαμβάνονται τα χρονικά στίγματα NMEA στο αρχείο εξόδου</string>
     <string name="pref_measurement_output_title">Μετρήσεις</string>
+    <string name="pref_as_measurement_output_summary">Καταγραφή μετρήσεων GNSS στο Android Studio (Android 7.0 και άνω)</string>
     <string name="pref_navigation_message_output_title">Μηνύματα πλοήγησης</string>
+    <string name="pref_as_navigation_message_output_summary">Καταγραφή μηνυμάτων πλοήγησης GNSS στο Android Studio (Android 7.0 και άνω)</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Εξοδος σε αρχείο</string>
+    <string name="pref_file_nmea_output_summary">Καταγραφή στοιχείων NMEA σε αρχείο</string>
+    <string name="pref_file_measurement_output_summary">Καταγραφή μετρήσεων GNSS σε αρχείο (Android 7.0 και άνω)</string>
+    <string name="pref_file_navigation_message_output_summary">Καταγραφή GNSS μηνυμάτων πλοήγησης σε αρχείο (Android 7.0 και άνω)</string>
+    <string name="pref_file_location_output_title">Τοποθεσία</string>
+    <string name="pref_file_location_output_summary">Καταγραφή τοποθεσίας στίγματος σε αρχείο</string>
+
+    <string name="logging_to_new_file">Καταγραφή σε νέο αρχείο: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Αδυναμία τερματισμού όλων των ροών αρχείου.</string>
+    <string name="could_not_initialize_file">Αδυναμία φόρτωσης αρχείου: %1$s</string>
+    <string name="error_writing_file">Σφάλμα εγγραφής στο αρχείου.</string>
+
     <string name="pref_about_category_title">Περί</string>
     <string name="pref_show_tutorial_title">Εμφάνιση Οδηγιών</string>
     <string name="pref_show_tutorial_summary">Δείχνει οδηγίες χρήσης για την εφαρμογή</string>
 
     <string name="pref_dark_theme_title">Αλλαγή Εμφάνισης</string>
     <string name="pref_dark_theme_summary">Θέμα πιο σκοτεινό με φωτεινά γράμματα</string>
+
+    <string name="pref_coordinate_format_title">Μορφή συντεταγμένων</string>
+    <string name="pref_coordinate_format_summary">Εμφάνιση σε δεκαδικές μοίρες, DMS, </string>
+    <string name="preferences_coordinate_format_dd">Δεκαδικές Μοίρες</string>
+    <string name="preferences_coordinate_format_dms">Μοίρες, Λεπτά, Δεκαδικά Δευτερόλεπτα</string>
+    <string name="preferences_coordinate_format_ddm">Μοίρες, Δεκαδικά Λεπτά</string>
 
     <string name="preferences_preferred_distance_units_title">Προτιμώμενη μονάδα μέτρησης απόστασης</string>
     <string name="preferences_preferred_distance_units_option_meters">Μέτρα</string>
@@ -230,4 +293,81 @@
     <!-- Help -->
     <string name="title_help">Βοήθεια</string>
 
+    <string name="help_text">
+        <b>Συχνές Ερωτήσεις - Απαντήσεις (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Προβολή Κατάστασης ***</b>\n\n&#8226;\u0020
+        <b>Γεωγραφικό πλάτος</b>
+        - Σε δεκαδικές μοίρες (WGS 84)\n&#8226;\u0020
+        <b>Γεωγραφικό μήκος</b>
+        - Σε δεκαδικές μοίρες (WGS 84)\n&#8226;\u0020
+        <b>Υψόμετρο</b>
+        - Μέτρα πάνω απο WGS 84 ελλιψοειδές\n&#8226;\u0020
+        <b>Υψόμετρο (MSL)</b>
+        - Μέτρα πάνω απο το επίπεδο της θάλασσας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
+        <b>Ακρίβεια</b>
+        - Εκτιμώμενη οριζόντια ακρίβεια της θέσης (ακτίνα σε μέτρα έως και πιθανότητα 68%). Με άλλα λόγια, εάν σχεδιάσετε έναν κύκλο με κέντρο γεωγραφικού πλάτους και γεωγραφικού μήκους και με ακτίνα ίση με την ακρίβεια, τότε υπάρχει πιθανότητα 68% ότι η πραγματική θέση βρίσκεται μέσα στον κύκλο.\n&#8226;\u0020
+        <b>Κ/Ο Ακρίβεια</b>
+        - Η οριζόντια και κάθετη ακρίβεια της θέσης, κατά πιθανότητα 68% ακριβείας. Η οριζόντια ακρίβεια ορίζει το ίδιο με το πεδίο Ακρίβειας θέσης παραπάνω. Η κάθετη ακρίβεια είναι διαθέσιμη σε Android 8.0 Oreo και πάνω. Παράδειγμα κατακόρυφης ακρίβειας - εάν το Υψόμετρο είναι 150 και ο Κάθετος άξονας είναι 20 τότε υπάρχει πιθανότητα 68% του πραγματικού υψομέτρου μεταξύ 130 και 170 μέτρων.\n&#8226;\u0020
+        <b>Ταχύτητα</b>
+        - Ταχύτητα σε μέτρα/δευτερόλεπτο πάνω απο το έδαφος\n&#8226;\u0020
+        <b>Ακρίβεια ταχύτητας</b>
+        - Υπολογισμένη ακρίβεια ταχύτητας του στίγματος με πιθανότητες 68%, σε μέτρα ανα δευτερόλεπτο. Για παράδειγμα, εάν η ταχύτητα είναι 5, και η ακριβής ταχύτητα είναι, τότε υπάρχει πιθανότητα 68% της πραγματικής ταχύτητας να είναι μεταξύ 4 και 6 μέτρων ανα δευτερόλεπτο.\n&#8226;\u0020
+        <b>Αξονας</b>
+        - Η οριζόντια κατεύθυνση κίνησης της συσκευής (σε μοίρες 0-360), και δεν σχετίζεται με τον προσανατολισμό της συσκευής.\n&#8226;\u0020
+        <b>Ακρίβεια Αξονα</b>
+        - Υπολογισμένη ακρίβεια του άξονα με πιθανότητα του στίγματος κατά 68%, σε μοίρες μέτρησης. Για παράδειγμα, εάν ο άξονας είναι 60 και η ακρίβεια του άξονα είναι 10, τότε υπάρχει πιθανότητα 68% του πραγματικού άξονα θέσης να είναι μεταξύ 50 και 70 βαθμών.\n&#8226;\u0020
+        <b># Δορυφόροι</b>
+        - # δορυφόροι που χρησιμοποιούνται για την επιδιόρθωση / # δορυφόροι εν όψει\n&#8226;\u0020
+        <b>PDOP</b>
+        - Θέση (3D) αραίωση της ακρίβειας (απαιτείται υποστήριξη NMEA)\n&#8226;\u0020
+        <b>Κ/Ο DOP</b>
+        - Οριζόντια / κάθετη αραίωση της ακρίβειας (απαιτείται υποστήριξη NMEAt)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Χρόνο αρχικού κλειδώματος\n&#8226;\u0020
+        <b>ID or PRN</b>
+        - αναγνωριστικό όνομα δορυφόρου (pseudorandom noise for GPS)\n&#8226;\u0020
+        <b>CF</b>
+        - Ετικέτα (π.χ. \"L1\") για τη συχνότητα φέροντος σήματος που παρακολουθείται. Αν υπάρχει μια άγνωστη συχνότητα, εμφανίζει την ακατέργαστη συχνότητα σε MHz (διαθέσιμη σε Android 8.0+, αλλά δεν υποστηρίζεται σε όλες τις συσκευές)\n&#8226;\u0020
+        <b>SNR</b>
+        - Αναλογία σήματος-θορύβου (Android M και κάτω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Πυκνότητα θορύβου-φορέα (Android N και άνω) (http://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Σημαίες</b>
+        - (Ε) αν η συσκευή έχει δεδομένα ετεροχρονισμού για τον δορυφόρο, (Α) εάν η συσκευή διαθέτει δεδομένα almanac
+         για τον δορυφόρο, (U) εάν ο δορυφόρος χρησιμοποιήθηκε στο τελευταίο κλείδωμα\n\n
+
+        <b>*** Προβολή Ουρανού ***</b>\n\n&#8226;\u0020
+        <b>GPS (Navstar ΑΜΕΡΙΚΗ)</b>
+        - Σχήμα κύκλου\n&#8226;\u0020
+        <b>GLONASS (ΡΩΣΙΑ)</b>
+        - Σχήμα τετράγωνο\n&#8226;\u0020
+        <b>Galileo (ΕΥΡΩΠΑΙΚΗ ΕΝΩΣΗ)</b>
+        - Σχήμα τρίγωνο\n&#8226;\u0020
+        <b>QZSS (ΙΑΠΩΝΙΑ)</b>
+        - Σχήμα εξάγωνο\n&#8226;\u0020
+        <b>BeiDou/COMPASS (ΚΙΝΑ)</b>
+        - Σχήμα πεντάγωνο\n&#8226;\u0020
+        <b>SBAS (GAGAN, Anik, Galaxy 15, Inmarsat 3-F2, Inmarsat 3-F5, Inmarsat 4-F3, SES-5, Astra 5B)</b>
+        - Σχήμα διαμάντι\n\n
+
+        &#8226;\u0020 Διαφανείς δορυφόροι - Χωρίς προβολή\n
+        &#8226;\u0020 Λεπτό περίγραμμα - Προβολή, αλλά δεν χρησιμοποιείται στο κλείδωμα\n
+        &#8226;\u0020 Εντονο περίγραμμα - Χρησιμοποιείται στο κλείδωμα\n\n
+
+        &#8226;\u0020 Αναμενόμενο SNR εύρος είναι απο 0 dB (κόκκινο) εως 30 dB (πράσινο) σε Android εκδόσεις κάτω απο 7.0. \n
+        &#8226;\u0020 Αναμενόμενο SNR εύρος είναι απο 10 dB (κόκκινο) εως 45 dB (πράσινο) σε εκδόσεις Android 7.0 και άνω. \n
+        &#8226;\u0020 Αναμενόμενο C/N0 εύρος είναι απο 10 dB-Hz (κόκκινο) εως 45 dB-Hz (πράσινο) σε εκδόσεις Android 7.0 και άνω. \n
+        &#8226;\u0020 Αν δεν υπάρχει διαθέσιμη SNR ή C/N0 τιμή για ένα δορυφόρο (π.χ., είναι εκτός ορατότητας της συσκευής), θα έχει διαφανές ανοιχτό γκρι χρώμα. \n\n
+
+        <b>*** Γνωστοποιήσεις ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - αρχικός προγραμματιστής έκδοσης v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - προγραμματιστής έκδοσης v2.x και άνω\n
+        &#8226;\u0020 Το εικονίδιο εκκίνησης του GPSTest προέρχεται από το εικονίδιο Android Satellite Design, το οποίο έχει άδεια χρήσης από την Google σε Apache v2.0. Άλλα εικονίδια σχεδίου υλικού Google χρησιμοποιούνται επίσης σε Apache v2.0.\n
+        &#8226;\u0020 Κινεζική μετάφραση έγινε απο wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Γερμανική μετάφραση έγινε απο Ronny Steiner\n
+        &#8226;\u0020 Ελληνική μετάφραση έγινε απο JimmyGolfi\n
+        &#8226;\u0020 nΙαπωνικά μετάφραση έγινε απο SakuraSa233\n
+    </string>
 </resources>

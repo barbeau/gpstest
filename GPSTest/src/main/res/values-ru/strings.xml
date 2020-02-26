@@ -113,11 +113,14 @@
     <string name="gnss_not_available">Недоступны спутники спутниковой системы навигации (ССН)</string>
     <string name="sbas_not_available">Недоступны спутники спутниковой системы дифференциальной коррекции (ССДК)</string>
     <string name="menu_option_sort_by">Сортировать по</string>
+    <string name="error_time_title">GNSS время неверно</string>
+    <string name="error_time_message">GNSS время на устройстве:\n\n%1$s\n\n…отличается более чем на %2$d дней от системных часов. Проблема может быть вызвана переключением недель в GPS - обратитесь к производителю вашего устройства. См. http://bit.ly/gps-week-rollover.</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Ваша широта</string>
     <string name="ground_truth_longitude">Ваша долгота</string>
     <string name="ground_truth_altitude">Ваша высота по WGS84 (Необязательно)</string>
-    <string name="set_ground_truth_title">Точность измерений</string>
+    <string name="set_ground_truth_title">Включить оценку точности</string>
     <string name="set_ground_truth_subtitle">Нажмите на карте или внесите ваши координаты</string>
     <string name="save">Сохранить</string>
     <string name="edit">Редактировать</string>
@@ -181,12 +184,22 @@
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
-    <string name="feedback_body">Жалобы, хвала, и сообщения об ошибках приветствуются!\n\n\n</string>
+    <string name="feedback_body">Отзывы и сообщения об ошибках приветствуются!\n\n\n</string>
     <string name="feedback_error">Невозможно отправить отзыв: на устройстве на найдено подходящее для этого приложение.
     </string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Что нового?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Улучшена обратная связь</b>
+        - Почтовое приложение показывается только при отправке отзыва.\n&#8226;\u0020
+        <b>Улучшено \"# Спутников\"</b>
+        - Теперь показывает \"Используется / В прямой видимости (хорошая мощность сигнала) / Всего\", с правильным подсчетом удвоенной частоты.\n&#8226;\u0020
+        <b>Детектируется проблема с переключением недель в GPS</b>
+        - Теперь время подсвечивается красным на устройствах с некорректным временем из-за проблемы с переключением недель в GPS (http://bit.ly/gps-week-rollover).\n&#8226;\u0020
+        <b>Исправления дефектов</b>
+        - См. https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Закрыть</string>
 
     <!-- Preferences -->
@@ -214,7 +227,7 @@
     <string name="pref_gps_min_time_invalid_entry">Это должно быть число</string>
 
     <string name="pref_use_gnss_apis_title">Использовать ССН API</string>
-    <string name="pref_use_gnss_apis_summary">Доступно на Android 7.0 и далее. Если не выбрано,
+    <string name="pref_use_gnss_apis_summary">Доступно на Android 7.0 и выше. Если не выбрано,
         будет использоваться прежний GPSStatus.Listener.
     </string>
 
@@ -225,7 +238,7 @@
     <string name="pref_gps_min_distance_invalid_entry">Мин. расстояние должно быть числом</string>
 
     <string name="pref_stop_gnss_in_background_title">Отключать навигацию в фоне</string>
-    <string name="pref_stop_gnss_in_background_summary">Если отмечено, приложение, перейдя в фоновый режим, отключит навигацию (например, если вы нажали кнопку Дом или перешли в другое приложение)
+    <string name="pref_stop_gnss_in_background_summary">Если отмечено, приложение, перейдя в фоновый режим, отключит навигацию (например, если вы нажали кнопку Домой или перешли в другое приложение)
     </string>
 
     <string name="pref_display_category_title">Отображение</string>
@@ -244,7 +257,7 @@
     <string name="pref_nmea_output_title">NMEA</string>
     <string name="pref_as_nmea_output_summary">Записывает NMEA логи в Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">NMEA время</string>
-    <string name="pref_nmea_timestamp_output_summary">Включать вренные отметки NMEA в вывод</string>
+    <string name="pref_nmea_timestamp_output_summary">Включать временные отметки NMEA в вывод</string>
     <string name="pref_measurement_output_title">Запись замеров</string>
     <string name="pref_as_measurement_output_summary">Записывает измерения ССН в Android Studio (Android
  7.0 и выше)
