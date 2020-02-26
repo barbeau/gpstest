@@ -47,6 +47,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
@@ -614,11 +615,13 @@ public class UIUtils {
             }
         });
 
-        if (loggingEnabled) {
-            // Hide the logging instructions
+        final File file = fileLogger.getFile();
+
+        if (loggingEnabled && file != null) {
+            // Hide the logging instructions - logging is enabled and working
             logInstructions.setVisibility(View.GONE);
         } else {
-            // Hide the logging and file views
+            // Hide the logging and file views so the user can see the instructions
             fileName.setVisibility(View.GONE);
             logBrowse.setVisibility(View.GONE);
             logShare.setVisibility(View.GONE);
@@ -626,15 +629,20 @@ public class UIUtils {
 
         // Set the log file name
         if (loggingEnabled) {
-            if (alternateFileUri == null) {
-                // Set the log file currently being logged to by the FileLogger
-                fileName.setText(fileLogger.getFile().getName());
+            if (file != null) {
+                if (alternateFileUri == null) {
+                    // Set the log file currently being logged to by the FileLogger
+                    fileName.setText(file.getName());
+                } else {
+                    // Set the log file selected by the user using the File Browse button
+                    String lastPathSegment = alternateFileUri.getLastPathSegment();
+                    // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
+                    String[] parts = lastPathSegment.split("/");
+                    fileName.setText(parts[1]);
+                }
             } else {
-                // Set the log file selected by the user using the File Browse button
-                String lastPathSegment = alternateFileUri.getLastPathSegment();
-                // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
-                String[] parts = lastPathSegment.split("/");
-                fileName.setText(parts[1]);
+                // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
+                logInstructions.setText(R.string.log_error);
             }
         }
 
@@ -656,7 +664,6 @@ public class UIUtils {
             } else {
                 // Send the log file selected by the user using the File Browse button
                 IOUtils.sendLogFile(activity, alternateFileUri);
-
             }
         });
 

@@ -49,6 +49,7 @@
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
+    <string name="log_error">Something went wrong with file logging. Did you allow file/storage permissions? Try re-enabling a file logging option in Settings and tap "Allow" when prompted.</string>
     <string name="no_location">Try sharing your location after getting a GNSS fix</string>
     <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
