@@ -280,6 +280,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
             mFixTimeView.setText("");
             mFixTimeErrorView.setText("");
+            mFixTimeErrorView.setVisibility(View.GONE);
         } else {
             if (DateTimeUtils.Companion.isTimeValid(mFixTime)) {
                 mFixTimeErrorView.setVisibility(View.GONE);
