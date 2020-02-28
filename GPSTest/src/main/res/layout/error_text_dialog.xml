@@ -8,5 +8,5 @@
     android:paddingLeft="24dp"
     android:paddingRight="10dp"
     android:textSize="16sp"
-    android:autoLink="all"
-    android:linksClickable="true"></TextView>
+    android:autoLink="web"
+    android:linksClickable="true" />
