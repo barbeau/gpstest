@@ -638,7 +638,7 @@ public class UIUtils {
                     String lastPathSegment = alternateFileUri.getLastPathSegment();
                     // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
                     String[] parts = lastPathSegment.split("/");
-                    fileName.setText(parts[1]);
+                    fileName.setText(parts[parts.length - 1]);
                 }
             } else {
                 // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
