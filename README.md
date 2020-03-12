@@ -55,3 +55,10 @@ Don't know where to start?  Take a look at the issues marked with the [your-firs
 ### Translations
 
 Want to improve existing translations, or add a new translation?  See our [Translations](/TRANSLATIONS.md) documentation.
+
+### Trusted by industry experts
+
+Notable appearances of GPSTest:
+
+* Xiaomi - [*Xiaomi Note 9 Pro Max launch*](https://youtu.be/Y_5cfCZBOV4?t=3035), March 12, 2020.
+* European Union Global Navigation Satellite Systems Agency (GSA) - [*Test your Android device’s satellite navigation performance*](https://www.gsa.europa.eu/newsroom/news/test-your-android-device-s-satellite-navigation-performance), August 21, 2018.
