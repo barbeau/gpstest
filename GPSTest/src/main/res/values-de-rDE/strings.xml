@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">GPS-Hilfsdaten bearbeiten</string>
-    <string name="force_xtra_injection">XTRA-Daten laden</string>
+    <string name="force_psds_injection">PSDS-Daten laden</string>
     <string name="force_time_injection">Zeit-Daten laden</string>
     <string name="delete_aiding_data">Hilfsdaten löschen</string>
     <string name="navdrawer_item_settings">Einstellungen</string>
@@ -48,8 +48,8 @@
     <string name="force_time_injection_success">Zeit-Daten erfolgreich geladen.</string>
     <string name="force_time_injection_failure">Das Gerät unterstützt nicht das Laden der Zeit-Daten.</string>
 
-    <string name="force_xtra_injection_success">XTRA-Daten erfolgreich geladen.</string>
-    <string name="force_xtra_injection_failure">Das Gerät unterstützt nicht das Laden der XTRA-Daten.</string>
+    <string name="force_psds_injection_success">PSDS-Daten erfolgreich geladen.</string>
+    <string name="force_psds_injection_failure">Das Gerät unterstützt nicht das Laden der PSDS-Daten.</string>
 
     <string name="zoom_in">Vergrößern</string>
     <string name="zoom_out">Verkleinern</string>

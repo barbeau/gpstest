@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modifikasi data bantuan</string>
-    <string name="force_xtra_injection">Injek data XTRA</string>
+    <string name="force_psds_injection">Injek data PSDS</string>
     <string name="force_time_injection">Injek data waktu</string>
     <string name="delete_aiding_data">Hapus data bantuan</string>
     <string name="navdrawer_item_settings">Setelan</string>
@@ -55,8 +55,8 @@
     <string name="force_time_injection_failure">Perangkat tidak mendukung injeksi data waktu.
     </string>
 
-    <string name="force_xtra_injection_success">Data XTRA berhasil diinjek.</string>
-    <string name="force_xtra_injection_failure">Perangkat tidak mendukung injeksi data XTRA.
+    <string name="force_psds_injection_success">Data PSDS berhasil diinjek.</string>
+    <string name="force_psds_injection_failure">Perangkat tidak mendukung injeksi data PSDS.
     </string>
 
     <string name="zoom_in">Perbesar</string>

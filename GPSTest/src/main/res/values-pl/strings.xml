@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Zmodyfikuj dane pomocnicze</string>
-    <string name="force_xtra_injection">Wprowadź dane XTRA</string>
+    <string name="force_psds_injection">Wprowadź dane PSDS</string>
     <string name="force_time_injection">Wprowadź dane czasowe</string>
     <string name="delete_aiding_data">Wyczyść dane pomocnicze</string>
     <string name="navdrawer_item_settings">Ustawienia</string>
@@ -53,8 +53,8 @@
     <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
     <string name="force_time_injection_failure">Urządzenie nie wspiera wprowadzania danych czasowych.</string>
 
-    <string name="force_xtra_injection_success">Pomyślnie wprowadzono dane XTRA.</string>
-    <string name="force_xtra_injection_failure">Urządzenie nie wspiera wprowadzania danych XTRA.</string>
+    <string name="force_psds_injection_success">Pomyślnie wprowadzono dane PSDS.</string>
+    <string name="force_psds_injection_failure">Urządzenie nie wspiera wprowadzania danych PSDS.</string>
 
     <string name="zoom_in">Powiększ</string>
     <string name="zoom_out">Pomniejsz</string>

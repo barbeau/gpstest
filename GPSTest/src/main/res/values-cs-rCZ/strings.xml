@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Upravit pomocné údaje</string>
-    <string name="force_xtra_injection">Vložit XTRA údaje</string>
+    <string name="force_psds_injection">Vložit PSDS údaje</string>
     <string name="force_time_injection">Vložit časové údaje</string>
     <string name="delete_aiding_data">Vymazat pomocné údaje</string>
     <string name="navdrawer_item_settings">Nastavení</string>
@@ -54,8 +54,8 @@
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
     <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>
 
-    <string name="force_xtra_injection_success">XTRA údaje úspěšně vloženy.</string>
-    <string name="force_xtra_injection_failure">Zařízení nepodporuje vkládání XTRA údajů.</string>
+    <string name="force_psds_injection_success">PSDS údaje úspěšně vloženy.</string>
+    <string name="force_psds_injection_failure">Zařízení nepodporuje vkládání PSDS údajů.</string>
 
     <string name="zoom_in">Zvětšit</string>
     <string name="zoom_out">Zmenšit</string>

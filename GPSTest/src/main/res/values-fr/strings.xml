@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modifier les données d\'assistance</string>
-    <string name="force_xtra_injection">Importer des données XTRA</string>
+    <string name="force_psds_injection">Importer des données PSDS</string>
     <string name="force_time_injection">Importer des données temporelles</string>
     <string name="delete_aiding_data">Effacer les données d\'assistance</string>
     <string name="navdrawer_item_settings">Paramètres</string>
@@ -47,8 +47,8 @@
     <string name="force_time_injection_success">Données horaires importées</string>
     <string name="force_time_injection_failure">Le matériel ne supporte pas l\'injection de données horaires</string>
 
-    <string name="force_xtra_injection_success">Données XTRA importées</string>
-    <string name="force_xtra_injection_failure">Le matériel ne supporte pas l\'injection de données XTRA</string>
+    <string name="force_psds_injection_success">Données PSDS importées</string>
+    <string name="force_psds_injection_failure">Le matériel ne supporte pas l\'injection de données PSDS</string>
 
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>

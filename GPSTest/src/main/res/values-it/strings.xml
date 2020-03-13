@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modifica dati di assistenza</string>
-    <string name="force_xtra_injection">Inserisci dati XTRA</string>
+    <string name="force_psds_injection">Inserisci dati PSDS</string>
     <string name="force_time_injection">Inserisci dati NTP</string>
     <string name="delete_aiding_data">Rimuovi dati di assistenza</string>
     <string name="navdrawer_item_settings">Impostazioni</string>
@@ -53,8 +53,8 @@
     <string name="force_time_injection_success">Dati temporali NTP inseriti con successo</string>
     <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento di dati temporali NTP</string>
 
-    <string name="force_xtra_injection_success">Dati XTRA inseriti con successo</string>
-    <string name="force_xtra_injection_failure">Il dispositivo non supporta l\'inserimento di dati XTRA</string>
+    <string name="force_psds_injection_success">Dati PSDS inseriti con successo</string>
+    <string name="force_psds_injection_failure">Il dispositivo non supporta l\'inserimento di dati PSDS</string>
 
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>

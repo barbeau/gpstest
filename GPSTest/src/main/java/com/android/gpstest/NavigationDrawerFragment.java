@@ -77,7 +77,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     protected static final int NAVDRAWER_ITEM_OPEN_SOURCE = 5;
 
-    protected static final int NAVDRAWER_ITEM_INJECT_XTRA_DATA = 6;
+    protected static final int NAVDRAWER_ITEM_INJECT_PSDS_DATA = 6;
 
     protected static final int NAVDRAWER_ITEM_INJECT_TIME_DATA = 7;
 
@@ -104,7 +104,7 @@ public class NavigationDrawerFragment extends Fragment {
             R.string.navdrawer_item_settings,
             R.string.navdrawer_item_help,
             R.string.navdrawer_item_open_source,
-            R.string.force_xtra_injection,
+            R.string.force_psds_injection,
             R.string.force_time_injection,
             R.string.delete_aiding_data,
             R.string.navdrawer_item_send_feedback,
@@ -119,7 +119,7 @@ public class NavigationDrawerFragment extends Fragment {
             0, // Settings
             0, // Help
             R.drawable.ic_drawer_github, // Open-source
-            R.drawable.ic_inject_xtra, // Inject XTRA data
+            R.drawable.ic_inject_psds, // Inject PSDS data
             R.drawable.ic_inject_time, // Inject time data
             R.drawable.ic_delete, // Clear assist data
             0, // Send feedback
@@ -134,7 +134,7 @@ public class NavigationDrawerFragment extends Fragment {
             0, // Settings
             0, // Help
             R.drawable.ic_drawer_link, // Open-source
-            0, // Inject XTRA data
+            0, // Inject PSDS data
             0, // Inject time data
             0, // Clear assist data
             0,  // Send feedback
@@ -405,7 +405,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
 
-        mNavDrawerItems.add(NAVDRAWER_ITEM_INJECT_XTRA_DATA);
+        mNavDrawerItems.add(NAVDRAWER_ITEM_INJECT_PSDS_DATA);
         mNavDrawerItems.add(NAVDRAWER_ITEM_INJECT_TIME_DATA);
         mNavDrawerItems.add(NAVDRAWER_ITEM_CLEAR_AIDING_DATA);
 
@@ -569,7 +569,7 @@ public class NavigationDrawerFragment extends Fragment {
         return itemId == NAVDRAWER_ITEM_SETTINGS ||
                 itemId == NAVDRAWER_ITEM_HELP ||
                 itemId == NAVDRAWER_ITEM_OPEN_SOURCE ||
-                itemId == NAVDRAWER_ITEM_INJECT_XTRA_DATA ||
+                itemId == NAVDRAWER_ITEM_INJECT_PSDS_DATA ||
                 itemId == NAVDRAWER_ITEM_INJECT_TIME_DATA ||
                 itemId == NAVDRAWER_ITEM_CLEAR_AIDING_DATA ||
                 itemId == NAVDRAWER_ITEM_SEND_FEEDBACK;

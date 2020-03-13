@@ -271,10 +271,10 @@ public class UIUtils {
             body.append(Application.get().getString(R.string.capability_title_nmea, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
-        // Inject XTRA capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_UNKNOWN);
+        // Inject PSDS capability
+        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_inject_xtra, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.get().getString(R.string.capability_title_inject_psds, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Inject time capability

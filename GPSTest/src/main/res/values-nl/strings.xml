@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Hulpgegevens importeren</string>
-    <string name="force_xtra_injection">XTRA-gegevens importeren</string>
+    <string name="force_psds_injection">PSDS-gegevens importeren</string>
     <string name="force_time_injection">NTP-gegevens importeren</string>
     <string name="delete_aiding_data">Hulpgegevens verwijderen</string>
     <string name="navdrawer_item_settings">Instellingen</string>
@@ -55,8 +55,8 @@
     <string name="force_time_injection_failure">Apparaat ondersteunt het importeren van NTP-gegevens niet.
     </string>
 
-    <string name="force_xtra_injection_success">XTRA-gegevens succesvol ingeladen</string>
-    <string name="force_xtra_injection_failure">Apparaat ondersteunt het importeren van XTRA-gegevens niet .
+    <string name="force_psds_injection_success">PSDS-gegevens succesvol ingeladen</string>
+    <string name="force_psds_injection_failure">Apparaat ondersteunt het importeren van PSDS-gegevens niet .
     </string>
 
     <string name="zoom_in">Inzoomen</string>

@@ -92,8 +92,8 @@ import java.util.ArrayList;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_XTRA_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
@@ -577,8 +577,8 @@ public class GpsTestActivity extends AppCompatActivity
                     mCurrentNavDrawerPosition = item;
                 }
                 break;
-            case NAVDRAWER_ITEM_INJECT_XTRA_DATA:
-                forceXtraInjection();
+            case NAVDRAWER_ITEM_INJECT_PSDS_DATA:
+                forcePsdsInjection();
                 break;
             case NAVDRAWER_ITEM_INJECT_TIME_DATA:
                 forceTimeInjection();
@@ -790,16 +790,23 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    private void forceXtraInjection() {
-        boolean success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
-        if (success) {
-            Toast.makeText(this, getString(R.string.force_xtra_injection_success),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_SUPPORTED);
+    private void forcePsdsInjection() {
+        boolean success;
+        // FIXME - We should use the platform constant from Build.VERSION_CODES below, but we can't use compileSdkVersion 29 due to NMEA interface issue (https://github.com/barbeau/gpstest/issues/340)
+        if (Build.VERSION.SDK_INT >= 29) {
+            success = sendExtraCommand(getString(R.string.force_psds_injection_command));
         } else {
-            Toast.makeText(this, getString(R.string.force_xtra_injection_failure),
+            success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
+        }
+
+        if (success) {
+            Toast.makeText(this, getString(R.string.force_psds_injection_success),
                     Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_xtra), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_SUPPORTED);
+        } else {
+            Toast.makeText(this, getString(R.string.force_psds_injection_failure),
+                    Toast.LENGTH_SHORT).show();
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
         }
     }
 

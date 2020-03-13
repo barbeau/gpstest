@@ -144,7 +144,10 @@
     <!-- Commands sent to the LocationManager -->
     <string name="delete_aiding_data_command">delete_aiding_data</string>
     <string name="force_time_injection_command">force_time_injection</string>
+    <!-- Android 9 and lower -->
     <string name="force_xtra_injection_command">force_xtra_injection</string>
+    <!-- Android 10 and higher -->
+    <string name="force_psds_injection_command">force_psds_injection</string>
 
     <!-- Open-source link for Github project -->
     <string name="open_source_github">https://github.com/barbeau/gpstest</string>
@@ -153,14 +156,14 @@
     <string name="app_feedback_email">barbeaudev@gmail.com</string>
 
     <!-- Device capabilities -->
-    <string name="capability_key_inject_xtra">capability_key_inject_xtra</string>
+    <string name="capability_key_inject_psds">capability_key_inject_psds</string>
     <string name="capability_key_inject_time">capability_key_inject_time</string>
     <string name="capability_key_delete_assist">capability_key_delete_assist</string>
     <string name="capability_key_raw_measurements">capability_key_raw_measurements</string>
     <string name="capability_key_nav_messages">capability_key_nav_messages</string>
     <string name="capability_key_nmea">capability_key_nmea</string>
 
-    <string name="capability_title_inject_xtra">Inject XTRA: %1$s\n</string>
+    <string name="capability_title_inject_psds">Inject PSDS: %1$s\n</string>
     <string name="capability_title_inject_time">Inject time: %1$s\n</string>
     <string name="capability_title_delete_assist">Delete assist: %1$s\n</string>
     <string name="capability_title_raw_measurements">Raw measurements: %1$s\n</string>

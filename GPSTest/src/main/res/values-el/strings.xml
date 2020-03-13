@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Τροποποιήστε τα δεδομένα βοήθειας</string>
-    <string name="force_xtra_injection">Εισαγωγή δεδομένων XTRA</string>
+    <string name="force_psds_injection">Εισαγωγή δεδομένων PSDS</string>
     <string name="force_time_injection">Εισαγωγή δεδομένων ώρας</string>
     <string name="delete_aiding_data">Καθαρισμός δεδομένων</string>
     <string name="navdrawer_item_settings">Ρυθμίσεις</string>
@@ -54,8 +54,8 @@
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
     <string name="force_time_injection_failure">Αδυναμία εισαγωγής δεδομένων ώρας (μη υποστήριξη).</string>
 
-    <string name="force_xtra_injection_success">Επιτυχής εισαγωγή δεδομένων XTRA.</string>
-    <string name="force_xtra_injection_failure">Αδυναμία εισαγωγής δεδομένων XTRA (μη υποστήριξη).</string>
+    <string name="force_psds_injection_success">Επιτυχής εισαγωγή δεδομένων PSDS.</string>
+    <string name="force_psds_injection_failure">Αδυναμία εισαγωγής δεδομένων PSDS (μη υποστήριξη).</string>
 
     <string name="zoom_in">Μεγέθυνση</string>
     <string name="zoom_out">Σμίκρυνση</string>

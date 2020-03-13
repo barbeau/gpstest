@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">辅助数据</string>
-    <string name="force_xtra_injection">导入XTRA数据</string>
+    <string name="force_psds_injection">导入PSDS数据</string>
     <string name="force_time_injection">导入时间数据</string>
     <string name="delete_aiding_data">清除辅助数据</string>
     <string name="navdrawer_item_settings">设置</string>
@@ -54,8 +54,8 @@
     <string name="force_time_injection_success">已成功导入时间数据。</string>
     <string name="force_time_injection_failure">设备不支持导入时间数据。</string>
 
-    <string name="force_xtra_injection_success">已成功导入XTRA数据。</string>
-    <string name="force_xtra_injection_failure">设备不支持导入XTRA数据。</string>
+    <string name="force_psds_injection_success">已成功导入PSDS数据。</string>
+    <string name="force_psds_injection_failure">设备不支持导入PSDS数据。</string>
 
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>

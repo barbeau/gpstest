@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Изменить вспом. сведения</string>
-    <string name="force_xtra_injection">Внести XTRA св.</string>
+    <string name="force_psds_injection">Внести PSDS св.</string>
     <string name="force_time_injection">Внести время</string>
     <string name="delete_aiding_data">Очистить всп. св.</string>
     <string name="navdrawer_item_settings">Настройки</string>
@@ -55,8 +55,8 @@
     <string name="force_time_injection_failure">Устройство не поддерживает внесение сведений о времени.
     </string>
 
-    <string name="force_xtra_injection_success">Успешно внесены XTRA сведения.</string>
-    <string name="force_xtra_injection_failure">Устройство не поддерживает внесение XTRA сведений.
+    <string name="force_psds_injection_success">Успешно внесены PSDS сведения.</string>
+    <string name="force_psds_injection_failure">Устройство не поддерживает внесение PSDS сведений.
     </string>
 
     <string name="zoom_in">Приблизить</string>

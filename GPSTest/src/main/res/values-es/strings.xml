@@ -25,7 +25,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modificar datos de asistencia</string>
-    <string name="force_xtra_injection">Insertar datos XTRA</string>
+    <string name="force_psds_injection">Insertar datos PSDS</string>
     <string name="force_time_injection">Insertar datos de tiempo</string>
     <string name="delete_aiding_data">Borrar datos de asistencia</string>
     <string name="navdrawer_item_settings">Ajustes</string>
@@ -47,8 +47,8 @@
     <string name="force_time_injection_success">Datos de tiempo insertados correctamente</string>
     <string name="force_time_injection_failure">El dispositivo no permite insertar los datos de tiempo</string>
 
-    <string name="force_xtra_injection_success">Datos XTRA insertados correctamente</string>
-    <string name="force_xtra_injection_failure">El dispositivo no permite insertar los datos XTRA</string>
+    <string name="force_psds_injection_success">Datos PSDS insertados correctamente</string>
+    <string name="force_psds_injection_failure">El dispositivo no permite insertar los datos PSDS</string>
 
     <string name="zoom_in">Ampliar Vista</string>
     <string name="zoom_out">Reducir Vista</string>
