@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Τροποποιήστε τα δεδομένα βοήθειας</string>
-    <string name="force_psds_injection">Εισαγωγή δεδομένων PSDS</string>
+    <string name="force_psds_injection">Ενσωμάτωση δεδομένων PSDS</string>
     <string name="force_time_injection">Εισαγωγή δεδομένων ώρας</string>
     <string name="delete_aiding_data">Καθαρισμός δεδομένων</string>
     <string name="navdrawer_item_settings">Ρυθμίσεις</string>
@@ -48,14 +48,15 @@
     <string name="copied_to_clipboard">αντιγράφηκε στο πρόχειρο</string>
     <string name="send_log">αποστολή αρχείου καταγραφής</string>
     <string name="log_instructions">οδηγίες καταγραφής</string>
+    <string name="log_error">Υπήρξε σφάλμα με το αρχείο καταγραφής. Εχετε δώσει άδεια για χρήση αρχείων/φακέλων στην εφαρμογή; Δοκιμάστε πάλι να ενεργοποιήσετε την καταγραφή σε αρχείο απο τις Ρυθμίσεις και πατήστε στο \"να επιτρέπεται\" όταν ερωτηθείτε.</string>
     <string name="no_location">χωρίς θέση στίγματος</string>
     <string name="include_altitude">να περιλαμβάνεται το υψόμετρο</string>
     <string name="set_fix_frequency">Ορίστε συχνότητα σταθεροποίησης</string>
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
     <string name="force_time_injection_failure">Αδυναμία εισαγωγής δεδομένων ώρας (μη υποστήριξη).</string>
 
-    <string name="force_psds_injection_success">Επιτυχής εισαγωγή δεδομένων PSDS.</string>
-    <string name="force_psds_injection_failure">Αδυναμία εισαγωγής δεδομένων PSDS (μη υποστήριξη).</string>
+    <string name="force_psds_injection_success">Επιτυχής ενσωμάτωση δεδομένων PSDS.</string>
+    <string name="force_psds_injection_failure">Η συσκευή δεν υποστηρίζει ενσωμάτωση δεδομένων PSDS.</string>
 
     <string name="zoom_in">Μεγέθυνση</string>
     <string name="zoom_out">Σμίκρυνση</string>

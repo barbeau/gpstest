@@ -48,6 +48,7 @@
     <string name="copied_to_clipboard">Местоположение скопировано</string>
     <string name="send_log">Отправить логи...</string>
     <string name="log_instructions">Включить логирование для NMEA, сырые измерения, сообщения навигации и т. д. в Настройках</string>
+    <string name="log_error">С журналированием что-то не так. Разрешили ли вы доступ к файлохранилищу? Попробуйте снова включить журналирование в настройках и нажмите \"Разрешить\" при запросе доступа.</string>
     <string name="no_location">Попробовать поделиться месторасположением после GNSS фиксации</string>
     <string name="include_altitude">Включать высоту над уровнем моря</string>
     <string name="set_fix_frequency">Установить частоту фиксации</string>

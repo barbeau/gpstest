@@ -70,12 +70,12 @@
     <string name="gps_ttff_label">TTEF:</string>
     <string name="gps_altitude_label">Hoogte:</string>
     <string name="gps_altitude_msl_label">Hoogte(GZN):</string>
-    <string name="gps_accuracy_label">Ges. H. Nauwk.:</string>
-    <string name="gps_hor_and_vert_accuracy_label">Ges. H/V Nk.:</string>
+    <string name="gps_accuracy_label">Gs. H. Nauwk.:</string>
+    <string name="gps_hor_and_vert_accuracy_label">Gs. H/V Nk.:</string>
     <string name="gps_speed_label">Snelheid:</string>
-    <string name="gps_speed_acc_label">Ges. Snel. Nauwk.:</string>
+    <string name="gps_speed_acc_label">Gs. Sn. Nauwk.:</string>
     <string name="gps_bearing_label">Peiling:</string>
-    <string name="gps_bearing_acc_label">P. Nauwk.:</string>
+    <string name="gps_bearing_acc_label">Gs. P. Nauwk.:</string>
     <string name="gps_num_sats_label">#Sat:</string>
     <string name="pdop_label">P VVP:</string>
     <string name="hvdop_label">H/V VVP:</string>
@@ -112,6 +112,7 @@
     <string name="gnss_not_available">Er zijn geen satellieten van het het Mondiale Navigatie-SatellietSysteem (GNSS) beschikbaar</string>
     <string name="sbas_not_available">Er zijn geen satellieten beschikbaar voor het Satelliet-geBaseerd AanvullingsSysteem (SBAS)</string>
     <string name="menu_option_sort_by">Sortering</string>
+    <string name="error_time_title">Je GNSS-tijd is niet correct</string>
     <!-- Map view -->
     <string name="ground_truth_latitude">Je breedtegraad</string>
     <string name="ground_truth_longitude">Je lengtegraad</string>
