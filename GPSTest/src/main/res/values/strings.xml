@@ -196,6 +196,8 @@
         - Only show email apps when providing feedback.\n&#8226;\u0020
         <b>Improved \"# Sats\"</b>
         - now shows \"Used / In View (valid signal strength) / Total\", with correct counts for dual-frequency.\n&#8226;\u0020
+        <b>XTRA renamed to PSDS</b>
+        - Predicted Satellite Data Service is the generic term. Injecting PSDS on Android 10 and higher is now supported.\n&#8226;\u0020
         <b>Identify GPS week rollover issues</b>
         - Time is now highlighted in red on devices with wrong times due to the GPS week rollover issue (http://bit.ly/gps-week-rollover).\n&#8226;\u0020
         <b>Bug fixes</b>
