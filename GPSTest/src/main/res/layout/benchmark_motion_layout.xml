@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/ground_truth_latitude"
             android:inputType="numberDecimal|numberSigned"
+            android:digits="0123456789,."
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
@@ -54,6 +55,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/ground_truth_longitude"
             android:inputType="numberDecimal|numberSigned"
+            android:digits="0123456789,."
             android:singleLine="true"
             android:ellipsize="end"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
@@ -72,6 +74,7 @@
             android:ellipsize="end"
             android:hint="@string/ground_truth_altitude"
             android:inputType="numberDecimal|numberSigned"
+            android:digits="0123456789,."
             android:singleLine="true"
             android:textSize="@dimen/ground_truth_text_size_expanded" />
     </com.google.android.material.textfield.TextInputLayout>
