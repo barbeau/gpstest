@@ -87,6 +87,7 @@ import com.android.gpstest.util.UIUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
@@ -120,6 +121,7 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
+    private static final String EXISTING_LOG_FILE = "file_logging_started";
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -324,6 +326,9 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
+         if (mFileLogger.isStarted()) {
+             outState.putSerializable(EXISTING_LOG_FILE, mFileLogger.getFile());
+         }
         super.onSaveInstanceState(outState);
     }
 
@@ -481,10 +486,17 @@ public class GpsTestActivity extends AppCompatActivity
             checkNavMessageOutput(settings);
         }
 
-        if (PermissionUtils.hasGrantedFileWritePermission(this) && !mFileLogger.isStarted() &&
-                isFileLoggingEnabled()) {
+        if (PermissionUtils.hasGrantedFileWritePermission(this)
+                && !mFileLogger.isStarted()
+                && isFileLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
-            mFileLogger.startNewLog();
+            File existingFile = null;
+            if (mLastSavedInstanceState != null) {
+                // Check is see if this was an orientation change and we should continue logging to
+                // an existing file
+                existingFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_LOG_FILE);
+            }
+            mFileLogger.startLog(existingFile);
         }
 
         autoShowWhatsNew();
