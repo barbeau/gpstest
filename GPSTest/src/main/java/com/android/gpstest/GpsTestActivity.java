@@ -121,7 +121,7 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
-    private static final String EXISTING_LOG_FILE = "file_logging_started";
+    private static final String EXISTING_LOG_FILE = "existing_log_file";
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
