@@ -492,7 +492,7 @@ public class GpsTestActivity extends AppCompatActivity
             // User has granted permissions and has chosen to log at least one data type
             File existingFile = null;
             if (mLastSavedInstanceState != null) {
-                // Check is see if this was an orientation change and we should continue logging to
+                // See if this was an orientation change and we should continue logging to
                 // an existing file
                 existingFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_LOG_FILE);
             }
