@@ -242,6 +242,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private FileLogger mFileLogger;
 
+    private boolean shareDialogOpen = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -326,7 +328,7 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
-         if (mFileLogger.isStarted()) {
+         if (mFileLogger.isStarted() && !shareDialogOpen) {
              outState.putSerializable(EXISTING_LOG_FILE, mFileLogger.getFile());
          }
         super.onSaveInstanceState(outState);
@@ -335,6 +337,7 @@ public class GpsTestActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        shareDialogOpen = false;
 
         if (!mUserDeniedPermission) {
             requestPermissionAndInit(this);
@@ -363,6 +366,7 @@ public class GpsTestActivity extends AppCompatActivity
                 Uri uri = data.getData();
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
+                shareDialogOpen = true;
                 UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, uri).show();
             }
         } else {
@@ -1548,6 +1552,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void share() {
         final Location location = mLastLocation;
+        shareDialogOpen = true;
         UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, null).show();
     }
 
