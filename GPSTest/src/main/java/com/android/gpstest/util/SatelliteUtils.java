@@ -142,6 +142,11 @@ public class SatelliteUtils {
     public static SbasType getSbasConstellationType(int svid) {
         if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
             return SbasType.EGNOS;
+        } else if (svid == 125 || svid == 140 || svid == 141) {
+            return SbasType.SDCM;
+        } else if (svid == 130 || svid == 143 || svid == 144) {
+            // Also referred to as BDSBAS
+            return SbasType.SNAS;
         } else if (svid == 131 || svid == 133 || svid == 135 || svid == 138) {
             return SbasType.WAAS;
         } else if (svid == 127 || svid == 128 || svid == 139) {

@@ -93,6 +93,36 @@ class SatelliteUtilsTest {
 
         val sbasWaasL1NoCfkey = SatelliteUtils.createGnssSatelliteKey(sbasWaasL1NoCf)
         assertEquals("1 SBAS WAAS", sbasWaasL1NoCfkey)
+
+        // SBAS SDCM L1 - without CF
+        val sbasSdcm125L1 = SatelliteStatus(125,
+                GnssType.SBAS,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        sbasSdcm125L1.sbasType = SbasType.SDCM
+
+        val sbasSdcmL1key = SatelliteUtils.createGnssSatelliteKey(sbasSdcm125L1)
+        assertEquals("125 SBAS SDCM", sbasSdcmL1key)
+
+        // SBAS SDCM L1 - with CF
+        val sbasSdcm125L1WithCf = SatelliteStatus(125,
+                GnssType.SBAS,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        sbasSdcm125L1WithCf.hasCarrierFrequency = true
+        sbasSdcm125L1WithCf.carrierFrequencyHz = 1575420000.0f
+        sbasSdcm125L1WithCf.sbasType = SbasType.SDCM
+
+        val sbasSdcm125L1WithCfkey = SatelliteUtils.createGnssSatelliteKey(sbasSdcm125L1WithCf)
+        assertEquals("125 SBAS SDCM", sbasSdcm125L1WithCfkey)
     }
 
     /**

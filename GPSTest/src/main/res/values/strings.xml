@@ -158,7 +158,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
-    <string name="sky_legend_shape_snas">SNAS (China)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Signal Availability</string>
@@ -379,7 +379,7 @@
         - Pentagons\n&#8226;\u0020
         <b>IRNSS (India)</b>
         - Ovals\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
         - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
