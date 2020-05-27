@@ -81,9 +81,12 @@ public class FileLogger {
     }
 
     /**
-     * Start a new file logging process.
+     * Start a file logging process
+     *
+     * @param existingFile The existing file if file logging is to be continued, or null if a
+     *                     new file should be created.
      */
-    public void startNewLog() {
+    public void startLog(File existingFile) {
         synchronized (mFileLock) {
             File baseDirectory;
             String state = Environment.getExternalStorageState();
@@ -98,110 +101,85 @@ public class FileLogger {
                 return;
             }
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
-            Date now = new Date();
-            String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(now));
-            File currentFile = new File(baseDirectory, fileName);
-            String currentFilePath = currentFile.getAbsolutePath();
+            String currentFilePath;
+
+            if (existingFile != null) {
+                // Use existing file
+                currentFilePath = existingFile.getAbsolutePath();
+                BufferedWriter writer;
+                try {
+                    writer = new BufferedWriter(new FileWriter(existingFile));
+                } catch (IOException e) {
+                    logException("Could not open file: " + currentFilePath, e);
+                    return;
+                }
+                if (mFileWriter != null) {
+                    try {
+                        mFileWriter.close();
+                    } catch (IOException e) {
+                        logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
+                        return;
+                    }
+                }
+                mFile = existingFile;
+                mFileWriter = writer;
+            } else {
+                // Create new logging file
+                SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
+                String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(new Date()));
+                File currentFile = new File(baseDirectory, fileName);
+                currentFilePath = currentFile.getAbsolutePath();
+                BufferedWriter writer;
+                try {
+                    writer = new BufferedWriter(new FileWriter(currentFile));
+                } catch (IOException e) {
+                    logException("Could not open file: " + currentFilePath, e);
+                    return;
+                }
+
+                writeFileHeader(writer, currentFilePath);
+
+                if (mFileWriter != null) {
+                    try {
+                        mFileWriter.close();
+                    } catch (IOException e) {
+                        logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
+                        return;
+                    }
+                }
+
+                mFile = currentFile;
+                mFileWriter = writer;
+
+                Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                deleteOldFiles(baseDirectory, mFile);
+            }
+
+
+            File file;
+            if (existingFile != null) {
+                // Use existing file
+                currentFilePath = existingFile.getAbsolutePath();
+                file = existingFile;
+            } else {
+                // Create new logging file
+                SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
+                String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(new Date()));
+                file = new File(baseDirectory, fileName);
+                currentFilePath = file.getAbsolutePath();
+            }
+
             BufferedWriter writer;
             try {
-                writer = new BufferedWriter(new FileWriter(currentFile));
+                writer = new BufferedWriter(new FileWriter(file));
             } catch (IOException e) {
                 logException("Could not open file: " + currentFilePath, e);
                 return;
             }
 
-            // initialize the contents of the file
-            try {
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("Header Description:");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write(VERSION_TAG);
-                String manufacturer = Build.MANUFACTURER;
-                String model = Build.MODEL;
-
-                String versionString = "";
-                int versionCode = 0;
-                try {
-                    PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
-                    versionString = info.versionName;
-                    versionCode = info.versionCode;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                StringBuilder version = new StringBuilder();
-                // Version info
-                version.append("v")
-                        .append(versionString)
-                        .append(" (")
-                        .append(versionCode)
-                        .append("-" + BuildConfig.FLAVOR + "), ");
-
-                version.append("Manufacturer: " + manufacturer + ", ");
-                version.append("Model: " + model + ", ");
-
-                version.append(IOUtils.getGnssHardwareYear() + ", ");
-
-                String versionRelease = Build.VERSION.RELEASE;
-                version.append("Platform: " + versionRelease + ", ");
-                int apiLevel = Build.VERSION.SDK_INT;
-                version.append("API Level: " + apiLevel + " ");
-
-                writer.write(version.toString());
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("Raw GNSS measurements format:");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write(
-                        "  Raw,ElapsedRealtimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,"
-                                + "BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,"
-                                + "HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,"
-                                + "ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,"
-                                + "PseudorangeRateUncertaintyMetersPerSecond,"
-                                + "AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,"
-                                + "AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,"
-                                + "CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,"
-                                + "ConstellationType,AgcDb,CarrierFrequencyHz");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("Location fix format:");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write(
-                        "  Fix,Provider,Latitude,Longitude,Altitude,Speed,Accuracy,(UTC)TimeInMs");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("Navigation message format:");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("  Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("NMEA format (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
-                writer.newLine();
-                writer.write(COMMENT_START);
-                writer.newLine();
-            } catch (IOException e) {
-                logException(Application.get().getString(R.string.could_not_initialize_file, currentFilePath), e);
-                return;
+            if (existingFile == null) {
+                // Only if file didn't previously exist
+                writeFileHeader(writer, currentFilePath);
             }
 
             if (mFileWriter != null) {
@@ -213,26 +191,140 @@ public class FileLogger {
                 }
             }
 
-            mFile = currentFile;
             mFileWriter = writer;
-            Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+            mFile = file;
 
-            // To make sure that files do not fill up the external storage:
-            // - Remove all empty files
-            FileFilter filter = new FileToDeleteFilter(mFile);
-            for (File existingFile : baseDirectory.listFiles(filter)) {
-                existingFile.delete();
+            if (existingFile == null) {
+                // Only if file didn't previously exist
+                Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                deleteOldFiles(baseDirectory, mFile);
             }
-            // - Trim the number of files with data
-            File[] existingFiles = baseDirectory.listFiles();
-            int filesToDeleteCount = existingFiles.length - MAX_FILES_STORED;
-            if (filesToDeleteCount > 0) {
-                Arrays.sort(existingFiles);
-                for (int i = 0; i < filesToDeleteCount; ++i) {
-                    existingFiles[i].delete();
-                }
-            }
+
             mIsStarted = true;
+        }
+    }
+
+    /**
+     * Initialize file by adding a header
+     *
+     * @param writer   writer to use when writing file
+     * @param filePath path to the current file
+     */
+    private void writeFileHeader(BufferedWriter writer, String filePath) {
+        try {
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Header Description:");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write(VERSION_TAG);
+            String manufacturer = Build.MANUFACTURER;
+            String model = Build.MODEL;
+
+            String versionString = "";
+            int versionCode = 0;
+            try {
+                PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+                versionString = info.versionName;
+                versionCode = info.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            StringBuilder version = new StringBuilder();
+            // Version info
+            version.append("v")
+                    .append(versionString)
+                    .append(" (")
+                    .append(versionCode)
+                    .append("-" + BuildConfig.FLAVOR + "), ");
+
+            version.append("Manufacturer: " + manufacturer + ", ");
+            version.append("Model: " + model + ", ");
+
+            version.append(IOUtils.getGnssHardwareYear() + ", ");
+
+            String versionRelease = Build.VERSION.RELEASE;
+            version.append("Platform: " + versionRelease + ", ");
+            int apiLevel = Build.VERSION.SDK_INT;
+            version.append("API Level: " + apiLevel + " ");
+
+            writer.write(version.toString());
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Raw GNSS measurements format:");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write(
+                    "  Raw,ElapsedRealtimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,"
+                            + "BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,"
+                            + "HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,"
+                            + "ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,"
+                            + "PseudorangeRateUncertaintyMetersPerSecond,"
+                            + "AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,"
+                            + "AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,"
+                            + "CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,"
+                            + "ConstellationType,AgcDb,CarrierFrequencyHz");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Location fix format:");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write(
+                    "  Fix,Provider,Latitude,Longitude,Altitude,Speed,Accuracy,(UTC)TimeInMs");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Navigation message format:");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("NMEA format (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+        } catch (IOException e) {
+            logException(Application.get().getString(R.string.could_not_initialize_file, filePath), e);
+            return;
+        }
+    }
+
+    /**
+     * Deletes old files in the given baseDirectory, except the fileNotToDelete
+     *
+     * @param baseDirectory   base directory in which to delete files
+     * @param fileNotToDelete file not to delete
+     */
+    private void deleteOldFiles(File baseDirectory, File fileNotToDelete) {
+        // To make sure that files do not fill up the external storage:
+        // - Remove all empty files
+        FileFilter filter = new FileToDeleteFilter(fileNotToDelete);
+        for (File pastFile : baseDirectory.listFiles(filter)) {
+            pastFile.delete();
+        }
+        // - Trim the number of files with data
+        File[] pastFiles = baseDirectory.listFiles();
+        int filesToDeleteCount = pastFiles.length - MAX_FILES_STORED;
+        if (filesToDeleteCount > 0) {
+            Arrays.sort(pastFiles);
+            for (int i = 0; i < filesToDeleteCount; ++i) {
+                pastFiles[i].delete();
+            }
         }
     }
 
