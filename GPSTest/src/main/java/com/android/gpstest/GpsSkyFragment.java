@@ -365,11 +365,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             GradientDrawable borderGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_border);
             borderGradient.setColor(color);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mSnrCn0InViewAvgText.setBackground(background);
-            } else {
-                mSnrCn0InViewAvgText.setBackgroundDrawable(background);
-            }
+            mSnrCn0InViewAvgText.setBackground(background);
 
             // Set padding
             mSnrCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
@@ -425,11 +421,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
             backgroundGradient.setColor(color);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mSnrCn0UsedAvgText.setBackground(background);
-            } else {
-                mSnrCn0UsedAvgText.setBackgroundDrawable(background);
-            }
+            mSnrCn0UsedAvgText.setBackground(background);
 
             // Set padding
             mSnrCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);

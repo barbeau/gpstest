@@ -271,10 +271,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mVerticalErrorCardView = v.findViewById(R.id.vert_error_layout);
         mGroundTruthCardView = v.findViewById(R.id.benchmark_card);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mGroundTruthCardView.getLayoutTransition()
-                    .enableTransitionType(LayoutTransition.CHANGING);
-        }
+        mGroundTruthCardView.getLayoutTransition()
+                .enableTransitionType(LayoutTransition.CHANGING);
 
         mMotionLayout = v.findViewById(R.id.motion_layout);
         mSaveGroundTruth = v.findViewById(R.id.save);
@@ -869,10 +867,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         corners[7] = 0;
         shape.setCornerRadii(corners);
         shape.setColor(Application.get().getResources().getColor(R.color.colorPrimary));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mSlidingPanelHeader.setBackground(shape);
-        } else {
-            mSlidingPanelHeader.setBackgroundDrawable(shape);
-        }
+        mSlidingPanelHeader.setBackground(shape);
     }
 }

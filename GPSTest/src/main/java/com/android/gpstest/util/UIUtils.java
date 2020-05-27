@@ -78,9 +78,7 @@ public class UIUtils {
         view.setClickable(false);
         view.setFocusable(false);
         view.setContentDescription("");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        }
+        view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
 
     /**
@@ -109,12 +107,7 @@ public class UIUtils {
         if (activity == null) {
             return false;
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            return !activity.isFinishing() && !activity.isDestroyed();
-        } else {
-            return !activity.isFinishing();
-        }
+        return !activity.isFinishing() && !activity.isDestroyed();
     }
 
     /**

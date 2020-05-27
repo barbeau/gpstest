@@ -16,7 +16,6 @@
 package com.android.gpstest.util;
 
 import android.location.Location;
-import android.os.Build;
 import android.os.SystemClock;
 
 import java.text.NumberFormat;
@@ -36,14 +35,9 @@ public class LocationUtils {
         long timeDiff;
         double timeDiffSec;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            timeDiff = SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos();
-            // Convert to seconds
-            timeDiffSec = timeDiff / 1E9;
-        } else {
-            timeDiff = System.currentTimeMillis() - loc.getTime();
-            timeDiffSec = timeDiff / 1E3;
-        }
+        timeDiff = SystemClock.elapsedRealtimeNanos() - loc.getElapsedRealtimeNanos();
+        // Convert to seconds
+        timeDiffSec = timeDiff / 1E9;
 
         StringBuilder sb = new StringBuilder();
         sb.append(loc.getProvider());

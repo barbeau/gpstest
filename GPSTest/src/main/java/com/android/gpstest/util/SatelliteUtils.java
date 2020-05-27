@@ -224,8 +224,7 @@ public class SatelliteUtils {
     public static boolean isRotationVectorSensorSupported(Context context) {
         SensorManager sensorManager = (SensorManager) context
                 .getSystemService(Context.SENSOR_SERVICE);
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD &&
-                sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null;
+        return sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null;
     }
 
     /**
