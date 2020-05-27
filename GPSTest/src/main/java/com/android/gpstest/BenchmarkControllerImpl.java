@@ -38,7 +38,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.constraintlayout.motion.widget.MotionScene;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -303,11 +302,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 } else {
                     onCardCollapsed();
                 }
-            }
-
-            @Override
-            public boolean allowsTransition(MotionScene.Transition transition) {
-                return true;
             }
         });
 
