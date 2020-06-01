@@ -45,7 +45,7 @@
     <string name="delete_aiding_data_failure">Device does not support deleting assist data.
     </string>
     <string name="gps_switch">Off/On</string>
-    <string name="share">Share</string>
+    <string name="share">Share your location</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>

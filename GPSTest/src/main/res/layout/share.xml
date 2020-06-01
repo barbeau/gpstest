@@ -38,6 +38,29 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/date_time_label"
+            style="@style/TextAppearance.MaterialComponents.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/location_value" />
+
+        <TextView
+            android:id="@+id/date_time_value"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/button_margin"
+            android:textIsSelectable="true"
+            tools:text="June 1, 2020 09:12:12 AM EST"
+            android:text="June 1, 2020 09:12:12 AM EST"
+            app:layout_constraintTop_toBottomOf="@id/date_time_label"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/no_location"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
@@ -54,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@id/location_value"
+            app:layout_constraintTop_toBottomOf="@id/date_time_value"
             app:layout_constraintBottom_toTopOf="@id/include_altitude"
             app:layout_constraintStart_toStartOf="parent"
             android:clipChildren="false">
