@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
 ** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
@@ -138,7 +139,6 @@
     <string name="sky_legend_shape_gagan">GAGAN (Inde)</string>
     <string name="sky_legend_shape_msas">MSAS (Japon)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russie)</string>
-    <string name="sky_legend_shape_snas">SNAS (Chine)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Disponibilité du Signal</string>

@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">辅助数据</string>
-    <string name="force_psds_injection">导入PSDS数据</string>
+    <string name="force_psds_injection">导入 PSDS 数据</string>
     <string name="force_time_injection">导入时间数据</string>
     <string name="delete_aiding_data">清除辅助数据</string>
     <string name="navdrawer_item_settings">设置</string>
@@ -48,14 +48,15 @@
     <string name="copied_to_clipboard">位置已复制到粘贴板</string>
     <string name="send_log">发送日志</string>
     <string name="log_instructions">在设置中启用 NMEA、原始测量数据、导航信息等的输出</string>
+    <string name="log_error">将日志输出到文件时发生了错误。您是否已授予本应用存储权限？请尝试在设置中重新启用任一将日志输出到文件的选项，并在系统提示时点击“允许”。</string>
     <string name="no_location">在 GNSS 定位成功后分享你的位置</string>
     <string name="include_altitude">包含高度</string>
     <string name="set_fix_frequency">设置固定频率</string>
     <string name="force_time_injection_success">已成功导入时间数据。</string>
     <string name="force_time_injection_failure">设备不支持导入时间数据。</string>
 
-    <string name="force_psds_injection_success">已成功导入PSDS数据。</string>
-    <string name="force_psds_injection_failure">设备不支持导入PSDS数据。</string>
+    <string name="force_psds_injection_success">已成功导入 PSDS 数据。</string>
+    <string name="force_psds_injection_failure">设备不支持导入 PSDS 数据。</string>
 
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>
@@ -68,6 +69,7 @@
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">高度:</string>
     <string name="gps_altitude_msl_label">高度(MSL):</string>
+    <string name="gps_accuracy_label">E H Acc:</string>
     <string name="gps_hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="gps_speed_label">速度:</string>
     <string name="gps_speed_acc_label">速度精度:</string>
@@ -108,6 +110,9 @@
     <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
     <string name="sbas_not_available">星基增强系统（SBAS）卫星不可用</string>
     <string name="menu_option_sort_by">分类</string>
+    <string name="error_time_title">你的 GNSS 时间有误</string>
+    <string name="error_time_message">设备的GNSS时间：n\n%1$s\n\n…与您的系统时钟相差%2$d天以上。这可能是GPS周翻转问题引起的-请向您的设备制造商询问详细信息。有关更多信息，请参见http://bit.ly/gps-week-rollover。</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">当前纬度</string>
     <string name="ground_truth_longitude">当前经度</string>
@@ -149,7 +154,6 @@
     <string name="sky_legend_shape_gagan">GAGAN（印度）</string>
     <string name="sky_legend_shape_msas">MSAS（日本）</string>
     <string name="sky_legend_shape_sdcm">SDCM（俄罗斯）</string>
-    <string name="sky_legend_shape_snas">SNAS（中国）</string>
     <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
 
     <string name="sky_legend_shape_availability_title">信号可用性</string>
@@ -181,6 +185,18 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>改善反馈</b>
+        - 提供反馈时仅显示电子邮件应用程序。\n&#8226;\u0020
+        <b>改善 \"# Sats\"</b>
+        - now shows \"Used / In View (valid signal strength) / Total\", with correct counts for dual-frequency.\n&#8226;\u0020
+        <b>XTRA 重命名为 PSDS</b>
+        -预测卫星数据服务是通用术语。现在支持在Android 10及更高版本上注入PSDS。\n&#8226;\u0020
+        <b>确定GPS周翻转问题</b>
+        - 由于GPS周翻转问题，时间错误的设备上的时间现在以红色突出显示(http://bit.ly/gps-week-rollover).\n&#8226;\u0020
+        <b>Bug修复</b>
+        - See https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->
@@ -283,4 +299,4 @@
     <!-- Help -->
     <string name="title_help">帮助</string>
 
-</resources>
+    </resources>

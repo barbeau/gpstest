@@ -124,7 +124,6 @@
     <string name="sky_legend_shape_gagan">GAGAN（インド）</string>
     <string name="sky_legend_shape_msas">MSAS（日本）</string>
     <string name="sky_legend_shape_sdcm">SDCM（ロシア）</string>
-    <string name="sky_legend_shape_snas">SNAS（中国）</string>
     <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
 
     <string name="sky_legend_shape_availability_title">信号の可用性</string>
@@ -222,4 +221,4 @@
     <!-- Help -->
     <string name="title_help">ヘルプ</string>
 
-</resources>
+    </resources>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
 ** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
@@ -47,13 +48,14 @@
     <string name="copied_to_clipboard">Coordinate copiate negli appunti</string>
     <string name="send_log">Invio registro...</string>
     <string name="log_instructions">Abilita registrazione dati NMEA, misurazioni di base, messaggi di navigazione e altro nelle Impostazioni.</string>
+    <string name="log_error">Qualcosa è andato storto durante il tentativo di log. Hai consentito i permessi di accesso alla memoria interna? Attiva di nuovo l\'opzione di log nelle Impostazioni e clicca su \"Consenti\" quando richiesto.</string>
     <string name="no_location">Prova a condividere le tue coordinate dopo che il dispositivo ti ha geolocalizzato</string>
     <string name="include_altitude">Includi altitudine</string>
     <string name="set_fix_frequency">Imposta Frequenza di geolocalizzazione</string>
     <string name="force_time_injection_success">Dati temporali NTP inseriti con successo</string>
     <string name="force_time_injection_failure">Il dispositivo non supporta l\'inserimento di dati temporali NTP</string>
 
-    <string name="force_psds_injection_success">Dati PSDS inseriti con successo</string>
+    <string name="force_psds_injection_success">Dati PSDS inseriti correttamente</string>
     <string name="force_psds_injection_failure">Il dispositivo non supporta l\'inserimento di dati PSDS</string>
 
     <string name="zoom_in">Zoom +</string>
@@ -154,7 +156,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Giappone)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
-    <string name="sky_legend_shape_snas">SNAS (Cina)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Segnale</string>
@@ -186,6 +187,18 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Miglioramento feedback</b>
+        - Ora appaiono solo le applicazioni mail quando proviamo a condividere un feedback.\n&#8226;\u0020
+        <b>Migliorato il \"Numero Satelliti\"</b>
+        - ora vengono mostrati i satelliti \"Usati / In Vista (valore intensità segnale valido) / Totali\", con un conteggio corretto per i dispositivi dual-frequency.\n&#8226;\u0020
+        <b>XTRA ridenominati in PSDS</b>
+        - Il termine generico riferito ai dati XTRA è stato ridenominato con la sigla PSDS (Predicted Satellite Data Service). L\'inserimento dei dati PSDS è ora supportato su Android 10 e superiori.\n&#8226;\u0020
+        <b>Identifica il problema \"GPS week rollover\"</b>
+        - L\'orrio è indicato in rosso sui dispositivi con un orario errato a causa del \"GPS week rollover issue\" (http://bit.ly/gps-week-rollover).\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - Per maggiori info vedi: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
