@@ -13,6 +13,7 @@ Users have contributed translations in the following languages:
 * Indonesian
 * Polish
 * French
+* Persian
 
 We would love help improving the existing translations, or adding a new translation.
 

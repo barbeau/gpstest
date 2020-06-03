@@ -213,6 +213,7 @@
         <item>Indonesia</item>
         <item>Polskie</item>
         <item>Français</item>
+        <item>زبان فارسی</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -230,6 +231,7 @@
         <item>in</item>
         <item>pl</item>
         <item>fr</item>
+        <item>fa</item>
     </string-array>
 
 

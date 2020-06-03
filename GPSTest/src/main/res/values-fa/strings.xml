@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     https://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Fragments -->
+    <string name="gps_status_title">وضعیت</string>
+    <string name="gps_map_title">نقشه</string>
+    <string name="gps_sky_title">آسمان</string>
+    <string name="gps_accuracy_title">صحت</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">اصلاح دادهٔ کمکی</string>
+    <string name="force_psds_injection">تزریق دادهٔ PSDS</string>
+    <string name="force_time_injection">تزریق دادهٔ زمان</string>
+    <string name="delete_aiding_data">پاک‌سازی دادهٔ کمکی</string>
+    <string name="navdrawer_item_settings">تنظیمات</string>
+    <string name="navdrawer_item_help">راهنما</string>
+    <string name="navdrawer_item_send_feedback">بازخورد</string>
+    <string name="navdrawer_item_open_source">ما در گیت‌هاب</string>
+
+    <string name="navigation_drawer_open">گشودن کشوی ناوبری</string>
+    <string name="navigation_drawer_close">بستن کشوی ناوبری</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">آغاز</string>
+    <string name="gps_pause">مکث</string>
+
+    <string name="delete_aiding_data_success">دادهٔ کمکی با موفقیت پاک شد.</string>
+    <string name="delete_aiding_data_failure">حذف دادهٔ کمکی در این دستگاه پشتیبانی نمی‌شود.</string>
+    <string name="gps_switch">خاموش/روشن</string>
+    <string name="share">همرسانی</string>
+    <string name="copied_to_clipboard">مکان در بریده‌دادن کپی شد</string>
+    <string name="send_log">«فرستادن لاگ...»</string>
+    <string name="log_instructions">در تنظیمات، لاگ‌نگاری برای NMEA، اندازه‌گیری‌های خام، پیام‌های ناوبری و غیره را فعال کنید.</string>
+    <string name="log_error">مشکلی در لاگ‌نگاری پیش آمد. آیا دسترسی به محل ذخیره را مجاز کرده‌اید؟ لطفاً در تنظیمات یکی از گزینه‌های رخدادنگاری را دوباره فعال کنید و هنگام درخواست دسترسی، «مجاز است» را برگزینید.</string>
+    <string name="no_location">پس از دریافت فیکس GNSS، برای همرسانی تلاش کنید</string>
+    <string name="include_altitude">شامل ارتفاع</string>
+    <string name="set_fix_frequency">تنظیم فرکانس فیکس</string>
+    <string name="force_time_injection_success">دادهٔ زمان با موفقیت تزریق شد.</string>
+    <string name="force_time_injection_failure">تزریق دادهٔ زمان در این دستگاه پشتیبانی نمی‌شود.</string>
+
+    <string name="force_psds_injection_success">دادهٔ PSDS با موفقیت تزریق شد.</string>
+    <string name="force_psds_injection_failure">تزریق دادهٔ PSDS در این دستگاه پشتیبانی نمی‌شود.</string>
+
+    <string name="zoom_in">زومپیش</string>
+    <string name="zoom_out">زومپس</string>
+    <string name="mode_map">نقشه</string>
+    <string name="mode_satellite">ماهواره</string>
+
+    <string name="gps_latitude_label">Lat:</string>
+    <string name="gps_longitude_label">Long:</string>
+    <string name="gps_fix_time_label">Time:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Alt:</string>
+    <string name="gps_altitude_msl_label">Alt (MSL):</string>
+    <string name="gps_accuracy_label">E H Acc:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
+    <string name="gps_speed_label">Speed:</string>
+    <string name="gps_speed_acc_label">S. Acc:</string>
+    <string name="gps_bearing_label">Bearing:</string>
+    <string name="gps_bearing_acc_label">B. Acc:</string>
+    <string name="gps_num_sats_label"># Sats:</string>
+    <string name="pdop_label">PDOP:</string>
+    <string name="hvdop_label">H/V DOP:</string>
+
+    <string name="gps_prn_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="gps_carrier_column_label">CF</string>
+    <string name="gps_snr_column_label">SNR</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">میانگین</string>
+    <string name="gps_elevation_column_label">Elev</string>
+    <string name="gps_azimuth_column_label">Azim</string>
+    <string name="gps_flags_column_label">Flags</string>
+    <string name="gps_not_supported">لطفاً تنظیمات دستگاه را بررسی کنید. به نظر می‌رسد دستگاه از GNSS/GPS پشتیبانی نمی‌کند.</string>
+    <string name="install">نصب</string>
+    <string name="no_thanks">خیر، سپاس</string>
+    <string name="please_install_google_maps">زبانهٔ نقشه نیازمند Google Maps است</string>
+    <string name="enable_gps_message">GPS/GNSS خاموش است. اکنون روشن می‌کنید؟</string>
+    <string name="enable_gps_positive_button">روشن‌کردن GPS/GNSS</string>
+    <string name="enable_gps_negative_button">خیر</string>
+    <string name="gps_set_location_listener">‏GNSS آغاز شد با interval = %1$ss, min. dist. = %2$sm
+    </string>
+    <string name="clear_assist_warning_title">حذف دادهٔ کمکی؟</string>
+    <string name="clear_assist_warning">تازه‌سازی خودکار دادهٔ کمکی در برخی دستگاه‌ها ممکن است تا ۲۴ ساعت زمان ببرد. اگر دستگاهتان از تزریق دستی پشتیبانی نمی‌کند، ممکن است تا تکمیل‌شدن تازه‌سازی خودکار، GNSS برای هیچ برنامه‌ای کار نکند. مطمئن هستید؟</string>
+    <string name="never_ask_again">دوباره نپرس</string>
+    <string name="qr_code_instructions_title">یک کد QR اسکن کنید</string>
+    <string name="qr_code_instructions_text">با استفاده از کد QR در قالب Geo URI ‏(geo:28.38434,-87.24334)، یک موقعیت میدانی درون‌برد کنید. در‪ https://zxing.appspot.com/generator/ ‬برای خودتان کد QR بسازید.</string>
+    <string name="qr_code_cannot_read_code">خوانش Geo URI از کد QR ناموفق بود.</string>
+    <string name="never_show_again">دوباره نشان نده</string>
+    <string name="not_now">اکنون خیر</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
+    <string name="gnss_not_available">ماهواره‌های GNSS (سامانهٔ ناوبری ماهواره‌ای جهانی) در دسترس نیستند.</string>
+    <string name="sbas_not_available">ماهواره‌های SBAS (سامانهٔ تقویتی بر پایهٔ ماهواره) در دسترس نیستند.</string>
+    <string name="menu_option_sort_by">ترتیب بر اساس</string>
+    <string name="error_time_title">زمان GNSS شما نادرست است</string>
+    <string name="error_time_message">زمان GNSS دستگاه:\n\n%1$s\n\n…بیش از %2$d روز با ساعت دستگاه شما فرق دارد. این مشکل می‌تواند ناشی از «مسئلهٔ بازنشانی شمارندهٔ هفته در GPS» باشد. برای جزئیات بیشتر با سازندهٔ دستگاه خود تماس بگیرید. برای اطلاعات بیشتر http://bit.ly/gps-week-rollover را ببینید.</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">عرض جغرافیایی شما</string>
+    <string name="ground_truth_longitude">طول جغرافیایی شما</string>
+    <string name="ground_truth_altitude">ارتفاع شما در WGS84 (اختیاری)</string>
+    <string name="set_ground_truth_title">اندازه‌گیری صحت</string>
+    <string name="set_ground_truth_subtitle">نقشه را لمس کنید یا موقعیت واقعی خود را بنویسید</string>
+    <string name="save">ذخیره</string>
+    <string name="edit">ویراش</string>
+    <string name="ground_truth_marker_title">موقعیت واقعی شما</string>
+    <string name="ground_truth_invalid_location_title">موقعیت نامعتبر</string>
+    <string name="ground_truth_invalid_lat">عرض جغرافیایی باید در قالب درجهٔ اعشاری بین ‎-90 و 90 باشد</string>
+    <string name="ground_truth_invalid_long">عرض جغرافیایی باید در قالب درجهٔ اعشاری بین ‎-180 و 180 باشد</string>
+    <string name="ground_truth_invalid_alt">ارتفاع باید در WGS84 به متر باشد</string>
+
+    <string name="horizontal_error_title">خطای افقی</string>
+    <string name="vertical_error_title">خطای عمودی</string>
+    <string name="horizontal_error_label">خطا</string>
+    <string name="measured_error_graph_label">خطای اندازه‌گیری‌شده</string>
+    <string name="estimated_accuracy_graph_label">تخمین صحت سخت‌افزاری</string>
+    <string name="horizontal_vertical_error_label">خطای اف‍/عم‍</string>
+    <string name="avg_error_label">میانگین %1$d فیکس</string>
+    <string name="fix_number">فیکس #</string>
+    <string name="show_radar_valid_location">موقعیت میدانی درون‌برد شد!</string>
+    <string name="show_radar_invalid_location">موقعیت میدانی درون‌بردی نامعتبر است</string>
+
+    <!-- Sky view -->
+    <string name="sky_legend_title">کلید</string>
+    <string name="sky_legend_shape_gnss_title">سامانه‌های ناوبری ماهواره‌ای جهانی (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (آمریکا)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (روسیه)</string>
+    <string name="sky_legend_shape_galileo">Galileo (اتحادیهٔ اروپا)</string>
+    <string name="sky_legend_shape_qzss">QZSS (ژاپن)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (چین)</string>
+    <string name="sky_legend_shape_irnss">IRNSS (هند)</string>
+
+    <string name="sky_legend_shape_sbas_title">سامانه‌های تقویتی بر پایهٔ ماهواره (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS (آمریکا)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (اتحادیهٔ اروپا)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (هند)</string>
+    <string name="sky_legend_shape_msas">MSAS (ژاپن)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (روسیه)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ایکائو)</string>
+
+    <string name="sky_legend_shape_availability_title">سطح سیگنال</string>
+    <string name="sky_legend_shape_not_in_view">خارج از دید دستگاه</string>
+    <string name="sky_legend_shape_in_view">در دید</string>
+    <string name="sky_legend_shape_used_in_fix">به‌کاررفته در فیکس</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">موقعیت مکانی یا ارائه‌دهندهٔ GNSS خاموش است. تا روشن شود، به‌روزآوری‌ای نیست</string>
+    <string name="gnss_nav_msg_status_not_supported">ردیابی پیام‌های ناوبری GNSS در این دستگاه پشتیبانی نمی‌شود</string>
+    <string name="gnss_nav_msg_status_ready">پیام‌های ناوبری GNSS با موفقیت در حال ردیابی است</string>
+
+    <string name="gnss_measurement_status_loc_disabled">موقعیت مکانی یا ارائه‌دهندهٔ GNSS خاموش است. تا روشن شود، به‌روزآوری‌ای نیست</string>
+    <string name="gnss_measurement_status_not_supported">ردیابی اندازه‌گیری‌های GNSS در این دستگاه پشتیبانی نمی‌شود</string>
+    <string name="gnss_measurement_status_ready">اندازه‌گیری‌های GNSS با موفقیت در حال ردیابی است</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">نیازمند دسترسی مکانی</string>
+    <string name="text_location_permission">‏GPSTest برای نمایش دادهٔ GNSS نیازمند دسترسی به موقعیت مکانی شماست. اگر «دوباره نپرس» را علامت بزنید، باید برنامه را دوباره نصب کنید یا دسترسی‌ها را از طریق تنظیمات دستگاه فعال کنید.</string>
+    <string name="ok">خب</string>
+    <string name="exit">خروج</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Feedback</string>
+    <string name="feedback_body">پذیرای انتقادها، قدردانی‌ها یا گزارش باگ‌ها هستیم!\n\n\n</string>
+    <string name="feedback_error">ناتوان از فرستادن بازخورد: برنامهٔ مناسبی یافت نشد.</string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">تازه‌ها</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>بهبود بازخورد</b>
+        - هنگام ارائهٔ بازخورد فقط برنامه‌های ایمیل را نشان می‌دهد.\n&#8226;\u0020
+        <b>بهبود \"‎# Sats\"</b>
+        - اکنون ‪«به‌کاررفته ‎/ در دید (قدرت سیگنال معتبر) /‎ کل»‬ را نشان می‌دهد همراه با شمارش درست برای دوفرکانسه‌ها.\n&#8226;\u0020
+        <b>XTRA به PSDS تغییرنام یافت</b>
+        - اصطلاح کلی Predicted Satellite Data Service است. اکنون تزریق PSDS در اندروید ۱۰ و بالاتر امکان‌پذیر است.\n&#8226;\u0020
+        <b>شناسایی مشکل بازنشانی شمارندهٔ هفتهٔ GPS</b>
+        - اکنون در دستگاه‌هایی که به‌خاطر مسئلهٔ بازنشانی شمارندهٔ هفتهٔ GPS زمانشان نادرست است، زمان به رنگ قرمز در می‌آید (http://bit.ly/gps-week-rollover).\n&#8226;\u0020
+        <b>رفع اشکال‌ها</b>
+        - https://bit.ly/gpstest-releases را ببینید
+    </string>
+    <string name="main_help_close">بستن</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">تنظیمات</string>
+    <string name="pref_map_category_title">نقشه</string>
+    <string name="pref_map_type_title">نوع نقشه</string>
+    <string name="pref_map_type_summary">نوع نقشهٔ نمایش‌یافته را تنظیم می‌کند.</string>
+    <string name="pref_map_type_dialog_title">نوع نقشه را انتخاب کنید</string>
+
+    <string name="pref_rotate_map_with_compass_title">چرخش نقشه با قطب‌نما</string>
+    <string name="pref_rotate_map_with_compass_summary">جهت نقشه را بر اساس جهت شما تغییر می‌دهد</string>
+
+    <string name="pref_tilt_map_with_sensors_title">مایل‌شدن نقشه با دستگاه</string>
+    <string name="pref_tilt_map_with_sensors_summary">هنگامی که دستگاه را در دست می‌گیرید، نمای نقشه را به اول‌شخص تغییر می‌دهد</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">آغاز خودکار GNSS</string>
+    <string name="pref_auto_start_gps_summary">هنگام آغاز برنامه، GNSS را آغاز می‌کند</string>
+
+    <string name="pref_gps_min_time_title">دوره</string>
+    <string name="pref_gps_min_time_summary">زمان بین فیکس‌های GNSS، به ثانیه</string>
+    <string name="pref_gps_min_time_dialog_title">دوره‌ای وارد کنید، به ثانیه</string>
+    <string name="pref_gps_min_time_invalid_entry">دوره باید عدد باشد</string>
+
+    <string name="pref_use_gnss_apis_title">استفاده از APIهای GNSS</string>
+    <string name="pref_use_gnss_apis_summary">در اندروید ۷.۰ و بالاتر موجود است. اگر فعال نباشد،
+        از GPSStatus.Listener قدیمی استفاده می‌کنیم.
+    </string>
+
+    <string name="pref_gps_min_distance_title">کمترین فاصله</string>
+    <string name="pref_gps_min_distance_summary">کمترین فاصله بین فیکس‌های GNSS، به متر</string>
+    <string name="pref_gps_min_distance_dialog_title">کمترین فاصله، به متر</string>
+    <string name="pref_gps_min_distance_invalid_entry">کمترین فاصله باید عدد باشد</string>
+
+    <string name="pref_stop_gnss_in_background_title">توقف GNSS در پس‌زمینه</string>
+    <string name="pref_stop_gnss_in_background_summary">اگر فعال باشد هنگامی که برنامه به پس‌زمینه برود همواره GNSS را متوقف می‌کند (برای مثال، هنگامی که از دکمهٔ برنامه‌های اخیر برای جابه‌جایی بین برنامه‌ها یا از دکمهٔ Home استفاده می‌کنید)</string>
+
+    <string name="pref_display_category_title">نمایش</string>
+    <string name="pref_keep_screen_on_title">نمایشگر روشن بماند</string>
+    <string name="pref_keep_screen_on_summary">از خاموش‌شدن صفحه جلوگیری می‌کند</string>
+    <string name="pref_true_north_title">اشارهٔ قطب‌نما به شمال حقیقی</string>
+    <string name="pref_true_north_summary">قطب‌نما به‌جای شمال مغناطیسی رو به شمال حقیقی می‌شود</string>
+
+    <!-- Output category -->
+    <string name="pref_output_category_title">لاگ‌نگاری و خروجی</string>
+    <string name="pref_output_category_summary">‏NMEA، اندازه‌گیری‌های خام، یا پیام‌های ناوبری را در پرونده یا Android Studio ثبت می‌کند</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">خروجی پایش اندروید</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">جملات NMEA را در Android Studio ثبت می‌کند</string>
+    <string name="pref_nmea_timestamp_output_title">مهر زمان NMEA</string>
+    <string name="pref_nmea_timestamp_output_summary">برچسب زمانی NMEA در خروجی بیاید</string>
+    <string name="pref_measurement_output_title">اندازه‌گیری‌ها</string>
+    <string name="pref_as_measurement_output_summary">اندازه‌گیری‌های GNSS را در Android Studio ثبت می‌کند (اندروید ۷.۰ و بالاتر)</string>
+    <string name="pref_navigation_message_output_title">پیام‌های ناوبری</string>
+    <string name="pref_as_navigation_message_output_summary">پیام‌های ناوبری GNSS را در Android Studio ثبت می‌کند (اندروید ۷.۰ و بالاتر)</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">خروجی در پرونده</string>
+    <string name="pref_file_nmea_output_summary">جملات NMEA را در پرونده‌ای ثبت می‌کند</string>
+    <string name="pref_file_measurement_output_summary">اندازه‌گیری‌های GNSS را در پرونده‌ای ثبت می‌کند (اندروید ۷.۰ و بالاتر)</string>
+    <string name="pref_file_navigation_message_output_summary">پیام‌های ناوبری GNSS را در پرونده‌ای ثبت می‌کند (اندروید ۷.۰ و بالاتر)</string>
+    <string name="pref_file_location_output_title">مکان</string>
+    <string name="pref_file_location_output_summary">جزئیات فیکس مکان را در پرونده‌ای ثبت می‌کند</string>
+
+    <string name="logging_to_new_file">لاگ‌نگاری در پروندهٔ جدید: %1$s</string>
+    <string name="unable_to_close_all_file_streams">ناتوان از بستن همهٔ جریان‌های پرونده.</string>
+    <string name="could_not_initialize_file">ناتوان از مقداردهی اولیهٔ پرونده:%1$s</string>
+    <string name="error_writing_file">مشکل هنگام نوشتن در پرونده.</string>
+
+    <string name="pref_about_category_title">درباره</string>
+    <string name="pref_show_tutorial_title">نمایش آموزش</string>
+    <string name="pref_show_tutorial_summary">دستورالعمل‌هایی برای کار با برنامه نشان می‌دهد</string>
+
+    <string name="pref_dark_theme_title">پوستهٔ تیره</string>
+    <string name="pref_dark_theme_summary">رنگ زمینه را تیره و رنگ متن را روشن می‌کند</string>
+
+    <string name="pref_coordinate_format_title">قالب مختصات</string>
+    <string name="pref_coordinate_format_summary">نمایش در قالب درجهٔ اعشاری، DMS یا درجه دقیقه اعشاری</string>
+    <string name="preferences_coordinate_format_dd">درجهٔ اعشاری</string>
+    <string name="preferences_coordinate_format_dms">درجه، دقیقه، ثانیهٔ اعشاری (DMS)</string>
+    <string name="preferences_coordinate_format_ddm">درجه، دقیقهٔ اعشاری</string>
+
+    <string name="preferences_preferred_distance_units_title">یکای ترجیحی مسافت</string>
+    <string name="preferences_preferred_distance_units_option_meters">متر</string>
+    <string name="preferences_preferred_distance_units_option_feet">پا</string>
+
+    <string name="preferences_preferred_speed_units_title">یکای ترجیحی سرعت</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">متر بر ثانیه</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">کیلومتر بر ساعت</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">مایل بر ساعت</string>
+
+    <string name="pref_language_title">زبان</string>
+    <string name="pref_language_summary">زبان نمایش برنامه را به‌طور دستی انتخاب کنید</string>
+    <string name="pref_language_dialog_title">انتخاب زبان</string>
+
+    <!-- Help -->
+    <string name="title_help">راهنما</string>
+
+    </resources>
