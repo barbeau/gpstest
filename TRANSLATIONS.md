@@ -29,6 +29,8 @@ As mentioned [here](https://docs.transifex.com/faq/all#what-kind-of-notification
 
 See also the [Notifications documentation](https://docs.transifex.com/tracking/notifications).
 
+After you finish a new language translation, please [open a GitHub issue](https://github.com/barbeau/gpstest/issues/new) asking for it to be merged into the app!
+
 ## Example translation
 
 You can see a sample translation for Dutch in the following files:
