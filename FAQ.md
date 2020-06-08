@@ -81,7 +81,7 @@ Android 1.5 and up, in its simplest form.  More advanced versions with an update
 * **Start/Stop** - Start/stop the GPS hardware
 * **Send Location** - After a latitude and longitude has been acquired, you can share this info
 * **Inject Time** - Injects Time assistance data for GPS into the platform, using information from a [Network Time Protocol (NTP)](http://support.ntp.org/bin/view/Main/WebHome) server.  Note that some devices don't use an NTP server for time data - if this is your device, you'll see a message saying "Platform does not support injecting time data".
-* **Inject XTRA Data** - Injects [XTRA assistance data](http://goo.gl/3RjWX) for GPS into the platform, using information from a XTRA server.  Note that some devices don't use XTRA for assistance data - if this is your device, you'll see a message saying "Platform does not support injecting XTRA data". 
+* **Inject PSDS Data** - Injects Predicted Satellite Data Service (PSDS) assistance data for GNSS into the platform, using information from a PSDS server.  Note that some devices don't use PSDS for assistance data - if this is your device, you'll see a message saying "Platform does not support injecting PSDS data". PSDS is the generic term for products like [XTRA assistance data](http://goo.gl/3RjWX).
 * **Clear Aiding Data** - Clears all assistance data used for GPS, including NTP and XTRA data (Note: if you select this option to fix broken GPS on your device, for GPS to work again you may need to ‘Inject Time’ and ‘Inject XTRA’ data).  Note that some devices don't support clearing assistance data - if this is your device, you'll see a message saying "Platform does not support deleting aiding data".
 * **Settings** - Set map tile type
 
