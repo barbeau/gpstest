@@ -96,6 +96,19 @@ public class UIUtils {
     }
 
     /**
+     * Returns true if the current display is wide enough to show the GPS date on the Status screen,
+     * false if the current display is too narrow to fit the GPS date
+     * @param context
+     * @return true if the current display is wide enough to show the GPS date on the Status screen,
+     *      false if the current display is too narrow to fit the GPS date
+     */
+    public static boolean isWideEnoughForDate(Context context) {
+        // 450dp is a little larger than the width of a Samsung Galaxy S8+
+        final int WIDTH_THRESHOLD = dpToPixels(context, 450);
+        return context.getResources().getDisplayMetrics().widthPixels > WIDTH_THRESHOLD;
+    }
+
+    /**
      * Returns true if the activity is still active and dialogs can be managed (i.e., displayed
      * or dismissed), or false if it is not
      *
