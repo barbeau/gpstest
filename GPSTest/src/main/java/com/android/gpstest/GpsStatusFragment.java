@@ -88,9 +88,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     private static final String EMPTY_LAT_LONG = "             ";
 
     @SuppressLint("SimpleDateFormat") // See #117
-    SimpleDateFormat mDateFormat = new SimpleDateFormat(
+    SimpleDateFormat mTimeFormat = new SimpleDateFormat(
             DateFormat.is24HourFormat(Application.get().getApplicationContext())
                     ? "HH:mm:ss" : "hh:mm:ss a");
+
+    SimpleDateFormat mTimeAndDateFormat = new SimpleDateFormat(
+            DateFormat.is24HourFormat(Application.get().getApplicationContext())
+                    ? "HH:mm:ss" : "hh:mm:ss a MMM d, yyyy z");
 
     private Resources mRes;
 
@@ -285,14 +289,22 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             if (DateTimeUtils.Companion.isTimeValid(mFixTime)) {
                 mFixTimeErrorView.setVisibility(View.GONE);
                 mFixTimeView.setVisibility(View.VISIBLE);
-                mFixTimeView.setText(mDateFormat.format(mFixTime));
+                mFixTimeView.setText(formatFixTimeDate(mFixTime));
             } else {
                 // Error in fix time
                 mFixTimeErrorView.setVisibility(View.VISIBLE);
                 mFixTimeView.setVisibility(View.GONE);
-                mFixTimeErrorView.setText(mDateFormat.format(mFixTime));
+                mFixTimeErrorView.setText(formatFixTimeDate(mFixTime));
             }
         }
+    }
+
+    /**
+     * Returns a formatted version of the provided fixTime based on the width of the current display
+     * @return a formatted version of the provided fixTime based on the width of the current display
+     */
+    private String formatFixTimeDate(long fixTime) {
+        return UIUtils.isWideEnoughForDate(getContext()) ? mTimeAndDateFormat.format(fixTime) : mTimeFormat.format(fixTime);
     }
 
     /**
