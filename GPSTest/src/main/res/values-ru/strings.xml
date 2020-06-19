@@ -158,7 +158,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (Индия)</string>
     <string name="sky_legend_shape_msas">MSAS (Япония)</string>
     <string name="sky_legend_shape_sdcm">СДКМ (Россия)</string>
-    <string name="sky_legend_shape_snas">SNAS (Китай)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (Китай)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ИКАО)</string>
 
     <string name="sky_legend_shape_availability_title">Доступность сигнала</string>
