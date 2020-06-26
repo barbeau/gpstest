@@ -23,9 +23,9 @@ A clear and concise description of what you expected to happen.
 **Observed behavior**
 A clear and concise description of what actually happened.
 
-**Device and Android version:** 
+**App, Device and Android version:** 
 
-What make and model device (e.g., Samsung Galaxy S10) did you encounter this on?  What Android version (e.g., Android 10.0) are you running?  Is it the stock version from the manufacturer or a custom ROM?  What version of Google Play Services is running on your device?
+What version of GPSTest did you encounter this on (see "Help->About")? What make and model device (e.g., Samsung Galaxy S10) did you encounter this on?  What Android version (e.g., Android 10.0) are you running?  Is it the stock version from the manufacturer or a custom ROM?  What version of Google Play Services is running on your device?
 
 **Screenshots:** 
 
