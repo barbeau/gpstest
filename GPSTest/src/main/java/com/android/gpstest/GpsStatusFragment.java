@@ -94,7 +94,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     SimpleDateFormat mTimeAndDateFormat = new SimpleDateFormat(
             DateFormat.is24HourFormat(Application.get().getApplicationContext())
-                    ? "HH:mm:ss" : "hh:mm:ss a MMM d, yyyy z");
+                    ? "HH:mm:ss MMM d, yyyy z" : "hh:mm:ss a MMM d, yyyy z");
 
     private Resources mRes;
 
