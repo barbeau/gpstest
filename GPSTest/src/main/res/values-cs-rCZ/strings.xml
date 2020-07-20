@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Upravit pomocné údaje</string>
-    <string name="force_psds_injection">Vložit PSDS údaje</string>
+    <string name="force_psds_injection">Vložit údaje PSDS</string>
     <string name="force_time_injection">Vložit časové údaje</string>
     <string name="delete_aiding_data">Vymazat pomocné údaje</string>
     <string name="navdrawer_item_settings">Nastavení</string>
@@ -48,14 +48,15 @@
     <string name="copied_to_clipboard">Poloha zkopírována do schránky</string>
     <string name="send_log">Odesílání protokolu...</string>
     <string name="log_instructions">Povolte protokolování pro NMEA, prvotní měření, navigační zprávy, atd. v Nastavení.</string>
+    <string name="log_error">Chyba při výstupu protokolu do souboru. Povolili jste oprávnění pro přístup do úložiště? Zkuste znovu povolit možnost výstupu protokolu do souboru v Nastavení a po zobrazení výzvy klikněte na „Povolit“.</string>
     <string name="no_location">Sdílejte Vaší polohu po opravě GNSS.</string>
     <string name="include_altitude">Zahrnout nadm. výšku</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
     <string name="force_time_injection_failure">Zařízení nepodporuje vkládání časových údajů.</string>
 
-    <string name="force_psds_injection_success">PSDS údaje úspěšně vloženy.</string>
-    <string name="force_psds_injection_failure">Zařízení nepodporuje vkládání PSDS údajů.</string>
+    <string name="force_psds_injection_success">Údaje PSDS úspěšně vloženy.</string>
+    <string name="force_psds_injection_failure">Zařízení nepodporuje vkládání údajů PSDS.</string>
 
     <string name="zoom_in">Zvětšit</string>
     <string name="zoom_out">Zmenšit</string>
@@ -109,6 +110,9 @@
     <string name="gnss_not_available">GNSS satelity (Global Navigation Satellite System) nejsou dostupné.</string>
     <string name="sbas_not_available">SBAS satelity (Satellite-based Augmentation System) nejsou dostupné.</string>
     <string name="menu_option_sort_by">Pořadí v seznamu podle</string>
+    <string name="error_time_title">Neplatný čas GNNS</string>
+    <string name="error_time_message">Čas GNSS zařízení je:\n\n%1$s\n\n…je o více než %2$d den/dny/dnů odlišný od systémových hodin. Může to být způsobeno problémem s prodloužením týdne GPS - požádejte výrobce zařízení o podrobnosti. Více na http://bit.ly/gps-week-rollover for more info.</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Zeměpisná šířka</string>
     <string name="ground_truth_longitude">Zeměpisná délka</string>
@@ -150,6 +154,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Dostupnost signálu</string>
@@ -181,6 +186,16 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Vylepšen SBAS</b>
+        - Přidáno více satelitů pro SNAS (China) a SDCM (Russia).\n&#8226;\u0020
+        <b>Přidán perský překlad</b>
+        - Poděkování pro Iman (imni)!\n&#8226;\u0020
+        <b>Přidány údaje pro stav</b>
+        - Pro zobrazení na šířku a velmi široké obrazovky.\n&#8226;\u0020
+        <b>Oprava chyb</b>
+        - Více na https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
@@ -280,6 +295,7 @@
     <string name="title_help">Nápověda</string>
 
     <string name="help_text">
+
         <b>Často kladené otázky (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
@@ -327,6 +343,9 @@
         <b>Stav</b>
         - (E) pokud zařízení přijímá efemeridové údaje pro satelit, (A) pokud zařízení přijímá almanachové údaje pro satelit, (U) pokud byl připojený satelit použit při výpočtu poslední polohy. 
         Pro SBAS satelity systém Android specificky neuvádí, zda označení (U) odkazuje na zdánlivou vzdálenost připojeného satelitu, která je používána pro stanovení pozice nebo ke korekčním informacím.\n\n
+
+         <b>Vložit údaje PSDS</b>
+         - Vyžaduje, aby zařízení obnovilo předpokládanou satelitní datovou službu (Predicted Satellite Data Service) - např. údaje XTRA, pokud zařízení používá údaje PSDS.\n\n
 
         <b>*** Zobrazení kompasu ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
@@ -377,5 +396,6 @@
         &#8226;\u0020 Indonesian translation provided by Adiitya Andre90\n
         &#8226;\u0020 Polish translation provided by Adam Wandelt\n
         &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
+        &#8226;\u0020 Persian translation provided by Iman (imni)\n
     </string>
 </resources>
