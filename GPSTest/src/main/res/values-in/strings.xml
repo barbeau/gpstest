@@ -32,7 +32,7 @@
     <string name="navdrawer_item_settings">Setelan</string>
     <string name="navdrawer_item_help">Bantuan</string>
     <string name="navdrawer_item_send_feedback">Kirim masukan</string>
-    <string name="navdrawer_item_open_source">Kunjungi GitHub kami</string>
+    <string name="navdrawer_item_open_source">Kunjungi kami di GitHub</string>
 
     <string name="navigation_drawer_open">Buka laci navigasi</string>
     <string name="navigation_drawer_close">Tutup laci navigasi</string>
