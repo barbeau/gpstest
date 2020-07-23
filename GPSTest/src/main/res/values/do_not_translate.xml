@@ -214,6 +214,8 @@
         <item>Polskie</item>
         <item>Français</item>
         <item>فارسی</item>
+        <item>Українська</item>
+        <item>한국어</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -232,6 +234,8 @@
         <item>pl</item>
         <item>fr</item>
         <item>fa</item>
+        <item>uk</item>
+        <item>ko</item>
     </string-array>
 
 

@@ -14,6 +14,8 @@ Users have contributed translations in the following languages:
 * Polish
 * French
 * Persian
+* Ukrainian
+* Korean
 
 We would love help improving the existing translations, or adding a new translation.
 
