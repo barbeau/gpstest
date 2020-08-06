@@ -1426,10 +1426,10 @@ public class GpsTestActivity extends AppCompatActivity
 
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.onLocationChanged(location);
-            if (mWriteLocationToFile &&
-                    PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                mFileLogger.onLocationChanged(location);
-            }
+        }
+        if (mWriteLocationToFile &&
+                PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+            mFileLogger.onLocationChanged(location);
         }
     }
 
