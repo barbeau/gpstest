@@ -156,6 +156,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Giappone)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (Cina)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Segnale</string>

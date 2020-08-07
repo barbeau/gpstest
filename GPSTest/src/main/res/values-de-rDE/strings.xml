@@ -46,7 +46,7 @@
     <string name="gps_switch">Aus/Ein</string>
     <string name="share">Teilen</string>
     <string name="copied_to_clipboard">Standort wurde in die Zwischenablage kopiert</string>
-    <string name="send_log">Protokoll senden…</string>
+    <string name="send_log">Protokoll senden...</string>
     <string name="log_instructions">Aktiviere die Protokollierung für NMEA, Rohmessungen, Navigationsnachrichten und mehr in den Einstellungen</string>
     <string name="log_error">Bei der Dateiprotokollierung lief etwas schief. Haben Sie die Datei-/Speicherberechtigungen erlaubt? Versuchen Sie, eine Dateiprotokollierungsoption in den Einstellungen erneut zu aktivieren und tippen Sie auf \"Zulassen\", wenn Sie dazu aufgefordert werden.</string>
     <string name="include_altitude">Höhe mit einbeziehen</string>
@@ -110,7 +110,7 @@
     <string name="sbas_not_available">Satelliten des Satellitenbasierten Ergänzungssystems (SBAS) nicht verfügbar</string>
     <string name="menu_option_sort_by">Sortiert nach</string>
     <string name="error_time_title">Deine GNSS-Zeit ist falsch</string>
-    <string name="error_time_message">Die GNSS-Zeit des Geräts mit:\n\n%1$s\n\n…weicht mehr als %2$d Tage von Ihrer Systemuhr ab. Dies kann durch das GPS-Wochennummer-Rollover-Problem verursacht werden - fragen Sie Ihren Gerätehersteller nach Details. Siehe http://bit.ly/gps-week-rollover für weitere Informationen.</string>
+    <string name="error_time_message">Die GNSS-Zeit des Geräts mit:\n\n%1$s\n\n...weicht mehr als %2$d Tage von Ihrer Systemuhr ab. Dies kann durch das GPS-Wochennummer-Rollover-Problem verursacht werden - fragen Sie Ihren Gerätehersteller nach Details. Siehe http://bit.ly/gps-week-rollover für weitere Informationen.</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Realer Breitengrad</string>
@@ -153,7 +153,6 @@
     <string name="sky_legend_shape_gagan">GAGAN (Indien)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russland)</string>
-    <string name="sky_legend_shape_snas">SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Signalverfügbarkeit</string>
@@ -237,14 +236,17 @@
     <string name="pref_nmea_timestamp_output_title">NMEA-Zeitstempel</string>
     <string name="pref_nmea_timestamp_output_summary">NMEA-Zeitstempel zusätzlich ausgeben</string>
     <string name="pref_measurement_output_title">Messungen</string>
-    <string name="pref_as_measurement_output_summary">Protokolliert GNSS-Messungen in Android Studio (Android 7.0 und höher)</string>
+    <string name="pref_as_measurement_output_summary">Protokolliert GNSS-Messungen in Android Studio (Android
+7.0 und höher)</string>
     <string name="pref_navigation_message_output_title">Navigationsnachrichten</string>
-    <string name="pref_as_navigation_message_output_summary">Protokolliert GNSS-Navigationsmeldungen in Android Studio (Android 7.0 und höher)</string>
+    <string name="pref_as_navigation_message_output_summary">Protokolliert GNSS-Navigationsmeldungen in Android
+Studio (Android 7.0 und höher)</string>
 
     <!-- File Output -->
     <string name="pref_file_output_category_title">Dateiausgabe</string>
     <string name="pref_file_nmea_output_summary">Protokolliert NMEA-Sätze in eine Datei</string>
-    <string name="pref_file_measurement_output_summary">Protokolliert GNSS-Messungen in einer Datei (Android 7.0 und höher)</string>
+    <string name="pref_file_measurement_output_summary">Protokolliert GNSS-Messungen in einer Datei (Android
+7.0 und höher)</string>
     <string name="pref_file_navigation_message_output_summary">Protokolliert GNSS-Navigationsmeldungen in einer Datei (Android 7.0 und höher)</string>
     <string name="pref_file_location_output_title">Standort</string>
     <string name="pref_file_location_output_summary">Protokolliert die Details der Standortbestimmung in einer Datei</string>

@@ -184,7 +184,7 @@
     <string name="feedback_error">Δεν είναι δυνατή η αποστολή σχολίων: δεν βρέθηκε σχετική εφαρμογή.</string>
 
     <!-- What's New -->
-    <string name="main_help_whatsnew_title">Τι νέο υπάρχει…</string>
+    <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
     <string name="main_help_close">Κλείσιμο</string>
 
     <!-- Preferences -->
