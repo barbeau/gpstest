@@ -195,7 +195,7 @@
         <b>Improved SBAS</b>
         - Add more satellites for SNAS (China) and SDCM (Russia).\n&#8226;\u0020
         <b>Add Persian, Ukrainian, and Korean translations</b>
-        - Thanks Iman (imni), gris.greyler, and snotree!\n&#8226;\u0020
+        - Thanks Iman (imni), Serhii Osmalchuk, and snotree!\n&#8226;\u0020
         <b>Add date to Status</b>
         - For landscape view and very wide screens.\n&#8226;\u0020
         <b>Bug fixes</b>
@@ -414,7 +414,7 @@
         &#8226;\u0020 Polish translation provided by Adam Wandelt\n
         &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Persian translation provided by Iman (imni)\n
-        &#8226;\u0020 Ukrainian translation provided by gris.greyler\n
+        &#8226;\u0020 Ukrainian translation provided by Serhii Osmalchuk\n
         &#8226;\u0020 Korean translation provided by snotree\n
     </string>
 </resources>
