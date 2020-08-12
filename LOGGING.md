@@ -1,6 +1,8 @@
 # Data Output and Logging
 
-GPSTest allows you to output raw data about GNSS/GPS to files as well as the Android system log.  The following sections discuss how to access these logs, and details about the data that is output.
+GPSTest allows you to output raw data about GNSS/GPS to files as well as the Android system log, which can be used to visualize the data using tools like Google's [GPS Measurement Tools project](https://github.com/google/gps-measurement-tools) shown below.  The following sections discuss how to access these logs, and details about the data that is output.
+
+![image](https://user-images.githubusercontent.com/928045/64804800-844fae00-d55d-11e9-8212-b0ef65885dc7.png)
 
 ## Logging data to files
 

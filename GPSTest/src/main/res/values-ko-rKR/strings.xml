@@ -160,7 +160,7 @@
     <string name="sky_legend_shape_snas">BDSBAS/SNAS (중국)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
-    <string name="sky_legend_shape_availability_title">신호 사용성</string>
+    <string name="sky_legend_shape_availability_title">신호 가용성</string>
     <string name="sky_legend_shape_not_in_view">기기에서 보이지 않음</string>
     <string name="sky_legend_shape_in_view">보임</string>
     <string name="sky_legend_shape_used_in_fix">위치 확정에 사용중</string>
@@ -193,8 +193,8 @@
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>SBAS 기능 향상</b>
         - SNAS (중국)과 SDCM (러시아) 위성 추가.\n&#8226;\u0020
-        <b>페르시아어 추가</b>
-        - Thanks Iman (imni)!\n&#8226;\u0020
+        <b>페르시아어, 우크라이나어, 한국어 추가</b>
+         - Thanks Iman (imni), Serhii Osmalchuk, and snotree!\n&#8226;\u0020
         <b>상태에 날짜 추가</b>
         - 가로보기 및 넓은 스크린.\n&#8226;\u0020
         <b>오류 수정</b>

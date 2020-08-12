@@ -146,7 +146,7 @@
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (India)</string>
 
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
@@ -189,8 +189,8 @@
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Vylepšen SBAS</b>
         - Přidáno více satelitů pro SNAS (China) a SDCM (Russia).\n&#8226;\u0020
-        <b>Přidán perský překlad</b>
-        - Poděkování pro Iman (imni)!\n&#8226;\u0020
+        <b>Přidán perský, ukrajinský a korejský překlad</b>
+        - Poděkování pro Iman (imni), Serhii Osmalchuk a snotree!\n&#8226;\u0020
         <b>Přidány údaje pro stav</b>
         - Pro zobrazení na šířku a velmi široké obrazovky.\n&#8226;\u0020
         <b>Oprava chyb</b>
@@ -295,7 +295,6 @@
     <string name="title_help">Nápověda</string>
 
     <string name="help_text">
-
         <b>Často kladené otázky (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
@@ -397,5 +396,7 @@
         &#8226;\u0020 Polish translation provided by Adam Wandelt\n
         &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Persian translation provided by Iman (imni)\n
+        &#8226;\u0020 Ukrainian translation provided by Serhii Osmalchuk\n
+        &#8226;\u0020 Korean translation provided by snotree\n
     </string>
 </resources>

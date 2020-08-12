@@ -26,7 +26,7 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modificar datos de asistencia</string>
-    <string name="force_psds_injection">Insertar datos PSDS</string>
+    <string name="force_psds_injection">Inyectar datos PSDS</string>
     <string name="force_time_injection">Insertar datos de tiempo</string>
     <string name="delete_aiding_data">Borrar datos de asistencia</string>
     <string name="navdrawer_item_settings">Ajustes</string>
@@ -44,12 +44,20 @@
     <string name="delete_aiding_data_success">Datos de asistencia borrados</string>
     <string name="delete_aiding_data_failure">El dispositivo no permite borrar los datos de asistencia</string>
     <string name="gps_switch">Off/On</string>
+    <string name="share">Compartir</string>
+    <string name="copied_to_clipboard">Localización copiada al portapapeles</string>
+    <string name="send_log">Enviar registro…</string>
+    <string name="log_instructions">Activa el registro para NMEA, mediciones en crudo, mensajes de navegación, y más en Configuración</string>
+    <string name="log_error">Algo ha salido mal con el registro en archivo. ¿Has dado permisos de almacenamiento? Prueba reactivando la opción de registro en archivo en Configuración y toca «Permitir» cuando seas preguntado.</string>
+    <string name="no_location">Prueba a compartir tu posición una vez el GNSS está fijado.</string>
+    <string name="include_altitude">Incluir altitud</string>
     <string name="set_fix_frequency">Fijar frecuencia</string>
     <string name="force_time_injection_success">Datos de tiempo insertados correctamente</string>
     <string name="force_time_injection_failure">El dispositivo no permite insertar los datos de tiempo</string>
 
-    <string name="force_psds_injection_success">Datos PSDS insertados correctamente</string>
-    <string name="force_psds_injection_failure">El dispositivo no permite insertar los datos PSDS</string>
+    <string name="force_psds_injection_success">Los datos PSDS se inyectaron satisfactoriamente.</string>
+    <string name="force_psds_injection_failure">El dispositivo no soporta inyectar datos PSDS.
+</string>
 
     <string name="zoom_in">Ampliar Vista</string>
     <string name="zoom_out">Reducir Vista</string>
@@ -85,14 +93,27 @@
     <string name="install">Instalar</string>
     <string name="no_thanks">No, gracias</string>
     <string name="please_install_google_maps">La pestaña \'Mapa\' requiere Google Maps</string>
+    <string name="enable_gps_message">El GPS/GNSS está desactivado. ¿Activar ahora?</string>
+    <string name="enable_gps_positive_button">Activar GPS/GNSS</string>
     <string name="enable_gps_negative_button">No</string>
+    <string name="gps_set_location_listener">Se ha iniciado el GNSS con intervalo = %1$ss, min. dist. = %2$sm
+</string>
     <string name="clear_assist_warning_title">Borrar datos de asistencia?</string>
+    <string name="clear_assist_warning">Algunos dispositivos pueden necesitar 24 horas para auto-refrescar los datos de asistencia. Si tu dispositivo no soporta inyección manual, el GNSS puede no funcionar con ninguna app hasta que el auto-refresco se complete. ¿Estás seguro?</string>
     <string name="never_ask_again">No volver a preguntar</string>
+    <string name="qr_code_instructions_title">Escanea un código QR</string>
+    <string name="qr_code_instructions_text">Importa una posición de referencia usando un código QR en el formato de URI Geo (geo:28.38434,-87.24334). Crea tus propios códigos QR en https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">No se pudo leer la URI Geo desde el código QR</string>
+    <string name="never_show_again">No mostrar más</string>
+    <string name="not_now">Ahora no</string>
     <string name="yes">SI</string>
     <string name="no">NO</string>
     <string name="gnss_not_available">Satélites del sistema global de navegación (GNSS) no disponibles</string>
     <string name="sbas_not_available">Satélites del sistema de aumento basado en satélites (SBAS) no disponibles</string>
     <string name="menu_option_sort_by">Ordenar por</string>
+    <string name="error_time_title">La hora de tu GNSS está mal</string>
+    <string name="error_time_message">La hora del dispositivo GNSS de:\n\n%1$s\n\n…tiene una diferencia superior a %2$d días respecto a tu reloj de sistema. Esto puede ser debido al problema de «vuelta del contador» del GPS - pregunta al fabricante de tu dispositivo para más detalles. Ver http://bit.ly/gps-week-rollover para más información.</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Su latitud</string>
     <string name="ground_truth_longitude">Su longitud</string>
@@ -115,6 +136,9 @@
     <string name="horizontal_vertical_error_label">H/V Error</string>
     <string name="avg_error_label">Corrección promedia %1$d</string>
     <string name="fix_number">Corrección #</string>
+    <string name="show_radar_valid_location">¡Posición de referencia importada!</string>
+    <string name="show_radar_invalid_location">La posición de referencia importada es inválida.</string>
+
     <!-- Sky view -->
     <string name="sky_legend_title">Leyenda</string>
     <string name="sky_legend_shape_gnss_title">Sistemas de Navegación Global por Satélite (GNSS)</string>
@@ -160,6 +184,16 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Que hay de nuevo?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Mejorado ISBAS</b>
+        - Añadir más satelites para SNAS (China) y SDCM (Russia).\n&#8226;\u0020
+        <b>Añadir traducciones al Persa, Ucraniano y Coreano</b>
+        - Gracias Iman (imni), Serhii Osmalchuk y snotree!\n&#8226;\u0020
+        <b>Añadir fecha a Estado</b>
+        - Para la vista paisaje y pantallas muy panorámicas.\n&#8226;\u0020
+        <b>Corrección de errores</b>
+        - Ver https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Cerrar</string>
 
     <!-- Preferences -->
@@ -205,17 +239,53 @@ esté sujetando el dispositivo</string>
     <string name="pref_true_north_title">La brújula apunta al Norte Real</string>
     <string name="pref_true_north_summary">La brújula apuntará al norte real en lugar del norte magnético</string>
 
+    <!-- Output category -->
+    <string name="pref_output_category_title">Registro y salida</string>
+    <string name="pref_output_category_summary">Registrar NMEA, mediciones en crudo o mensajes de navegación en archivos o Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Salida de Android Monitor</string>
     <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Registra sentencias NMEA en Android Studio</string>
     <string name="pref_nmea_timestamp_output_title">Marca de tiempo NMEA</string>
     <string name="pref_nmea_timestamp_output_summary">Incluir marca de tiempo NMEA en la salida</string>
     <string name="pref_measurement_output_title">Mediciones</string>
+    <string name="pref_as_measurement_output_summary">Registra mediciones GNSS en Android Studio (Android
+        7.0 y superior)
+    </string>
     <string name="pref_navigation_message_output_title">Mensajes de navegación</string>
+    <string name="pref_as_navigation_message_output_summary">Registra mensajes de navegación GNSS en Android
+          Studio (Android 7.0 y superior)
+</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Salida en archivo</string>
+    <string name="pref_file_nmea_output_summary">Registra sentencias NMEA en un archivo</string>
+    <string name="pref_file_measurement_output_summary">Registra mediciones GNSS en un archivo (Android
+        7.0 y posterior)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Registra mensajes de navegación GNSS en un archivo (Android 7.0 y posterior)
+</string>
+    <string name="pref_file_location_output_title">Posición</string>
+    <string name="pref_file_location_output_summary">Registra los detalles de obtención de posición en un archivo</string>
+
+    <string name="logging_to_new_file">Registrando en un nuevo archivo: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Incapaz de cerrar todos los archivos.</string>
+    <string name="could_not_initialize_file">No se pudo inicializar el archivo: %1$s</string>
+    <string name="error_writing_file">Problema escribiendo en archivo.</string>
+
     <string name="pref_about_category_title">Acerca de</string>
     <string name="pref_show_tutorial_title">Mostrar tutorial</string>
     <string name="pref_show_tutorial_summary">Mostrar instrucciones de uso de la app</string>
 
     <string name="pref_dark_theme_title">Usar tema oscuro</string>
     <string name="pref_dark_theme_summary">Dar al fondo un color oscuro y al texto un color claro</string>
+
+    <string name="pref_coordinate_format_title">Formato de coordenadas</string>
+    <string name="pref_coordinate_format_summary">Mostrar en grados decimales, DMS, o grados decimal minutos</string>
+    <string name="preferences_coordinate_format_dd">Grados decimales</string>
+    <string name="preferences_coordinate_format_dms">Grados, minutos, segundos decimales</string>
+    <string name="preferences_coordinate_format_ddm">Grados, minutos decimales</string>
 
     <string name="preferences_preferred_distance_units_title">Unidades de distancia preferidas</string>
     <string name="preferences_preferred_distance_units_option_meters">Metros</string>
@@ -233,4 +303,105 @@ esté sujetando el dispositivo</string>
     <!-- Help -->
     <string name="title_help">Ayuda</string>
 
-    </resources>
+    <string name="help_text">
+        <b>Preguntas frecuentes (FAQ)</b>
+- https://github.com/barbeau/gpstest/blob/master/FAQ.md
+
+*** Vista de estado ***\n\n&#8226;\N-
+<b>Latitud</b>
+- En grados decimales (WGS 84)\n&#8226;\N-u0020
+<b>Longitud</b>
+- En grados decimales (WGS 84)\n&#8226;\N-u0020
+<b>Alt</b>
+- A metros por encima del elipsoide WGS 84...
+<b>Alt (MSL)</b>
+- Metros sobre el nivel medio del mar (requiere apoyo de NMEA)|n&#8226;\u0020
+<b>E H Acc</b>
+- Exactitud horizontal estimada de la ubicación (radio en metros de 68% de confianza). En otras palabras, si dibujas un círculo centrado en la latitud y longitud de esta ubicación, y con un radio igual a la precisión, entonces hay un 68% de probabilidad de que la verdadera ubicación esté dentro del círculo. Para más detalles ver https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+<b>E H/V Acc</b>
+- Precisión horizontal y vertical estimada de la ubicación, ambas con un 68% de confianza. La precisión horizontal se define igual que el campo Acc de arriba. La precisión vertical está disponible en el Android 8.0 Oreo y superior. Ejemplo de exactitud vertical - si Alt es 150, y V Acc es 20 entonces hay un 68% de probabilidad de que la verdadera altitud esté entre 130 y 170 metros. Para más detalles ver https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+<b>Velocidad</b>
+- Velocidad, en metros/segundo sobre el suelo.
+<b>V. Acc</b>
+- Precisión de velocidad estimada de esta ubicación con un 68% de confianza, en metros por segundo. Por ejemplo, si la velocidad es 5, y la velocidad de acceso es 1, entonces hay un 68% de probabilidad de que la verdadera velocidad esté entre 4 y 6 metros por segundo.
+<b>Rotación</b>
+- La dirección horizontal del viaje del dispositivo (en grados 0-360), y no está relacionada con la orientación del dispositivo.
+<b>R. Acc</b>
+- Precisión estimada del rumbo de esta ubicación con un 68% de confianza, en grados. Por ejemplo, si la marcación es 60, y la precisión de la marcación es 10, entonces hay un 68% de probabilidad de que la marcación verdadera esté entre 50 y 70 grados.
+<b># Sats</b>
+- # satélites usados en fijo / # satélites a la vista (con valores válidos de intensidad de señal) / # satélites conocidos por el dispositivo. En los dispositivos de doble frecuencia, un satélite se muestra como usado si al menos una frecuencia de ese satélite está en uso, un satélite se muestra como en vista si al menos una señal tiene un valor de intensidad de señal válido, y se muestra como conocido por el dispositivo si hay información sobre al menos una señal del satélite.\n&#8226;\u0020
+<b>PDOP</b>
+- Posición (3D) dilución de precisión (requiere apoyo de NMEA)\n&#8226;\u0020
+<b>H/V DOP</b>
+- Dilución horizontal/vertical de precisión (requiere apoyo de NMEA)|n&#8226;\u0020
+<b>TTFF</b>
+- Es hora de arreglar primero...
+<b>ID o PRN</b>
+- identificador de este satélite (ruido pseudoaleatorio para GPS)\n&#8226;\u0020
+<b>CF</b>
+- Etiqueta (por ejemplo, \"L1\") para la frecuencia portadora de la señal que se está rastreando. Si se trata de una frecuencia desconocida, muestra la frecuencia bruta en MHz (disponible en Android 8.0+, pero no está soportada en todos los dispositivos). La nueva señal GLONASS CDMA para L1 se muestra como \"L1-C\".\n&#8226;\u0020
+<b>SNR</b>
+- Relación señal-ruido (Android M e inferior) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+<b>C/N0</b>
+- Densidad de portador a ruido (Android N y superior) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+<b>Marcas</b>
+- (E) si el dispositivo tiene datos de efemérides para el satélite, (A) si el dispositivo tiene datos de almanaque
+para el satélite, (U) si el satélite fue usado en el cálculo de la posición fija más reciente. Para el SBAS, la especificación del Android no especifica si (U) se refiere a pseudorangos del satélite que se está usando en la solución de posición o a la información de corrección originada por ese satélite que se está usando.
+
+<b>Inyectar datos PSDS</b>
+- Solicita que el dispositivo actualice su Servicio de Datos Previsibles por Satélite (por ejemplo, datos XTRA), si el dispositivo utiliza datos PSDS.
+
+<b>*** Sky View ***</b>\n\n&#8226;\N-
+<b>GPS (USA Navstar)</b>
+- Círculos...
+<b>GLONASS (Rusia)</b>
+- Cuadrados\n&#8226;\N-u0020
+<b>Galileo (Unión Europea)</b>
+- Triángulos...
+<b>QZSS (Japón)</b>
+- Hexágonos...
+<b>BeiDou/COMPASS (China)</b>
+- Pentágonos...
+<b>IRNSS/Navic (India)</b>
+- Oválos...
+30SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)30
+- Diamantes\n\n
+
+Satélites transparentes. No están a la vista.
+&#8226;\u0020 Contorno delgado - A la vista pero no usado en el arreglo
+&#8226;\u0020 Contorno en negrita - Se utiliza en la fijación
+
+&#8226;\u0020 El rango esperado de SNR es de 0 dB (rojo) a 30 dB (verde) en las versiones de Android inferiores a 7.0. \n
+ &#8226;\u0020 El rango esperado de SNR es de 10 dB (rojo) a 45 dB (verde) en Android 7.0 y superior. \n
+El rango esperado de C/N0 es de 10 dB-Hz (rojo) a 45 dB-Hz (verde) en Android 7.0 y superior. \n
+&#8226;\u0020 Si no hay un valor de SNR o C/N0 para un satélite (es decir, no está a la vista del dispositivo), tendrá un color gris claro transparente. \N -
+
+<b>*** Vista de precisión.***</b>\n\n&#8226;\u0020
+<b>Error vertical</b>\n\n
+- Las mediciones del error vertical, a diferencia del error horizontal, pueden ser positivas o negativas. Cuando se muestra en la vista de Precisión, el error vertical, y el promedio del error vertical, se calculan ambos usando el valor absoluto de la medición del error.
+
+&#8226;\u0020Establece tu ubicación real rápidamente usando los códigos QR. Vea http://bit.ly/gpstest-qr-codes para más detalles.
+
+<b>*** El registro de los archivos es un proceso de aprendizaje.***</b>\n\n
+&#8226;\u0020Habilitar el registro de archivos en Ajustes para NMEA, mediciones en bruto, mensajes de navegación y correcciones de ubicación. Ver http://bit.ly/gpstest-file para más detalles.
+
+<b>*** Reconocimientos... ***</b>\n\n
+<b>Mike Lockwood</b>, desarrollador original de la versión 1.x.
+<b>Sean Barbeau</b>, desarrollador de la versión 2.x y superior.
+&#8226;\u0020 El icono del lanzador GPSTest se deriva del icono del \"satélite\" Android Material Design, licenciado por Google bajo la versión Apache v2.0. Otros iconos de diseño de material de Google también se utilizan bajo Apache v2.0. Icono del código QR de Austin Andrews de https://materialdesignicons.com/icon/qrcode.\n
+Traducción al chino proporcionada por wangkf, liuyunli, SakuraSa233 yamp; Skimige.
+Traducción al alemán proporcionada por SIRSteiner.
+Traducción al holandés proporcionada por Dennis Dolman, Meteor0id\n
+Traducción al griego proporcionada por Jimmy Golfi.
+Traducción al japonés proporcionada por SakuraSa233.
+Traducción al checo proporcionada por llzn.cz.
+Traducción al italiano proporcionada por Giolly90.
+Traducción al español proporcionada por Sergi Pellicer.
+Traducción al indonesio proporcionada por Adiitya Andre90.
+Traducción al polaco proporcionada por Adam Wandelt.
+Traducción al francés proporcionada por Olivier Merlin &amp; Jérémy Belloir
+Traducción al persa proporcionada por Iman (imni).
+Traducción al ucraniano proporcionada por Serhii Osmalchuk.
+Traducción al coreano proporcionada por Snotree.
+    </string>
+</resources>

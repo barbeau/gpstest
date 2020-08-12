@@ -41,7 +41,7 @@
     <string name="gps_start">Mulai</string>
     <string name="gps_pause">Jeda</string>
 
-    <string name="delete_aiding_data_success">Data bantuan berhasil dihapus</string>
+    <string name="delete_aiding_data_success">Data bantuan berhasil dihapus.</string>
     <string name="delete_aiding_data_failure">Perangkat tidak mendukung penghapusan data bantuan.
     </string>
     <string name="gps_switch">Nonaktif/Aktif</string>
@@ -50,14 +50,14 @@
     <string name="send_log">Kirim catatan…</string>
     <string name="log_instructions">Aktifkan pencatatan untuk NMEA, pengukuran dasar, pesan navigasi, dan lainnya di Setelan</string>
     <string name="log_error">Terjadi kesalahan dalam pencatatan file. Apakah Anda memberikan izin ke penyimpanan? Coba aktifkan kembali opsi pencatatan file di Setelan dan ketuk \"Izinkan\" saat diminta.</string>
-    <string name="no_location">Coba membagikan lokasi Anda setelah mendapat perbaikan GNSS</string>
+    <string name="no_location">Coba bagikan lokasi Anda setelah mendapat perbaikan GNSS</string>
     <string name="include_altitude">Termasuk ketinggian</string>
     <string name="set_fix_frequency">Atur Frekuensi Perbaikan</string>
-    <string name="force_time_injection_success">Data waktu berhasil diinjeksi.</string>
+    <string name="force_time_injection_success">Data waktu berhasil di-injeksi.</string>
     <string name="force_time_injection_failure">Perangkat tidak mendukung injeksi data waktu.
     </string>
 
-    <string name="force_psds_injection_success">Data PSDS berhasil diinjeksi.</string>
+    <string name="force_psds_injection_success">Data PSDS berhasil di-injeksi.</string>
     <string name="force_psds_injection_failure">Perangkat tidak mendukung injeksi data PSDS.
     </string>
 
@@ -71,10 +71,10 @@
     <string name="gps_fix_time_label">Waktu:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Ketinggian:</string>
-    <string name="gps_altitude_msl_label">Ktng (DPL):</string>
+    <string name="gps_altitude_msl_label">Ktngn. (DPL):</string>
     <string name="gps_accuracy_label">Akrs. P H:</string>
     <string name="gps_hor_and_vert_accuracy_label">Akrs. P H/V:</string>
-    <string name="gps_speed_label">Kecapatan:</string>
+    <string name="gps_speed_label">Kecepatan:</string>
     <string name="gps_speed_acc_label">Akrs. K:</string>
     <string name="gps_bearing_label">Bantalan:</string>
     <string name="gps_bearing_acc_label">Akrs. B:</string>
@@ -99,13 +99,13 @@
     <string name="enable_gps_message">GPS/GNSS tidak aktif. Aktifkan sekarang?</string>
     <string name="enable_gps_positive_button">Aktifkan GPS/GNSS</string>
     <string name="enable_gps_negative_button">Tidak</string>
-    <string name="gps_set_location_listener">GPS dimulai dengan selang waktu = %1$sd, min. jarak. = %2$sm
+    <string name="gps_set_location_listener">Memulai GNSS dengan selang = %1$sd, jarak min. = %2$sm
     </string>
     <string name="clear_assist_warning_title">Hapus data bantuan?</string>
-    <string name="clear_assist_warning">Beberapa perangkat mungkin membutuhkan waktu 24 jam untuk merefresh data bantuan secara otomatis. Bila perangkat Anda tidak mendukung injeksi secara manual, GNSS mungkin tidak bekerja untuk beberapa apl sampai refresh otomatis selesai. Apakah Anda yakin?</string>
+    <string name="clear_assist_warning">Beberapa perangkat mungkin membutuhkan waktu 24 jam untuk me-refresh data bantuan secara otomatis. Bila perangkat Anda tidak mendukung injeksi secara manual, GNSS mungkin tidak bekerja untuk beberapa apl sampai refresh-otomatis selesai. Apakah Anda yakin?</string>
     <string name="never_ask_again">Jangan tanyakan lagi</string>
     <string name="qr_code_instructions_title">Pindai Kode QR</string>
-    <string name="qr_code_instructions_text">Impor ketepatan permukaan lokasi menggunakan Kode QR dalam format Geo URI (geo:28.38434,-87.24334).  Buat Kode QR Anda di https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_instructions_text">Impor titik dasar lokasi menggunakan Kode QR dalam format Geo URI (geo:28.38434,-87.24334).  Buat Kode QR Anda di https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Tidak dapat membaca Geo URI dari kode QR</string>
     <string name="never_show_again">Jangan tampilkan lagi</string>
     <string name="not_now">Jangan sekarang</string>
@@ -115,11 +115,11 @@
     <string name="sbas_not_available">Satelit SBAS (Sistem Augmentasi berdasarkan Satelit) tidak tersedia</string>
     <string name="menu_option_sort_by">Urutkan dengan</string>
     <string name="error_time_title">Waktu GNSS Anda salah</string>
-    <string name="error_time_message">Waktu GNSS pada perangkat:\n\n%1$s\n\n…berbeda lebih dari %2$d hari dari jam pada sistem Anda. Ini bisa dikarenakan masalah oleh GPS week rollover - Tanyakan pembuat perangkat Anda untuk detailnya. Lihat http://bit.ly/gps-week-rollover untuk info lebih lanjut.</string>
+    <string name="error_time_message">Waktu pada GNSS perangkat:\n\n%1$s\n\n…berbeda lebih dari %2$d hari dari jam pada sistem Anda. Hal ini bisa dikarenakan masalah dengan GPS week rollover - Tanyakan pembuat perangkat Anda untuk detailnya. Lihat http://bit.ly/gps-week-rollover untuk info lebih lanjut.</string>
 
     <!-- Map view -->
-    <string name="ground_truth_latitude">Posisi lintang Anda</string>
-    <string name="ground_truth_longitude">Posisi bujur Anda</string>
+    <string name="ground_truth_latitude">Titik lintang Anda</string>
+    <string name="ground_truth_longitude">Titik bujur Anda</string>
     <string name="ground_truth_altitude">Ketinggian Anda dalam WGS84 (Opsional)</string>
     <string name="set_ground_truth_title">Akurasi pengukuran</string>
     <string name="set_ground_truth_subtitle">Ketuk pada peta atau ketikkan lokasi real Anda</string>
@@ -127,8 +127,8 @@
     <string name="edit">Edit</string>
     <string name="ground_truth_marker_title">Lokasi real Anda</string>
     <string name="ground_truth_invalid_location_title">Lokasi tidak valid</string>
-    <string name="ground_truth_invalid_lat">Garis lintang harus dalam derajat desimal antara -90 dan 90</string>
-    <string name="ground_truth_invalid_long">Garis bujur harus dalam derajat desimal antara -180 dan 180</string>
+    <string name="ground_truth_invalid_lat">Titik lintang harus dalam derajat desimal antara -90 dan 90</string>
+    <string name="ground_truth_invalid_long">Titik bujur harus dalam derajat desimal antara -180 dan 180</string>
     <string name="ground_truth_invalid_alt">Ketinggian harus dengan WGS84 dalam meter</string>
 
     <string name="horizontal_error_title">Kesalahan Horizontal</string>
@@ -137,10 +137,10 @@
     <string name="measured_error_graph_label">Kesalahan diukur</string>
     <string name="estimated_accuracy_graph_label">Akurasi diperkirakan oleh perangkat</string>
     <string name="horizontal_vertical_error_label">Kesalahan H/V</string>
-    <string name="avg_error_label">%1$d rata-rata perbaikan</string>
+    <string name="avg_error_label"> rata-rata perbaikan %1$d</string>
     <string name="fix_number">Perbaikan #</string>
-    <string name="show_radar_valid_location">Ketepatan lokasi permukaan diimpor!</string>
-    <string name="show_radar_invalid_location">Ketepatan lokasi permukaan yang diimpor tidak valid</string>
+    <string name="show_radar_valid_location">Titik dasar lokasi diimpor!</string>
+    <string name="show_radar_invalid_location">Titik dasar lokasi yang diimpor tidak valid</string>
 
     <!-- Sky view -->
     <string name="sky_legend_title">Legenda</string>
@@ -150,7 +150,7 @@
     <string name="sky_legend_shape_galileo">Galileo (Uni Eropa)</string>
     <string name="sky_legend_shape_qzss">QZSS (Jepang)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (India)</string>
 
     <string name="sky_legend_shape_sbas_title">Sistem Augmentasi berdasarkan Satelit (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (AS)</string>
@@ -164,7 +164,7 @@
     <string name="sky_legend_shape_availability_title">Ketersediaan Sinyal</string>
     <string name="sky_legend_shape_not_in_view">Tidak terlihat oleh perangkat</string>
     <string name="sky_legend_shape_in_view">Terlihat</string>
-    <string name="sky_legend_shape_used_in_fix">Digunakan untuk perbaikan</string>
+    <string name="sky_legend_shape_used_in_fix">Digunakan dalam perbaikan</string>
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">Penyedia GNSS atau Lokasi dinonaktifkan, pembaruan tidak akan tersedia sampai penyedia diaktifkan</string>
@@ -193,9 +193,9 @@
     <string name="main_help_whatsnew_title">Apa yang Baru?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Peningkatan SBAS</b>
-        - Menambahkan satelit lainnya untuk SNAS (China) dan SDCM (Rusia).\n&#8226;\u0020
-        <b>Menambahkan terjemahan Persia</b>
-        - Terima kasih Iman (imni)!\n&#8226;\u0020
+        - Menambahkan lagi satelit untuk SNAS (China) dan SDCM (Rusia).\n&#8226;\u0020
+        <b>Menambahkan terjemahan Persia, Ukraina dan Korea</b>
+        - Terima kasih Iman (imni), Serhii Osmalchuk dan snotree!\n&#8226;\u0020
         <b>Menambahkan tanggal pada Status</b>
         - Untuk mode lanskap dan layar yang lebar.\n&#8226;\u0020
         <b>Perbaikan masalah</b>
@@ -216,7 +216,7 @@
     </string>
 
     <string name="pref_tilt_map_with_sensors_title">Miringkan Peta dengan Perangkat</string>
-    <string name="pref_tilt_map_with_sensors_summary">Ubah ke tampilan orang-pertama peta ketika Anda
+    <string name="pref_tilt_map_with_sensors_summary">Ubah peta ke tampilan orang-pertama ketika Anda
         mengangkat perangkat
     </string>
 
@@ -327,7 +327,7 @@
         - Dalam derajat desimal (WGS 84)\n&#8226;\u0020
         <b>Ketinggian</b>
         - Meter di atas ellipsoid WGS 84\n&#8226;\u0020
-        <b>Ktng (DPL)</b>
+        <b>Ktngn (DPL)</b>
         - Meter Di atas Permukaan Laut (membutuhkan dukungan NMEA)\n&#8226;\u0020
         <b>Akrs. P H</b>
         - Akurasi lokasi yang diperkirakan secara horizontal (radius ditetapkan 68%, dalam meter). Dengan kata lain, apabila Anda membuat lingkaran yang berpusat di titik lintang dan bujur lokasi ini, dan dengan radius yang sama terhadap akurasi, maka terdapat 68% kemungkinan bilamana lokasi aslinya berada di dalam lingkaran. Untuk detailnya lihat https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
@@ -337,12 +337,12 @@
         - Kecepatan, dalam meter/detik dari permukaan tanah\n&#8226;\u0020
         <b>Akrs. K</b>
         - Akurasi kecepatan yang diperkirakan di lokasi ini ditetapkan dalam 68%, dalam meter per detik. Contohnya, apabila Kecepatan 5, dan Akurasi Kecepatan 1, maka terdapat 68% kemungkinan bilamana kecepatan aslinya berada di antara 4 dan 6 meter per detik.\n&#8226;\u0020
-        <b>Banatalan</b>
+        <b>Bantalan</b>
         - Arah hadap perangkat secara horizontal (dalam derajat 0-360), dan tidak berhubungan dengan orientasi perangkat.\n&#8226;\u0020
         <b>Akrs. B</b>
         - Akurasi bantalan yang diperkirakan di lokasi ini ditetapkan dalam 68%, dalam derajat. Contohnya, apabila Bantalan 60, dan Akurasi Bantalan 10, maka terdapat 68% kemungkinan bilamana bantalan aslinya berada di antara 50 dan 70 derajat.\n&#8226;\u0020
         <b># Sat</b>
-        - # satelit yang digunakan untuk perbaikan / # satelit yang terlihat (dengan nilai sinyal yang valid) / # satelit yang dikenali oleh perangkat. Pada perangkat dengan dual-frekuensi, satelit ditampilkan sebagai; digunakan apabila setidaknya terdapat satu frekuensi satelit sedang digunakan, satelit ditampilkan sebagai; terlihat apabila setidaknya terdapat satu sinyal yang memiliki nilai yang valid, dan ditampilkan sebagai; dikenali oleh perangkat bilamana terdapat informasi mengenai setidaknya satu sinyal dari suatu satelit.\n&#8226;\u0020
+        - # satelit yang digunakan dalam perbaikan / # satelit yang terlihat (dengan nilai sinyal yang valid) / # satelit yang dikenali oleh perangkat. Pada perangkat dengan dual-frekuensi, satelit ditampilkan sebagai; digunakan apabila setidaknya terdapat satu frekuensi satelit sedang digunakan, satelit ditampilkan sebagai; terlihat apabila setidaknya terdapat satu sinyal yang memiliki nilai yang valid, dan ditampilkan sebagai; dikenali oleh perangkat bilamana terdapat informasi mengenai setidaknya satu sinyal dari suatu satelit.\n&#8226;\u0020
         <b>PDOP</b>
         - Presisi dilusi posisi (3D) (membutuhkan dukungan NMEA)\n&#8226;\u0020
         <b>H/V DOP</b>
@@ -354,15 +354,15 @@
         <b>FK</b>
         - Label (cth. \"L1\") untuk sinyal frekuensi karir yang terlacak. Apabila frekuensi tidak diketahui, akan ditampilkan frekuensi dasar dalam MHz (tersedia pada Android 8.0+, namun belum pasti didukung setiap perangkat). Sinyal L1 untuk CDMA GLONASS baru, ditampilkan sebagai \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
-        - Rasio sinyal-terhadap-kebisingan (Android M dan dibawahnya) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Rasio sinyal-terhadap-kebisingan (Android M dan di bawahnya) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
-        - Kepadatan Karier-terhadap-kebisingan (Android N dan lebih tinggi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        - Kepadatan karier-terhadap-kebisingan (Android N dan lebih tinggi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Tanda</b>
         - (E) apabila perangkat memiliki data ephemeris untuk satelit, (A) apabila perangkat memiliki data almanac
-        dari satelit, (U) apabila satelit digunakan untuk dalam penghitungan perbaikan posisi saat ini.  Untuk SBAS, spek Android tidak merinci bilamana (U) mengacu pada pseudoranges dari satelit digunakan untuk solusi posisi atau untuk koreksi informasi yang berasal dari satelit yang sedang digunakan.\n\n
+        dari satelit, (U) apabila satelit digunakan dalam penghitungan perbaikan posisi saat ini.  Untuk SBAS, spek Android tidak merinci apakah (U) mengacu pada pseudoranges dari satelit yang sedang digunakan untuk solusi posisi atau untuk koreksi informasi yang berasal dari satelit yang sedang digunakan.\n\n
 
         <b>Injeksi data PSDS</b>
-        - Apabila data PSDS digunakan oleh perangkat, akan meminta perangkat untuk menyegarkan Layanan Data Satelit Terprediksi (cth. data XTRA).\n\n
+        - Apabila data PSDS digunakan oleh perangkat, akan meminta perangkat untuk me-refresh Layanan Data Satelit Terprediksi (cth. data XTRA).\n\n
 
         <b>*** Tampilan Langit ***</b>\n\n&#8226;\u0020
         <b>GPS Navstar (AS)</b>
@@ -375,23 +375,23 @@
         - Segi Enam\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Segi Lima\n&#8226;\u0020
-        <b>IRNSS (India)</b>
+        <b>IRNSS/NavIC (India)</b>
         - Lonjong\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
         - Wajik\n\n
 
         &#8226;\u0020 Satelit transparan - Tidak terlihat\n
         &#8226;\u0020 Garis tipis - Terlihat namun tidak digunakan untuk perbaikan\n
-        &#8226;\u0020 Garis tebal - Digunakan untuk perbaikan\n\n
+        &#8226;\u0020 Garis tebal - Digunakan dalam perbaikan\n\n
 
-        &#8226;\u0020 Rentang SNR yang diharapkan 0 dB (merah) sampai 30 dB (hijau) pada Android dibawah versi 7.0. \n
+        &#8226;\u0020 Rentang SNR yang diharapkan 0 dB (merah) sampai 30 dB (hijau) pada Android di bawah versi 7.0. \n
         &#8226;\u0020 Rentang SNR yang diharapkan 10 dB (merah) sampai 45 dB (hijau) pada Android 7.0 dan lebih tinggi. \n
         &#8226;\u0020 Rentang C/N0 yang diharapkan 10 dB-Hz (merah) sampai 45 dB-Hz (hijau) pada Android 7.0 dan lebih tinggi. \n
         &#8226;\u0020 Apabila tidak ada nilai SNR atau C/N0 untuk suatu satelit (cth. satelit tidak terlihat oleh perangkat), akan berwarna abu-abu terang transparan. \n\n
 
         <b>*** Tampilan Akurasi ***</b>\n\n&#8226;\u0020
         <b>Kesalahan vertikal</b>
-        - Tidak seperti kesalahan horizontal, penghitungan kesalahan vertikal dapat berupa positif atau negatif.  Saat ditayangkan di tampilan Akurasi, kesalahan vertikal, dan rata-rata kesalahan vertikal, keduanya dihitung menggunakan nilai mutlak dari penghitungan kesalahan.\n\n
+        - Tidak seperti kesalahan horizontal, penghitungan kesalahan vertikal dapat berupa positif atau negatif.  Saat ditayangkan di tampilan Akurasi, kesalahan vertikal dan rata-rata kesalahan vertikal, keduanya dihitung menggunakan nilai mutlak dari penghitungan kesalahan.\n\n
 
         &#8226;\u0020Atur lokasi real Anda dengan cepat menggunakan kode QR. Lihat http://bit.ly/gpstest-qr-codes untuk lebih detail.\n\n
 
@@ -414,5 +414,7 @@
         &#8226;\u0020 Bahasa Polandia diterjemahkan oleh Adam Wandelt\n
         &#8226;\u0020 Bahasa Prancis diterjemahkan oleh Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Bahasa Persia diterjemahkan oleh Iman (imni)\n
+        &#8226;\u0020 Bahasa Ukraina diterjemahkan oleh Serhii Osmalchuk\n
+        &#8226;\u0020 Bahasa Korea diterjemahkan oleh snotree\n
     </string>
 </resources>

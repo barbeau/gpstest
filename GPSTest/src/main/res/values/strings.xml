@@ -151,7 +151,7 @@
     <string name="sky_legend_shape_galileo">Galileo (European Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (India)</string>
 
     <string name="sky_legend_shape_sbas_title">Satellite-based Augmentation Systems (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
@@ -196,7 +196,7 @@
         <b>Improved SBAS</b>
         - Add more satellites for SNAS (China) and SDCM (Russia).\n&#8226;\u0020
         <b>Add Persian, Ukrainian, and Korean translations</b>
-        - Thanks Iman (imni), gris.greyler, and snotree!\n&#8226;\u0020
+        - Thanks Iman (imni), Serhii Osmalchuk, and snotree!\n&#8226;\u0020
         <b>Add date to Status</b>
         - For landscape view and very wide screens.\n&#8226;\u0020
         <b>Bug fixes</b>
@@ -376,7 +376,7 @@
         - Hexagons\n&#8226;\u0020
         <b>BeiDou/COMPASS (China)</b>
         - Pentagons\n&#8226;\u0020
-        <b>IRNSS (India)</b>
+        <b>IRNSS/NavIC (India)</b>
         - Ovals\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
         - Diamonds\n\n
@@ -415,7 +415,7 @@
         &#8226;\u0020 Polish translation provided by Adam Wandelt\n
         &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Persian translation provided by Iman (imni)\n
-        &#8226;\u0020 Ukrainian translation provided by gris.greyler\n
+        &#8226;\u0020 Ukrainian translation provided by Serhii Osmalchuk\n
         &#8226;\u0020 Korean translation provided by snotree\n
     </string>
 </resources>

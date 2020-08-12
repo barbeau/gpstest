@@ -99,7 +99,7 @@
     <string name="gps_set_location_listener">‏GNSS آغاز شد با interval = %1$ss, min. dist. = %2$sm
     </string>
     <string name="clear_assist_warning_title">حذف دادهٔ کمکی؟</string>
-    <string name="clear_assist_warning">تازه‌سازی خودکار دادهٔ کمکی در برخی دستگاه‌ها ممکن است تا ۲۴ ساعت زمان ببرد. اگر دستگاهتان از تزریق دستی پشتیبانی نمی‌کند، ممکن است تا تکمیل‌شدن تازه‌سازی خودکار، GNSS برای هیچ برنامه‌ای کار نکند. مطمئن هستید؟</string>
+    <string name="clear_assist_warning">در برخی دستگاه‌ها ممکن است تازه‌سازی خودکارِ دادهٔ کمکی تا ۲۴ ساعت زمان ببرد. اگر دستگاه شما از تزریق دستی پشتیبانی نمی‌کند، احتمال دارد تا تکمیل‌شدن تازه‌سازی خودکار، GNSS برای هیچ برنامه‌ای کار نکند. مطمئن هستید؟</string>
     <string name="never_ask_again">دوباره نپرس</string>
     <string name="qr_code_instructions_title">یک کد QR اسکن کنید</string>
     <string name="qr_code_instructions_text">با استفاده از کد QR در قالب Geo URI ‏(geo:28.38434,-87.24334)، یک موقعیت میدانی درون‌برد کنید. در‪ https://zxing.appspot.com/generator/ ‬برای خودتان کد QR بسازید.</string>
@@ -155,6 +155,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (هند)</string>
     <string name="sky_legend_shape_msas">MSAS (ژاپن)</string>
     <string name="sky_legend_shape_sdcm">SDCM (روسیه)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (چین)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ایکائو)</string>
 
     <string name="sky_legend_shape_availability_title">سطح سیگنال</string>
