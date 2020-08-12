@@ -18,6 +18,9 @@
 package com.android.gpstest;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -48,6 +51,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -72,6 +76,7 @@ import com.android.gpstest.util.UIUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -142,6 +147,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     String mPrefSpeedUnits;
 
     DeviceInfoViewModel mViewModel;
+
+    // The set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
+    private LinkedHashSet<GnssType> gnssTypeFilter;
 
     private final Observer<SatelliteMetadata> mSatelliteMetadataObserver = new Observer<SatelliteMetadata>() {
         @Override
@@ -386,6 +394,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         final int id = item.getItemId();
         if (id == R.id.sort_sats) {
             showSortByDialog();
+        } else if (id == R.id.filter_sats) {
+            showFilterDialog();
         }
         return false;
     }
@@ -800,6 +810,130 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         PreferenceUtils.saveString(getResources()
                         .getString(R.string.pref_key_default_sat_sort),
                         sortOptions[index]);
+    }
+
+    /**
+     * Sets the GNSS types that should be shown
+     * @param filter The set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
+     */
+    public void setFilter(LinkedHashSet<GnssType> filter) {
+        gnssTypeFilter = filter;
+        ObaContract.StopRouteFilters.set(getActivity(), mStopId, gnssTypeFilter);
+        refreshSituations(UIUtils.getAllSituations(getArrivalsLoader().getLastGoodResponse(), gnssTypeFilter));
+        refreshLocal();
+    }
+
+    private void showFilterDialog() {
+        ObaArrivalInfoResponse response =
+                getArrivalsLoader().getLastGoodResponse();
+        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
+        final int len = routes.size();
+        final ArrayList<String> filter = gnssTypeFilter;
+
+        // mRouteIds = new ArrayList<String>(len);
+        String[] items = new String[len];
+        boolean[] checks = new boolean[len];
+
+        // Go through all the stops, add them to the Ids and Names
+        // For each stop, if it is in the enabled list, mark it as checked.
+        for (int i = 0; i < len; ++i) {
+            final ObaRoute route = routes.get(i);
+            // final String id = route.getId();
+            // mRouteIds.add(i, id);
+            items[i] = UIUtils.getRouteDisplayName(route);
+            if (filter.contains(route.getId())) {
+                checks[i] = true;
+            }
+        }
+
+        // Arguments
+        Bundle args = new Bundle();
+        args.putStringArray(RoutesFilterDialog.ITEMS, items);
+        args.putBooleanArray(RoutesFilterDialog.CHECKS, checks);
+        RoutesFilterDialog frag = new RoutesFilterDialog();
+        frag.setArguments(args);
+        frag.show(getActivity().getSupportFragmentManager(), ".RoutesFilterDialog");
+    }
+
+    private void setFilter(boolean[] checks) {
+        final int len = checks.length;
+        final ArrayList<String> newFilter = new ArrayList<String>(len);
+
+        ObaArrivalInfoResponse response =
+                getArrivalsLoader().getLastGoodResponse();
+        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
+        if (routes.size() != len) {
+            throw new IllegalArgumentException("checks.length must be equal to routes.size()");
+        }
+
+        for (int i = 0; i < len; ++i) {
+            final ObaRoute route = routes.get(i);
+            if (checks[i]) {
+                newFilter.add(route.getId());
+            }
+        }
+        // If the size of the filter is the number of routes
+        // (i.e., the user selected every checkbox) act then
+        // don't select any.
+        if (newFilter.size() == len) {
+            newFilter.clear();
+        }
+
+        setGnssTypeFilter(newFilter);
+    }
+
+    public static class GnssFilterDialog extends DialogFragment
+            implements DialogInterface.OnMultiChoiceClickListener,
+            DialogInterface.OnClickListener {
+
+        static final String ITEMS = ".items";
+
+        static final String CHECKS = ".checks";
+
+        private boolean[] mChecks;
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            Bundle args = getArguments();
+            String[] items = args.getStringArray(ITEMS);
+            mChecks = args.getBooleanArray(CHECKS);
+            if (savedInstanceState != null) {
+                mChecks = args.getBooleanArray(CHECKS);
+            }
+
+            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+            return builder.setTitle(R.string.stop_info_filter_title)
+                    .setMultiChoiceItems(items, mChecks, this)
+                    .setPositiveButton(R.string.stop_info_save, this)
+                    .setNegativeButton(R.string.stop_info_cancel, null)
+                    .create();
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            outState.putBooleanArray(CHECKS, mChecks);
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Activity act = getActivity();
+            ArrivalsListFragment frag = null;
+
+            // Get the fragment we want...
+            if (act instanceof ArrivalsListActivity) {
+                frag = ((ArrivalsListActivity) act).getArrivalsListFragment();
+            } else if (act instanceof HomeActivity) {
+                frag = ((HomeActivity) act).getArrivalsListFragment();
+            }
+
+            frag.setRoutesFilter(mChecks);
+            dialog.dismiss();
+        }
+
+        @Override
+        public void onClick(DialogInterface arg0, int which, boolean isChecked) {
+            mChecks[which] = isChecked;
+        }
     }
 
     private class SatelliteStatusAdapter extends RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder> {
