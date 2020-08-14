@@ -819,40 +819,37 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     public void setFilter(LinkedHashSet<GnssType> filter) {
         gnssTypeFilter = filter;
         ObaContract.StopRouteFilters.set(getActivity(), mStopId, gnssTypeFilter);
-        refreshSituations(UIUtils.getAllSituations(getArrivalsLoader().getLastGoodResponse(), gnssTypeFilter));
         refreshLocal();
     }
 
     private void showFilterDialog() {
-        ObaArrivalInfoResponse response =
-                getArrivalsLoader().getLastGoodResponse();
-        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
-        final int len = routes.size();
-        final ArrayList<String> filter = gnssTypeFilter;
+//        ObaArrivalInfoResponse response =
+//                getArrivalsLoader().getLastGoodResponse();
+//        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
+        GnssType[] gnssTypes = GnssType.values();
+        final int len = gnssTypes.length;
+        final LinkedHashSet<GnssType> filter = gnssTypeFilter;
 
-        // mRouteIds = new ArrayList<String>(len);
         String[] items = new String[len];
         boolean[] checks = new boolean[len];
 
-        // Go through all the stops, add them to the Ids and Names
-        // For each stop, if it is in the enabled list, mark it as checked.
+        // For each GnssType, if it is in the enabled list, mark it as checked.
         for (int i = 0; i < len; ++i) {
-            final ObaRoute route = routes.get(i);
-            // final String id = route.getId();
-            // mRouteIds.add(i, id);
-            items[i] = UIUtils.getRouteDisplayName(route);
-            if (filter.contains(route.getId())) {
+            GnssType gnssType = gnssTypes[i];
+
+            items[i] = UIUtils.getGnssDisplayName(getContext(), gnssType);
+            if (filter.contains(gnssType)) {
                 checks[i] = true;
             }
         }
 
         // Arguments
         Bundle args = new Bundle();
-        args.putStringArray(RoutesFilterDialog.ITEMS, items);
-        args.putBooleanArray(RoutesFilterDialog.CHECKS, checks);
-        RoutesFilterDialog frag = new RoutesFilterDialog();
+        args.putStringArray(GnssFilterDialog.ITEMS, items);
+        args.putBooleanArray(GnssFilterDialog.CHECKS, checks);
+        GnssFilterDialog frag = new GnssFilterDialog();
         frag.setArguments(args);
-        frag.show(getActivity().getSupportFragmentManager(), ".RoutesFilterDialog");
+        frag.show(getActivity().getSupportFragmentManager(), ".GnssFilterDialog");
     }
 
     private void setFilter(boolean[] checks) {
@@ -880,6 +877,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
 
         setGnssTypeFilter(newFilter);
+        pref_key_default_sat_filter
     }
 
     public static class GnssFilterDialog extends DialogFragment

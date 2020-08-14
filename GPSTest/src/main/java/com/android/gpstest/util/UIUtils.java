@@ -43,6 +43,7 @@ import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.model.GnssType;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -760,5 +761,32 @@ public class UIUtils {
     public static boolean isLargeScreen(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Returns the display name for the given GnssType
+     * @param context
+     * @param gnssType
+     * @return the display name for the given GnssType
+     */
+    public static String getGnssDisplayName(Context context, GnssType gnssType) {
+        switch(gnssType) {
+            case NAVSTAR:
+                return context.getResources().getString(R.string.sky_legend_shape_navstar);
+            case GALILEO:
+                return context.getResources().getString(R.string.sky_legend_shape_galileo);
+            case GLONASS:
+                return context.getResources().getString(R.string.sky_legend_shape_glonass);
+            case BEIDOU:
+                return context.getResources().getString(R.string.sky_legend_shape_beidou);
+            case QZSS:
+                return context.getResources().getString(R.string.sky_legend_shape_qzss);
+            case IRNSS:
+                return context.getResources().getString(R.string.sky_legend_shape_irnss);
+            case SBAS:
+                return context.getResources().getString(R.string.sbas);
+            case UNKNOWN:
+                return context.getResources().getString(R.string.unknown);
+        }
     }
 }
