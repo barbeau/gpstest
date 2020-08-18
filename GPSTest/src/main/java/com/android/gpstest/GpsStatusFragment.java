@@ -18,7 +18,6 @@
 package com.android.gpstest;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -78,6 +77,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.COMPLEX_UNIT_PX;
@@ -659,6 +659,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
+        // TODO - pull filter from preferences and use it
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
 
@@ -812,23 +813,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                         sortOptions[index]);
     }
 
-    /**
-     * Sets the GNSS types that should be shown
-     * @param filter The set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
-     */
-    public void setFilter(LinkedHashSet<GnssType> filter) {
-        gnssTypeFilter = filter;
-        ObaContract.StopRouteFilters.set(getActivity(), mStopId, gnssTypeFilter);
-        refreshLocal();
-    }
-
     private void showFilterDialog() {
-//        ObaArrivalInfoResponse response =
-//                getArrivalsLoader().getLastGoodResponse();
-//        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
         GnssType[] gnssTypes = GnssType.values();
         final int len = gnssTypes.length;
-        final LinkedHashSet<GnssType> filter = gnssTypeFilter;
+        final Set<GnssType> filter = PreferenceUtils.getGnssFilter();
 
         String[] items = new String[len];
         boolean[] checks = new boolean[len];
@@ -852,34 +840,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         frag.show(getActivity().getSupportFragmentManager(), ".GnssFilterDialog");
     }
 
-    private void setFilter(boolean[] checks) {
-        final int len = checks.length;
-        final ArrayList<String> newFilter = new ArrayList<String>(len);
-
-        ObaArrivalInfoResponse response =
-                getArrivalsLoader().getLastGoodResponse();
-        final List<ObaRoute> routes = response.getRoutes(mStop.getRouteIds());
-        if (routes.size() != len) {
-            throw new IllegalArgumentException("checks.length must be equal to routes.size()");
-        }
-
-        for (int i = 0; i < len; ++i) {
-            final ObaRoute route = routes.get(i);
-            if (checks[i]) {
-                newFilter.add(route.getId());
-            }
-        }
-        // If the size of the filter is the number of routes
-        // (i.e., the user selected every checkbox) act then
-        // don't select any.
-        if (newFilter.size() == len) {
-            newFilter.clear();
-        }
-
-        setGnssTypeFilter(newFilter);
-        pref_key_default_sat_filter
-    }
-
     public static class GnssFilterDialog extends DialogFragment
             implements DialogInterface.OnMultiChoiceClickListener,
             DialogInterface.OnClickListener {
@@ -899,11 +859,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mChecks = args.getBooleanArray(CHECKS);
             }
 
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
-            return builder.setTitle(R.string.stop_info_filter_title)
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            return builder.setTitle(R.string.filter_dialog_title)
                     .setMultiChoiceItems(items, mChecks, this)
-                    .setPositiveButton(R.string.stop_info_save, this)
-                    .setNegativeButton(R.string.stop_info_cancel, null)
+                    .setPositiveButton(R.string.save, this)
+                    .setNegativeButton(R.string.cancel, null)
                     .create();
         }
 
@@ -914,17 +875,15 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            Activity act = getActivity();
-            ArrivalsListFragment frag = null;
-
-            // Get the fragment we want...
-            if (act instanceof ArrivalsListActivity) {
-                frag = ((ArrivalsListActivity) act).getArrivalsListFragment();
-            } else if (act instanceof HomeActivity) {
-                frag = ((HomeActivity) act).getArrivalsListFragment();
+            Set<GnssType> filter = new LinkedHashSet<>();
+            GnssType[] gnssTypes = GnssType.values();
+            for (int i = 0; i < mChecks.length; i++) {
+                if (mChecks[i]) {
+                    filter.add(gnssTypes[i]);
+                }
             }
 
-            frag.setRoutesFilter(mChecks);
+            PreferenceUtils.saveGnssFilter(filter);
             dialog.dismiss();
         }
 

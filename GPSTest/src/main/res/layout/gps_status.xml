@@ -215,7 +215,8 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- Filter by route -->
+        <!-- TODO Show card for "Showing X of Y satellites (Show all)" if filter is active -->
+        <!--
         <LinearLayout
             android:id="@+id/filter_group"
             style="@style/Header3Text"
@@ -249,6 +250,7 @@
                 android:linksClickable="true"
                 android:textColorLink="@color/theme_accent"/>
         </LinearLayout>
+        -->
 
         <androidx.cardview.widget.CardView
             android:id="@+id/gnss_status_card"

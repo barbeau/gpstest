@@ -21,6 +21,10 @@ import android.content.res.Resources;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
+import com.android.gpstest.model.GnssType;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A class containing utility methods related to preferences
@@ -163,6 +167,45 @@ public class PreferenceUtils {
             }
         }
         return 0;  // Default to the first option
+    }
+
+    /**
+     * Gets a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
+     * @return a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
+     */
+    public static Set<GnssType> getGnssFilter() {
+        Set<GnssType> filter = new LinkedHashSet<>();
+        Resources r = Application.get().getResources();
+        String filterString = getString(r.getString(R.string.pref_key_default_sat_filter));
+        if (filterString == null) {
+            return filter;
+        }
+        String[] parsedFilter = filterString.split(",");
+        for (String s : parsedFilter) {
+            GnssType gnssType = GnssType.fromString(s);
+            if (gnssType != null) {
+                filter.add(gnssType);
+            }
+        }
+        return filter;
+    }
+
+    /**
+     * Saves a set of GnssTypes that should have their satellites displayed to preferences. (All are shown if empty or null)
+     * Values are persisted as string of comma-separated values, with each of the enum values .toString() called
+     * @param filter a set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
+     */
+    public static void saveGnssFilter(Set<GnssType> filter) {
+        Resources r = Application.get().getResources();
+        StringBuilder filterString = new StringBuilder();
+        for (GnssType gnssType : filter) {
+            filterString.append(gnssType.toString() + ",");
+        }
+        // Remove the last comma (if there was at least one entry)
+        if (filter.size() >= 1) {
+            filterString.deleteCharAt(filterString.length() - 1);
+        }
+        saveString(r.getString(R.string.pref_key_default_sat_filter), filterString.toString());
     }
 
     /**

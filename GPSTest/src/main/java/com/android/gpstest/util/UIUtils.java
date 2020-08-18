@@ -786,6 +786,7 @@ public class UIUtils {
             case SBAS:
                 return context.getResources().getString(R.string.sbas);
             case UNKNOWN:
+            default:
                 return context.getResources().getString(R.string.unknown);
         }
     }
