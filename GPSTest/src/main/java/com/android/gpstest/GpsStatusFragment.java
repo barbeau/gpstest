@@ -155,10 +155,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         @Override
         public void onChanged(@Nullable final SatelliteMetadata satelliteMetadata) {
             if (satelliteMetadata != null) {
+                Set<GnssType> filter = PreferenceUtils.getGnssFilter();
                 mNumSats.setText(mRes.getString(R.string.gps_num_sats_value,
                         satelliteMetadata.getNumSatsUsed(),
                         satelliteMetadata.getNumSatsInView(),
-                        satelliteMetadata.getNumSatsTotal()));
+                        satelliteMetadata.getNumSatsTotal()) +
+                        (filter.isEmpty() ? "" : "*"));
             }
         }
     };
@@ -612,6 +614,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
+        Set<GnssType> filter = PreferenceUtils.getGnssFilter();
         while (mSvCount < length) {
             SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), SatelliteUtils.getGnssConstellationType(status.getConstellationType(mSvCount)),
                     status.getCn0DbHz(mSvCount),
@@ -627,11 +630,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 }
             }
 
-            if (satStatus.getGnssType() == GnssType.SBAS) {
-                satStatus.setSbasType(SatelliteUtils.getSbasConstellationType(satStatus.getSvid()));
-                mSbasStatus.add(satStatus);
-            } else {
-                mGnssStatus.add(satStatus);
+            if (filter.isEmpty() || filter.contains(satStatus.getGnssType())) {
+                if (satStatus.getGnssType() == GnssType.SBAS) {
+                    satStatus.setSbasType(SatelliteUtils.getSbasConstellationType(satStatus.getSvid()));
+                    mSbasStatus.add(satStatus);
+                } else {
+                    mGnssStatus.add(satStatus);
+                }
             }
             mSvCount++;
         }
@@ -659,7 +664,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
-        // TODO - pull filter from preferences and use it
+        Set<GnssType> filter = PreferenceUtils.getGnssFilter();
         while (satellites.hasNext()) {
             GpsSatellite satellite = satellites.next();
 
@@ -671,11 +676,13 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     satellite.getElevation(),
                     satellite.getAzimuth());
 
-            if (satStatus.getGnssType() == GnssType.SBAS) {
-                satStatus.setSbasType(SatelliteUtils.getSbasConstellationTypeLegacy(satStatus.getSvid()));
-                mSbasStatus.add(satStatus);
-            } else {
-                mGnssStatus.add(satStatus);
+            if (filter.isEmpty() || filter.contains(satStatus.getGnssType())) {
+                if (satStatus.getGnssType() == GnssType.SBAS) {
+                    satStatus.setSbasType(SatelliteUtils.getSbasConstellationTypeLegacy(satStatus.getSvid()));
+                    mSbasStatus.add(satStatus);
+                } else {
+                    mGnssStatus.add(satStatus);
+                }
             }
             mSvCount++;
         }
