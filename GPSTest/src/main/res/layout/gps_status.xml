@@ -215,42 +215,45 @@
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- TODO Show card for "Showing X of Y satellites (Show all)" if filter is active -->
-        <!--
-        <LinearLayout
-            android:id="@+id/filter_group"
-            style="@style/Header3Text"
-            android:layout_width="match_parent"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/status_filter_card"
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardCornerRadius="4dp"
+            android:foreground="?attr/selectableItemBackground"
             android:visibility="gone">
-
-            <TextView`
-            android:id="@+id/filter_text"
-            style="@style/Header3Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:gravity="center_vertical|right"/>
-
-            <TextView
-                android:id="@+id/show_all"
-                android:text="@string/stop_info_filter_showall"
-                style="@style/Header3Text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="2dp"
+            <LinearLayout
+                android:id="@+id/filter_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="center_vertical"
-                android:bufferType="spannable"
-                android:linksClickable="true"
-                android:textColorLink="@color/theme_accent"/>
-        </LinearLayout>
-        -->
+                android:orientation="horizontal">
+
+                <TextView
+                android:id="@+id/filter_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical|right"/>
+
+                <TextView
+                    android:id="@+id/show_all"
+                    android:text="@string/filter_showall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center_vertical"
+                    android:bufferType="spannable"
+                    android:linksClickable="true"
+                    android:textColorLink="@color/colorAccent"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/gnss_status_card"
