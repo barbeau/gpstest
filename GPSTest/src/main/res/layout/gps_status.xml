@@ -233,16 +233,18 @@
                 android:orientation="horizontal">
 
                 <TextView
-                android:id="@+id/filter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_vertical|right"/>
+                    android:id="@+id/filter_text"
+                    android:textStyle="italic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_vertical|right"/>
 
                 <TextView
-                    android:id="@+id/show_all"
+                    android:id="@+id/filter_show_all"
+                    android:textStyle="italic"
                     android:text="@string/filter_showall"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

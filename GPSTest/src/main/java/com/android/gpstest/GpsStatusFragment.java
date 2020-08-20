@@ -19,6 +19,7 @@ package com.android.gpstest;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -33,6 +34,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -111,6 +113,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private CardView mLocationCard;
 
+    private ViewGroup filterCard;
+    private TextView filterTextView;
+    private TextView filterShowAllView;
+    private ClickableSpan filterShowAllClick;
+
     private Location mLocation;
 
     private TableRow mSpeedBearingAccuracyRow;
@@ -125,7 +132,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private List<SatelliteStatus> mSbasStatus = new ArrayList<>();
 
-    private int mSvCount;
+    private int svCount;
+
+    private int svVisibleCount;
 
     private String mSnrCn0Title;
 
@@ -148,9 +157,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     DeviceInfoViewModel mViewModel;
 
-    // The set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
-    private LinkedHashSet<GnssType> gnssTypeFilter;
-
     private final Observer<SatelliteMetadata> mSatelliteMetadataObserver = new Observer<SatelliteMetadata>() {
         @Override
         public void onChanged(@Nullable final SatelliteMetadata satelliteMetadata) {
@@ -159,8 +165,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mNumSats.setText(mRes.getString(R.string.gps_num_sats_value,
                         satelliteMetadata.getNumSatsUsed(),
                         satelliteMetadata.getNumSatsInView(),
-                        satelliteMetadata.getNumSatsTotal()) +
-                        (filter.isEmpty() ? "" : "*"));
+                        satelliteMetadata.getNumSatsTotal()));
             }
         }
     };
@@ -226,6 +231,21 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             }
         });
 
+        // GNSS filter
+        filterCard = v.findViewById(R.id.status_filter_card);
+        filterTextView = v.findViewById(R.id.filter_text);
+        filterShowAllView = v.findViewById(R.id.filter_show_all);
+
+        // Remove any previous clickable spans to avoid issues with recycling views
+        UIUtils.removeAllClickableSpans(filterShowAllView);
+        filterShowAllClick = new ClickableSpan() {
+            public void onClick(View v) {
+                // Save an empty set to preferences to show all satellites
+                PreferenceUtils.saveGnssFilter(new LinkedHashSet<>());
+            }
+        };
+        UIUtils.setClickableSpan(filterShowAllView, filterShowAllClick);
+
         // GNSS
         LinearLayoutManager llmGnss = new LinearLayoutManager(getContext());
         llmGnss.setAutoMeasureEnabled(true);
@@ -280,7 +300,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mPdopView.setText("");
                 mHvdopView.setText("");
 
-                mSvCount = 0;
+                svCount = 0;
+                svVisibleCount = 0;
                 mGnssStatus.clear();
                 mSbasStatus.clear();
                 mGnssAdapter.notifyDataSetChanged();
@@ -610,27 +631,29 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mSnrCn0Title = mRes.getString(R.string.gps_cn0_column_label);
 
         final int length = status.getSatelliteCount();
-        mSvCount = 0;
+        svCount = 0;
+        svVisibleCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
-        while (mSvCount < length) {
-            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(mSvCount), SatelliteUtils.getGnssConstellationType(status.getConstellationType(mSvCount)),
-                    status.getCn0DbHz(mSvCount),
-                    status.hasAlmanacData(mSvCount),
-                    status.hasEphemerisData(mSvCount),
-                    status.usedInFix(mSvCount),
-                    status.getElevationDegrees(mSvCount),
-                    status.getAzimuthDegrees(mSvCount));
+        while (svCount < length) {
+            SatelliteStatus satStatus = new SatelliteStatus(status.getSvid(svCount), SatelliteUtils.getGnssConstellationType(status.getConstellationType(svCount)),
+                    status.getCn0DbHz(svCount),
+                    status.hasAlmanacData(svCount),
+                    status.hasEphemerisData(svCount),
+                    status.usedInFix(svCount),
+                    status.getElevationDegrees(svCount),
+                    status.getAzimuthDegrees(svCount));
             if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
-                if (status.hasCarrierFrequencyHz(mSvCount)) {
+                if (status.hasCarrierFrequencyHz(svCount)) {
                     satStatus.setHasCarrierFrequency(true);
-                    satStatus.setCarrierFrequencyHz(status.getCarrierFrequencyHz(mSvCount));
+                    satStatus.setCarrierFrequencyHz(status.getCarrierFrequencyHz(svCount));
                 }
             }
 
             if (filter.isEmpty() || filter.contains(satStatus.getGnssType())) {
+                svVisibleCount++;
                 if (satStatus.getGnssType() == GnssType.SBAS) {
                     satStatus.setSbasType(SatelliteUtils.getSbasConstellationType(satStatus.getSvid()));
                     mSbasStatus.add(satStatus);
@@ -638,7 +661,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     mGnssStatus.add(satStatus);
                 }
             }
-            mSvCount++;
+            svCount++;
         }
         mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
@@ -660,7 +683,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
 
-        mSvCount = 0;
+        svCount = 0;
+        svVisibleCount = 0;
         mGnssStatus.clear();
         mSbasStatus.clear();
         mViewModel.reset();
@@ -677,6 +701,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     satellite.getAzimuth());
 
             if (filter.isEmpty() || filter.contains(satStatus.getGnssType())) {
+                svVisibleCount++;
                 if (satStatus.getGnssType() == GnssType.SBAS) {
                     satStatus.setSbasType(SatelliteUtils.getSbasConstellationTypeLegacy(satStatus.getSvid()));
                     mSbasStatus.add(satStatus);
@@ -684,7 +709,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     mGnssStatus.add(satStatus);
                 }
             }
-            mSvCount++;
+            svCount++;
         }
 
         mViewModel.setStatuses(mGnssStatus, mSbasStatus);
@@ -694,6 +719,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private void refreshViews() {
         sortLists();
+        updateFilterView();
 
         updateListVisibility();
         mGnssAdapter.notifyDataSetChanged();
@@ -739,6 +765,25 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mGnssStatus = SortUtil.Companion.sortByGnssThenUsedThenId(mGnssStatus);
                 mSbasStatus = SortUtil.Companion.sortBySbasThenUsedThenId(mSbasStatus);
                 break;
+        }
+    }
+
+    private void updateFilterView() {
+        Context c = getContext();
+        if (c == null) {
+            return;
+        }
+        Set<GnssType> filter = PreferenceUtils.getGnssFilter();
+        if (filter.isEmpty()) {
+            filterCard.setVisibility(View.GONE);
+            // Set num sats view back to normal
+            mNumSats.setTypeface(null, Typeface.NORMAL);
+        } else {
+            // Show filter text
+            filterCard.setVisibility(View.VISIBLE);
+            filterTextView.setText(c.getString(R.string.filter_text, svVisibleCount, svCount));
+            // Set num sats view to italics to match filter text
+            mNumSats.setTypeface(mNumSats.getTypeface(), Typeface.ITALIC);
         }
     }
 

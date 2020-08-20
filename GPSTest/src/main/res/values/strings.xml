@@ -116,7 +116,7 @@
     <string name="menu_option_sort_by">Sort by</string>
     <string name="menu_option_filter">Filter</string>
     <string name="filter_dialog_title">Show only these GNSS</string>
-    <string name="filter_text">* Showing %1$d of %2$d satellites</string>
+    <string name="filter_text">Showing %1$d of %2$d satellites</string>
     <string name="filter_showall">(show all)</string>
     <string name="error_time_title">Your GNSS time is wrong</string>
     <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See http://bit.ly/gps-week-rollover for more info.</string>

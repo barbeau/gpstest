@@ -27,7 +27,10 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -788,6 +791,20 @@ public class UIUtils {
             case UNKNOWN:
             default:
                 return context.getResources().getString(R.string.unknown);
+        }
+    }
+
+    public static void setClickableSpan(TextView v, ClickableSpan span) {
+        Spannable text = (Spannable) v.getText();
+        text.setSpan(span, 0, text.length(), 0);
+        v.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public static void removeAllClickableSpans(TextView v) {
+        Spannable text = (Spannable) v.getText();
+        ClickableSpan[] spans = text.getSpans(0, text.length(), ClickableSpan.class);
+        for (ClickableSpan cs : spans) {
+            text.removeSpan(cs);
         }
     }
 }
