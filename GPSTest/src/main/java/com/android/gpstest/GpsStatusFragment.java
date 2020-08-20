@@ -113,7 +113,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     private CardView mLocationCard;
 
-    private ViewGroup filterCard;
+    private ViewGroup filterGroup;
     private TextView filterTextView;
     private TextView filterShowAllView;
     private ClickableSpan filterShowAllClick;
@@ -232,7 +232,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         });
 
         // GNSS filter
-        filterCard = v.findViewById(R.id.status_filter_card);
+        filterGroup = v.findViewById(R.id.status_filter_group);
         filterTextView = v.findViewById(R.id.filter_text);
         filterShowAllView = v.findViewById(R.id.filter_show_all);
 
@@ -775,12 +775,12 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
         if (filter.isEmpty()) {
-            filterCard.setVisibility(View.GONE);
+            filterGroup.setVisibility(View.GONE);
             // Set num sats view back to normal
             mNumSats.setTypeface(null, Typeface.NORMAL);
         } else {
             // Show filter text
-            filterCard.setVisibility(View.VISIBLE);
+            filterGroup.setVisibility(View.VISIBLE);
             filterTextView.setText(c.getString(R.string.filter_text, svVisibleCount, svCount));
             // Set num sats view to italics to match filter text
             mNumSats.setTypeface(mNumSats.getTypeface(), Typeface.ITALIC);
