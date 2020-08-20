@@ -52,6 +52,7 @@
     <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
     <string name="feet_abbreviation">ft</string>
     <string name="meters_abbreviation">m</string>
+    <string name="sbas">SBAS</string>
 
     <!-- Values and units display - Sky View -->
     <string name="sky_legend_cn0_low">10</string>
@@ -84,6 +85,7 @@
 
     <!-- Preference keys -->
     <string name="pref_key_default_sat_sort">preference_default_sat_sort</string>
+    <string name="pref_key_default_sat_filter">preference_default_sat_filter</string>
 
     <string name="pref_key_map_category">map_category</string>
     <string name="pref_key_map_type">map_type</string>

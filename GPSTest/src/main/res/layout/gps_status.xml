@@ -18,7 +18,8 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
@@ -213,6 +214,41 @@
 
                 </TableLayout>
             </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+         <LinearLayout
+             android:id="@+id/status_filter_group"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:gravity="center_vertical"
+             android:orientation="horizontal"
+             android:visibility="gone"
+             tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/filter_text"
+                tools:text="Showing 5 of 10 satellites"
+                android:textStyle="italic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical|right"/>
+
+            <TextView
+                android:id="@+id/filter_show_all"
+                android:textStyle="italic"
+                android:text="@string/filter_showall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:gravity="center_vertical"
+                android:bufferType="spannable"
+                android:linksClickable="true"
+                android:textColorLink="@color/colorAccent"/>
         </LinearLayout>
 
         <androidx.cardview.widget.CardView

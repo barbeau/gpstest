@@ -22,5 +22,10 @@
               android:icon="@drawable/ic_action_sort"
               android:orderInCategory="1"
               app:showAsAction="ifRoom"/>
+        <item android:id="@+id/filter_sats"
+            android:title="@string/menu_option_filter"
+            android:icon="@drawable/ic_baseline_filter_list_24"
+            android:orderInCategory="2"
+            app:showAsAction="ifRoom"/>
     </group>
 </menu>

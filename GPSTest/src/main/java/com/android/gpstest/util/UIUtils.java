@@ -27,7 +27,10 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -43,6 +46,7 @@ import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.model.GnssType;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -760,5 +764,47 @@ public class UIUtils {
     public static boolean isLargeScreen(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
+    /**
+     * Returns the display name for the given GnssType
+     * @param context
+     * @param gnssType
+     * @return the display name for the given GnssType
+     */
+    public static String getGnssDisplayName(Context context, GnssType gnssType) {
+        switch(gnssType) {
+            case NAVSTAR:
+                return context.getResources().getString(R.string.sky_legend_shape_navstar);
+            case GALILEO:
+                return context.getResources().getString(R.string.sky_legend_shape_galileo);
+            case GLONASS:
+                return context.getResources().getString(R.string.sky_legend_shape_glonass);
+            case BEIDOU:
+                return context.getResources().getString(R.string.sky_legend_shape_beidou);
+            case QZSS:
+                return context.getResources().getString(R.string.sky_legend_shape_qzss);
+            case IRNSS:
+                return context.getResources().getString(R.string.sky_legend_shape_irnss);
+            case SBAS:
+                return context.getResources().getString(R.string.sbas);
+            case UNKNOWN:
+            default:
+                return context.getResources().getString(R.string.unknown);
+        }
+    }
+
+    public static void setClickableSpan(TextView v, ClickableSpan span) {
+        Spannable text = (Spannable) v.getText();
+        text.setSpan(span, 0, text.length(), 0);
+        v.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public static void removeAllClickableSpans(TextView v) {
+        Spannable text = (Spannable) v.getText();
+        ClickableSpan[] spans = text.getSpans(0, text.length(), ClickableSpan.class);
+        for (ClickableSpan cs : spans) {
+            text.removeSpan(cs);
+        }
     }
 }
