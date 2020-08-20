@@ -335,7 +335,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
      * @return a formatted version of the provided fixTime based on the width of the current display
      */
     private String formatFixTimeDate(long fixTime) {
-        return UIUtils.isWideEnoughForDate(getContext()) ? mTimeAndDateFormat.format(fixTime) : mTimeFormat.format(fixTime);
+        Context context = getContext();
+        if (context == null) {
+            return "";
+        }
+        return UIUtils.isWideEnoughForDate(context) ? mTimeAndDateFormat.format(fixTime) : mTimeFormat.format(fixTime);
     }
 
     /**
