@@ -218,6 +218,7 @@
         <item>فارسی</item>
         <item>Українська</item>
         <item>한국어</item>
+        <item>Euskara</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -238,6 +239,7 @@
         <item>fa</item>
         <item>uk</item>
         <item>ko</item>
+        <item>eu</item>
     </string-array>
 
 
