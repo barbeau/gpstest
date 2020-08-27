@@ -111,7 +111,6 @@
     <string name="menu_option_sort_by">Sortiert nach</string>
     <string name="error_time_title">Deine GNSS-Zeit ist falsch</string>
     <string name="error_time_message">Die GNSS-Zeit des Geräts mit:\n\n%1$s\n\n...weicht mehr als %2$d Tage von Ihrer Systemuhr ab. Dies kann durch das GPS-Wochennummer-Rollover-Problem verursacht werden - fragen Sie Ihren Gerätehersteller nach Details. Siehe http://bit.ly/gps-week-rollover für weitere Informationen.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Realer Breitengrad</string>
     <string name="ground_truth_longitude">Realer Längengrad</string>
@@ -145,7 +144,7 @@
     <string name="sky_legend_shape_galileo">Galileo (Europäische Union)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (Indien)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (Indien)</string>
 
     <string name="sky_legend_shape_sbas_title">Satellitenbasierte Ergänzungssysteme (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
@@ -153,6 +152,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (Indien)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russland)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Signalverfügbarkeit</string>

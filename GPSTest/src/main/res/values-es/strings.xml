@@ -113,7 +113,6 @@
     <string name="menu_option_sort_by">Ordenar por</string>
     <string name="error_time_title">La hora de tu GNSS está mal</string>
     <string name="error_time_message">La hora del dispositivo GNSS de:\n\n%1$s\n\n…tiene una diferencia superior a %2$d días respecto a tu reloj de sistema. Esto puede ser debido al problema de «vuelta del contador» del GPS - pregunta al fabricante de tu dispositivo para más detalles. Ver http://bit.ly/gps-week-rollover para más información.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Su latitud</string>
     <string name="ground_truth_longitude">Su longitud</string>

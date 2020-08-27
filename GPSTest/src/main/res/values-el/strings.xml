@@ -112,7 +112,6 @@
     <string name="menu_option_sort_by">Ταξινόμηση κατά</string>
     <string name="error_time_title">Σφάλμα Ωρας</string>
     <string name="error_time_message">Μήνυμα σφάλματος</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Το γεωγραφικό πλάτος σας</string>
     <string name="ground_truth_longitude">Το γεωγραφικό μήκος σας</string>

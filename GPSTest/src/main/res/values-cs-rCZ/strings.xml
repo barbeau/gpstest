@@ -112,7 +112,6 @@
     <string name="menu_option_sort_by">Pořadí v seznamu podle</string>
     <string name="error_time_title">Neplatný čas GNNS</string>
     <string name="error_time_message">Čas GNSS zařízení je:\n\n%1$s\n\n…je o více než %2$d den/dny/dnů odlišný od systémových hodin. Může to být způsobeno problémem s prodloužením týdne GPS - požádejte výrobce zařízení o podrobnosti. Více na http://bit.ly/gps-week-rollover for more info.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Zeměpisná šířka</string>
     <string name="ground_truth_longitude">Zeměpisná délka</string>
@@ -190,7 +189,7 @@
         <b>Vylepšen SBAS</b>
         - Přidáno více satelitů pro SNAS (China) a SDCM (Russia).\n&#8226;\u0020
         <b>Přidán perský, ukrajinský a korejský překlad</b>
-        - Poděkování pro Iman (imni), Serhii Osmalchuk a snotree!\n&#8226;\u0020
+        - Poděkování pro Iman (imni), Serhii Osmalchuk, a snotree!\n&#8226;\u0020
         <b>Přidány údaje pro stav</b>
         - Pro zobrazení na šířku a velmi široké obrazovky.\n&#8226;\u0020
         <b>Oprava chyb</b>

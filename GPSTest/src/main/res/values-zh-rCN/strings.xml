@@ -112,7 +112,6 @@
     <string name="menu_option_sort_by">分类</string>
     <string name="error_time_title">你的 GNSS 时间有误</string>
     <string name="error_time_message">设备的GNSS时间：n\n%1$s\n\n…与您的系统时钟相差%2$d天以上。这可能是GPS周翻转问题引起的-请向您的设备制造商询问详细信息。有关更多信息，请参见http://bit.ly/gps-week-rollover。</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">当前纬度</string>
     <string name="ground_truth_longitude">当前经度</string>
@@ -146,8 +145,6 @@
     <string name="sky_legend_shape_galileo">伽利略定位系统（欧盟）</string>
     <string name="sky_legend_shape_qzss">准天顶卫星系统（日本）</string>
     <string name="sky_legend_shape_beidou">北斗卫星导航系统（中国）</string>
-    <string name="sky_legend_shape_irnss">印度区域导航卫星系统（印度）</string>
-
     <string name="sky_legend_shape_sbas_title">星基增强系统（SBAS）</string>
     <string name="sky_legend_shape_waas">WAAS（美国）</string>
     <string name="sky_legend_shape_egnos">EGNOS（欧盟）</string>
@@ -185,18 +182,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>改善反馈</b>
-        - 提供反馈时仅显示电子邮件应用程序。\n&#8226;\u0020
-        <b>改善 \"# Sats\"</b>
-        - now shows \"Used / In View (valid signal strength) / Total\", with correct counts for dual-frequency.\n&#8226;\u0020
-        <b>XTRA 重命名为 PSDS</b>
-        -预测卫星数据服务是通用术语。现在支持在Android 10及更高版本上注入PSDS。\n&#8226;\u0020
-        <b>确定GPS周翻转问题</b>
-        - 由于GPS周翻转问题，时间错误的设备上的时间现在以红色突出显示(http://bit.ly/gps-week-rollover).\n&#8226;\u0020
-        <b>Bug修复</b>
-        - See https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">关闭</string>
 
     <!-- Preferences -->

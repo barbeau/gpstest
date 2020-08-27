@@ -21,10 +21,10 @@
     <!-- Status -->
     <string-array name="sort_sats">
         <item>Konstelasi</item>
-        <item>Frekuensi Karir</item>
+        <item>Frekuensi Karier</item>
         <item>Kekuatan Sinyal</item>
         <item>Digunakan dalam Perbaikan</item>
-        <item>Konstelasi, Frekuensi Karir</item>
+        <item>Konstelasi, Frekuensi Karier</item>
         <item>Konstelasi, Kekuatan Sinyal</item>
         <item>Konstelasi, Digunakan dalam Perbaikan</item>
     </string-array>

@@ -115,7 +115,6 @@
     <string name="menu_option_sort_by">정렬 방법</string>
     <string name="error_time_title">GNSS 시간이 잘못 되었습니다</string>
     <string name="error_time_message">기기의 GNSS 시간:\n\n%1$s\n\n...이 시스템 시계와 %2$d일 이상 차이가 나고 있습니다. 이는 GPS week rollover 이슈로 인해 발생 했을 수 있습니다. 현재 사용하는 기기 제조사에 자세한 사항을 문의해주세요. 자세히 보기 http://bit.ly/gps-week-rollover</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">고도</string>
     <string name="ground_truth_longitude">경도</string>
@@ -149,8 +148,6 @@
     <string name="sky_legend_shape_galileo">Galileo (유럽연합)</string>
     <string name="sky_legend_shape_qzss">QZSS (일본)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (중국)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (인도)</string>
-
     <string name="sky_legend_shape_sbas_title">위성 기반 보정 시스템 (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (미국)</string>
     <string name="sky_legend_shape_egnos">EGNOS (유럽연합)</string>
@@ -190,16 +187,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">새로운 소식</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>SBAS 기능 향상</b>
-        - SNAS (중국)과 SDCM (러시아) 위성 추가.\n&#8226;\u0020
-        <b>페르시아어, 우크라이나어, 한국어 추가</b>
-         - Thanks Iman (imni), Serhii Osmalchuk, and snotree!\n&#8226;\u0020
-        <b>상태에 날짜 추가</b>
-        - 가로보기 및 넓은 스크린.\n&#8226;\u0020
-        <b>오류 수정</b>
-        - https://bit.ly/gpstest-releases 보기
-    </string>
     <string name="main_help_close">닫기</string>
 
     <!-- Preferences -->
@@ -313,103 +300,4 @@ legacy GPSStatus.Listener를 사용합니다.</string>
     <!-- Help -->
     <string name="title_help">도움말</string>
 
-    <string name="help_text">
-        <b>자주 묻는 질문 (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-
-        <b>*** 상태 보기 ***</b>\n\n&#8226;\u0020
-        <b>위도</b>
-        - 10진수 (WGS 84)\n&#8226;\u0020
-        <b>경도</b>
-        - 10진수 (WGS 84)\n&#8226;\u0020
-        <b>고도</b>
-        - WGS 84 타원체 위의 미터\n&#8226;\u0020
-        <b>고도 (MSL)</b>
-        - 평균 해발 미터(MSL) (NMEA 지원 필요)\n&#8226;\u0020
-        <b>E H Acc</b>
-        - 위치의 예상 수평 정확도(Estimated horizontal accuracy) (68% 신뢰도의 반경). 즉, 이 위치의 위도와 경도를 중심으로 하고 반지름이 정확도와 같은 원을 그리면 실제 위치가 원 안에 있을 확률은 68%입니다. 더 자세히는 https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
-        <b>E H/V Acc</b>
-        - 위치의 예상 수평 및 수직 정확도 (Estimated horizontal and vertical accuracy of the location),  양 쪽 모두 68% 신뢰도로써 수평 정확도는 위의 Acc 필드와 동일하게 정의 됩니다. 수직 정확도는 Android 8.0 Oreo 이상에서 사용할 수 있습니다. 수직 정확도의 예를 들면 고도가 150 이고 V Acc가 20이면 실제 고도가 130미터에서 170미터 사이 일 확률은 68%입니다. 자세한 사항은 https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
-        <b>속도</b>
-        - 속도, 지상 기준 미터/초 입니다\n&#8226;\u0020
-        <b>S. Acc</b>
-        - 초당 미터 단위의 68% 신뢰도의 이 위치의 예상 속도 정확도. 예를 들어 Speed가 5이고 속도 정확도가 1이면 실제 속도가 초당 4에서 6 미터 사이 일 확률은 68%입니다.\n&#8226;\u0020
-        <b>Bearing</b>
-        - 장치의 수평 이동 방향 (0-360도) 이며 장치 방향과는 관련이 없습니다.\n&#8226;\u0020
-        <b>B. Acc</b>
-        - 이 위치의 예상 베어링 정확도(Estimated bearing accuracy)는 68%의 신뢰도입니다. 예를 들어 Bearing이 60이고 Bearing Acc가 10이면 실제 베어링이 50도에서 70도 사이 일 확률은 68%입니다.\n&#8226;\u0020
-        <b># 위성</b>
-        - # 위치확정에 사용 된 위성 / # 위성보기 (유효한 신호 강도 값) / # 장치에 알려진 위성. 이중 주파수 기기에서 위성은 해당 위성에서 하나 이상의 주파수를 송신중인 경우 위치 확정에 사용중으로 표시되고, 위성으로부터의 적어도 하나의 신호정보만 있는 경우 하나 이상의 신호가 유효한 신호 강도 인경우 위성은 보기로 표시되고 장치에 알려진 것으로 표시됩니다.\n&#8226;\u0020
-        <b>PDOP</b>
-        - (3차원적) 위치 오차 (NMEA 지원 필요)\n&#8226;\u0020
-        <b>H/V DOP</b>
-        - 수평 / 수직 위치 오차 (NMEA 지원 필요)\n&#8226;\u0020
-        <b>TTFF</b>
-        - 초기 위치 결정 시간\n&#8226;\u0020
-        <b>ID 혹은 PRN</b>
-        - 위성 식별자 (GPS용 의사난수잡음(pseudorandom noise)\n&#8226;\u0020
-        <b>CF</b>
-        - 추적중인 신호의 반송파 주파수에 대한 라벨입니다 (예 : \"L1\"). 알 수 없는 주파수 인 경우 원시 주파수 (MHz)가 표시됩니다 (Android 8.0 이상에서 사용 가능하지만 모든 장치에서 지원되지는 않음). L1에 대한 새로운 GLONASS CDMA 신호는 \"L1-C\"로 표시됩니다.\n&#8226;\u0020
-        <b>SNR</b>
-        - 신호 대 잡음비 비율 (안드로이드 M 이나 낮은 버전) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>C/N0</b>
-        - 반송파대 잡음 밀도 (안드로이드 N 이나 높은 버전) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>플래그</b>
-        - (E) 장치에 위성에 대한 천체 데이터가있는 경우, (A) 장치에 연감 데이터가있는 경우, (U) 위성이 가장 최근 위치 수정을 계산하는 데 사용 된 경우.
- SBAS의 경우 Android 사양은 (U)가 위치 솔루션에 사용되는 위성의 의사 범위를 참조 하는지 또는 사용중인 위성에서 나온 정보를 수정하는지 여부를 지정하지 않습니다.\n\n
-
-        <b>PSDS 데이터 주입</b>
-        - Requests that the device refresh it\'s Predicted Satellite Data Service (e.g., XTRA data), if PSDS data is used by the device.\n\n
-
-        <b>*** 스카이 뷰 ***</b>\n\n&#8226;\u0020
-        <b>GPS (미국 Navstar)</b>
-        - 원형\n&#8226;\u0020
-        <b>GLONASS (러시아)</b>
-        - 사각형\n&#8226;\u0020
-        <b>Galileo (유럽연합)</b>
-        - 삼각형\n&#8226;\u0020
-        <b>QZSS (일본)</b>
-        - 육각형\n&#8226;\u0020
-        <b>BeiDou/COMPASS (중국)</b>
-        - 오각형\n&#8226;\u0020
-        <b>IRNSS (인도)</b>
-        - 타원형\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
-        - 다이아몬드형\n\n
-
-        &#8226;\u0020 투명한 위성 모양 - 시야에서 안보임\n
-        &#8226;\u0020 얇은 윤곽선 - 보이지만 위치에 사용하지 않음\n
-        &#8226;\u0020 굵은 윤곽선 - 위치 확정에 사용중\n\n
-
-        &#8226;\u0020 Expected SNR range is 0 dB (red) to 30 dB (green) on Android versions less than 7.0. \n
-        &#8226;\u0020 Expected SNR range is 10 dB (red) to 45 dB (green) on Android 7.0 and higher. \n
-        &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
-        &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
-
-        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
-        <b>수직 오류</b>
-        - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
-
-        &#8226;\u0020Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n\n
-
-        <b>*** 파일 로그 기록 ***</b>\n\n
-        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See http://bit.ly/gpstest-file for details.\n\n
-
-        <b>*** 감사의 글 ***</b>\n\n
-        &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
-        &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
-        &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design \"satellite\" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0. QR code icon by Austin Andrews from https://materialdesignicons.com/icon/qrcode.\n
-        &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-        &#8226;\u0020 German translation provided by SIRSteiner\n
-        &#8226;\u0020 Dutch translation provided by Dennis Dolman, Meteor0id\n
-        &#8226;\u0020 Greek translation provided by Jimmy Golfi\n
-        &#8226;\u0020 Japanese translation provided by SakuraSa233\n
-        &#8226;\u0020 Czech translation provided by llzn.cz\n
-        &#8226;\u0020 Italian translation provided by Giolly90\n
-        &#8226;\u0020 Spanish translation provided by Sergi Pellicer\n
-        &#8226;\u0020 Indonesian translation provided by Adiitya Andre90\n
-        &#8226;\u0020 Polish translation provided by Adam Wandelt\n
-        &#8226;\u0020 French translation provided by Olivier Merlin &amp; Jérémy Belloir\n
-        &#8226;\u0020 Persian translation provided by Iman (imni)\n
-    </string>
-</resources>
+    </resources>

@@ -26,7 +26,6 @@
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">アシストデータを変更</string>
-    <string name="force_psds_injection">PSDSデータを注入</string>
     <string name="force_time_injection">時間データを注入</string>
     <string name="delete_aiding_data">アシストデータを削除</string>
     <string name="navdrawer_item_settings">設定</string>
@@ -48,10 +47,6 @@
     <string name="set_fix_frequency">周波数を設定する</string>
     <string name="force_time_injection_success">時間データを注入しました。</string>
     <string name="force_time_injection_failure">デバイスは時間データの注入をサポートしていません。
-    </string>
-
-    <string name="force_psds_injection_success">PSDSデータを注入しました。</string>
-    <string name="force_psds_injection_failure">デバイスはPSDSデータの注入をサポートしていません。
     </string>
 
     <string name="zoom_in">ズームイン</string>

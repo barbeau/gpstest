@@ -146,15 +146,12 @@
     <string name="sky_legend_shape_galileo">Galileo (Europese Unie)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (China)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (India)</string>
-
     <string name="sky_legend_shape_sbas_title">Satelliet-gebaseerde AanvullingsSystemen (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (VS)</string>
     <string name="sky_legend_shape_egnos">EGNOS (Europese Unie)</string>
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Rusland)</string>
-    <string name="sky_legend_shape_snas">SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Signaalbeschikbaarheid</string>
@@ -292,96 +289,4 @@
     <!-- Help -->
     <string name="title_help">Help</string>
 
-    <string name="help_text">
-<b>Veel gestelde vragen (FAQ)</b>
-        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-
-        <b>*** Status weergave ***</b>\n\n&#8226;\u0020
-        <b>Breedtegr.</b>
-        - Breedtegraad in decimale graden (WGS 84) (in het Engels Latitude) \n&#8226;\u0020
-        <b>Lengtegr.</b>
-        - Lengtegraad in decimale graden (WGS 84) (in het Engels Longitude) \n&#8226;\u0020
-        <b>Hoogte</b>
-        - Meters boven de WGS 84 ellipsoïde\n&#8226;\u0020
-        <b>Hoogte (GZN)</b>
-        - Meters boven het Gemiddeld ZeeNiveau (Vereist NMEA ondersteuning). Dit is NIET precies gelijk aan NAP (Nieuw Amsterdams Pijl) (in het Engels Alt (MSL) wat staat voor Altitude above Mean Sea Level)\n&#8226;\u0020
-        <b>Nauwk.</b>
-- Geschatte horizontale nauwkeurigheid van de positie (radius in meters met 68% zekerheid). In andere woorden, als je een cirkel tekent in het midden van deze breedte- en lengtegraad, met een radius gelijk aan deze nauwkeurigheid, dan is er een kans van 68% dat je daadwerkelijke positie zich binnen deze cirkel bevind. Voor meer details lees https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389 .\n&#8226;\u0020
-        <b>G. H/V Nauwk.</b>
-- Geschatte horizontale- en verticale- nauwkeurigheid van de positie, beide met een betrouwbaarheid van 68%. Horizontale nauwkeurigheid wordt hetzelfde gedefinieerd als het veld Nauwk. hierboven. Verticale nauwkeurigheid is beschikbaar op Android 8.0 (Oreo) en hoger. Een rekenvoorbeeld met verticaal nauwkeurigheid: als hoogte 150 m is en verticale nauwkeurigheid 20 m is, dan is er een kans van 68% dat de werkelijke hoogte tussen 130 en 170 meter ligt. Voor meer details lees https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389 .\n&#8226;\u0020
-        <b>Snelheid</b>
-        - Snelheid in meters per seconde over de grond\n&#8226;\u0020
-        <b>Snel. Nauwk.</b>
-- Geschatte bewegingssnelheidsnauwkeurigheid met 68% zekerheid, in meters per seconde. Als snelheid bijvoorbeeld 5 m/s is en snelheid nauwkeurigheid 1 m/s is, is er een kans van 68% dat de werkelijke snelheid tussen 4 en 6 meter per seconde ligt.\n&#8226;\u0020
-        <b>Peiling</b>
-- De horizontale beweegrichting van het apparaat (in graden 0-360) en is niet gerelateerd aan de oriëntatie van het apparaat. (in het Engels Bearing)\n&#8226;\u0020
-        <b>P. Nauwk.</b>
-        - Geschatte nauwkeurigheid van peiling bij 68% zekerheid, in graden. Als bijvoorbeeld de peiling 60 is en peiling nauwkeurigheid 10 m, dan is er een zekerheid van 68% dat het ware peil tussen 50 en 70 graden ligt. (in het Engels Bearing accuracy)\n&#8226;\u0020
-        <b>#Sat</b>
-        -  Aantal satellieten gebruikt in de fix / Aantal satellieten in zicht\n&#8226;\u0020
-        <b>P VVN</b>
-        - Positie-gerelateerde (in 3 dimensies) Verzwakking Van Nauwkeurigheid (in het Engels P DOP wat staat voor Position related Dilution Of Precision) (vereist NMEA ondersteuning)\n&#8226;\u0020
-        <b>H/V VVN</b>
-        - Horizontale / Verticale Verzwakking Van Nauwkeurigheid (in het Engels H/V DOP wat staat voor Horizontal / Veritical Dilution Of Precision) (vereist NMEA ondersteuning)\n&#8226;\u0020
-        <b>TTEF</b>
-        - Tijd tot de eerste fix (in het Engels TTFF wat staat voor Time To First Fix)\n&#8226;\u0020
-        <b>ID of PRN</b>
-        - Identificator van deze satelliet (bij GPS wordt pseudo-willekeurige ruis gebruikt om deze te bepalen)\n&#8226;\u0020
-        <b>DF</b>
-- Label (bijv. \"L1\") voor DraaggolfFrequentie van het signaal dat wordt gevolgd (in het Engels CF wat staat voor Carrier Frequency). Als er een onbekende frequentie is, wordt de onbewerkte frequentie in MHz weergegeven (beschikbaar op Android 8.0+, maar niet op alle apparaten) Het nieuwe GLOSNASS-CDMA-signaal voor \"L1\" wordt weergegeven als \"L1-C\".\n&#8226;\u0020
-        <b>S/R</b>
-        - Signaal tot ruis verhouding (in het Engels SNR wat staat voor Signal-to-Noise ratio) (Android M en lager) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>D/R0</b>
-        - Draaggolf tot ruisdichtheid verhouding (in het Engels C/N0 wat staat voor Carrier-to-noise density) (Android N en hoger) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
-        <b>Flaggen</b>
-        - (E) als het apparaat efemeride-gegevens heeft voor deze satelliet, (A) als het apparaat almanakgegevens
-heeft voor deze satelliet, (G) als de satelliet werd gebruikt in de berekening voor de meest recente locatiebepaling. Voor SBAS definiëren de Android specificaties niet of (G) verwijst naar het gebruik van pseudo-afstanden tot de satelliet in de locatiebepaling of dat de correctie-gegevens van die satelliet worden gebruik in de berekening. Het is daarom niet mogelijk voor GPSTest om aan te geven of SBAS ook echt wordt gebruikt.\n\n
-
-        <b>*** Hemel weergave - Uitleg ***</b>\n\n&#8226;\u0020
-        <b>GPS (VS Navstar)</b>
-        - Cirkels\n&#8226;\u0020
-        <b>GLONASS (Rusland)</b>
-        - Vierkanten\n&#8226;\u0020
-        <b>Galileo (Europese Unie)</b>
-        - Driehoeken\n&#8226;\u0020
-        <b>QZSS (Japan)</b>
-        - Zeshoeken\n&#8226;\u0020
-        <b>BeiDou/COMPASS (China)</b>
-        - Vijfhoeken\n&#8226;\u0020
-        <b>IRNSS (India)</b>
-        - Ovalen\n&#8226;\u0020
-         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA)</b>
-        - Diamanten\n\n
-
-        &#8226;\u0020 Transparante satellieten  - niet in zicht\n
-        &#8226;\u0020 Dunne omlijning - In zicht maar niet gebruikt in fix\n
-        &#8226;\u0020 Dikke omlijning - In zicht en in fix\n\n
-
-        &#8226;\u0020 Verwachtte S/R domein is 0 (rood) tot 30 dB (groen) op Android versies lager dan 7.0. \n
-        &#8226;\u0020 Verwachtte S/R domein is 10 (rood) tot 45 dB (groen) op Android 7.0 en hoger. \n
-        &#8226;\u0020 Verwachtte D/R0 domein is 10 (rood) tot 45 dB-Hz (groen) op Android 7.0 en hoger. \n
-        &#8226;\u0020 Als er geen S/R of D/R0 waarde is voor een satelliet (bijv. als hij niet in zicht is van je apparaat), zal hij een transparante licht grijze kleur hebben.\n\n
-
-<b>*** Nauwkeurigheids-weergave***</b>\n\n&#8226;\u0020
- <b>Vertical afwijking</b>
-- Verticale afwijking kan, anders dan horizontale afwijking, zowel positief als negatief zijn. Als de nauwkeurigheidsweergave wordt gebruikt zullen de absolute waardes van de verticale en gemiddelde afwijking worden gebruikt om de foutwaarden te berekenen.\n\n
-        
-*** Bestandsloggen ***\n\n
- &#8226;\u0020Schakel bij de instellingen bestandsloggen in voor NEMA, navigatiemeldingen rauwe metingen en locatie-fixes. Zie http://bit.ly/gpstest-file voor details.\n\n
-        
-*** Erkenningen ***\n\n
-&#8226;\u0020 <b>Mike Lockwood</b> - oorspronkelijke ontwikkelaar voor v1.x\n
-&#8226;\u0020 <b>Sean Barbeau</b> - ontwikkelaar voor v2.x en hoger\n
-&#8226;\u0020 Het GPSTest pictogram is afgeleid uit de Android Material Design \"satelliet-pictogram\", licentie van Google onder Apache v2.0. Andere \'Google material design\'-pictogrammen door Austin Andrews van https://materialdesignicons.com/icon/qrcode worden gebruikt onder Apache v2.0 licentie.\n
-&#8226;\u0020 Chinese vertaaling aangeboden door wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
-&#8226;\u0020 Duitse vertaling aangeboden door SIRSteiner\n
-&#8226;\u0020 Nederlandse vertaling aangeboden door Dennis Dolman &amp; Niels Lancel\n
-&#8226;\u0020 Griekse vertaling aangeboden door Jimmy Golfi\n
-&#8226;\u0020 Japanse vertaling aangeboden door SakuraSa233\n
-&#8226;\u0020 Tsjechisch vertaling aangeboden door llzn_cz\n
-&#8226;\u0020 Italiaanse vertaling aangeboden door Giolly90\n
-&#8226;\u0020 Spaanse vertaling aangeboden door Sergi Pellicer\n
-&#8226;\u0020 Indonesische vertaling aangeboden door Adiitya Andre90\n
-&#8226;\u0020 Poolse vertaling aangeboden door Adam Wandelt\n
-&#8226;\u0020 Franse vertaling aangeboden door Olivier Marlin &amp; Jérémy Balloir\n</string>
-</resources>
+    </resources>

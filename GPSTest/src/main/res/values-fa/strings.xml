@@ -113,7 +113,6 @@
     <string name="menu_option_sort_by">ترتیب بر اساس</string>
     <string name="error_time_title">زمان GNSS شما نادرست است</string>
     <string name="error_time_message">زمان GNSS دستگاه:\n\n%1$s\n\n…بیش از %2$d روز با ساعت دستگاه شما فرق دارد. این مشکل می‌تواند ناشی از «مسئلهٔ بازنشانی شمارندهٔ هفته در GPS» باشد. برای جزئیات بیشتر با سازندهٔ دستگاه خود تماس بگیرید. برای اطلاعات بیشتر http://bit.ly/gps-week-rollover را ببینید.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">عرض جغرافیایی شما</string>
     <string name="ground_truth_longitude">طول جغرافیایی شما</string>

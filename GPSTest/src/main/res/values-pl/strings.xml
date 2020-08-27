@@ -114,7 +114,6 @@
     <string name="menu_option_sort_by">Sortuj według</string>
     <string name="error_time_title">Twój czas GNSS jest nieprawidłowy</string>
     <string name="error_time_message">Czas GNSS urządzenia wynoszący:\n\n%1$s\n\n…więcej niż %2$d dni inne niż zegar systemowy. Przyczyną może być problem z tyrolowaniem tygodnia GPS - szczegółowe informacje można uzyskać od producenta urządzenia. Aby uzyskać więcej informacji, zobacz http://bit.ly/gps-week-rollover.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Twoja szerokość geograficzna</string>
     <string name="ground_truth_longitude">Twoja długość geograficzna</string>
@@ -189,12 +188,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co nowego?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Ulepszony SBAS</b>
+        <b>Ulepszono SBAS</b>
         - Dodano więcej satelitów dla SNAS (Chiny) i SDCM (Rosja).\n&#8226;\u0020
-        <b>Dodano tłumaczenia na język Perski, Ukraiński i Koreański</b>
-        - Dzięki Iman (imni), Serhii Osmalchuk, i snotree!\n&#8226;\u0020
-        <b>Dodano datę do Pozycji</b>
-        - Dla widoku poziomego i bardzo szerokich ekranów.\n&#8226;\u0020
+        <b>Dodaj tłumaczenia na język Perski, Ukraiński i Koreański</b>
+        - Dzięki Iman (imni), Serhii Osmalchuk i snotree!\n&#8226;\u0020
+        <b>Dodano datę do Pozycja</b>
+        - Do widoku poziomego i bardzo szerokich ekranów.\n&#8226;\u0020
         <b>Poprawki błędów</b>
         - Zobacz https://bit.ly/gpstest-releases
     </string>
@@ -310,7 +309,7 @@
         <b>Często zadawane pytania (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
 
-        <b>*** Widok stanu ***</b>\n\n&#8226;\u0020
+        <b>*** Widok Pozycja ***</b>\n\n&#8226;\u0020
         <b>Szerokość geograficzna</b>
         - W stopniach dziesiętnych (WGS 84)\n&#8226;\u0020
         <b>Długość geograficzna</b>
@@ -403,7 +402,7 @@
         &#8226;\u0020 Tłumaczenie na język Polski Adam Wandelt\n
         &#8226;\u0020 Tłumaczenie na język Francuski Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Tłumaczenie na język Perski Iman (imni)\n
-        &#8226;\u0020 Tłumaczenie na język Ukraiński Serhii Osmalchuk\n
-        &#8226;\u0020 Tłumaczenie na język snotree\n
+        &#8226;\u0020 Tłumaczenie na język Ukraiński gris.greyler\n
+        &#8226;\u0020 Tłumaczenie na język Koreański snotree\n
     </string>
 </resources>

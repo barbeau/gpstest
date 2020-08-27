@@ -116,7 +116,6 @@
     <string name="menu_option_sort_by">Сортировать по</string>
     <string name="error_time_title">GNSS время неверно</string>
     <string name="error_time_message">GNSS время на устройстве:\n\n%1$s\n\n…отличается более чем на %2$d дней от системных часов. Проблема может быть вызвана сбросом недель в GPS - обратитесь к производителю вашего устройства. См. http://bit.ly/gps-week-rollover для получения дополнительной информации.</string>
-
     <!-- Map view -->
     <string name="ground_truth_latitude">Ваша широта</string>
     <string name="ground_truth_longitude">Ваша долгота</string>
@@ -150,7 +149,7 @@
     <string name="sky_legend_shape_galileo">Галилео (Европейский союз)</string>
     <string name="sky_legend_shape_qzss">QZSS (Япония)</string>
     <string name="sky_legend_shape_beidou">Бэйдоу/COMPASS (Китай)</string>
-    <string name="sky_legend_shape_irnss">IRNSS (Индия)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (Индия)</string>
 
     <string name="sky_legend_shape_sbas_title">Спутниковые системы дифференциальной коррекции (ССДК)</string>
     <string name="sky_legend_shape_waas">WAAS (США)</string>
@@ -194,8 +193,8 @@
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Улучшения SBAS</b>
         - Добавлено больше спутников для SNAS (Китай) и SDCM (Россия).\n&#8226;\u0020
-        <b>Добавлен персидский перевод</b>
-        - Спасибо Iman (imni)!\n&#8226;\u0020
+        <b>Добавлен персидский, украинский и корейский перевод</b>
+        - Спасибо Iman (imni), Serhii Osmalchuk и snotree!\n&#8226;\u0020
         <b>Добавление даты во вкладку Состояние</b>
         - Для альбомной ориентации и очень широких экранов.\n&#8226;\u0020
         <b>Баг фиксы</b>

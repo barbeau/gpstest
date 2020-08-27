@@ -46,13 +46,13 @@
     </string>
     <string name="gps_switch">Nonaktif/Aktif</string>
     <string name="share">Bagikan</string>
-    <string name="copied_to_clipboard">Lokasi disalin ke klipboard</string>
+    <string name="copied_to_clipboard">Lokasi disalin ke papan klip</string>
     <string name="send_log">Kirim catatan…</string>
     <string name="log_instructions">Aktifkan pencatatan untuk NMEA, pengukuran dasar, pesan navigasi, dan lainnya di Setelan</string>
     <string name="log_error">Terjadi kesalahan dalam pencatatan file. Apakah Anda memberikan izin ke penyimpanan? Coba aktifkan kembali opsi pencatatan file di Setelan dan ketuk \"Izinkan\" saat diminta.</string>
     <string name="no_location">Coba bagikan lokasi Anda setelah mendapat perbaikan GNSS</string>
-    <string name="include_altitude">Termasuk ketinggian</string>
-    <string name="set_fix_frequency">Atur Frekuensi Perbaikan</string>
+    <string name="include_altitude">Sertakan ketinggian</string>
+    <string name="set_fix_frequency">Setel Frekuensi Perbaikan</string>
     <string name="force_time_injection_success">Data waktu berhasil di-injeksi.</string>
     <string name="force_time_injection_failure">Perangkat tidak mendukung injeksi data waktu.
     </string>
@@ -71,13 +71,13 @@
     <string name="gps_fix_time_label">Waktu:</string>
     <string name="gps_ttff_label">TTFF:</string>
     <string name="gps_altitude_label">Ketinggian:</string>
-    <string name="gps_altitude_msl_label">Ktngn. (DPL):</string>
-    <string name="gps_accuracy_label">Akrs. P H:</string>
-    <string name="gps_hor_and_vert_accuracy_label">Akrs. P H/V:</string>
+    <string name="gps_altitude_msl_label">Ktgn (DPL):</string>
+    <string name="gps_accuracy_label">Akrs P H:</string>
+    <string name="gps_hor_and_vert_accuracy_label">Akrs P H/V:</string>
     <string name="gps_speed_label">Kecepatan:</string>
-    <string name="gps_speed_acc_label">Akrs. K:</string>
-    <string name="gps_bearing_label">Bantalan:</string>
-    <string name="gps_bearing_acc_label">Akrs. B:</string>
+    <string name="gps_speed_acc_label">Akrs K:</string>
+    <string name="gps_bearing_label">Poros:</string>
+    <string name="gps_bearing_acc_label">Akrs P:</string>
     <string name="gps_num_sats_label"># Sat:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
@@ -92,7 +92,7 @@
     <string name="gps_elevation_column_label">Elev</string>
     <string name="gps_azimuth_column_label">Azim</string>
     <string name="gps_flags_column_label">Tanda</string>
-    <string name="gps_not_supported">Silahkan periksa setelan sistem - perangkat sepertinya tidak mendukung GNSS/GPS.</string>
+    <string name="gps_not_supported">Periksa setelan sistem - perangkat sepertinya tidak mendukung GNSS/GPS.</string>
     <string name="install">Instal</string>
     <string name="no_thanks">Tidak, terima kasih</string>
     <string name="please_install_google_maps">Tab Peta membutuhkan Google Maps</string>
@@ -113,9 +113,15 @@
     <string name="no">TIDAK</string>
     <string name="gnss_not_available">Satelit GNSS (Sistem Satelit Navigasi Global) tidak tersedia</string>
     <string name="sbas_not_available">Satelit SBAS (Sistem Augmentasi berdasarkan Satelit) tidak tersedia</string>
-    <string name="menu_option_sort_by">Urutkan dengan</string>
+    <string name="menu_option_sort_by">Urutkan menurut</string>
+    <string name="menu_option_filter">Filter</string>
+    <string name="filter_dialog_title">Hanya tampilkan GNSS ini</string>
+    <string name="filter_text">Menampilkan %1$d dari %2$d satelit</string>
+    <string name="filter_showall">(tampilkan semua)</string>
     <string name="error_time_title">Waktu GNSS Anda salah</string>
-    <string name="error_time_message">Waktu pada GNSS perangkat:\n\n%1$s\n\n…berbeda lebih dari %2$d hari dari jam pada sistem Anda. Hal ini bisa dikarenakan masalah dengan GPS week rollover - Tanyakan pembuat perangkat Anda untuk detailnya. Lihat http://bit.ly/gps-week-rollover untuk info lebih lanjut.</string>
+    <string name="error_time_message">Waktu pada GNSS perangkat:\n\n%1$s\n\n…berbeda lebih dari %2$d hari dari jam pada sistem Anda. Hal ini bisa disebabkan oleh masalah GPS week rollover - Tanyakan pembuat perangkat Anda untuk detailnya. Lihat http://bit.ly/gps-week-rollover untuk info lebih lanjut.</string>
+    <string name="unknown">Tidak dikenal</string>
+    <string name="cancel">Batal</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Titik lintang Anda</string>
@@ -180,12 +186,12 @@
     <!-- Permissions -->
     <string name="title_location_permission">Izin lokasi dibutuhkan</string>
     <string name="text_location_permission">GPSTest membutuhkan akses lokasi Anda untuk menampilkan data GNSS. Bila Anda memilih \"Jangan tanyakan lagi\" Anda perlu menginstal ulang aplikasi atau aktifkan izin melalui setelan sistem.</string>
-    <string name="ok">OK</string>
+    <string name="ok">OKE</string>
     <string name="exit">KELUAR</string>
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Umpan Balik</string>
-    <string name="feedback_body">Keluhan, pujian, atau pelaporan bug diterima!\n\n\n</string>
+    <string name="feedback_body">Menerima keluhan, pujian atau pelaporan bug!\n\n\n</string>
     <string name="feedback_error">Tidak dapat mengirim masukan: tidak ditemukan aplikasi yang sesuai.
     </string>
 
@@ -193,9 +199,9 @@
     <string name="main_help_whatsnew_title">Apa yang Baru?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Peningkatan SBAS</b>
-        - Menambahkan lagi satelit untuk SNAS (China) dan SDCM (Rusia).\n&#8226;\u0020
-        <b>Menambahkan terjemahan Persia, Ukraina dan Korea</b>
-        - Terima kasih Iman (imni), Serhii Osmalchuk dan snotree!\n&#8226;\u0020
+        - Menambahkan lebih banyak satelit untuk SNAS (China) dan SDCM (Rusia).\n&#8226;\u0020
+        <b>Menambahkan terjemahan Bahasa Persia, Ukraina dan Korea</b>
+        - Terima kasih kepada Iman (imni), Serhii Osmalchuk dan snotree!\n&#8226;\u0020
         <b>Menambahkan tanggal pada Status</b>
         - Untuk mode lanskap dan layar yang lebar.\n&#8226;\u0020
         <b>Perbaikan masalah</b>
@@ -207,7 +213,7 @@
     <string name="pref_title">Setelan</string>
     <string name="pref_map_category_title">Peta</string>
     <string name="pref_map_type_title">Jenis Peta</string>
-    <string name="pref_map_type_summary">Atur jenis petak pada peta yang ditampilkan</string>
+    <string name="pref_map_type_summary">Setel jenis petak pada peta yang ditampilkan</string>
     <string name="pref_map_type_dialog_title">Pilih Jenis Peta</string>
 
     <string name="pref_rotate_map_with_compass_title">Putar Peta dengan Kompas</string>
@@ -245,10 +251,10 @@
     </string>
 
     <string name="pref_display_category_title">Tampilan</string>
-    <string name="pref_keep_screen_on_title">Jaga Layar Tetap Menyala</string>
+    <string name="pref_keep_screen_on_title">Layar Terus Menyala</string>
     <string name="pref_keep_screen_on_summary">Cegah layar agar tidak mati</string>
     <string name="pref_true_north_title">Arahkan Kompas ke Utara yang Benar</string>
-    <string name="pref_true_north_summary">Arahkan kompas ke arah utara yang sebenarnya dari pada arah utara magnet
+    <string name="pref_true_north_summary">Arahkan kompas ke arah utara yang sebenarnya alih-alih arah utara magnet
     </string>
 
     <!-- Output category -->
@@ -284,7 +290,7 @@
     <string name="logging_to_new_file">Mencatat ke file baru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Tidak dapat menutup semua aliran file.</string>
     <string name="could_not_initialize_file">Penghitungan file tidak menginisialisasi: %1$s</string>
-    <string name="error_writing_file">Masalah dalam menulis ke dalam file.</string>
+    <string name="error_writing_file">Masalah saat menulis ke dalam file.</string>
 
     <string name="pref_about_category_title">Tentang</string>
     <string name="pref_show_tutorial_title">Tampilkan tutorial</string>
@@ -326,21 +332,21 @@
         <b>Bujur</b>
         - Dalam derajat desimal (WGS 84)\n&#8226;\u0020
         <b>Ketinggian</b>
-        - Meter di atas ellipsoid WGS 84\n&#8226;\u0020
-        <b>Ktngn (DPL)</b>
+        - Meter di atas elipsoid WGS 84\n&#8226;\u0020
+        <b>Ktgn (DPL)</b>
         - Meter Di atas Permukaan Laut (membutuhkan dukungan NMEA)\n&#8226;\u0020
-        <b>Akrs. P H</b>
+        <b>Akrs P H</b>
         - Akurasi lokasi yang diperkirakan secara horizontal (radius ditetapkan 68%, dalam meter). Dengan kata lain, apabila Anda membuat lingkaran yang berpusat di titik lintang dan bujur lokasi ini, dan dengan radius yang sama terhadap akurasi, maka terdapat 68% kemungkinan bilamana lokasi aslinya berada di dalam lingkaran. Untuk detailnya lihat https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
-        <b>Akrs. P H/V</b>
+        <b>Akrs P H/V</b>
         - Akurasi lokasi yang diperkirakan secara horizontal dan vertikal, keduanya ditetapkan dalam 68%. Akurasi horizontal seperti yang sudah dijelaskan di atas. Akurasi vertikal tersedia pada Android 8.0 Oreo dan lebih tinggi. Contoh akurasi vertikal - apabila Ketinggian 150, dan Akurasi Vertikal 20 maka terdapat 68% kemungkinan bilamana ketinggian aslinya berada di antara 130 dan 170 meter. Untuk detailnya lihat https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>Kecepatan</b>
         - Kecepatan, dalam meter/detik dari permukaan tanah\n&#8226;\u0020
-        <b>Akrs. K</b>
+        <b>Akrs K</b>
         - Akurasi kecepatan yang diperkirakan di lokasi ini ditetapkan dalam 68%, dalam meter per detik. Contohnya, apabila Kecepatan 5, dan Akurasi Kecepatan 1, maka terdapat 68% kemungkinan bilamana kecepatan aslinya berada di antara 4 dan 6 meter per detik.\n&#8226;\u0020
-        <b>Bantalan</b>
+        <b>Poros</b>
         - Arah hadap perangkat secara horizontal (dalam derajat 0-360), dan tidak berhubungan dengan orientasi perangkat.\n&#8226;\u0020
-        <b>Akrs. B</b>
-        - Akurasi bantalan yang diperkirakan di lokasi ini ditetapkan dalam 68%, dalam derajat. Contohnya, apabila Bantalan 60, dan Akurasi Bantalan 10, maka terdapat 68% kemungkinan bilamana bantalan aslinya berada di antara 50 dan 70 derajat.\n&#8226;\u0020
+        <b>Akrs P</b>
+        - Akurasi poros yang diperkirakan di lokasi ini ditetapkan dalam 68%, dalam derajat. Contohnya, apabila Poros 60, dan Akurasi Poros 10, maka terdapat 68% kemungkinan bilamana poros aslinya berada di antara 50 dan 70 derajat.\n&#8226;\u0020
         <b># Sat</b>
         - # satelit yang digunakan dalam perbaikan / # satelit yang terlihat (dengan nilai sinyal yang valid) / # satelit yang dikenali oleh perangkat. Pada perangkat dengan dual-frekuensi, satelit ditampilkan sebagai; digunakan apabila setidaknya terdapat satu frekuensi satelit sedang digunakan, satelit ditampilkan sebagai; terlihat apabila setidaknya terdapat satu sinyal yang memiliki nilai yang valid, dan ditampilkan sebagai; dikenali oleh perangkat bilamana terdapat informasi mengenai setidaknya satu sinyal dari suatu satelit.\n&#8226;\u0020
         <b>PDOP</b>
@@ -352,14 +358,14 @@
         <b>ID atau PRN</b>
         - Pengidentifikasi satelit ini (pseudorandom noise untuk GPS)\n&#8226;\u0020
         <b>FK</b>
-        - Label (cth. \"L1\") untuk sinyal frekuensi karir yang terlacak. Apabila frekuensi tidak diketahui, akan ditampilkan frekuensi dasar dalam MHz (tersedia pada Android 8.0+, namun belum pasti didukung setiap perangkat). Sinyal L1 untuk CDMA GLONASS baru, ditampilkan sebagai \"L1-C\".\n&#8226;\u0020
+        - Label (cth. \"L1\") untuk sinyal frekuensi karier yang terlacak. Apabila frekuensi tidak diketahui, akan ditampilkan frekuensi dasar dalam MHz (tersedia pada Android 8.0+, namun belum pasti didukung setiap perangkat). Sinyal L1 untuk CDMA GLONASS baru, ditampilkan sebagai \"L1-C\".\n&#8226;\u0020
         <b>SNR</b>
         - Rasio sinyal-terhadap-kebisingan (Android M dan di bawahnya) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>C/N0</b>
         - Kepadatan karier-terhadap-kebisingan (Android N dan lebih tinggi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Tanda</b>
-        - (E) apabila perangkat memiliki data ephemeris untuk satelit, (A) apabila perangkat memiliki data almanac
-        dari satelit, (U) apabila satelit digunakan dalam penghitungan perbaikan posisi saat ini.  Untuk SBAS, spek Android tidak merinci apakah (U) mengacu pada pseudoranges dari satelit yang sedang digunakan untuk solusi posisi atau untuk koreksi informasi yang berasal dari satelit yang sedang digunakan.\n\n
+        - (E) apabila perangkat memiliki data efemeris untuk satelit, (A) apabila perangkat memiliki data almanak
+        dari satelit, (U) apabila satelit digunakan dalam penghitungan perbaikan posisi saat ini.  Untuk SBAS, spek Android tidak merinci apakah (U) mengacu pada jarak semu dari satelit yang sedang digunakan untuk solusi posisi atau untuk koreksi informasi yang berasal dari satelit yang sedang digunakan.\n\n
 
         <b>Injeksi data PSDS</b>
         - Apabila data PSDS digunakan oleh perangkat, akan meminta perangkat untuk me-refresh Layanan Data Satelit Terprediksi (cth. data XTRA).\n\n
@@ -368,7 +374,7 @@
         <b>GPS Navstar (AS)</b>
         - Lingkaran\n&#8226;\u0020
         <b>GLONASS (Rusia)</b>
-        - Kotak\n&#8226;\u0020
+        - Persegi\n&#8226;\u0020
         <b>Galileo (Uni Eropa)</b>
         - Segi Tiga\n&#8226;\u0020
         <b>QZSS (Jepang)</b>
@@ -376,7 +382,7 @@
         <b>BeiDou/COMPASS (China)</b>
         - Segi Lima\n&#8226;\u0020
         <b>IRNSS/NavIC (India)</b>
-        - Lonjong\n&#8226;\u0020
+        - Oval\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
         - Wajik\n\n
 
