@@ -98,7 +98,7 @@
     <string name="enable_gps_negative_button">No</string>
     <string name="gps_set_location_listener">Geolocalizzazione attivata. Intervallo = %1$ss, distanza minima = %2$sm</string>
     <string name="clear_assist_warning_title">Cancellare dati di assistenza?</string>
-    <string name="clear_assist_warning">Alcuni dispositivi possono impiegare 24 ore per aggiornare in automatico i dati di assistenza. Se il tuo dispositivo non supporta l\'inserimento manuale, il sistema di geolocalizzazione tramite GNSS potrebbe non funzionare in nessuna applicazione finché l\'aggiornamento automatico non sarà completato. Vuoi procedere?</string>
+    <string name="clear_assist_warning">Alcuni dispositivi possono impiegare 24 ore per aggiornare in automatico i dati di assistenza. Se il tuo dispositivo non supporta l\'inserimento manuale, il sistema di geolocalizzazione tramite sistema satellitare di geolocalizzazione potrebbe non funzionare in nessuna applicazione finché l\'aggiornamento automatico non sarà completato. Vuoi procedere?</string>
     <string name="never_ask_again">Non chiedere più</string>
     <string name="qr_code_instructions_title">Scansiona un QR Code</string>
     <string name="qr_code_instructions_text">Importa la posizione reale con l\'utilizzo di un QR Code nel formato Geo URI (es.:
@@ -112,8 +112,15 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="gnss_not_available">Sistema Globale di Navigazione Satellitare (GNSS)</string>
     <string name="sbas_not_available">Nessun segnale SBAS disponibile</string>
     <string name="menu_option_sort_by">Ordina per</string>
-    <string name="error_time_title">Il tuo orario GNSS è sbagliato</string>
-    <string name="error_time_message">L\'orario fornito dal sistema GNSS: \n\n%1$s\n\n differisce dall\'orario impostato sul device per più di %2$d giorni. Questo può essere causato dal problema conosciuto come \"GPS week rollover issue\". Rivolgiti al produttore del tuo device per maggiori chiarimenti. Per ulteriori informazioni: http://bit.ly/gps-week-rollover.</string>
+    <string name="menu_option_filter">Filtro</string>
+    <string name="filter_dialog_title">Mostra solo questi sistemi satellitari di geolocalizzazione</string>
+    <string name="filter_text">Mostra %1$d di %2$d satelliti</string>
+    <string name="filter_showall">(Mostra tutti)</string>
+    <string name="error_time_title">Il tuo orario fornito dal sistema satellitare di geolocalizzazione è sbagliato</string>
+    <string name="error_time_message">L\'orario fornito dal sistema satellitare di geolocalizzazione: \n\n%1$s\n\n differisce dall\'orario impostato sul device per più di %2$d giorni. Questo può essere causato dal problema conosciuto come \"GPS week rollover issue\". Rivolgiti al produttore del tuo device per maggiori chiarimenti. Per ulteriori informazioni: http://bit.ly/gps-week-rollover.</string>
+    <string name="unknown">Sconosciuto</string>
+    <string name="cancel">Annulla</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Latitudine</string>
     <string name="ground_truth_longitude">Longitudine</string>
@@ -147,6 +154,8 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="sky_legend_shape_galileo">GALILEO (UE)</string>
     <string name="sky_legend_shape_qzss">QZSS (Giappone)</string>
     <string name="sky_legend_shape_beidou">BEIDOU/COMPASS (Cina)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NAVIC (India)</string>
+
     <string name="sky_legend_shape_sbas_title">Sistema di Aumento della Precisione tramite Satelliti (SBAS)</string>
     <string name="sky_legend_shape_waas">WAAS (USA)</string>
     <string name="sky_legend_shape_egnos">EGNOS (UE)</string>
@@ -163,18 +172,18 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">Geolocalizzazione disabilitata o nessun satellite agganciato</string>
-    <string name="gnss_nav_msg_status_not_supported">Il dispositivo non supporta la registrazione dei messaggi di navigazione GNSS</string>
-    <string name="gnss_nav_msg_status_ready">I segnali di navigazione GNSS vengono registrati correttamente</string>
+    <string name="gnss_nav_msg_status_not_supported">Il dispositivo non supporta la registrazione dei messaggi di navigazione forniti dal sistema satellitare di geolocalizzazione</string>
+    <string name="gnss_nav_msg_status_ready">I segnali di navigazione forniti dal sistema satellitare di geolocalizzazione vengono registrati correttamente</string>
 
     <string name="gnss_measurement_status_loc_disabled">La geolocalizzazione è disabilitata, nessun aggiornamento fino all\'attivazione</string>
-    <string name="gnss_measurement_status_not_supported">Il dispositivo non supporta la registrazione delle misurazioni GNSS</string>
-    <string name="gnss_measurement_status_ready">Le misurazioni GNSS vengono registrate correttamente</string>
+    <string name="gnss_measurement_status_not_supported">Il dispositivo non supporta la registrazione delle misurazioni fornite dal sistema satellitare di geolocalizzazione</string>
+    <string name="gnss_measurement_status_ready">Le misurazioni fornite dal sistema satellitare di geolocalizzazione vengono registrate correttamente</string>
 
     <string name="gnss_status_unknown">Stato di callback sconosciuto</string>
 
     <!-- Permissions -->
     <string name="title_location_permission">Permesso di geolocalizzazione necessario</string>
-    <string name="text_location_permission">GPSTest richiede l\'accesso alla geolocalizzazione per mostrare i dati GNSS. Se selezioni \"Non chiedere più\" dovrai reinstallare l\'app o abilitare i permessi attraverso le impostazioni di sistema.</string>
+    <string name="text_location_permission">GPSTest richiede l\'accesso alla geolocalizzazione per mostrare i dati forniti dal sistema satellitare di geolocalizzazione. Se selezioni \"Non chiedere più\" dovrai reinstallare l\'app o abilitare i permessi attraverso le impostazioni di sistema.</string>
     <string name="ok">OK</string>
     <string name="exit">ESCI</string>
 
@@ -185,6 +194,16 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Miglioramento SBAS</b>
+        - Aggiunti più satelliti SNAS (Cina) e SDCM (Russia).\n&#8226;\u0020
+        <b>Aggiunte traduzioni in Persiano, Ucraino e Coreano</b>
+        - Grazie Iman (imni), Serhii Osmalchuk e snotree!\n&#8226;\u0020
+        <b>Aggiunta data nella scheda Stato</b>
+        - Per visualzzazione in orizzontale e per schermi molto larghi.\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - Per ulteriori informazioni: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
@@ -210,7 +229,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 (in secondi)</string>
     <string name="pref_gps_min_time_invalid_entry">L\'intervallo deve essere un numero</string>
 
-    <string name="pref_use_gnss_apis_title">Usa le API GNSS</string>
+    <string name="pref_use_gnss_apis_title">Usa le API del sistema satellitare di geolocalizzazione</string>
     <string name="pref_use_gnss_apis_summary">Disponibile con Android 7.0 e successivi. Se disattivato, utilizza le informazioni GNSS Legacy</string>
 
     <string name="pref_gps_min_distance_title">Distanza minima</string>
@@ -239,21 +258,21 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_nmea_timestamp_output_title">NMEA Timestamp</string>
     <string name="pref_nmea_timestamp_output_summary">Includi NMEA Timestamp nell\'output</string>
     <string name="pref_measurement_output_title">Misurazioni</string>
-    <string name="pref_as_measurement_output_summary">Registra misurazioni GNSS su Android Studio (Android
+    <string name="pref_as_measurement_output_summary">Registra misurazioni fornite dal sistema satellitare di geolocalizzazione su Android Studio (Android
         7.0 e successivi)
     </string>
     <string name="pref_navigation_message_output_title">Messaggi di navigazione</string>
-    <string name="pref_as_navigation_message_output_summary">Registra messaggi di navigazione GNSS su Android Studio (Android
+    <string name="pref_as_navigation_message_output_summary">Registra messaggi di navigazione forniti dal sistema satellitare di geolocalizzazione su Android Studio (Android
         7.0 e successivi)
     </string>
 
     <!-- File Output -->
     <string name="pref_file_output_category_title">Registra su File</string>
     <string name="pref_file_nmea_output_summary">Registra dati NMEA su File</string>
-    <string name="pref_file_measurement_output_summary">Registra misurazioni GNSS su File (Android
+    <string name="pref_file_measurement_output_summary">Registra misurazioni fornite dal sistema satellitare di geolocalizzazione su File (Android
         7.0 e successivi)
     </string>
-    <string name="pref_file_navigation_message_output_summary">Registra messaggi di navigazione GNSS su File (Android
+    <string name="pref_file_navigation_message_output_summary">Registra messaggi di navigazione forniti dal sistema satellitare di geolocalizzazione su File (Android
         7.0 e successivi)
     </string>
     <string name="pref_file_location_output_title">Segnali di localizzazione</string>
@@ -293,4 +312,119 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <!-- Help -->
     <string name="title_help">Informazioni</string>
 
-    </resources>
+    <string name="help_text">
+        <b>Domande Frequenti (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Scheda Stato ***</b>\n\n&#8226;\u0020
+        <b>Lat.</b>
+         - Latitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
+        <b>Long.</b>
+        - Longitudine (espressa in gradi decimali rispetto all\'ellissoide WGS84).\n&#8226;\u0020
+        <b>Alt.</b>
+       - Altitudine (espressa in metri rispetto all\'ellissoide WGS84).\n&#8226;\u0020
+        <b>Alt. (s.l.m.)</b>
+       - Altitudine (espressa in metri sopra il livello del mare). Richiede il supporto NMEA.\n&#8226;\u0020
+        <b>Prec. orizz.</b>
+         - Precisione orizzontale della posizione stimata con il 68% di confidenza (espressa in metri).
+Esempio: tracciando una circonferenza centrata nel punto determinato da latitudine e longitudine della posizione stimata dal nostro dispositivo e con un raggio pari al valore della precisione, allora c\'è il 68% di probabilità che la posizione reale sia interna alla circonferenza così tracciata.
+Per ulteriori informazioni: https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Prec. o/v</b>
+       - Precisione della posizione orizzontale e verticale stimata, entrambi i parametri sono stimati con il 68% di confidenza (espressa in metri). La precisione orizzontale è definita allo stesso modo del campo precisione precedente. La precisione verticale è disponibile su Android 8.0 e successivi.
+Esempio di precisione verticale: se l\'altitudine stimata dal nostro dispositivo è di 150m e la precisione verticale è 20m, allora c\'è il 68% di probabilità che l\'altitudine reale sia compresa tra 130 e 170 metri.
+Per ulteriori informazioni: https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Velocità</b>
+        - Velocità misurata sulla superficie (espressa in metri al secondo).\n&#8226;\u0020
+        <b>Prec. vel.</b>
+        Precisione della velocità stimata con il 68% di confidenza (espressa in metri al secondo).
+Esempio: se la velocità stimata dal nostro dispositivo è di 5m/s e la precisione della velocità è 1m/s, allora c\'è il 68% di probabilità che la velocità reale sia tra 4 e 6 metri al secondo.\n&#8226;\u0020
+        <b>Direzione</b>
+        - Direzione orizzontale di spostamento del dispositivo (espressa in gradi: 0-360°).
+Non dipende dall\'orientamento del dispositivo.\n&#8226;\u0020
+        <b>Prec. dir.</b>
+        - Precisione della direzione orizzontale stimata con il 68% di confidenza (espressa in gradi).
+Esempio, se la direzione stimata dal nostro dispositivo è di 60° e la precisione della direzione è 10°, allora c\'è il 68% di probabilità che la direzione reale sia compresa tra 50 e 70 gradi.\n&#8226;\u0020
+        <b>n° Sat</b>
+        - Numero di satelliti usati per il posizionamento / Numero di satelliti in vista (con valori validi di intensità segnale) / Numero di satelliti conosciuti dal dispositivo.
+Sui device a doppia frequenza un satellite appare come \"usato per il posizionamento\" se almeno una frequenza proveniente da quel satellite è in uso; un satellite appare come \"in vista\" se almeno una frequenza ha ha un valore valido di intensità segnale; un satellite appare come \"conosciuto dal dispositivo\" se c\'è almeno un segnale proveniente da quel satellite.\n&#8226;\u0020
+        <b>DOP</b>
+        - Diluizione della precisione. Richiede il supporto NMEA.\n&#8226;\u0020
+        <b>DOP o/v</b>
+        - Diluizione della precisione orizzontale/verticale. Richiede il supporto NMEA.\n&#8226;\u0020
+        <b>TTPL</b>
+        -  Tempo Trascorso dalla Prima Localizzazione.\n&#8226;\u0020
+        <b>ID/PRN</b>
+        - Identificativo del satellite (anche indicato con la sigla PRN).\n&#8226;\u0020
+        <b>CF</b>
+        - Frequenza del segnale agganciato.E\' un\'etichetta (es, \"L1\") per indicare la frequenza del segnale agganciato. Se la frequenza è sconosciuta, verrà visualizzato il suo valore in MHz (disponibile su Android 8.0+, non supportato da tutti i dispositivi). Il nuovo segnale L1 del sistema GLONASS CDMA è indicato come \"L1-C\".\n&#8226;\u0020
+        <b>SNR</b>
+        - Signal-to-Noise Ratio (Android M e precedenti).
+Per ulteriori informazioni: https://bit.ly/SNR-CN0.\n&#8226;\u0020
+        <b>C/N0</b>
+        - Carrier-to-Noise density (Android N e successivi).
+Per ulteriori informazioni: https://bit.ly/SNR-CN0.\n&#8226;\u0020
+        <b>Dati</b>
+        - (E) se il dispositivo ha scarsità di dati per il satellite;
+(A) se il dispositivo ha dati registrati per il satellite;
+(U) se il satellite è stato utilizzato nel posizionamento più recente.
+Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisce ai satelliti usati per il posizionamento oppure per la correzione delle informazioni fornite dagli altri satelliti.\n\n
+
+        <b>Inserisci dati PSDS</b>
+       - Possibilità di aggiornare i dati \"Predicted Satellite Data Service\" (es. dati XTRA), se il dispositivo utilizza dati PSDS.\n\n
+
+        <b>*** Scheda Bussola ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
+        - Cerchi\n&#8226;\u0020
+        <b>GLONASS (Russia)</b>
+        - Quadrati\n&#8226;\u0020
+        <b>Galileo (Unione Europea)</b>
+        - Triangoli\n&#8226;\u0020
+        <b>BEIDOU/COMPASS (Cina)</b>
+        - Pentagoni\n&#8226;\u0020
+        <b>QZSS (Giappone)</b>
+        - Esagoni\n&#8226;\u0020
+        <b>IRNSS (India)</b>
+        - Ovali\n&#8226;\u0020
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
+        - Rombi\n\n
+
+        &#8226;\u0020 Satelliti trasparenti - Non in vista\n
+        &#8226;\u0020 Contorno sottile - In vista ma non usati per il posizionamento\n
+        &#8226;\u0020 Contorno spesso - Usati per il posizionamento\n\n
+
+        &#8226;\u0020 Il range atteso per l\'SNR varia tra 0dB (rosso) e 30dB (verde) su sistemi precedenti ad Android 7.0.\n
+        &#8226;\u0020 Il range atteso per l\'SNR varia tra 10dB (rosso) e 45dB (verde) su sistemi Android 7.0 e successivi.\n
+        &#8226;\u0020 Il range atteso per C/N0 varia tra 10dB-Hz (rosso) e 45dB-Hz (verde) su sistemi Android 7.0 e successivi.\n
+        &#8226;\u0020 Se non è presente il valore SNR o C/N0 per un satellite (es. non è in vista del dispositivo), quel satellite avrà un colore grigio chiaro/trasparente.\n\n
+
+        <b>*** Scheda Precisione ***</b>\n\n&#8226;\u0020
+        <b>Errore Verticale</b>
+        - Le misurazioni dell\'errore verticale, a differenza di quelle dell\'errore orizzontale, possono essere positive o negative. La scheda Precisione mostra l\'errore verticale e l\'errore verticale medi, calcolati entrambi usando il valore assoluto della misura dell\'errore.\n\n
+
+        &#8226;\u0020Imposta rapidamente la tua posizione reale utilizzando i QR Code.
+Per ulteriori informazioni: https://bit.ly/gpstest-qr-codes for details.\n\n
+
+        <b>*** Registra Attività ***</b>\n\n
+        &#8226;\u0020Abilita la registrazione dell\'attività dal menù Impostazioni. Verranno registrati i dati NMEA, le misurazioni di base, i messaggi di navigazione e i segnali di localizzazione.
+Per ulteriori informazioni: https://bit.ly/gpstest-file.\n\n
+
+        <b>*** Riconoscimenti ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - sviluppatore originale della versione v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - sviluppatore della versione v2.x e successive\n
+        &#8226;\u0020 L\'icona di GPSTest è tratta dall\'icona \"satellite\" di Android Material Design, autorizzata da Google in base al regolamento Apache v2.0. Anche le altre icone di Google material design sono utilizzate in base al regolamento Apache v2.0. L\'icona \"QR Code\" di Austin Andrews è tratta da: https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Traduzione in cinese a cura di wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Traduzione in tedesco a cura di SIRSteiner\n
+        &#8226;\u0020 Traduzione in olandese a cura di Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Traduzione in greco a cura di Jimmy Golfi\n
+        &#8226;\u0020 Traduzione in giapponese a cura di SakuraSa233\n
+        &#8226;\u0020 Traduzione in ceco a cura di llzn\n
+        &#8226;\u0020 Traduzione in italiano a cura di Giolly90\n
+        &#8226;\u0020 Traduzione in spagnolo a cura di Sergi Pellicer\n
+        &#8226;\u0020 Traduzione in indonesiano a cura di Adiitya Andre90\n
+        &#8226;\u0020 Traduzione in polacco a cura di Adam Wandelt\n
+        &#8226;\u0020 Traduzione in francese a cura di Olivier Merlin &amp; Jérémy Belloir\n
+        &#8226;\u0020 Traduzione in persiano a cura di Iman (imni)\n
+        &#8226;\u0020 Traduzione in ucraino a cura di Serhii Osmalchuk\n
+        &#8226;\u0020 Traduzione in coreano a cura di snotree\n
+        &#8226;\u0020 Traduzione in basco a cura di Alexander Gabilondo\n</string>
+</resources>
