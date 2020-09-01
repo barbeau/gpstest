@@ -124,22 +124,22 @@ class IOUtilsTest {
     @Test
     fun testCreateShowRadarIntent() {
         val resultNoAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, null)
-        assertEquals(24.5253, resultNoAltitude.extras["latitude"])
-        assertEquals(87.23434, resultNoAltitude.extras["longitude"])
+        assertEquals(24.5253, resultNoAltitude?.extras?.get("latitude"))
+        assertEquals(87.23434, resultNoAltitude?.extras?.get("longitude"))
         assertFalse(resultNoAltitude.hasExtra("altitude"))
 
         val resultWithAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, 15.5)
-        assertEquals(24.5253, resultWithAltitude.extras["latitude"])
-        assertEquals(87.23434, resultWithAltitude.extras["longitude"])
-        assertEquals(15.5, resultWithAltitude.extras["altitude"])
+        assertEquals(24.5253, resultWithAltitude.extras?.get("latitude"))
+        assertEquals(87.23434, resultWithAltitude.extras?.get("longitude"))
+        assertEquals(15.5, resultWithAltitude.extras?.get("altitude"))
 
         val locationNoAltitude = Location("TestNoAltitude")
         locationNoAltitude.latitude = -20.8373
         locationNoAltitude.longitude = -120.8273
 
         val resultFromLocationNoAltitude = IOUtils.createShowRadarIntent(locationNoAltitude)
-        assertEquals(-20.8373, resultFromLocationNoAltitude.extras["latitude"])
-        assertEquals(-120.8273, resultFromLocationNoAltitude.extras["longitude"])
+        assertEquals(-20.8373, resultFromLocationNoAltitude?.extras?.get("latitude"))
+        assertEquals(-120.8273, resultFromLocationNoAltitude?.extras?.get("longitude"))
         assertFalse(resultNoAltitude.hasExtra("altitude"))
 
         val locationWithAltitude = Location("TestWithAltitude")
@@ -148,9 +148,9 @@ class IOUtilsTest {
         locationWithAltitude.altitude = -13.5
 
         val resultFromLocationWithAltitude = IOUtils.createShowRadarIntent(locationWithAltitude)
-        assertEquals(-26.8373, resultFromLocationWithAltitude.extras["latitude"])
-        assertEquals(-126.8273, resultFromLocationWithAltitude.extras["longitude"])
-        assertEquals(-13.5, resultFromLocationWithAltitude.extras["altitude"])
+        assertEquals(-26.8373, resultFromLocationWithAltitude.extras?.get("latitude"))
+        assertEquals(-126.8273, resultFromLocationWithAltitude.extras?.get("longitude"))
+        assertEquals(-13.5, resultFromLocationWithAltitude.extras?.get("altitude"))
 
     }
 
