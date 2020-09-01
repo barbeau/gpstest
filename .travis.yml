@@ -10,8 +10,8 @@ stages:
 
 env:
   global:
-    - BUILD_TOOLS=28.0.3
-    - COMPILE_SDK_VERSION=28
+    - BUILD_TOOLS=29.0.3
+    - COMPILE_SDK_VERSION=30
     - ABI=x86_64
     - ADB_INSTALL_TIMEOUT=8
     - ANDROID_HOME=${HOME}/android-sdk

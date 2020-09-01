@@ -47,8 +47,6 @@ public class SatelliteUtils {
 
     private static final String TAG = "SatelliteUtils";
 
-    private static final int CONSTELLATION_IRNSS_TEMP = 7;
-
     /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
      * Android 6.0.1 (API Level 23) and lower.  Android 7.0 and higher should use getGnssConstellationType()
@@ -116,11 +114,7 @@ public class SatelliteUtils {
                 return QZSS;
             case GnssStatus.CONSTELLATION_GALILEO:
                 return GALILEO;
-            case CONSTELLATION_IRNSS_TEMP:
-                // FIX ME - We can't use the GnssStatus.CONSTELLATION_IRNSS Android SDK constant in
-                // this switch statement until this Android bug is fixed - https://issuetracker.google.com/issues/134611316
-                // For now, we define CONSTELLATION_IRNSS_TEMP to be the same value of 7 so we can
-                // still support IRNSS.
+            case GnssStatus.CONSTELLATION_IRNSS:
                 return IRNSS;
             case GnssStatus.CONSTELLATION_SBAS:
                 return SBAS;
