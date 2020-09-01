@@ -114,8 +114,15 @@
     <string name="gnss_not_available">Недоступны спутники спутниковой системы навигации (ССН)</string>
     <string name="sbas_not_available">Недоступны спутники спутниковой системы дифференциальной коррекции (ССДК)</string>
     <string name="menu_option_sort_by">Сортировать по</string>
+    <string name="menu_option_filter">Фильтр</string>
+    <string name="filter_dialog_title">Показывать только эти ССН</string>
+    <string name="filter_text">Показаны %1$d из %2$d спутников</string>
+    <string name="filter_showall">(показать все)</string>
     <string name="error_time_title">GNSS время неверно</string>
     <string name="error_time_message">GNSS время на устройстве:\n\n%1$s\n\n…отличается более чем на %2$d дней от системных часов. Проблема может быть вызвана сбросом недель в GPS - обратитесь к производителю вашего устройства. См. http://bit.ly/gps-week-rollover для получения дополнительной информации.</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="cancel">Отмена</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Ваша широта</string>
     <string name="ground_truth_longitude">Ваша долгота</string>

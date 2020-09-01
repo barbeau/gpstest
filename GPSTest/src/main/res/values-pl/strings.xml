@@ -112,8 +112,15 @@
     <string name="gnss_not_available">Satelity Globalnego Systemu Nawigacji Satelitarnej (GNSS) nie są dostępne</string>
     <string name="sbas_not_available">Satelity Systemu Augmentacji (SBAS) nie są dostępne</string>
     <string name="menu_option_sort_by">Sortuj według</string>
+    <string name="menu_option_filter">Filtr</string>
+    <string name="filter_dialog_title">Pokaż tylko te GNSS</string>
+    <string name="filter_text">Wyświetlono %1$d z %2$d satelitów</string>
+    <string name="filter_showall">(pokaż wszystkie)</string>
     <string name="error_time_title">Twój czas GNSS jest nieprawidłowy</string>
     <string name="error_time_message">Czas GNSS urządzenia wynoszący:\n\n%1$s\n\n…więcej niż %2$d dni inne niż zegar systemowy. Przyczyną może być problem z tyrolowaniem tygodnia GPS - szczegółowe informacje można uzyskać od producenta urządzenia. Aby uzyskać więcej informacji, zobacz http://bit.ly/gps-week-rollover.</string>
+    <string name="unknown">Nieznany</string>
+    <string name="cancel">Anuluj </string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Twoja szerokość geograficzna</string>
     <string name="ground_truth_longitude">Twoja długość geograficzna</string>

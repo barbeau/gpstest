@@ -111,8 +111,15 @@
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) sateliterik ez dago</string>
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) sateliterik ez dago</string>
     <string name="menu_option_sort_by">Ordenatu honen arabera</string>
+    <string name="menu_option_filter">Iragazi</string>
+    <string name="filter_dialog_title">Erakutsi GNSS hauek soilik</string>
+    <string name="filter_text">%2$d satelitetatik %1$d erakusten</string>
+    <string name="filter_showall">(erakutsi guztiak)</string>
     <string name="error_time_title">Zure GNSS ordua okerra da</string>
     <string name="error_time_message">n\n%1$s\n\n… GNSS gailuaren ordua zure sistemaren erlojuarekiko %2$d egunekoa baino diferentzia handiagoa du. Horren arrazoia izan daiteke \"week rollover issue\" - galdetu gailuaren hornitzaileari zehaztasun gehiagorako. Ikusi http://bit.ly/gps-week-rollover informazio gehiagorako..</string>
+    <string name="unknown">Ezezaguna</string>
+    <string name="cancel">Utzi</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Zure latitudea</string>
     <string name="ground_truth_longitude">Zure longitudea</string>

@@ -34,8 +34,8 @@
     <string name="navdrawer_item_send_feedback">Kirim masukan</string>
     <string name="navdrawer_item_open_source">Kunjungi kami di GitHub</string>
 
-    <string name="navigation_drawer_open">Buka laci navigasi</string>
-    <string name="navigation_drawer_close">Tutup laci navigasi</string>
+    <string name="navigation_drawer_open">Buka panel navigasi</string>
+    <string name="navigation_drawer_close">Tutup panel navigasi</string>
 
     <!-- GPS functionality -->
     <string name="gps_start">Mulai</string>
@@ -417,10 +417,11 @@
         &#8226;\u0020 Bahasa Italia diterjemahkan oleh Giolly90\n
         &#8226;\u0020 Bahasa Spanyol diterjemahkan oleh Sergi Pellicer\n
         &#8226;\u0020 Bahasa Indonesia diterjemahkan oleh Adiitya Andre\n
-        &#8226;\u0020 Bahasa Polandia diterjemahkan oleh Adam Wandelt\n
+        &#8226;\u0020 Bahasa Polski diterjemahkan oleh Adam Wandelt\n
         &#8226;\u0020 Bahasa Prancis diterjemahkan oleh Olivier Merlin &amp; Jérémy Belloir\n
         &#8226;\u0020 Bahasa Persia diterjemahkan oleh Iman (imni)\n
         &#8226;\u0020 Bahasa Ukraina diterjemahkan oleh Serhii Osmalchuk\n
         &#8226;\u0020 Bahasa Korea diterjemahkan oleh snotree\n
-    </string>
+        &#8226;\u0020 Bahasa Basque diterjemahkan oleh Alexander Gabilndo\n
+</string>
 </resources>
