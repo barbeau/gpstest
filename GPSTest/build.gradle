@@ -9,8 +9,8 @@ android {
         minSdkVersion 18
         targetSdkVersion 29
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
-        versionCode 18071
-        versionName "3.7.4"
+        versionCode 18072
+        versionName "3.8.0"
 
         vectorDrawables.useSupportLibrary = true
 
