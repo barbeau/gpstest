@@ -1012,20 +1012,7 @@ public class GpsTestActivity extends AppCompatActivity
             public void onSatelliteStatusChanged(GnssStatus status) {
                 mGnssStatus = status;
 
-                if (mLastLocation != null && progressBar != null) {
-                    if ((SystemClock.elapsedRealtimeNanos() - mLastLocation.getElapsedRealtimeNanos()) >
-                            TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
-                        // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
-                        UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-
-                        // TODO - hide lock icon
-                    } else {
-                        // We have a GNSS fix - hide the progress bar
-                        UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-
-                        // TODO - show lock icon
-                    }
-                }
+                checkHaveFix();
 
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onSatelliteStatusChanged(mGnssStatus);
@@ -1033,6 +1020,23 @@ public class GpsTestActivity extends AppCompatActivity
             }
         };
         mLocationManager.registerGnssStatusCallback(mGnssStatusListener);
+    }
+
+    private void checkHaveFix() {
+        if (mLastLocation != null && progressBar != null) {
+            if ((SystemClock.elapsedRealtimeNanos() - mLastLocation.getElapsedRealtimeNanos()) >
+                    TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
+                // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
+                UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+
+                // TODO - hide lock icon
+            } else {
+                // We have a GNSS fix - hide the progress bar
+                UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+
+                // TODO - show lock icon
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -1100,10 +1104,14 @@ public class GpsTestActivity extends AppCompatActivity
                     case GpsStatus.GPS_EVENT_STOPPED:
                         break;
                     case GpsStatus.GPS_EVENT_FIRST_FIX:
+                        if (progressBar != null) {
+                            // We got an initial fix, hide the progress bar
+                            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+                            // TODO - show lock icon
+                        }
                         break;
                     case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                        // Stop progress bar after the first status information is obtained
-                        setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                        checkHaveFix();
                         break;
                 }
 
