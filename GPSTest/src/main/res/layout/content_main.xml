@@ -66,6 +66,16 @@
                 android:layout_marginEnd="@dimen/map_motion_outer_margin"
                 android:layout_marginTop="@dimen/map_motion_outer_margin"
                 android:layout_marginBottom="@dimen/map_motion_outer_margin" />
+            <!-- Progress bar for when GNSS is attempting fix -->
+            <ProgressBar
+                android:id="@+id/progress_horizontal"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-7dp"
+                android:indeterminate="true"/>
         </RelativeLayout>
 
         <!-- Bottom sliding panel -->

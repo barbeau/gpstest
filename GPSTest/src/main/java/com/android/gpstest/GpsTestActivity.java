@@ -49,6 +49,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -59,6 +60,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,6 +91,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
@@ -244,6 +247,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean shareDialogOpen = false;
 
+    private ProgressBar progressBar = null;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -286,6 +291,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        progressBar = findViewById(R.id.progress_horizontal);
 
         setupNavigationDrawer();
 
@@ -992,6 +998,11 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onFirstFix(int ttffMillis) {
+                if (progressBar != null) {
+                    // We got an initial fix, hide the progress bar
+                    UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+                    // TODO - show lock icon
+                }
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFirstFix(ttffMillis);
                 }
@@ -1001,8 +1012,20 @@ public class GpsTestActivity extends AppCompatActivity
             public void onSatelliteStatusChanged(GnssStatus status) {
                 mGnssStatus = status;
 
-                // Stop progress bar after the first status information is obtained
-                setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
+                if (mLastLocation != null && progressBar != null) {
+                    if ((SystemClock.elapsedRealtimeNanos() - mLastLocation.getElapsedRealtimeNanos()) >
+                            TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
+                        // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
+                        UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+
+                        // TODO - hide lock icon
+                    } else {
+                        // We have a GNSS fix - hide the progress bar
+                        UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+
+                        // TODO - show lock icon
+                    }
+                }
 
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onSatelliteStatusChanged(mGnssStatus);
