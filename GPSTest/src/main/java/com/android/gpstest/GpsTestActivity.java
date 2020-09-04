@@ -57,9 +57,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -249,6 +249,10 @@ public class GpsTestActivity extends AppCompatActivity
 
     private ProgressBar progressBar = null;
 
+    private ImageView lock = null;
+
+    private boolean haveFix = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -257,7 +261,6 @@ public class GpsTestActivity extends AppCompatActivity
             setTheme(R.style.AppTheme_Dark_NoActionBar);
             mUseDarkTheme = true;
         }
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         mActivity = this;
         // Reset the activity title to make sure dynamic locale changes are shown
@@ -292,6 +295,7 @@ public class GpsTestActivity extends AppCompatActivity
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         progressBar = findViewById(R.id.progress_horizontal);
+        lock = findViewById(R.id.lock);
 
         setupNavigationDrawer();
 
@@ -674,6 +678,9 @@ public class GpsTestActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction().show(mStatusFragment).commit();
         setTitle(getResources().getString(R.string.gps_status_title));
+        if (haveFix) {
+            lock.setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideStatusFragment() {
@@ -694,6 +701,9 @@ public class GpsTestActivity extends AppCompatActivity
         hideAccuracyFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
+        }
+        if (lock != null) {
+            lock.setVisibility(View.GONE);
         }
         /**
          * Show fragment (we use show instead of replace to keep the map state)
@@ -758,6 +768,9 @@ public class GpsTestActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction().show(mSkyFragment).commit();
         setTitle(getResources().getString(R.string.gps_sky_title));
+        if (haveFix) {
+            lock.setVisibility(View.VISIBLE);
+        }
     }
 
     private void hideSkyFragment() {
@@ -776,6 +789,9 @@ public class GpsTestActivity extends AppCompatActivity
         hideStatusFragment();
         hideMapFragment();
         hideSkyFragment();
+        if (lock != null) {
+            lock.setVisibility(View.GONE);
+        }
         /**
          * Show fragment (we use show instead of replace to keep the map state)
          */
@@ -919,9 +935,6 @@ public class GpsTestActivity extends AppCompatActivity
                         String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
             }
 
-            // Show the indeterminate progress bar on the action bar until first GPS status is shown
-            setSupportProgressBarIndeterminateVisibility(Boolean.TRUE);
-
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu();
         }
@@ -937,11 +950,13 @@ public class GpsTestActivity extends AppCompatActivity
         if (mStarted) {
             mLocationManager.removeUpdates(this);
             mStarted = false;
-            // Stop progress bar
-            setSupportProgressBarIndeterminateVisibility(Boolean.FALSE);
 
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu();
+            if (progressBar != null && lock != null) {
+                progressBar.setVisibility(View.GONE);
+                lock.setVisibility(View.GONE);
+            }
         }
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.gpsStop();
@@ -998,11 +1013,8 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onFirstFix(int ttffMillis) {
-                if (progressBar != null) {
-                    // We got an initial fix, hide the progress bar
-                    UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-                    // TODO - show lock icon
-                }
+                haveFix = true;
+                showHaveFix();
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFirstFix(ttffMillis);
                 }
@@ -1023,19 +1035,33 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkHaveFix() {
-        if (mLastLocation != null && progressBar != null) {
+        if (mLastLocation != null) {
             if ((SystemClock.elapsedRealtimeNanos() - mLastLocation.getElapsedRealtimeNanos()) >
                     TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
+                haveFix = false;
                 // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
-                UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-
-                // TODO - hide lock icon
+                showLostFix();
             } else {
+                haveFix = true;
                 // We have a GNSS fix - hide the progress bar
-                UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-
-                // TODO - show lock icon
+                showHaveFix();
             }
+        }
+    }
+
+    private void showHaveFix() {
+        if (progressBar != null && lock != null) {
+            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            if (mCurrentNavDrawerPosition == NAVDRAWER_ITEM_STATUS || mCurrentNavDrawerPosition == NAVDRAWER_ITEM_SKY) {
+                UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            }
+        }
+    }
+
+    private void showLostFix() {
+        if (progressBar != null && lock != null) {
+            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
     }
 
