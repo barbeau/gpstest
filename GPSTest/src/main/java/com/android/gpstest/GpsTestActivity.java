@@ -1130,11 +1130,8 @@ public class GpsTestActivity extends AppCompatActivity
                     case GpsStatus.GPS_EVENT_STOPPED:
                         break;
                     case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        if (progressBar != null) {
-                            // We got an initial fix, hide the progress bar
-                            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
-                            // TODO - show lock icon
-                        }
+                        haveFix = true;
+                        showHaveFix();
                         break;
                     case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                         checkHaveFix();
