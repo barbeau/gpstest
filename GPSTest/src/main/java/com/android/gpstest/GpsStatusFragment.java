@@ -288,6 +288,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mLongitudeView.setText(EMPTY_LAT_LONG);
                 mFixTime = 0;
                 updateFixTime();
+                updateFilterView();
                 mTTFFView.setText("");
                 mAltitudeView.setText("");
                 mAltitudeMslView.setText("");
@@ -778,7 +779,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             return;
         }
         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
-        if (filter.isEmpty()) {
+        if ((GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted) || filter.isEmpty()) {
             filterGroup.setVisibility(View.GONE);
             // Set num sats view back to normal
             mNumSats.setTypeface(null, Typeface.NORMAL);
