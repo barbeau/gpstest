@@ -950,6 +950,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (mStarted) {
             mLocationManager.removeUpdates(this);
             mStarted = false;
+            haveFix = false;
 
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu();
