@@ -249,7 +249,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private ProgressBar progressBar = null;
 
-    private ImageView lock = null;
+    private ImageView lock, lockShadow = null;
 
     private boolean haveFix = false;
 
@@ -296,6 +296,7 @@ public class GpsTestActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         progressBar = findViewById(R.id.progress_horizontal);
         lock = findViewById(R.id.lock);
+        lockShadow = findViewById(R.id.lock_shadow);
 
         setupNavigationDrawer();
 
@@ -680,6 +681,9 @@ public class GpsTestActivity extends AppCompatActivity
         setTitle(getResources().getString(R.string.gps_status_title));
         if (haveFix) {
             lock.setVisibility(View.VISIBLE);
+            if (mLastLocation.hasAltitude()) {
+                lockShadow.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -702,8 +706,9 @@ public class GpsTestActivity extends AppCompatActivity
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
-        if (lock != null) {
+        if (lock != null && lockShadow != null) {
             lock.setVisibility(View.GONE);
+            lockShadow.setVisibility(View.GONE);
         }
         /**
          * Show fragment (we use show instead of replace to keep the map state)
@@ -770,6 +775,9 @@ public class GpsTestActivity extends AppCompatActivity
         setTitle(getResources().getString(R.string.gps_sky_title));
         if (haveFix) {
             lock.setVisibility(View.VISIBLE);
+            if (mLastLocation.hasAltitude()) {
+                lockShadow.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -789,8 +797,9 @@ public class GpsTestActivity extends AppCompatActivity
         hideStatusFragment();
         hideMapFragment();
         hideSkyFragment();
-        if (lock != null) {
+        if (lock != null && lockShadow != null) {
             lock.setVisibility(View.GONE);
+            lockShadow.setVisibility(View.GONE);
         }
         /**
          * Show fragment (we use show instead of replace to keep the map state)
@@ -954,9 +963,10 @@ public class GpsTestActivity extends AppCompatActivity
 
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu();
-            if (progressBar != null && lock != null) {
+            if (progressBar != null && lock != null && lockShadow != null) {
                 progressBar.setVisibility(View.GONE);
                 lock.setVisibility(View.GONE);
+                lockShadow.setVisibility(View.GONE);
             }
         }
         for (GpsTestListener listener : mGpsTestListeners) {
@@ -1051,18 +1061,22 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void showHaveFix() {
-        if (progressBar != null && lock != null) {
+        if (progressBar != null && lock != null && lockShadow != null) {
             UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
             if (mCurrentNavDrawerPosition == NAVDRAWER_ITEM_STATUS || mCurrentNavDrawerPosition == NAVDRAWER_ITEM_SKY) {
-                UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+                UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS, 1);
+                if (mLastLocation.hasAltitude()) {
+                    UIUtils.showViewWithAnimation(lockShadow, UIUtils.ANIMATION_DURATION_SHORT_MS, .3f);
+                }
             }
         }
     }
 
     private void showLostFix() {
-        if (progressBar != null && lock != null) {
-            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+        if (progressBar != null && lock != null && lockShadow != null) {
+            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS, 1);
             UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            UIUtils.hideViewWithAnimation(lockShadow, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
     }
 
@@ -1473,6 +1487,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+
+        checkHaveFix();
 
         updateGeomagneticField();
 

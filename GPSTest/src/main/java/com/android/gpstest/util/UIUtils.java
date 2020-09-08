@@ -819,8 +819,9 @@ public class UIUtils {
      *
      * @param v                 View to show
      * @param animationDuration duration of animation
+     * @param finalAlpha the final alpha value for the view
      */
-    public static void showViewWithAnimation(final View v, int animationDuration) {
+    public static void showViewWithAnimation(final View v, int animationDuration, float finalAlpha) {
         if (v.getVisibility() == View.VISIBLE && v.getAlpha() == 1) {
             // View is already visible and not transparent, return without doing anything
             return;
@@ -838,7 +839,7 @@ public class UIUtils {
 
         // Animate the content view to 100% opacity, and clear any animation listener set on the view.
         v.animate()
-                .alpha(1f)
+                .alpha(finalAlpha)
                 .setDuration(animationDuration)
                 .setListener(null);
     }
