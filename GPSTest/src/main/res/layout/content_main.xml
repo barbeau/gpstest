@@ -77,6 +77,17 @@
                 android:layout_marginTop="-7dp"
                 android:indeterminate="true"/>
             <ImageView
+                android:id="@+id/lock_shadow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="17dp"
+                android:alpha=".3"
+                android:tint="?attr/colorControlNormal"
+                app:srcCompat="@drawable/ic_baseline_lock_24" />
+            <ImageView
                 android:id="@+id/lock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,8 +95,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                app:srcCompat="@drawable/ic_baseline_lock_24"
-                android:visibility="gone"/>
+                android:elevat="2dp"
+                android:alpha="1"
+                android:tint="?attr/colorControlNormal"
+                app:srcCompat="@drawable/ic_baseline_lock_24" />
         </RelativeLayout>
 
         <!-- Bottom sliding panel -->
