@@ -15,6 +15,8 @@
  */
 package com.android.gpstest.util;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -74,6 +76,10 @@ public class UIUtils {
     public static final String COORDINATE_LONGITUDE = "lon";
 
     public static int PICKFILE_REQUEST_CODE = 101;
+
+    public static final int ANIMATION_DURATION_SHORT_MS = 200;
+    public static final int ANIMATION_DURATION_MEDIUM_MS = 400;
+    public static final int ANIMATION_DURATION_LONG_MS = 500;
 
     /**
      * Formats a view so it is ignored for accessible access
@@ -806,5 +812,62 @@ public class UIUtils {
         for (ClickableSpan cs : spans) {
             text.removeSpan(cs);
         }
+    }
+
+    /**
+     * Shows a view using animation
+     *
+     * @param v                 View to show
+     * @param animationDuration duration of animation
+     */
+    public static void showViewWithAnimation(final View v, int animationDuration) {
+        if (v.getVisibility() == View.VISIBLE && v.getAlpha() == 1) {
+            // View is already visible and not transparent, return without doing anything
+            return;
+        }
+
+        v.clearAnimation();
+        v.animate().cancel();
+
+        if (v.getVisibility() != View.VISIBLE) {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            v.setAlpha(0f);
+            v.setVisibility(View.VISIBLE);
+        }
+
+        // Animate the content view to 100% opacity, and clear any animation listener set on the view.
+        v.animate()
+                .alpha(1f)
+                .setDuration(animationDuration)
+                .setListener(null);
+    }
+
+    /**
+     * Hides a view using animation
+     *
+     * @param v                 View to hide
+     * @param animationDuration duration of animation
+     */
+    public static void hideViewWithAnimation(final View v, int animationDuration) {
+        if (v.getVisibility() == View.GONE) {
+            // View is already gone, return without doing anything
+            return;
+        }
+
+        v.clearAnimation();
+        v.animate().cancel();
+
+        // Animate the view to 0% opacity. After the animation ends, set its visibility to GONE as
+        // an optimization step (it won't participate in layout passes, etc.)
+        v.animate()
+                .alpha(0f)
+                .setDuration(animationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        v.setVisibility(View.GONE);
+                    }
+                });
     }
 }
