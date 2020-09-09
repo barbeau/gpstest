@@ -50,6 +50,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -451,6 +452,13 @@ public class GpsMapFragment extends SupportMapFragment
             mRotate = settings
                     .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
             mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        }
+
+        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
+        if (mMap != null && getActivity() != null && useDarkTheme) {
+            mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.dark_theme));
         }
     }
 
