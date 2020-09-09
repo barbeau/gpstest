@@ -109,7 +109,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="not_now">Non adesso</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
-    <string name="gnss_not_available">Sistema Globale di Navigazione Satellitare (GNSS)</string>
+    <string name="gnss_not_available">Nessun segnale GNSS disponibile</string>
     <string name="sbas_not_available">Nessun segnale SBAS disponibile</string>
     <string name="menu_option_sort_by">Ordina per</string>
     <string name="menu_option_filter">Filtro</string>
@@ -195,12 +195,12 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Miglioramento SBAS</b>
-        - Aggiunti più satelliti SNAS (Cina) e SDCM (Russia).\n&#8226;\u0020
-        <b>Aggiunte traduzioni in Persiano, Ucraino e Coreano</b>
-        - Grazie Iman (imni), Serhii Osmalchuk e snotree!\n&#8226;\u0020
-        <b>Aggiunta data nella scheda Stato</b>
-        - Per visualzzazione in orizzontale e per schermi molto larghi.\n&#8226;\u0020
+        <b>Aggiunto filtro satelliti nella Scheda Stato</b>
+        - Seleziona solo determinati sistemi di navigazione satellitare (GNSS) usando il bottone apposito.\n&#8226;\u0020
+        <b>Aggiunta traduzione in Basco</b>
+        - Grazie Alexander Gabilondo!\n&#8226;\u0020
+        <b>Migliorata icona dell\'app</b>
+        - Aggiunto il supporto per le icone adattive.\n&#8226;\u0020
         <b>Bug fixes</b>
         - Per ulteriori informazioni: https://bit.ly/gpstest-releases
     </string>
@@ -383,14 +383,14 @@ Per i satelliti SBAS, le specifiche di Android non dichiarano se (U) si riferisc
         - Pentagoni\n&#8226;\u0020
         <b>QZSS (Giappone)</b>
         - Esagoni\n&#8226;\u0020
-        <b>IRNSS (India)</b>
+        <b>IRNSS/NAVIC (India)</b>
         - Ovali\n&#8226;\u0020
         <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
         - Rombi\n\n
 
-        &#8226;\u0020 Satelliti trasparenti - Non in vista\n
-        &#8226;\u0020 Contorno sottile - In vista ma non usati per il posizionamento\n
-        &#8226;\u0020 Contorno spesso - Usati per il posizionamento\n\n
+        &#8226;\u0020 Forme trasparenti - Satelliti non in vista\n
+        &#8226;\u0020 Contorno sottile - Satelliti in vista ma non usati per il posizionamento\n
+        &#8226;\u0020 Contorno spesso - Satelliti usati per il posizionamento\n\n
 
         &#8226;\u0020 Il range atteso per l\'SNR varia tra 0dB (rosso) e 30dB (verde) su sistemi precedenti ad Android 7.0.\n
         &#8226;\u0020 Il range atteso per l\'SNR varia tra 10dB (rosso) e 45dB (verde) su sistemi Android 7.0 e successivi.\n

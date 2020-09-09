@@ -183,16 +183,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Que hay de nuevo?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Mejorado ISBAS</b>
-        - Añadir más satelites para SNAS (China) y SDCM (Russia).\n&#8226;\u0020
-        <b>Añadir traducciones al Persa, Ucraniano y Coreano</b>
-        - Gracias Iman (imni), Serhii Osmalchuk y snotree!\n&#8226;\u0020
-        <b>Añadir fecha a Estado</b>
-        - Para la vista paisaje y pantallas muy panorámicas.\n&#8226;\u0020
-        <b>Corrección de errores</b>
-        - Ver https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Cerrar</string>
 
     <!-- Preferences -->
