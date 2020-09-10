@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import com.android.gpstest.Application;
 import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
@@ -103,8 +104,20 @@ public class GpsSkyView extends View implements GpsTestListener {
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         SAT_RADIUS = UIUtils.dpToPixels(context, 5);
 
+        int textColor;
+        int backgroundColor;
+        if (Application.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
+            // Dark theme
+            textColor = getResources().getColor(android.R.color.secondary_text_dark);
+            backgroundColor = ContextCompat.getColor(context, R.color.navdrawer_background_dark);
+        } else {
+            // Light theme
+            textColor = getResources().getColor(R.color.body_text_2_light);
+            backgroundColor = Color.WHITE;
+        }
+
         mHorizonActiveFillPaint = new Paint();
-        mHorizonActiveFillPaint.setColor(Color.WHITE);
+        mHorizonActiveFillPaint.setColor(backgroundColor);
         mHorizonActiveFillPaint.setStyle(Paint.Style.FILL);
         mHorizonActiveFillPaint.setAntiAlias(true);
 
@@ -166,8 +179,8 @@ public class GpsSkyView extends View implements GpsTestListener {
         mNorthFillPaint.setAntiAlias(true);
 
         mPrnIdPaint = new Paint();
-        mPrnIdPaint.setColor(Color.BLACK);
-        mPrnIdPaint.setStyle(Paint.Style.STROKE);
+        mPrnIdPaint.setColor(textColor);
+        mPrnIdPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mPrnIdPaint
                 .setTextSize(UIUtils.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
         mPrnIdPaint.setAntiAlias(true);
