@@ -59,7 +59,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0LeftCenterText,
             mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
 
-    private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg;
+    private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg, lock;
 
     Animation mSnrCn0InViewAvgAnimation, mSnrCn0UsedAvgAnimation, mSnrCn0InViewAvgAnimationTextView, mSnrCn0UsedAvgAnimationTextView;
 
@@ -76,6 +76,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         mSnrCn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view);
         mSnrCn0UsedAvg = v.findViewById(R.id.cn0_indicator_used);
+        lock = v.findViewById(R.id.sky_lock);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
@@ -123,6 +124,16 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
     }
 
+    @Override
+    public void onGnssFixAcquired() {
+        showHaveFix();
+    }
+
+    @Override
+    public void onGnssFixLost() {
+        showLostFix();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
@@ -140,6 +151,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     @Override
     public void onGnssStopped() {
         mSkyView.setStopped();
+        if (lock != null) {
+            lock.setVisibility(View.GONE);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -506,5 +520,17 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         animation.setDuration(300);
         animation.setInterpolator(new FastOutSlowInInterpolator());
         v.startAnimation(animation);
+    }
+
+    private void showHaveFix() {
+        if (lock != null) {
+            UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+        }
+    }
+
+    private void showLostFix() {
+        if (lock != null) {
+            UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+        }
     }
 }

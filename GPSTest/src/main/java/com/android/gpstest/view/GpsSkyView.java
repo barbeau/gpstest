@@ -694,6 +694,16 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     }
 
+    @Override
+    public void onGnssFixAcquired() {
+
+    }
+
+    @Override
+    public void onGnssFixLost() {
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {

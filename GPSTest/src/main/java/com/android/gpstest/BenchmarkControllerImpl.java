@@ -758,6 +758,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     @Override
+    public void onGnssFixAcquired() {
+
+    }
+
+    @Override
+    public void onGnssFixLost() {
+
+    }
+
+    @Override
     public void onMapClick(Location location) {
         if (!mViewModel.getBenchmarkCardCollapsed()) {
             updateGroundTruthEditTexts(location);

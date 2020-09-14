@@ -30,4 +30,15 @@ public interface GpsTestListener extends LocationListener {
     void onOrientationChanged(double orientation, double tilt);
 
     void onNmeaMessage(String message, long timestamp);
+
+    /**
+     * Called when a GNSS fix is acquired, including on first fix
+     */
+    void onGnssFixAcquired();
+
+    /**
+     * Called when a GNSS fix is lost, following initial acquisition (this is not called on startup
+     * prior to a fix initially being acquired)
+     */
+    void onGnssFixLost();
 }

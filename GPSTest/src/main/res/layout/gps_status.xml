@@ -47,6 +47,18 @@
                 card_view:cardCornerRadius="4dp"
                 android:foreground="?attr/selectableItemBackground">
 
+                <ImageView
+                    android:id="@+id/status_lock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="6dp"
+                    card_view:srcCompat="@drawable/ic_baseline_lock_24"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
                 <TableLayout
                     android:id="@+id/lat_long_table"
                     android:layout_width="wrap_content"

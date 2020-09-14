@@ -157,6 +157,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
     DeviceInfoViewModel mViewModel;
 
+    ImageView lock;
+
     private final Observer<SatelliteMetadata> mSatelliteMetadataObserver = new Observer<SatelliteMetadata>() {
         @Override
         public void onChanged(@Nullable final SatelliteMetadata satelliteMetadata) {
@@ -179,6 +181,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
         View v = inflater.inflate(R.layout.gps_status, container,false);
 
+        lock = v.findViewById(R.id.status_lock);
         mLatitudeView = v.findViewById(R.id.latitude);
         mLongitudeView = v.findViewById(R.id.longitude);
         mFixTimeView = v.findViewById(R.id.fix_time);
@@ -300,6 +303,10 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 mNumSats.setText("");
                 mPdopView.setText("");
                 mHvdopView.setText("");
+
+                if (lock != null) {
+                    lock.setVisibility(View.GONE);
+                }
 
                 svCount = 0;
                 svVisibleCount = 0;
@@ -559,6 +566,16 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         if (mTTFFView != null) {
             mTTFFView.setText(mTtff);
         }
+    }
+
+    @Override
+    public void onGnssFixAcquired() {
+        showHaveFix();
+    }
+
+    @Override
+    public void onGnssFixLost() {
+        showLostFix();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1203,6 +1220,18 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 default:
                     flag.setVisibility(View.INVISIBLE);
             }
+        }
+    }
+
+    private void showHaveFix() {
+        if (lock != null) {
+            UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
+        }
+    }
+
+    private void showLostFix() {
+        if (lock != null) {
+            UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
     }
 }

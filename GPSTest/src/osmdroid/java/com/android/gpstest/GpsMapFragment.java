@@ -337,6 +337,14 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
 
     }
 
+    @Override
+    public void onGnssFixAcquired() {
+    }
+
+    @Override
+    public void onGnssFixLost() {
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
