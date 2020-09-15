@@ -110,8 +110,15 @@
     <string name="gnss_not_available">GNSS satelity (Global Navigation Satellite System) nejsou dostupné.</string>
     <string name="sbas_not_available">SBAS satelity (Satellite-based Augmentation System) nejsou dostupné.</string>
     <string name="menu_option_sort_by">Pořadí v seznamu podle</string>
+    <string name="menu_option_filter">Filtr</string>
+    <string name="filter_dialog_title">Zobrazit pouze tyto GNSS</string>
+    <string name="filter_text">Zobrazeno %1$d z %2$d satelitů</string>
+    <string name="filter_showall">(zobrazit vše)</string>
     <string name="error_time_title">Neplatný čas GNNS</string>
     <string name="error_time_message">Čas GNSS zařízení je:\n\n%1$s\n\n…je o více než %2$d den/dny/dnů odlišný od systémových hodin. Může to být způsobeno problémem s prodloužením týdne GPS - požádejte výrobce zařízení o podrobnosti. Více na http://bit.ly/gps-week-rollover for more info.</string>
+    <string name="unknown">Neznámý</string>
+    <string name="cancel">Zrušit</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Zeměpisná šířka</string>
     <string name="ground_truth_longitude">Zeměpisná délka</string>
@@ -185,6 +192,20 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Filtr pro zobrazení satelitů v záložce Stav</b>
+        - Umožní skrýt GNSS pomocí tlačítka na panelu akcí.\n&#8226;\u0020
+        <b>GNSS indikátor zámku</b>
+        - Během čekání na opravu GNSS se zobrazí indikátor průběhu a po získání polohy se zobrazí ikona zámku.\n&#8226;\u0020
+        <b>Vylepšený tmavý režim</b>
+        - Záložka Mapa a Kompas jsou nyní přizpůsobeny tmavému režimu.\n&#8226;\u0020
+        <b>Přidán baskický překlad</b>
+        - Poděkování Alexander Gabilondo!\n&#8226;\u0020
+        <b>Vylepšená ikona spouštěče</b>
+        - Podpora adaptivních ikon na podporovaných zařízeních.\n&#8226;\u0020
+        <b>Oprava chyb</b>
+        - Více na: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Zavřít</string>
 
     <!-- Preferences -->
@@ -387,5 +408,6 @@
         &#8226;\u0020 Persian translation provided by Iman (imni)\n
         &#8226;\u0020 Ukrainian translation provided by Serhii Osmalchuk\n
         &#8226;\u0020 Korean translation provided by snotree\n
+        &#8226;\u0020 Basque translation provided by Alexander Gabilondo\n
     </string>
 </resources>

@@ -194,16 +194,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Aggiunto filtro satelliti nella Scheda Stato</b>
-        - Seleziona solo determinati sistemi di navigazione satellitare (GNSS) usando il bottone apposito.\n&#8226;\u0020
-        <b>Aggiunta traduzione in Basco</b>
-        - Grazie Alexander Gabilondo!\n&#8226;\u0020
-        <b>Migliorata icona dell\'app</b>
-        - Aggiunto il supporto per le icone adattive.\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - Per ulteriori informazioni: https://bit.ly/gpstest-releases
-    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
