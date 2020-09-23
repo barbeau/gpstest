@@ -106,14 +106,17 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         int textColor;
         int backgroundColor;
+        int satStrokeColorUsed;
         if (Application.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
             textColor = getResources().getColor(android.R.color.secondary_text_dark);
             backgroundColor = ContextCompat.getColor(context, R.color.navdrawer_background_dark);
+            satStrokeColorUsed = getResources().getColor(android.R.color.darker_gray);
         } else {
             // Light theme
             textColor = getResources().getColor(R.color.body_text_2_light);
             backgroundColor = Color.WHITE;
+            satStrokeColorUsed = Color.BLACK;
         }
 
         mHorizonActiveFillPaint = new Paint();
@@ -149,7 +152,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         mSatelliteStrokePaint.setAntiAlias(true);
 
         mSatelliteUsedStrokePaint = new Paint();
-        mSatelliteUsedStrokePaint.setColor(Color.BLACK);
+        mSatelliteUsedStrokePaint.setColor(satStrokeColorUsed);
         mSatelliteUsedStrokePaint.setStyle(Paint.Style.STROKE);
         mSatelliteUsedStrokePaint.setStrokeWidth(8.0f);
         mSatelliteUsedStrokePaint.setAntiAlias(true);

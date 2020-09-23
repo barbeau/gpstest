@@ -17,6 +17,7 @@
 
 package com.android.gpstest;
 
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.location.GnssMeasurementsEvent;
@@ -59,11 +60,15 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0LeftCenterText,
             mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
 
-    private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg, lock;
+    private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg, lock, circleUsedInFix;
 
     Animation mSnrCn0InViewAvgAnimation, mSnrCn0UsedAvgAnimation, mSnrCn0InViewAvgAnimationTextView, mSnrCn0UsedAvgAnimationTextView;
 
     private boolean mUseLegacyGnssApi = false;
+
+    // Default light theme values
+    int usedCn0Background = R.drawable.cn0_round_corner_background_used;
+    int usedCn0IndicatorColor = Color.BLACK;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +82,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mSnrCn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view);
         mSnrCn0UsedAvg = v.findViewById(R.id.cn0_indicator_used);
         lock = v.findViewById(R.id.sky_lock);
+        circleUsedInFix = v.findViewById(R.id.sky_legend_used_in_fix);
 
         GpsTestActivity.getInstance().addListener(this);
         return v;
@@ -89,9 +95,15 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
             color = getResources().getColor(android.R.color.secondary_text_dark);
+            circleUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark);
+            usedCn0Background = R.drawable.cn0_round_corner_background_used_dark;
+            usedCn0IndicatorColor = getResources().getColor(android.R.color.darker_gray);;
         } else {
             // Light theme
             color = getResources().getColor(R.color.body_text_2_light);
+            circleUsedInFix.setImageResource(R.drawable.circle_used_in_fix);
+            usedCn0Background =  R.drawable.cn0_round_corner_background_used;
+            usedCn0IndicatorColor = Color.BLACK;
         }
         for (View v : mLegendLines) {
             v.setBackgroundColor(color);
@@ -429,7 +441,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             mSnrCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getSnrCn0UsedAvg()));
             // Set color of TextView
             int color = mSkyView.getSatelliteColor(mSkyView.getSnrCn0UsedAvg());
-            LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), R.drawable.cn0_round_corner_background_used);
+            LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), usedCn0Background);
 
             // Fill
             GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
@@ -439,6 +451,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
             // Set padding
             mSnrCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+
+            // Set color of indicator
+            mSnrCn0UsedAvg.setColorFilter(usedCn0IndicatorColor);
 
             // Set position and visibility of TextView
             if (mSnrCn0UsedAvgText.getVisibility() == View.VISIBLE) {
