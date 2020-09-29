@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.GnssAntennaInfo;
 import android.location.GnssClock;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
@@ -32,6 +33,7 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
@@ -455,6 +457,11 @@ public class FileLogger {
                 logException(Application.get().getString(R.string.error_writing_file), e);
             }
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
+        // TODO - write antenna info to JSON file
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

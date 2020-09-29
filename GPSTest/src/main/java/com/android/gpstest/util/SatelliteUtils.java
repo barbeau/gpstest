@@ -22,6 +22,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.GnssStatus;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -262,6 +263,16 @@ public class SatelliteUtils {
      */
     public static boolean isSpeedAndBearingAccuracySupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
+     * Returns true if the platform supports the Android GnssAntennaInfo (https://developer.android.com/reference/android/location/GnssAntennaInfo.Listener)
+     * , false if it does not
+     * @return true if the platform supports the Android GnssAntennaInfo (https://developer.android.com/reference/android/location/GnssAntennaInfo.Listener)
+     *      , false if it does not
+     */
+    public static boolean isGnssAntennaInfoSupported(LocationManager manager) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager.getGnssCapabilities().hasGnssAntennaInfo();
     }
 
     /**

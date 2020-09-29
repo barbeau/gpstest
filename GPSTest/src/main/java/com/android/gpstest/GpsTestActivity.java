@@ -34,6 +34,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssNavigationMessage;
@@ -193,6 +194,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteLocationToFile;
 
+    boolean mWriteAntennaInfoToFile;
+
     private Switch mSwitch;  // GPS on/off switch
 
     private LocationManager mLocationManager;
@@ -220,6 +223,8 @@ public class GpsTestActivity extends AppCompatActivity
     private OnNmeaMessageListener mOnNmeaMessageListener;
 
     private GnssNavigationMessage.Callback mGnssNavMessageListener;
+
+    private GnssAntennaInfo.Listener gnssAntennaInfoListener;
 
     // Listeners for Fragments
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
@@ -468,6 +473,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         addNmeaListener();
 
+        addGnssAntennaListener();
+
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
@@ -485,6 +492,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkNmeaOutput(settings);
         checkLocationOutput(settings);
+        checkGnssAntennaOutput(settings);
 
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
@@ -519,6 +527,7 @@ public class GpsTestActivity extends AppCompatActivity
         // Remove status listeners
         removeStatusListener();
         removeNmeaListener();
+        removeGnssAntennaListener();
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeNavMessageListener();
         }
@@ -534,7 +543,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private boolean isFileLoggingEnabled() {
-        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -975,6 +984,30 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     @SuppressLint("MissingPermission")
+    private void addGnssAntennaListener() {
+        if (mLocationManager == null) {
+            return;
+        }
+        if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener == null) {
+            // TODO - move this and other callbacks to background threads and only run on UI thread when updating UI
+           gnssAntennaInfoListener = list -> {
+               if (mWriteAntennaInfoToFile &&
+                       PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                   mFileLogger.onGnssAntennaInfoReceived(list);
+               }
+           };
+            mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void removeGnssAntennaListener() {
+        if (mLocationManager != null && SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
+            mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.N)
     private void addGnssStatusListener() {
         mGnssStatusListener = new GnssStatus.Callback() {
@@ -1363,6 +1396,10 @@ public class GpsTestActivity extends AppCompatActivity
                 .getBoolean(getString(R.string.pref_key_as_nmea_timestamp_output), true);
         mWriteNmeaToFile = settings
                 .getBoolean(getString(R.string.pref_key_file_nmea_output), false);
+    }
+
+    private void checkGnssAntennaOutput(SharedPreferences settings) {
+        mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output), false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
