@@ -77,7 +77,8 @@ import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.io.CsvFileLogger;
+import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
@@ -91,6 +92,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
@@ -124,7 +126,8 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
-    private static final String EXISTING_LOG_FILE = "existing_log_file";
+    private static final String EXISTING_CSV_LOG_FILE = "existing_csv_log_file";
+    private static final String EXISTING_JSON_LOG_FILE = "existing_json_log_file";
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -247,7 +250,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     private String mInitialLanguage;
 
-    private FileLogger mFileLogger;
+    private CsvFileLogger csvFileLogger;
+
+    private JsonFileLogger jsonFileLogger;
 
     private boolean shareDialogOpen = false;
 
@@ -298,7 +303,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         setupNavigationDrawer();
 
-        mFileLogger = new FileLogger(getApplicationContext());
+        csvFileLogger = new CsvFileLogger(getApplicationContext());
+        jsonFileLogger = new JsonFileLogger(getApplicationContext());
     }
 
     @Override
@@ -337,8 +343,11 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
-         if (mFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_LOG_FILE, mFileLogger.getFile());
+         if (csvFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_CSV_LOG_FILE, csvFileLogger.getFile());
+         }
+         if (jsonFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_JSON_LOG_FILE, jsonFileLogger.getFile());
          }
         super.onSaveInstanceState(outState);
     }
@@ -376,7 +385,7 @@ public class GpsTestActivity extends AppCompatActivity
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
                 shareDialogOpen = true;
-                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, uri).show();
+                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, uri).show();
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -503,16 +512,21 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         if (PermissionUtils.hasGrantedFileWritePermission(this)
-                && !mFileLogger.isStarted()
+                && !csvFileLogger.isStarted() && !jsonFileLogger.isStarted()
                 && isFileLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
-            File existingFile = null;
+            File existingCsvFile = null;
+            File existingJsonFile = null;
             if (mLastSavedInstanceState != null) {
                 // See if this was an orientation change and we should continue logging to
                 // an existing file
-                existingFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_LOG_FILE);
+                existingCsvFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_CSV_LOG_FILE);
+                existingJsonFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_JSON_LOG_FILE);
             }
-            mFileLogger.startLog(existingFile);
+            Date date = new Date();
+            csvFileLogger.startLog(existingCsvFile, date);
+            jsonFileLogger.startLog(existingJsonFile, date);
+            IOUtils.deleteOldFiles(csvFileLogger.getBaseDirectory(), csvFileLogger.getFile(), jsonFileLogger.getFile());
         }
 
         autoShowWhatsNew();
@@ -993,7 +1007,7 @@ public class GpsTestActivity extends AppCompatActivity
            gnssAntennaInfoListener = list -> {
                if (mWriteAntennaInfoToFile &&
                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                   mFileLogger.onGnssAntennaInfoReceived(list);
+                   csvFileLogger.onGnssAntennaInfoReceived(list);
                }
            };
             mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);
@@ -1095,7 +1109,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteRawMeasurementsToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onGnssMeasurementsReceived(event);
+                    csvFileLogger.onGnssMeasurementsReceived(event);
                 }
             }
 
@@ -1215,7 +1229,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteNmeaToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onNmeaReceived(timestamp, message);
+                    csvFileLogger.onNmeaReceived(timestamp, message);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1235,7 +1249,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteNmeaToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onNmeaReceived(timestamp, nmea);
+                    csvFileLogger.onNmeaReceived(timestamp, nmea);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1266,7 +1280,7 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                     if (mWriteNavMessageToFile &&
                             PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        mFileLogger.onGnssNavigationMessageReceived(event);
+                        csvFileLogger.onGnssNavigationMessageReceived(event);
                     }
                 }
 
@@ -1426,7 +1440,8 @@ public class GpsTestActivity extends AppCompatActivity
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
         }
-        mFileLogger.close();
+        csvFileLogger.close();
+        jsonFileLogger.close();
         super.onDestroy();
     }
 
@@ -1503,7 +1518,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
         if (mWriteLocationToFile &&
                 PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-            mFileLogger.onLocationChanged(location);
+            csvFileLogger.onLocationChanged(location);
         }
     }
 
@@ -1627,7 +1642,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void share() {
         final Location location = mLastLocation;
         shareDialogOpen = true;
-        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, null).show();
+        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, null).show();
     }
 
     /**
