@@ -28,6 +28,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -306,7 +307,7 @@ public class IOUtils {
      * @param baseDirectory   base directory in which to delete files
      * @param fileNotToDelete file not to delete
      */
-    public static void deleteOldFiles(File baseDirectory, File... fileNotToDelete) {
+    public static void deleteOldFiles(@NonNull File baseDirectory, File... fileNotToDelete) {
         // To make sure that files do not fill up the external storage:
         // - Remove all empty files
         FileFilter filter = new FileToDeleteFilter(fileNotToDelete);

@@ -89,8 +89,10 @@ public class CsvFileLogger implements FileLogger {
      * @param existingFile The existing file if file logging is to be continued, or null if a
      *                     new file should be created.
      * @param date The date and time to use for the file name
+     * @return true if a new file was created, false if an existing file was used
      */
-    public void startLog(File existingFile, Date date) {
+    public boolean startLog(File existingFile, Date date) {
+        boolean isNewFile = false;
         synchronized (mFileLock) {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state)) {
@@ -98,10 +100,10 @@ public class CsvFileLogger implements FileLogger {
                 baseDirectory.mkdirs();
             } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
                 logError("Cannot write to external storage.");
-                return;
+                return false;
             } else {
                 logError("Cannot read external storage.");
-                return;
+                return false;
             }
 
             String currentFilePath;
@@ -114,14 +116,14 @@ public class CsvFileLogger implements FileLogger {
                     writer = new BufferedWriter(new FileWriter(existingFile));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
-                    return;
+                    return false;
                 }
                 if (mFileWriter != null) {
                     try {
                         mFileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return;
+                        return false;
                     }
                 }
                 mFile = existingFile;
@@ -137,7 +139,7 @@ public class CsvFileLogger implements FileLogger {
                     writer = new BufferedWriter(new FileWriter(currentFile));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
-                    return;
+                    return false;
                 }
 
                 writeFileHeader(writer, currentFilePath);
@@ -147,14 +149,15 @@ public class CsvFileLogger implements FileLogger {
                         mFileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return;
+                        return false;
                     }
                 }
 
                 mFile = currentFile;
                 mFileWriter = writer;
 
-                Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
+                isNewFile = true;
             }
 
 
@@ -176,7 +179,7 @@ public class CsvFileLogger implements FileLogger {
                 writer = new BufferedWriter(new FileWriter(file));
             } catch (IOException e) {
                 logException("Could not open file: " + currentFilePath, e);
-                return;
+                return false;
             }
 
             if (existingFile == null) {
@@ -189,7 +192,7 @@ public class CsvFileLogger implements FileLogger {
                     mFileWriter.close();
                 } catch (IOException e) {
                     logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                    return;
+                    return false;
                 }
             }
 
@@ -198,11 +201,13 @@ public class CsvFileLogger implements FileLogger {
 
             if (existingFile == null) {
                 // Only if file didn't previously exist
-                Toast.makeText(mContext, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
+                isNewFile = true;
             }
 
             mIsStarted = true;
         }
+        return isNewFile;
     }
 
     /**

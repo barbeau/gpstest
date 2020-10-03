@@ -202,7 +202,6 @@ public class Preferences extends PreferenceActivity implements
             }
         }
 
-
         Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
     }
 

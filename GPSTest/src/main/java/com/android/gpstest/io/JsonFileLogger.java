@@ -75,8 +75,10 @@ public class JsonFileLogger implements FileLogger {
      *
      * @param existingFile The existing file if file logging is to be continued, or null if a
      *                     new file should be created.
+     * @return true if a new file was created, false if an existing file was used
      */
-    public void startLog(File existingFile, Date date) {
+    public boolean startLog(File existingFile, Date date) {
+        boolean isNewFile = false;
         synchronized (fileLock) {
             String state = Environment.getExternalStorageState();
             if (mapper == null) {
@@ -87,10 +89,10 @@ public class JsonFileLogger implements FileLogger {
                 baseDirectory.mkdirs();
             } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
                 logError("Cannot write to external storage.");
-                return;
+                return false;
             } else {
                 logError("Cannot read external storage.");
-                return;
+                return false;
             }
 
             String currentFilePath;
@@ -103,14 +105,14 @@ public class JsonFileLogger implements FileLogger {
                     writer = new BufferedWriter(new FileWriter(existingFile));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
-                    return;
+                    return false;
                 }
                 if (fileWriter != null) {
                     try {
                         fileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return;
+                        return false;
                     }
                 }
                 file = existingFile;
@@ -126,7 +128,7 @@ public class JsonFileLogger implements FileLogger {
                     writer = new BufferedWriter(new FileWriter(currentFile));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
-                    return;
+                    return false;
                 }
 
                 if (fileWriter != null) {
@@ -134,14 +136,15 @@ public class JsonFileLogger implements FileLogger {
                         fileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return;
+                        return false;
                     }
                 }
 
                 file = currentFile;
                 fileWriter = writer;
 
-                Toast.makeText(context, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
+                isNewFile = true;
             }
 
 
@@ -163,7 +166,7 @@ public class JsonFileLogger implements FileLogger {
                 writer = new BufferedWriter(new FileWriter(file));
             } catch (IOException e) {
                 logException("Could not open file: " + currentFilePath, e);
-                return;
+                return false;
             }
 
             if (fileWriter != null) {
@@ -171,7 +174,7 @@ public class JsonFileLogger implements FileLogger {
                     fileWriter.close();
                 } catch (IOException e) {
                     logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                    return;
+                    return false;
                 }
             }
 
@@ -183,17 +186,19 @@ public class JsonFileLogger implements FileLogger {
                     jsonGenerator = mapper.getFactory().createGenerator(fileWriter);
                 } catch (IOException e) {
                     logException(Application.get().getString(R.string.unable_to_open_json_generator), e);
-                    return;
+                    return false;
                 }
             }
 
             if (existingFile == null) {
                 // Only if file didn't previously exist
-                Toast.makeText(context, Application.get().getString(R.string.logging_to_new_file, currentFilePath), Toast.LENGTH_LONG).show();
+                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
+                isNewFile = true;
             }
 
             isStarted = true;
         }
+        return isNewFile;
     }
 
     /**

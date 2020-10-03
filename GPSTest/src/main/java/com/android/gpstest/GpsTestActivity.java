@@ -511,22 +511,58 @@ public class GpsTestActivity extends AppCompatActivity
             checkNavMessageOutput(settings);
         }
 
+        Date date = new Date();
+        boolean isNewCSVFile = false;
+        boolean isNewJsonFile = false;
         if (PermissionUtils.hasGrantedFileWritePermission(this)
-                && !csvFileLogger.isStarted() && !jsonFileLogger.isStarted()
-                && isFileLoggingEnabled()) {
+                && !csvFileLogger.isStarted() && isCsvLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
             File existingCsvFile = null;
-            File existingJsonFile = null;
             if (mLastSavedInstanceState != null) {
                 // See if this was an orientation change and we should continue logging to
                 // an existing file
                 existingCsvFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_CSV_LOG_FILE);
+            }
+            isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date);
+        }
+
+        if (PermissionUtils.hasGrantedFileWritePermission(this)
+                && !jsonFileLogger.isStarted() && isJsonLoggingEnabled()) {
+            // User has granted permissions and has chosen to log at least one data type
+            File existingJsonFile = null;
+            if (mLastSavedInstanceState != null) {
+                // See if this was an orientation change and we should continue logging to
+                // an existing file
                 existingJsonFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_JSON_LOG_FILE);
             }
-            Date date = new Date();
-            csvFileLogger.startLog(existingCsvFile, date);
-            jsonFileLogger.startLog(existingJsonFile, date);
-            IOUtils.deleteOldFiles(csvFileLogger.getBaseDirectory(), csvFileLogger.getFile(), jsonFileLogger.getFile());
+            isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date);
+        }
+
+        if (csvFileLogger.isStarted() && !jsonFileLogger.isStarted()) {
+            if (isNewCSVFile) {
+                // CSV logging only
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
+            }
+        } else if (!csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+            // JSON logging only
+            if (isNewJsonFile) {
+                // CSV logging only
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, jsonFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
+            }
+        } else if (csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+            // CSV and JSON logging
+            if (isNewCSVFile && isNewJsonFile) {
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file) + ", .json", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (PermissionUtils.hasGrantedFileWritePermission(this) && (csvFileLogger.isStarted()|| jsonFileLogger.isStarted())) {
+            // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
+            File baseDirectory = csvFileLogger.getBaseDirectory();
+            if (baseDirectory == null) {
+                baseDirectory = jsonFileLogger.getBaseDirectory();
+            }
+            IOUtils.deleteOldFiles(baseDirectory, csvFileLogger.getFile(), jsonFileLogger.getFile());
         }
 
         autoShowWhatsNew();
@@ -558,6 +594,14 @@ public class GpsTestActivity extends AppCompatActivity
 
     private boolean isFileLoggingEnabled() {
         return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFile;
+    }
+
+    private boolean isCsvLoggingEnabled() {
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
+    }
+
+    private boolean isJsonLoggingEnabled() {
+        return mWriteLocationToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {

@@ -290,7 +290,7 @@
     </string>
     <string name="pref_file_location_output_title">Location</string>
     <string name="pref_file_location_output_summary">Logs location fix details to a file</string>
-    <string name="pref_file_antenna_output_title">Antenna info</string>
+    <string name="pref_file_antenna_output_title">Antenna Info</string>
     <string name="pref_file_antenna_output_summary">Logs GNSS antenna details to a file. Only available on supported devices with Android 11 or greater.</string>
 
     <string name="logging_to_new_file">Logging to new file: %1$s</string>

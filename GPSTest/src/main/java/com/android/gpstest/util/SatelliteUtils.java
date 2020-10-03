@@ -272,7 +272,7 @@ public class SatelliteUtils {
      *      , false if it does not
      */
     public static boolean isGnssAntennaInfoSupported(LocationManager manager) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager.getGnssCapabilities().hasGnssAntennaInfo();
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager != null && manager.getGnssCapabilities().hasGnssAntennaInfo();
     }
 
     /**
