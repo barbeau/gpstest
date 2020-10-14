@@ -489,7 +489,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         /**
-         * Check preferences to see how these componenets should be initialized
+         * Check preferences to see how these components should be initialized
          */
         SharedPreferences settings = Application.getPrefs();
 
@@ -601,7 +601,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private boolean isJsonLoggingEnabled() {
-        return mWriteLocationToFile;
+        return mWriteAntennaInfoToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
