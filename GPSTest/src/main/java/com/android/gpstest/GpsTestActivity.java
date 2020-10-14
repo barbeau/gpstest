@@ -1051,7 +1051,7 @@ public class GpsTestActivity extends AppCompatActivity
            gnssAntennaInfoListener = list -> {
                if (mWriteAntennaInfoToFile &&
                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                   csvFileLogger.onGnssAntennaInfoReceived(list);
+                   jsonFileLogger.onGnssAntennaInfoReceived(list);
                }
            };
             mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);

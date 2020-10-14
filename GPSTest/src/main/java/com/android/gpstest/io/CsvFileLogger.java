@@ -19,7 +19,6 @@ package com.android.gpstest.io;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.location.GnssAntennaInfo;
 import android.location.GnssClock;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
@@ -32,7 +31,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
@@ -46,7 +44,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -61,22 +58,20 @@ public class CsvFileLogger implements FileLogger {
     private static final char RECORD_DELIMITER = ',';
     private static final String VERSION_TAG = "GPSTest version: ";
 
-    private static final int MAX_FILES_STORED = 100;
+    private final Context context;
 
-    private final Context mContext;
-
-    private final Object mFileLock = new Object();
-    private BufferedWriter mFileWriter;
-    private File mFile;
-    private boolean mIsStarted = false;
+    private final Object fileLock = new Object();
+    private BufferedWriter fileWriter;
+    private File file;
+    private boolean isStarted = false;
     private File baseDirectory;
 
     public CsvFileLogger(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     public File getFile() {
-        return mFile;
+        return file;
     }
 
     public File getBaseDirectory() {
@@ -93,7 +88,7 @@ public class CsvFileLogger implements FileLogger {
      */
     public boolean startLog(File existingFile, Date date) {
         boolean isNewFile = false;
-        synchronized (mFileLock) {
+        synchronized (fileLock) {
             String state = Environment.getExternalStorageState();
             if (Environment.MEDIA_MOUNTED.equals(state)) {
                 baseDirectory = new File(Environment.getExternalStorageDirectory(), FILE_PREFIX);
@@ -118,20 +113,20 @@ public class CsvFileLogger implements FileLogger {
                     logException("Could not open file: " + currentFilePath, e);
                     return false;
                 }
-                if (mFileWriter != null) {
+                if (fileWriter != null) {
                     try {
-                        mFileWriter.close();
+                        fileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
                         return false;
                     }
                 }
-                mFile = existingFile;
-                mFileWriter = writer;
+                file = existingFile;
+                fileWriter = writer;
             } else {
                 // Create new logging file
                 SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
-                String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(new Date()));
+                String fileName = String.format("%s_%s.txt", FILE_PREFIX, formatter.format(date));
                 File currentFile = new File(baseDirectory, fileName);
                 currentFilePath = currentFile.getAbsolutePath();
                 BufferedWriter writer;
@@ -144,17 +139,17 @@ public class CsvFileLogger implements FileLogger {
 
                 writeFileHeader(writer, currentFilePath);
 
-                if (mFileWriter != null) {
+                if (fileWriter != null) {
                     try {
-                        mFileWriter.close();
+                        fileWriter.close();
                     } catch (IOException e) {
                         logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
                         return false;
                     }
                 }
 
-                mFile = currentFile;
-                mFileWriter = writer;
+                file = currentFile;
+                fileWriter = writer;
 
                 Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
                 isNewFile = true;
@@ -187,17 +182,17 @@ public class CsvFileLogger implements FileLogger {
                 writeFileHeader(writer, currentFilePath);
             }
 
-            if (mFileWriter != null) {
+            if (fileWriter != null) {
                 try {
-                    mFileWriter.close();
+                    fileWriter.close();
                 } catch (IOException e) {
                     logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
                     return false;
                 }
             }
 
-            mFileWriter = writer;
-            mFile = file;
+            fileWriter = writer;
+            this.file = file;
 
             if (existingFile == null) {
                 // Only if file didn't previously exist
@@ -205,7 +200,7 @@ public class CsvFileLogger implements FileLogger {
                 isNewFile = true;
             }
 
-            mIsStarted = true;
+            isStarted = true;
         }
         return isNewFile;
     }
@@ -233,7 +228,7 @@ public class CsvFileLogger implements FileLogger {
             String versionString = "";
             int versionCode = 0;
             try {
-                PackageInfo info = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+                PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                 versionString = info.versionName;
                 versionCode = info.versionCode;
             } catch (PackageManager.NameNotFoundException e) {
@@ -316,16 +311,16 @@ public class CsvFileLogger implements FileLogger {
      * @return
      */
     public synchronized boolean isStarted() {
-        return mIsStarted;
+        return isStarted;
     }
 
     public void close() {
-        if (mFileWriter != null) {
+        if (fileWriter != null) {
             try {
-                mFileWriter.flush();
-                mFileWriter.close();
-                mFileWriter = null;
-                mIsStarted = false;
+                fileWriter.flush();
+                fileWriter.close();
+                fileWriter = null;
+                isStarted = false;
             } catch (IOException e) {
                 logException("Unable to close all file streams.", e);
                 return;
@@ -335,8 +330,8 @@ public class CsvFileLogger implements FileLogger {
 
     public void onLocationChanged(Location location) {
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-            synchronized (mFileLock) {
-                if (mFileWriter == null) {
+            synchronized (fileLock) {
+                if (fileWriter == null) {
                     return;
                 }
                 String locationStream =
@@ -351,8 +346,8 @@ public class CsvFileLogger implements FileLogger {
                                 location.getAccuracy(),
                                 location.getTime());
                 try {
-                    mFileWriter.write(locationStream);
-                    mFileWriter.newLine();
+                    fileWriter.write(locationStream);
+                    fileWriter.newLine();
                 } catch (IOException e) {
                     logException(Application.get().getString(R.string.error_writing_file), e);
                 }
@@ -362,8 +357,8 @@ public class CsvFileLogger implements FileLogger {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-        synchronized (mFileLock) {
-            if (mFileWriter == null) {
+        synchronized (fileLock) {
+            if (fileWriter == null) {
                 return;
             }
             GnssClock gnssClock = event.getClock();
@@ -379,8 +374,8 @@ public class CsvFileLogger implements FileLogger {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onGnssNavigationMessageReceived(GnssNavigationMessage navigationMessage) {
-        synchronized (mFileLock) {
-            if (mFileWriter == null) {
+        synchronized (fileLock) {
+            if (fileWriter == null) {
                 return;
             }
             StringBuilder builder = new StringBuilder("Nav");
@@ -402,8 +397,8 @@ public class CsvFileLogger implements FileLogger {
                 builder.append(word);
             }
             try {
-                mFileWriter.write(builder.toString());
-                mFileWriter.newLine();
+                fileWriter.write(builder.toString());
+                fileWriter.newLine();
             } catch (IOException e) {
                 logException(Application.get().getString(R.string.error_writing_file), e);
             }
@@ -411,23 +406,18 @@ public class CsvFileLogger implements FileLogger {
     }
 
     public void onNmeaReceived(long timestamp, String s) {
-        synchronized (mFileLock) {
-            if (mFileWriter == null) {
+        synchronized (fileLock) {
+            if (fileWriter == null) {
                 return;
             }
             String nmeaStream = "NMEA," + s.trim() + "," + timestamp;
             try {
-                mFileWriter.write(nmeaStream);
-                mFileWriter.newLine();
+                fileWriter.write(nmeaStream);
+                fileWriter.newLine();
             } catch (IOException e) {
                 logException(Application.get().getString(R.string.error_writing_file), e);
             }
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
-        // TODO - write antenna info to JSON file
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -448,7 +438,7 @@ public class CsvFileLogger implements FileLogger {
                                 ? clock.getDriftUncertaintyNanosPerSecond()
                                 : "",
                         clock.getHardwareClockDiscontinuityCount() + ",");
-        mFileWriter.write(clockStream);
+        fileWriter.write(clockStream);
 
         String measurementStream =
                 String.format(
@@ -478,17 +468,17 @@ public class CsvFileLogger implements FileLogger {
                                 ? measurement.getAutomaticGainControlLevelDb()
                                 : "",
                         measurement.hasCarrierFrequencyHz() ? measurement.getCarrierFrequencyHz() : "");
-        mFileWriter.write(measurementStream);
-        mFileWriter.newLine();
+        fileWriter.write(measurementStream);
+        fileWriter.newLine();
     }
 
     private void logException(String errorMessage, Exception e) {
         Log.e(TAG, errorMessage, e);
-        Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     private void logError(String errorMessage) {
         Log.e(TAG, errorMessage);
-        Toast.makeText(mContext, errorMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
     }
 }
