@@ -58,11 +58,13 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @Override
-    boolean postFileInit(BufferedWriter fileWriter) {
+    boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile) {
         if (jsonGenerator == null) {
             try {
                 jsonGenerator = mapper.getFactory().createGenerator(fileWriter);
-                jsonGenerator.writeStartArray();
+                if (isNewFile) {
+                    jsonGenerator.writeStartArray();
+                }
             } catch (IOException e) {
                 logException(Application.get().getString(R.string.unable_to_open_json_generator), e);
                 return false;

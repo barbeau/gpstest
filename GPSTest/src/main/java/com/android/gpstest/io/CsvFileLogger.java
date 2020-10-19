@@ -59,7 +59,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @Override
-    boolean postFileInit(BufferedWriter fileWriter) {
+    boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile) {
         // No-op for CSV files
         return true;
     }

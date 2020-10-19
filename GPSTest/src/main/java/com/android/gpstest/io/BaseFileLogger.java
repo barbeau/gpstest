@@ -64,9 +64,10 @@ public abstract class BaseFileLogger implements FileLogger {
      * Called after files have finished initialing within startLog() but prior to returning from startLog(), if
      * additional init is required for a specific file logging implementation
      * @param fileWriter
+     * @param isNewFile true if the file is new, or false if it already existed and was re-opened
      * @return true if the operation was successful, false if it was not
      */
-    abstract boolean postFileInit(BufferedWriter fileWriter);
+    abstract boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile);
 
     /**
      * Start a file logging process
@@ -113,6 +114,7 @@ public abstract class BaseFileLogger implements FileLogger {
                 }
                 file = existingFile;
                 fileWriter = writer;
+                isNewFile = false;
             } else {
                 // Create new logging file
                 SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
@@ -147,7 +149,7 @@ public abstract class BaseFileLogger implements FileLogger {
 
 
             File file;
-            if (existingFile != null) {
+            if (!isNewFile) {
                 // Use existing file
                 currentFilePath = existingFile.getAbsolutePath();
                 file = existingFile;
@@ -167,7 +169,7 @@ public abstract class BaseFileLogger implements FileLogger {
                 return false;
             }
 
-            if (existingFile == null) {
+            if (isNewFile) {
                 // Only if file didn't previously exist
                 writeFileHeader(writer, currentFilePath);
             }
@@ -184,15 +186,14 @@ public abstract class BaseFileLogger implements FileLogger {
             fileWriter = writer;
             this.file = file;
 
-            boolean postInit = postFileInit(fileWriter);
+            boolean postInit = postFileInit(fileWriter, isNewFile);
             if (!postInit) {
                 return false;
             }
 
-            if (existingFile == null) {
+            if (isNewFile) {
                 // Only if file didn't previously exist
                 Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
-                isNewFile = true;
             }
 
             isStarted = true;
