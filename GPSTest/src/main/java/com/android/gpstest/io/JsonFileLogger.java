@@ -62,6 +62,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
         if (jsonGenerator == null) {
             try {
                 jsonGenerator = mapper.getFactory().createGenerator(fileWriter);
+                jsonGenerator.writeStartArray();
             } catch (IOException e) {
                 logException(Application.get().getString(R.string.unable_to_open_json_generator), e);
                 return false;
@@ -90,8 +91,12 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     public void close() {
         if (fileWriter != null) {
             try {
-                jsonGenerator.close();
+                if (jsonGenerator != null) {
+                    jsonGenerator.writeEndArray();
+                    jsonGenerator.close();
+                }
                 mapper = null;
+                jsonGenerator = null;
             } catch (IOException e) {
                 logException("Unable to close jsonGenerator and mapper file streams.", e);
             }
@@ -102,11 +107,11 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
         try {
-            jsonGenerator.writeStartArray();
-            for (GnssAntennaInfo info : list) {
-                mapper.writeValue(jsonGenerator, info);
+            if (mapper != null && jsonGenerator != null) {
+                for (GnssAntennaInfo info : list) {
+                    mapper.writeValue(jsonGenerator, info);
+                }
             }
-            jsonGenerator.writeEndArray();
         } catch (IOException e) {
             logException("Unable to write antenna info to JSON", e);
         }
