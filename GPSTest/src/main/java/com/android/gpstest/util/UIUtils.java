@@ -57,6 +57,8 @@ import com.google.android.material.chip.ChipGroup;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Intent.createChooser;
@@ -680,7 +682,7 @@ public class UIUtils {
                 IOUtils.sendLogFile(activity, csvFileLogger, jsonFileLogger);
             } else {
                 // Send the log file selected by the user using the File Browse button
-                IOUtils.sendLogFile(activity, alternateFileUri);
+                IOUtils.sendLogFile(activity, new ArrayList<>(Collections.singleton(alternateFileUri)));
             }
         });
 

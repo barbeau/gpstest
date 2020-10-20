@@ -45,7 +45,6 @@ import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;
 import static com.android.gpstest.util.LocationUtils.isValidLongitude;
@@ -259,14 +258,14 @@ public class IOUtils {
      * @param fileLoggers file loggers for files to send
      */
     public static void sendLogFile(Activity activity, FileLogger... fileLoggers) {
-        List<android.net.Uri> uris = new ArrayList<>();
+        ArrayList<android.net.Uri> uris = new ArrayList<>();
         for (FileLogger logger : fileLoggers) {
             if (logger.getFile() != null) {
                 uris.add(IOUtils.getUriFromFile(activity, logger.getFile()));
             }
         }
 
-        IOUtils.sendLogFile(activity, uris.toArray(new android.net.Uri[uris.size()]));
+        IOUtils.sendLogFile(activity, uris);
         for (FileLogger logger : fileLoggers) {
             if (logger.getFile() != null) {
                 logger.close();
@@ -280,13 +279,13 @@ public class IOUtils {
      * @param activity
      * @param fileUris  Android URIs for the File to be attached
      */
-    public static void sendLogFile(Activity activity, android.net.Uri... fileUris) {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    public static void sendLogFile(Activity activity, ArrayList<android.net.Uri> fileUris) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("*/*");
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "GnssLog from GPSTest");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "");
         Log.d(TAG, "Sending " + fileUris);
-        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUris);
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris);
         activity.startActivity(Intent.createChooser(emailIntent, Application.get().getString(R.string.send_log)));
     }
 
