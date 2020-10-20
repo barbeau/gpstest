@@ -108,7 +108,7 @@ public class FileLogger {
                 currentFilePath = existingFile.getAbsolutePath();
                 BufferedWriter writer;
                 try {
-                    writer = new BufferedWriter(new FileWriter(existingFile));
+                    writer = new BufferedWriter(new FileWriter(existingFile, true));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
                     return;
@@ -131,7 +131,7 @@ public class FileLogger {
                 currentFilePath = currentFile.getAbsolutePath();
                 BufferedWriter writer;
                 try {
-                    writer = new BufferedWriter(new FileWriter(currentFile));
+                    writer = new BufferedWriter(new FileWriter(currentFile, true));
                 } catch (IOException e) {
                     logException("Could not open file: " + currentFilePath, e);
                     return;
@@ -171,7 +171,7 @@ public class FileLogger {
 
             BufferedWriter writer;
             try {
-                writer = new BufferedWriter(new FileWriter(file));
+                writer = new BufferedWriter(new FileWriter(file, true));
             } catch (IOException e) {
                 logException("Could not open file: " + currentFilePath, e);
                 return;
