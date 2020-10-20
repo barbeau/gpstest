@@ -95,6 +95,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
             try {
                 if (jsonGenerator != null) {
                     jsonGenerator.writeEndArray();
+                    jsonGenerator.flush();
                     jsonGenerator.close();
                 }
                 mapper = null;
