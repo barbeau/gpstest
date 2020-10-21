@@ -552,7 +552,7 @@ public class GpsTestActivity extends AppCompatActivity
         } else if (csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
             // CSV and JSON logging
             if (isNewCSVFile && isNewJsonFile) {
-                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file) + ", .json", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()) + " + .json", Toast.LENGTH_LONG).show();
             }
         }
 
