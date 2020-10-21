@@ -85,6 +85,8 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     public boolean startLog(File existingFile, Date date) {
         if (mapper == null) {
             mapper = new ObjectMapper();
+            // We manage closing the underlying file streams in super.close()
+            mapper.getFactory().disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET);
         }
         return super.startLog(existingFile, date);
     }
