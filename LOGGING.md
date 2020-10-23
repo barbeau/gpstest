@@ -8,15 +8,16 @@ GPSTest allows you to output raw data about GNSS/GPS to files as well as the And
 
 You can enable file logging in GPSTest via the Settings. By default file logging is turned off for all data to avoid unnecessarily filling up storage space.
 
-Steps to view data:
-1. In the GPSTest app, go to "Settings", scroll down, tap on "Logging and Output" and under "File Output" make sure the box is checked for each data output type you'd like to see (see next section).
+Steps to log and view data:
+1. In the GPSTest app, go to "Settings", scroll down, tap on "Logging and Output" and under "File Output" make sure the box is checked for each data output type you'd like to see (see next sections).
+1. You can share CSV and JSON log files via the "Share" button in the top action bar of the app, or by copying them off internal memory or SD card over USB.
 
-#### Data output
+#### Data output - CSV
 
 Here are the details of file logging:
 * CSV format - Same file format as the Google [GPS Measurement Tools (GNSS Logger) project](https://github.com/google/gps-measurement-tools) so you can use MATLAB tools under that project to [analyze the data](https://github.com/google/gps-measurement-tools#to-process-a-log-file-you-collected-from-gnsslogger).
 * Files are saved to your Android device storage under the `gnss_log` directory.
-* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.txt`). If you end the app (e.g., hit back button) and restart it, another file gets created.
+* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.csv`). If you end the app (e.g., hit back button) and restart it, another file gets created.
 * Each row of the file is prefixed with a string designating the data type:
     * `Raw` - Raw GNSS measurements
     * `Fix` - Location fix information
@@ -57,9 +58,60 @@ Raw,1257164415,126692640000000,,,-1252130864797923510,0.9759163856506348,571.243
 Fix,gps,28.071355,-82.426751,14.320496,0.000000,38.592003,1568222340000
 ~~~
 
+#### Data output - JSON
+
+[GnssAntennaInfo](https://developer.android.com/reference/android/location/GnssAntennaInfo) logging is available on supported devices (e.g., Pixel 5) with Android 11 and is logged in the JSON format. GNSS antenna(s) characteristics, such as phase center offset (PCO) coordinates, phase center variation (PCV) corrections, and signal gain corrections can be applied to the raw measurements to improve accuracy.
+
+Logging works similar to the CSV file process, with a file name like `gnss_log_2019_09_11_13_09_50.json`. Here's example data from a Pixel 5:
+
+~~~
+[
+   {
+      "carrierFrequencyMHz":1575.42,
+      "phaseCenterOffset":{
+         "xoffsetMm":1.2,
+         "xoffsetUncertaintyMm":0.1,
+         "yoffsetMm":3.4,
+         "yoffsetUncertaintyMm":0.2,
+         "zoffsetMm":5.6,
+         "zoffsetUncertaintyMm":0.3
+      },
+      "phaseCenterVariationCorrections":{
+         "correctionUncertaintiesArray":[
+            [ 0.1, 0.2, 0.3, 0.4 ],
+            [ 1.1, 1.2, 1.3, 1.4 ],
+            [ 2.1, 2.2, 2.3, 2.4 ]
+         ],
+         "correctionsArray":[
+            [ 11.22, 33.44, 55.66, 77.88 ],
+            [ 10.2, 30.4, 50.6, 70.8 ],
+            [ 12.2, 34.4, 56.6, 78.8 ]
+         ],
+         "deltaPhi":60.0,
+         "deltaTheta":120.0
+      },
+      "signalGainCorrections":{
+         "correctionUncertaintiesArray":[
+            [ 0.11, 0.22, 0.33, 0.44 ],
+            [ 0.55, 0.66, 0.77, 0.88 ],
+            [ 0.91, 0.92, 0.93, 0.94 ]
+         ],
+         "correctionsArray":[
+            [ 9.8, 8.7, 7.6, 6.5 ],
+            [ 5.4, 4.3, 3.2, 2.1 ],
+            [ 1.3, 2.4, 3.5, 4.6 ]
+         ],
+         "deltaPhi":60.0,
+         "deltaTheta":120.0
+      }
+   }
+   ...
+]
+~~~
+
 #### Data Analysis
 
-Use the file output from GPSTest along with the Google [GPS Measurement Tools project](https://github.com/google/gps-measurement-tools) to analyze the data.
+Use the CSV file output from GPSTest along with the Google [GPS Measurement Tools project](https://github.com/google/gps-measurement-tools) to analyze the data (as of late October 2020 supported for [GnssAntennaInfo](https://developer.android.com/reference/android/location/GnssAntennaInfo) doesn't seem to exist).
 
 For details see the Android documentation:
 * ["GNSS Measurements - Analyzing raw measurements"](https://developer.android.com/guide/topics/sensors/gnss#analyze)
