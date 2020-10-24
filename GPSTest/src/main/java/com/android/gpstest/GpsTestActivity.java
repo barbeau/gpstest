@@ -34,6 +34,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssNavigationMessage;
@@ -76,7 +77,8 @@ import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.io.CsvFileLogger;
+import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
@@ -90,6 +92,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
@@ -123,7 +126,8 @@ public class GpsTestActivity extends AppCompatActivity
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_STARTED = "gps_started";
-    private static final String EXISTING_LOG_FILE = "existing_log_file";
+    private static final String EXISTING_CSV_LOG_FILE = "existing_csv_log_file";
+    private static final String EXISTING_JSON_LOG_FILE = "existing_json_log_file";
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
 
@@ -193,6 +197,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteLocationToFile;
 
+    boolean mWriteAntennaInfoToFile;
+
     private Switch mSwitch;  // GPS on/off switch
 
     private LocationManager mLocationManager;
@@ -221,6 +227,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private GnssNavigationMessage.Callback mGnssNavMessageListener;
 
+    private GnssAntennaInfo.Listener gnssAntennaInfoListener;
+
     // Listeners for Fragments
     private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
 
@@ -242,7 +250,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     private String mInitialLanguage;
 
-    private FileLogger mFileLogger;
+    private CsvFileLogger csvFileLogger;
+
+    private JsonFileLogger jsonFileLogger;
 
     private boolean shareDialogOpen = false;
 
@@ -293,7 +303,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         setupNavigationDrawer();
 
-        mFileLogger = new FileLogger(getApplicationContext());
+        csvFileLogger = new CsvFileLogger(getApplicationContext());
+        jsonFileLogger = new JsonFileLogger(getApplicationContext());
     }
 
     @Override
@@ -332,8 +343,11 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save current GPS started state
         outState.putBoolean(GPS_STARTED, mStarted);
-         if (mFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_LOG_FILE, mFileLogger.getFile());
+         if (csvFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_CSV_LOG_FILE, csvFileLogger.getFile());
+         }
+         if (jsonFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_JSON_LOG_FILE, jsonFileLogger.getFile());
          }
         super.onSaveInstanceState(outState);
     }
@@ -371,7 +385,7 @@ public class GpsTestActivity extends AppCompatActivity
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
                 shareDialogOpen = true;
-                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, uri).show();
+                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, uri).show();
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -468,12 +482,14 @@ public class GpsTestActivity extends AppCompatActivity
 
         addNmeaListener();
 
+        addGnssAntennaListener();
+
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
 
         /**
-         * Check preferences to see how these componenets should be initialized
+         * Check preferences to see how these components should be initialized
          */
         SharedPreferences settings = Application.getPrefs();
 
@@ -485,6 +501,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkNmeaOutput(settings);
         checkLocationOutput(settings);
+        checkGnssAntennaOutput(settings);
 
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             checkGnssMeasurementOutput(settings);
@@ -494,17 +511,58 @@ public class GpsTestActivity extends AppCompatActivity
             checkNavMessageOutput(settings);
         }
 
+        Date date = new Date();
+        boolean isNewCSVFile = false;
+        boolean isNewJsonFile = false;
         if (PermissionUtils.hasGrantedFileWritePermission(this)
-                && !mFileLogger.isStarted()
-                && isFileLoggingEnabled()) {
+                && !csvFileLogger.isStarted() && isCsvLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
-            File existingFile = null;
+            File existingCsvFile = null;
             if (mLastSavedInstanceState != null) {
                 // See if this was an orientation change and we should continue logging to
                 // an existing file
-                existingFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_LOG_FILE);
+                existingCsvFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_CSV_LOG_FILE);
             }
-            mFileLogger.startLog(existingFile);
+            isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date);
+        }
+
+        if (PermissionUtils.hasGrantedFileWritePermission(this)
+                && !jsonFileLogger.isStarted() && isJsonLoggingEnabled()) {
+            // User has granted permissions and has chosen to log at least one data type
+            File existingJsonFile = null;
+            if (mLastSavedInstanceState != null) {
+                // See if this was an orientation change and we should continue logging to
+                // an existing file
+                existingJsonFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_JSON_LOG_FILE);
+            }
+            isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date);
+        }
+
+        if (csvFileLogger.isStarted() && !jsonFileLogger.isStarted()) {
+            if (isNewCSVFile) {
+                // CSV logging only
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
+            }
+        } else if (!csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+            // JSON logging only
+            if (isNewJsonFile) {
+                // CSV logging only
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, jsonFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
+            }
+        } else if (csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+            // CSV and JSON logging
+            if (isNewCSVFile && isNewJsonFile) {
+                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()) + " + .json", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (PermissionUtils.hasGrantedFileWritePermission(this) && (csvFileLogger.isStarted()|| jsonFileLogger.isStarted())) {
+            // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
+            File baseDirectory = csvFileLogger.getBaseDirectory();
+            if (baseDirectory == null) {
+                baseDirectory = jsonFileLogger.getBaseDirectory();
+            }
+            IOUtils.deleteOldFiles(baseDirectory, csvFileLogger.getFile(), jsonFileLogger.getFile());
         }
 
         autoShowWhatsNew();
@@ -519,6 +577,7 @@ public class GpsTestActivity extends AppCompatActivity
         // Remove status listeners
         removeStatusListener();
         removeNmeaListener();
+        removeGnssAntennaListener();
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeNavMessageListener();
         }
@@ -534,7 +593,15 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private boolean isFileLoggingEnabled() {
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFile;
+    }
+
+    private boolean isCsvLoggingEnabled() {
         return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
+    }
+
+    private boolean isJsonLoggingEnabled() {
+        return mWriteAntennaInfoToFile;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -975,6 +1042,30 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     @SuppressLint("MissingPermission")
+    private void addGnssAntennaListener() {
+        if (mLocationManager == null) {
+            return;
+        }
+        if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener == null) {
+            // TODO - move this and other callbacks to background threads and only run on UI thread when updating UI
+           gnssAntennaInfoListener = list -> {
+               if (mWriteAntennaInfoToFile &&
+                       PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                   jsonFileLogger.onGnssAntennaInfoReceived(list);
+               }
+           };
+            mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void removeGnssAntennaListener() {
+        if (mLocationManager != null && SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
+            mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.N)
     private void addGnssStatusListener() {
         mGnssStatusListener = new GnssStatus.Callback() {
@@ -1062,7 +1153,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteRawMeasurementsToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onGnssMeasurementsReceived(event);
+                    csvFileLogger.onGnssMeasurementsReceived(event);
                 }
             }
 
@@ -1182,7 +1273,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteNmeaToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onNmeaReceived(timestamp, message);
+                    csvFileLogger.onNmeaReceived(timestamp, message);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1202,7 +1293,7 @@ public class GpsTestActivity extends AppCompatActivity
                 }
                 if (mWriteNmeaToFile &&
                         PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    mFileLogger.onNmeaReceived(timestamp, nmea);
+                    csvFileLogger.onNmeaReceived(timestamp, nmea);
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
             };
@@ -1233,7 +1324,7 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                     if (mWriteNavMessageToFile &&
                             PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        mFileLogger.onGnssNavigationMessageReceived(event);
+                        csvFileLogger.onGnssNavigationMessageReceived(event);
                     }
                 }
 
@@ -1365,6 +1456,10 @@ public class GpsTestActivity extends AppCompatActivity
                 .getBoolean(getString(R.string.pref_key_file_nmea_output), false);
     }
 
+    private void checkGnssAntennaOutput(SharedPreferences settings) {
+        mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output), false);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkNavMessageOutput(SharedPreferences settings) {
         mWriteNavMessageToAndroidMonitor = settings
@@ -1389,7 +1484,8 @@ public class GpsTestActivity extends AppCompatActivity
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
         }
-        mFileLogger.close();
+        csvFileLogger.close();
+        jsonFileLogger.close();
         super.onDestroy();
     }
 
@@ -1466,7 +1562,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
         if (mWriteLocationToFile &&
                 PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-            mFileLogger.onLocationChanged(location);
+            csvFileLogger.onLocationChanged(location);
         }
     }
 
@@ -1590,7 +1686,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void share() {
         final Location location = mLastLocation;
         shareDialogOpen = true;
-        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), mFileLogger, null).show();
+        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, null).show();
     }
 
     /**
