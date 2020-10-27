@@ -192,8 +192,8 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>
-    <string name="feedback_error">Unable to send feedback: no suitable application found.
-    </string>
+    <string name="feedback_error">Unable to send feedback: no suitable application found.</string>
+    <string name="device_properties_upload_success">Successfully uploaded device properties. Thanks!</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>

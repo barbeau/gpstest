@@ -43,11 +43,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.io.UploadDevicePropertiesWorker;
 import com.android.gpstest.model.GnssType;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -629,6 +633,16 @@ public class UIUtils {
                 intent.setType("text/plain");
                 activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
             }
+            Data myData = new Data.Builder()
+                    .putString(UploadDevicePropertiesWorker.MODEL, Build.MODEL)
+                    .putString(UploadDevicePropertiesWorker.ANDROID_VERSION, Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT)
+                    .build();
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(
+                    UploadDevicePropertiesWorker.class)
+                    .setInputData(myData)
+                    .build();
+            WorkManager.getInstance(Application.get()).enqueue(workRequest);
         });
 
         final File file = fileLogger.getFile();

@@ -126,6 +126,10 @@ dependencies {
     // QR Code reader for ground truth locations
     implementation 'com.google.zxing:android-integration:3.3.0'
 
+    // WorkManager for uploading device properties on user request
+    implementation 'androidx.work:work-runtime:2.4.0'
+    implementation 'commons-io:commons-io:2.6'
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)
