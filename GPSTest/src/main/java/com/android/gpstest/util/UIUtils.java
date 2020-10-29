@@ -29,6 +29,7 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -43,6 +44,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -50,6 +52,7 @@ import androidx.work.WorkManager;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.dialog.ShareDialogFragment;
 import com.android.gpstest.io.FileLogger;
 import com.android.gpstest.io.UploadDevicePropertiesWorker;
 import com.android.gpstest.model.GnssType;
@@ -698,6 +701,43 @@ public class UIUtils {
         });
 
         return dialog;
+    }
+
+    /**
+     * Creates a dialog for sharing location and files
+     *
+     * @param activity
+     * @param location
+     * @param loggingEnabled true if logging is enabled, false if it is not
+     * @param fileLogger the file logger being used to log files
+     * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
+     * @return a dialog for sharing location and files
+     */
+    public static void showShareFragmentDialog(AppCompatActivity activity, final Location location,
+                                                         boolean loggingEnabled, FileLogger fileLogger,
+                                                         Uri alternateFileUri) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        ShareDialogFragment dialog = new ShareDialogFragment();
+        dialog.setArguments(createBundleForShareDialog(location, loggingEnabled, fileLogger, alternateFileUri));
+        dialog.show(fm, "ShareDialogFragment");
+    }
+
+    /**
+     * Creates a bundle out of the provided variables for passing between fragments
+     * @param location
+     * @param loggingEnabled
+     * @param fileLogger
+     * @param alternateFileUri
+     * @return a bundle out of the provided variables for passing between fragments
+     */
+    public static Bundle createBundleForShareDialog(final Location location,
+                                                     boolean loggingEnabled, FileLogger fileLogger,
+                                                     Uri alternateFileUri) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ShareDialogFragment.Companion.getKEY_LOCATION(), location);
+        bundle.putBoolean(ShareDialogFragment.Companion.getKEY_LOGGING_ENABLED(), loggingEnabled);
+
+        return bundle;
     }
 
     /**

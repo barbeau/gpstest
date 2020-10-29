@@ -109,7 +109,7 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
@@ -129,6 +129,9 @@ dependencies {
     // WorkManager for uploading device properties on user request
     implementation 'androidx.work:work-runtime:2.4.0'
     implementation 'commons-io:commons-io:2.6'
+
+    // Share dialog
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
