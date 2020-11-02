@@ -1,5 +1,7 @@
 package com.android.gpstest.dialog
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +9,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.android.gpstest.R
+import com.android.gpstest.util.IOUtils
+import com.android.gpstest.util.UIUtils
 import com.google.android.material.button.MaterialButton
+import java.io.File
 
 class ShareLogFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -20,58 +25,58 @@ class ShareLogFragment : Fragment() {
         val logBrowse: MaterialButton = view.findViewById(R.id.log_browse)
         val logShare: MaterialButton = view.findViewById(R.id.log_share)
 
-//        val file: File = fileLogger.getFile()
-//
-//        if (loggingEnabled && file != null) {
-//            // Hide the logging instructions - logging is enabled and working
-//            logInstructions.visibility = View.GONE
-//        } else {
-//            // Hide the logging and file views so the user can see the instructions
-//            fileName.visibility = View.GONE
-//            logBrowse.visibility = View.GONE
-//            logShare.visibility = View.GONE
-//        }
-//
-//        // Set the log file name
-//
-//        // Set the log file name
-//        if (loggingEnabled) {
-//            if (file != null) {
-//                if (alternateFileUri == null) {
-//                    // Set the log file currently being logged to by the FileLogger
-//                    fileName.text = file.name
-//                } else {
-//                    // Set the log file selected by the user using the File Browse button
-//                    val lastPathSegment: String = alternateFileUri.getLastPathSegment()
-//                    // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
-//                    val parts = lastPathSegment.split("/".toRegex()).toTypedArray()
-//                    fileName.text = parts[parts.size - 1]
-//                }
-//            } else {
-//                // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
-//                logInstructions.setText(R.string.log_error)
-//            }
-//        }
-//
-//        logBrowse.setOnClickListener { v: View? ->
-//            // File browse
-//            val uri = IOUtils.getUriFromFile(activity, fileLogger.getFile())
-//            val intent = Intent(Intent.ACTION_GET_CONTENT)
-//            intent.data = uri
-//            activity!!.startActivityForResult(intent, UIUtils.PICKFILE_REQUEST_CODE)
-//            // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
-//            dialog.dismiss()
-//        }
-//
-//        logShare.setOnClickListener { v: View? ->
-//            // Send the log file
-//            if (alternateFileUri == null) {
-//                // Send the log file currently being logged to by the FileLogger
-//                fileLogger.send(activity)
-//            } else {
-//                // Send the log file selected by the user using the File Browse button
-//                IOUtils.sendLogFile(activity, alternateFileUri)
-//            }
-//        }
+        val loggingEnabled = arguments?.getBoolean(ShareDialogFragment.KEY_LOGGING_ENABLED) ?: false
+        val file = arguments?.getSerializable(ShareDialogFragment.KEY_LOG_FILE) as File?
+        val alternateFileUri = arguments?.getParcelable<Uri>(ShareDialogFragment.KEY_ALTERNATE_FILE_URI)
+
+        if (loggingEnabled && file != null) {
+            // Hide the logging instructions - logging is enabled and working
+            logInstructions.visibility = View.GONE
+        } else {
+            // Hide the logging and file views so the user can see the instructions
+            fileName.visibility = View.GONE
+            logBrowse.visibility = View.GONE
+            logShare.visibility = View.GONE
+        }
+
+        // Set the log file name
+        if (loggingEnabled) {
+            if (file != null) {
+                if (alternateFileUri == null) {
+                    // Set the log file currently being logged to by the FileLogger
+                    fileName.text = file.name
+                } else {
+                    // Set the log file selected by the user using the File Browse button
+                    val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
+                    // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
+                    val parts = lastPathSegment?.split("/".toRegex())?.toTypedArray()
+                    fileName.text = parts?.get(parts.size - 1) ?: ""
+                }
+            } else {
+                // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
+                logInstructions.setText(R.string.log_error)
+            }
+        }
+
+        logBrowse.setOnClickListener { v: View? ->
+            // File browse
+            val uri = IOUtils.getUriFromFile(activity, file)
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.data = uri
+            activity!!.startActivityForResult(intent, UIUtils.PICKFILE_REQUEST_CODE)
+            // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
+            dialog.dismiss()
+        }
+
+        logShare.setOnClickListener { v: View? ->
+            // Send the log file
+            if (alternateFileUri == null) {
+                // Send the log file currently being logged to by the FileLogger
+                fileLogger.send(activity)
+            } else {
+                // Send the log file selected by the user using the File Browse button
+                IOUtils.sendLogFile(activity, alternateFileUri)
+            }
+        }
     }
 }

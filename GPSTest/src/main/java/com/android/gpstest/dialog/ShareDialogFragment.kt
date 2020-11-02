@@ -19,6 +19,8 @@ class ShareDialogFragment : DialogFragment() {
     companion object {
         val KEY_LOCATION = "location"
         val KEY_LOGGING_ENABLED = "logging-enabled"
+        val KEY_ALTERNATE_FILE_URI = "alternate-file-uri"
+        val KEY_LOG_FILE = "log-file"
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -28,6 +30,7 @@ class ShareDialogFragment : DialogFragment() {
                 .setView(view)
                 .setNeutralButton(R.string.main_help_close) { dialog, which -> }
         shareCollectionAdapter = ShareCollectionAdapter(this)
+        shareCollectionAdapter.setArguments(arguments)
         viewPager = view.findViewById(R.id.pager)
         viewPager.offscreenPageLimit = 2
         viewPager.adapter = shareCollectionAdapter
@@ -45,13 +48,30 @@ class ShareDialogFragment : DialogFragment() {
 
 class ShareCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
+    private var arguments: Bundle? = null
+
+    fun setArguments(arguments: Bundle?) {
+        this.arguments = arguments
+    }
+
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
+        val fragment: Fragment
         when (position) {
-            0 -> return ShareLocationFragment()
-            1 -> return ShareLogFragment()
+            0 -> {
+                fragment =  ShareLocationFragment()
+                fragment.arguments = arguments
+                return fragment
+            }
+            1 -> {
+                fragment =  ShareLogFragment()
+                fragment.arguments = arguments
+                return fragment
+            }
         }
-        return ShareLocationFragment()
+        fragment =  ShareLocationFragment()
+        fragment.arguments = arguments
+        return fragment
     }
 }

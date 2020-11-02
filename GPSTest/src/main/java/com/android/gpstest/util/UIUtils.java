@@ -730,13 +730,14 @@ public class UIUtils {
      * @param alternateFileUri
      * @return a bundle out of the provided variables for passing between fragments
      */
-    public static Bundle createBundleForShareDialog(final Location location,
+    private static Bundle createBundleForShareDialog(final Location location,
                                                      boolean loggingEnabled, FileLogger fileLogger,
                                                      Uri alternateFileUri) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ShareDialogFragment.Companion.getKEY_LOCATION(), location);
         bundle.putBoolean(ShareDialogFragment.Companion.getKEY_LOGGING_ENABLED(), loggingEnabled);
-
+        bundle.putSerializable(ShareDialogFragment.Companion.getKEY_LOG_FILE(), fileLogger.getFile());
+        bundle.putParcelable(ShareDialogFragment.Companion.getKEY_ALTERNATE_FILE_URI(), alternateFileUri);
         return bundle;
     }
 
