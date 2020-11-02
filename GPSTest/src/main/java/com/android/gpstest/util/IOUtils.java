@@ -28,6 +28,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
@@ -35,10 +36,15 @@ import androidx.core.content.FileProvider;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.io.FileToDeleteFilter;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.android.gpstest.util.LocationUtils.isValidLatitude;
 import static com.android.gpstest.util.LocationUtils.isValidLongitude;
@@ -54,6 +60,8 @@ public class IOUtils {
     private static final String NM_OUTPUT_TAG = "GpsOutputNav";
 
     private static StringBuilder mNmeaOutput = new StringBuilder();
+
+    private static final int MAX_FILES_STORED = 100;
 
     /**
      * Returns the ground truth location encapsulated in the Intent if the provided Intent has a
@@ -244,18 +252,40 @@ public class IOUtils {
     }
 
     /**
+     * Send the current log via email or other options selected from the chooser shown to the user. The
+     * current log is closed when calling this method.
+     * @param activity Activity used to open the chooser to send the file
+     * @param fileLoggers file loggers for files to send
+     */
+    public static void sendLogFile(Activity activity, FileLogger... fileLoggers) {
+        ArrayList<android.net.Uri> uris = new ArrayList<>();
+        for (FileLogger logger : fileLoggers) {
+            if (logger.getFile() != null) {
+                uris.add(IOUtils.getUriFromFile(activity, logger.getFile()));
+            }
+        }
+
+        IOUtils.sendLogFile(activity, uris);
+        for (FileLogger logger : fileLoggers) {
+            if (logger.getFile() != null) {
+                logger.close();
+            }
+        }
+    }
+
+    /**
      * Sends the specified file via the ACTION_SEND Intent
      *
      * @param activity
-     * @param fileUri  Android URI for the File to be attached
+     * @param fileUris  Android URIs for the File to be attached
      */
-    public static void sendLogFile(Activity activity, android.net.Uri fileUri) {
-        Log.d(TAG, "Sending " + fileUri);
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    public static void sendLogFile(Activity activity, ArrayList<android.net.Uri> fileUris) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("*/*");
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "GnssLog from GPSTest");
         emailIntent.putExtra(Intent.EXTRA_TEXT, "");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
+        Log.d(TAG, "Sending " + fileUris);
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris);
         activity.startActivity(Intent.createChooser(emailIntent, Application.get().getString(R.string.send_log)));
     }
 
@@ -268,6 +298,30 @@ public class IOUtils {
      */
     public static android.net.Uri getUriFromFile(Context context, File file) {
         return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+    }
+
+    /**
+     * Deletes old files in the given baseDirectory, except the fileNotToDelete
+     *
+     * @param baseDirectory   base directory in which to delete files
+     * @param fileNotToDelete file not to delete
+     */
+    public static void deleteOldFiles(@NonNull File baseDirectory, File... fileNotToDelete) {
+        // To make sure that files do not fill up the external storage:
+        // - Remove all empty files
+        FileFilter filter = new FileToDeleteFilter(fileNotToDelete);
+        for (File pastFile : baseDirectory.listFiles(filter)) {
+            pastFile.delete();
+        }
+        // - Trim the number of files with data
+        File[] pastFiles = baseDirectory.listFiles();
+        int filesToDeleteCount = pastFiles.length - MAX_FILES_STORED;
+        if (filesToDeleteCount > 0) {
+            Arrays.sort(pastFiles);
+            for (int i = 0; i < filesToDeleteCount; ++i) {
+                pastFiles[i].delete();
+            }
+        }
     }
 
     /**

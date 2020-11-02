@@ -132,6 +132,11 @@
                     android:title="@string/pref_file_location_output_title"
                     android:summary="@string/pref_file_location_output_summary"
                     android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_antenna_output"
+                    android:title="@string/pref_file_antenna_output_title"
+                    android:summary="@string/pref_file_antenna_output_summary"
+                    android:defaultValue="false" />
             </PreferenceCategory>
 
             <PreferenceCategory

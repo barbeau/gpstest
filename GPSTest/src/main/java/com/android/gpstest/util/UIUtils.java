@@ -53,7 +53,8 @@ import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.dialog.ShareDialogFragment;
-import com.android.gpstest.io.FileLogger;
+import com.android.gpstest.io.CsvFileLogger;
+import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.io.UploadDevicePropertiesWorker;
 import com.android.gpstest.model.GnssType;
 import com.google.android.material.button.MaterialButton;
@@ -63,6 +64,8 @@ import com.google.android.material.chip.ChipGroup;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Intent.createChooser;
@@ -499,13 +502,13 @@ public class UIUtils {
      * @param activity
      * @param location
      * @param loggingEnabled true if logging is enabled, false if it is not
-     * @param fileLogger the file logger being used to log files
+     * @param csvFileLogger the file logger being used to log files
      * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
      * @return a dialog for sharing location and files
      */
     public static Dialog createShareDialog(AppCompatActivity activity, final Location location,
-                                           boolean loggingEnabled, FileLogger fileLogger,
-                                           Uri alternateFileUri) {
+                                           boolean loggingEnabled, CsvFileLogger csvFileLogger,
+                                           JsonFileLogger jsonFileLogger, Uri alternateFileUri) {
         View view = activity.getLayoutInflater().inflate(R.layout.share, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                 .setTitle(R.string.share)
@@ -648,7 +651,7 @@ public class UIUtils {
             WorkManager.getInstance(Application.get()).enqueue(workRequest);
         });
 
-        final File file = fileLogger.getFile();
+        final File file = csvFileLogger.getFile();
 
         if (loggingEnabled && file != null) {
             // Hide the logging instructions - logging is enabled and working
@@ -681,7 +684,7 @@ public class UIUtils {
 
         logBrowse.setOnClickListener(v -> {
             // File browse
-            Uri uri = IOUtils.getUriFromFile(activity, fileLogger.getFile());
+            Uri uri = IOUtils.getUriFromFile(activity, csvFileLogger.getFile());
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setData(uri);
             activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
@@ -693,10 +696,10 @@ public class UIUtils {
             // Send the log file
             if (alternateFileUri == null) {
                 // Send the log file currently being logged to by the FileLogger
-                fileLogger.send(activity);
+                IOUtils.sendLogFile(activity, csvFileLogger, jsonFileLogger);
             } else {
                 // Send the log file selected by the user using the File Browse button
-                IOUtils.sendLogFile(activity, alternateFileUri);
+                IOUtils.sendLogFile(activity, new ArrayList<>(Collections.singleton(alternateFileUri)));
             }
         });
 

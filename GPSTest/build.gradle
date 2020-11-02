@@ -133,6 +133,10 @@ dependencies {
     // Share dialog
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+    // Write GNSS antenna info to JSON
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)

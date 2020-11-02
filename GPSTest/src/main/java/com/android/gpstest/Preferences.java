@@ -18,6 +18,7 @@ package com.android.gpstest;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -59,6 +60,7 @@ public class Preferences extends PreferenceActivity implements
     CheckBoxPreference chkLogFileNavMessages;
     CheckBoxPreference chkLogFileMeasurements;
     CheckBoxPreference chkLogFileLocation;
+    CheckBoxPreference chkLogFileAntenna;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -186,6 +188,19 @@ public class Preferences extends PreferenceActivity implements
             PermissionUtils.requestFileWritePermission(Preferences.this);
             return true;
         });
+        chkLogFileAntenna = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output));
+        LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (manager != null) {
+            if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
+                chkLogFileAntenna.setOnPreferenceChangeListener((preference, newValue) -> {
+                    PermissionUtils.requestFileWritePermission(Preferences.this);
+                    return true;
+                });
+            } else {
+                // Not supported
+                chkLogFileAntenna.setEnabled(false);
+            }
+        }
 
         Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
     }
