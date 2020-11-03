@@ -13,8 +13,25 @@ import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.UIUtils
 import com.google.android.material.button.MaterialButton
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ShareLogFragment : Fragment() {
+
+    private lateinit var listener: Listener
+
+    interface Listener {
+        /**
+         * Called when the fragment sends the log file
+         */
+        fun onLogFileSent()
+
+        /**
+         * Called when the file browser is opened
+         */
+        fun onFileBrowse()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.share_log, container, false)
     }
@@ -26,10 +43,10 @@ class ShareLogFragment : Fragment() {
         val logShare: MaterialButton = view.findViewById(R.id.log_share)
 
         val loggingEnabled = arguments?.getBoolean(ShareDialogFragment.KEY_LOGGING_ENABLED) ?: false
-        val file = arguments?.getSerializable(ShareDialogFragment.KEY_LOG_FILE) as File?
+        val files = arguments?.getSerializable(ShareDialogFragment.KEY_LOG_FILES) as ArrayList<File>?
         val alternateFileUri = arguments?.getParcelable<Uri>(ShareDialogFragment.KEY_ALTERNATE_FILE_URI)
 
-        if (loggingEnabled && file != null) {
+        if (loggingEnabled && files != null) {
             // Hide the logging instructions - logging is enabled and working
             logInstructions.visibility = View.GONE
         } else {
@@ -41,10 +58,14 @@ class ShareLogFragment : Fragment() {
 
         // Set the log file name
         if (loggingEnabled) {
-            if (file != null) {
+            if (files != null) {
                 if (alternateFileUri == null) {
+                    var fileNameText = ""
                     // Set the log file currently being logged to by the FileLogger
-                    fileName.text = file.name
+                    for (file in files) {
+                        fileNameText += file.name + System.getProperty("line.separator")
+                    }
+                    fileName.text = fileNameText
                 } else {
                     // Set the log file selected by the user using the File Browse button
                     val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
@@ -55,28 +76,35 @@ class ShareLogFragment : Fragment() {
             } else {
                 // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
                 logInstructions.setText(R.string.log_error)
+                return
             }
         }
 
         logBrowse.setOnClickListener { v: View? ->
             // File browse
-            val uri = IOUtils.getUriFromFile(activity, file)
+            val uri = IOUtils.getUriFromFile(activity, files?.get(0))
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.data = uri
             activity!!.startActivityForResult(intent, UIUtils.PICKFILE_REQUEST_CODE)
             // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
-            dialog.dismiss()
+            listener.onFileBrowse()
         }
 
         logShare.setOnClickListener { v: View? ->
             // Send the log file
-            if (alternateFileUri == null) {
+            if (alternateFileUri == null && files != null) {
                 // Send the log file currently being logged to by the FileLogger
-                fileLogger.send(activity)
+                IOUtils.sendLogFile(activity, *files.toTypedArray())
+                listener.onLogFileSent()
             } else {
                 // Send the log file selected by the user using the File Browse button
-                IOUtils.sendLogFile(activity, alternateFileUri)
+                IOUtils.sendLogFile(activity, ArrayList(Collections.singleton(alternateFileUri)))
+                listener.onLogFileSent()
             }
         }
+    }
+
+    fun setListener(listener: Listener) {
+        this.listener = listener
     }
 }

@@ -36,7 +36,6 @@ import androidx.core.content.FileProvider;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.io.FileLogger;
 import com.android.gpstest.io.FileToDeleteFilter;
 import com.google.zxing.integration.android.IntentIntegrator;
 
@@ -255,22 +254,17 @@ public class IOUtils {
      * Send the current log via email or other options selected from the chooser shown to the user. The
      * current log is closed when calling this method.
      * @param activity Activity used to open the chooser to send the file
-     * @param fileLoggers file loggers for files to send
+     * @param files files to send
      */
-    public static void sendLogFile(Activity activity, FileLogger... fileLoggers) {
+    public static void sendLogFile(Activity activity, File... files) {
         ArrayList<android.net.Uri> uris = new ArrayList<>();
-        for (FileLogger logger : fileLoggers) {
-            if (logger.getFile() != null) {
-                uris.add(IOUtils.getUriFromFile(activity, logger.getFile()));
+        for (File file : files) {
+            if (file != null) {
+                uris.add(IOUtils.getUriFromFile(activity, file));
             }
         }
 
         IOUtils.sendLogFile(activity, uris);
-        for (FileLogger logger : fileLoggers) {
-            if (logger.getFile() != null) {
-                logger.close();
-            }
-        }
     }
 
     /**

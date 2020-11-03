@@ -385,7 +385,8 @@ public class GpsTestActivity extends AppCompatActivity
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
                 shareDialogOpen = true;
-                UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, uri);
+                UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
+                        csvFileLogger, jsonFileLogger, uri);
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -1686,7 +1687,8 @@ public class GpsTestActivity extends AppCompatActivity
     private void share() {
         final Location location = mLastLocation;
         shareDialogOpen = true;
-        UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, null);
+        UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
+                csvFileLogger, jsonFileLogger, null);
     }
 
     /**

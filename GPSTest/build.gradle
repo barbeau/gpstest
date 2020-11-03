@@ -8,6 +8,7 @@ android {
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 29
+        multiDexEnabled true
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
         versionCode 18076
         versionName "3.8.4"

@@ -45,9 +45,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
@@ -55,17 +52,13 @@ import com.android.gpstest.R;
 import com.android.gpstest.dialog.ShareDialogFragment;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
-import com.android.gpstest.io.UploadDevicePropertiesWorker;
 import com.android.gpstest.model.GnssType;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Intent.createChooser;
@@ -506,222 +499,39 @@ public class UIUtils {
      * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
      * @return a dialog for sharing location and files
      */
-    public static Dialog createShareDialog(AppCompatActivity activity, final Location location,
-                                           boolean loggingEnabled, CsvFileLogger csvFileLogger,
-                                           JsonFileLogger jsonFileLogger, Uri alternateFileUri) {
-        View view = activity.getLayoutInflater().inflate(R.layout.share, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(R.string.share)
-                .setView(view)
-                .setNeutralButton(R.string.main_help_close,
-                        (dialog, which) -> {
-                            // No-op
-                        }
-                );
-        AlertDialog dialog = builder.create();
-        TextView locationValue = view.findViewById(R.id.location_value);
-        TextView fileName = view.findViewById(R.id.log_file_name);
-        CheckBox includeAltitude = view.findViewById(R.id.include_altitude);
-        TextView noLocation = view.findViewById(R.id.no_location);
-        TextView logInstructions = view.findViewById(R.id.log_instructions);
-        MaterialButton locationCopy = view.findViewById(R.id.location_copy);
-        MaterialButton locationGeohack = view.findViewById(R.id.location_geohack);
-        MaterialButton locationLaunchApp = view.findViewById(R.id.location_launch_app);
-        MaterialButton locationShare = view.findViewById(R.id.location_share);
-        MaterialButton logBrowse = view.findViewById(R.id.log_browse);
-        MaterialButton logShare = view.findViewById(R.id.log_share);
-        ChipGroup chipGroup = view.findViewById(R.id.coordinate_format_group);
-        Chip chipDecimalDegrees = view.findViewById(R.id.chip_decimal_degrees);
-        Chip chipDMS = view.findViewById(R.id.chip_dms);
-        Chip chipDegreesDecimalMin = view.findViewById(R.id.chip_degrees_decimal_minutes);
-
-        if (location == null) {
-            // No location - Hide the location info
-            locationValue.setVisibility(View.GONE);
-            includeAltitude.setVisibility(View.GONE);
-            chipGroup.setVisibility(View.GONE);
-            locationCopy.setVisibility(View.GONE);
-            locationGeohack.setVisibility(View.GONE);
-            locationLaunchApp.setVisibility(View.GONE);
-            locationShare.setVisibility(View.GONE);
-        } else {
-            // We have a location - Hide the "no location" message
-            noLocation.setVisibility(View.GONE);
-        }
-
-        // Set default state of include altitude view
-        boolean includeAltitudePref = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
-        includeAltitude.setChecked(includeAltitudePref);
-
-        // Check selected coordinate format and show in UI
-        String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
-        formatLocationForDisplay(location, locationValue, includeAltitude.isChecked(), chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat);
-
-        // Change the location text when the user toggles the altitude checkbox
-        includeAltitude.setOnCheckedChangeListener((view1, isChecked) -> {
-            String format = "dd";
-            if (chipDecimalDegrees.isChecked()) {
-                format = "dd";
-            } else if (chipDMS.isChecked()) {
-                format = "dms";
-            } else if (chipDegreesDecimalMin.isChecked()) {
-                format = "ddm";
-            }
-            formatLocationForDisplay(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format);
-            PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), isChecked);
-        });
-
-        chipDecimalDegrees.setOnCheckedChangeListener((view1, isChecked) -> {
-            if (isChecked) {
-                locationValue.setText(IOUtils.createLocationShare(location, includeAltitude.isChecked()));
-            }
-        });
-        chipDMS.setOnCheckedChangeListener((view1, isChecked) -> {
-            if (isChecked) {
-                if (location != null) {
-                    locationValue.setText(IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                            location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
-                }
-            }
-        });
-        chipDegreesDecimalMin.setOnCheckedChangeListener((view1, isChecked) -> {
-            if (isChecked) {
-                if (location != null) {
-                    locationValue.setText(IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                            location.hasAltitude() && includeAltitude.isChecked() ? Double.toString(location.getAltitude()) : null));
-                }
-            }
-        });
-
-        locationCopy.setOnClickListener(v -> {
-            // Copy to clipboard
-            if (location != null) {
-                String locationString = locationValue.getText().toString();
-                IOUtils.copyToClipboard(locationString);
-                Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
-            }
-        });
-        locationGeohack.setOnClickListener(v -> {
-            // Open the browser to the GeoHack site with lots of coordinate conversions
-            if (location != null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                String geohackUrl = Application.get().getString(R.string.geohack_url) +
-                        location.getLatitude() + ";" +
-                        location.getLongitude();
-                intent.setData(Uri.parse(geohackUrl));
-                activity.startActivity(intent);
-            }
-        });
-        locationLaunchApp.setOnClickListener(v -> {
-            // Open the location in another app
-            if (location != null) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(IOUtils.createGeoUri(location, includeAltitude.isChecked())));
-                if (intent.resolveActivity(activity.getPackageManager()) != null) {
-                    activity.startActivity(intent);
-                }
-            }
-        });
-        locationShare.setOnClickListener(v -> {
-            // Send the location as a Geo URI (e.g., in an email) if the user has decimal degrees
-            // selected, otherwise send plain text version
-            if (location != null) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                String text;
-                if (chipDecimalDegrees.isChecked()) {
-                    text = IOUtils.createGeoUri(location, includeAltitude.isChecked());
-                } else {
-                    text = locationValue.getText().toString();
-                }
-                intent.putExtra(Intent.EXTRA_TEXT, text);
-                intent.setType("text/plain");
-                activity.startActivity(createChooser(intent, Application.get().getString(R.string.share)));
-            }
-            Data myData = new Data.Builder()
-                    .putString(UploadDevicePropertiesWorker.MODEL, Build.MODEL)
-                    .putString(UploadDevicePropertiesWorker.ANDROID_VERSION, Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT)
-                    .build();
-
-            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(
-                    UploadDevicePropertiesWorker.class)
-                    .setInputData(myData)
-                    .build();
-            WorkManager.getInstance(Application.get()).enqueue(workRequest);
-        });
-
-        final File file = csvFileLogger.getFile();
-
-        if (loggingEnabled && file != null) {
-            // Hide the logging instructions - logging is enabled and working
-            logInstructions.setVisibility(View.GONE);
-        } else {
-            // Hide the logging and file views so the user can see the instructions
-            fileName.setVisibility(View.GONE);
-            logBrowse.setVisibility(View.GONE);
-            logShare.setVisibility(View.GONE);
-        }
-
-        // Set the log file name
-        if (loggingEnabled) {
-            if (file != null) {
-                if (alternateFileUri == null) {
-                    // Set the log file currently being logged to by the FileLogger
-                    fileName.setText(file.getName());
-                } else {
-                    // Set the log file selected by the user using the File Browse button
-                    String lastPathSegment = alternateFileUri.getLastPathSegment();
-                    // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
-                    String[] parts = lastPathSegment.split("/");
-                    fileName.setText(parts[parts.length - 1]);
-                }
-            } else {
-                // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
-                logInstructions.setText(R.string.log_error);
-            }
-        }
-
-        logBrowse.setOnClickListener(v -> {
-            // File browse
-            Uri uri = IOUtils.getUriFromFile(activity, csvFileLogger.getFile());
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setData(uri);
-            activity.startActivityForResult(intent, PICKFILE_REQUEST_CODE);
-            // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
-            dialog.dismiss();
-        });
-
-        logShare.setOnClickListener(v -> {
-            // Send the log file
-            if (alternateFileUri == null) {
-                // Send the log file currently being logged to by the FileLogger
-                IOUtils.sendLogFile(activity, csvFileLogger, jsonFileLogger);
-            } else {
-                // Send the log file selected by the user using the File Browse button
-                IOUtils.sendLogFile(activity, new ArrayList<>(Collections.singleton(alternateFileUri)));
-            }
-        });
-
-        return dialog;
-    }
-
-    /**
-     * Creates a dialog for sharing location and files
-     *
-     * @param activity
-     * @param location
-     * @param loggingEnabled true if logging is enabled, false if it is not
-     * @param fileLogger the file logger being used to log files
-     * @param alternateFileUri The URI for a file if a file other than the one current used by the FileLogger should be used (e.g., one previously picked from the folder browse button), or null if no alternate file is chosen and the file from the file logger should be shared.
-     * @return a dialog for sharing location and files
-     */
     public static void showShareFragmentDialog(AppCompatActivity activity, final Location location,
-                                                         boolean loggingEnabled, FileLogger fileLogger,
-                                                         Uri alternateFileUri) {
+                                               boolean loggingEnabled, CsvFileLogger csvFileLogger,
+                                               JsonFileLogger jsonFileLogger, Uri alternateFileUri) {
+        ArrayList<File> files = new ArrayList<>(2);
+        if (csvFileLogger != null && csvFileLogger.getFile() != null) {
+            files.add(csvFileLogger.getFile());
+        }
+        if (jsonFileLogger != null && jsonFileLogger.getFile() != null) {
+            files.add(jsonFileLogger.getFile());
+        }
+
         FragmentManager fm = activity.getSupportFragmentManager();
         ShareDialogFragment dialog = new ShareDialogFragment();
-        dialog.setArguments(createBundleForShareDialog(location, loggingEnabled, fileLogger, alternateFileUri));
+        ShareDialogFragment.Listener shareListener = new ShareDialogFragment.Listener() {
+            @Override
+            public void onLogFileSent() {
+                if (csvFileLogger != null) {
+                    csvFileLogger.close();
+                }
+                if (jsonFileLogger != null) {
+                    jsonFileLogger.close();
+                }
+            }
+
+            @Override
+            public void onFileBrowse() {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        };
+        dialog.setListener(shareListener);
+        dialog.setArguments(createBundleForShareDialog(location, loggingEnabled, files, alternateFileUri));
         dialog.show(fm, "ShareDialogFragment");
     }
 
@@ -729,17 +539,17 @@ public class UIUtils {
      * Creates a bundle out of the provided variables for passing between fragments
      * @param location
      * @param loggingEnabled
-     * @param fileLogger
+     * @param files
      * @param alternateFileUri
      * @return a bundle out of the provided variables for passing between fragments
      */
     private static Bundle createBundleForShareDialog(final Location location,
-                                                     boolean loggingEnabled, FileLogger fileLogger,
+                                                     boolean loggingEnabled, ArrayList<File> files,
                                                      Uri alternateFileUri) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(ShareDialogFragment.Companion.getKEY_LOCATION(), location);
         bundle.putBoolean(ShareDialogFragment.Companion.getKEY_LOGGING_ENABLED(), loggingEnabled);
-        bundle.putSerializable(ShareDialogFragment.Companion.getKEY_LOG_FILE(), fileLogger.getFile());
+        bundle.putSerializable(ShareDialogFragment.Companion.getKEY_LOG_FILES(), files);
         bundle.putParcelable(ShareDialogFragment.Companion.getKEY_ALTERNATE_FILE_URI(), alternateFileUri);
         return bundle;
     }
