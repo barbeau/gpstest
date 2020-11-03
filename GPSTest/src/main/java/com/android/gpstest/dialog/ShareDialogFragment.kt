@@ -40,6 +40,7 @@ class ShareDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = activity!!.layoutInflater.inflate(R.layout.share, null)
+        setRetainInstance(true)
         val builder = AlertDialog.Builder(activity!!)
                 .setTitle(R.string.share)
                 .setView(view)

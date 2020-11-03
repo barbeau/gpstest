@@ -28,6 +28,7 @@ import com.google.android.material.chip.ChipGroup
 
 class ShareLocationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setRetainInstance(true)
         return inflater.inflate(R.layout.share_location, container, false)
     }
 
