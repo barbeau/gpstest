@@ -510,6 +510,7 @@ public class UIUtils {
             files.add(jsonFileLogger.getFile());
         }
 
+        // TODO - check for existing dialog from FM before creating new one?
         FragmentManager fm = activity.getSupportFragmentManager();
         ShareDialogFragment dialog = new ShareDialogFragment();
         ShareDialogFragment.Listener shareListener = new ShareDialogFragment.Listener() {
