@@ -17,7 +17,10 @@ package com.android.gpstest.io;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
@@ -71,10 +74,14 @@ public class UploadDevicePropertiesWorker extends Worker {
                     new BufferedInputStream(connection.getInputStream(), 8 * 1024));
             String result = IOUtils.toString(reader);
             if (RESULT_OK.equals(result)) {
-                Log.d(TAG, "Successfully uploaded device properties");
+                Log.d(TAG, "Successfully uploaded device capabilities!");
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show());
+            } else {
+                logFailure(null);
             }
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+            logFailure(e);
         }
     }
 
@@ -84,5 +91,13 @@ public class UploadDevicePropertiesWorker extends Worker {
                 .appendQueryParameter("model", model)
                 .appendQueryParameter("androidVersion", androidVersion)
                 .build();
+    }
+
+    private void logFailure(IOException e) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show());
+        if (e != null) {
+            Log.e(TAG, e.toString());
+        }
     }
 }

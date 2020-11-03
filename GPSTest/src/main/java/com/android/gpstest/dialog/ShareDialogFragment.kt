@@ -56,6 +56,7 @@ class ShareDialogFragment : DialogFragment() {
             when (position) {
                 0 -> tab.text = getString(R.string.location)
                 1 -> tab.text = getString(R.string.log)
+                2 -> tab.text = getString(R.string.upload)
             }
         }.attach()
         val alternateFileUri = arguments?.getParcelable<Uri>(KEY_ALTERNATE_FILE_URI)
@@ -85,7 +86,7 @@ class ShareCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
         this.listener = listener
     }
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
@@ -106,6 +107,11 @@ class ShareCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                         listener?.onFileBrowse()
                     }
                 })
+                return fragment
+            }
+            2 -> {
+                val fragment =  UploadDeviceInfoFragment()
+                fragment.arguments = arguments
                 return fragment
             }
         }

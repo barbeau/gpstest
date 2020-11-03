@@ -63,6 +63,12 @@
     <string name="force_psds_injection_failure">Device does not support injecting PSDS data.
     </string>
 
+    <string name="upload">Upload</string>
+    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database.\n\nNo private information about your particular device is shared. \n\nSee what other users have uploaded at (link here).</string>
+    <string name="upload_no_location">Trying uploading device info after you get a GNSS fix…</string>
+    <string name="upload_success">Successfully uploaded device capabilities!</string>
+    <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
+
     <string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
     <string name="mode_map">Map</string>

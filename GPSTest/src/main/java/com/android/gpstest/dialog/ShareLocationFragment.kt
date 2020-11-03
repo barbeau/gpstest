@@ -3,7 +3,6 @@ package com.android.gpstest.dialog
 import android.content.Intent
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +12,8 @@ import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.android.gpstest.Application
 import com.android.gpstest.R
-import com.android.gpstest.io.UploadDevicePropertiesWorker
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.UIUtils
@@ -157,15 +152,6 @@ class ShareLocationFragment : Fragment() {
                 intent.type = "text/plain"
                 activity!!.startActivity(Intent.createChooser(intent, Application.get().getString(R.string.share)))
             }
-            val myData = Data.Builder()
-                    .putString(UploadDevicePropertiesWorker.MODEL, Build.MODEL)
-                    .putString(UploadDevicePropertiesWorker.ANDROID_VERSION, Build.VERSION.RELEASE + " / " + Build.VERSION.SDK_INT)
-                    .build()
-            val workRequest = OneTimeWorkRequest.Builder(
-                    UploadDevicePropertiesWorker::class.java)
-                    .setInputData(myData)
-                    .build()
-            WorkManager.getInstance(Application.get()).enqueue(workRequest)
         }
     }
 }
