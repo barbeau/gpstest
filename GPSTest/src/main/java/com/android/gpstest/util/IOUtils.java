@@ -42,6 +42,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -357,23 +358,46 @@ public class IOUtils {
      * @return the GNSS hardware year for the device, or null if the year couldn't be determined
      */
     public static String getGnssHardwareYear() {
-        java.lang.reflect.Method method;
+        String year = "";
         LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
-        try {
-            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
-            int hwYear = (int) method.invoke(locationManager);
-            if (hwYear == 0) {
-                return "GNSS HW Year: " + "2015 or older";
-            } else {
-                return "GNSS HW Year: " + hwYear;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            year = String.valueOf(locationManager.getGnssYearOfHardware());
+        } else {
+            Method method;
+            try {
+                method = locationManager.getClass().getMethod("getGnssYearOfHardware");
+                int hwYear = (int) method.invoke(locationManager);
+                if (hwYear == 0) {
+                    year = "<= 2015";
+                } else {
+                    year = String.valueOf(hwYear);
+                }
+            } catch (NoSuchMethodException e) {
+                Log.e(TAG, "No such method exception: ", e);
+            } catch (IllegalAccessException e) {
+                Log.e(TAG, "Illegal Access exception: ", e);
+            } catch (InvocationTargetException e) {
+                Log.e(TAG, "Invocation Target Exception: ", e);
             }
-        } catch (NoSuchMethodException e) {
-            Log.e(TAG, "No such method exception: ", e);
-        } catch (IllegalAccessException e) {
-            Log.e(TAG, "Illegal Access exception: ", e);
-        } catch (InvocationTargetException e) {
-            Log.e(TAG, "Invocation Target Exception: ", e);
         }
-        return null;
+        return year;
+    }
+
+    /**
+     * Returns the GNSS hardware model name for the device, or empty String if the year couldn't be determined
+     *
+     * @return the GNSS hardware model name for the device, or empty String if the year couldn't be determined
+     */
+    public static String getGnssHardwareModelName() {
+        String modelName = "";
+        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (locationManager.getGnssHardwareModelName() != null) {
+                modelName = String.valueOf(locationManager.getGnssHardwareModelName());
+            }
+        }
+        return modelName;
     }
 }

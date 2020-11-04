@@ -270,7 +270,7 @@ public class UIUtils {
             body.append("Location: " + location + "\n");
         }
 
-        body.append(IOUtils.getGnssHardwareYear() + "\n");
+        body.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + "\n");
 
         // Raw GNSS measurement capability
         int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);

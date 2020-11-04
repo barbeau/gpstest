@@ -42,9 +42,25 @@ public class UploadDevicePropertiesWorker extends Worker {
 
     private static final String TAG = "UploadDevicePropsWorker";
 
+    public static final String MANUFACTURER = "manufacturer";
     public static final String MODEL = "model";
-
     public static final String ANDROID_VERSION = "androidVersion";
+    public static final String API_LEVEL = "apiLevel";
+    public static final String GNSS_HARDWARE_YEAR = "gnssHardwareYear";
+    public static final String GNSS_HARDWARE_MODEL_NAME = "gnssHardwareModelName";
+    public static final String DUAL_FREQUENCY = "duelFrequency";
+    public static final String SUPPORTED_GNSS = "supportedGnss";
+    public static final String SUPPORTED_SBAS = "supportedSbas";
+    public static final String RAW_MEASUREMENTS = "rawMeasurements";
+    public static final String NAVIGATION_MESSAGES = "navigationMessages";
+    public static final String NMEA = "nmea";
+    public static final String INJECT_PSDS = "injectPsds";
+    public static final String INJECT_TIME = "injectTime";
+    public static final String ACCUMULATED_DELTA_RANGE = "accumulatedDeltaRange";
+    public static final String GNSS_ANTENNA_INFO = "gnssAntennaInfo";
+    public static final String APP_VERSION_NAME = "appVersionName";
+    public static final String APP_VERSION_CODE = "appVersionCode";
+    public static final String APP_BUILD_FLAVOR = "appBuildFlavor";
 
     private static final String RESULT_OK = "STATUS OK";
 
@@ -56,14 +72,36 @@ public class UploadDevicePropertiesWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        String model = getInputData().getString(MODEL);
-        String androidVersion = getInputData().getString(ANDROID_VERSION);
-        uploadDeviceProperties(model, androidVersion);
+        uploadDeviceProperties(buildUri());
         return Result.success();
     }
 
-    private void uploadDeviceProperties(String model, String androidVersion) {
-        Uri uri = buildUri(model, androidVersion);
+    private Uri buildUri() {
+        return Uri.parse(Application.get().getResources().getString(R.string.
+                device_properties_upload_url)).buildUpon()
+                .appendQueryParameter(MANUFACTURER, getInputData().getString(MANUFACTURER))
+                .appendQueryParameter(MODEL, getInputData().getString(MODEL))
+                .appendQueryParameter(ANDROID_VERSION, getInputData().getString(ANDROID_VERSION))
+                .appendQueryParameter(API_LEVEL, getInputData().getString(API_LEVEL))
+                .appendQueryParameter(GNSS_HARDWARE_YEAR, getInputData().getString(GNSS_HARDWARE_YEAR))
+                .appendQueryParameter(GNSS_HARDWARE_MODEL_NAME, getInputData().getString(GNSS_HARDWARE_MODEL_NAME))
+                .appendQueryParameter(DUAL_FREQUENCY, getInputData().getString(DUAL_FREQUENCY))
+                .appendQueryParameter(SUPPORTED_GNSS, getInputData().getString(SUPPORTED_GNSS))
+                .appendQueryParameter(SUPPORTED_SBAS, getInputData().getString(SUPPORTED_SBAS))
+                .appendQueryParameter(RAW_MEASUREMENTS, getInputData().getString(RAW_MEASUREMENTS))
+                .appendQueryParameter(NAVIGATION_MESSAGES, getInputData().getString(NAVIGATION_MESSAGES))
+                .appendQueryParameter(NMEA, getInputData().getString(NMEA))
+                .appendQueryParameter(INJECT_PSDS, getInputData().getString(INJECT_PSDS))
+                .appendQueryParameter(INJECT_TIME, getInputData().getString(INJECT_TIME))
+                .appendQueryParameter(ACCUMULATED_DELTA_RANGE, getInputData().getString(ACCUMULATED_DELTA_RANGE))
+                .appendQueryParameter(GNSS_ANTENNA_INFO, getInputData().getString(GNSS_ANTENNA_INFO))
+                .appendQueryParameter(APP_VERSION_NAME, getInputData().getString(APP_VERSION_NAME))
+                .appendQueryParameter(APP_VERSION_CODE, getInputData().getString(APP_VERSION_CODE))
+                .appendQueryParameter(APP_BUILD_FLAVOR, getInputData().getString(APP_BUILD_FLAVOR))
+                .build();
+    }
+
+    private void uploadDeviceProperties(Uri uri) {
         try {
             Log.d(TAG, uri.toString());
             URL url = new URL(uri.toString());
@@ -83,14 +121,6 @@ public class UploadDevicePropertiesWorker extends Worker {
         } catch (IOException e) {
             logFailure(e);
         }
-    }
-
-    private Uri buildUri(String model, String androidVersion) {
-        return Uri.parse(Application.get().getResources().getString(R.string.
-                device_properties_upload_url)).buildUpon()
-                .appendQueryParameter("model", model)
-                .appendQueryParameter("androidVersion", androidVersion)
-                .build();
     }
 
     private void logFailure(IOException e) {

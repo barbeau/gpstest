@@ -106,7 +106,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             version.append("Manufacturer: " + manufacturer + ", ");
             version.append("Model: " + model + ", ");
 
-            version.append(IOUtils.getGnssHardwareYear() + ", ");
+            version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + ", ");
 
             String versionRelease = Build.VERSION.RELEASE;
             version.append("Platform: " + versionRelease + ", ");
