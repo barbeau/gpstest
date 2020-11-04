@@ -24,16 +24,19 @@ class UploadDeviceInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val uploadNoLocationTextView: TextView = view.findViewById(R.id.upload_no_location)
+        val uploadDetails: TextView = view.findViewById(R.id.upload_details)
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
 
         if (location == null) {
             // No location
+            uploadDetails.visibility = View.GONE
             upload.visibility = View.GONE
             uploadNoLocationTextView.visibility = View.VISIBLE
         } else {
             // We have a location
+            uploadDetails.visibility = View.VISIBLE
             upload.visibility = View.VISIBLE
             uploadNoLocationTextView.visibility = View.GONE
         }

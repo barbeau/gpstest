@@ -49,6 +49,7 @@
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
     <string name="log">Log</string>
+    <string name="file_name">File name</string>
     <string name="location">Location</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
     <string name="log_error">Something went wrong with file logging. Did you allow file/storage permissions? Try re-enabling a file logging option in Settings and tap "Allow" when prompted.</string>
@@ -63,8 +64,8 @@
     <string name="force_psds_injection_failure">Device does not support injecting PSDS data.
     </string>
 
-    <string name="upload">Upload</string>
-    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database.\n\nNo private information about your particular device is shared. \n\nSee what other users have uploaded at (link here).</string>
+    <string name="device">Device</string>
+    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (link here).\n\nNo private information from your device is shared.</string>
     <string name="upload_no_location">Trying uploading device info after you get a GNSS fix…</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>

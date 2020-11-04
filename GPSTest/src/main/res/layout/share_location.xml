@@ -20,8 +20,8 @@
         android:layout_marginEnd="@dimen/button_margin"
         android:textIsSelectable="true"
         tools:text="28.3748343,-82.38475"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/no_location"
@@ -33,16 +33,15 @@
         android:textIsSelectable="true"
         android:text="@string/no_location"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <HorizontalScrollView
         android:id="@+id/scroll_coordinate_format"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@id/location_value"
-        app:layout_constraintBottom_toTopOf="@id/include_altitude"
-        app:layout_constraintStart_toStartOf="parent"
+        android:scrollbars="none"
         android:clipChildren="false">
 
         <com.google.android.material.chip.ChipGroup
@@ -50,7 +49,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             app:singleLine="true"
             app:singleSelection="true"
             android:clipChildren="false">
@@ -85,46 +83,52 @@
         android:layout_marginBottom="@dimen/button_margin"
         android:text="@string/include_altitude"
         app:layout_constraintTop_toBottomOf="@id/scroll_coordinate_format"
-        app:layout_constraintBottom_toTopOf="@id/location_share"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/location_copy"
-        style="@style/Widget.AppTheme.Button.IconButton"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/location_button_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/button_margin"
-        app:icon="@drawable/ic_content_copy_black_36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/location_geohack" />
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/location_geohack"
-        style="@style/Widget.AppTheme.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/button_margin"
-        app:icon="@drawable/ic_public_black_36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/location_launch_app" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/location_copy"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin"
+            app:icon="@drawable/ic_content_copy_black_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/location_geohack" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/location_launch_app"
-        style="@style/Widget.AppTheme.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/button_margin"
-        app:icon="@drawable/ic_open_in_new_black_36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/location_share" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/location_geohack"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin"
+            app:icon="@drawable/ic_public_black_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/location_launch_app" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/location_share"
-        style="@style/Widget.AppTheme.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/button_margin"
-        app:icon="@drawable/ic_share_black_36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/location_launch_app"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin"
+            app:icon="@drawable/ic_open_in_new_black_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/location_share" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/location_share"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/button_margin"
+            app:icon="@drawable/ic_share_black_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

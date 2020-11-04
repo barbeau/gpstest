@@ -56,7 +56,7 @@ class ShareDialogFragment : DialogFragment() {
             when (position) {
                 0 -> tab.text = getString(R.string.location)
                 1 -> tab.text = getString(R.string.log)
-                2 -> tab.text = getString(R.string.upload)
+                2 -> tab.text = getString(R.string.device)
             }
         }.attach()
         val alternateFileUri = arguments?.getParcelable<Uri>(KEY_ALTERNATE_FILE_URI)

@@ -31,7 +31,7 @@
         android:layout_marginEnd="@dimen/button_margin"
         android:textIsSelectable="true"
         android:text="@string/upload_no_location"
-        app:layout_constraintTop_toBottomOf="@id/upload_details"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
