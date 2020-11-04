@@ -4,10 +4,12 @@ import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.dialog.ShareLogFragment.Listener
 import com.google.android.material.tabs.TabLayout
@@ -54,9 +56,18 @@ class ShareDialogFragment : DialogFragment() {
         val tabLayout = view.findViewById(R.id.share_tab_layout) as TabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.location)
-                1 -> tab.text = getString(R.string.log)
-                2 -> tab.text = getString(R.string.device)
+                0 -> {
+                    tab.text = getString(R.string.location)
+                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_location_on_24)
+                }
+                1 -> {
+                    tab.text = getString(R.string.log)
+                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_list_alt_24)
+                }
+                2 -> {
+                    tab.text = getString(R.string.device)
+                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_perm_device_information_24)
+                }
             }
         }.attach()
         val alternateFileUri = arguments?.getParcelable<Uri>(KEY_ALTERNATE_FILE_URI)
@@ -91,12 +102,12 @@ class ShareCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> {
-                val fragment =  ShareLocationFragment()
+                val fragment = ShareLocationFragment()
                 fragment.arguments = arguments
                 return fragment
             }
             1 -> {
-                val fragment =  ShareLogFragment()
+                val fragment = ShareLogFragment()
                 fragment.arguments = arguments
                 fragment.setListener(object : Listener {
                     override fun onLogFileSent() {
@@ -110,7 +121,7 @@ class ShareCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
                 return fragment
             }
             2 -> {
-                val fragment =  UploadDeviceInfoFragment()
+                val fragment = UploadDeviceInfoFragment()
                 fragment.arguments = arguments
                 return fragment
             }
