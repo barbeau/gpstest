@@ -27,11 +27,12 @@
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="@dimen/button_margin"
         android:textIsSelectable="true"
         android:text="@string/upload_no_location"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton

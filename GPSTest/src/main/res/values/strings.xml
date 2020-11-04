@@ -53,7 +53,7 @@
     <string name="location">Location</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
     <string name="log_error">Something went wrong with file logging. Did you allow file/storage permissions? Try re-enabling a file logging option in Settings and tap "Allow" when prompted.</string>
-    <string name="no_location">Try sharing your location after getting a GNSS fix</string>
+    <string name="no_location">Try sharing your location after getting a GNSS fix…</string>
     <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
@@ -66,7 +66,7 @@
 
     <string name="device">Device</string>
     <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (link here).\n\nNo private information from your device is shared.</string>
-    <string name="upload_no_location">Trying uploading device info after you get a GNSS fix…</string>
+    <string name="upload_no_location">Trying uploading device capabilities after you get a GNSS fix…</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
 
