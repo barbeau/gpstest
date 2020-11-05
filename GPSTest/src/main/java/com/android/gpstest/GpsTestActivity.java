@@ -879,14 +879,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void forcePsdsInjection() {
-        boolean success;
-        // FIXME - We should use the platform constant from Build.VERSION_CODES below, but we can't use compileSdkVersion 29 due to NMEA interface issue (https://github.com/barbeau/gpstest/issues/340)
-        if (Build.VERSION.SDK_INT >= 29) {
-            success = sendExtraCommand(getString(R.string.force_psds_injection_command));
-        } else {
-            success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
-        }
-
+        boolean success = IOUtils.forcePsdsInjection(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.force_psds_injection_success),
                     Toast.LENGTH_SHORT).show();
@@ -899,7 +892,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void forceTimeInjection() {
-        boolean success = sendExtraCommand(getString(R.string.force_time_injection_command));
+        boolean success = IOUtils.forceTimeInjection(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.force_time_injection_success),
                     Toast.LENGTH_SHORT).show();
@@ -917,7 +910,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (mStarted) {
             gpsStop();
         }
-        boolean success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
+        boolean success = IOUtils.deleteAidingData(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.delete_aiding_data_success),
                     Toast.LENGTH_SHORT).show();
@@ -1010,10 +1003,6 @@ public class GpsTestActivity extends AppCompatActivity
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.gpsStop();
         }
-    }
-
-    private boolean sendExtraCommand(String command) {
-        return mLocationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     private void addOrientationSensorListener() {

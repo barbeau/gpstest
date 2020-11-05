@@ -400,4 +400,46 @@ public class IOUtils {
         }
         return modelName;
     }
+
+    /**
+     * Attempts to force a GNSS assistance time injection
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean forceTimeInjection(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.force_time_injection_command), null);
+    }
+
+    /**
+     * Attempts to force a GNSS assistance PSDS injection
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean forcePsdsInjection(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        String command;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            command = Application.get().getString(R.string.force_psds_injection_command);
+        } else {
+            command = Application.get().getString(R.string.force_xtra_injection_command);
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+    }
+
+    /**
+     * Attempts to delete GNSS assistance data
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean deleteAidingData(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.delete_aiding_data_command), null);
+    }
 }
