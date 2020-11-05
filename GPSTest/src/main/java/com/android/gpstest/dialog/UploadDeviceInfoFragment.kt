@@ -20,6 +20,7 @@ import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.io.UploadDevicePropertiesWorker
 import com.android.gpstest.util.IOUtils
+import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 
@@ -59,6 +60,7 @@ class UploadDeviceInfoFragment : Fragment() {
                 e.printStackTrace()
             }
             val manager = Application.get().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED)
 
             // Upload device info to database
             val myData = Data.Builder()
@@ -74,12 +76,12 @@ class UploadDeviceInfoFragment : Fragment() {
 //                    .putString(UploadDevicePropertiesWorker.SUPPORTED_SBAS)
 //                    .putString(UploadDevicePropertiesWorker.RAW_MEASUREMENTS)
 //                    .putString(UploadDevicePropertiesWorker.NAVIGATION_MESSAGES)
-//                    .putString(UploadDevicePropertiesWorker.NMEA)
+                    .putString(UploadDevicePropertiesWorker.NMEA, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)))
 //                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS)
 //                    .putString(UploadDevicePropertiesWorker.INJECT_TIME)
 //                    .putString(UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE)
 
-                    .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, SatelliteUtils.isGnssAntennaInfoSupported(manager).toString())
+                    .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(manager)))
                     .putString(UploadDevicePropertiesWorker.APP_VERSION_NAME, versionName)
                     .putString(UploadDevicePropertiesWorker.APP_VERSION_CODE, versionCode)
                     .putString(UploadDevicePropertiesWorker.APP_BUILD_FLAVOR, BuildConfig.FLAVOR)
