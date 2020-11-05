@@ -19,6 +19,7 @@
         android:layout_marginEnd="@dimen/button_margin"
         android:textIsSelectable="true"
         android:text="@string/upload_details"
+        android:autoLink="web"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
