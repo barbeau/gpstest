@@ -38,6 +38,7 @@ class ShareLogFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val logLabel = view.findViewById<TextView>(R.id.log_file_label)
         val fileName = view.findViewById<TextView>(R.id.log_file_name)
         val logInstructions = view.findViewById<TextView>(R.id.log_instructions)
         val logBrowse: MaterialButton = view.findViewById(R.id.log_browse)
@@ -52,6 +53,7 @@ class ShareLogFragment : Fragment() {
             logInstructions.visibility = View.GONE
         } else {
             // Hide the logging and file views so the user can see the instructions
+            logLabel.visibility = View.GONE
             fileName.visibility = View.GONE
             logBrowse.visibility = View.GONE
             logShare.visibility = View.GONE
