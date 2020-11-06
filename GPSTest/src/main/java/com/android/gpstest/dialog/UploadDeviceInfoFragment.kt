@@ -60,8 +60,6 @@ class UploadDeviceInfoFragment : Fragment() {
                 e.printStackTrace()
             }
             val locationManager = Application.get().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED)
-
 
             // Inject PSDS capability
             val capabilityInjectPsdsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
