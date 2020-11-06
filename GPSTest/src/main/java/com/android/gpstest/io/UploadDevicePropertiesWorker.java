@@ -50,13 +50,19 @@ public class UploadDevicePropertiesWorker extends Worker {
     public static final String GNSS_HARDWARE_MODEL_NAME = "gnssHardwareModelName";
     public static final String DUAL_FREQUENCY = "duelFrequency";
     public static final String SUPPORTED_GNSS = "supportedGnss";
+    public static final String GNSS_CFS = "gnssCfs";
     public static final String SUPPORTED_SBAS = "supportedSbas";
+    public static final String SBAS_CFS = "sbasCfs";
     public static final String RAW_MEASUREMENTS = "rawMeasurements";
     public static final String NAVIGATION_MESSAGES = "navigationMessages";
     public static final String NMEA = "nmea";
     public static final String INJECT_PSDS = "injectPsds";
     public static final String INJECT_TIME = "injectTime";
+    public static final String DELETE_ASSIST = "deleteAssist";
     public static final String ACCUMULATED_DELTA_RANGE = "accumulatedDeltaRange";
+    public static final String HARDWARE_CLOCK = "hardwareClock";
+    public static final String HARDWARE_CLOCK_DISCONTINUITY = "hardwareClockDiscontinuity";
+    public static final String AUTOMATIC_GAIN_CONTROL = "automaticGainControl";
     public static final String GNSS_ANTENNA_INFO = "gnssAntennaInfo";
     public static final String APP_VERSION_NAME = "appVersionName";
     public static final String APP_VERSION_CODE = "appVersionCode";
@@ -87,13 +93,19 @@ public class UploadDevicePropertiesWorker extends Worker {
                 .appendQueryParameter(GNSS_HARDWARE_MODEL_NAME, getInputData().getString(GNSS_HARDWARE_MODEL_NAME))
                 .appendQueryParameter(DUAL_FREQUENCY, getInputData().getString(DUAL_FREQUENCY))
                 .appendQueryParameter(SUPPORTED_GNSS, getInputData().getString(SUPPORTED_GNSS))
+                .appendQueryParameter(GNSS_CFS, getInputData().getString(GNSS_CFS))
                 .appendQueryParameter(SUPPORTED_SBAS, getInputData().getString(SUPPORTED_SBAS))
+                .appendQueryParameter(SBAS_CFS, getInputData().getString(SBAS_CFS))
                 .appendQueryParameter(RAW_MEASUREMENTS, getInputData().getString(RAW_MEASUREMENTS))
                 .appendQueryParameter(NAVIGATION_MESSAGES, getInputData().getString(NAVIGATION_MESSAGES))
                 .appendQueryParameter(NMEA, getInputData().getString(NMEA))
                 .appendQueryParameter(INJECT_PSDS, getInputData().getString(INJECT_PSDS))
                 .appendQueryParameter(INJECT_TIME, getInputData().getString(INJECT_TIME))
+                .appendQueryParameter(DELETE_ASSIST, getInputData().getString(DELETE_ASSIST))
                 .appendQueryParameter(ACCUMULATED_DELTA_RANGE, getInputData().getString(ACCUMULATED_DELTA_RANGE))
+                .appendQueryParameter(HARDWARE_CLOCK, getInputData().getString(HARDWARE_CLOCK))
+                .appendQueryParameter(HARDWARE_CLOCK_DISCONTINUITY, getInputData().getString(HARDWARE_CLOCK_DISCONTINUITY))
+                .appendQueryParameter(AUTOMATIC_GAIN_CONTROL, getInputData().getString(AUTOMATIC_GAIN_CONTROL))
                 .appendQueryParameter(GNSS_ANTENNA_INFO, getInputData().getString(GNSS_ANTENNA_INFO))
                 .appendQueryParameter(APP_VERSION_NAME, getInputData().getString(APP_VERSION_NAME))
                 .appendQueryParameter(APP_VERSION_CODE, getInputData().getString(APP_VERSION_CODE))
