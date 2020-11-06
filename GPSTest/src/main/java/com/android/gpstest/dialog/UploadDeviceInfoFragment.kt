@@ -59,8 +59,16 @@ class UploadDeviceInfoFragment : Fragment() {
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            val manager = Application.get().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationManager = Application.get().getSystemService(Context.LOCATION_SERVICE) as LocationManager
             PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED)
+
+
+            // Inject PSDS capability
+            val capabilityInjectPsdsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
+            var psdsSuccess = false
+            if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
+                psdsSuccess = IOUtils.forceTimeInjection(locationManager)
+            }
 
             // Upload device info to database
             val myData = Data.Builder()
@@ -77,11 +85,11 @@ class UploadDeviceInfoFragment : Fragment() {
 //                    .putString(UploadDevicePropertiesWorker.RAW_MEASUREMENTS)
 //                    .putString(UploadDevicePropertiesWorker.NAVIGATION_MESSAGES)
                     .putString(UploadDevicePropertiesWorker.NMEA, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)))
-//                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS)
+                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS, PreferenceUtils.getCapabilityDescription(psdsSuccess))
 //                    .putString(UploadDevicePropertiesWorker.INJECT_TIME)
 //                    .putString(UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE)
 
-                    .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(manager)))
+                    .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)))
                     .putString(UploadDevicePropertiesWorker.APP_VERSION_NAME, versionName)
                     .putString(UploadDevicePropertiesWorker.APP_VERSION_CODE, versionCode)
                     .putString(UploadDevicePropertiesWorker.APP_BUILD_FLAVOR, BuildConfig.FLAVOR)
