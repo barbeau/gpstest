@@ -65,9 +65,24 @@ class UploadDeviceInfoFragment : Fragment() {
 
             // Inject PSDS capability
             val capabilityInjectPsdsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
-            var psdsSuccess = false
+            val psdsSuccessBoolean: Boolean
+            val psdsSuccessString: String
             if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
-                psdsSuccess = IOUtils.forceTimeInjection(locationManager)
+                psdsSuccessBoolean = IOUtils.forcePsdsInjection(locationManager)
+                psdsSuccessString = PreferenceUtils.getCapabilityDescription(psdsSuccessBoolean)
+            } else {
+                psdsSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectPsdsInt)
+            }
+
+            // Inject time
+            val capabilityInjectTimeInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val timeSuccessBoolean: Boolean
+            val timeSuccessString: String
+            if (capabilityInjectTimeInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
+                timeSuccessBoolean = IOUtils.forceTimeInjection(locationManager)
+                timeSuccessString = PreferenceUtils.getCapabilityDescription(timeSuccessBoolean)
+            } else {
+                timeSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectTimeInt)
             }
 
             // Upload device info to database
@@ -85,8 +100,8 @@ class UploadDeviceInfoFragment : Fragment() {
 //                    .putString(UploadDevicePropertiesWorker.RAW_MEASUREMENTS)
 //                    .putString(UploadDevicePropertiesWorker.NAVIGATION_MESSAGES)
                     .putString(UploadDevicePropertiesWorker.NMEA, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)))
-                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS, PreferenceUtils.getCapabilityDescription(psdsSuccess))
-//                    .putString(UploadDevicePropertiesWorker.INJECT_TIME)
+                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS, psdsSuccessString)
+                    .putString(UploadDevicePropertiesWorker.INJECT_TIME, timeSuccessString)
 //                    .putString(UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE)
 
                     .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)))
