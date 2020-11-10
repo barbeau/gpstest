@@ -10,19 +10,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import androidx.lifecycle.coroutineScope
 import com.android.gpstest.Application
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
-import com.android.gpstest.io.UploadDevicePropertiesWorker
+import com.android.gpstest.io.DevicePropertiesUploader
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UploadDeviceInfoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,6 +35,7 @@ class UploadDeviceInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val uploadNoLocationTextView: TextView = view.findViewById(R.id.upload_no_location)
         val uploadDetails: TextView = view.findViewById(R.id.upload_details)
+        val uploadProgress: ProgressBar = view.findViewById(R.id.upload_progress)
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
@@ -84,41 +87,73 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // Upload device info to database
-            val myData = Data.Builder()
-                    .putString(UploadDevicePropertiesWorker.MANUFACTURER, Build.MANUFACTURER)
-                    .putString(UploadDevicePropertiesWorker.MODEL, Build.MODEL)
-                    .putString(UploadDevicePropertiesWorker.ANDROID_VERSION, Build.VERSION.RELEASE)
-                    .putString(UploadDevicePropertiesWorker.API_LEVEL, Build.VERSION.SDK_INT.toString())
-                    .putString(UploadDevicePropertiesWorker.GNSS_HARDWARE_YEAR, IOUtils.getGnssHardwareYear())
-                    .putString(UploadDevicePropertiesWorker.GNSS_HARDWARE_MODEL_NAME, IOUtils.getGnssHardwareModelName())
+            val bundle = bundleOf(
+                    DevicePropertiesUploader.MANUFACTURER to Build.MANUFACTURER,
+                    DevicePropertiesUploader.MODEL to Build.MODEL,
+                    DevicePropertiesUploader.ANDROID_VERSION to Build.VERSION.RELEASE,
+                    DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
+                    DevicePropertiesUploader.GNSS_HARDWARE_YEAR to IOUtils.getGnssHardwareYear(),
+                    DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to IOUtils.getGnssHardwareModelName(),
+//                    UploadDevicePropertiesWorker.DUAL_FREQUENCY
+//                    UploadDevicePropertiesWorker.SUPPORTED_GNSS
+//                    UploadDevicePropertiesWorker.GNSS_CFS
+//                    UploadDevicePropertiesWorker.SUPPORTED_SBAS
+//                    UploadDevicePropertiesWorker.SBAS_CFS
+//                    UploadDevicePropertiesWorker.RAW_MEASUREMENTS
+//                    UploadDevicePropertiesWorker.NAVIGATION_MESSAGES
+                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
+                    DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
+//                    UploadDevicePropertiesWorker.DELETE_ASSIST
+//                    UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE
+//                    UploadDevicePropertiesWorker.HARDWARE_CLOCK
+//                    UploadDevicePropertiesWorker.HARDWARE_CLOCK_DISCONTINUITY
+//                    UploadDevicePropertiesWorker.AUTOMATIC_GAIN_CONTROL
+                    DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
+                    DevicePropertiesUploader.APP_VERSION_NAME to versionName,
+                    DevicePropertiesUploader.APP_VERSION_CODE to versionCode,
+                    DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR
+            )
 
-//                    .putString(UploadDevicePropertiesWorker.DUAL_FREQUENCY)
-//                    .putString(UploadDevicePropertiesWorker.SUPPORTED_GNSS)
-                    //                    .putString(UploadDevicePropertiesWorker.GNSS_CFS)
-//                    .putString(UploadDevicePropertiesWorker.SUPPORTED_SBAS)
-                    //                    .putString(UploadDevicePropertiesWorker.SBAS_CFS)
-//                    .putString(UploadDevicePropertiesWorker.RAW_MEASUREMENTS)
-//                    .putString(UploadDevicePropertiesWorker.NAVIGATION_MESSAGES)
-                    .putString(UploadDevicePropertiesWorker.NMEA, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)))
-                    .putString(UploadDevicePropertiesWorker.INJECT_PSDS, psdsSuccessString)
-                    .putString(UploadDevicePropertiesWorker.INJECT_TIME, timeSuccessString)
-                    //.putString(UploadDevicePropertiesWorker.DELETE_ASSIST)
-//                    .putString(UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE)
-                    //                    .putString(UploadDevicePropertiesWorker.HARDWARE_CLOCK)
-                    //                    .putString(UploadDevicePropertiesWorker.HARDWARE_CLOCK_DISCONTINUITY)
-                    //                    .putString(UploadDevicePropertiesWorker.AUTOMATIC_GAIN_CONTROL)
+            upload.isEnabled = false
+            uploadProgress.visibility = View.VISIBLE
 
-                    .putString(UploadDevicePropertiesWorker.GNSS_ANTENNA_INFO, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)))
-                    .putString(UploadDevicePropertiesWorker.APP_VERSION_NAME, versionName)
-                    .putString(UploadDevicePropertiesWorker.APP_VERSION_CODE, versionCode)
-                    .putString(UploadDevicePropertiesWorker.APP_BUILD_FLAVOR, BuildConfig.FLAVOR)
+            lifecycle.coroutineScope.launch(Dispatchers.IO) {
+                val uploader = DevicePropertiesUploader(bundle)
+                val result = uploader.upload()
+                // TODO - re-enable button and stop progress bar after completion
+            }
 
-                    .build()
-            val workRequest = OneTimeWorkRequest.Builder(
-                    UploadDevicePropertiesWorker::class.java)
-                    .setInputData(myData)
-                    .build()
-            WorkManager.getInstance(Application.get()).enqueue(workRequest)
+//            workManager.getWorkInfosByTag(TAG)
+
+//            val listenableFuture = workManager.getWorkInfoById(workRequest.id)
+//            Futures.addCallback(listenableFuture, object : FutureCallback<WorkInfo?>() {
+//                fun onSuccess(@NullableDecl result: WorkInfo?) {
+//                    activity?.runOnUiThread {
+////                        Toast.makeText(Application.get(), R.string.travel_behavior_enroll_success,
+////                                Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//
+//                fun onFailure(t: Throwable?) {
+//                    activity?.runOnUiThread {
+////                        Toast.makeText(Application.get(), R.string.travel_behavior_enroll_fail,
+////                                Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//            }, TravelBehaviorFileSaverExecutorManager.getInstance().getThreadPoolExecutor())
+
+
+
+//            val workInfo = workManager.getWorkInfoById(workRequest.id)
+//            workManager.getWorkInfoByIdLiveData(workRequest.id)
+//                .observe(viewLifecycleOwner) { t: WorkInfo? ->
+//                    if (workInfo?.state == WorkInfo.State.SUCCEEDED) {
+////                        Snackbar.make(requireView(),
+////                                R.string.work_completed, Snackbar.LENGTH_SHORT)
+////                                .show()
+//                    }
+//                }
         }
     }
 }
