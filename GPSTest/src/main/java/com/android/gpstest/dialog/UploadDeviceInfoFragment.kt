@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
@@ -23,7 +24,6 @@ import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class UploadDeviceInfoFragment : Fragment() {
@@ -115,45 +115,20 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR
             )
 
+            // TODO - check hash of previously uploaded data (if previously uploaded) and only enable option if it's changed
             upload.isEnabled = false
             uploadProgress.visibility = View.VISIBLE
 
-            lifecycle.coroutineScope.launch(Dispatchers.IO) {
+            lifecycle.coroutineScope.launch {
                 val uploader = DevicePropertiesUploader(bundle)
-                val result = uploader.upload()
-                // TODO - re-enable button and stop progress bar after completion
+                if (uploader.upload()) {
+                    Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show()
+                    upload.isEnabled = true
+                }
+                uploadProgress.visibility = View.INVISIBLE
             }
-
-//            workManager.getWorkInfosByTag(TAG)
-
-//            val listenableFuture = workManager.getWorkInfoById(workRequest.id)
-//            Futures.addCallback(listenableFuture, object : FutureCallback<WorkInfo?>() {
-//                fun onSuccess(@NullableDecl result: WorkInfo?) {
-//                    activity?.runOnUiThread {
-////                        Toast.makeText(Application.get(), R.string.travel_behavior_enroll_success,
-////                                Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//
-//                fun onFailure(t: Throwable?) {
-//                    activity?.runOnUiThread {
-////                        Toast.makeText(Application.get(), R.string.travel_behavior_enroll_fail,
-////                                Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//            }, TravelBehaviorFileSaverExecutorManager.getInstance().getThreadPoolExecutor())
-
-
-
-//            val workInfo = workManager.getWorkInfoById(workRequest.id)
-//            workManager.getWorkInfoByIdLiveData(workRequest.id)
-//                .observe(viewLifecycleOwner) { t: WorkInfo? ->
-//                    if (workInfo?.state == WorkInfo.State.SUCCEEDED) {
-////                        Snackbar.make(requireView(),
-////                                R.string.work_completed, Snackbar.LENGTH_SHORT)
-////                                .show()
-//                    }
-//                }
         }
     }
 }

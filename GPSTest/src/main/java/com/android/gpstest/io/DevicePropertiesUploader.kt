@@ -17,12 +17,12 @@ package com.android.gpstest.io
 
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.widget.Toast
+import androidx.annotation.WorkerThread
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.apache.commons.io.IOUtils
 import java.io.BufferedInputStream
 import java.io.IOException
@@ -31,38 +31,37 @@ import java.io.Reader
 import java.net.HttpURLConnection
 import java.net.URL
 
-sealed class Result<out R> {
-    data class Success<out T>(val data: T) : Result<Nothing>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-}
-
+/**
+ * Uploads the provided device properties to a Google Sheet via Google Scripts endpoint
+ */
 class DevicePropertiesUploader(private val inputData: Bundle) {
 
-    fun upload() : Result<out R> {
-        val uri = buildUri()
-        try {
-            Log.d(TAG, uri.toString())
-            val url = URL(uri.toString())
-            val connection = url.openConnection() as HttpURLConnection
-            connection.readTimeout = 30 * 1000
-            val reader: Reader = InputStreamReader(
-                    BufferedInputStream(connection.inputStream, 8 * 1024))
-            val result = IOUtils.toString(reader)
-            if (RESULT_OK == result) {
-                Log.d(TAG, "Successfully uploaded device capabilities!")
-                val handler = Handler(Looper.getMainLooper())
-                handler.post { Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show() }
-                return Result.Success(R.string.upload_success)
-            } else {
-                logFailure(null)
-                return Result.Error(Exception(Application.get().getString(R.string.upload_failure)))
+    @WorkerThread
+    suspend fun upload() : Boolean {
+        var success = false
+        withContext(Dispatchers.IO) {
+            val uri = buildUri()
+            try {
+                Log.d(TAG, uri.toString())
+                val url = URL(uri.toString())
+                val connection = url.openConnection() as HttpURLConnection
+                connection.readTimeout = 2 * 1000
+                val reader: Reader = InputStreamReader(
+                        BufferedInputStream(connection.inputStream, 8 * 1024))
+                val result = IOUtils.toString(reader)
+                if (RESULT_OK == result) {
+                    Log.d(TAG, "Successfully uploaded device capabilities!")
+                    success = true
+                } else {
+                    logFailure(null)
+                    success = false
+                }
+            } catch (e: IOException) {
+                logFailure(e)
+                success = false
             }
-        } catch (e: IOException) {
-            logFailure(e)
-            return Result.Error(Exception(Application.get().getString(R.string.upload_failure)))
-        } finally {
-            return Result.Error(Exception(Application.get().getString(R.string.upload_failure)))
         }
+        return success
     }
 
     private fun buildUri(): Uri {
@@ -96,10 +95,10 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
     }
 
     private fun logFailure(e: IOException?) {
-        val handler = Handler(Looper.getMainLooper())
-        handler.post { Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show() }
         if (e != null) {
             Log.e(TAG, e.toString())
+        } else {
+            Log.e(TAG, Application.get().getString(R.string.upload_failure))
         }
     }
 
