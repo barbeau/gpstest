@@ -37,31 +37,29 @@ import java.net.URL
 class DevicePropertiesUploader(private val inputData: Bundle) {
 
     @WorkerThread
-    suspend fun upload() : Boolean {
-        var success = false
-        withContext(Dispatchers.IO) {
+    suspend fun upload() : Boolean = withContext(Dispatchers.IO) {
+        var success: Boolean
+        try {
             val uri = buildUri()
-            try {
-                Log.d(TAG, uri.toString())
-                val url = URL(uri.toString())
-                val connection = url.openConnection() as HttpURLConnection
-                connection.readTimeout = 2 * 1000
-                val reader: Reader = InputStreamReader(
-                        BufferedInputStream(connection.inputStream, 8 * 1024))
-                val result = IOUtils.toString(reader)
-                if (RESULT_OK == result) {
-                    Log.d(TAG, "Successfully uploaded device capabilities!")
-                    success = true
-                } else {
-                    logFailure(null)
-                    success = false
-                }
-            } catch (e: IOException) {
-                logFailure(e)
+            Log.d(TAG, uri.toString())
+            val url = URL(uri.toString())
+            val connection = url.openConnection() as HttpURLConnection
+            connection.readTimeout = 30 * 1000
+            val reader: Reader = InputStreamReader(
+                    BufferedInputStream(connection.inputStream, 8 * 1024))
+            val result = IOUtils.toString(reader)
+            if (RESULT_OK == result) {
+                Log.d(TAG, "Successfully uploaded device capabilities!")
+                success = true
+            } else {
+                logFailure(null)
                 success = false
             }
+        } catch (e: IOException) {
+            logFailure(e)
+            success = false
         }
-        return success
+        return@withContext success
     }
 
     private fun buildUri(): Uri {
