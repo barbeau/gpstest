@@ -15,9 +15,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.coroutineScope
 import com.android.gpstest.Application
 import com.android.gpstest.BuildConfig
+import com.android.gpstest.DeviceInfoViewModel
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
 import com.android.gpstest.util.IOUtils
@@ -86,6 +88,8 @@ class UploadDeviceInfoFragment : Fragment() {
                 timeSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectTimeInt)
             }
 
+            val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
+
             // Upload device info to database
             val bundle = bundleOf(
                     DevicePropertiesUploader.MANUFACTURER to Build.MANUFACTURER,
@@ -94,21 +98,21 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
                     DevicePropertiesUploader.GNSS_HARDWARE_YEAR to IOUtils.getGnssHardwareYear(),
                     DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to IOUtils.getGnssHardwareModelName(),
-//                    UploadDevicePropertiesWorker.DUAL_FREQUENCY
-//                    UploadDevicePropertiesWorker.SUPPORTED_GNSS
-//                    UploadDevicePropertiesWorker.GNSS_CFS
-//                    UploadDevicePropertiesWorker.SUPPORTED_SBAS
-//                    UploadDevicePropertiesWorker.SBAS_CFS
-//                    UploadDevicePropertiesWorker.RAW_MEASUREMENTS
-//                    UploadDevicePropertiesWorker.NAVIGATION_MESSAGES
+                    DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView),
+//                    DevicePropertiesUploader.SUPPORTED_GNSS
+//                    DevicePropertiesUploader.GNSS_CFS
+//                    DevicePropertiesUploader.SUPPORTED_SBAS
+//                    DevicePropertiesUploader.SBAS_CFS
+//                    DevicePropertiesUploader.RAW_MEASUREMENTS
+//                    DevicePropertiesUploader.NAVIGATION_MESSAGES
                     DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
-//                    UploadDevicePropertiesWorker.DELETE_ASSIST
-//                    UploadDevicePropertiesWorker.ACCUMULATED_DELTA_RANGE
-//                    UploadDevicePropertiesWorker.HARDWARE_CLOCK
-//                    UploadDevicePropertiesWorker.HARDWARE_CLOCK_DISCONTINUITY
-//                    UploadDevicePropertiesWorker.AUTOMATIC_GAIN_CONTROL
+//                    DevicePropertiesUploader.DELETE_ASSIST
+//                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE
+//                    DevicePropertiesUploader.HARDWARE_CLOCK
+//                    DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY
+//                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
                     DevicePropertiesUploader.APP_VERSION_NAME to versionName,
                     DevicePropertiesUploader.APP_VERSION_CODE to versionCode,

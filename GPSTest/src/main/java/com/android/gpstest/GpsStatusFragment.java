@@ -687,6 +687,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
         mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
+        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_dual_frequency), PreferenceUtils.CAPABILITY_SUPPORTED);
+
         refreshViews();
     }
 

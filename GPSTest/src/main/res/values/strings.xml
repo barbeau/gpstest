@@ -65,7 +65,7 @@
     </string>
 
     <string name="device">Device</string>
-    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (http://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
+    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (https://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
     <string name="upload_no_location">Trying uploading device capabilities after you get a GNSS fix…</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
@@ -128,7 +128,7 @@
     <string name="filter_text">Showing %1$d of %2$d satellites</string>
     <string name="filter_showall">(show all)</string>
     <string name="error_time_title">Your GNSS time is wrong</string>
-    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See http://bit.ly/gps-week-rollover for more info.</string>
+    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
 
@@ -415,10 +415,10 @@
         <b>Vertical error</b>
         - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
 
-        &#8226;\u0020Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n\n
+        &#8226;\u0020Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n\n
 
         <b>*** File Logging ***</b>\n\n
-        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See http://bit.ly/gpstest-file for details.\n\n
+        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See https://bit.ly/gpstest-file for details.\n\n
 
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n

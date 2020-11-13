@@ -165,6 +165,7 @@
     <string name="capability_key_raw_measurements">capability_key_raw_measurements</string>
     <string name="capability_key_nav_messages">capability_key_nav_messages</string>
     <string name="capability_key_nmea">capability_key_nmea</string>
+    <string name="capability_key_dual_frequency">capability_key_dual_frequency</string>
 
     <string name="capability_title_inject_psds">Inject PSDS: %1$s\n</string>
     <string name="capability_title_inject_time">Inject time: %1$s\n</string>
