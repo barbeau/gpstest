@@ -3,6 +3,7 @@ package com.android.gpstest.dialog
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
@@ -27,6 +28,7 @@ import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import java.util.*
 
 class UploadDeviceInfoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -41,6 +43,7 @@ class UploadDeviceInfoFragment : Fragment() {
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
+        var userCountry = ""
 
         if (location == null) {
             // No location
@@ -52,6 +55,14 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadDetails.visibility = View.VISIBLE
             upload.visibility = View.VISIBLE
             uploadNoLocationTextView.visibility = View.GONE
+
+            if (Geocoder.isPresent()) {
+                val geocoder = Geocoder(context, Locale.US)
+                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                if (!addresses.isEmpty()) {
+                    userCountry = addresses.get(0).countryCode
+                }
+            }
         }
 
         upload.setOnClickListener { v: View? ->
@@ -116,7 +127,8 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
                     DevicePropertiesUploader.APP_VERSION_NAME to versionName,
                     DevicePropertiesUploader.APP_VERSION_CODE to versionCode,
-                    DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR
+                    DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
+                    DevicePropertiesUploader.USER_COUNTRY to userCountry
             )
 
             // TODO - check hash of previously uploaded data (if previously uploaded) and only enable option if it's changed

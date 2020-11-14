@@ -89,6 +89,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
                 .appendQueryParameter(APP_VERSION_NAME, inputData.getString(APP_VERSION_NAME))
                 .appendQueryParameter(APP_VERSION_CODE, inputData.getString(APP_VERSION_CODE))
                 .appendQueryParameter(APP_BUILD_FLAVOR, inputData.getString(APP_BUILD_FLAVOR))
+                .appendQueryParameter(USER_COUNTRY, inputData.getString(USER_COUNTRY))
                 .build()
     }
 
@@ -127,6 +128,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         const val APP_VERSION_NAME = "appVersionName"
         const val APP_VERSION_CODE = "appVersionCode"
         const val APP_BUILD_FLAVOR = "appBuildFlavor"
+        const val USER_COUNTRY = "userCountry"
         private const val RESULT_OK = "STATUS OK"
     }
 }
