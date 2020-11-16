@@ -98,6 +98,16 @@ class UploadDeviceInfoFragment : Fragment() {
                 timeSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectTimeInt)
             }
 
+            // Delete assist capability
+            val capabilityDeleteAssistInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val deleteAssistSuccessString: String
+            if (capabilityDeleteAssistInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
+                // Deleting assist data can be destructive, so don't force it - just use existing info
+                deleteAssistSuccessString = PreferenceUtils.getCapabilityDescription(capabilityDeleteAssistInt)
+            } else {
+                deleteAssistSuccessString = ""
+            }
+
             val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
 
             // Upload device info to database
@@ -118,7 +128,7 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
-//                    DevicePropertiesUploader.DELETE_ASSIST
+                    DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
 //                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE
 //                    DevicePropertiesUploader.HARDWARE_CLOCK
 //                    DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY
