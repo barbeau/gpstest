@@ -28,7 +28,6 @@ import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
-import java.util.*
 
 class UploadDeviceInfoFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,7 +56,7 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadNoLocationTextView.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(context, Locale.US)
+                val geocoder = Geocoder(context)
                 val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
                 if (!addresses.isEmpty()) {
                     userCountry = addresses.get(0).countryCode
