@@ -476,23 +476,27 @@ public class GpsTestActivity extends AppCompatActivity
             mUseDarkTheme = useDarkTheme;
             recreate();
         }
+        SharedPreferences settings = Application.getPrefs();
 
         addStatusListener();
 
         addOrientationSensorListener();
 
+        checkNmeaOutput(settings);
         addNmeaListener();
 
+        checkGnssMeasurementOutput(settings);
+        addGnssMeasurementsListener();
+
+        checkNavMessageOutput(settings);
+        addNavMessageListener();
+
+        checkGnssAntennaOutput(settings);
         addGnssAntennaListener();
 
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
-
-        /**
-         * Check preferences to see how these components should be initialized
-         */
-        SharedPreferences settings = Application.getPrefs();
 
         checkKeepScreenOn(settings);
 
@@ -500,17 +504,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkTrueNorth(settings);
 
-        checkNmeaOutput(settings);
         checkLocationOutput(settings);
-        checkGnssAntennaOutput(settings);
-
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            checkGnssMeasurementOutput(settings);
-        }
-
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            checkNavMessageOutput(settings);
-        }
 
         Date date = new Date();
         boolean isNewCSVFile = false;
@@ -1128,54 +1122,58 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void addGnssMeasurementsListener() {
-        mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
-            @Override
-            public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-                for (GpsTestListener listener : mGpsTestListeners) {
-                    listener.onGnssMeasurementsReceived(event);
-                }
-                if (mWriteRawMeasurementToAndroidMonitor) {
-                    for (GnssMeasurement m : event.getMeasurements()) {
-                        writeGnssMeasurementToAndroidStudio(m);
+        if (mLocationManager == null) {
+            return;
+        }
+        if (SatelliteUtils.isGnssStatusListenerSupported() && mGnssMeasurementsListener == null) {
+            mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
+                @Override
+                public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+                    for (GpsTestListener listener : mGpsTestListeners) {
+                        listener.onGnssMeasurementsReceived(event);
+                    }
+                    if (mWriteRawMeasurementToAndroidMonitor) {
+                        for (GnssMeasurement m : event.getMeasurements()) {
+                            writeGnssMeasurementToAndroidStudio(m);
+                        }
+                    }
+                    if (mWriteRawMeasurementsToFile &&
+                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                        csvFileLogger.onGnssMeasurementsReceived(event);
                     }
                 }
-                if (mWriteRawMeasurementsToFile &&
-                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    csvFileLogger.onGnssMeasurementsReceived(event);
-                }
-            }
 
-            @Override
-            public void onStatusChanged(int status) {
-                final String statusMessage;
-                switch (status) {
-                    case STATUS_LOCATION_DISABLED:
-                        statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                        break;
-                    case STATUS_NOT_SUPPORTED:
-                        statusMessage = getString(R.string.gnss_measurement_status_not_supported);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                        break;
-                    case STATUS_READY:
-                        statusMessage = getString(R.string.gnss_measurement_status_ready);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
-                        break;
-                    default:
-                        statusMessage = getString(R.string.gnss_status_unknown);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+                @Override
+                public void onStatusChanged(int status) {
+                    final String statusMessage;
+                    switch (status) {
+                        case STATUS_LOCATION_DISABLED:
+                            statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                            break;
+                        case STATUS_NOT_SUPPORTED:
+                            statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                            break;
+                        case STATUS_READY:
+                            statusMessage = getString(R.string.gnss_measurement_status_ready);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
+                            break;
+                        default:
+                            statusMessage = getString(R.string.gnss_status_unknown);
+                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+                    }
+                    Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
+                    if (UIUtils.canManageDialog(GpsTestActivity.this)) {
+                        new Handler(Looper.getMainLooper()).postDelayed(
+                                () -> runOnUiThread(() ->
+                                        Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
+                    }
                 }
-                Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
-                if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                    new Handler(Looper.getMainLooper()).postDelayed(
-                            () -> runOnUiThread(() ->
-                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
-                }
-            }
-        };
-        mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+            };
+            mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -1303,9 +1301,11 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void addNavMessageListener() {
-        if (mGnssNavMessageListener == null) {
+        if (mLocationManager == null) {
+            return;
+        }
+        if (SatelliteUtils.isGnssStatusListenerSupported() && mGnssNavMessageListener == null) {
             mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
                 @Override
                 public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
@@ -1346,8 +1346,8 @@ public class GpsTestActivity extends AppCompatActivity
                     }
                 }
             };
+            mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
         }
-        mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -1427,15 +1427,10 @@ public class GpsTestActivity extends AppCompatActivity
         mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
         mWriteRawMeasurementToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
         mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_measurement_output), false);
-
-        if (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile) {
-            addGnssMeasurementsListener();
-        }
     }
 
     private void checkNmeaOutput(SharedPreferences settings) {
@@ -1450,18 +1445,11 @@ public class GpsTestActivity extends AppCompatActivity
         mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output), false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkNavMessageOutput(SharedPreferences settings) {
         mWriteNavMessageToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_navigation_message_output), false);
         mWriteNavMessageToFile = settings
                 .getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
-
-        if (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile) {
-            addNavMessageListener();
-        } else {
-            removeNavMessageListener();
-        }
     }
 
     private void checkLocationOutput(SharedPreferences settings) {

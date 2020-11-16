@@ -108,6 +108,24 @@ class UploadDeviceInfoFragment : Fragment() {
                 deleteAssistSuccessString = ""
             }
 
+            // GNSS measurements
+            val capabilityMeasurementsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityMeasurementsString: String
+            if (capabilityMeasurementsInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
+                capabilityMeasurementsString = PreferenceUtils.getCapabilityDescription(capabilityMeasurementsInt)
+            } else {
+                capabilityMeasurementsString = ""
+            }
+
+            // GNSS navigation message
+            val capabilityNavMessagesInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityNavMessagesString: String
+            if (capabilityNavMessagesInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
+                capabilityNavMessagesString = PreferenceUtils.getCapabilityDescription(capabilityNavMessagesInt)
+            } else {
+                capabilityNavMessagesString = ""
+            }
+
             val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
 
             // Upload device info to database
@@ -123,8 +141,8 @@ class UploadDeviceInfoFragment : Fragment() {
 //                    DevicePropertiesUploader.GNSS_CFS
 //                    DevicePropertiesUploader.SUPPORTED_SBAS
 //                    DevicePropertiesUploader.SBAS_CFS
-//                    DevicePropertiesUploader.RAW_MEASUREMENTS
-//                    DevicePropertiesUploader.NAVIGATION_MESSAGES
+                    DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
+                    DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
                     DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
