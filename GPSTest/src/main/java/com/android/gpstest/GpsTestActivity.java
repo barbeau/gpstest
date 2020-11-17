@@ -1332,53 +1332,63 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("NewApi")
     private void addNavMessageListener() {
         if (mLocationManager == null) {
             return;
         }
-        if (SatelliteUtils.isGnssStatusListenerSupported() && mGnssNavMessageListener == null) {
-            mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
-                @Override
-                public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
-                    if (mWriteNavMessageToAndroidMonitor) {
-                        writeNavMessageToAndroidStudio(event);
-                    }
-                    if (mWriteNavMessageToFile &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        csvFileLogger.onGnssNavigationMessageReceived(event);
-                    }
-                }
-
-                @Override
-                public void onStatusChanged(int status) {
-                    final String statusMessage;
-                    switch (status) {
-                        case STATUS_LOCATION_DISABLED:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                            break;
-                        case STATUS_NOT_SUPPORTED:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                            break;
-                        case STATUS_READY:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_ready);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
-                            break;
-                        default:
-                            statusMessage = getString(R.string.gnss_status_unknown);
-                    }
-                    Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
-                    if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                        // Delay this toast so it's not overwritten by other toasts
-                        new Handler(Looper.getMainLooper()).postDelayed(
-                                () -> runOnUiThread(() ->
-                                        Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
-                    }
-                }
-            };
-            mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
+        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
+            // Record capabilities that aren't supported related to nav messages
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            return;
         }
+        if (mGnssNavMessageListener != null) {
+            // Listener already registered
+            return;
+        }
+        mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
+            @Override
+            public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                if (mWriteNavMessageToAndroidMonitor) {
+                    writeNavMessageToAndroidStudio(event);
+                }
+                if (mWriteNavMessageToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    csvFileLogger.onGnssNavigationMessageReceived(event);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(int status) {
+                final String statusMessage;
+                switch (status) {
+                    case STATUS_LOCATION_DISABLED:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                        break;
+                    case STATUS_NOT_SUPPORTED:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                        break;
+                    case STATUS_READY:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
+                        break;
+                    default:
+                        statusMessage = getString(R.string.gnss_status_unknown);
+                }
+                Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
+                // Only show toast when user has enabled logging
+                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                        (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile)) {
+                    // Delay this toast so it's not overwritten by other toasts
+                    new Handler(Looper.getMainLooper()).postDelayed(
+                            () -> runOnUiThread(() ->
+                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
+                }
+            }
+        };
+        mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
