@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.GnssMeasurement;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -263,6 +264,30 @@ public class SatelliteUtils {
      */
     public static boolean isSpeedAndBearingAccuracySupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    /**
+     * Returns true if automatic gain control is supported for this GNSS measurement, false if it is not
+     * @param gnssMeasurement
+     * @return true if automatic gain control is supported for this GNSS measurement, false if it is not
+     */
+    public static boolean isAutomaticGainControlSupported(GnssMeasurement gnssMeasurement) {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && gnssMeasurement.hasAutomaticGainControlLevelDb();
+    }
+
+    /**
+     * Returns true if carrier phase uncertainty is supported for this GNSS measurement, false if it is not
+     * @param gnssMeasurement
+     * @return true if carrier phase uncertainty is supported for this GNSS measurement, false if it is not
+     */
+    public static boolean isCarrierPhaseUncertaintySupported(GnssMeasurement gnssMeasurement) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return gnssMeasurement.getAccumulatedDeltaRangeState() != GnssMeasurement.ADR_STATE_UNKNOWN;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return gnssMeasurement.hasCarrierFrequencyHz();
+        } else {
+            return false;
+        }
     }
 
     /**

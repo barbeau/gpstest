@@ -1121,59 +1121,90 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"NewApi", "MissingPermission"})
     private void addGnssMeasurementsListener() {
         if (mLocationManager == null) {
             return;
         }
-        if (SatelliteUtils.isGnssStatusListenerSupported() && mGnssMeasurementsListener == null) {
-            mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
-                @Override
-                public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-                    for (GpsTestListener listener : mGpsTestListeners) {
-                        listener.onGnssMeasurementsReceived(event);
-                    }
-                    if (mWriteRawMeasurementToAndroidMonitor) {
-                        for (GnssMeasurement m : event.getMeasurements()) {
-                            writeGnssMeasurementToAndroidStudio(m);
-                        }
-                    }
-                    if (mWriteRawMeasurementsToFile &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        csvFileLogger.onGnssMeasurementsReceived(event);
-                    }
+        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
+            // Record capabilities that aren't supported related to raw measurements
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            return;
+        }
+        if (mGnssMeasurementsListener != null) {
+            // Listener already registered
+            return;
+        }
+        mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
+            @Override
+            public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+                for (GpsTestListener listener : mGpsTestListeners) {
+                    listener.onGnssMeasurementsReceived(event);
                 }
 
-                @Override
-                public void onStatusChanged(int status) {
-                    final String statusMessage;
-                    switch (status) {
-                        case STATUS_LOCATION_DISABLED:
-                            statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                            break;
-                        case STATUS_NOT_SUPPORTED:
-                            statusMessage = getString(R.string.gnss_measurement_status_not_supported);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                            break;
-                        case STATUS_READY:
-                            statusMessage = getString(R.string.gnss_measurement_status_ready);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
-                            break;
-                        default:
-                            statusMessage = getString(R.string.gnss_status_unknown);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+                int agcSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
+                int carrierPhaseSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
+                for (GnssMeasurement measurement : event.getMeasurements()) {
+                    if (SatelliteUtils.isAutomaticGainControlSupported(measurement)) {
+                        agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
+                    } else {
+                        agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
                     }
-                    Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
-                    if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                        new Handler(Looper.getMainLooper()).postDelayed(
-                                () -> runOnUiThread(() ->
-                                        Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
+                    if (SatelliteUtils.isCarrierPhaseUncertaintySupported(measurement)) {
+                        carrierPhaseSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
+                    } else {
+                        carrierPhaseSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
+                    }
+                    break;
+                }
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), agcSupport);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), carrierPhaseSupport);
+
+                if (mWriteRawMeasurementToAndroidMonitor) {
+                    for (GnssMeasurement m : event.getMeasurements()) {
+                        writeGnssMeasurementToAndroidStudio(m);
                     }
                 }
-            };
-            mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
-        }
+                if (mWriteRawMeasurementsToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    csvFileLogger.onGnssMeasurementsReceived(event);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(int status) {
+                final String statusMessage;
+                switch (status) {
+                    case STATUS_LOCATION_DISABLED:
+                        statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                        break;
+                    case STATUS_NOT_SUPPORTED:
+                        statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                        break;
+                    case STATUS_READY:
+                        statusMessage = getString(R.string.gnss_measurement_status_ready);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
+                        break;
+                    default:
+                        statusMessage = getString(R.string.gnss_status_unknown);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+                }
+                Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
+                // Only show toast if the user has enabled logging
+                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                        (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile)) {
+                    new Handler(Looper.getMainLooper()).postDelayed(
+                            () -> runOnUiThread(() -> {
+                                Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
+                            }), 3000);
+                }
+            }
+        };
+        mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
     }
 
     @SuppressLint("MissingPermission")

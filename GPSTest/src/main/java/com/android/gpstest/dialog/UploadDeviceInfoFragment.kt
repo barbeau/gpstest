@@ -147,10 +147,10 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
                     DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
-//                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE
+                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
 //                    DevicePropertiesUploader.HARDWARE_CLOCK
 //                    DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY
-//                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL
+                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
                     DevicePropertiesUploader.APP_VERSION_NAME to versionName,
                     DevicePropertiesUploader.APP_VERSION_CODE to versionCode,
