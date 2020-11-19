@@ -238,4 +238,31 @@ class IOUtilsTest {
         val shareStringAltRemoved = IOUtils.createLocationShare(lAlt, false)
         assertEquals("28.12345,-82.1345", shareStringAltRemoved)
     }
+
+    /**
+     * Test stripping leading and trailing characters
+     */
+    @Test
+    fun testStripEnds() {
+        val input = "[NAVSTAR, GLONASS]"
+        assertEquals("NAVSTAR, GLONASS", IOUtils.trimEnds(input))
+
+        val emptyWithBrackets = "[]"
+        assertEquals("", IOUtils.trimEnds(emptyWithBrackets))
+
+        val empty = ""
+        assertEquals("", IOUtils.trimEnds(empty))
+    }
+
+    /**
+     * Test replacing "NAVSTAR" with "GPS"
+     */
+    @Test
+    fun testReplaceNavstar() {
+        val input = "[NAVSTAR, GLONASS]"
+        assertEquals("[GPS, GLONASS]", IOUtils.replaceNavstar(input))
+
+        val input2 = "[GPS, GLONASS]"
+        assertEquals("[GPS, GLONASS]", IOUtils.replaceNavstar(input2))
+    }
 }

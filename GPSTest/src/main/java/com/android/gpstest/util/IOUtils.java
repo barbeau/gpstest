@@ -442,4 +442,26 @@ public class IOUtils {
         }
         return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.delete_aiding_data_command), null);
     }
+
+    /**
+     * Removes leading and trailing characters ("[" and "]") from the provided input, respectively.
+     * If the input size is less than 2, then an empty string is returned
+     * @param input
+     * @return the input string with leading and trailing characters ("[" and "]") from the provided input, respectively
+     */
+    public static String trimEnds(String input) {
+        if (input.length() < 2) {
+            return "";
+        }
+        return input.substring(1, input.length() - 1);
+    }
+
+    /**
+     * Replaces the term "NAVSTAR" with "GPS" for the provided input
+     * @param input
+     * @return the input string with the term "NAVSTAR" replaced with "GPS"
+     */
+    public static String replaceNavstar(String input) {
+        return input.replace("NAVSTAR", "GPS");
+    }
 }

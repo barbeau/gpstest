@@ -264,5 +264,5 @@
     <string name="preferences_coordinate_format_ddm_key">ddm</string>
 
     <!-- Google Sheets URL for device properties -->
-    <string name="device_properties_upload_url">https://script.google.com/macros/s/AKfycbx8uwQhj0A5qd1TxG5XonEQtlS9gWw1NS3Btv_K/exec</string>
+    <string name="device_properties_upload_url">https://script.google.com/macros/s/AKfycbx2yxZwWTIUpC2q6xfRNwuRNjJQ6yfKSTCjYaSDWkBrJWe2ViA/exec</string>
 </resources>

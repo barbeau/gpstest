@@ -23,7 +23,7 @@ import com.android.gpstest.BuildConfig
 import com.android.gpstest.DeviceInfoViewModel
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
-import com.android.gpstest.util.IOUtils
+import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
@@ -81,7 +81,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val psdsSuccessBoolean: Boolean
             val psdsSuccessString: String
             if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
-                psdsSuccessBoolean = IOUtils.forcePsdsInjection(locationManager)
+                psdsSuccessBoolean = forcePsdsInjection(locationManager)
                 psdsSuccessString = PreferenceUtils.getCapabilityDescription(psdsSuccessBoolean)
             } else {
                 psdsSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectPsdsInt)
@@ -92,7 +92,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val timeSuccessBoolean: Boolean
             val timeSuccessString: String
             if (capabilityInjectTimeInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
-                timeSuccessBoolean = IOUtils.forceTimeInjection(locationManager)
+                timeSuccessBoolean = forceTimeInjection(locationManager)
                 timeSuccessString = PreferenceUtils.getCapabilityDescription(timeSuccessBoolean)
             } else {
                 timeSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectTimeInt)
@@ -134,13 +134,13 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.MODEL to Build.MODEL,
                     DevicePropertiesUploader.ANDROID_VERSION to Build.VERSION.RELEASE,
                     DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
-                    DevicePropertiesUploader.GNSS_HARDWARE_YEAR to IOUtils.getGnssHardwareYear(),
-                    DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to IOUtils.getGnssHardwareModelName(),
+                    DevicePropertiesUploader.GNSS_HARDWARE_YEAR to getGnssHardwareYear(),
+                    DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to getGnssHardwareModelName(),
                     DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView),
-//                    DevicePropertiesUploader.SUPPORTED_GNSS
-//                    DevicePropertiesUploader.GNSS_CFS
-//                    DevicePropertiesUploader.SUPPORTED_SBAS
-//                    DevicePropertiesUploader.SBAS_CFS
+                    DevicePropertiesUploader.SUPPORTED_GNSS to trimEnds(replaceNavstar(deviceInfoViewModel.supportedGnss.toString())),
+                    DevicePropertiesUploader.GNSS_CFS to trimEnds(deviceInfoViewModel.supportedGnssCfs.toString()),
+                    DevicePropertiesUploader.SUPPORTED_SBAS to trimEnds(deviceInfoViewModel.supportedSbas.toString()),
+                    DevicePropertiesUploader.SBAS_CFS to trimEnds(deviceInfoViewModel.supportedSbasCfs.toString()),
                     DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
                     DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
                     DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
@@ -148,8 +148,9 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
                     DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
                     DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
-//                    DevicePropertiesUploader.HARDWARE_CLOCK
-//                    DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY
+                    // TODO - Add below clock values? What should they be to generalize across all of the same model?
+                    DevicePropertiesUploader.HARDWARE_CLOCK to "",
+                    DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
                     DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
                     DevicePropertiesUploader.APP_VERSION_NAME to versionName,
