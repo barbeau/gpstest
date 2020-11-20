@@ -52,11 +52,11 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
                 Log.d(TAG, "Successfully uploaded device capabilities!")
                 success = true
             } else {
-                logFailure(null)
+                logFailure(result, null)
                 success = false
             }
         } catch (e: IOException) {
-            logFailure(e)
+            logFailure(null, e)
             success = false
         }
         return@withContext success
@@ -93,12 +93,14 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
                 .build()
     }
 
-    private fun logFailure(e: IOException?) {
+    private fun logFailure(result: String?, e: IOException?) {
         if (e != null) {
             Log.e(TAG, e.toString())
-        } else {
-            Log.e(TAG, Application.get().getString(R.string.upload_failure))
         }
+        if (result != null) {
+            Log.e(TAG, result)
+        }
+        Log.e(TAG, Application.get().getString(R.string.upload_failure))
     }
 
     companion object {
@@ -130,5 +132,6 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         const val APP_BUILD_FLAVOR = "appBuildFlavor"
         const val USER_COUNTRY = "userCountry"
         private const val RESULT_OK = "STATUS OK"
+        private const val RESULT_NO_EMULATOR_SUBMISSIONS = "NO EMULATOR SUBMISSIONS"
     }
 }
