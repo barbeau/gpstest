@@ -130,7 +130,7 @@ dependencies {
     // QR Code reader for ground truth locations
     implementation 'com.google.zxing:android-integration:3.3.0'
 
-    // WorkManager for uploading device properties on user request
+    // Uploading device properties on user request
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
