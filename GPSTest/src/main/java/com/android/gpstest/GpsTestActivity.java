@@ -1530,9 +1530,15 @@ public class GpsTestActivity extends AppCompatActivity
                         // Turn GPS on or off
                         if (!mSwitch.isChecked() && mStarted) {
                             gpsStop();
+                            // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
+                            if (SatelliteUtils.isGnssStatusListenerSupported()) {
+                                removeGnssMeasurementsListener();
+                            }
                         } else {
                             if (mSwitch.isChecked() && !mStarted) {
                                 gpsStart();
+                                // Measurements need to be started again
+                                addGnssMeasurementsListener();
                             }
                         }
                     }
