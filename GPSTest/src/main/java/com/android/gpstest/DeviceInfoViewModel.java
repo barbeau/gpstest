@@ -57,6 +57,8 @@ public class DeviceInfoViewModel extends AndroidViewModel {
 
     private boolean mIsNonPrimaryCarrierFreqInUse = false;
 
+    private boolean gotFirstFix = false;
+
     private Set<GnssType> supportedGnss = new HashSet<>();
 
     private Set<SbasType> supportedSbas = new HashSet<>();
@@ -195,6 +197,22 @@ public class DeviceInfoViewModel extends AndroidViewModel {
      */
     public Set<String> getSupportedSbasCfs() {
         return supportedSbasCfs;
+    }
+
+    /**
+     * Returns true if this view model has observed a GNSS fix first, false if it has not
+     * @return true if this view model has observed a GNSS fix first, false if it has not
+     */
+    public boolean gotFirstFix() {
+        return gotFirstFix;
+    }
+
+    /**
+     * Sets if the view model has observed a first GNSS fix during this execution
+     * @param value true if the model has observed a first GNSS fix during this execution, false if it has not
+     */
+    public void setGotFirstFix(boolean value) {
+        gotFirstFix = value;
     }
 
     /**
@@ -351,6 +369,7 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         mIsDualFrequencyPerSatInUse = false;
         mIsNonPrimaryCarrierFreqInView = false;
         mIsNonPrimaryCarrierFreqInUse = false;
+        gotFirstFix = false;
     }
 
     /**

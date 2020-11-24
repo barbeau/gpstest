@@ -42,9 +42,15 @@ class UploadDeviceInfoFragment : Fragment() {
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
+        val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
         var userCountry = ""
 
-        if (location == null) {
+        // TODO - DeviceInfoViewModel is still largely updated in GnssStatusFragment, so we need
+        // to check and make sure that the Status screen has been viewed even if we have a location
+        // to ensure we capture dual-frequency capability, supported GNSS, etc.
+        // Future work should move DeviceInfoViewModel so it's contained in the Activity instead
+        // so no matter what fragment is visible all the DeviceInfoViewModel are still updated.
+        if (location == null || !deviceInfoViewModel.gotFirstFix()) {
             // No location
             uploadDetails.visibility = View.GONE
             upload.visibility = View.GONE
@@ -125,8 +131,6 @@ class UploadDeviceInfoFragment : Fragment() {
             } else {
                 capabilityNavMessagesString = ""
             }
-
-            val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
 
             // Upload device info to database
             val bundle = bundleOf(

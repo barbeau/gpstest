@@ -66,7 +66,7 @@
 
     <string name="device">Device</string>
     <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (https://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
-    <string name="upload_no_location">Trying uploading device capabilities after you get a GNSS fix…</string>
+    <string name="upload_no_location">Please switch to the Status screen, wait for a GNSS fix, and then upload device capabilities.</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
     <string name="upload_nothing_changed">Nothing changed since last upload. Please try again later.</string>
