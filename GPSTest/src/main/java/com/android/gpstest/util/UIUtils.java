@@ -34,6 +34,7 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -74,6 +75,7 @@ import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_SNR;
  */
 
 public class UIUtils {
+    public static final String TAG = "UIUtils";
 
     public static final String COORDINATE_LATITUDE = "lat";
     public static final String COORDINATE_LONGITUDE = "lon";
@@ -510,9 +512,17 @@ public class UIUtils {
             files.add(jsonFileLogger.getFile());
         }
 
-        // TODO - check for existing dialog from FM before creating new one?
         FragmentManager fm = activity.getSupportFragmentManager();
-        ShareDialogFragment dialog = new ShareDialogFragment();
+        final ShareDialogFragment dialog;
+        final ShareDialogFragment cachedDialog = (ShareDialogFragment) fm.findFragmentByTag(ShareDialogFragment.Companion.getTAG());
+        if (cachedDialog == null) {
+            // No existing fragment was found, so create a new one
+            Log.d(TAG, "Creating new ShareDialogFragment");
+            dialog = new ShareDialogFragment();
+        } else {
+            // Use cached dialog
+            dialog = cachedDialog;
+        }
         ShareDialogFragment.Listener shareListener = new ShareDialogFragment.Listener() {
             @Override
             public void onLogFileSent() {
@@ -533,7 +543,7 @@ public class UIUtils {
         };
         dialog.setListener(shareListener);
         dialog.setArguments(createBundleForShareDialog(location, loggingEnabled, files, alternateFileUri));
-        dialog.show(fm, "ShareDialogFragment");
+        dialog.show(fm, ShareDialogFragment.Companion.getTAG());
     }
 
     /**

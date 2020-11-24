@@ -22,6 +22,7 @@ class ShareDialogFragment : DialogFragment() {
     private lateinit var listener: Listener
 
     companion object {
+        val TAG = "ShareDialogFragment"
         val KEY_LOCATION = "location"
         val KEY_LOGGING_ENABLED = "logging-enabled"
         val KEY_ALTERNATE_FILE_URI = "alternate-file-uri"
