@@ -69,6 +69,7 @@
     <string name="upload_no_location">Trying uploading device capabilities after you get a GNSS fix…</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
+    <string name="upload_nothing_changed">Nothing changed since last upload. Please try again later.</string>
 
     <string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>

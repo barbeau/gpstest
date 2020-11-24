@@ -153,26 +153,40 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
                     DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
-                    DevicePropertiesUploader.APP_VERSION_NAME to versionName,
-                    DevicePropertiesUploader.APP_VERSION_CODE to versionCode,
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
                     DevicePropertiesUploader.USER_COUNTRY to userCountry
             )
 
-            // TODO - check hash of previously uploaded data (if previously uploaded) and only enable option if it's changed
             upload.isEnabled = false
-            uploadProgress.visibility = View.VISIBLE
 
-            lifecycle.coroutineScope.launch {
-                val uploader = DevicePropertiesUploader(bundle)
-                if (uploader.upload()) {
-                    Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show()
+            // Check to see if anything changed since last upload
+            val lastUpload = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_last_upload_hash), Int.MAX_VALUE)
+            if (lastUpload != Int.MAX_VALUE && lastUpload == bundle.toString().hashCode()) {
+                // Nothing changed since last upload
+                Toast.makeText(Application.get(), R.string.upload_nothing_changed, Toast.LENGTH_SHORT).show()
+                upload.isEnabled = true
+            } else {
+                // First upload, or something changed since last upload - add app version and upload data
+                bundle.putString(DevicePropertiesUploader.APP_VERSION_NAME, versionName)
+                bundle.putString(DevicePropertiesUploader.APP_VERSION_CODE, versionCode)
+
+                uploadProgress.visibility = View.VISIBLE
+                lifecycle.coroutineScope.launch {
+                    val uploader = DevicePropertiesUploader(bundle)
+                    if (uploader.upload()) {
+                        Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show()
+                        // Remove app version and code, and then save hash to compare against next upload attempt
+                        bundle.remove(DevicePropertiesUploader.APP_VERSION_NAME)
+                        bundle.remove(DevicePropertiesUploader.APP_VERSION_CODE)
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode())
+                    } else {
+                        Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show()
+                    }
                     upload.isEnabled = true
+                    uploadProgress.visibility = View.INVISIBLE
                 }
-                uploadProgress.visibility = View.INVISIBLE
             }
+
         }
     }
 }
