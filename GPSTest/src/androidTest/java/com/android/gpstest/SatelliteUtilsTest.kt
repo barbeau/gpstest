@@ -16,7 +16,7 @@
 package com.android.gpstest
 
 import android.os.Build
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.model.SbasType
@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 /**
  * Test utilities used to manage GNSS satellites and signals
  */
-@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4ClassRunner::class)
 class SatelliteUtilsTest {
 
     /**

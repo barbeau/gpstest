@@ -17,7 +17,7 @@ package com.android.gpstest
 
 import android.content.Intent
 import android.location.Location
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.util.IOUtils
 import junit.framework.Assert.*
 import org.junit.Test
@@ -27,7 +27,7 @@ import org.junit.runner.RunWith
  * Test IO utilities.  This class has to be under the Android test runner because tested code
  * uses the Application class.
  */
-@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4ClassRunner::class)
 class IOUtilsTest {
 
     /**

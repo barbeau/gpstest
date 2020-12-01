@@ -15,6 +15,8 @@
  */
 package com.android.gpstest;
 
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+
 import com.android.gpstest.util.MathUtils;
 
 import org.junit.Test;
@@ -22,11 +24,9 @@ import org.junit.runner.RunWith;
 
 import java.io.UnsupportedEncodingException;
 
-import androidx.test.runner.AndroidJUnit4;
-
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class MathUtilsAndroidTest {
 
     @Test
