@@ -274,11 +274,14 @@
 </string>
     <string name="pref_file_location_output_title">Местоположение</string>
     <string name="pref_file_location_output_summary">Записывает подробности фиксации местоположения в файл</string>
+    <string name="pref_file_antenna_output_title">Информация об антенне</string>
+    <string name="pref_file_antenna_output_summary">Внести в лог информацию об антенне GNSS. Доступно только на поддерживаемых устройствах (Android 11 и выше).</string>
 
     <string name="logging_to_new_file">Журналирование в новый файл: %1$s</string>
     <string name="unable_to_close_all_file_streams">Не удаётся закрыть все файловые потоки.</string>
     <string name="could_not_initialize_file">Не удалось инициализировать файл: %1$s</string>
     <string name="error_writing_file">Проблема с записью в файл </string>
+    <string name="unable_to_open_json_generator">Невозможно открыть генератор JSON</string>
 
     <string name="pref_about_category_title">О приложении</string>
     <string name="pref_show_tutorial_title">Показать инструкцию</string>

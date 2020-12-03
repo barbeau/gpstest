@@ -128,7 +128,7 @@
     <string name="sky_legend_shape_gnss_title">Global Navigation Satellite Systems (GNSS)</string>
     <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
     <string name="sky_legend_shape_glonass">GLONASS (Russie)</string>
-    <string name="sky_legend_shape_galileo">Galileo  Union Européenne)</string>
+    <string name="sky_legend_shape_galileo">Galileo (Union Européenne)</string>
     <string name="sky_legend_shape_qzss">QZSS (Japon)</string>
     <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Chine)</string>
     <string name="sky_legend_shape_irnss">IRNSS (Inde)</string>
@@ -245,12 +245,10 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     </string>
     <string name="pref_file_location_output_title">Localisation</string>
     <string name="pref_file_location_output_summary">Archive les détails du verrouillage de la localisation dans un fichier </string>
-
     <string name="logging_to_new_file">Archivage dans un nouveau fichier: %1$s</string>
     <string name="unable_to_close_all_file_streams">Impossible de fermer tous les fichiers de flux</string>
     <string name="could_not_initialize_file">Impossible d\'initialiser le fichier: %1$s</string>
     <string name="error_writing_file">Il y a un problème pour écrire dans le fichier.</string>
-
     <string name="pref_about_category_title">A propos</string>
     <string name="pref_show_tutorial_title">Montrer le tutoriel</string>
     <string name="pref_show_tutorial_summary">Montre les instructions pour utiliser l\'application</string>

@@ -110,8 +110,15 @@
     <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
     <string name="sbas_not_available">星基增强系统（SBAS）卫星不可用</string>
     <string name="menu_option_sort_by">分类</string>
+    <string name="menu_option_filter">过滤器</string>
+    <string name="filter_dialog_title">只显示这些全球卫星导航系统</string>
+    <string name="filter_text">显示 %2$d颗卫星中的%1$d颗</string>
+    <string name="filter_showall">(显示全部)</string>
     <string name="error_time_title">你的 GNSS 时间有误</string>
     <string name="error_time_message">设备的GNSS时间：n\n%1$s\n\n…与您的系统时钟相差%2$d天以上。这可能是GPS周翻转问题引起的-请向您的设备制造商询问详细信息。有关更多信息，请参见http://bit.ly/gps-week-rollover。</string>
+    <string name="unknown">未知</string>
+    <string name="cancel">取消</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">当前纬度</string>
     <string name="ground_truth_longitude">当前经度</string>
@@ -145,12 +152,15 @@
     <string name="sky_legend_shape_galileo">伽利略定位系统（欧盟）</string>
     <string name="sky_legend_shape_qzss">准天顶卫星系统（日本）</string>
     <string name="sky_legend_shape_beidou">北斗卫星导航系统（中国）</string>
+    <string name="sky_legend_shape_irnss">印度区域导航卫星系统/印度星座导航 (印度)</string>
+
     <string name="sky_legend_shape_sbas_title">星基增强系统（SBAS）</string>
     <string name="sky_legend_shape_waas">WAAS（美国）</string>
     <string name="sky_legend_shape_egnos">EGNOS（欧盟）</string>
     <string name="sky_legend_shape_gagan">GAGAN（印度）</string>
     <string name="sky_legend_shape_msas">MSAS（日本）</string>
     <string name="sky_legend_shape_sdcm">SDCM（俄罗斯）</string>
+    <string name="sky_legend_shape_snas">北斗星基增强系统/卫星导航增强系统(中国)</string>
     <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
 
     <string name="sky_legend_shape_availability_title">信号可用性</string>
@@ -249,11 +259,14 @@
 （Android 7.0 及其以上）</string>
     <string name="pref_file_location_output_title">位置</string>
     <string name="pref_file_location_output_summary">输出定位详情至文件</string>
+    <string name="pref_file_antenna_output_title">天线信息</string>
+    <string name="pref_file_antenna_output_summary">将GNSS天线细节记录到一个文件。只能在支持的设备上使用 (Android 11及以上版本)。</string>
 
     <string name="logging_to_new_file">日志写入至: %1$s</string>
     <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>
     <string name="could_not_initialize_file">无法初始化文件: %1$s</string>
     <string name="error_writing_file">文件写入错误</string>
+    <string name="unable_to_open_json_generator">无法打开 JSON 生成器</string>
 
     <string name="pref_about_category_title">关于</string>
     <string name="pref_show_tutorial_title">显示手册</string>

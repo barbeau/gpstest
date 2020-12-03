@@ -264,12 +264,10 @@ legacy GPSStatus.Listener를 사용합니다.</string>
 </string>
     <string name="pref_file_location_output_title">위치</string>
     <string name="pref_file_location_output_summary">위치확정의 세부 사항을 파일로 기록</string>
-
     <string name="logging_to_new_file">새 파일로 기록: %1$s</string>
     <string name="unable_to_close_all_file_streams">모든 파일 스트림을 닫을 수 없습니다.</string>
     <string name="could_not_initialize_file">파일 초기화 실패: %1$s</string>
     <string name="error_writing_file">파일 쓰기에 문제가 있습니다.</string>
-
     <string name="pref_about_category_title">정보</string>
     <string name="pref_show_tutorial_title">튜토리얼 보기</string>
     <string name="pref_show_tutorial_summary">앱을 사용하는 방법 보기</string>

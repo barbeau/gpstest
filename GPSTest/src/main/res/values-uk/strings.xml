@@ -253,12 +253,10 @@
 7.0 та вище)</string>
     <string name="pref_file_location_output_title">Розташування</string>
     <string name="pref_file_location_output_summary">Журналювання фіксації розташування у файл</string>
-
     <string name="logging_to_new_file">Журналювання в новий файл: %1$s</string>
     <string name="unable_to_close_all_file_streams">Не можливо закрити усі потоки.</string>
     <string name="could_not_initialize_file">Не вдалося ініціалізувати файл: %1$s</string>
     <string name="error_writing_file">Проблема запису у файл.</string>
-
     <string name="pref_about_category_title">Про програму</string>
     <string name="pref_show_tutorial_title">Показати підручник</string>
     <string name="pref_show_tutorial_summary">Показати інструкції щодо використання програми</string>

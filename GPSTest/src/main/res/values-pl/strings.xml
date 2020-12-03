@@ -267,11 +267,14 @@
     </string>
     <string name="pref_file_location_output_title">Lokalizacja</string>
     <string name="pref_file_location_output_summary">Rejestruje szczegóły poprawek lokalizacji do pliku</string>
+    <string name="pref_file_antenna_output_title">Informacje o Antenna</string>
+    <string name="pref_file_antenna_output_summary">Rejestruje szczegóły anteny GNSS do pliku. Dostępne tylko na obsługiwanych urządzeniach (Android 11 i nowsze).</string>
 
     <string name="logging_to_new_file">Rejestrowanie do nowego pliku: %1$s</string>
     <string name="unable_to_close_all_file_streams">Nie można zamknąć wszystkich strumieni plików.</string>
     <string name="could_not_initialize_file">Zliczaj nie inicjalizuj pliku: %1$s</string>
     <string name="error_writing_file">Problem z zapisem do pliku.</string>
+    <string name="unable_to_open_json_generator">Nie można otworzyć generatora JSON</string>
 
     <string name="pref_about_category_title">O aplikacji</string>
     <string name="pref_show_tutorial_title">Pokaż samouczek</string>

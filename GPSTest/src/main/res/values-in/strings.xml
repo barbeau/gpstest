@@ -48,8 +48,8 @@
     <string name="share">Bagikan</string>
     <string name="copied_to_clipboard">Lokasi disalin ke papan klip</string>
     <string name="send_log">Kirim log…</string>
-    <string name="log_instructions">Aktifkan pencatatan log NMEA, pengukuran dasar, pesan navigasi, dan lainnya di Setelan</string>
-    <string name="log_error">Terjadi kesalahan dengan pencatatan file log. Apakah Anda memberikan izin ke penyimpanan? Coba aktifkan kembali opsi pencatatan file log di Setelan dan ketuk \"Izinkan\" saat diminta.</string>
+    <string name="log_instructions">Aktifkan pencatatan log untuk NMEA, pengukuran dasar, pesan navigasi, dan lainnya di Setelan</string>
+    <string name="log_error">Terjadi kesalahan dengan file pencatatan log. Apakah Anda memberikan izin ke penyimpanan? Coba aktifkan kembali opsi file pencatatan log di Setelan dan ketuk \"Izinkan\" saat diminta.</string>
     <string name="no_location">Coba bagikan lokasi Anda setelah mendapat perbaikan GNSS</string>
     <string name="include_altitude">Sertakan ketinggian</string>
     <string name="set_fix_frequency">Setel Frekuensi Perbaikan</string>
@@ -184,8 +184,8 @@
     <string name="gnss_status_unknown">Status callback tidak diketahui</string>
 
     <!-- Permissions -->
-    <string name="title_location_permission">Izin lokasi dibutuhkan</string>
-    <string name="text_location_permission">GPSTest memerlukan akses lokasi Anda untuk menampilkan data GNSS. Jika Anda memilih \"Jangan tanyakan lagi\" Anda perlu menginstal ulang aplikasi atau aktifkan izin melalui setelan sistem.</string>
+    <string name="title_location_permission">Perlu izin lokasi</string>
+    <string name="text_location_permission">GPSTest memerlukan akses lokasi Anda untuk menampilkan data GNSS. Jika Anda memilih \"Jangan tanyakan lagi\" Anda harus menginstal aplikasi kembali atau aktifkan izin melalui setelan sistem.</string>
     <string name="ok">OKE</string>
     <string name="exit">KELUAR</string>
 
@@ -263,7 +263,7 @@
 
     <!-- Output category -->
     <string name="pref_output_category_title">Pencatatan Log dan Keluaran</string>
-    <string name="pref_output_category_summary">Log NMEA, pengukuran dasar, atau pesan navigasi ke dalam file atau Android Studio</string>
+    <string name="pref_output_category_summary">Catat log NMEA, pengukuran dasar, atau pesan navigasi ke dalam file atau Android Studio</string>
 
     <!-- Android Monitor Output -->
     <string name="pref_as_output_category_title">Monitor Keluaran Android</string>
@@ -290,11 +290,14 @@
     </string>
     <string name="pref_file_location_output_title">Lokasi</string>
     <string name="pref_file_location_output_summary">Log detail perbaikan lokasi ke dalam file</string>
+    <string name="pref_file_antenna_output_title">Info antena</string>
+    <string name="pref_file_antenna_output_summary">Log detail antena GNSS ke dalam file. Tersedia pada perangkat yang didukung saja ( Android 11 ke atas)</string>
 
     <string name="logging_to_new_file">Mencatat log ke file baru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Tidak dapat menutup semua aliran file.</string>
     <string name="could_not_initialize_file">Penghitungan file tidak menginisialisasi: %1$s</string>
     <string name="error_writing_file">Masalah saat menulis ke dalam file.</string>
+    <string name="unable_to_open_json_generator">Tidak dapat membuka penghasil JSON</string>
 
     <string name="pref_about_category_title">Tentang</string>
     <string name="pref_show_tutorial_title">Tampilkan tutorial</string>

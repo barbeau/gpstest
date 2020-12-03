@@ -250,12 +250,10 @@ Studio (Android 7.0 und höher)</string>
     <string name="pref_file_navigation_message_output_summary">Protokolliert GNSS-Navigationsmeldungen in einer Datei (Android 7.0 und höher)</string>
     <string name="pref_file_location_output_title">Standort</string>
     <string name="pref_file_location_output_summary">Protokolliert die Details der Standortbestimmung in einer Datei</string>
-
     <string name="logging_to_new_file">Protokollierung in neue Datei: %1$s</string>
     <string name="unable_to_close_all_file_streams">Es konnten nicht alle Datei-Streams geschlossen werden.</string>
     <string name="could_not_initialize_file">Anzahl nicht initialisierter Dateien: %1$s </string>
     <string name="error_writing_file">Problem beim Schreiben in eine Datei.</string>
-
     <string name="pref_about_category_title">Über GPSTest</string>
     <string name="pref_show_tutorial_title">Tutorial ansehen</string>
     <string name="pref_show_tutorial_summary">Zeigt eine Anleitung zur Bedienung dieser App an</string>

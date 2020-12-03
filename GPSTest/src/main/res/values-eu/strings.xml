@@ -259,12 +259,10 @@ GPSStatus klasikoa erabiliko du.</string>
     <string name="pref_file_navigation_message_output_summary">GNSS nabigazio mezuak fitxategi batean erregistratzen ditu (Android 7.0 eta goragokoak)</string>
     <string name="pref_file_location_output_title">Kokalekua</string>
     <string name="pref_file_location_output_summary">Kokalekuaren zehaztapenak fitxategi batean erregistratzen ditu</string>
-
     <string name="logging_to_new_file">Erregistratzen fitxategi berrian: %1$s</string>
     <string name="unable_to_close_all_file_streams">Ezin izan da fitxategi-korronte guztiak itxi.</string>
     <string name="could_not_initialize_file">Ezin da fitxategia hasieratu: %1$s</string>
     <string name="error_writing_file">Arazoak fitxategira idaztean</string>
-
     <string name="pref_about_category_title">Honi buruz</string>
     <string name="pref_show_tutorial_title">Erakutsi tutoriala</string>
     <string name="pref_show_tutorial_summary">Erakutsi aplikazioa erabiltzeko jarraibideak</string>

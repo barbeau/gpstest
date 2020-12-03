@@ -257,12 +257,10 @@ esté sujetando el dispositivo</string>
 </string>
     <string name="pref_file_location_output_title">Posición</string>
     <string name="pref_file_location_output_summary">Registra los detalles de obtención de posición en un archivo</string>
-
     <string name="logging_to_new_file">Registrando en un nuevo archivo: %1$s</string>
     <string name="unable_to_close_all_file_streams">Incapaz de cerrar todos los archivos.</string>
     <string name="could_not_initialize_file">No se pudo inicializar el archivo: %1$s</string>
     <string name="error_writing_file">Problema escribiendo en archivo.</string>
-
     <string name="pref_about_category_title">Acerca de</string>
     <string name="pref_show_tutorial_title">Mostrar tutorial</string>
     <string name="pref_show_tutorial_summary">Mostrar instrucciones de uso de la app</string>

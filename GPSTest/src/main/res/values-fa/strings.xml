@@ -249,12 +249,10 @@
     <string name="pref_file_navigation_message_output_summary">پیام‌های ناوبری GNSS را در پرونده‌ای ثبت می‌کند (اندروید ۷.۰ و بالاتر)</string>
     <string name="pref_file_location_output_title">مکان</string>
     <string name="pref_file_location_output_summary">جزئیات فیکس مکان را در پرونده‌ای ثبت می‌کند</string>
-
     <string name="logging_to_new_file">لاگ‌نگاری در پروندهٔ جدید: %1$s</string>
     <string name="unable_to_close_all_file_streams">ناتوان از بستن همهٔ جریان‌های پرونده.</string>
     <string name="could_not_initialize_file">ناتوان از مقداردهی اولیهٔ پرونده:%1$s</string>
     <string name="error_writing_file">مشکل هنگام نوشتن در پرونده.</string>
-
     <string name="pref_about_category_title">درباره</string>
     <string name="pref_show_tutorial_title">نمایش آموزش</string>
     <string name="pref_show_tutorial_summary">دستورالعمل‌هایی برای کار با برنامه نشان می‌دهد</string>
