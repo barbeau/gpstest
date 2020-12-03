@@ -143,6 +143,9 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
 
+    // Multidex - Needed for APIs < 21
+    implementation 'androidx.multidex:multidex:2.0.1'
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)
