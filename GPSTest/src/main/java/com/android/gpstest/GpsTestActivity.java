@@ -309,6 +309,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         // If another app is passing in a ground truth location, recreate the activity to initialize an existing instance
         if (IOUtils.isShowRadarIntent(intent)) {
             recreateApp(intent);

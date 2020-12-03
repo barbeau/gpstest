@@ -115,7 +115,6 @@
     <string name="filter_text">Εμφάνιση %1$d απο %2$d δορυφόρους</string>
     <string name="filter_showall">(εμφάνιση όλων)</string>
     <string name="error_time_title">Σφάλμα Ωρας</string>
-    <string name="error_time_message">Μήνυμα σφάλματος</string>
     <string name="unknown">Αγνωστο</string>
     <string name="cancel">Ακύρωση</string>
 
