@@ -47,7 +47,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
 
     private static final String COMMENT_START = "# ";
     private static final char RECORD_DELIMITER = ',';
-    private static final String VERSION_TAG = "GPSTest version: ";
+    private static final String VERSION_TAG = "Version: ";
 
     public CsvFileLogger(Context context) {
         super(context);
