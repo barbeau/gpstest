@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     https://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Fragments -->
+    <string name="gps_status_title">Tila</string>
+    <string name="gps_map_title">Kartta</string>
+    <string name="gps_sky_title">Taivas</string>
+    <string name="gps_accuracy_title">Tarkkuus</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">Muokkaa aputietoja</string>
+    <string name="force_psds_injection">Aseta PSDS-tiedot</string>
+    <string name="force_time_injection">Aseta aika tiedot</string>
+    <string name="delete_aiding_data">Tyhjennä avustustiedot</string>
+    <string name="navdrawer_item_settings">Asetukset</string>
+    <string name="navdrawer_item_help">Apua</string>
+    <string name="navdrawer_item_send_feedback">Lähetä palautetta</string>
+    <string name="navdrawer_item_open_source">Vieraile GitHubissa</string>
+
+    <string name="navigation_drawer_open">Avaa navigointi piirtäjä</string>
+    <string name="navigation_drawer_close">Sulje navigointi piirtäjä</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">Aloita</string>
+    <string name="gps_pause">Tauko</string>
+
+    <string name="delete_aiding_data_success">Aputiedot on poistettu.</string>
+    <string name="delete_aiding_data_failure">Laite ei tue aputietojen poistamista.</string>
+    <string name="gps_switch">Pois/Päällä</string>
+    <string name="share">Jaa</string>
+    <string name="copied_to_clipboard">Sijainti kopioitu leikepöydälle</string>
+    <string name="send_log">Lähetä loki ...</string>
+    <string name="log_instructions">Ota NMEA: n, raakamittausten, navigointiviestien ja muiden tietojen kirjaaminen käyttöön Asetuksissa</string>
+    <string name="log_error">Jokin meni pieleen tiedostojen kirjaamisessa. Sallitko tiedosto- / tallennusoikeudet? Yritä ottaa tiedostojen kirjaaminen uudelleen käyttöön Asetuksissa ja napauta \"Salli\" pyydettäessä.</string>
+    <string name="no_location">Yritä jakaa sijaintisi saatuasi GNSS-korjauksen</string>
+    <string name="include_altitude">Sisältää korkeuden</string>
+    <string name="set_fix_frequency">Aseta Korjattu Taajuus</string>
+    <string name="force_time_injection_success">Aikatiedot lisätty onnistuneesti.</string>
+    <string name="force_time_injection_failure">Laite ei tue aikatietojen syöttämistä.</string>
+
+    <string name="force_psds_injection_success">PSDS-tietojen lisääminen onnistui.</string>
+    <string name="force_psds_injection_failure">Laite ei tue PSDS-tietojen syöttämistä.</string>
+
+    <string name="zoom_in">Suurenna</string>
+    <string name="zoom_out">Pienennä</string>
+    <string name="mode_map">Kartta</string>
+    <string name="mode_satellite">Satelliitti</string>
+
+    <string name="gps_latitude_label">Leveys:</string>
+    <string name="gps_longitude_label">Pituus:</string>
+    <string name="gps_fix_time_label">Aika:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Korkeus:</string>
+    <string name="gps_altitude_msl_label">Korkeus (MSL):</string>
+    <string name="gps_accuracy_label">E H Tark:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E H/V Tark:</string>
+    <string name="gps_speed_label">Nopeus:</string>
+    <string name="gps_speed_acc_label">Nop. Tark.</string>
+    <string name="gps_bearing_label">Suuntima</string>
+    <string name="gps_bearing_acc_label">Suun. Tark.</string>
+    <string name="gps_num_sats_label"># Sats:</string>
+    <string name="pdop_label">PDOP:</string>
+    <string name="hvdop_label">H/V DOP:</string>
+
+    <string name="gps_prn_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="gps_carrier_column_label">CR</string>
+    <string name="gps_snr_column_label">SNR</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">ka</string>
+    <string name="gps_elevation_column_label">Kork.</string>
+    <string name="gps_azimuth_column_label">Atsim</string>
+    <string name="gps_flags_column_label">Liput</string>
+    <string name="gps_not_supported">Tarkista järjestelmäasetukset - laite ei näytä tukevan GNSS: ää/GPS: ää.</string>
+    <string name="install">Asentaa</string>
+    <string name="no_thanks">Ei kiitos</string>
+    <string name="please_install_google_maps">Kartta-välilehti vaatii Google Mapsin</string>
+    <string name="enable_gps_message">GPS / GNSS on poistettu käytöstä. Ota se käyttöön nyt?</string>
+    <string name="enable_gps_positive_button">Käytä GPS / GNSS</string>
+    <string name="enable_gps_negative_button">Ei</string>
+    <string name="gps_set_location_listener">Käynnistettiin GNSS välillä = %1$s s, min. dist. = %2$sm</string>
+    <string name="clear_assist_warning_title">Poistetaanko aputiedot?</string>
+    <string name="clear_assist_warning">Joillakin laitteilla voi kestää 24 tuntia aputietojen automaattinen päivittäminen. Jos laitteesi ei tue käsin tehtävää syöttämistä, GNSS ei välttämättä toimi missään sovelluksessa, ennen kuin automaattinen päivitys on valmis. Oletko varma?</string>
+    <string name="never_ask_again">Älä kysy uudestaan</string>
+    <string name="qr_code_instructions_title">Skannaa QR Koodi</string>
+    <string name="qr_code_instructions_text">Tuo todellinen maa sijainti QR-koodilla Geo URI -muodossa (geo: 28.38434, -87.24334). Luo omat QR-koodisi osoitteessa https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Geo-URI: ta ei voitu lukea QR-koodista</string>
+    <string name="never_show_again">Älä näytä uudelleen</string>
+    <string name="not_now">Ei nyt</string>
+    <string name="yes">KYLLÄ</string>
+    <string name="no">EI</string>
+    <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satelliitteja ei ole saatavilla</string>
+    <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satelliitteja ei ole saatavilla</string>
+    <string name="menu_option_sort_by">Lajittelu</string>
+    <string name="menu_option_filter">Suodattaa</string>
+    <string name="filter_dialog_title">Näytä vain nämä GNSS</string>
+    <string name="filter_text">Näytetään %1$d %2$d sateliitistä </string>
+    <string name="filter_showall">(näytä kaikki)</string>
+    <string name="error_time_title">GNSS aika on väärä</string>
+    <string name="error_time_message">Laitteen GNSS-aika: \ n \ n \%1$s n \ n…on enemmän kuin %2$d päivää eri kuin järjestelmän kellosi. Tämä voi johtua GPS-viikon siirtymisongelmasta - kysy lisätietoja laitteen valmistajalta. Katso lisätietoja osoitteesta http://bit.ly/gps-week-rollover.</string>
+    <string name="unknown">Tuntematon</string>
+    <string name="cancel">Peruuttaa</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Leveysasteesi</string>
+    <string name="ground_truth_longitude">Pituusasteesi</string>
+    <string name="ground_truth_altitude">Korkeutesi WGS84: ssä (valinnainen)</string>
+    <string name="set_ground_truth_title">Mittaus tarkkuus</string>
+    <string name="set_ground_truth_subtitle">Napauta karttaa tai kirjoita todellinen sijaintisi</string>
+    <string name="save">Tallentaa</string>
+    <string name="edit">Muokata</string>
+    <string name="ground_truth_marker_title">Todellinen sijainti</string>
+    <string name="ground_truth_invalid_location_title">Virheellinen sijainti</string>
+    <string name="ground_truth_invalid_lat">Leveyden on oltava astelukuna välillä -90 ja 90</string>
+    <string name="ground_truth_invalid_long">Pituuden on oltava astelukuna välillä -180 ja 180</string>
+    <string name="ground_truth_invalid_alt">Korkeuden on oltava WGS84 metreinä</string>
+
+    <string name="horizontal_error_title">Vaakasuuntainen virhe</string>
+    <string name="vertical_error_title">Pystyvirhe</string>
+    <string name="horizontal_error_label">Virhe</string>
+    <string name="measured_error_graph_label">Mittaus virhe</string>
+    <string name="estimated_accuracy_graph_label">Laitteiston arvioima tarkkuus</string>
+    <string name="horizontal_vertical_error_label">H/V virhe</string>
+    <string name="avg_error_label">keskiarvo %1$d korjaukset</string>
+    <string name="fix_number">Korjata #</string>
+    <string name="show_radar_valid_location">Maa tiedon sijainti tuotu!</string>
+    <string name="show_radar_invalid_location">Tuodun maa tiedon sijainti on virheellinen</string>
+
+    <!-- Sky view -->
+    <string name="sky_legend_title">Tunnisteet</string>
+    <string name="sky_legend_shape_gnss_title">Maailmanlaajuinen satelliittipaikannusjärjestelmä (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (Venäjä)</string>
+    <string name="sky_legend_shape_galileo">Galileo (Euroopan unioni)</string>
+    <string name="sky_legend_shape_qzss">QZSS (Japani)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Kiina)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (Intia)</string>
+
+    <string name="sky_legend_shape_sbas_title">Satelliittipohjaiset avustepalvelut (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (Euroopan unioni)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (Intia)</string>
+    <string name="sky_legend_shape_msas">MSAS (Japani)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (Venäjä)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (Kiina)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+
+    <string name="sky_legend_shape_availability_title">Signaali Saatavilla</string>
+    <string name="sky_legend_shape_not_in_view">Ei laitteen näkyvissä</string>
+    <string name="sky_legend_shape_in_view">Näkyvissä</string>
+    <string name="sky_legend_shape_used_in_fix">Käytetään korjattuna</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">GNSS-palveluntarjoaja tai sijainti on poistettu käytöstä, ei päivityksiä, ennen kuin se on käytössä</string>
+    <string name="gnss_nav_msg_status_not_supported">Laite ei tue GNSS-navigointiviestien seurantaa</string>
+    <string name="gnss_nav_msg_status_ready">GNSS-navigointiviestejä seurataan onnistuneesti</string>
+
+    <string name="gnss_measurement_status_loc_disabled">GNSS-palveluntarjoaja tai sijainti on poistettu käytöstä, ei päivityksiä, ennen kuin se on käytössä</string>
+    <string name="gnss_measurement_status_not_supported">Laite ei tue GNSS-mittausten seurantaa</string>
+    <string name="gnss_measurement_status_ready">GNSS-mittauksia seurataan onnistuneesti</string>
+
+    <string name="gnss_status_unknown">Tuntematon tilan takaisinsoitto</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">Tarvitaan sijainti lupa</string>
+    <string name="text_location_permission">GPSTest tarvitsee pääsyn sijaintiin GNSS-tietojen näyttämiseksi. Jos valitset \"Älä koskaan kysy uudestaan\", sinun on asennettava sovellus uudelleen tai sallittava käyttöoikeudet järjestelmäasetusten kautta.</string>
+    <string name="ok">OK</string>
+    <string name="exit">POISTUA</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Palaute</string>
+    <string name="feedback_body">Valitukset, kehut tai virheilmoitukset ovat tervetulleita! \n\ n\ n
+</string>
+    <string name="feedback_error">Ei voi lähettää palautetta: sopivaa sovellusta ei löydy.</string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">Mikä on uutta?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+<b>Suodata satelliitteja tila-näytössä</b>
+- Piilota GNSS toimintopalkin painikkeella..\n&#8226;\u0020
+<b>GNSS-lukituksen ilmaisin</b>
+- Edistymispalkki näkyy odotettaessa GNSS-korjausta, ja lukituskuvake näkyy, kun sijainti on hankittu.\n&#8226;\u0020
+<b>Parannettu tumma tila</b>
+- Kartta ja taivas ovat nyt teemalla.\n&#8226;\u0020
+<b>Lisätty baskinkielinen käännös</b>
+- Kiitos Alexander Gabilondo!\n&#8226;\u0020
+<b>Parannettu käynnistyskuvake</b>
+- Tuettujen laitteiden mukautuvien kuvakkeiden tuki.\n&#8226;\u0020
+<b>Virheenkorjauksia</b>
+- Katso https://bit.ly/gpstest-releases</string>
+    <string name="main_help_close">Sulje</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">Asetukset</string>
+    <string name="pref_map_category_title">Kartta</string>
+    <string name="pref_map_type_title">Kartta Tyyppi</string>
+    <string name="pref_map_type_summary">Asettaa näytettävien karttatyyppien tyypin</string>
+    <string name="pref_map_type_dialog_title">Valitse Kartta Tyyppi</string>
+
+    <string name="pref_rotate_map_with_compass_title">Kierrä karttaa kompassilla</string>
+    <string name="pref_rotate_map_with_compass_summary">Muuta kartan suuntaa oman sijaintisi suunnan perusteella</string>
+
+    <string name="pref_tilt_map_with_sensors_title">Kallista karttaa laitteella</string>
+    <string name="pref_tilt_map_with_sensors_summary">Vaihda ensimmäisen persoonan karttanäkymään, kun sinä pidät laitetta</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">Käynnistä GNSS automaattisesti</string>
+    <string name="pref_auto_start_gps_summary">Käynnistä GNSS, kun sovellus käynnistyy</string>
+
+    <string name="pref_gps_min_time_title">Aikaväli</string>
+    <string name="pref_gps_min_time_summary">GNSS-korjausten välinen aika sekunteina</string>
+    <string name="pref_gps_min_time_dialog_title">Anna aikaväli sekunneissa</string>
+    <string name="pref_gps_min_time_invalid_entry">Väli on oltava numero</string>
+
+    <string name="pref_use_gnss_apis_title">Käytä GNSS ohjelmointirajapintoja API</string>
+    <string name="pref_use_gnss_apis_summary">Saatavana Android 7.0: lla tai uudemmalla. Jos sitä ei ole valittu,
+käyttä vanhaa GPSStatus.Listener-ohjelmaa.</string>
+
+    <string name="pref_gps_min_distance_title">Min. Etäisyys</string>
+    <string name="pref_gps_min_distance_summary">Pienin etäisyys GNSS-korjausten välillä, metreinä</string>
+    <string name="pref_gps_min_distance_dialog_title">Anna min. etäisyys metreinä</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. etäisyyden on oltava numero</string>
+
+    <string name="pref_stop_gnss_in_background_title">Pysäytä GNSS taustalta</string>
+    <string name="pref_stop_gnss_in_background_summary">Jos tämä on käytössä, GNSS pysäytetään aina, kun sovellus asetetaan taustalle (esimerkiksi vaihdettaessa sovelluksia Koti-painikkeella tai Monitoimipainikkeella)</string>
+
+    <string name="pref_display_category_title">Näyttö</string>
+    <string name="pref_keep_screen_on_title">Pidä näyttö päällä</string>
+    <string name="pref_keep_screen_on_summary">Estää näytön sammumisen</string>
+    <string name="pref_true_north_title">Osoita kompassi todelliseen pohjoiseen</string>
+    <string name="pref_true_north_summary">Kompassi on todellisen pohjoisen suuntainen magneettisen pohjoisen sijaan</string>
+
+    <!-- Output category -->
+    <string name="pref_output_category_title">Kirjaaminen ja tulostus</string>
+    <string name="pref_output_category_summary">Kirjaudu NMEA-, raaka-mittaus- tai navigointiviestit tiedostoihin tai Android Studioon</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android-näytön lähtö</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Kirjaa NMEA-lauseet Android Studioon</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA-aikaleima</string>
+    <string name="pref_nmea_timestamp_output_summary">Sisällytä NMEA-aikaleima tulostukseen</string>
+    <string name="pref_measurement_output_title">Mitat</string>
+    <string name="pref_as_measurement_output_summary">Kirjaa GNSS-mittaukset Android Studioon (Android
+7.0 tai uudempi)</string>
+    <string name="pref_navigation_message_output_title">Navigointiviestit</string>
+    <string name="pref_as_navigation_message_output_summary">Kirjaa GNSS-navigointiviestit Android
+Studioon (Android 7.0 ja uudemmat)</string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Tiedoston ulostulo</string>
+    <string name="pref_file_nmea_output_summary">Kirjaa NMEA-lauseet tiedostoon</string>
+    <string name="pref_file_measurement_output_summary">Kirjaa GNSS-mittaukset tiedostoon (Android 7.0 ja uudemmat)</string>
+    <string name="pref_file_navigation_message_output_summary">Luo GNSS-navigointiviestit tiedostoon (Android 7.0 tai uudempi)</string>
+    <string name="pref_file_location_output_title">Sijainti</string>
+    <string name="pref_file_location_output_summary">Kirjaa sijaintikorjauksen tiedot tiedostoon</string>
+    <string name="pref_file_antenna_output_title">Antennitiedot</string>
+    <string name="pref_file_antenna_output_summary">Kirjaa GNSS-antennin tiedot tiedostoon. Saatavilla vain tuetuilla laitteilla (Android 11 ja uudemmat).</string>
+
+    <string name="logging_to_new_file">Kirjautuminen uuteen tiedostoon: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Kaikkia tiedostovirtoja ei voi sulkea.</string>
+    <string name="could_not_initialize_file">Laskeminen ei alusta tiedostoa: %1$s</string>
+    <string name="error_writing_file">Ongelma kirjoitettaessa tiedostoon.</string>
+    <string name="unable_to_open_json_generator">JSON-generaattoria ei voi avata</string>
+
+    <string name="pref_about_category_title">Muuta</string>
+    <string name="pref_show_tutorial_title">Näytä opastus</string>
+    <string name="pref_show_tutorial_summary">Näyttää sovelluksen käyttöohjeet</string>
+
+    <string name="pref_dark_theme_title">Käytä tummaa teemaa</string>
+    <string name="pref_dark_theme_summary">Anna taustalle tumma väri ja tekstille vaalea väri</string>
+
+    <string name="pref_coordinate_format_title">Koordinaattien muoto</string>
+    <string name="pref_coordinate_format_summary">Näyttö desimaaliasteina, DMS tai aste desimaaliminuutteina</string>
+    <string name="preferences_coordinate_format_dd">Desimaaliasteet</string>
+    <string name="preferences_coordinate_format_dms">Asteet, minuutit, desimaalisekunnit</string>
+    <string name="preferences_coordinate_format_ddm">Asteet, desimaaliminuuttit</string>
+
+    <string name="preferences_preferred_distance_units_title">Etäisyys yksiköt</string>
+    <string name="preferences_preferred_distance_units_option_meters">Metri</string>
+    <string name="preferences_preferred_distance_units_option_feet">Jalka</string>
+
+    <string name="preferences_preferred_speed_units_title">Nopeusyksiköt</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Metriä sekunnissa</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometriä tunnissa</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Mailia tunnissa</string>
+
+    <string name="pref_language_title">Kieli</string>
+    <string name="pref_language_summary">Asettaa sovelluksessa näkyvän kielen manuaalisesti</string>
+    <string name="pref_language_dialog_title">Valitse kieli</string>
+
+    <!-- Help -->
+    <string name="title_help">Apua</string>
+
+    <string name="help_text">
+<b>Usein kysyttyjä kysymyksiä (FAQ)</b>
+ - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+<b>*** Tilanäkymä ***</b>\n\n&#8226;\u0020
+<b>Leveysaste</b>
+- Desimaaliasteina (WGS 84)\n&#8226;\u0020
+<b>Pituusaste</b>
+- Desimaaliasteina (WGS 84)\n&#8226;\u0020
+<b>Korkeus</b>
+- Metriä WGS 84 ellipsoidin yläpuolella\n&#8226;\u0020
+<b>Korkeus (MSL)</b>
+- Metriä merenpinnan yläpuolella (vaatii NMEA-tuen)\n&#8226;\u0020
+<b>E H Tarkkuus</b>
+- Arvioitu sijainnin vaakasuora tarkkuus (säde metreinä 68%: n varmuus). Toisin sanoen, jos piirrät ympyrän, joka on keskitetty tämän sijainnin leveys- ja pituusasteeseen ja jonka säde on yhtä suuri kuin tarkkuus, on todennäköistä, että todellinen sijainti on ympyrän sisällä. Lisätietoja on osoitteessa https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+<b>E H/V Tarkkuus</b>
+- Arvioitu sijainnin vaaka- ja pystytarkkuus molemmat 68%: n luotettavuudella. Vaakasuora tarkkuus määritetään samalla tavalla kuin yllä oleva Acc-kenttä. Pystytarkkuus on saatavana Android 8.0 Oreolla tai uudemmalla. Pystysuoran tarkkuuden esimerkki - jos korkeus on 150 ja vaakatarkkuus on 20, todellinen korkeus on 68%: n todennäköisyydellä välillä 130-170 metriä. Lisätietoja on osoitteessa https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+<b>Nopeus</b>
+- Nopeus metreinä sekunnissa maanpinnan yläpuolella.\n&#8226;\u0020
+<b>Nopeuden tarkkuus</b>
+- Arvioitu nopeuden tarkkuus tässä paikassa 68%: n varmuudella metreinä sekunnissa. Esimerkiksi, jos nopeus on 5 ja nopuden tarkkuus on 1, on todennäköistä, että todellinen nopeus on 4-6 metriä sekunnissa..\n&#8226;\u0020
+<b>Suuntima</b>
+- Laitteen vaakasuuntainen ajosuunta (0-360 astetta), eikä se liity laitteen suuntaan.\n&#8226;\u0020
+<b>Suuntiman tarkkuus</b>
+Esimerkiksi, jos suuntima on 60 ja suuntiman tarkkuus on 10, on 68% todennäköisyydellä, että todellinen suuntima on 50-70 astetta.\n&#8226;\u0020
+<b># Satelliitti</b>
+# satelliitit, joita käytetään korjauksessa / # satelliittit näkyvissä (kelvollisilla signaalinvoimakkuuden arvoilla) / # satelliittit, jotka laite tunnistaa. Kaksitaajuisissa laitteissa satelliitti näytetään käytetyksi, jos vähintään yksi kyseisen satelliitin taajuus on käytössä, satelliitti näytetään näkymänä, jos ainakin yhdellä signaalilla on kelvollinen signaalin voimakkuusarvo, ja se näytetään laitteen tuntemana jos on tietoa ainakin yhdestä satelliitin signaalista.\n&#8226;\u0020
+<b>PDOP</b>
+- Tarkkuuden (3D) laimennus (vaatii NMEA-tuen)\n&#8226;\u0020
+<b>H/V DOP</b>
+- Tarkkuuden vaaka- / pystysuora laimennus (vaatii NMEA-tuen)\n&#8226;\u0020
+<b>TTFF</b>
+- Aika ensimmäiseen korjaukseen\n&#8226;\u0020
+<b>ID tai PRN</b>
+- Tämän satelliitin tunniste (näennäissatunnainen kohina GPS: lle)\n&#8226;\u0020
+<b>CF, kantoaallon taajuus</b>
+- Tunnus (esim. \"L1\") seurattavan signaalin kantoaaltotaajuudelle. Jos taajuus on tuntematon, se näyttää raakataajuuden MHz: ssä (saatavana Android 8.0+: ssa, mutta ei tueta kaikilla laitteilla). L1: n uusi GLONASS CDMA -signaali näytetään nimellä \"L1-C\".\n&#8226;\u0020
+<b>SNE, Signaali-kohinasuhde</b>
+- Signaali-kohinasuhde (Android M tai vanhempi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+<b>C/N0</b>
+- Kantoaalto taajuus (Android N tai uudempi) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+<b>Liput</b>
+- (E) jos laitteessa on efemeriditietoja satelliitille, (A) jos laitteessa on almanakkitietoja
+satelliitille (U), jos satelliittia käytettiin viimeisimmän sijainnin korjauksen laskemiseen. SBAS: n osalta Android-spesifikaatio ei tarkoita, viittaako (U) sijaintiratkaisussa käytetyn satelliitin näennäisalueisiin vai kyseisestä satelliitista peräisin olevien tietojen korjaamiseen.\n\n
+
+<b>Asettaa PSDS-tiedot</b>
+- Pyytää laitetta päivittämään sen ennustetun satelliittidatapalvelun (esim. XTRA-tiedot), jos laite käyttää PSDS-tietoja.\n\n
+
+<b>*** Taivas näkymä ***</b>\n\n&#8226;\u0020
+<b>GPS (USA Navstar)</b>
+- Ympyrät\n&#8226;\u0020
+<b>GLONASS (Venäjä)</b>
+- Neliöt\n&#8226;\u0020
+<b>Galileo (Euroopan unioni)</b>
+- Kolmiot\n&#8226;\u0020
+<b>QZSS (Japani</b>)
+- Kuusikulmiot\n&#8226;\u0020
+<b>BeiDou/COMPASS (Kiina)</b>
+- Viisikulmiot\n&#8226;\u0020
+<b>IRNSS/NavIC (Intia)</b>
+- Soikeat\n&#8226;\u0020
+<b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
+- Timanttit\n\n
+
+&#8226;\u0020 Läpinäkyvät satelliitit - Ei näkyvissä \n
+&#8226;\u0020 Ohut ääriviiva - näkymässä, mutta ei käytetty korjauksessa \n
+&#8226;\u0020 Lihavoitu ääriviiva - käytetään korjauksessa \n\n
+
+&#8226;\u0020 Odotettu SNR-alue on 0 dB (punainen) - 30 dB (vihreä) alle 7.0: n Android-versioissa. \n
+&#8226;\u0020 Odotettu SNR-alue on 10 dB (punainen) - 45 dB (vihreä) Android 7.0: lla tai uudemmalla. \n
+&#8226;\u0020 Odotettu C / N0-alue on 10 dB-Hz (punainen) - 45 dB-Hz (vihreä) Android 7.0: ssa ja uudemmissa. \n
+&#8226;\u0020 Jos satelliitille ei ole SNR- tai C / N0-arvoa (ts. Se ei ole laitteen näkyvissä), sillä on läpinäkyvä vaaleanharmaa väri. \n\n
+
+<b>*** Tarkkuusnäkymä ***</b>\n\n&#8226;\u0020
+<b>Pystyvirhe</b>
+- Pystysuuntaiset virhemittaukset, toisin kuin vaakasuuntaiset virheet, voivat olla positiivisia tai negatiivisia. Kun tarkkuus-näkymä näytetään, sekä pystysuuntainen virhe että keskimääräinen pystysuuntainen virhe lasketaan käyttämällä virhemittauksen absoluuttista arvoa.\n\n
+
+&#8226;\u0020Aseta oikea sijaintisi nopeasti QR-koodien avulla. Katso lisätietoja osoitteesta http://bit.ly/gpstest-qr-codes.\n\n
+
+<b>*** Tiedostojen kirjaaminen ***</b>\n\n
+&#8226;\u0020Ota tiedostojen kirjaaminen käyttöön NMEA-asetusten, raakamittausten, navigointiviestien ja sijaintikorjausten asetuksissa. Katso lisätietoja osoitteesta http://bit.ly/gpstest-file.\n\n
+
+<b>*** Kiitokset ***</b>\n\n
+&#8226;\u0020 <b>Mike Lockwood</b>- alkuperäinen kehittäjä versiolle v1.x\n
+&#8226;\u0020 <b>Sean Barbeau</b> - kehittäjä versiolle v2.x ja uudemmille\n
+&#8226;\u0020 GPSTest-käynnistyskuvake on johdettu Android Material Design -satelliittikuvakkeesta, jonka Google on lisensoinut Apache v2.0: lla. Apache v2.0: ssa käytetään myös muita Google-materiaalisuunnittelukuvakkeita. QR-kuvake, kirjoittanut Austin Andrews osoitteesta https://materialdesignicons.com/icon/qrcode.\n
+&#8226;\u0020 Kiinankielisen käännös wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+&#8226;\u0020 Saksankielinen käännös SIRSteiner\n
+&#8226;\u0020 Hollanninkielinen käännös Dennis Dolman, Meteor0id\n
+&#8226;\u0020 Kreikankielinen käännös Jimmy Golfi\n
+&#8226;\u0020 Japaninkielinen käännös SakuraSa233\n
+&#8226;\u0020 Tšekinkielinen käännös llzn.cz\n
+&#8226;\u0020 Italiankielinen käännös Giolly90\n
+&#8226;\u0020 Espanjankielinen käännös Sergi Pellicer\n
+&#8226;\u0020 Indonesiankielinen käännös Adiitya Andre90\n
+&#8226;\u0020 Puolankielinen käännös Adam Wandelt\n
+&#8226;\u0020 Ranskankielinen käännös Olivier Merlin &amp; Jérémy Belloir\n
+&#8226;\u0020 Persiankielinen käännös Iman (imni)\n
+&#8226;\u0020 Ukrainankielinen käännös Serhii Osmalchuk\n
+&#8226;\u0020 Koreankielinen käännös snotree\n
+&#8226;\u0020 Baskinkielinen käännös Alexander Gabilondo\n
+</string>
+</resources>
