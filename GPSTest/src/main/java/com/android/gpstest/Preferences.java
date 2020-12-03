@@ -190,16 +190,14 @@ public class Preferences extends PreferenceActivity implements
         });
         chkLogFileAntenna = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output));
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (manager != null) {
-            if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
-                chkLogFileAntenna.setOnPreferenceChangeListener((preference, newValue) -> {
-                    PermissionUtils.requestFileWritePermission(Preferences.this);
-                    return true;
-                });
-            } else {
-                // Not supported
-                chkLogFileAntenna.setEnabled(false);
-            }
+        if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
+            chkLogFileAntenna.setOnPreferenceChangeListener((preference, newValue) -> {
+                PermissionUtils.requestFileWritePermission(Preferences.this);
+                return true;
+            });
+        } else {
+            // Not supported
+            chkLogFileAntenna.setEnabled(false);
         }
 
         Application.getPrefs().registerOnSharedPreferenceChangeListener(this);

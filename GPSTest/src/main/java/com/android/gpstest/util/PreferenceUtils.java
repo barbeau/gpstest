@@ -56,6 +56,19 @@ public class PreferenceUtils {
         }
     }
 
+    /**
+     * Returns a simple SUPPORTED or UNSUPPORTED value for the given boolean value
+     * @param supported
+     * @return a simple SUPPORTED or UNSUPPORTED value for the given boolean value
+     */
+    public static String getCapabilityDescription(boolean supported) {
+        if (supported) {
+            return Application.get().getString(R.string.capability_value_supported);
+        } else {
+            return Application.get().getString(R.string.capability_value_not_supported);
+        }
+    }
+
     @TargetApi(9)
     public static void saveString(SharedPreferences prefs, String key, String value) {
         SharedPreferences.Editor edit = prefs.edit();

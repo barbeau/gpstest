@@ -22,15 +22,19 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.gpstest.model.ConstellationFamily;
+import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.Satellite;
 import com.android.gpstest.model.SatelliteMetadata;
 import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.model.SbasType;
 import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.SatelliteUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
@@ -52,6 +56,16 @@ public class DeviceInfoViewModel extends AndroidViewModel {
     private boolean mIsNonPrimaryCarrierFreqInView = false;
 
     private boolean mIsNonPrimaryCarrierFreqInUse = false;
+
+    private boolean gotFirstFix = false;
+
+    private Set<GnssType> supportedGnss = new HashSet<>();
+
+    private Set<SbasType> supportedSbas = new HashSet<>();
+
+    private Set<String> supportedGnssCfs = new HashSet<>();
+
+    private Set<String> supportedSbasCfs = new HashSet<>();
 
     /**
      * A set of metadata about all satellites the device knows of
@@ -153,6 +167,53 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         return mSatelliteMetadata;
     }
 
+    /**
+     * Returns a set of GNSS types that are supported by the device
+     * @return a set of GNSS types that are supported by the device
+     */
+    public Set<GnssType> getSupportedGnss() {
+        return supportedGnss;
+    }
+
+    /**
+     * Returns a set of SBAS types that are supported by the device
+     * @return a set of SBAS types that are supported by the device
+     */
+    public Set<SbasType> getSupportedSbas() {
+        return supportedSbas;
+    }
+
+    /**
+     * Returns a set of GNSS carrier frequency labels that are supported by the device
+     * @return a set of GNSS carrier frequency labels that are supported by the device
+     */
+    public Set<String> getSupportedGnssCfs() {
+        return supportedGnssCfs;
+    }
+
+    /**
+     * Returns a set of SBAS carrier frequency labels that are supported by the device
+     * @return a set of SBAS carrier frequency labels that are supported by the device
+     */
+    public Set<String> getSupportedSbasCfs() {
+        return supportedSbasCfs;
+    }
+
+    /**
+     * Returns true if this view model has observed a GNSS fix first, false if it has not
+     * @return true if this view model has observed a GNSS fix first, false if it has not
+     */
+    public boolean gotFirstFix() {
+        return gotFirstFix;
+    }
+
+    /**
+     * Sets if the view model has observed a first GNSS fix during this execution
+     * @param value true if the model has observed a first GNSS fix during this execution, false if it has not
+     */
+    public void setGotFirstFix(boolean value) {
+        gotFirstFix = value;
+    }
 
     /**
      * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
@@ -204,18 +265,40 @@ public class DeviceInfoViewModel extends AndroidViewModel {
                 numSignalsInView++;
             }
 
+            // Save the supported GNSS or SBAS type
             String key = SatelliteUtils.createGnssSatelliteKey(s);
+            if (s.getGnssType() != GnssType.UNKNOWN) {
+                if (s.getGnssType() != GnssType.SBAS) {
+                    supportedGnss.add(s.getGnssType());
+                } else {
+                    if (s.getSbasType() != SbasType.UNKNOWN) {
+                        supportedSbas.add(s.getSbasType());
+                    }
+                }
+            }
+
             // Get carrier label
             String carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s);
             if (carrierLabel.equals(CF_UNKNOWN)) {
                 mUnknownCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(s), s);
             }
-            // Check if this is a non-primary carrier frequency
-            if (!carrierLabel.equals(CF_UNKNOWN) && !carrierLabel.equals(CF_UNSUPPORTED)
-                    && !CarrierFreqUtils.isPrimaryCarrier(carrierLabel)) {
-                mIsNonPrimaryCarrierFreqInView = true;
-                if (s.getUsedInFix()) {
-                    mIsNonPrimaryCarrierFreqInUse = true;
+            if (!carrierLabel.equals(CF_UNKNOWN) && !carrierLabel.equals(CF_UNSUPPORTED)) {
+                // Save the supported GNSS or SBAS CF
+                if (s.getGnssType() != GnssType.UNKNOWN) {
+                    if (s.getGnssType() != GnssType.SBAS) {
+                        supportedGnssCfs.add(carrierLabel);
+                    } else {
+                        if (s.getSbasType() != SbasType.UNKNOWN) {
+                            supportedSbasCfs.add(carrierLabel);
+                        }
+                    }
+                }
+                // Check if this is a non-primary carrier frequency
+                if (!CarrierFreqUtils.isPrimaryCarrier(carrierLabel)) {
+                    mIsNonPrimaryCarrierFreqInView = true;
+                    if (s.getUsedInFix()) {
+                        mIsNonPrimaryCarrierFreqInUse = true;
+                    }
                 }
             }
 
@@ -278,10 +361,15 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         mSatelliteMetadata.setValue(null);
         mDuplicateCarrierStatuses = new HashMap<>();
         mUnknownCarrierStatuses = new HashMap<>();
+        supportedGnss = new HashSet<>();
+        supportedSbas = new HashSet<>();
+        supportedGnssCfs = new HashSet<>();
+        supportedSbasCfs = new HashSet<>();
         mIsDualFrequencyPerSatInView = false;
         mIsDualFrequencyPerSatInUse = false;
         mIsNonPrimaryCarrierFreqInView = false;
         mIsNonPrimaryCarrierFreqInUse = false;
+        gotFirstFix = false;
     }
 
     /**

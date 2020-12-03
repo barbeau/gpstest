@@ -18,7 +18,7 @@ package com.android.gpstest;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
 import com.android.gpstest.util.UIUtils;
 
@@ -30,7 +30,7 @@ import java.util.Locale;
 import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class UIUtilsAndroidTest {
 
     @Test

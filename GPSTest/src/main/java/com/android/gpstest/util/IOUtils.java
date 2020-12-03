@@ -36,13 +36,13 @@ import androidx.core.content.FileProvider;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.io.FileLogger;
 import com.android.gpstest.io.FileToDeleteFilter;
 import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -255,22 +255,17 @@ public class IOUtils {
      * Send the current log via email or other options selected from the chooser shown to the user. The
      * current log is closed when calling this method.
      * @param activity Activity used to open the chooser to send the file
-     * @param fileLoggers file loggers for files to send
+     * @param files files to send
      */
-    public static void sendLogFile(Activity activity, FileLogger... fileLoggers) {
+    public static void sendLogFile(Activity activity, File... files) {
         ArrayList<android.net.Uri> uris = new ArrayList<>();
-        for (FileLogger logger : fileLoggers) {
-            if (logger.getFile() != null) {
-                uris.add(IOUtils.getUriFromFile(activity, logger.getFile()));
+        for (File file : files) {
+            if (file != null) {
+                uris.add(IOUtils.getUriFromFile(activity, file));
             }
         }
 
         IOUtils.sendLogFile(activity, uris);
-        for (FileLogger logger : fileLoggers) {
-            if (logger.getFile() != null) {
-                logger.close();
-            }
-        }
     }
 
     /**
@@ -363,23 +358,110 @@ public class IOUtils {
      * @return the GNSS hardware year for the device, or null if the year couldn't be determined
      */
     public static String getGnssHardwareYear() {
-        java.lang.reflect.Method method;
+        String year = "";
         LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
-        try {
-            method = locationManager.getClass().getMethod("getGnssYearOfHardware");
-            int hwYear = (int) method.invoke(locationManager);
-            if (hwYear == 0) {
-                return "GNSS HW Year: " + "2015 or older";
-            } else {
-                return "GNSS HW Year: " + hwYear;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            year = String.valueOf(locationManager.getGnssYearOfHardware());
+        } else {
+            Method method;
+            try {
+                method = locationManager.getClass().getMethod("getGnssYearOfHardware");
+                int hwYear = (int) method.invoke(locationManager);
+                if (hwYear == 0) {
+                    year = "<= 2015";
+                } else {
+                    year = String.valueOf(hwYear);
+                }
+            } catch (NoSuchMethodException e) {
+                Log.e(TAG, "No such method exception: ", e);
+            } catch (IllegalAccessException e) {
+                Log.e(TAG, "Illegal Access exception: ", e);
+            } catch (InvocationTargetException e) {
+                Log.e(TAG, "Invocation Target Exception: ", e);
             }
-        } catch (NoSuchMethodException e) {
-            Log.e(TAG, "No such method exception: ", e);
-        } catch (IllegalAccessException e) {
-            Log.e(TAG, "Illegal Access exception: ", e);
-        } catch (InvocationTargetException e) {
-            Log.e(TAG, "Invocation Target Exception: ", e);
         }
-        return null;
+        return year;
+    }
+
+    /**
+     * Returns the GNSS hardware model name for the device, or empty String if the year couldn't be determined
+     *
+     * @return the GNSS hardware model name for the device, or empty String if the year couldn't be determined
+     */
+    public static String getGnssHardwareModelName() {
+        String modelName = "";
+        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (locationManager.getGnssHardwareModelName() != null) {
+                modelName = String.valueOf(locationManager.getGnssHardwareModelName());
+            }
+        }
+        return modelName;
+    }
+
+    /**
+     * Attempts to force a GNSS assistance time injection
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean forceTimeInjection(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.force_time_injection_command), null);
+    }
+
+    /**
+     * Attempts to force a GNSS assistance PSDS injection
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean forcePsdsInjection(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        String command;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            command = Application.get().getString(R.string.force_psds_injection_command);
+        } else {
+            command = Application.get().getString(R.string.force_xtra_injection_command);
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+    }
+
+    /**
+     * Attempts to delete GNSS assistance data
+     * @param locationManager
+     * @return true if the command succeeded, false if it failed
+     */
+    public static boolean deleteAidingData(LocationManager locationManager) {
+        if (locationManager == null) {
+            return false;
+        }
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.delete_aiding_data_command), null);
+    }
+
+    /**
+     * Removes leading and trailing characters ("[" and "]") from the provided input, respectively.
+     * If the input size is less than 2, then an empty string is returned
+     * @param input
+     * @return the input string with leading and trailing characters ("[" and "]") from the provided input, respectively
+     */
+    public static String trimEnds(String input) {
+        if (input.length() < 2) {
+            return "";
+        }
+        return input.substring(1, input.length() - 1);
+    }
+
+    /**
+     * Replaces the term "NAVSTAR" with "GPS" for the provided input
+     * @param input
+     * @return the input string with the term "NAVSTAR" replaced with "GPS"
+     */
+    public static String replaceNavstar(String input) {
+        return input.replace("NAVSTAR", "GPS");
     }
 }

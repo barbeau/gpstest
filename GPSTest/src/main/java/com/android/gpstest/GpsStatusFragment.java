@@ -465,8 +465,11 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         // Cache location for copy to clipboard operation
         mLocation = location;
 
-        // Make sure TTFF is shown, if the TTFF is acquired before the mTTFFView is initialized
+        // Make sure TTFF is shown/set, if the TTFF is acquired before the mTTFFView/this fragment is initialized
         mTTFFView.setText(mTtff);
+        if (mViewModel != null) {
+            mViewModel.setGotFirstFix(true);
+        }
 
         String coordinateFormat = Application.getPrefs().getString(getString(R.string.pref_key_coordinate_format), getString(R.string.preferences_coordinate_format_dd_key));
         switch (coordinateFormat) {
@@ -552,6 +555,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 if (mTTFFView != null) {
                     mTTFFView.setText(mTtff);
                 }
+                if (mViewModel != null) {
+                    mViewModel.setGotFirstFix(true);
+                }
                 break;
 
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
@@ -565,6 +571,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mTtff = UIUtils.getTtffString(ttffMillis);
         if (mTTFFView != null) {
             mTTFFView.setText(mTtff);
+        }
+        if (mViewModel != null) {
+            mViewModel.setGotFirstFix(true);
         }
     }
 

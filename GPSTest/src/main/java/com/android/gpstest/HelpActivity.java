@@ -57,7 +57,7 @@ public class HelpActivity extends AppCompatActivity {
                 .append(versionCode)
                 .append("-" + BuildConfig.FLAVOR + ")\n");
 
-        version.append(IOUtils.getGnssHardwareYear() + "\n");
+        version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + "\n");
 
         String versionRelease = Build.VERSION.RELEASE;
         version.append("Platform: " + versionRelease + "\n");

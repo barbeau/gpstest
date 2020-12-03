@@ -165,6 +165,9 @@
     <string name="capability_key_raw_measurements">capability_key_raw_measurements</string>
     <string name="capability_key_nav_messages">capability_key_nav_messages</string>
     <string name="capability_key_nmea">capability_key_nmea</string>
+    <string name="capability_key_measurement_automatic_gain_control">capability_key_measurement_automatic_gain_control</string>
+    <string name="capability_key_measurement_delta_range">capability_key_measurement_delta_range</string>
+    <string name="capability_key_last_upload_hash">capability_key_last_upload_hash</string>
 
     <string name="capability_title_inject_psds">Inject PSDS: %1$s\n</string>
     <string name="capability_title_inject_time">Inject time: %1$s\n</string>
@@ -260,4 +263,7 @@
     <string name="preferences_coordinate_format_dd_key">dd</string>
     <string name="preferences_coordinate_format_dms_key">dms</string>
     <string name="preferences_coordinate_format_ddm_key">ddm</string>
+
+    <!-- Google Sheets URL for device properties -->
+    <string name="device_properties_upload_url">https://script.google.com/macros/s/AKfycbx2yxZwWTIUpC2q6xfRNwuRNjJQ6yfKSTCjYaSDWkBrJWe2ViA/exec</string>
 </resources>

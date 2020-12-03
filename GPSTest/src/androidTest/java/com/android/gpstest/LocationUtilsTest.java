@@ -18,6 +18,8 @@ package com.android.gpstest;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
+
 import com.android.gpstest.util.LocationUtils;
 
 import org.junit.Test;
@@ -25,13 +27,11 @@ import org.junit.runner.RunWith;
 
 import java.util.Locale;
 
-import androidx.test.runner.AndroidJUnit4;
-
 import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4ClassRunner.class)
 public class LocationUtilsTest {
 
     /**

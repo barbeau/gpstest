@@ -48,9 +48,12 @@
     <string name="share">Share</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
+    <string name="log">Log</string>
+    <string name="file_name">File name</string>
+    <string name="location">Location</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
     <string name="log_error">Something went wrong with file logging. Did you allow file/storage permissions? Try re-enabling a file logging option in Settings and tap "Allow" when prompted.</string>
-    <string name="no_location">Try sharing your location after getting a GNSS fix</string>
+    <string name="no_location">Try sharing your location after getting a GNSS fix…</string>
     <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
     <string name="force_time_injection_success">Successfully injected time data.</string>
@@ -60,6 +63,13 @@
     <string name="force_psds_injection_success">Successfully injected PSDS data.</string>
     <string name="force_psds_injection_failure">Device does not support injecting PSDS data.
     </string>
+
+    <string name="device">Device</string>
+    <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (https://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
+    <string name="upload_no_location">Please switch to the Status screen, wait for a GNSS fix, and then upload device capabilities.</string>
+    <string name="upload_success">Successfully uploaded device capabilities!</string>
+    <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
+    <string name="upload_nothing_changed">Nothing changed since last upload. Please try again later.</string>
 
     <string name="zoom_in">Zoom In</string>
     <string name="zoom_out">Zoom Out</string>
@@ -119,7 +129,7 @@
     <string name="filter_text">Showing %1$d of %2$d satellites</string>
     <string name="filter_showall">(show all)</string>
     <string name="error_time_title">Your GNSS time is wrong</string>
-    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See http://bit.ly/gps-week-rollover for more info.</string>
+    <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
 
@@ -192,8 +202,8 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>
-    <string name="feedback_error">Unable to send feedback: no suitable application found.
-    </string>
+    <string name="feedback_error">Unable to send feedback: no suitable application found.</string>
+    <string name="device_properties_upload_success">Successfully uploaded device properties. Thanks!</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
@@ -406,10 +416,10 @@
         <b>Vertical error</b>
         - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
 
-        &#8226;\u0020Set your real location quickly using QR codes. See http://bit.ly/gpstest-qr-codes for details.\n\n
+        &#8226;\u0020Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n\n
 
         <b>*** File Logging ***</b>\n\n
-        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See http://bit.ly/gpstest-file for details.\n\n
+        &#8226;\u0020Enable file logging in Settings for NMEA, raw measurments, nav messages, and location fixes. See https://bit.ly/gpstest-file for details.\n\n
 
         <b>*** Acknowledgments ***</b>\n\n
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n

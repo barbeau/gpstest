@@ -16,9 +16,9 @@
     <dimen name="map_card_outer_margin">10dp</dimen>
     <dimen name="map_motion_outer_margin">26dp</dimen>
     <dimen name="map_card_inner_margin">16dp</dimen>
-    <dimen name="ground_truth_motion_layout_height">270dp</dimen>
-    <dimen name="ground_truth_cardview_height">285dp</dimen>
-    <dimen name="ground_truth_cardview_height_collapsed">132dp</dimen>
+    <dimen name="ground_truth_motion_layout_height">300dp</dimen>
+    <dimen name="ground_truth_cardview_height">312dp</dimen>
+    <dimen name="ground_truth_cardview_height_collapsed">138dp</dimen>
     <dimen name="map_card_top_margin_collapsed">10dp</dimen>
     <dimen name="ground_truth_text_size_expanded">11sp</dimen>
     <dimen name="ground_truth_text_size_collapsed">10sp</dimen>

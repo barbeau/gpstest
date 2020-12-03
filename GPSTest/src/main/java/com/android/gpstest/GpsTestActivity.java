@@ -385,7 +385,8 @@ public class GpsTestActivity extends AppCompatActivity
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
                 shareDialogOpen = true;
-                UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, uri).show();
+                UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
+                        csvFileLogger, jsonFileLogger, uri);
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -475,23 +476,27 @@ public class GpsTestActivity extends AppCompatActivity
             mUseDarkTheme = useDarkTheme;
             recreate();
         }
+        SharedPreferences settings = Application.getPrefs();
 
         addStatusListener();
 
         addOrientationSensorListener();
 
+        checkNmeaOutput(settings);
         addNmeaListener();
 
+        checkGnssMeasurementOutput(settings);
+        addGnssMeasurementsListener();
+
+        checkNavMessageOutput(settings);
+        addNavMessageListener();
+
+        checkGnssAntennaOutput(settings);
         addGnssAntennaListener();
 
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
         }
-
-        /**
-         * Check preferences to see how these components should be initialized
-         */
-        SharedPreferences settings = Application.getPrefs();
 
         checkKeepScreenOn(settings);
 
@@ -499,17 +504,7 @@ public class GpsTestActivity extends AppCompatActivity
 
         checkTrueNorth(settings);
 
-        checkNmeaOutput(settings);
         checkLocationOutput(settings);
-        checkGnssAntennaOutput(settings);
-
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            checkGnssMeasurementOutput(settings);
-        }
-
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            checkNavMessageOutput(settings);
-        }
 
         Date date = new Date();
         boolean isNewCSVFile = false;
@@ -878,14 +873,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void forcePsdsInjection() {
-        boolean success;
-        // FIXME - We should use the platform constant from Build.VERSION_CODES below, but we can't use compileSdkVersion 29 due to NMEA interface issue (https://github.com/barbeau/gpstest/issues/340)
-        if (Build.VERSION.SDK_INT >= 29) {
-            success = sendExtraCommand(getString(R.string.force_psds_injection_command));
-        } else {
-            success = sendExtraCommand(getString(R.string.force_xtra_injection_command));
-        }
-
+        boolean success = IOUtils.forcePsdsInjection(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.force_psds_injection_success),
                     Toast.LENGTH_SHORT).show();
@@ -898,7 +886,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void forceTimeInjection() {
-        boolean success = sendExtraCommand(getString(R.string.force_time_injection_command));
+        boolean success = IOUtils.forceTimeInjection(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.force_time_injection_success),
                     Toast.LENGTH_SHORT).show();
@@ -916,7 +904,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (mStarted) {
             gpsStop();
         }
-        boolean success = sendExtraCommand(getString(R.string.delete_aiding_data_command));
+        boolean success = IOUtils.deleteAidingData(mLocationManager);
         if (success) {
             Toast.makeText(this, getString(R.string.delete_aiding_data_success),
                     Toast.LENGTH_SHORT).show();
@@ -1009,10 +997,6 @@ public class GpsTestActivity extends AppCompatActivity
         for (GpsTestListener listener : mGpsTestListeners) {
             listener.gpsStop();
         }
-    }
-
-    private boolean sendExtraCommand(String command) {
-        return mLocationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
 
     private void addOrientationSensorListener() {
@@ -1137,15 +1121,47 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint({"NewApi", "MissingPermission"})
     private void addGnssMeasurementsListener() {
+        if (mLocationManager == null) {
+            return;
+        }
+        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
+            // Record capabilities that aren't supported related to raw measurements
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            return;
+        }
+        if (mGnssMeasurementsListener != null) {
+            // Listener already registered
+            return;
+        }
         mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
             @Override
             public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssMeasurementsReceived(event);
                 }
+
+                int agcSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
+                int carrierPhaseSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
+                for (GnssMeasurement measurement : event.getMeasurements()) {
+                    if (SatelliteUtils.isAutomaticGainControlSupported(measurement)) {
+                        agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
+                    } else {
+                        agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
+                    }
+                    if (SatelliteUtils.isCarrierPhaseUncertaintySupported(measurement)) {
+                        carrierPhaseSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
+                    } else {
+                        carrierPhaseSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
+                    }
+                    break;
+                }
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), agcSupport);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), carrierPhaseSupport);
+
                 if (mWriteRawMeasurementToAndroidMonitor) {
                     for (GnssMeasurement m : event.getMeasurements()) {
                         writeGnssMeasurementToAndroidStudio(m);
@@ -1178,10 +1194,13 @@ public class GpsTestActivity extends AppCompatActivity
                         PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
                 }
                 Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
-                if (UIUtils.canManageDialog(GpsTestActivity.this)) {
+                // Only show toast if the user has enabled logging
+                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                        (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile)) {
                     new Handler(Looper.getMainLooper()).postDelayed(
-                            () -> runOnUiThread(() ->
-                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
+                            () -> runOnUiThread(() -> {
+                                Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
+                            }), 3000);
                 }
             }
         };
@@ -1313,50 +1332,62 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint("NewApi")
     private void addNavMessageListener() {
-        if (mGnssNavMessageListener == null) {
-            mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
-                @Override
-                public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
-                    if (mWriteNavMessageToAndroidMonitor) {
-                        writeNavMessageToAndroidStudio(event);
-                    }
-                    if (mWriteNavMessageToFile &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        csvFileLogger.onGnssNavigationMessageReceived(event);
-                    }
-                }
-
-                @Override
-                public void onStatusChanged(int status) {
-                    final String statusMessage;
-                    switch (status) {
-                        case STATUS_LOCATION_DISABLED:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                            break;
-                        case STATUS_NOT_SUPPORTED:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                            break;
-                        case STATUS_READY:
-                            statusMessage = getString(R.string.gnss_nav_msg_status_ready);
-                            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
-                            break;
-                        default:
-                            statusMessage = getString(R.string.gnss_status_unknown);
-                    }
-                    Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
-                    if (UIUtils.canManageDialog(GpsTestActivity.this)) {
-                        // Delay this toast so it's not overwritten by other toasts
-                        new Handler(Looper.getMainLooper()).postDelayed(
-                                () -> runOnUiThread(() ->
-                                        Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
-                    }
-                }
-            };
+        if (mLocationManager == null) {
+            return;
         }
+        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
+            // Record capabilities that aren't supported related to nav messages
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            return;
+        }
+        if (mGnssNavMessageListener != null) {
+            // Listener already registered
+            return;
+        }
+        mGnssNavMessageListener = new GnssNavigationMessage.Callback() {
+            @Override
+            public void onGnssNavigationMessageReceived(GnssNavigationMessage event) {
+                if (mWriteNavMessageToAndroidMonitor) {
+                    writeNavMessageToAndroidStudio(event);
+                }
+                if (mWriteNavMessageToFile &&
+                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                    csvFileLogger.onGnssNavigationMessageReceived(event);
+                }
+            }
+
+            @Override
+            public void onStatusChanged(int status) {
+                final String statusMessage;
+                switch (status) {
+                    case STATUS_LOCATION_DISABLED:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                        break;
+                    case STATUS_NOT_SUPPORTED:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                        break;
+                    case STATUS_READY:
+                        statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
+                        break;
+                    default:
+                        statusMessage = getString(R.string.gnss_status_unknown);
+                }
+                Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
+                // Only show toast when user has enabled logging
+                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                        (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile)) {
+                    // Delay this toast so it's not overwritten by other toasts
+                    new Handler(Looper.getMainLooper()).postDelayed(
+                            () -> runOnUiThread(() ->
+                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
+                }
+            }
+        };
         mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
     }
 
@@ -1437,15 +1468,10 @@ public class GpsTestActivity extends AppCompatActivity
         mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
         mWriteRawMeasurementToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
         mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_measurement_output), false);
-
-        if (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile) {
-            addGnssMeasurementsListener();
-        }
     }
 
     private void checkNmeaOutput(SharedPreferences settings) {
@@ -1460,18 +1486,11 @@ public class GpsTestActivity extends AppCompatActivity
         mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output), false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void checkNavMessageOutput(SharedPreferences settings) {
         mWriteNavMessageToAndroidMonitor = settings
                 .getBoolean(getString(R.string.pref_key_as_navigation_message_output), false);
         mWriteNavMessageToFile = settings
                 .getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
-
-        if (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile) {
-            addNavMessageListener();
-        } else {
-            removeNavMessageListener();
-        }
     }
 
     private void checkLocationOutput(SharedPreferences settings) {
@@ -1511,9 +1530,15 @@ public class GpsTestActivity extends AppCompatActivity
                         // Turn GPS on or off
                         if (!mSwitch.isChecked() && mStarted) {
                             gpsStop();
+                            // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
+                            if (SatelliteUtils.isGnssStatusListenerSupported()) {
+                                removeGnssMeasurementsListener();
+                            }
                         } else {
                             if (mSwitch.isChecked() && !mStarted) {
                                 gpsStart();
+                                // Measurements need to be started again
+                                addGnssMeasurementsListener();
                             }
                         }
                     }
@@ -1686,7 +1711,8 @@ public class GpsTestActivity extends AppCompatActivity
     private void share() {
         final Location location = mLastLocation;
         shareDialogOpen = true;
-        UIUtils.createShareDialog(this, location, isFileLoggingEnabled(), csvFileLogger, jsonFileLogger, null).show();
+        UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
+                csvFileLogger, jsonFileLogger, null);
     }
 
     /**

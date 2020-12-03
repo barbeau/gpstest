@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.android.gpstest.lang.LocaleManager;
 
 /**
@@ -28,7 +30,7 @@ import com.android.gpstest.lang.LocaleManager;
  *
  * @author Sean J. Barbeau
  */
-public class Application extends android.app.Application {
+public class Application extends MultiDexApplication {
 
     private static Application mApp;
 
