@@ -113,7 +113,7 @@
     <string name="pref_key_file_nmea_output">file_nmea_output</string>
     <string name="pref_key_file_measurement_output">file_measurement_output</string>
     <string name="pref_key_file_navigation_message_output">file_navigation_message_output</string>
-    <string name="pref_key_file_antenna_output">file_antenna_output</string>
+    <string name="pref_key_file_antenna_output_json">file_antenna_output_json</string>
     <string name="pref_key_file_location_output">file_location_output</string>
 
     <string name="pref_key_about_category">about_category</string>

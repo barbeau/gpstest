@@ -300,8 +300,8 @@
     </string>
     <string name="pref_file_location_output_title">Location</string>
     <string name="pref_file_location_output_summary">Logs location fix details to a file</string>
-    <string name="pref_file_antenna_output_title">Antenna Info</string>
-    <string name="pref_file_antenna_output_summary">Logs GNSS antenna details to a file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_title">Antenna Info (JSON)</string>
+    <string name="pref_file_antenna_output_summary">Logs GNSS antenna details to a JSON file. Only available on supported devices (Android 11 and up).</string>
 
     <string name="logging_to_new_file">Logging to new file: %1$s</string>
     <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>

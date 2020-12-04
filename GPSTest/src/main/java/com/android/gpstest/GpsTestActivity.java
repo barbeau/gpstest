@@ -1484,7 +1484,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkGnssAntennaOutput(SharedPreferences settings) {
-        mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output), false);
+        mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_json), false);
     }
 
     private void checkNavMessageOutput(SharedPreferences settings) {

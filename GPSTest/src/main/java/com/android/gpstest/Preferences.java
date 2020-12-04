@@ -188,7 +188,7 @@ public class Preferences extends PreferenceActivity implements
             PermissionUtils.requestFileWritePermission(Preferences.this);
             return true;
         });
-        chkLogFileAntenna = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output));
+        chkLogFileAntenna = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output_json));
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
             chkLogFileAntenna.setOnPreferenceChangeListener((preference, newValue) -> {
