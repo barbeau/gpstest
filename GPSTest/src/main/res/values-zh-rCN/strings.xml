@@ -47,9 +47,12 @@
     <string name="share">分享</string>
     <string name="copied_to_clipboard">位置已复制到粘贴板</string>
     <string name="send_log">发送日志</string>
+    <string name="log">日志</string>
+    <string name="file_name">文件名</string>
+    <string name="location">位置</string>
     <string name="log_instructions">在设置中启用 NMEA、原始测量数据、导航信息等的输出</string>
     <string name="log_error">将日志输出到文件时发生了错误。您是否已授予本应用存储权限？请尝试在设置中重新启用任一将日志输出到文件的选项，并在系统提示时点击“允许”。</string>
-    <string name="no_location">在 GNSS 定位成功后分享你的位置</string>
+    <string name="no_location">试着在获得一个 GNSS 固定方位后分享你的位置......</string>
     <string name="include_altitude">包含高度</string>
     <string name="set_fix_frequency">设置固定频率</string>
     <string name="force_time_injection_success">已成功导入时间数据。</string>
@@ -57,6 +60,13 @@
 
     <string name="force_psds_injection_success">已成功导入 PSDS 数据。</string>
     <string name="force_psds_injection_failure">设备不支持导入 PSDS 数据。</string>
+
+    <string name="device">设备</string>
+    <string name="upload_details">将您设备的功能(例如，设备制造商和型号，支持的GNSS，支持的SBAS，双频支持)到公共的GPSTest设备数据库 （https://docs.google.com/spreadsheets/d/1jXtRCoEnnFNWj6_oFlVWflsf-b0jkfZpyhN-BXsv7uo/edit）。n\n不会共享来自你设备的私密信息。</string>
+    <string name="upload_no_location">请切换到状态屏幕，等待GNSS固定方位，然后上传设备功能。</string>
+    <string name="upload_success">成功上传设备功能！</string>
+    <string name="upload_failure">设备功能信息上传失败。请再试一次。</string>
+    <string name="upload_nothing_changed">自从上次上传后没有任何变化。请稍后再试。</string>
 
     <string name="zoom_in">放大</string>
     <string name="zoom_out">缩小</string>
@@ -115,7 +125,7 @@
     <string name="filter_text">显示 %2$d颗卫星中的%1$d颗</string>
     <string name="filter_showall">(显示全部)</string>
     <string name="error_time_title">你的 GNSS 时间有误</string>
-    <string name="error_time_message">设备的GNSS时间：n\n%1$s\n\n…与您的系统时钟相差%2$d天以上。这可能是GPS周翻转问题引起的-请向您的设备制造商询问详细信息。有关更多信息，请参见http://bit.ly/gps-week-rollover。</string>
+    <string name="error_time_message">设备的 GNSS 时间：\n\n%1$s\n\n… 和你的设备时钟的时间相差超过 %2$d天。这可能是由GPS 周翻转问题造成的。- 细节请询问您的设备制造商。更多信息见https://github.com/barbeau/gpstest/blob/master/FAQ.md#why-is-my-gps-time-wrong</string>
     <string name="unknown">未知</string>
     <string name="cancel">取消</string>
 
@@ -188,7 +198,8 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: 反馈</string>
     <string name="feedback_body">欢迎任何意见、建议、bug 报告！\n\n\n</string>
-    <string name="feedback_error">无法发送反馈: 没有找到合适的应用。</string>
+    <string name="feedback_error">无法发送反馈：没有找到合适的应用程序。</string>
+    <string name="device_properties_upload_success">成功地上传了设备属性。感谢！</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新内容</string>
@@ -259,8 +270,8 @@
 （Android 7.0 及其以上）</string>
     <string name="pref_file_location_output_title">位置</string>
     <string name="pref_file_location_output_summary">输出定位详情至文件</string>
-    <string name="pref_file_antenna_output_title">天线信息</string>
-    <string name="pref_file_antenna_output_summary">将GNSS天线细节记录到一个文件。只能在支持的设备上使用 (Android 11及以上版本)。</string>
+    <string name="pref_file_antenna_output_title">天线信息 (JSON)</string>
+    <string name="pref_file_antenna_output_summary">将GNSS天线细节记录到一个JSON文件中。只能在支持的设备上使用 (Android 11及以上)。</string>
 
     <string name="logging_to_new_file">日志写入至: %1$s</string>
     <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>

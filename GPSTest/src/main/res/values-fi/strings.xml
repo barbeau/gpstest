@@ -47,9 +47,12 @@
     <string name="share">Jaa</string>
     <string name="copied_to_clipboard">Sijainti kopioitu leikepöydälle</string>
     <string name="send_log">Lähetä loki ...</string>
+    <string name="log">Loki</string>
+    <string name="file_name">Tiedoston nimi</string>
+    <string name="location">Sijainti</string>
     <string name="log_instructions">Ota NMEA: n, raakamittausten, navigointiviestien ja muiden tietojen kirjaaminen käyttöön Asetuksissa</string>
     <string name="log_error">Jokin meni pieleen tiedostojen kirjaamisessa. Sallitko tiedosto- / tallennusoikeudet? Yritä ottaa tiedostojen kirjaaminen uudelleen käyttöön Asetuksissa ja napauta \"Salli\" pyydettäessä.</string>
-    <string name="no_location">Yritä jakaa sijaintisi saatuasi GNSS-korjauksen</string>
+    <string name="no_location">Yritä jakaa sijaintisi GNSS-korjauksen jälkeen ...</string>
     <string name="include_altitude">Sisältää korkeuden</string>
     <string name="set_fix_frequency">Aseta Korjattu Taajuus</string>
     <string name="force_time_injection_success">Aikatiedot lisätty onnistuneesti.</string>
@@ -57,6 +60,13 @@
 
     <string name="force_psds_injection_success">PSDS-tietojen lisääminen onnistui.</string>
     <string name="force_psds_injection_failure">Laite ei tue PSDS-tietojen syöttämistä.</string>
+
+    <string name="device">Laite</string>
+    <string name="upload_details">Lataa laitteesi ominaisuudet (esim. Laitemerkki ja -malli, tuettu GNSS, tuettu SBAS, kaksoistaajuustuki) julkiseen GPSTest-laitetietokantaan (https://bit.ly/gpstest-device-database).\n\nLaitteesi yksityistietoja ei jaeta..</string>
+    <string name="upload_no_location">Vaihda tila-näyttöön, odota GNSS-korjaus ja lataa laitteen ominaisuudet.</string>
+    <string name="upload_success">Laitteen ominaisuudet ladattu onnistuneesti!</string>
+    <string name="upload_failure">Laitteen ominaisuuksien lataaminen epäonnistui. Yritä uudelleen.</string>
+    <string name="upload_nothing_changed">Mikään ei muuttunut viimeisimmän latauksen jälkeen. Yritä uudelleen myöhemmin.</string>
 
     <string name="zoom_in">Suurenna</string>
     <string name="zoom_out">Pienennä</string>
@@ -115,7 +125,7 @@
     <string name="filter_text">Näytetään %1$d %2$d sateliitistä </string>
     <string name="filter_showall">(näytä kaikki)</string>
     <string name="error_time_title">GNSS aika on väärä</string>
-    <string name="error_time_message">Laitteen GNSS-aika: \ n \ n \%1$s n \ n…on enemmän kuin %2$d päivää eri kuin järjestelmän kellosi. Tämä voi johtua GPS-viikon siirtymisongelmasta - kysy lisätietoja laitteen valmistajalta. Katso lisätietoja osoitteesta http://bit.ly/gps-week-rollover.</string>
+    <string name="error_time_message">Laitteen GNSS-aika: \ n \ n%1$s\ n \ n… eroaa %2$d päivää enemmän kuin järjestelmän kellosi. Tämä voi johtua GPS-viikon siirtymisongelmasta - kysy lisätietoja laitteen valmistajalta. Katso lisätietoja osoitteesta https://bit.ly/gps-week-rollover.</string>
     <string name="unknown">Tuntematon</string>
     <string name="cancel">Peruuttaa</string>
 
@@ -189,7 +199,8 @@
     <string name="feedback_subject">GPSTest: Palaute</string>
     <string name="feedback_body">Valitukset, kehut tai virheilmoitukset ovat tervetulleita! \n\ n\ n
 </string>
-    <string name="feedback_error">Ei voi lähettää palautetta: sopivaa sovellusta ei löydy.</string>
+    <string name="feedback_error">Palautteen lähettäminen ei onnistu: Ei löytynyt sopivaa sovellusta.</string>
+    <string name="device_properties_upload_success">Laitteen ominaisuudet ladattu onnistuneesti. Kiitos!</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Mikä on uutta?</string>
@@ -272,8 +283,8 @@ Studioon (Android 7.0 ja uudemmat)</string>
     <string name="pref_file_navigation_message_output_summary">Luo GNSS-navigointiviestit tiedostoon (Android 7.0 tai uudempi)</string>
     <string name="pref_file_location_output_title">Sijainti</string>
     <string name="pref_file_location_output_summary">Kirjaa sijaintikorjauksen tiedot tiedostoon</string>
-    <string name="pref_file_antenna_output_title">Antennitiedot</string>
-    <string name="pref_file_antenna_output_summary">Kirjaa GNSS-antennin tiedot tiedostoon. Saatavilla vain tuetuilla laitteilla (Android 11 ja uudemmat).</string>
+    <string name="pref_file_antenna_output_title">Antenni tiedot (JSON)</string>
+    <string name="pref_file_antenna_output_summary">Kirjaa GNSS-antennin tiedot JSON-tiedostoon. Saatavilla vain tuetuilla laitteilla (Android 11 ja uudemmat).</string>
 
     <string name="logging_to_new_file">Kirjautuminen uuteen tiedostoon: %1$s</string>
     <string name="unable_to_close_all_file_streams">Kaikkia tiedostovirtoja ei voi sulkea.</string>
@@ -338,7 +349,7 @@ Esimerkiksi, jos suuntima on 60 ja suuntiman tarkkuus on 10, on 68% todennäköi
 <b># Satelliitti</b>
 # satelliitit, joita käytetään korjauksessa / # satelliittit näkyvissä (kelvollisilla signaalinvoimakkuuden arvoilla) / # satelliittit, jotka laite tunnistaa. Kaksitaajuisissa laitteissa satelliitti näytetään käytetyksi, jos vähintään yksi kyseisen satelliitin taajuus on käytössä, satelliitti näytetään näkymänä, jos ainakin yhdellä signaalilla on kelvollinen signaalin voimakkuusarvo, ja se näytetään laitteen tuntemana jos on tietoa ainakin yhdestä satelliitin signaalista.\n&#8226;\u0020
 <b>PDOP</b>
-- Tarkkuuden (3D) laimennus (vaatii NMEA-tuen)\n&#8226;\u0020
+- Sijainta tarkkuuden (3D) laimennus (vaatii NMEA-tuen)\n&#8226;\u0020
 <b>H/V DOP</b>
 - Tarkkuuden vaaka- / pystysuora laimennus (vaatii NMEA-tuen)\n&#8226;\u0020
 <b>TTFF</b>
@@ -387,10 +398,10 @@ satelliitille (U), jos satelliittia käytettiin viimeisimmän sijainnin korjauks
 <b>Pystyvirhe</b>
 - Pystysuuntaiset virhemittaukset, toisin kuin vaakasuuntaiset virheet, voivat olla positiivisia tai negatiivisia. Kun tarkkuus-näkymä näytetään, sekä pystysuuntainen virhe että keskimääräinen pystysuuntainen virhe lasketaan käyttämällä virhemittauksen absoluuttista arvoa.\n\n
 
-&#8226;\u0020Aseta oikea sijaintisi nopeasti QR-koodien avulla. Katso lisätietoja osoitteesta http://bit.ly/gpstest-qr-codes.\n\n
+&#8226;\u0020Aseta oikea sijaintisi nopeasti QR-koodien avulla. Katso lisätietoja osoitteesta https://bit.ly/gpstest-qr-codes.\n\n
 
 <b>*** Tiedostojen kirjaaminen ***</b>\n\n
-&#8226;\u0020Ota tiedostojen kirjaaminen käyttöön NMEA-asetusten, raakamittausten, navigointiviestien ja sijaintikorjausten asetuksissa. Katso lisätietoja osoitteesta http://bit.ly/gpstest-file.\n\n
+&#8226;\u0020Ota tiedostojen kirjaaminen käyttöön NMEA-asetusten, raakamittausten, navigointiviestien ja sijaintikorjausten asetuksissa. Katso lisätietoja osoitteesta https://bit.ly/gpstest-file for details.\n\n
 
 <b>*** Kiitokset ***</b>\n\n
 &#8226;\u0020 <b>Mike Lockwood</b>- alkuperäinen kehittäjä versiolle v1.x\n
@@ -411,5 +422,5 @@ satelliitille (U), jos satelliittia käytettiin viimeisimmän sijainnin korjauks
 &#8226;\u0020 Ukrainankielinen käännös Serhii Osmalchuk\n
 &#8226;\u0020 Koreankielinen käännös snotree\n
 &#8226;\u0020 Baskinkielinen käännös Alexander Gabilondo\n
-</string>
+&#8226;\u0020 Suomenkielinen käännös Ari Nygard\n</string>
 </resources>

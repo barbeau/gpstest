@@ -39,7 +39,7 @@
 
     <!-- Help -->
     <string-array name="main_help_options">
-        <item>Apa yang Baru?</item>
+        <item>Apa yang baru?</item>
         <item>Tentang</item>
     </string-array>
 </resources>
