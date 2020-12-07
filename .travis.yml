@@ -23,8 +23,8 @@ env:
     # PATH order is incredibly important. e.g. the 'emulator' script exists in more than one place!
     - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
   matrix:
-    - API=18 ABI=x86 # Works
-    - API=19 ABI=x86 # Works
+    # - API=18 ABI=x86 # Broken - see https://github.com/barbeau/gpstest/issues/453
+    # - API=19 ABI=x86 # Broken - see https://github.com/barbeau/gpstest/issues/453
     # API 20 was Android Wear only
     - API=21 ABI=x86_64 # Works
     - API=22 ABI=x86_64 # Works
