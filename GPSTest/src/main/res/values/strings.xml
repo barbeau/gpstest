@@ -208,16 +208,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Filter satellites on Status screen</b>
-        - Hide a GNSS using the button on the action bar.\n&#8226;\u0020
-        <b>GNSS lock indicator</b>
-        - A progress bar is shown while waiting for a GNSS fix, and a lock icon is shown when a position is acquired.\n&#8226;\u0020
-        <b>Improved dark mode</b>
-        - Map and Sky are now themed.\n&#8226;\u0020
-        <b>Added Basque translation</b>
-        - Thanks Alexander Gabilondo!\n&#8226;\u0020
-        <b>Improved launcher icon</b>
-        - Support for adaptive icons on supported devices.\n&#8226;\u0020
+        <b>Crowd-source device capabilities</b>
+        - Optionally contribute your device capabilities to the public GPSTest Device Database (https://bit.ly/gpstest-device-database) via the Share screen.\n&#8226;\u0020
+        <b>Log antenna info</b>
+        - Support for logging GnssAntennaInfo to a JSON file.\n&#8226;\u0020
+        <b>Add Finnish translation</b>
+        -  Thanks Ari Nygard!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
