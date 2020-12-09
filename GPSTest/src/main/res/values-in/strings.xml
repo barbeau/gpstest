@@ -208,16 +208,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Apa yang baru?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Filter satelit pada layar Status</b>
-        - Sembunyikan GNSS menggunakan tombol pada bar tindakan.\n&#8226;\u0020
-        <b>Indikator pengunci GNSS</b>
-        - Menampilkan bar berjalan selama menunggu perbaikan GNSS, dan ikon kunci ditampilkan saat memperoleh posisi lokasi.\n&#8226;\u0020
-        <b>Peningkatan mode gelap</b>
-        - Peta dan Langit sekarang mengikuti tema.\n&#8226;\u0020
-        <b>Tambahan terjemahan bahasa Basque</b>
-        - Terima kasih kepada Alexander Gabilondo!\n&#8226;\u0020
-        <b>Peningkatan ikon peluncur</b>
-        - Dukungan ikon adaptif untuk perangkat yang mendukung.\n&#8226;\u0020
+        <b>Info kapabilitas perangkat bersumber luas</b>
+        - Sumbangkan informasi kapabilitas perangkat Anda secara opsional ke Database Perangkat GPSTest publik (https://bit.ly/gpstest-device-database) melalui layar Bagikan.\n&#8226;\u0020
+        <b>Log info antena</b>
+        - Dukungan pencatatan log GnssAntennaInfo ke dalam file JSON.\n&#8226;\u0020
+        <b>Tambahan terjemahan bahasa Suomi</b>
+        - Terima kasih kepada Ari Nygard!\n&#8226;\u0020
         <b>Perbaikan masalah</b>
         - Lihat https://bit.ly/gpstest-releases
     </string>

@@ -204,19 +204,6 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Mikä on uutta?</string>
-    <string name="main_help_whatsnew">&#8226;\u0020
-<b>Suodata satelliitteja tila-näytössä</b>
-- Piilota GNSS toimintopalkin painikkeella..\n&#8226;\u0020
-<b>GNSS-lukituksen ilmaisin</b>
-- Edistymispalkki näkyy odotettaessa GNSS-korjausta, ja lukituskuvake näkyy, kun sijainti on hankittu.\n&#8226;\u0020
-<b>Parannettu tumma tila</b>
-- Kartta ja taivas ovat nyt teemalla.\n&#8226;\u0020
-<b>Lisätty baskinkielinen käännös</b>
-- Kiitos Alexander Gabilondo!\n&#8226;\u0020
-<b>Parannettu käynnistyskuvake</b>
-- Tuettujen laitteiden mukautuvien kuvakkeiden tuki.\n&#8226;\u0020
-<b>Virheenkorjauksia</b>
-- Katso https://bit.ly/gpstest-releases</string>
     <string name="main_help_close">Sulje</string>
 
     <!-- Preferences -->
