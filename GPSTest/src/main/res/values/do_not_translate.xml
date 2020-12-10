@@ -97,7 +97,6 @@
     <string name="pref_key_gps_min_time">gps_min_time</string>
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
     <string name="pref_key_use_gnss_apis">use_gnss_apis</string>
-    <string name="pref_key_stop_gnss_in_background">stop_gnss_in_background</string>
 
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>

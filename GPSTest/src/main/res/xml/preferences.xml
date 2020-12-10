@@ -97,11 +97,6 @@
             android:title="@string/pref_use_gnss_apis_title"
             android:summary="@string/pref_use_gnss_apis_summary"
             android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="@string/pref_key_stop_gnss_in_background"
-            android:title="@string/pref_stop_gnss_in_background_title"
-            android:summary="@string/pref_stop_gnss_in_background_summary"
-            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_output_category_title">

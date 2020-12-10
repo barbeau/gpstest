@@ -580,8 +580,8 @@ public class GpsTestActivity extends AppCompatActivity
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeGnssMeasurementsListener();
         }
-        // Check if the user has chosen to stop GNSS whenever app is in background
-        if (!isChangingConfigurations() && Application.getPrefs().getBoolean(getString(R.string.pref_key_stop_gnss_in_background), false)) {
+        // Stop GNSS whenever app is in background
+        if (!isChangingConfigurations()) {
             gpsStop();
         }
 
@@ -1501,9 +1501,6 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        if (mLocationManager != null) {
-            mLocationManager.removeUpdates(this);
-        }
         csvFileLogger.close();
         jsonFileLogger.close();
         super.onDestroy();
