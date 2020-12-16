@@ -90,6 +90,8 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
                 .appendQueryParameter(APP_VERSION_CODE, inputData.getString(APP_VERSION_CODE))
                 .appendQueryParameter(APP_BUILD_FLAVOR, inputData.getString(APP_BUILD_FLAVOR))
                 .appendQueryParameter(USER_COUNTRY, inputData.getString(USER_COUNTRY))
+                .appendQueryParameter(ANDROID_BUILD_INCREMENTAL, inputData.getString(ANDROID_BUILD_INCREMENTAL))
+                .appendQueryParameter(ANDROID_BUILD_CODENAME, inputData.getString(ANDROID_BUILD_CODENAME))
                 .build()
     }
 
@@ -131,6 +133,8 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         const val APP_VERSION_CODE = "appVersionCode"
         const val APP_BUILD_FLAVOR = "appBuildFlavor"
         const val USER_COUNTRY = "userCountry"
+        const val ANDROID_BUILD_INCREMENTAL = "androidBuildIncremental"
+        const val ANDROID_BUILD_CODENAME = "androidBuildCodename"
         private const val RESULT_OK = "STATUS OK"
         private const val RESULT_NO_EMULATOR_SUBMISSIONS = "NO EMULATOR SUBMISSIONS"
     }

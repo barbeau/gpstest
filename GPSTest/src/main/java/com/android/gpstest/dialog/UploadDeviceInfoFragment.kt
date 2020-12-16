@@ -158,7 +158,9 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
-                    DevicePropertiesUploader.USER_COUNTRY to userCountry
+                    DevicePropertiesUploader.USER_COUNTRY to userCountry,
+                    DevicePropertiesUploader.ANDROID_BUILD_INCREMENTAL to Build.VERSION.INCREMENTAL,
+                    DevicePropertiesUploader.ANDROID_BUILD_CODENAME to Build.VERSION.CODENAME
             )
 
             upload.isEnabled = false
