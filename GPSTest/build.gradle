@@ -151,7 +151,7 @@ dependencies {
     // Calculating offset for camera target in map view (Google flavor only)
     googleImplementation 'com.google.maps.android:android-maps-utils:0.5'
     // OSM Droid (fdroid flavor only)
-    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.0'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.4'
 
     //
     // Unit tests

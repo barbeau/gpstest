@@ -250,6 +250,12 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
     }
 
     public void onLocationChanged(Location loc) {
+        if (mMap == null || !mMap.isLayoutOccurred()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !mMap.isLaidOut()) {
+            return;
+        }
         GeoPoint startPoint = new GeoPoint(loc.getLatitude(), loc.getLongitude());
         if (!mGotFix) {
             // Zoom levels are a little different than Google Maps, so add 2 to our Google default to get the same view
@@ -264,16 +270,18 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
                 mHorAccPolygon = new Polygon();
             }
             ArrayList<GeoPoint> circle = Polygon.pointsAsCircle(startPoint, loc.getAccuracy());
-            mHorAccPolygon.setPoints(circle);
+            if (circle != null) {
+                mHorAccPolygon.setPoints(circle);
 
-            if (!mMap.getOverlays().contains(mHorAccPolygon)) {
-                mHorAccPolygon.setStrokeWidth(0.5f);
-                mHorAccPolygon.setOnClickListener((polygon, mapView, eventPos) -> {
-                    // Disable clicks
-                    return false;
-                });
-                mHorAccPolygon.setFillColor(ContextCompat.getColor(Application.get(), R.color.horizontal_accuracy));
-                mMap.getOverlays().add(mHorAccPolygon);
+                if (!mMap.getOverlays().contains(mHorAccPolygon)) {
+                    mHorAccPolygon.setStrokeWidth(0.5f);
+                    mHorAccPolygon.setOnClickListener((polygon, mapView, eventPos) -> {
+                        // Disable clicks
+                        return false;
+                    });
+                    mHorAccPolygon.setFillColor(ContextCompat.getColor(Application.get(), R.color.horizontal_accuracy));
+                    mMap.getOverlays().add(mHorAccPolygon);
+                }
             }
         }
 
