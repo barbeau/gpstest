@@ -104,13 +104,8 @@ public abstract class BaseFileLogger implements FileLogger {
                     logException("Could not open file: " + currentFilePath, e);
                     return false;
                 }
-                if (fileWriter != null) {
-                    try {
-                        fileWriter.close();
-                    } catch (IOException e) {
-                        logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return false;
-                    }
+                if (!closeOldFileWriter()) {
+                    return false;
                 }
                 file = existingFile;
                 fileWriter = writer;
@@ -131,13 +126,8 @@ public abstract class BaseFileLogger implements FileLogger {
 
                 writeFileHeader(writer, currentFilePath);
 
-                if (fileWriter != null) {
-                    try {
-                        fileWriter.close();
-                    } catch (IOException e) {
-                        logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                        return false;
-                    }
+                if (!closeOldFileWriter()) {
+                    return false;
                 }
 
                 file = currentFile;
@@ -147,58 +137,26 @@ public abstract class BaseFileLogger implements FileLogger {
                 isNewFile = true;
             }
 
-
-            File file;
-            if (!isNewFile) {
-                // Use existing file
-                currentFilePath = existingFile.getAbsolutePath();
-                file = existingFile;
-            } else {
-                // Create new logging file
-                SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
-                String fileName = String.format("%s_%s." + getFileExtension(), FILE_PREFIX, formatter.format(date));
-                file = new File(baseDirectory, fileName);
-                currentFilePath = file.getAbsolutePath();
-            }
-
-            BufferedWriter writer;
-            try {
-                writer = new BufferedWriter(new FileWriter(file, true));
-            } catch (IOException e) {
-                logException("Could not open file: " + currentFilePath, e);
-                return false;
-            }
-
-            if (isNewFile) {
-                // Only if file didn't previously exist
-                writeFileHeader(writer, currentFilePath);
-            }
-
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
-                    return false;
-                }
-            }
-
-            fileWriter = writer;
-            this.file = file;
-
             boolean postInit = postFileInit(fileWriter, isNewFile);
             if (!postInit) {
                 return false;
             }
 
-            if (isNewFile) {
-                // Only if file didn't previously exist
-                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
-            }
-
             isStarted = true;
         }
         return isNewFile;
+    }
+
+    private boolean closeOldFileWriter() {
+        if (fileWriter != null) {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
