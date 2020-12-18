@@ -75,7 +75,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="-7dp"
-                android:indeterminate="true"/>
+                android:indeterminate="true"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <!-- Bottom sliding panel -->

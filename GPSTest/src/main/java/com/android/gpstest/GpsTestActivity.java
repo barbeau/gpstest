@@ -125,7 +125,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
-    private static final String GPS_STARTED = "gps_started";
+    private static final String GPS_RESUME = "gps_resume";
     private static final String EXISTING_CSV_LOG_FILE = "existing_csv_log_file";
     private static final String EXISTING_JSON_LOG_FILE = "existing_json_log_file";
 
@@ -178,6 +178,8 @@ public class GpsTestActivity extends AppCompatActivity
     private static boolean mTruncateVector = false;
 
     boolean mStarted;
+
+    boolean gpsResume = false;
 
     boolean mFaceTrueNorth;
 
@@ -342,8 +344,8 @@ public class GpsTestActivity extends AppCompatActivity
 
      @Override
     public void onSaveInstanceState(Bundle outState) {
-        // Save current GPS started state
-        outState.putBoolean(GPS_STARTED, mStarted);
+        // Save GPS resume state
+        outState.putBoolean(GPS_RESUME, gpsResume);
          if (csvFileLogger.isStarted() && !shareDialogOpen) {
              outState.putSerializable(EXISTING_CSV_LOG_FILE, csvFileLogger.getFile());
          }
@@ -570,7 +572,7 @@ public class GpsTestActivity extends AppCompatActivity
             mSensorManager.unregisterListener(this);
         }
 
-        // Remove status listeners
+        // Remove status and location listeners
         removeStatusListener();
         removeNmeaListener();
         removeGnssAntennaListener();
@@ -580,9 +582,12 @@ public class GpsTestActivity extends AppCompatActivity
         if (SatelliteUtils.isGnssStatusListenerSupported()) {
             removeGnssMeasurementsListener();
         }
-        // Stop GNSS whenever app is in background
-        if (!isChangingConfigurations()) {
+        if (mStarted) {
             gpsStop();
+            // If GPS was started, we want to resume it after orientation change
+            gpsResume = true;
+        } else {
+            gpsResume = false;
         }
 
         super.onPause();
@@ -616,13 +621,13 @@ public class GpsTestActivity extends AppCompatActivity
 
         if (savedInstanceState != null) {
             // Activity is being restarted and has previous state (e.g., user rotated device)
-            boolean gpsWasStarted = savedInstanceState.getBoolean(GPS_STARTED, true);
-            if (gpsWasStarted) {
+            boolean gpsResume = savedInstanceState.getBoolean(GPS_RESUME, true);
+            if (gpsResume) {
                 gpsStart();
             }
         } else {
-            // Activity is starting without previous state - use "Auto-start GNSS" setting
-            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true)) {
+            // Activity is starting without previous state - use "Auto-start GNSS" setting, or gpsResume (e.g., if app was backgrounded via Home button)
+            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true) || gpsResume) {
                 gpsStart();
             }
         }
@@ -962,6 +967,7 @@ public class GpsTestActivity extends AppCompatActivity
             mLocationManager
                     .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
             mStarted = true;
+            showProgressBar();
 
             // Show Toast only if the user has set minTime or minDistance to something other than default values
             if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec))
@@ -1070,7 +1076,7 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onFirstFix(int ttffMillis) {
-                showHaveFix();
+                hideProgressBar();
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFirstFix(ttffMillis);
                     listener.onGnssFixAcquired();
@@ -1096,13 +1102,13 @@ public class GpsTestActivity extends AppCompatActivity
             if ((SystemClock.elapsedRealtimeNanos() - mLastLocation.getElapsedRealtimeNanos()) >
                     TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
                 // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
-                showLostFix();
+                showProgressBar();
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFixLost();
                 }
             } else {
                 // We have a GNSS fix - hide the progress bar
-                showHaveFix();
+                hideProgressBar();
                 for (GpsTestListener listener : mGpsTestListeners) {
                     listener.onGnssFixAcquired();
                 }
@@ -1110,13 +1116,13 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    private void showHaveFix() {
+    private void hideProgressBar() {
         if (progressBar != null) {
             UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
     }
 
-    private void showLostFix() {
+    private void showProgressBar() {
         if (progressBar != null) {
             UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
@@ -1124,7 +1130,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressLint({"NewApi", "MissingPermission"})
     private void addGnssMeasurementsListener() {
-        if (mLocationManager == null) {
+        if (mLocationManager == null || !mStarted) {
             return;
         }
         if (!SatelliteUtils.isGnssStatusListenerSupported()) {
@@ -1222,7 +1228,7 @@ public class GpsTestActivity extends AppCompatActivity
                     case GpsStatus.GPS_EVENT_STOPPED:
                         break;
                     case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        showHaveFix();
+                        hideProgressBar();
                         for (GpsTestListener listener : mGpsTestListeners) {
                             listener.onGnssFixAcquired();
                         }
@@ -1574,6 +1580,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     public void onLocationChanged(Location location) {
         mLastLocation = location;
+        Log.d(TAG, "Location from " + this + location);
 
         updateGeomagneticField();
 
