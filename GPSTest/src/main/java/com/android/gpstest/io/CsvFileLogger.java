@@ -55,7 +55,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
 
     @Override
     String getFileExtension() {
-        return "csv";
+        return "txt";
     }
 
     @Override
