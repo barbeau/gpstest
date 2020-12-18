@@ -85,10 +85,18 @@
         app:layout_constraintTop_toBottomOf="@id/scroll_coordinate_format"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="include_altitude" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/location_button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/barrier"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.button.MaterialButton
