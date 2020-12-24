@@ -4,12 +4,10 @@ import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.dialog.ShareLogFragment.Listener
 import com.google.android.material.tabs.TabLayout
@@ -59,15 +57,15 @@ class ShareDialogFragment : DialogFragment() {
             when (position) {
                 0 -> {
                     tab.text = getString(R.string.location)
-                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_location_on_24)
+                    tab.setIcon(R.drawable.ic_baseline_location_on_24)
                 }
                 1 -> {
                     tab.text = getString(R.string.log)
-                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_list_alt_24)
+                    tab.setIcon(R.drawable.ic_baseline_list_alt_24)
                 }
                 2 -> {
                     tab.text = getString(R.string.device)
-                    tab.icon = ContextCompat.getDrawable(Application.get(),  R.drawable.ic_baseline_perm_device_information_24)
+                    tab.setIcon(R.drawable.ic_baseline_perm_device_information_24)
                 }
             }
         }.attach()
