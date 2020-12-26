@@ -24,6 +24,7 @@ import com.android.gpstest.model.MeasuredError;
 import com.android.gpstest.util.BenchmarkUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -45,7 +46,7 @@ public class BenchmarkViewModel extends AndroidViewModel {
 
     private MutableLiveData<Pair<Location, MeasuredError>> mLocationErrorPair = new MutableLiveData<>();
 
-    private ArrayList<Pair<Location, MeasuredError>> mLocationErrorPairs = new ArrayList<>();
+    private List<Pair<Location, MeasuredError>> mLocationErrorPairs = new ArrayList<>();
 
     public BenchmarkViewModel(@NonNull Application application) {
         super(application);
@@ -87,7 +88,7 @@ public class BenchmarkViewModel extends AndroidViewModel {
      * Get history of all location and error pairs from the most recent test
      * @return history of all location and error pairs from the most recent test
      */
-    public ArrayList<Pair<Location, MeasuredError>> getLocationErrorPairs() {
+    public List<Pair<Location, MeasuredError>> getLocationErrorPairs() {
         return mLocationErrorPairs;
     }
 

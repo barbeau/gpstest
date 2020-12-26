@@ -92,6 +92,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -232,7 +233,7 @@ public class GpsTestActivity extends AppCompatActivity
     private GnssAntennaInfo.Listener gnssAntennaInfoListener;
 
     // Listeners for Fragments
-    private ArrayList<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
+    private List<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
 
     private Location mLastLocation;
 
