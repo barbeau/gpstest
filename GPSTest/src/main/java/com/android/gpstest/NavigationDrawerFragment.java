@@ -47,6 +47,7 @@ import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.ScrimInsetsScrollView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -142,7 +143,7 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     // list of navdrawer items that were actually added to the navdrawer, in order
-    private ArrayList<Integer> mNavDrawerItems = new ArrayList<Integer>();
+    private List<Integer> mNavDrawerItems = new ArrayList<Integer>();
 
     // views that correspond to each navdrawer item, null if not yet created
     private View[] mNavDrawerItemViews = null;

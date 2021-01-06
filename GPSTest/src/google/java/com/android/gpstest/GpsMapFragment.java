@@ -57,6 +57,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -111,7 +112,7 @@ public class GpsMapFragment extends SupportMapFragment
 
     private Location mLastLocation;
 
-    private ArrayList<Polyline> mPathLines = new ArrayList<>();
+    private List<Polyline> mPathLines = new ArrayList<>();
 
     MapViewModelController mMapController;
 
