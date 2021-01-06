@@ -163,6 +163,8 @@ No.  See our [Privacy Policy](https://github.com/barbeau/gpstest/wiki/Privacy-Po
 
 As of April 6, 2019, some older devices have been impacted by the [GPS Week Number Rollover](https://www.cisa.gov/gps-week-number-roll-over), which can result in unpredictable behavior. Typically, the time computed by GPS will be wrong. You will need to contact your device manufacturer or cellular carrier to determine if you device can be updated to fix this issue. For example, here is [Verizon's GPS Week Rollover help page](https://www.verizonwireless.com/legal/notices/global-positioning-system/).
 
+See more information in [this article I wrote](https://barbeau.medium.com/how-to-detect-gps-week-rollover-problems-on-android-5cc739f2fa9c) for the hidden feature in GPSTest that can tell you if your device is impacted.
+
 ## I'm getting a weird value for Time-to-First-Fix.  What's up?
 
 On Android 4.1 and below, your system clock must be accurate to calculate an accurate Time-To-First-Fix (TTFF) value
