@@ -3,11 +3,13 @@ package com.android.gpstest.dialog
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +30,13 @@ import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class UploadDeviceInfoFragment : Fragment() {
+    companion object {
+        val TAG = "UploadDIFragment"
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setRetainInstance(true)
         return inflater.inflate(R.layout.share_upload, container, false)
@@ -63,8 +70,15 @@ class UploadDeviceInfoFragment : Fragment() {
 
             if (Geocoder.isPresent()) {
                 val geocoder = Geocoder(context)
-                val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                if (!addresses.isEmpty()) {
+                var addresses: List<Address>? = emptyList()
+                try {
+                    addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                } catch (ioe: IOException) {
+                    Log.e(TAG, "Error getting address from location via geocoder: " + ioe)
+                } catch (iae: IllegalArgumentException) {
+                    Log.e(TAG, "Invalid lat/lon when getting address from location via geocoder: " + iae)
+                }
+                if (!addresses.isNullOrEmpty()) {
                     userCountry = addresses.get(0).countryCode
                 }
             }
