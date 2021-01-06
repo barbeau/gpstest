@@ -48,7 +48,7 @@ Galileo support has also been confirmed using GPSTest on the following devices:
 * OnePlus 5T (See [this post](https://groups.google.com/forum/m/#!topic/gpstest_android/MCowNjKpVyo)) 
 * Xiaomi Mi 9 (See [official specsheet](https://www.mi.com/global/mi9/specs/)) (also supports GLONASS, Beidou and dual-frequency receiving)
 
-Note that the U.S. [FCC currently restricts use of Galileo](https://groups.google.com/forum/#!topic/gpstest_android/KrBe_csYFfg) when in the United States, so even if your device supports Galileo you won't see any Galileo satellites in GPSTest when in the United States.
+Note that the U.S. [FCC currently restricts use of Galileo](https://barbeau.medium.com/where-is-the-world-is-galileo-6bb7bfa29e) when in the United States, so even if your device supports Galileo you won't see any Galileo satellites in GPSTest when in the United States.
 
 ## Does GPSTest support dual-frequency GNSS?
 
