@@ -19,6 +19,7 @@ package com.android.gpstest.io;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.GnssAntennaInfo;
 import android.location.GnssClock;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
@@ -28,6 +29,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
@@ -37,6 +39,7 @@ import com.android.gpstest.util.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -158,6 +161,12 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
             writer.newLine();
             writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("GnssAntennaInfo format (https://developer.android.com/reference/android/location/GnssAntennaInfo):");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta");
             writer.newLine();
         } catch (IOException e) {
             logException(Application.get().getString(R.string.could_not_initialize_file, filePath), e);
@@ -306,6 +315,37 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                                 : "",
                         measurement.hasCarrierFrequencyHz() ? measurement.getCarrierFrequencyHz() : "");
         fileWriter.write(measurementStream);
+        fileWriter.newLine();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) throws IOException {
+        for (GnssAntennaInfo info : list) {
+            String text =
+                    String.format(
+                            "GnssAntennaInfo,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                            info.getCarrierFrequencyMHz(),
+                            info.getPhaseCenterOffset().getXOffsetMm(),
+                            info.getPhaseCenterOffset().getXOffsetUncertaintyMm(),
+                            info.getPhaseCenterOffset().getYOffsetMm(),
+                            info.getPhaseCenterOffset().getYOffsetUncertaintyMm(),
+                            info.getPhaseCenterOffset().getZOffsetMm(),
+                            info.getPhaseCenterOffset().getZOffsetUncertaintyMm(),
+                            clock.hasLeapSecond() ? clock.getLeapSecond() : "",
+                            clock.hasTimeUncertaintyNanos() ? clock.getTimeUncertaintyNanos() : "",
+                            clock.getFullBiasNanos(),
+                            clock.hasBiasNanos() ? clock.getBiasNanos() : "",
+                            clock.hasBiasUncertaintyNanos() ? clock.getBiasUncertaintyNanos() : "",
+                            clock.hasDriftNanosPerSecond() ? clock.getDriftNanosPerSecond() : "",
+                            clock.hasDriftUncertaintyNanosPerSecond()
+                                    ? clock.getDriftUncertaintyNanosPerSecond()
+                                    : "",
+                            clock.getHardwareClockDiscontinuityCount() + ",");
+            //PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta
+            ///[11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8],[0.1 0.2 0.3 0.4; 1.1 1.2 1.3 1.4; 2.1 2.2 2.3 2.4],60.0,120.0,[9.8 8.7 7.6 6.5; 5.4 4.3 3.2 2.1; 1.3 2.4 3.5 4.6],[0.11 0.22 0.33 0.44; 0.55 0.66 0.77 0.88; 0.91 0.92 0.93 0.94],60.0,120.0
+            fileWriter.write(text);
+        }
+
         fileWriter.newLine();
     }
 }
