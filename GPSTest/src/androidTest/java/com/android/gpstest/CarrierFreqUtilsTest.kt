@@ -465,15 +465,25 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos133L5)
         assertEquals("L5", label)
 
-        // Galaxy 15 (WAAS)
+        // WAAS 131
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(waas_131L1(true))
+        assertEquals("L1", label)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(waas_131L5(true))
+        assertEquals("L5", label)
+
+        // WAAS 133
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(waas_133L1(true))
+        assertEquals("L1", label)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(waas_133L5(true))
+        assertEquals("L5", label)
+
+        // Galaxy 15 (WAAS 135)
         label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L1(true))
         assertEquals("L1", label)
         label = CarrierFreqUtils.getCarrierFrequencyLabel(galaxy15_135L5(true))
         assertEquals("L5", label)
 
-        // ANIK F1R (WAAS)
-
-        // ANIK F1R - 138 L1
+        // ANIK F1R (WAAS 138) L1
         val anik15_138L1 = SatelliteStatus(138,
                 GnssType.SBAS,
                 30f,
@@ -489,7 +499,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(anik15_138L1)
         assertEquals("L1", label)
 
-        // ANIK F1R - 138 L5
+        // ANIK F1R (WAAS 138) L5
         val anik15_138L5 = SatelliteStatus(138,
                 GnssType.SBAS,
                 30f,
@@ -505,9 +515,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(anik15_138L5)
         assertEquals("L5", label)
 
-        // SES_5 (WAAS)
-
-        // SES_5 - 136 L1
+        // SES_5 - 136 L1 (EGNOS)
         val ses5_136L1 = SatelliteStatus(136,
                 GnssType.SBAS,
                 30f,
@@ -518,12 +526,12 @@ class CarrierFreqUtilsTest {
                 25f);
         ses5_136L1.hasCarrierFrequency = true
         ses5_136L1.carrierFrequencyHz = 1575420000.0f
-        ses5_136L1.sbasType = SbasType.WAAS
+        ses5_136L1.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(ses5_136L1)
         assertEquals("L1", label)
 
-        // SES_5 - 136 L5
+        // SES_5 - 136 L5 (EGNOS)
         val ses5_136L5 = SatelliteStatus(136,
                 GnssType.SBAS,
                 30f,
@@ -534,7 +542,7 @@ class CarrierFreqUtilsTest {
                 25f);
         ses5_136L5.hasCarrierFrequency = true
         ses5_136L5.carrierFrequencyHz = 1176450000.0f
-        ses5_136L5.sbasType = SbasType.WAAS
+        ses5_136L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(ses5_136L5)
         assertEquals("L5", label)

@@ -327,6 +327,78 @@ fun galileoE6(id: Int, usedInFix: Boolean): SatelliteStatus {
 }
 
 /**
+ * Returns a status for a WAAS 131 L1 signal
+ */
+fun waas_131L1(usedInFix: Boolean): SatelliteStatus {
+    val waas_131L1 = SatelliteStatus(131,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    waas_131L1.hasCarrierFrequency = true
+    waas_131L1.carrierFrequencyHz = 1575420000.0f
+    waas_131L1.sbasType = SbasType.WAAS
+    return waas_131L1
+}
+
+/**
+ * Returns a status for a WAAS 131 L5 signal
+ */
+fun waas_131L5(usedInFix: Boolean): SatelliteStatus {
+    val waas_131L5 = SatelliteStatus(131,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    waas_131L5.hasCarrierFrequency = true
+    waas_131L5.carrierFrequencyHz = 1176450000.0f
+    waas_131L5.sbasType = SbasType.WAAS
+    return waas_131L5
+}
+
+/**
+ * Returns a status for a WAAS 133 L1 signal
+ */
+fun waas_133L1(usedInFix: Boolean): SatelliteStatus {
+    val waas_133L1 = SatelliteStatus(133,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    waas_133L1.hasCarrierFrequency = true
+    waas_133L1.carrierFrequencyHz = 1575420000.0f
+    waas_133L1.sbasType = SbasType.WAAS
+    return waas_133L1
+}
+
+/**
+ * Returns a status for a WAAS 133 L5 signal
+ */
+fun waas_133L5(usedInFix: Boolean): SatelliteStatus {
+    val waas_133L5 = SatelliteStatus(133,
+            GnssType.SBAS,
+            30f,
+            true,
+            true,
+            usedInFix,
+            72f,
+            25f);
+    waas_133L5.hasCarrierFrequency = true
+    waas_133L5.carrierFrequencyHz = 1176450000.0f
+    waas_133L5.sbasType = SbasType.WAAS
+    return waas_133L5
+}
+
+/**
  * Returns a status for a WAAS Galaxy 15 ID 135 L1 signal
  */
 fun galaxy15_135L1(usedInFix: Boolean): SatelliteStatus {

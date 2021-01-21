@@ -140,21 +140,7 @@ public class CarrierFreqUtils {
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
                     }
-                } else if (svid == 133) {
-                    // GnssType.WAAS;
-                    if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
-                        return "L1";
-                    } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
-                        return "L5";
-                    }
-                } else if (svid == 135) {
-                    // GnssType.WAAS;
-                    if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
-                        return "L1";
-                    } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, TOLERANCE_MHZ)) {
-                        return "L5";
-                    }
-                } else if (svid == 138) {
+                } else if (svid == 131 || svid == 133 || svid == 135 || svid == 138) {
                     // GnssType.WAAS;
                     if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, TOLERANCE_MHZ)) {
                         return "L1";
