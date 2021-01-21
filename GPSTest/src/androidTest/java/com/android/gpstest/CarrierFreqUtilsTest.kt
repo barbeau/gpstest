@@ -666,6 +666,7 @@ class CarrierFreqUtilsTest {
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("E1"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1"))
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1C"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1-C"))
 
         assertFalse(CarrierFreqUtils.isPrimaryCarrier("L2"))

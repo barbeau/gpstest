@@ -169,6 +169,6 @@ public class CarrierFreqUtils {
      * * frequency
      */
     public static boolean isPrimaryCarrier(String label) {
-        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1");
+        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1") || label.equals("B1C");
     }
 }
