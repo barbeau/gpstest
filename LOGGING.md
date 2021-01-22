@@ -17,12 +17,13 @@ Steps to log and view data:
 Here are the details of file logging:
 * CSV format - Same file format as the Google [GPS Measurement Tools (GNSS Logger) project](https://github.com/google/gps-measurement-tools) so you can use MATLAB tools under that project to [analyze the data](https://github.com/google/gps-measurement-tools#to-process-a-log-file-you-collected-from-gnsslogger).
 * Files are saved to your Android device storage under the `gnss_log` directory.
-* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.csv`). If you end the app (e.g., hit back button) and restart it, another file gets created.
+* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.txt`). If you end the app (e.g., hit back button) and restart it, another file gets created.
 * Each row of the file is prefixed with a string designating the data type:
     * `Raw` - Raw GNSS measurements
     * `Fix` - Location fix information
     * `Nav` - Navigation message
     * `NMEA` - NMEA sentences
+    * `GnssAntennaInfo` - [Antenna characteristics](https://developer.android.com/reference/android/location/GnssAntennaInfo) for the device model. Available on supported devices (e.g., Pixel 5) with Android 11 and higher.
 
 The header of the CSV file explains the format for each data type:
 
@@ -38,6 +39,9 @@ The header of the CSV file explains the format for each data type:
 # 
 # NMEA format (Android 2.3 and higher) (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):
 #   NMEA,[NMEA sentence],timestamp
+#
+# GnssAntennaInfo format (https://developer.android.com/reference/android/location/GnssAntennaInfo):
+#   GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta
 ~~~
 
 Sample data looks like:
@@ -56,11 +60,13 @@ Raw,1257164413,126692640000000,,,-1252130864797923510,0.9759163856506348,571.243
 Raw,1257164414,126692640000000,,,-1252130864797923510,0.9759163856506348,571.2438141927123,74.13293543922987,35.96258578603258,729,13,0.0,15,321557363597446,1504,17.2,-508.64544677734375,9.940999984741211,0,0.0,0.0,,,,,0,,1,,
 Raw,1257164415,126692640000000,,,-1252130864797923510,0.9759163856506348,571.2438141927123,74.13293543922987,35.96258578603258,729,15,0.0,15,321557358793297,826,22.0,-689.0819702148438,9.483500480651855,0,0.0,0.0,,,,,0,,1,,
 Fix,gps,28.071355,-82.426751,14.320496,0.000000,38.592003,1568222340000
+GnssAntennaInfo,1575.42,1.2,0.1,3.4,0.2,5.6,0.3,[11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8],[0.1 0.2 0.3 0.4; 1.1 1.2 1.3 1.4; 2.1 2.2 2.3 2.4],60.0,120.0,[9.8 8.7 7.6 6.5; 5.4 4.3 3.2 2.1; 1.3 2.4 3.5 4.6],[0.11 0.22 0.33 0.44; 0.55 0.66 0.77 0.88; 0.91 0.92 0.93 0.94],60.0,120.0
+GnssAntennaInfo,1227.6,3.4,0.2,5.6,0.3,1.2,0.1,[55.66 77.88; 11.22 33.44; 56.6 78.8; 12.2 34.4],[0.3 0.4; 1.1 1.2; 2.1 2.2; 0.1 0.2],180.0,90.0,[7.6 6.5; 5.4 4.3; 1.3 2.4; 9.8 8.7],[0.91 0.92; 0.55 0.66; 0.11 0.22; 0.93 0.94],180.0,90.0
 ~~~
 
 #### Data output - JSON
 
-[GnssAntennaInfo](https://developer.android.com/reference/android/location/GnssAntennaInfo) logging is available on supported devices (e.g., Pixel 5) with Android 11 and is logged in the JSON format. GNSS antenna(s) characteristics, such as phase center offset (PCO) coordinates, phase center variation (PCV) corrections, and signal gain corrections can be applied to the raw measurements to improve accuracy.
+[GnssAntennaInfo](https://developer.android.com/reference/android/location/GnssAntennaInfo) logging is available on supported devices (e.g., Pixel 5) with Android 11 and is also logged in the JSON format. GNSS antenna(s) characteristics, such as phase center offset (PCO) coordinates, phase center variation (PCV) corrections, and signal gain corrections can be applied to the raw measurements to improve accuracy.
 
 Logging works similar to the CSV file process, with a file name like `gnss_log_2019_09_11_13_09_50.json`. Here's example data from a Pixel 5:
 
