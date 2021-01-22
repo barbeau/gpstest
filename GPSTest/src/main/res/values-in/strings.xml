@@ -296,8 +296,8 @@
     </string>
     <string name="pref_file_location_output_title">Lokasi</string>
     <string name="pref_file_location_output_summary">Catat log detail perbaikan lokasi ke dalam file</string>
-    <string name="pref_file_antenna_output_title">Info antena (JSON)</string>
-    <string name="pref_file_antenna_output_summary">Catat log detail antena GNSS ke dalam file JSON. Tersedia pada perangkat yang didukung saja (Android 11 ke atas)</string>
+    <string name="pref_file_antenna_output_json_title">Info antena (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Catat log detail antena GNSS ke dalam file JSON. Tersedia pada perangkat yang didukung saja (Android 11 ke atas)</string>
 
     <string name="logging_to_new_file">Mencatat log ke file baru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Tidak dapat menutup semua aliran file.</string>

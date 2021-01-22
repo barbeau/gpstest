@@ -92,8 +92,8 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
@@ -200,7 +200,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean mWriteLocationToFile;
 
-    boolean mWriteAntennaInfoToFile;
+    boolean mWriteAntennaInfoToFileJson;
+    boolean mWriteAntennaInfoToFileCsv;
 
     private Switch mSwitch;  // GPS on/off switch
 
@@ -595,15 +596,15 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private boolean isFileLoggingEnabled() {
-        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFile;
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFileJson || mWriteAntennaInfoToFileCsv;
     }
 
     private boolean isCsvLoggingEnabled() {
-        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile;
+        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFileCsv;
     }
 
     private boolean isJsonLoggingEnabled() {
-        return mWriteAntennaInfoToFile;
+        return mWriteAntennaInfoToFileJson;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -1041,9 +1042,13 @@ public class GpsTestActivity extends AppCompatActivity
         if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener == null) {
             // TODO - move this and other callbacks to background threads and only run on UI thread when updating UI
            gnssAntennaInfoListener = list -> {
-               if (mWriteAntennaInfoToFile &&
+               if (mWriteAntennaInfoToFileJson &&
                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
                    jsonFileLogger.onGnssAntennaInfoReceived(list);
+               }
+               if (mWriteAntennaInfoToFileCsv &&
+                       PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                   csvFileLogger.onGnssAntennaInfoReceived(list);
                }
            };
             mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);
@@ -1491,7 +1496,8 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void checkGnssAntennaOutput(SharedPreferences settings) {
-        mWriteAntennaInfoToFile = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_json), false);
+        mWriteAntennaInfoToFileJson = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_json), false);
+        mWriteAntennaInfoToFileCsv = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_csv), false);
     }
 
     private void checkNavMessageOutput(SharedPreferences settings) {
