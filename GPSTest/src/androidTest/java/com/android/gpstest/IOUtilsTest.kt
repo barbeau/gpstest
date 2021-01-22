@@ -18,6 +18,8 @@ package com.android.gpstest
 import android.content.Intent
 import android.location.GnssAntennaInfo
 import android.location.Location
+import android.os.Build
+import androidx.test.filters.SdkSuppress
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.util.IOUtils
 import junit.framework.Assert.*
@@ -279,9 +281,10 @@ class IOUtilsTest {
     }
 
     /**
-     * Test writing GnssAntennaInfo to CSV format
+     * Test writing GnssAntennaInfo to CSV format (only runs on Android R or higher)
      */
     @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.R)
     fun testSerializeGnssAntennaInfo() {
         val builder = GnssAntennaInfo.Builder()
         builder.setCarrierFrequencyMHz(1575.42)
