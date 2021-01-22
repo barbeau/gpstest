@@ -71,7 +71,7 @@ class ShareLocationFragment : Fragment() {
         // Change the location text when the user toggles the altitude checkbox
 
         // Change the location text when the user toggles the altitude checkbox
-        includeAltitude.setOnCheckedChangeListener { view1: CompoundButton?, isChecked: Boolean ->
+        includeAltitude.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             var format = "dd"
             if (chipDecimalDegrees.isChecked) {
                 format = "dd"
@@ -84,12 +84,12 @@ class ShareLocationFragment : Fragment() {
             PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), isChecked)
         }
 
-        chipDecimalDegrees.setOnCheckedChangeListener { view1: CompoundButton?, isChecked: Boolean ->
+        chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 locationValue.text = IOUtils.createLocationShare(location, includeAltitude.isChecked)
             }
         }
-        chipDMS.setOnCheckedChangeListener { view1: CompoundButton?, isChecked: Boolean ->
+        chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
                     locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
@@ -98,7 +98,7 @@ class ShareLocationFragment : Fragment() {
                 }
             }
         }
-        chipDegreesDecimalMin.setOnCheckedChangeListener { view1: CompoundButton?, isChecked: Boolean ->
+        chipDegreesDecimalMin.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
                     locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
@@ -108,7 +108,7 @@ class ShareLocationFragment : Fragment() {
             }
         }
 
-        locationCopy.setOnClickListener { v: View? ->
+        locationCopy.setOnClickListener { _: View? ->
             // Copy to clipboard
             if (location != null) {
                 val locationString = locationValue.text.toString()
@@ -116,7 +116,7 @@ class ShareLocationFragment : Fragment() {
                 Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show()
             }
         }
-        locationGeohack.setOnClickListener { v: View? ->
+        locationGeohack.setOnClickListener { _: View? ->
             // Open the browser to the GeoHack site with lots of coordinate conversions
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -127,7 +127,7 @@ class ShareLocationFragment : Fragment() {
                 activity!!.startActivity(intent)
             }
         }
-        locationLaunchApp.setOnClickListener { v: View? ->
+        locationLaunchApp.setOnClickListener { _: View? ->
             // Open the location in another app
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
@@ -137,7 +137,7 @@ class ShareLocationFragment : Fragment() {
                 }
             }
         }
-        locationShare.setOnClickListener { v: View? ->
+        locationShare.setOnClickListener { _: View? ->
             // Send the location as a Geo URI (e.g., in an email) if the user has decimal degrees
             // selected, otherwise send plain text version
             if (location != null) {

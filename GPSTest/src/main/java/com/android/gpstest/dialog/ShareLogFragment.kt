@@ -83,7 +83,7 @@ class ShareLogFragment : Fragment() {
             }
         }
 
-        logBrowse.setOnClickListener { v: View? ->
+        logBrowse.setOnClickListener { _: View? ->
             // File browse
             val uri = IOUtils.getUriFromFile(activity, files?.get(0))
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -93,7 +93,7 @@ class ShareLogFragment : Fragment() {
             listener.onFileBrowse()
         }
 
-        logShare.setOnClickListener { v: View? ->
+        logShare.setOnClickListener { _: View? ->
             // Send the log file
             if (alternateFileUri == null && files != null) {
                 // Send the log file currently being logged to by the FileLogger
