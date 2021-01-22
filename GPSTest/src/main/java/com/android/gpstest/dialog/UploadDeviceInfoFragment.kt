@@ -84,7 +84,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
         }
 
-        upload.setOnClickListener { v: View? ->
+        upload.setOnClickListener { _: View? ->
             var versionName = ""
             var versionCode = ""
             try {

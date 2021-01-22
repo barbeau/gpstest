@@ -45,7 +45,7 @@ class ShareDialogFragment : DialogFragment() {
         val builder = AlertDialog.Builder(activity!!)
                 .setTitle(R.string.share)
                 .setView(view)
-                .setNeutralButton(R.string.main_help_close) { dialog, which -> }
+                .setNeutralButton(R.string.main_help_close) { dialog, _ -> }
         shareCollectionAdapter = ShareCollectionAdapter(this)
         shareCollectionAdapter.setArguments(arguments)
         shareCollectionAdapter.setListener(listener)
