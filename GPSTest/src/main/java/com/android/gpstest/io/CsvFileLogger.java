@@ -19,6 +19,7 @@ package com.android.gpstest.io;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.GnssAntennaInfo;
 import android.location.GnssClock;
 import android.location.GnssMeasurement;
 import android.location.GnssMeasurementsEvent;
@@ -28,6 +29,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
@@ -37,6 +39,7 @@ import com.android.gpstest.util.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -158,6 +161,12 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
             writer.newLine();
             writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("GnssAntennaInfo format (https://developer.android.com/reference/android/location/GnssAntennaInfo):");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta");
             writer.newLine();
         } catch (IOException e) {
             logException(Application.get().getString(R.string.could_not_initialize_file, filePath), e);
@@ -307,5 +316,18 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                         measurement.hasCarrierFrequencyHz() ? measurement.getCarrierFrequencyHz() : "");
         fileWriter.write(measurementStream);
         fileWriter.newLine();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
+        try {
+            for (GnssAntennaInfo info : list) {
+                fileWriter.write(IOUtils.serialize(info));
+                fileWriter.newLine();
+            }
+            fileWriter.newLine();
+        } catch (IOException e) {
+            logException("Unable to write antenna info to CSV", e);
+        }
     }
 }

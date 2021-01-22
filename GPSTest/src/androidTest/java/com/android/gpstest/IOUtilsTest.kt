@@ -16,7 +16,10 @@
 package com.android.gpstest
 
 import android.content.Intent
+import android.location.GnssAntennaInfo
 import android.location.Location
+import android.os.Build
+import androidx.test.filters.SdkSuppress
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.util.IOUtils
 import junit.framework.Assert.*
@@ -264,5 +267,74 @@ class IOUtilsTest {
 
         val input2 = "[GPS, GLONASS]"
         assertEquals("[GPS, GLONASS]", IOUtils.replaceNavstar(input2))
+    }
+
+    /**
+     * Test writing array of doubles to String (for serializing GnssAntennaInfo)
+     */
+    @Test
+    fun testSerializeDoubleArray() {
+        val data = buildPhaseCenterVariationCorrectionsArray()
+
+        val expected = "[11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8]"
+        assertEquals(expected, IOUtils.serialize(data))
+    }
+
+    /**
+     * Test writing GnssAntennaInfo to CSV format (only runs on Android R or higher)
+     */
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.R)
+    fun testSerializeGnssAntennaInfo() {
+        val builder = GnssAntennaInfo.Builder()
+        builder.setCarrierFrequencyMHz(1575.42)
+        builder.setPhaseCenterOffset(
+                GnssAntennaInfo.PhaseCenterOffset(
+                        1.2,0.1,
+                        3.4,0.2,
+                        5.6,0.3))
+        builder.setPhaseCenterVariationCorrections(
+                GnssAntennaInfo.SphericalCorrections(
+                        buildPhaseCenterVariationCorrectionsArray(),
+                        buildPhaseCenterVariationCorrectionsUncertaintyArray()))
+        builder.setSignalGainCorrections(
+                GnssAntennaInfo.SphericalCorrections(
+                        buildSignalGainCorrectionsArray(),
+                        buildSignalGainCorrectionsUnvesrtaintyArray()))
+
+        val expected = "GnssAntennaInfo,1575.42,1.2,0.1,3.4,0.2,5.6,0.3," +
+                "[11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8]," +
+                "[0.1 0.2 0.3 0.4; 1.1 1.2 1.3 1.4; 2.1 2.2 2.3 2.4],60.0,120.0," +
+                "[9.8 8.7 7.6 6.5; 5.4 4.3 3.2 2.1; 1.3 2.4 3.5 4.6]," +
+                "[0.11 0.22 0.33 0.44; 0.55 0.66 0.77 0.88; 0.91 0.92 0.93 0.94],60.0,120.0"
+        assertEquals(expected, IOUtils.serialize(builder.build()))
+    }
+
+    fun buildPhaseCenterVariationCorrectionsArray() : Array<DoubleArray> {
+        val array1: DoubleArray = doubleArrayOf(11.22, 33.44, 55.66, 77.88)
+        val array2: DoubleArray = doubleArrayOf(10.2, 30.4, 50.6, 70.8)
+        val array3: DoubleArray = doubleArrayOf(12.2, 34.4, 56.6, 78.8)
+        return arrayOf(array1, array2, array3)
+    }
+
+    fun buildPhaseCenterVariationCorrectionsUncertaintyArray() : Array<DoubleArray> {
+        val array1: DoubleArray = doubleArrayOf(0.1, 0.2, 0.3, 0.4)
+        val array2: DoubleArray = doubleArrayOf(1.1, 1.2, 1.3, 1.4)
+        val array3: DoubleArray = doubleArrayOf(2.1, 2.2, 2.3, 2.4)
+        return arrayOf(array1, array2, array3)
+    }
+
+    fun buildSignalGainCorrectionsArray() : Array<DoubleArray> {
+        val array1: DoubleArray = doubleArrayOf(9.8, 8.7, 7.6, 6.5)
+        val array2: DoubleArray = doubleArrayOf(5.4, 4.3, 3.2, 2.1)
+        val array3: DoubleArray = doubleArrayOf(1.3, 2.4, 3.5, 4.6)
+        return arrayOf(array1, array2, array3)
+    }
+
+    fun buildSignalGainCorrectionsUnvesrtaintyArray() : Array<DoubleArray> {
+        val array1: DoubleArray = doubleArrayOf(0.11, 0.22, 0.33, 0.44)
+        val array2: DoubleArray = doubleArrayOf(0.55, 0.66, 0.77, 0.88)
+        val array3: DoubleArray = doubleArrayOf(0.91, 0.92, 0.93, 0.94)
+        return arrayOf(array1, array2, array3)
     }
 }

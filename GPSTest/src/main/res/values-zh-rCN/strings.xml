@@ -270,8 +270,8 @@
 （Android 7.0 及其以上）</string>
     <string name="pref_file_location_output_title">位置</string>
     <string name="pref_file_location_output_summary">输出定位详情至文件</string>
-    <string name="pref_file_antenna_output_title">天线信息 (JSON)</string>
-    <string name="pref_file_antenna_output_summary">将GNSS天线细节记录到一个JSON文件中。只能在支持的设备上使用 (Android 11及以上)。</string>
+    <string name="pref_file_antenna_output_json_title">天线信息 (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">将GNSS天线细节记录到一个JSON文件中。只能在支持的设备上使用 (Android 11及以上)。</string>
 
     <string name="logging_to_new_file">日志写入至: %1$s</string>
     <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>

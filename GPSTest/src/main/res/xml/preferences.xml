@@ -128,9 +128,14 @@
                     android:summary="@string/pref_file_location_output_summary"
                     android:defaultValue="false" />
                 <CheckBoxPreference
+                    android:key="@string/pref_key_file_antenna_output_csv"
+                    android:title="@string/pref_file_antenna_output_csv_title"
+                    android:summary="@string/pref_file_antenna_output_csv_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
                     android:key="@string/pref_key_file_antenna_output_json"
-                    android:title="@string/pref_file_antenna_output_title"
-                    android:summary="@string/pref_file_antenna_output_summary"
+                    android:title="@string/pref_file_antenna_output_json_title"
+                    android:summary="@string/pref_file_antenna_output_json_summary"
                     android:defaultValue="false" />
             </PreferenceCategory>
 

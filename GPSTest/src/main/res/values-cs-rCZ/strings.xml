@@ -269,8 +269,8 @@
     <string name="pref_file_navigation_message_output_summary">Povolte výstup navigačních zpráv GNSS do souboru (Android 7.0 a vyšší).</string>
     <string name="pref_file_location_output_title">Protokoly oprav polohy</string>
     <string name="pref_file_location_output_summary">Povolte výstup protokolů oprav polohy do souboru.</string>
-    <string name="pref_file_antenna_output_title">Informace o anténě</string>
-    <string name="pref_file_antenna_output_summary">Povolte výstup protokolů s podrobnostmi antény GNSS do souboru (Android 11 a vyšší). Tato funkce je k dispozici pouze na podporovaných zařízeních.</string>
+    <string name="pref_file_antenna_output_json_title">Informace o anténě (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Povolte výstup protokolů s podrobnostmi antény GNSS do souboru (Android 11 a vyšší). Tato funkce je k dispozici pouze na podporovaných zařízeních.</string>
 
     <string name="logging_to_new_file">Výstup protokolu do nového souboru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Nelze zavřít všechny soubory se streamy.</string>

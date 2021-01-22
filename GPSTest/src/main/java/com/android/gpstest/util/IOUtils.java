@@ -20,6 +20,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.Location;
@@ -463,5 +464,52 @@ public class IOUtils {
      */
     public static String replaceNavstar(String input) {
         return input.replace("NAVSTAR", "GPS");
+    }
+
+    /**
+     * Serializes GnssAntennaInfo to a CSV format
+     * @param info
+     * @return GnssAntennaInfo in a CSV format
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static String serialize(@NonNull GnssAntennaInfo info) {
+        return String.format(
+                "GnssAntennaInfo,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                info.getCarrierFrequencyMHz(),
+                info.getPhaseCenterOffset().getXOffsetMm(),
+                info.getPhaseCenterOffset().getXOffsetUncertaintyMm(),
+                info.getPhaseCenterOffset().getYOffsetMm(),
+                info.getPhaseCenterOffset().getYOffsetUncertaintyMm(),
+                info.getPhaseCenterOffset().getZOffsetMm(),
+                info.getPhaseCenterOffset().getZOffsetUncertaintyMm(),
+                serialize(info.getPhaseCenterVariationCorrections().getCorrectionsArray()),
+                serialize(info.getPhaseCenterVariationCorrections().getCorrectionUncertaintiesArray()),
+                info.getPhaseCenterVariationCorrections().getDeltaPhi(),
+                info.getPhaseCenterVariationCorrections().getDeltaTheta(),
+                serialize(info.getSignalGainCorrections().getCorrectionsArray()),
+                serialize(info.getSignalGainCorrections().getCorrectionUncertaintiesArray()),
+                info.getSignalGainCorrections().getDeltaPhi(),
+                info.getSignalGainCorrections().getDeltaTheta());
+    }
+
+    /**
+     * Serializes the provided two-dimensional array of doubles to a String
+     * (for example, for logging GnssAntennaInfo to CSV files). Example:
+     * [11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8]
+     * @param data an array to be serialized
+     * @return the serialized version of the provided array as a String
+     */
+    public static String serialize(double[][] data) {
+        StringBuilder builder = new StringBuilder(70); // Based on Pixel 5 GnssAntennaInfo
+        builder.append("[");
+        for (double[] i : data) {
+            for (double j : i) {
+                builder.append(j);
+                builder.append(" ");
+            }
+            builder.replace(builder.length() - 1, builder.length(), "; ");
+        }
+        builder.replace(builder.length() - 2, builder.length(), "]");
+        return builder.toString();
     }
 }

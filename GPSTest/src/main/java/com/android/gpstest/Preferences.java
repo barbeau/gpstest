@@ -60,7 +60,8 @@ public class Preferences extends PreferenceActivity implements
     CheckBoxPreference chkLogFileNavMessages;
     CheckBoxPreference chkLogFileMeasurements;
     CheckBoxPreference chkLogFileLocation;
-    CheckBoxPreference chkLogFileAntenna;
+    CheckBoxPreference chkLogFileAntennaJson;
+    CheckBoxPreference chkLogFileAntennaCsv;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -188,16 +189,26 @@ public class Preferences extends PreferenceActivity implements
             PermissionUtils.requestFileWritePermission(Preferences.this);
             return true;
         });
-        chkLogFileAntenna = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output_json));
+        chkLogFileAntennaJson = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output_json));
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
-            chkLogFileAntenna.setOnPreferenceChangeListener((preference, newValue) -> {
+            chkLogFileAntennaJson.setOnPreferenceChangeListener((preference, newValue) -> {
                 PermissionUtils.requestFileWritePermission(Preferences.this);
                 return true;
             });
         } else {
             // Not supported
-            chkLogFileAntenna.setEnabled(false);
+            chkLogFileAntennaJson.setEnabled(false);
+        }
+        chkLogFileAntennaCsv = (CheckBoxPreference) findPreference(getString(R.string.pref_key_file_antenna_output_csv));
+        if (SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
+            chkLogFileAntennaCsv.setOnPreferenceChangeListener((preference, newValue) -> {
+                PermissionUtils.requestFileWritePermission(Preferences.this);
+                return true;
+            });
+        } else {
+            // Not supported
+            chkLogFileAntennaCsv.setEnabled(false);
         }
 
         Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
