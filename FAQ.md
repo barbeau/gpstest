@@ -188,6 +188,10 @@ If you do launch your own app, I would ask that you do the following when publis
 * If you're using GPSTest for research, if possible I'd be interested in seeing the results of your research
 * If possible, publish your own code as open-source
 
+## I recorded raw measurements data but when visualizing the data it looks all choppy and interrupted. What's up?
+
+You'll probably need to enable the hidden "Force full GNSS measurements" setting in the Android "Developer options" menu. See [this article](https://barbeau.medium.com/gnss-interrupted-the-hidden-android-setting-you-need-to-know-d812d28a3821) for details.
+
 ## My question wasn't answered here.  What's the next step?
 
 You can ask questions by:
