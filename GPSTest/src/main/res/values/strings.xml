@@ -211,7 +211,7 @@
         <b>Crowd-source device capabilities</b>
         - Optionally contribute your device capabilities to the public GPSTest Device Database (https://bit.ly/gpstest-device-database) via the Share screen.\n&#8226;\u0020
         <b>Log antenna info</b>
-        - Support for logging GnssAntennaInfo to a JSON file.\n&#8226;\u0020
+        - Support for logging GnssAntennaInfo to CSV and JSON files.\n&#8226;\u0020
         <b>Add Finnish translation</b>
         -  Thanks Ari Nygard!\n&#8226;\u0020
         <b>Bug fixes</b>
