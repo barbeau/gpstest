@@ -1159,18 +1159,18 @@ public class GpsTestActivity extends AppCompatActivity
 
                 int agcSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
                 int carrierPhaseSupport = PreferenceUtils.CAPABILITY_UNKNOWN;
+                // Loop through all measurements - if at least one supports, then mark as supported
                 for (GnssMeasurement measurement : event.getMeasurements()) {
                     if (SatelliteUtils.isAutomaticGainControlSupported(measurement)) {
                         agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
-                    } else {
+                    } else if (agcSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
                         agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
                     }
-                    if (SatelliteUtils.isCarrierPhaseUncertaintySupported(measurement)) {
+                    if (SatelliteUtils.isCarrierPhaseSupported(measurement)) {
                         carrierPhaseSupport = PreferenceUtils.CAPABILITY_SUPPORTED;
-                    } else {
+                    } else if (carrierPhaseSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
                         carrierPhaseSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED;
                     }
-                    break;
                 }
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), agcSupport);
                 PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), carrierPhaseSupport);

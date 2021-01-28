@@ -276,15 +276,17 @@ public class SatelliteUtils {
     }
 
     /**
-     * Returns true if carrier phase uncertainty is supported for this GNSS measurement, false if it is not
+     * Returns true if carrier phase is supported for this GNSS measurement, false if it is not
      * @param gnssMeasurement
-     * @return true if carrier phase uncertainty is supported for this GNSS measurement, false if it is not
+     * @return true if carrier phase is supported for this GNSS measurement, false if it is not
      */
-    public static boolean isCarrierPhaseUncertaintySupported(GnssMeasurement gnssMeasurement) {
+    public static boolean isCarrierPhaseSupported(GnssMeasurement gnssMeasurement) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return gnssMeasurement.getAccumulatedDeltaRangeState() != GnssMeasurement.ADR_STATE_UNKNOWN;
+            return gnssMeasurement.getAccumulatedDeltaRangeState() == GnssMeasurement.ADR_STATE_VALID
+                    && gnssMeasurement.getAccumulatedDeltaRangeMeters() != 0.0d;
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return gnssMeasurement.hasCarrierFrequencyHz();
+            return gnssMeasurement.hasCarrierPhase()
+                    && gnssMeasurement.getCarrierPhase() != 0.0d;
         } else {
             return false;
         }
