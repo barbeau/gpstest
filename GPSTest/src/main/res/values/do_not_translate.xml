@@ -175,6 +175,16 @@
     <string name="capability_title_raw_measurements">Raw measurements: %1$s\n</string>
     <string name="capability_title_nav_messages">Navigation messages: %1$s\n</string>
     <string name="capability_title_nmea">NMEA: %1$s\n</string>
+    <string name="capability_title_dual_frequency">Dual frequency: %1$s\n</string>
+    <string name="capability_title_gnss_hardware_name">GNSS hardware name: %1$s\n</string>
+    <string name="capability_title_accumulated_delta_range">Accumulated delta range: %1$s\n</string>
+    <string name="capability_title_automatic_gain_control">Automatic gain control: %1$s\n</string>
+    <string name="capability_title_gnss_antenna_info">GNSS antenna info: %1$s\n</string>
+    <string name="capability_title_supported_gnss">Supported GNSS: %1$s\n</string>
+    <string name="capability_title_gnss_cf">GNSS CFs: %1$s\n</string>
+    <string name="capability_title_supported_sbas">Supported SBAS: %1$s\n</string>
+    <string name="capability_title_sbas_cf">SBAS CFs: %1$s\n</string>
+    <string name="capability_title_first_fix">First fix: %1$b\n</string>
 
     <string name="capability_value_unknown">UNKNOWN</string>
     <string name="capability_value_not_supported">NOT_SUPPORTED</string>

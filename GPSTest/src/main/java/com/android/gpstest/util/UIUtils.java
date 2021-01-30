@@ -27,6 +27,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,22 +50,28 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
+import com.android.gpstest.DeviceInfoViewModel;
 import com.android.gpstest.R;
 import com.android.gpstest.dialog.ShareDialogFragment;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.model.GnssType;
+import com.android.gpstest.model.SbasType;
 import com.google.android.material.chip.Chip;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Intent.createChooser;
 import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
+import static com.android.gpstest.util.IOUtils.replaceNavstar;
+import static com.android.gpstest.util.IOUtils.trimEnds;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_SNR;
 import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_CN0;
@@ -237,8 +244,10 @@ public class UIUtils {
      * Opens email apps based on the given email address
      * @param email address
      * @param location string that shows the current location
+     * @param deviceInfoViewModel view model that contains state of GNSS
      */
-    public static void sendEmail(Context context, String email, String location) {
+    public static void sendEmail(Context context, String email, String location, DeviceInfoViewModel deviceInfoViewModel) {
+        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
         PackageManager pm = context.getPackageManager();
         PackageInfo appInfo;
 
@@ -272,7 +281,10 @@ public class UIUtils {
             body.append("Location: " + location + "\n");
         }
 
-        body.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + "\n");
+        body.append("GNSS HW year: " + IOUtils.getGnssHardwareYear() + "\n");
+        if (!IOUtils.getGnssHardwareModelName().trim().isEmpty()) {
+            body.append("GNSS HW name: " + IOUtils.getGnssHardwareModelName() + "\n");
+        }
 
         // Raw GNSS measurement capability
         int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
@@ -310,6 +322,42 @@ public class UIUtils {
             body.append(Application.get().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
+        // First fix
+        body.append(Application.get().getString(R.string.capability_title_first_fix, location != null && deviceInfoViewModel.gotFirstFix()));
+
+        // We need a fix to determine these attributes reliably
+        if (location != null && deviceInfoViewModel.gotFirstFix()) {
+            // Dual frequency
+            body.append(Application.get().getString(R.string.capability_title_dual_frequency, PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView())));
+            // Supported GNSS
+            List<GnssType> gnss = new ArrayList<>(deviceInfoViewModel.getSupportedGnss());
+            Collections.sort(gnss);
+            body.append(Application.get().getString(R.string.capability_title_supported_gnss, trimEnds(replaceNavstar(gnss.toString()))));
+            // GNSS CF
+            List<String> gnssCfs = new ArrayList<>(deviceInfoViewModel.getSupportedGnssCfs());
+            if (!gnssCfs.isEmpty()) {
+                Collections.sort(gnssCfs);
+                body.append(Application.get().getString(R.string.capability_title_gnss_cf, trimEnds(gnssCfs.toString())));
+            }
+            // Supported SBAS
+            List<SbasType> sbas = new ArrayList<>(deviceInfoViewModel.getSupportedSbas());
+            if (!sbas.isEmpty()) {
+                Collections.sort(sbas);
+                body.append(Application.get().getString(R.string.capability_title_supported_sbas, trimEnds(sbas.toString())));
+            }
+            // SBAS CF
+            List<String> sbasCfs = new ArrayList<>(deviceInfoViewModel.getSupportedSbasCfs());
+            if (!sbasCfs.isEmpty()) {
+                Collections.sort(sbasCfs);
+                body.append(Application.get().getString(R.string.capability_title_sbas_cf, trimEnds(sbasCfs.toString())));
+            }
+            // Accumulated delta range
+            body.append(Application.get().getString(R.string.capability_title_accumulated_delta_range, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN))));
+            // Automatic gain control
+            body.append(Application.get().getString(R.string.capability_title_automatic_gain_control, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN))));
+        }
+        // GNSS Antenna Info
+        body.append(Application.get().getString(R.string.capability_title_gnss_antenna_info, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))));
 
         if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
             body.append("\n" + BuildUtils.getPlayServicesVersion());

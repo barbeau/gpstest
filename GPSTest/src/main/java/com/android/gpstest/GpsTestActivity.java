@@ -76,6 +76,7 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
@@ -262,6 +263,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private ProgressBar progressBar = null;
 
+    DeviceInfoViewModel deviceInfoViewModel;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -309,6 +312,8 @@ public class GpsTestActivity extends AppCompatActivity
 
         csvFileLogger = new CsvFileLogger(getApplicationContext());
         jsonFileLogger = new JsonFileLogger(getApplicationContext());
+
+        deviceInfoViewModel = ViewModelProviders.of(this).get(DeviceInfoViewModel.class);
     }
 
     @Override
@@ -700,7 +705,7 @@ public class GpsTestActivity extends AppCompatActivity
                     locationString = LocationUtils.printLocationDetails(mLastLocation);
                 }
 
-                UIUtils.sendEmail(this, email, locationString);
+                UIUtils.sendEmail(this, email, locationString, deviceInfoViewModel);
                 break;
         }
         invalidateOptionsMenu();
