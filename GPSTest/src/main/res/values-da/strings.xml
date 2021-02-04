@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     https://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Fragments -->
+    <string name="gps_status_title">Status</string>
+    <string name="gps_map_title">Kort</string>
+    <string name="gps_sky_title">Himmel</string>
+    <string name="gps_accuracy_title">Nøjagtighed</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">Rediger hjælpedata</string>
+    <string name="force_psds_injection">Tilføj PSDS data</string>
+    <string name="force_time_injection">Tilføj tidsdata</string>
+    <string name="delete_aiding_data">Ryd hjælpedata</string>
+    <string name="navdrawer_item_settings">Indstillinger</string>
+    <string name="navdrawer_item_help">Hjælp</string>
+    <string name="navdrawer_item_send_feedback">Send feedback</string>
+    <string name="navdrawer_item_open_source">Besøg os på GitHub</string>
+
+    <string name="navigation_drawer_open">Åbne navigationsskuffe</string>
+    <string name="navigation_drawer_close">Luk navigationsskuffe</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">Start</string>
+    <string name="gps_pause">Pause</string>
+
+    <string name="delete_aiding_data_success">Hjælpedata er slettet.</string>
+    <string name="delete_aiding_data_failure">Enheden understøtter ikke sletning af hjælpedata.</string>
+    <string name="gps_switch">Sluk/tænd</string>
+    <string name="share">Del</string>
+    <string name="copied_to_clipboard">Lokation kopieret til udklipsholder</string>
+    <string name="send_log">Send log…</string>
+    <string name="log">Log</string>
+    <string name="file_name">Filnavn</string>
+    <string name="location">Lokation</string>
+    <string name="log_instructions">Aktivér logning for NMEA, rå målinger, navigationsmeddelelser og mere i Indstillinger</string>
+    <string name="log_error">Der gik noget galt med fillogning. Tillod du fil- / lagertilladelser? Prøv at genaktivere en fillogning i indstillinger, og tryk på \"Tillad\", når du bliver bedt om det. </string>
+    <string name="no_location">Prøv at dele din placering efter at have fået en GNSS-fiksering...</string>
+    <string name="include_altitude">Inkluder højde</string>
+    <string name="set_fix_frequency">Indstil fikseringsfrekvens</string>
+    <string name="force_time_injection_success">Tidsdata tilføjet korrekt.</string>
+    <string name="force_time_injection_failure">Enheden understøtter ikke at tilføje tidsdata. </string>
+
+    <string name="force_psds_injection_success">PSDS-data blev tilføjet</string>
+    <string name="force_psds_injection_failure">Enheden understøtter ikke at tilføje PSDS-data.</string>
+
+    <string name="device">Enhed</string>
+    <string name="upload_details">Uploader dine enheds funktioner (f.eks. enhedens fabrikat og model, understøttet GNSS, understøttet SBAS, understøttelse med dobbelt frekvens) til den offentlige GPSTest enhedsdatabase (https://bit.ly/gpstest-device-database).\n\nIngen private oplysninger fra din enhed deles.</string>
+    <string name="upload_no_location">Skift til statusskærmen, vent på en GNSS-fiksering, og upload derefter enhedens funktioner.</string>
+    <string name="upload_success">Enhedens funktioner blev uploadet!</string>
+    <string name="upload_failure">Upload af enhedens funktioner mislykkedes. Prøv igen.</string>
+    <string name="upload_nothing_changed">Intet ændret siden sidste upload. Prøv igen senere. </string>
+
+    <string name="zoom_in">Zoom ind</string>
+    <string name="zoom_out">Zoom ud</string>
+    <string name="mode_map">Kort</string>
+    <string name="mode_satellite">Satellit</string>
+
+    <string name="gps_latitude_label">Lat:</string>
+    <string name="gps_longitude_label">Længde:</string>
+    <string name="gps_fix_time_label">Tid:</string>
+    <string name="gps_ttff_label">TTFF:</string>
+    <string name="gps_altitude_label">Alt:</string>
+    <string name="gps_altitude_msl_label">Højde (MSL):</string>
+    <string name="gps_accuracy_label">E H Acc:</string>
+    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
+    <string name="gps_speed_label">Hastighed</string>
+    <string name="gps_speed_acc_label">S. Acc:</string>
+    <string name="gps_bearing_label">Pejling:</string>
+    <string name="gps_bearing_acc_label">B. Acc:</string>
+    <string name="gps_num_sats_label">Antal sat:</string>
+    <string name="pdop_label">PDOP:</string>
+    <string name="hvdop_label">H/V DOP:</string>
+
+    <string name="gps_prn_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="gps_carrier_column_label">CF</string>
+    <string name="gps_snr_column_label">S/N</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="gps_avg_cn0_label">Gns</string>
+    <string name="gps_elevation_column_label">Højde</string>
+    <string name="gps_azimuth_column_label">Azim</string>
+    <string name="gps_flags_column_label">Flag</string>
+    <string name="gps_not_supported">Kontroller systemindstillingerne - enheden ser ikke ud til at understøtte GNSS / GPS.</string>
+    <string name="install">Installere</string>
+    <string name="no_thanks">Nej tak</string>
+    <string name="please_install_google_maps">Kort fanen kræver Google Maps</string>
+    <string name="enable_gps_message">GPS / GNSS er deaktiveret. Aktiver det nu?</string>
+    <string name="enable_gps_positive_button">Aktivér GPS / GNSS</string>
+    <string name="enable_gps_negative_button">Nej</string>
+    <string name="gps_set_location_listener">Startede GNSS med interval = %1$ss, min. afstand = %2$sm
+    </string>
+    <string name="clear_assist_warning_title">Slet hjælpedata?</string>
+    <string name="clear_assist_warning">Nogle enheder kan tage 24 timer om at auto-opdatere hjælpedata. Hvis din enhed ikke understøtter manuel tilføjelse, fungerer GNSS muligvis ikke for apps, før den automatiske opdatering er afsluttet. Er du sikker?</string>
+    <string name="never_ask_again">Spørg aldrig igen</string>
+    <string name="qr_code_instructions_title">Scan en QR kode</string>
+    <string name="qr_code_instructions_text">Importer en sand lokation ved hjælp af en QR-kode i Geo URI-format (geo: 28.38434, -87.24334). Opret dine egne QR-koder på https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_cannot_read_code">Kunne ikke læse en Geo URI fra QR-koden</string>
+    <string name="never_show_again">Vis aldrig igen</string>
+    <string name="not_now">Ikke nu</string>
+    <string name="yes">JA</string>
+    <string name="no">NEJ</string>
+    <string name="gnss_not_available">Global Navigation Satellit Systemer (GNSS) satellitter er ikke tilgængelige</string>
+    <string name="sbas_not_available">Satellitbaserede forstærkningssystem (SBAS) satellitter er ikke tilgængelige </string>
+    <string name="menu_option_sort_by">Sorter efter</string>
+    <string name="menu_option_filter">Filter</string>
+    <string name="filter_dialog_title">Vis kun disse GNSS</string>
+    <string name="filter_text">Vis %1$d ud af %2$d satellitter</string>
+    <string name="filter_showall">(vis alt)</string>
+    <string name="error_time_title">Din GNSS-tid er forkert</string>
+    <string name="error_time_message">Enhedens GNSS-tid på:\n\n%1$s\n\n…adskiller sig mere end %2$d dage fra dit system-ur. Dette kan skyldes problemet med GPS-uges overflytning - spørg din enhedsproducent for at få flere oplysninger. Se https://bit.ly/gps-week-rollover for mere info.</string>
+    <string name="unknown">Ukendt</string>
+    <string name="cancel">Afbryd</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">Din breddegrad</string>
+    <string name="ground_truth_longitude">Din længdegrad</string>
+    <string name="ground_truth_altitude">Din højde i WGS84 (valgfri)</string>
+    <string name="set_ground_truth_title">Målenøjagtighed</string>
+    <string name="set_ground_truth_subtitle">Tryk på kortet eller skriv din rigtige placering</string>
+    <string name="save">Gem</string>
+    <string name="edit">Redigere</string>
+    <string name="ground_truth_marker_title">Din rigtige placering</string>
+    <string name="ground_truth_invalid_location_title">Ugyldig placering</string>
+    <string name="ground_truth_invalid_lat">Breddegrad skal være i decimalgrader imellem -90 og 90</string>
+    <string name="ground_truth_invalid_long">Længdegrad skal være i decimalgrader mellem -180 og 180</string>
+    <string name="ground_truth_invalid_alt">Højden skal være i WGS84 i meter</string>
+
+    <string name="horizontal_error_title">Horisontal fejl</string>
+    <string name="vertical_error_title">Vertikal fejl</string>
+    <string name="horizontal_error_label">Fejl</string>
+    <string name="measured_error_graph_label">Målt fejl</string>
+    <string name="estimated_accuracy_graph_label">Nøjagtighed estimeret af hardware</string>
+    <string name="horizontal_vertical_error_label">H/V Fejl</string>
+    <string name="avg_error_label">gns %1$d fikseringer</string>
+    <string name="fix_number">Fix #</string>
+    <string name="show_radar_valid_location">Jordens sandhede placering importeret!</string>
+    <string name="show_radar_invalid_location">Den importerede sande placering er ugyldig</string>
+
+    <!-- Sky view -->
+    <string name="sky_legend_title">Signaturforklaring</string>
+    <string name="sky_legend_shape_gnss_title">Global Navigation Satellit Systemer (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS (USA)</string>
+    <string name="sky_legend_shape_glonass">GLONASS (Rusland)</string>
+    <string name="sky_legend_shape_galileo">Galileo (Europæiske Union)</string>
+    <string name="sky_legend_shape_qzss">QZSS (Japan)</string>
+    <string name="sky_legend_shape_beidou">BeiDou/COMPASS (Kina)</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC (Indien)</string>
+
+    <string name="sky_legend_shape_sbas_title">Satellitbaserede forstærkningssystem (SBAS) </string>
+    <string name="sky_legend_shape_waas">WAAS (USA)</string>
+    <string name="sky_legend_shape_egnos">EGNOS (Europæiske Union)</string>
+    <string name="sky_legend_shape_gagan">GAGAN (Indien)</string>
+    <string name="sky_legend_shape_msas">MSAS (Japan)</string>
+    <string name="sky_legend_shape_sdcm">SDCM (Rusland)</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS (Kina)</string>
+    <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+
+    <string name="sky_legend_shape_availability_title">Signal tilgængelighed</string>
+    <string name="sky_legend_shape_not_in_view">Ikke i enhedens synsfelt</string>
+    <string name="sky_legend_shape_in_view">I syne</string>
+    <string name="sky_legend_shape_used_in_fix">Brugt i fiksering</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">GNSS-udbyder eller placering er deaktiveret, ingen opdateringer, før den er aktiveret</string>
+    <string name="gnss_nav_msg_status_not_supported">Enheden understøtter ikke sporing af GNSS-navigationsmeddelelser</string>
+    <string name="gnss_nav_msg_status_ready">GNSS-navigationsmeddelelser bliver sporet korrekt</string>
+
+    <string name="gnss_measurement_status_loc_disabled">GNSS-udbyder eller placering er deaktiveret, ingen opdateringer, før den er aktiveret</string>
+    <string name="gnss_measurement_status_not_supported">Enheden understøtter ikke sporing af GNSS-målinger</string>
+    <string name="gnss_measurement_status_ready">GNSS-målinger spores med succes</string>
+
+    <string name="gnss_status_unknown">Ukendt status tilbagekald</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">Brug for placeringstilladelse</string>
+    <string name="text_location_permission">GPSTest har brug for adgang til din placering for at vise GNSS-data. Hvis du vælger \"Spørg aldrig igen\", skal du geninstallere appen eller aktivere tilladelser via systemindstillinger.</string>
+    <string name="ok">OK</string>
+    <string name="exit">AFSLUT</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest: Feedback</string>
+    <string name="feedback_body">Klager, kudos eller fejlrapporter er velkomne!\n\n\n</string>
+    <string name="feedback_error">Kan ikke sende feedback: ingen passende applikation fundet.</string>
+    <string name="device_properties_upload_success">Enhedens egenskaber er uploadet. Tak! </string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">Hvad er nyt?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Crowd-source enhedsfunktioner</b>
+        - Du kan eventuelt bidrage med dine enhedsfunktioner til den offentlige GPSTest enhedsdatabase (https://bit.ly/gpstest-device-database) via skærmdelingen.\n&#8226;\u0020
+        <b>Log antenne info</b>
+        - Understøttelse af logning af GnssAntennaInfo til CSV og JSON filer.\n&#8226;\u0020
+        <b>Tilføjet finske oversættelser</b>
+        -  Tak Ari Nygard!\n&#8226;\u0020
+        <b>Fejlrettelser</b>
+        - Se https://bit.ly/gpstest-releases
+    </string>
+    <string name="main_help_close">Luk</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">Indstillinger</string>
+    <string name="pref_map_category_title">Kort</string>
+    <string name="pref_map_type_title">Korttype</string>
+    <string name="pref_map_type_summary">Indstiller den viste type kortfliser</string>
+    <string name="pref_map_type_dialog_title">Vælg korttype</string>
+
+    <string name="pref_rotate_map_with_compass_title">Drej kort med kompas</string>
+    <string name="pref_rotate_map_with_compass_summary">Skift kortorientering ud fra din
+        retning
+    </string>
+
+    <string name="pref_tilt_map_with_sensors_title">Vip kort med enhed</string>
+    <string name="pref_tilt_map_with_sensors_summary">Skift til en førstepersons kortvisning, når du
+        holder enheden nede</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_auto_start_gps_title">Start GNSS automatisk</string>
+    <string name="pref_auto_start_gps_summary">Start GNSS, når appen starter</string>
+
+    <string name="pref_gps_min_time_title">Interval</string>
+    <string name="pref_gps_min_time_summary">Tid mellem GNSS-fikseringer i sekunder</string>
+    <string name="pref_gps_min_time_dialog_title">Indtast et interval i sekunder</string>
+    <string name="pref_gps_min_time_invalid_entry">Intervallet skal være et tal</string>
+
+    <string name="pref_use_gnss_apis_title">Brug GNSS API\'er</string>
+    <string name="pref_use_gnss_apis_summary">Fås på Android 7.0 og nyere. Hvis det ikke er markeret,
+        bruger den ældre GPSStatus.Listener.
+    </string>
+
+    <string name="pref_gps_min_distance_title">Min. afstand</string>
+    <string name="pref_gps_min_distance_summary">Mindste afstand mellem GNSS-fikseringer i meter</string>
+    <string name="pref_gps_min_distance_dialog_title">Indtast en min. afstand i meter</string>
+    <string name="pref_gps_min_distance_invalid_entry">Min. afstand skal være numerisk</string>
+
+    <string name="pref_display_category_title">Skærm</string>
+    <string name="pref_keep_screen_on_title">Hold skærmen tændt</string>
+    <string name="pref_keep_screen_on_summary">Forhindrer at skærmen slukkes</string>
+    <string name="pref_true_north_title">Peg kompas mod ægte nord</string>
+    <string name="pref_true_north_summary">Kompas vender mod sande nord i stedet for magnetisk nord</string>
+
+    <!-- Output category -->
+    <string name="pref_output_category_title">Logning og output</string>
+    <string name="pref_output_category_summary">Log NMEA, rå målinger eller navigationsmeddelelser til filer eller Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android skærm output</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">Logger NMEA-sætninger til Android Studio</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA Tidsstempel</string>
+    <string name="pref_nmea_timestamp_output_summary">Inkluder NMEA tidsstempel i output</string>
+    <string name="pref_measurement_output_title">Målinger</string>
+    <string name="pref_as_measurement_output_summary">Log GNSS målinger til Android Studio (Android
+        7.0 og nyere)
+    </string>
+    <string name="pref_navigation_message_output_title">Navigationsmeddelelser</string>
+    <string name="pref_as_navigation_message_output_summary">Log GNSS navigationsmeddelelser til Android
+        Studio (Android 7.0 og nyere)
+    </string>
+
+    <!-- File Output -->
+    <string name="pref_file_output_category_title">Filoutput</string>
+    <string name="pref_file_nmea_output_summary">Log NMEA-sætninger til en fil </string>
+    <string name="pref_file_measurement_output_summary">Log GNSS målinger til en file (Android
+        7.0 og nyere)
+    </string>
+    <string name="pref_file_navigation_message_output_summary">Log GNSS navigationsmeddelelser til en fil (Android 7.0 og nyere)
+    </string>
+    <string name="pref_file_location_output_title">Lokation</string>
+    <string name="pref_file_location_output_summary">Log placeringsfikseringsdetaljer til en fil </string>
+    <string name="pref_file_antenna_output_csv_title">Antenne Info (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Log GNSS-antennedetaljer til en CSV-fil. Kun tilgængelig på understøttede enheder (Android 11 og nyere).</string>
+    <string name="pref_file_antenna_output_json_title">Antenne Info (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Logger GNSS-antennedetaljer til en JSON-fil. Kun tilgængelig på understøttede enheder (Android 11 og nyere).</string>
+
+    <string name="logging_to_new_file">Logning til en ny fil: %1$s</string>
+    <string name="unable_to_close_all_file_streams">Kan ikke lukke alle filstrømme.</string>
+    <string name="could_not_initialize_file">Kunne ikke initialisere fil: %1$s</string>
+    <string name="error_writing_file">Problemer med at skrive til filen.</string>
+    <string name="unable_to_open_json_generator">Kan ikke åbne JSON generator</string>
+
+    <string name="pref_about_category_title">Om</string>
+    <string name="pref_show_tutorial_title">Vis vejledning</string>
+    <string name="pref_show_tutorial_summary">Viser instruktioner til brug af appen</string>
+
+    <string name="pref_dark_theme_title">Brug mørkt tema</string>
+    <string name="pref_dark_theme_summary">Giv baggrunden en mørk farve og teksten en lys farve
+    </string>
+
+    <string name="pref_coordinate_format_title">Koordinatformat</string>
+    <string name="pref_coordinate_format_summary">Vis i decimalgrader, DMS eller decimalgrader, minutter</string>
+    <string name="preferences_coordinate_format_dd">Decimalgrader</string>
+    <string name="preferences_coordinate_format_dms">Decimalgrader, minutter, sekunder</string>
+    <string name="preferences_coordinate_format_ddm">Decimalgrader, minutter</string>
+
+    <string name="preferences_preferred_distance_units_title">Foretrukne afstandsenheder</string>
+    <string name="preferences_preferred_distance_units_option_meters">Meter</string>
+    <string name="preferences_preferred_distance_units_option_feet">Fod</string>
+
+    <string name="preferences_preferred_speed_units_title">Foretrukne hastighedsenheder</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">Meter pr. sekund</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometer i timen</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">Mil i timen</string>
+
+    <string name="pref_language_title">Sprog</string>
+    <string name="pref_language_summary">Indstiller manuelt det sprog, der vises i appen</string>
+    <string name="pref_language_dialog_title">Vælg sprog</string>
+
+    <!-- Help -->
+    <string name="title_help">Hjælp</string>
+
+    <string name="help_text">
+        <b>Ofte stillede spørgsmål (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** Statusvisning ***</b>\n\n&#8226;\u0020
+        <b>Breddegrad</b>
+        - I decimalgrader (WGS 84)\n&#8226;\u0020
+        <b>Længdegrad</b>
+        - I decimalgrader (WGS 84)\n&#8226;\u0020
+        <b>Højde</b>
+        - Meter over the WGS 84 ellipsoide\n&#8226;\u0020
+        <b>Højde (MSL)</b>
+        - Meter over havets overflade (MSL) (kræver NMEA support)\n&#8226;\u0020
+        <b>E H Acc</b>
+        - Anslået horisontal nøjagtighed for placeringen (radius i meter med 68% sikkerhed). Med andre ord, hvis du tegner en cirkel centreret på placeringens breddegrad og længdegrad og med en radius svarende til nøjagtigheden, så er der 68% sikkerhed for, at den rigtige placering er inde i cirklen. For detaljer se https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>E H/V Acc</b>
+        - Anslået horisontal og vertikal nøjagtighed for placeringen, begge ved 68% sikkerhed. Horisontal nøjagtighed er defineret på samme måde som Acc-feltet ovenfor. Vertikal nøjagtighed er tilgængelig på Android 8.0 Oreo og nyere. Eksempel på vertikal nøjagtighed - hvis højde er 150, og V Acc er 20, er der 68% sikkerhed for, at den rigtige højde er mellem 130 og 170 meter. For detaljer se https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
+        <b>Hastighed</b>
+        - Hastighed, i meters/sekund over jorden\n&#8226;\u0020
+        <b>S. Acc</b>
+        - Anslået nøjagtighed af hastighed på placeringen ved 68% sikkerhed i meter pr. sekund. Hvis hastigheden f.eks. er 5, og hastighedsacceleration er 1, er der 68% sikkerhed for, at den rigtige hastighed er mellem 4 og 6 meter pr. sekund .\n&#8226;\u0020
+        <b>Pejling</b>
+        - Enhedens vandrette kørselsretning (i grader 0-360) og er ikke relateret til enhedens orientering.\n&#8226;\u0020
+        <b>B. Acc</b>
+        - Anslået pejlingsnøjagtighed i grader for denne placering ved 68% sikkerhed. For eksempel, hvis pejling er 60, og pejling acceleration er 10, så er der en 68% sikkerhed for, at den rigtige pejling er mellem 50 og 70 grader .\n&#8226;\u0020
+        <b># Sat.</b>
+        - Antal satellitter brugt i fiksering / antal satellitter i synsfelt (med gyldige signalstyrkeværdier) / antal satellitter kendt af enheden. På enheder med dobbeltfrekvens vises en satellit som i brug, hvis mindst en frekvens fra den pågældende satellit er i brug, en satellit vises som synlig, hvis mindst et signal har en gyldig signalstyrkeværdi og vises som kendt for enheden hvis der er information om mindst et signal fra satellitten .\n&#8226;\u0020
+        <b>PDOP</b>
+        - Position (3D) udvanding af præcision (kræver NMEA support) \n&#8226;\u0020
+        <b>H/V DOP</b>
+        - Horisontal / vertikal udvanding of præcision (kræver NMEA support)\n&#8226;\u0020
+        <b>TTFF</b>
+        - Time to første fiksering\n&#8226;\u0020
+        <b>ID or PRN</b>
+        - Identifikator for denne satellit (pseudorandom-støj til GPS )\n&#8226;\u0020
+        <b>CF</b>
+        - Etiket (f.eks. \"L1\") til bærefrekvens for signal, der spores. Hvis frekvensen er ukendt vises den rå frekvens i MHz (tilgængelig på Android 8.0+, men understøttes ikke på alle enheder). Det nye GLONASS CDMA-signal til L1 vises som \"L1-C\".\n&#8226;\u0020
+        <b>S/N</b>
+        - Signal / støj-forhold (Android M og lavere) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - Carrier til støj-forhold tæthed (Android N og højere) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>Flag</b>
+        -(E) hvis enheden har flygtig data om satellitten, (A) hvis enheden har almanakdata for satellitten, (U) hvis satellitten blev brugt til beregning af den seneste positionsbestemmelse. For SBAS angiver Android-specifikationen ikke, om (U) henviser til pseudoafstand fra satellitten, der bruges i positioneringen, eller til korrektionsoplysninger, der stammer fra den satellit, der bruges .\n\n
+
+        <b>Tilføj PSDS data</b>
+        - Anmoder om, at enheden opdaterer sin forudsagte satellitdatatjeneste (f.eks. XTRA-data), hvis PSDS-data bruges af enheden .\n\n
+
+        <b>*** Himmel ***</b>\n\n&#8226;\u0020
+        <b>GPS (USA Navstar)</b>
+        - Cirkler\n&#8226;\u0020
+        <b>GLONASS (Russisk)</b>
+        - Firkanter\n&#8226;\u0020
+        <b>Galileo (Europæiske Union)</b>
+        - Trikanter\n&#8226;\u0020
+        <b>QZSS (Japan)</b>
+        - Sekskanter\n&#8226;\u0020
+        <b>BeiDou/COMPASS (Kina)</b>
+        - Femkanter\n&#8226;\u0020
+        <b>IRNSS/NavIC (Indien)</b>
+        - Ovaler\n&#8226;\u0020
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
+        - Diamanter\n\n
+
+        &#8226;\u0020Transparente satellitter - Ikke i syne\n
+        &#8226;\u0020 Tynd omrids - I syne men ikke brugt til fiksering\n
+        &#8226;\u0020 Fed omrids - Brugt i fiksering\n\n
+
+        &#8226;\u0020Forventet S/N interval er 0 dB (rød) til 30 dB (grøn) på Android versioner mindre end 7.0. \n
+        &#8226;\u0020 Forventet S/N interval er 10 dB (rød) til 45 dB (grøn) på Android 7.0 og højere. \n
+        &#8226;\u0020 Forventet C/N0 interval er 10 dB-Hz (rød) til 45 dB-Hz (grøn) på Android 7.0 og højere. \n
+        &#8226;\u0020 Hvis der ikke er nogen S/N eller C/N0 værdi for en satellit (f.eks. hvis det ikke er i syne for enheden), vil den have en transparent lysegrå farve. \n\n
+
+        <b>*** Nøjagtighedsvisning ***</b>\n\n&#8226;\u0020
+        <b>Vertikal fejl</b>
+        - Vertikale fejlmålinger kan i modsætning til horisontale fejl være positive eller negative. Når de vises i nøjagtighedsvisningen, beregnes vertikale fejl og gennemsnitlig vertikale fejl ved hjælp af den absolutte værdi af fejlmålingen .\n\n
+        &#8226;\u0020Indstil din rigtige placering hurtigt ved hjælp af QR-koder. Se https://bit.ly/gpstest-qr-codes for detaljer.\n\n
+
+        <b>*** Fil-logning ***</b>\n\n
+        &#8226;\u0020Aktivér fillogning i indstillinger for NMEA, rå målinger, nav-beskeder og placeringsfikseringer. Se https://bit.ly/gpstest-file for detaljer .\n\n
+
+        <b>*** Anerkendelser ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - original  udvikler af v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - udvikler af v2.x og højere\n
+        &#8226;\u0020 GPSTest start-ikonet stammer fra Android Material Design \"satellit\" -ikonet, licenseret af Google under Apache v2.0. Andre Google material design ikoner bruges også under Apache v2.0. QR-kode ikon af Austin Andrews fra https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Kinesisk oversættelse leveret af wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
+        &#8226;\u0020 Tyske oversættelse leveret af SIRSteiner\n
+        &#8226;\u0020 Hollandsk oversættelse leveret af Dennis Dolman, Meteor0id\n
+        &#8226;\u0020 Græsk oversættelse leveret af Jimmy Golfi\n
+        &#8226;\u0020 Japansk oversættelse leveret af SakuraSa233\n
+        &#8226;\u0020 Tjekkisk oversættelse leveret af llzn.cz\n
+        &#8226;\u0020 Italiensk oversættelse leveret af Giolly90\n
+        &#8226;\u0020 Spansk oversættelse leveret af Sergi Pellicer\n
+        &#8226;\u0020 Indonesisk oversættelse leveret af Adiitya Andre90\n
+        &#8226;\u0020 Polsk oversættelse leveret af Adam Wandelt\n
+        &#8226;\u0020 Fransk oversættelse leveret af Olivier Merlin &amp; Jérémy Belloir\n
+        &#8226;\u0020 Persisk oversættelse leveret af Iman (imni)\n
+        &#8226;\u0020 Ukrainsk oversættelse leveret af Serhii Osmalchuk\n
+        &#8226;\u0020 Koreansk oversættelse leveret af snotree\n
+        &#8226;\u0020 Baskisk oversættelse leveret af Alexander Gabilondo\n
+        &#8226;\u0020 Finsk oversættelse leveret af Ari Nygard\n
+        &#8226;\u0020 Dansk oversættelse leveret af Claus Østergaard\n
+</string>
+</resources>

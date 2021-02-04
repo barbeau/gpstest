@@ -234,6 +234,7 @@
         <item>한국어</item>
         <item>Euskara</item>
         <item>Suomalainen</item>
+        <item>Dansk</item>
     </string-array>
 
     <!-- Supported languages, must stay in-order with language_entries -->
@@ -256,6 +257,7 @@
         <item>ko</item>
         <item>eu</item>
         <item>fi</item>
+        <item>da</item>
     </string-array>
 
 

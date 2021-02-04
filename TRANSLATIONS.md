@@ -18,6 +18,7 @@ Users have contributed translations in the following languages:
 * Korean
 * Basque
 * Finnish
+* Danish
 
 We would love help improving the existing translations, or adding a new translation.
 
