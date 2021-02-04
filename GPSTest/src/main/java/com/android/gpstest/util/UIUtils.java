@@ -322,8 +322,8 @@ public class UIUtils {
             body.append(Application.get().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
-        // First fix
-        body.append(Application.get().getString(R.string.capability_title_first_fix, location != null && deviceInfoViewModel.gotFirstFix()));
+        // Got fix
+        body.append(Application.get().getString(R.string.capability_title_got_fix, location != null && deviceInfoViewModel.gotFirstFix()));
 
         // We need a fix to determine these attributes reliably
         if (location != null && deviceInfoViewModel.gotFirstFix()) {

@@ -184,7 +184,7 @@
     <string name="capability_title_gnss_cf">GNSS CFs: %1$s\n</string>
     <string name="capability_title_supported_sbas">Supported SBAS: %1$s\n</string>
     <string name="capability_title_sbas_cf">SBAS CFs: %1$s\n</string>
-    <string name="capability_title_first_fix">First fix: %1$b\n</string>
+    <string name="capability_title_got_fix">Got fix: %1$b\n</string>
 
     <string name="capability_value_unknown">UNKNOWN</string>
     <string name="capability_value_not_supported">NOT_SUPPORTED</string>
