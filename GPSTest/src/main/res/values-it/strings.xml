@@ -47,9 +47,12 @@
     <string name="share">Condividi</string>
     <string name="copied_to_clipboard">Coordinate copiate negli appunti</string>
     <string name="send_log">Invio registro...</string>
+    <string name="log">Registro</string>
+    <string name="file_name">Nome del file</string>
+    <string name="location">Posizione</string>
     <string name="log_instructions">Abilita registrazione dati NMEA, misurazioni di base, messaggi di navigazione e altro nelle Impostazioni.</string>
     <string name="log_error">Qualcosa è andato storto durante il tentativo di log. Hai consentito i permessi di accesso alla memoria interna? Attiva di nuovo l\'opzione di log nelle Impostazioni e clicca su \"Consenti\" quando richiesto.</string>
-    <string name="no_location">Prova a condividere le tue coordinate dopo che il dispositivo ti ha geolocalizzato</string>
+    <string name="no_location">Attendi di essere geolocalizzato prima di condividere la tua posizione</string>
     <string name="include_altitude">Includi altitudine</string>
     <string name="set_fix_frequency">Imposta Frequenza di geolocalizzazione</string>
     <string name="force_time_injection_success">Dati temporali NTP inseriti con successo</string>
@@ -57,6 +60,15 @@
 
     <string name="force_psds_injection_success">Dati PSDS inseriti correttamente</string>
     <string name="force_psds_injection_failure">Il dispositivo non supporta l\'inserimento di dati PSDS</string>
+
+    <string name="device">Dispositivo</string>
+    <string name="upload_details">Carica le informazioni del tuo dispositivo sul database pubblico \"GPSTest Device Database\" (es: modello e produttore del dispositivo, sistemi GNSS supportati, sistemi SBAS supportati, dual-frequency supportata).
+.\n\nNessuna informazione privata relativa al tuo dispositivo verrà condivisa.
+Link database: https://bit.ly/gpstest-device-database</string>
+    <string name="upload_no_location">Perfavore passa alla scheda Stato, attendi di essere geolocalizzato e carica le informazioni del tuo dispositivo.</string>
+    <string name="upload_success">Informazioni del dispositivo caricate correttamente!</string>
+    <string name="upload_failure">Il caricamento delle informazioni del dispositivo non è andato a buon fine. Prova di nuovo.</string>
+    <string name="upload_nothing_changed">Nessuna variazione rispetto all\'ultimo caricamento. Prova più tardi.</string>
 
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
@@ -117,7 +129,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="filter_text">Mostra %1$d di %2$d satelliti</string>
     <string name="filter_showall">(Mostra tutti)</string>
     <string name="error_time_title">Il tuo orario fornito dal sistema satellitare di geolocalizzazione è sbagliato</string>
-    <string name="error_time_message">L\'orario fornito dal sistema satellitare di geolocalizzazione: \n\n%1$s\n\n differisce dall\'orario impostato sul device per più di %2$d giorni. Questo può essere causato dal problema conosciuto come \"GPS week rollover issue\". Rivolgiti al produttore del tuo device per maggiori chiarimenti. Per ulteriori informazioni: http://bit.ly/gps-week-rollover.</string>
+    <string name="error_time_message">L\'orario fornito dal sistema satellitare di geolocalizzazione: \n\n%1$s\n\n differisce dall\'orario impostato sul device per più di %2$d giorni. Questo può essere causato dal problema conosciuto come \"GPS week rollover issue\". Rivolgiti al produttore del tuo device per maggiori chiarimenti. Per ulteriori informazioni: https://bit.ly/gps-week-rollover.</string>
     <string name="unknown">Sconosciuto</string>
     <string name="cancel">Annulla</string>
 
@@ -191,6 +203,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Critiche, apprezzamenti o segnalazioni di bug sono graditi!\n\n\n</string>
     <string name="feedback_error">Impossibile inviare feedback: nessuna applicazione compatibile trovata.</string>
+    <string name="device_properties_upload_success">Informazioni del dispositivo caricate correttamente. Grazie!</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
@@ -228,9 +241,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 (in metri)</string>
     <string name="pref_gps_min_distance_invalid_entry">La distanza minima deve essere un numero</string>
 
-    <string name="pref_stop_gnss_in_background_title">Disattiva geolocalizzazione in background</string>
-    <string name="pref_stop_gnss_in_background_summary">Se abilitato disattiva il sistema di geolocalizzazione quando l\'app è aperta in background (per esempio, quando premi il tasto Home o Multitasking per cambiare app)</string>
-
     <string name="pref_display_category_title">Schermo</string>
     <string name="pref_keep_screen_on_title">Tieni lo schermo acceso</string>
     <string name="pref_keep_screen_on_summary">Impedisce allo schermo di spegnersi</string>
@@ -267,9 +277,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     </string>
     <string name="pref_file_location_output_title">Segnali di localizzazione</string>
     <string name="pref_file_location_output_summary">Registra dettagli relativi ai segnali di localizzazione su File</string>
-    <string name="pref_file_antenna_output_json_title">Informazioni Antenna (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Registra all\'interno di un file i dati ricevuti tramite antenna. Disponibile solo sui device supportati (Android 11 e superiori).</string>
-
     <string name="logging_to_new_file">Registrazione su nuovo File in corso: %1$s</string>
     <string name="unable_to_close_all_file_streams">Impossibile chiudere tutti i flussi di lavoro.</string>
     <string name="could_not_initialize_file">Il conteggio non inizializza il File: %1$s</string>
@@ -419,5 +426,6 @@ Per ulteriori informazioni: https://bit.ly/gpstest-file.\n\n
         &#8226;\u0020 Traduzione in persiano a cura di Iman (imni)\n
         &#8226;\u0020 Traduzione in ucraino a cura di Serhii Osmalchuk\n
         &#8226;\u0020 Traduzione in coreano a cura di snotree\n
-        &#8226;\u0020 Traduzione in basco a cura di Alexander Gabilondo\n</string>
+        &#8226;\u0020 Traduzione in basco a cura di Alexander Gabilondo\n
+        &#8226;\u0020 Traduzione in finlandese a cura di Ari Nygard\n</string>
 </resources>

@@ -49,7 +49,6 @@
     <string name="send_log">로그 보내기...</string>
     <string name="log_instructions">설정에서 NMEA, raw 측정지, 네비게이션 메시지 기록을 활성화 해주세요</string>
     <string name="log_error">로그 파일 생성에 무언가 문제가 발생했습니다. 파일/저장소 권한을 허가하셨나요? 설정에서 파일 로깅 옵션을 다시 활성화한 후 메시지가 표시되면 \"허용\" 을 누르세요.</string>
-    <string name="no_location">GNSS 위치 확정 후 위치 공유하기를 시도해 주세요</string>
     <string name="include_altitude">고도 포함</string>
     <string name="set_fix_frequency">확정 주파수 설정</string>
     <string name="force_time_injection_success">시간 데이터가 성공적으로 주입되었습니다.</string>
@@ -114,7 +113,6 @@
     <string name="sbas_not_available">위성 기반 보정 시스템 (SBAS) 사용 불가능</string>
     <string name="menu_option_sort_by">정렬 방법</string>
     <string name="error_time_title">GNSS 시간이 잘못 되었습니다</string>
-    <string name="error_time_message">기기의 GNSS 시간:\n\n%1$s\n\n...이 시스템 시계와 %2$d일 이상 차이가 나고 있습니다. 이는 GPS week rollover 이슈로 인해 발생 했을 수 있습니다. 현재 사용하는 기기 제조사에 자세한 사항을 문의해주세요. 자세히 보기 http://bit.ly/gps-week-rollover</string>
     <!-- Map view -->
     <string name="ground_truth_latitude">고도</string>
     <string name="ground_truth_longitude">경도</string>
@@ -182,9 +180,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: 피드백</string>
     <string name="feedback_body">불만, 찬사, 혹은 버그 리포트 모두 환영합니다!\n\n\n</string>
-    <string name="feedback_error">피드백을 보낼 수 없습니다: 알맞은 앱을 찾을 수 없습니다.
-</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">새로운 소식</string>
     <string name="main_help_close">닫기</string>
@@ -224,10 +219,6 @@ legacy GPSStatus.Listener를 사용합니다.</string>
 </string>
     <string name="pref_gps_min_distance_dialog_title">최소 거리를 입력하세요, 미터 단위</string>
     <string name="pref_gps_min_distance_invalid_entry">최소 거리는 숫자여야 합니다</string>
-
-    <string name="pref_stop_gnss_in_background_title">백그라운드에서 GNSS 정지</string>
-    <string name="pref_stop_gnss_in_background_summary">이 기능을 켜시면 앱이 백그라운드로 이동시 GNSS가 정지합니다 (예를 들면, 홈 버튼을 누르거나 멀티태스팅 버튼으로 앱 전환을 시도하는 경우 입니다)
-</string>
 
     <string name="pref_display_category_title">디스플레이</string>
     <string name="pref_keep_screen_on_title">항상 화면 켜기</string>

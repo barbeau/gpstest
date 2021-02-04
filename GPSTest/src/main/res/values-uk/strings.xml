@@ -49,7 +49,6 @@
     <string name="send_log">Відправити журнал...</string>
     <string name="log_instructions">Увімкнути запис журналу для NMEA, сирі вимірювання, навігаційні повідомлення та інше в Налаштуваннях</string>
     <string name="log_error">Щось не так з файлом журналу. Чи надали ви права на операції з файлами/сховищем? Спробуйте повторно увімкнути журналювання в Налаштуваннях і натисніть \"Дозволити\" коли з\'явиться запит.</string>
-    <string name="no_location">Спробуйте поділитися розташуванням після отримання GNSS фіксації</string>
     <string name="include_altitude">Додати висоту</string>
     <string name="set_fix_frequency">Встановити частоту фіксації</string>
     <string name="force_time_injection_success">Дані про час успішно внесені.</string>
@@ -111,7 +110,6 @@
     <string name="sbas_not_available">Супутникова система диференційної корекції (SBAS) не доступна</string>
     <string name="menu_option_sort_by">Сортувати по</string>
     <string name="error_time_title">Ваш GNSS час неправильний</string>
-    <string name="error_time_message">GNSS час на пристрої:\n\n%1$s\n\n…відрізняється більше ніж на %2$d дні/днів від системного годинника. Це може бути викликано проблемою перекидання GPS тижня - зверніться до виробника пристрою за деталями. Див. http://bit.ly/gps-week-rollover для додаткової інформації.</string>
     <!-- Map view -->
     <string name="ground_truth_latitude">Ваша широта</string>
     <string name="ground_truth_longitude">Ваша довгота</string>
@@ -181,8 +179,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Відгук</string>
     <string name="feedback_body">Скарги або повідомлення про помилки вітаються!\n\n\n</string>
-    <string name="feedback_error">Неможливо надіслати відгук: не знайдено відповідного додатка.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Що нового?</string>
     <string name="main_help_close">Закрити</string>
@@ -217,9 +213,6 @@
     <string name="pref_gps_min_distance_summary">Мінімальна відстань між GNSS фіксаціями, в метрах</string>
     <string name="pref_gps_min_distance_dialog_title">Введіть мін. дистанцію, в метрах</string>
     <string name="pref_gps_min_distance_invalid_entry">Мін. дистанція повинна бути числом</string>
-
-    <string name="pref_stop_gnss_in_background_title">Зупиняти GNSS в фоні</string>
-    <string name="pref_stop_gnss_in_background_summary">Якщо це ввімкнено, GNSS завжди зупинятиметься, коли додаток перебуває у фоновому режимі (наприклад, при використанні кнопки \"Головна\" або кнопки \"Багатозадачність\" для переключення програм)</string>
 
     <string name="pref_display_category_title">Відображення</string>
     <string name="pref_keep_screen_on_title">Тримати екран увімкненим</string>

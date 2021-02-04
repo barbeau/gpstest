@@ -44,6 +44,7 @@
     <string name="delete_aiding_data_success">Données d\'assistance effacées</string>
     <string name="delete_aiding_data_failure">Le matériel ne supporte pas l\'effacement des données d\'assistance</string>
     <string name="gps_switch">Off/On</string>
+    <string name="share">Partager</string>
     <string name="set_fix_frequency">Force la Fréquence de Verrouillage</string>
     <string name="force_time_injection_success">Données horaires importées</string>
     <string name="force_time_injection_failure">Le matériel ne supporte pas l\'injection de données horaires</string>
@@ -166,8 +167,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Vos retours</string>
     <string name="feedback_body">Les plaintes, bravos et rapports de plantage sont les bienvenus!\n\n\n</string>
-    <string name="feedback_error">Impossible d\'envoyer un commentaire: pas d\'application trouvée</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Quoi de neuf?</string>
     <string name="main_help_close">Fermer</string>
@@ -206,9 +205,6 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_gps_min_distance_summary">Distance minimale entre les verrouillages GNSS, en mètres</string>
     <string name="pref_gps_min_distance_dialog_title">Entrez une distance minimale, en mètre</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. Distance doit être un nombre</string>
-
-    <string name="pref_stop_gnss_in_background_title">Arrêt du GNSS en arrière plan</string>
-    <string name="pref_stop_gnss_in_background_summary">Si activé, cela arrête le service GNSS lorsque l\'application est placée en arrière plan (par exemple, lorsque l\'on utilise le bouton Home ou le Multitache pour basculer entre applications)</string>
 
     <string name="pref_display_category_title">Affichage</string>
     <string name="pref_keep_screen_on_title">Garder l\'écran allumé</string>

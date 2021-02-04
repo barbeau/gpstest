@@ -235,9 +235,6 @@
     <string name="pref_gps_min_distance_dialog_title">输入最小距离间隔（单位：米）</string>
     <string name="pref_gps_min_distance_invalid_entry">最小距离间隔必须是一个数字</string>
 
-    <string name="pref_stop_gnss_in_background_title">后台停止 GNSS</string>
-    <string name="pref_stop_gnss_in_background_summary">启用后，当本应用处于后台时将不会启用GNSS</string>
-
     <string name="pref_display_category_title">显示</string>
     <string name="pref_keep_screen_on_title">保持亮屏</string>
     <string name="pref_keep_screen_on_summary">阻止屏幕关闭</string>
@@ -270,8 +267,10 @@
 （Android 7.0 及其以上）</string>
     <string name="pref_file_location_output_title">位置</string>
     <string name="pref_file_location_output_summary">输出定位详情至文件</string>
-    <string name="pref_file_antenna_output_json_title">天线信息 (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">将GNSS天线细节记录到一个JSON文件中。只能在支持的设备上使用 (Android 11及以上)。</string>
+    <string name="pref_file_antenna_output_csv_title">天线信号 （CSV）</string>
+    <string name="pref_file_antenna_output_csv_summary">将 GNSS 天线详细信息记录到 CSV 文件中。仅在支持的设备上可用 （安卓11及以上系统）。</string>
+    <string name="pref_file_antenna_output_json_title">天线信息 （JSON）</string>
+    <string name="pref_file_antenna_output_json_summary">将 GNSS 天线详细信息记录到 JSON 文件中。仅在支持的设备上可用 （安卓11及以上系统）。</string>
 
     <string name="logging_to_new_file">日志写入至: %1$s</string>
     <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>

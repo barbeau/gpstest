@@ -48,7 +48,6 @@
     <string name="copied_to_clipboard">Locatie gekopieerd naar klembord</string>
     <string name="send_log">Log insturen…</string>
     <string name="log_instructions">Schakel in de instellingen loggen voor NMEA, rauwe metingen, navigatieberichten en meer in.</string>
-    <string name="no_location">Probeer je locatie te delen nadat je een GNSS fix hebt.</string>
     <string name="include_altitude">Hoogte meerekenen</string>
     <string name="set_fix_frequency">Fix-frequentie instellen </string>
     <string name="force_time_injection_success">NTP-gegevens succesvol ingeladen</string>
@@ -189,8 +188,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complimenten, kudo\'s of foutrapportages zijn welkom!\n\n\n</string>
-    <string name="feedback_error">Kan geen feedback verzenden; geen geschikte applicatie gevonden</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Wat is er nieuw?</string>
     <string name="main_help_close">Sluiten</string>
@@ -226,9 +223,6 @@
 </string>
     <string name="pref_gps_min_distance_dialog_title">Vul een minimale afstand in, in meters</string>
     <string name="pref_gps_min_distance_invalid_entry">De minimale afstand moet een nummer zijn</string>
-
-    <string name="pref_stop_gnss_in_background_title">Stop GNSS in de achtergrond</string>
-    <string name="pref_stop_gnss_in_background_summary">Indien ingeschakeld, stopt GNSS altijd wanneer deze app in de achtergrond geplaatst wordt (bijvoorbeeld wanneer je de knop \'Home\' of \'Overzicht\' gebruikt om van app te wisselen)</string>
 
     <string name="pref_display_category_title">Scherm</string>
     <string name="pref_keep_screen_on_title">Ingeschakeld houden</string>

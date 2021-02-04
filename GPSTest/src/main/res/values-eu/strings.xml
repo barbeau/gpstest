@@ -49,7 +49,6 @@
     <string name="send_log">Bidali erregistroa...</string>
     <string name="log_instructions">Ezarpenetan aktibatu NMEAren erregistroa, prozesatu gabeko neurriak, nabigazio mezuak eta gehiago</string>
     <string name="log_error">Zerbaitek huts egin du fitxategia erregistratzean. Baimendu al dituzu fitxategiak biltegiratzeko baimenak? Saiatu fitxategien erregistroa berriro gaitzen Ezarpenetan eta sakatu \"Baimendu\" galdetzean.</string>
-    <string name="no_location">Saiatu zure kokapena partekatzen GNSS seinalea bat atzitu ondoren</string>
     <string name="include_altitude">Altitudea barne</string>
     <string name="set_fix_frequency">Ezarri seinale atzitzeko maiztasuna</string>
     <string name="force_time_injection_success">Denbora datuak behar bezala txertatu dira</string>
@@ -116,7 +115,6 @@
     <string name="filter_text">%2$d satelitetatik %1$d erakusten</string>
     <string name="filter_showall">(erakutsi guztiak)</string>
     <string name="error_time_title">Zure GNSS ordua okerra da</string>
-    <string name="error_time_message">n\n%1$s\n\n… GNSS gailuaren ordua zure sistemaren erlojuarekiko %2$d egunekoa baino diferentzia handiagoa du. Horren arrazoia izan daiteke \"week rollover issue\" - galdetu gailuaren hornitzaileari zehaztasun gehiagorako. Ikusi http://bit.ly/gps-week-rollover informazio gehiagorako..</string>
     <string name="unknown">Ezezaguna</string>
     <string name="cancel">Utzi</string>
 
@@ -189,8 +187,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: iruzkina</string>
     <string name="feedback_body">Kexak, zorionak edo akatsen txostenak ongi etorriak dira!\n\n\n</string>
-    <string name="feedback_error">Ezin da iruzkinik bidali: ez da aplikazio egokirik aurkitu.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Zer berri?</string>
     <string name="main_help_close">Itxi</string>
@@ -227,9 +223,6 @@ GPSStatus klasikoa erabiliko du.</string>
     <string name="pref_gps_min_distance_summary">GNSS atzipenen arteko gutxieneko distantzia, metrotan</string>
     <string name="pref_gps_min_distance_dialog_title">Sartu gutxieneko distantzia, metrotan</string>
     <string name="pref_gps_min_distance_invalid_entry">Gutxieneko distantzia zenbaki bat izan behar du.</string>
-
-    <string name="pref_stop_gnss_in_background_title">Gelditu GNSS bigarren planoan</string>
-    <string name="pref_stop_gnss_in_background_summary">Aktiboa badago GNSSa geldituko da beti aplikazioa bigarren planora pasatzean (adib. Hasierako pantailara joatean edo aplikazioa aldatzeko atazen matrizera joatean)</string>
 
     <string name="pref_display_category_title">Bistarazi</string>
     <string name="pref_keep_screen_on_title">Mantendu pantaila piztuta</string>

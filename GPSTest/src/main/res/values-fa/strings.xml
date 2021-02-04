@@ -49,7 +49,6 @@
     <string name="send_log">«فرستادن لاگ...»</string>
     <string name="log_instructions">در تنظیمات، لاگ‌نگاری برای NMEA، اندازه‌گیری‌های خام، پیام‌های ناوبری و غیره را فعال کنید.</string>
     <string name="log_error">مشکلی در لاگ‌نگاری پیش آمد. آیا دسترسی به محل ذخیره را مجاز کرده‌اید؟ لطفاً در تنظیمات یکی از گزینه‌های رخدادنگاری را دوباره فعال کنید و هنگام درخواست دسترسی، «مجاز است» را برگزینید.</string>
-    <string name="no_location">پس از دریافت فیکس GNSS، برای همرسانی تلاش کنید</string>
     <string name="include_altitude">شامل ارتفاع</string>
     <string name="set_fix_frequency">تنظیم فرکانس فیکس</string>
     <string name="force_time_injection_success">دادهٔ زمان با موفقیت تزریق شد.</string>
@@ -112,7 +111,6 @@
     <string name="sbas_not_available">ماهواره‌های SBAS (سامانهٔ تقویتی بر پایهٔ ماهواره) در دسترس نیستند.</string>
     <string name="menu_option_sort_by">ترتیب بر اساس</string>
     <string name="error_time_title">زمان GNSS شما نادرست است</string>
-    <string name="error_time_message">زمان GNSS دستگاه:\n\n%1$s\n\n…بیش از %2$d روز با ساعت دستگاه شما فرق دارد. این مشکل می‌تواند ناشی از «مسئلهٔ بازنشانی شمارندهٔ هفته در GPS» باشد. برای جزئیات بیشتر با سازندهٔ دستگاه خود تماس بگیرید. برای اطلاعات بیشتر http://bit.ly/gps-week-rollover را ببینید.</string>
     <!-- Map view -->
     <string name="ground_truth_latitude">عرض جغرافیایی شما</string>
     <string name="ground_truth_longitude">طول جغرافیایی شما</string>
@@ -180,8 +178,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">پذیرای انتقادها، قدردانی‌ها یا گزارش باگ‌ها هستیم!\n\n\n</string>
-    <string name="feedback_error">ناتوان از فرستادن بازخورد: برنامهٔ مناسبی یافت نشد.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">تازه‌ها</string>
     <string name="main_help_close">بستن</string>
@@ -217,9 +213,6 @@
     <string name="pref_gps_min_distance_summary">کمترین فاصله بین فیکس‌های GNSS، به متر</string>
     <string name="pref_gps_min_distance_dialog_title">کمترین فاصله، به متر</string>
     <string name="pref_gps_min_distance_invalid_entry">کمترین فاصله باید عدد باشد</string>
-
-    <string name="pref_stop_gnss_in_background_title">توقف GNSS در پس‌زمینه</string>
-    <string name="pref_stop_gnss_in_background_summary">اگر فعال باشد هنگامی که برنامه به پس‌زمینه برود همواره GNSS را متوقف می‌کند (برای مثال، هنگامی که از دکمهٔ برنامه‌های اخیر برای جابه‌جایی بین برنامه‌ها یا از دکمهٔ Home استفاده می‌کنید)</string>
 
     <string name="pref_display_category_title">نمایش</string>
     <string name="pref_keep_screen_on_title">نمایشگر روشن بماند</string>

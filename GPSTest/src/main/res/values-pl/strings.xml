@@ -47,9 +47,12 @@
     <string name="share">Udostępnij</string>
     <string name="copied_to_clipboard">Lokalizacja skopiowana do schowka</string>
     <string name="send_log">Przesyłanie dziennika…</string>
+    <string name="log">Dziennik</string>
+    <string name="file_name">Nazwa pliku</string>
+    <string name="location">Lokalizacja</string>
     <string name="log_instructions">Włącz rejestrowanie dla NMEA, nieprzetworzonych pomiarów, komunikatów nawigacyjnych i innych w Ustawieniach</string>
     <string name="log_error">Coś poszło nie tak z rejestrowaniem plików. Czy zezwoliłeś na uprawnienia do plików/magazynu? Spróbuj ponownie włączyć opcję rejestrowania plików w ustawieniach i naciśnij \"Zezwalaj\" po wyświetleniu monitu.</string>
-    <string name="no_location">Spróbuj udostępnić swoją lokalizację po uzyskaniu poprawki GNSS</string>
+    <string name="no_location">Spróbuj udostępnić swoją lokalizację po uzyskaniu poprawki GNSS…</string>
     <string name="include_altitude">Uwzględnij wysokość</string>
     <string name="set_fix_frequency">Ustaw częstotliwość aktualnej pozycji</string>
     <string name="force_time_injection_success">Pomyślnie wprowadzono dane czasowe.</string>
@@ -58,6 +61,13 @@
     <string name="force_psds_injection_success">Pomyślnie wprowadzono dane PSDS.</string>
     <string name="force_psds_injection_failure">Urządzenie nie obsługuje wprowadzania danych PSDS.
     </string>
+
+    <string name="device">Urządzenie</string>
+    <string name="upload_details">Przesyła funkcje urządzenia (np. producent i model urządzenia, obsługiwany GNSS, obsługiwany SBAS, obsługa dwóch częstotliwości) do publicznej bazy danych urządzeń GPSTest (https://bit.ly/gpstest-device-database).\n\nŻadne prywatne informacje z Twojego urządzenia nie są udostępniane.</string>
+    <string name="upload_no_location">Przejdź do ekranu Status, poczekaj na poprawkę GNSS, a następnie prześlij funkcje urządzenia.</string>
+    <string name="upload_success">Pomyślnie przesłane funkcje urządzenia!</string>
+    <string name="upload_failure">Przekazywanie funkcji urządzenia nie powiodło się. Spróbuj ponownie.</string>
+    <string name="upload_nothing_changed">Nic się nie zmieniło od ostatniego przesłania. Spróbuj ponownie później.</string>
 
     <string name="zoom_in">Powiększ</string>
     <string name="zoom_out">Pomniejsz</string>
@@ -117,7 +127,7 @@
     <string name="filter_text">Wyświetlono %1$d z %2$d satelitów</string>
     <string name="filter_showall">(pokaż wszystkie)</string>
     <string name="error_time_title">Twój czas GNSS jest nieprawidłowy</string>
-    <string name="error_time_message">Czas GNSS urządzenia wynoszący:\n\n%1$s\n\n…więcej niż %2$d dni inne niż zegar systemowy. Przyczyną może być problem z tyrolowaniem tygodnia GPS - szczegółowe informacje można uzyskać od producenta urządzenia. Aby uzyskać więcej informacji, zobacz http://bit.ly/gps-week-rollover.</string>
+    <string name="error_time_message">Czas GNSS urządzenia:\n\n%1$s\n\n… różni się o więcej niż %2$d dni od zegara systemowego. Może to być spowodowane problemem kumulacji tygodnia GPS - o szczegóły zapytaj producenta urządzenia. Więcej informacji można znaleźć pod adresem https://bit.ly/gps-week-rollover.</string>
     <string name="unknown">Nieznany</string>
     <string name="cancel">Anuluj </string>
 
@@ -190,7 +200,8 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Przekaż opinię</string>
     <string name="feedback_body">Uwagi, pochwały i zgłaszanie błędów jest mile widziane !\n\n\n</string>
-    <string name="feedback_error">Nie można przekazać opinii: nie znaleziono odpowiedniej aplikacji</string>
+    <string name="feedback_error">Nie można wysłać informacji zwrotnej: nie znaleziono odpowiedniej aplikacji.</string>
+    <string name="device_properties_upload_success">Pomyślnie przesłano właściwości urządzenia. Dzięki!</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co nowego?</string>
@@ -228,10 +239,6 @@
     <string name="pref_gps_min_distance_dialog_title">Wpisz min. odległość w metrach</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. Odległość musi być liczbą</string>
 
-    <string name="pref_stop_gnss_in_background_title">Zatrzymaj GNSS w tle</string>
-    <string name="pref_stop_gnss_in_background_summary">Jeśli włączone, GNSS zostanie wyłączone kiedy aplikacja będzie działać w tle (na przykład, kiedy użyjesz przycisku Home lub przycisku Multitaskingu do przełączania się pomiędzy aplikacjami)
-    </string>
-
     <string name="pref_display_category_title">Wyświetlacz</string>
     <string name="pref_keep_screen_on_title">Pozostaw włączony ekran</string>
     <string name="pref_keep_screen_on_summary">Powstrzymuje ekran przed wyłączeniem się</string>
@@ -267,9 +274,6 @@
     </string>
     <string name="pref_file_location_output_title">Lokalizacja</string>
     <string name="pref_file_location_output_summary">Rejestruje szczegóły poprawek lokalizacji do pliku</string>
-    <string name="pref_file_antenna_output_json_title">Informacje o Antenna (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Rejestruje szczegóły anteny GNSS do pliku. Dostępne tylko na obsługiwanych urządzeniach (Android 11 i nowsze).</string>
-
     <string name="logging_to_new_file">Rejestrowanie do nowego pliku: %1$s</string>
     <string name="unable_to_close_all_file_streams">Nie można zamknąć wszystkich strumieni plików.</string>
     <string name="could_not_initialize_file">Zliczaj nie inicjalizuj pliku: %1$s</string>

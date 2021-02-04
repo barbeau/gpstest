@@ -50,7 +50,6 @@
     <string name="send_log">Отправить логи...</string>
     <string name="log_instructions">Включить логирование для NMEA, сырые измерения, сообщения навигации и т. д. в Настройках</string>
     <string name="log_error">С журналированием что-то не так. Разрешили ли вы доступ к файлохранилищу? Попробуйте снова включить журналирование в настройках и нажмите \"Разрешить\" при запросе доступа.</string>
-    <string name="no_location">Попробовать поделиться месторасположением после GNSS фиксации</string>
     <string name="include_altitude">Включать высоту над уровнем моря</string>
     <string name="set_fix_frequency">Установить частоту фиксации</string>
     <string name="force_time_injection_success">Успешно внесены сведения о времени.</string>
@@ -119,7 +118,6 @@
     <string name="filter_text">Показаны %1$d из %2$d спутников</string>
     <string name="filter_showall">(показать все)</string>
     <string name="error_time_title">GNSS время неверно</string>
-    <string name="error_time_message">GNSS время на устройстве:\n\n%1$s\n\n…отличается более чем на %2$d дней от системных часов. Проблема может быть вызвана сбросом недель в GPS - обратитесь к производителю вашего устройства. См. http://bit.ly/gps-week-rollover для получения дополнительной информации.</string>
     <string name="unknown">Неизвестно</string>
     <string name="cancel">Отмена</string>
 
@@ -192,9 +190,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Отзывы и сообщения об ошибках приветствуются!\n\n\n</string>
-    <string name="feedback_error">Невозможно отправить отзыв: на устройстве на найдено подходящее для этого приложение.
-    </string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Что нового?</string>
     <string name="main_help_close">Закрыть</string>
@@ -234,10 +229,6 @@
     <string name="pref_gps_min_distance_dialog_title">Введите минимальное расстояние, в метрах</string>
     <string name="pref_gps_min_distance_invalid_entry">Мин. расстояние должно быть числом</string>
 
-    <string name="pref_stop_gnss_in_background_title">Отключать навигацию в фоне</string>
-    <string name="pref_stop_gnss_in_background_summary">Если отмечено, приложение, перейдя в фоновый режим, отключит навигацию (например, если вы нажали кнопку Домой или перешли в другое приложение)
-    </string>
-
     <string name="pref_display_category_title">Отображение</string>
     <string name="pref_keep_screen_on_title">Держать экран включенным</string>
     <string name="pref_keep_screen_on_summary">Предотвращать отключение экрана</string>
@@ -274,9 +265,6 @@
 </string>
     <string name="pref_file_location_output_title">Местоположение</string>
     <string name="pref_file_location_output_summary">Записывает подробности фиксации местоположения в файл</string>
-    <string name="pref_file_antenna_output_json_title">Информация об антенне (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Внести в лог информацию об антенне GNSS. Доступно только на поддерживаемых устройствах (Android 11 и выше).</string>
-
     <string name="logging_to_new_file">Журналирование в новый файл: %1$s</string>
     <string name="unable_to_close_all_file_streams">Не удаётся закрыть все файловые потоки.</string>
     <string name="could_not_initialize_file">Не удалось инициализировать файл: %1$s</string>

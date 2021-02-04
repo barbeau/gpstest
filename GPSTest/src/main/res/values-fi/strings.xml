@@ -237,9 +237,6 @@ käyttä vanhaa GPSStatus.Listener-ohjelmaa.</string>
     <string name="pref_gps_min_distance_dialog_title">Anna min. etäisyys metreinä</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. etäisyyden on oltava numero</string>
 
-    <string name="pref_stop_gnss_in_background_title">Pysäytä GNSS taustalta</string>
-    <string name="pref_stop_gnss_in_background_summary">Jos tämä on käytössä, GNSS pysäytetään aina, kun sovellus asetetaan taustalle (esimerkiksi vaihdettaessa sovelluksia Koti-painikkeella tai Monitoimipainikkeella)</string>
-
     <string name="pref_display_category_title">Näyttö</string>
     <string name="pref_keep_screen_on_title">Pidä näyttö päällä</string>
     <string name="pref_keep_screen_on_summary">Estää näytön sammumisen</string>
@@ -270,6 +267,8 @@ Studioon (Android 7.0 ja uudemmat)</string>
     <string name="pref_file_navigation_message_output_summary">Luo GNSS-navigointiviestit tiedostoon (Android 7.0 tai uudempi)</string>
     <string name="pref_file_location_output_title">Sijainti</string>
     <string name="pref_file_location_output_summary">Kirjaa sijaintikorjauksen tiedot tiedostoon</string>
+    <string name="pref_file_antenna_output_csv_title">Antenni tiedot (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Kirjaa GNSS-antennin tiedot CSV-tiedostoon. Saatavilla vain tuetuilla laitteilla (Android 11 ja uudemmat).</string>
     <string name="pref_file_antenna_output_json_title">Antenni tiedot (JSON)</string>
     <string name="pref_file_antenna_output_json_summary">Kirjaa GNSS-antennin tiedot JSON-tiedostoon. Saatavilla vain tuetuilla laitteilla (Android 11 ja uudemmat).</string>
 

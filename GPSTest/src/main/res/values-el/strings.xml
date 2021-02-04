@@ -49,7 +49,6 @@
     <string name="send_log">αποστολή αρχείου καταγραφής</string>
     <string name="log_instructions">οδηγίες καταγραφής</string>
     <string name="log_error">Υπήρξε σφάλμα με το αρχείο καταγραφής. Εχετε δώσει άδεια για χρήση αρχείων/φακέλων στην εφαρμογή; Δοκιμάστε πάλι να ενεργοποιήσετε την καταγραφή σε αρχείο απο τις Ρυθμίσεις και πατήστε στο \"να επιτρέπεται\" όταν ερωτηθείτε.</string>
-    <string name="no_location">χωρίς θέση στίγματος</string>
     <string name="include_altitude">να περιλαμβάνεται το υψόμετρο</string>
     <string name="set_fix_frequency">Ορίστε συχνότητα σταθεροποίησης</string>
     <string name="force_time_injection_success">Επιτυχής εισαγωγή δεδομένων ώρας.</string>
@@ -187,8 +186,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Σχόλιο</string>
     <string name="feedback_body">Παράπονα, kudos, ή προβλήματα είναι καλοδεχούμενα!\n\n\n</string>
-    <string name="feedback_error">Δεν είναι δυνατή η αποστολή σχολίων: δεν βρέθηκε σχετική εφαρμογή.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Τι νέο υπάρχει...</string>
     <string name="main_help_close">Κλείσιμο</string>
@@ -222,9 +219,6 @@
     <string name="pref_gps_min_distance_summary">Ελάχιστη απόσταση μεταξύ των διορθώσεων του GNSS, σε μέτρα</string>
     <string name="pref_gps_min_distance_dialog_title">Πληκτρολογήστε ελάχιστη απόσταση, σε μέτρα</string>
     <string name="pref_gps_min_distance_invalid_entry">Ελάχιστη απόσταση πρέπει να είναι αριθμός</string>
-
-    <string name="pref_stop_gnss_in_background_title">Σταμάτημα του GNSS στο παρασκήνιο</string>
-    <string name="pref_stop_gnss_in_background_summary">Αν είναι ενεργοποιημένο, θα σταματήσει πάντα το GNSS κατά την τοποθέτηση της εφαρμογής στο παρασκήνιο (για παράδειγμα, όταν χρησιμοποιείτε το κουμπί Home ή το κουμπί Multitasking για να αλλάξετε εφαρμογές)</string>
 
     <string name="pref_display_category_title">Προβολή</string>
     <string name="pref_keep_screen_on_title">Διατήρηση της Οθόνης πάντα ανοιχτή</string>

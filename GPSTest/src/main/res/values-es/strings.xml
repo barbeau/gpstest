@@ -49,7 +49,6 @@
     <string name="send_log">Enviar registro…</string>
     <string name="log_instructions">Activa el registro para NMEA, mediciones en crudo, mensajes de navegación, y más en Configuración</string>
     <string name="log_error">Algo ha salido mal con el registro en archivo. ¿Has dado permisos de almacenamiento? Prueba reactivando la opción de registro en archivo en Configuración y toca «Permitir» cuando seas preguntado.</string>
-    <string name="no_location">Prueba a compartir tu posición una vez el GNSS está fijado.</string>
     <string name="include_altitude">Incluir altitud</string>
     <string name="set_fix_frequency">Fijar frecuencia</string>
     <string name="force_time_injection_success">Datos de tiempo insertados correctamente</string>
@@ -179,8 +178,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Quejas, felicitaciones o informes de errores son bienvenidos!\n\n\n</string>
-    <string name="feedback_error">Imposible enviar feedback: no se encuentra ninguna aplicación adecuada</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Que hay de nuevo?</string>
     <string name="main_help_close">Cerrar</string>
@@ -218,9 +215,6 @@ esté sujetando el dispositivo</string>
     <string name="pref_gps_min_distance_summary">Distancia mínima entre correcciónes GNSS, en metros</string>
     <string name="pref_gps_min_distance_dialog_title">Introduzca distancia min., en metros</string>
     <string name="pref_gps_min_distance_invalid_entry">Distancia min. debe ser un número</string>
-
-    <string name="pref_stop_gnss_in_background_title">Parar GNSS en segundo plano</string>
-    <string name="pref_stop_gnss_in_background_summary">Si está activado siempre se parará GNSS cuando la app está en segundo plano (por ejemplo, cuando se usa el botón Home o el Multitarea para cambiar de app)</string>
 
     <string name="pref_display_category_title">Pantalla</string>
     <string name="pref_keep_screen_on_title">Mantener Pantalla Encendida</string>

@@ -146,9 +146,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: フィードバック</string>
     <string name="feedback_body">不満、称賛、バグ報告は歓迎です！\n\n\n</string>
-    <string name="feedback_error">フィードバックを送信できません：適切なアプリが見つかりません。
-    </string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">更新履歴</string>
     <string name="main_help_close">閉じる</string>
@@ -182,9 +179,6 @@
     <string name="pref_gps_min_distance_summary">GNSS修正の最小距離間隔（メートル単位）</string>
     <string name="pref_gps_min_distance_dialog_title">最小距離をメートル単位で入力します</string>
     <string name="pref_gps_min_distance_invalid_entry">最小距離は数字でなければなりません</string>
-
-    <string name="pref_stop_gnss_in_background_title">バックグラウンドでGNSSを停止する</string>
-    <string name="pref_stop_gnss_in_background_summary">アプリがバックグラウンドに置かれたときにGNSSを常に停止する</string>
 
     <string name="pref_display_category_title">画面</string>
     <string name="pref_keep_screen_on_title">画面をオンのまま</string>

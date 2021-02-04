@@ -211,7 +211,7 @@
         <b>Info kapabilitas perangkat bersumber luas</b>
         - Sumbangkan informasi kapabilitas perangkat Anda secara opsional ke Database Perangkat GPSTest publik (https://bit.ly/gpstest-device-database) melalui layar Bagikan.\n&#8226;\u0020
         <b>Log info antena</b>
-        - Dukungan pencatatan log GnssAntennaInfo ke dalam file JSON.\n&#8226;\u0020
+        - Dukungan pencatatan log GnssAntennaInfo ke dalam file CSV dan JSON.\n&#8226;\u0020
         <b>Tambahan terjemahan bahasa Suomi</b>
         - Terima kasih kepada Ari Nygard!\n&#8226;\u0020
         <b>Perbaikan masalah</b>
@@ -256,10 +256,6 @@
     <string name="pref_gps_min_distance_dialog_title">Masukkan jarak minimum, dalam meter</string>
     <string name="pref_gps_min_distance_invalid_entry">Jarak minimum harus berupa angka</string>
 
-    <string name="pref_stop_gnss_in_background_title">Hentikan GNSS di latar belakang</string>
-    <string name="pref_stop_gnss_in_background_summary">Jika diaktifkan akan menghentikan GNSS saat aplikasi berada di latar belakang (contohnya, saat menekan tombol Home atau tombol Recent untuk beralih aplikasi)
-    </string>
-
     <string name="pref_display_category_title">Tampilan</string>
     <string name="pref_keep_screen_on_title">Layar terus aktif</string>
     <string name="pref_keep_screen_on_summary">Cegah layar agar tidak mati</string>
@@ -296,6 +292,8 @@
     </string>
     <string name="pref_file_location_output_title">Lokasi</string>
     <string name="pref_file_location_output_summary">Catat log detail perbaikan lokasi ke dalam file</string>
+    <string name="pref_file_antenna_output_csv_title">Info antena (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Catat log detail antena GNSS ke dalam file CSV. Tersedia pada perangkat yang didukung saja (Android 11 ke atas)</string>
     <string name="pref_file_antenna_output_json_title">Info antena (JSON)</string>
     <string name="pref_file_antenna_output_json_summary">Catat log detail antena GNSS ke dalam file JSON. Tersedia pada perangkat yang didukung saja (Android 11 ke atas)</string>
 
