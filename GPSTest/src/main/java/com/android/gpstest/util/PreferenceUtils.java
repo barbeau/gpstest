@@ -91,6 +91,10 @@ public class PreferenceUtils {
         saveInt(Application.getPrefs(), key, value);
     }
 
+    public static int getInt(String key, int defaultValue) {
+        return Application.getPrefs().getInt(key, defaultValue);
+    }
+
     @TargetApi(9)
     public static void saveLong(SharedPreferences prefs, String key, long value) {
         SharedPreferences.Editor edit = prefs.edit();

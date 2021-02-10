@@ -86,6 +86,8 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
                 .appendQueryParameter(HARDWARE_CLOCK_DISCONTINUITY, inputData.getString(HARDWARE_CLOCK_DISCONTINUITY))
                 .appendQueryParameter(AUTOMATIC_GAIN_CONTROL, inputData.getString(AUTOMATIC_GAIN_CONTROL))
                 .appendQueryParameter(GNSS_ANTENNA_INFO, inputData.getString(GNSS_ANTENNA_INFO))
+                .appendQueryParameter(NUM_ANTENNAS, inputData.getString(NUM_ANTENNAS))
+                .appendQueryParameter(ANTENNA_CFS, inputData.getString(ANTENNA_CFS))
                 .appendQueryParameter(APP_VERSION_NAME, inputData.getString(APP_VERSION_NAME))
                 .appendQueryParameter(APP_VERSION_CODE, inputData.getString(APP_VERSION_CODE))
                 .appendQueryParameter(APP_BUILD_FLAVOR, inputData.getString(APP_BUILD_FLAVOR))
@@ -129,6 +131,8 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         const val HARDWARE_CLOCK_DISCONTINUITY = "hardwareClockDiscontinuity"
         const val AUTOMATIC_GAIN_CONTROL = "automaticGainControl"
         const val GNSS_ANTENNA_INFO = "gnssAntennaInfo"
+        const val NUM_ANTENNAS = "numAntennas"
+        const val ANTENNA_CFS = "antennaCfs"
         const val APP_VERSION_NAME = "appVersionName"
         const val APP_VERSION_CODE = "appVersionCode"
         const val APP_BUILD_FLAVOR = "appBuildFlavor"
@@ -136,6 +140,5 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         const val ANDROID_BUILD_INCREMENTAL = "androidBuildIncremental"
         const val ANDROID_BUILD_CODENAME = "androidBuildCodename"
         private const val RESULT_OK = "STATUS OK"
-        private const val RESULT_NO_EMULATOR_SUBMISSIONS = "NO EMULATOR SUBMISSIONS"
     }
 }

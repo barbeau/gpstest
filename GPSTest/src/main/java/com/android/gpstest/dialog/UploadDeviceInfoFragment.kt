@@ -146,6 +146,17 @@ class UploadDeviceInfoFragment : Fragment() {
                 capabilityNavMessagesString = ""
             }
 
+            val gnssAntennaInfo = PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
+            val numAntennas: String
+            val antennaCfs: String
+            if (gnssAntennaInfo.equals(Application.get().getString(R.string.capability_value_supported))) {
+                numAntennas = PreferenceUtils.getInt(Application.get().getString(R.string.capability_key_num_antenna), -1).toString()
+                antennaCfs = PreferenceUtils.getString(Application.get().getString(R.string.capability_key_antenna_cf))
+            } else {
+                numAntennas = ""
+                antennaCfs = ""
+            }
+
             // Upload device info to database
             val bundle = bundleOf(
                     DevicePropertiesUploader.MANUFACTURER to Build.MANUFACTURER,
@@ -170,11 +181,13 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.HARDWARE_CLOCK to "",
                     DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
                     DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
-                    DevicePropertiesUploader.GNSS_ANTENNA_INFO to PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)),
+                    DevicePropertiesUploader.GNSS_ANTENNA_INFO to gnssAntennaInfo,
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
                     DevicePropertiesUploader.USER_COUNTRY to userCountry,
                     DevicePropertiesUploader.ANDROID_BUILD_INCREMENTAL to Build.VERSION.INCREMENTAL,
-                    DevicePropertiesUploader.ANDROID_BUILD_CODENAME to Build.VERSION.CODENAME
+                    DevicePropertiesUploader.ANDROID_BUILD_CODENAME to Build.VERSION.CODENAME,
+                    DevicePropertiesUploader.NUM_ANTENNAS to numAntennas,
+                    DevicePropertiesUploader.ANTENNA_CFS to antennaCfs,
             )
 
             upload.isEnabled = false

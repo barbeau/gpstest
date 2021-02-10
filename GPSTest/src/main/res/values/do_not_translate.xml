@@ -168,6 +168,8 @@
     <string name="capability_key_measurement_automatic_gain_control">capability_key_measurement_automatic_gain_control</string>
     <string name="capability_key_measurement_delta_range">capability_key_measurement_delta_range</string>
     <string name="capability_key_last_upload_hash">capability_key_last_upload_hash</string>
+    <string name="capability_key_num_antenna">capability_key_num_antenna</string>
+    <string name="capability_key_antenna_cf">capability_key_antenna_cf</string>
 
     <string name="capability_title_inject_psds">Inject PSDS: %1$s\n</string>
     <string name="capability_title_inject_time">Inject time: %1$s\n</string>
