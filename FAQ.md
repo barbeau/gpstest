@@ -192,6 +192,11 @@ If you do launch your own app, I would ask that you do the following when publis
 
 You'll probably need to enable the hidden "Force full GNSS measurements" setting in the Android "Developer options" menu. See [this article](https://barbeau.medium.com/gnss-interrupted-the-hidden-android-setting-you-need-to-know-d812d28a3821) for details.
 
+## Does GPSTest support RINEX output?
+
+No, but you can use the below tool to convert from the CSV log format that GPSTest supports to RINEX:
+https://github.com/rokubun/android_rinex
+
 ## My question wasn't answered here.  What's the next step?
 
 You can ask questions by:

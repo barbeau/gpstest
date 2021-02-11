@@ -115,6 +115,11 @@ Logging works similar to the CSV file process, with a file name like `gnss_log_2
 ]
 ~~~
 
+#### Data output - RINEX
+
+Are you interested in data in the RINEX format? GPSTest doesn't natively support RINEX, but you can use the below tool to convert from the above CSV format to RINEX:
+https://github.com/rokubun/android_rinex
+
 #### Data Analysis
 
 Use the CSV file output from GPSTest along with the Google [GPS Measurement Tools project](https://github.com/google/gps-measurement-tools) to analyze the data (as of late October 2020 supported for [GnssAntennaInfo](https://developer.android.com/reference/android/location/GnssAntennaInfo) doesn't seem to exist).
