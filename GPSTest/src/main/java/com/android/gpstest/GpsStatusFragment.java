@@ -35,12 +35,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.text.style.ClickableSpan;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -50,8 +53,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -111,7 +114,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
             mSbasNotAvailableView, mFixTimeErrorView;
 
-    private CardView mLocationCard;
+    private HorizontalScrollView locationScrollView;
 
     private ViewGroup filterGroup;
     private TextView filterTextView;
@@ -218,20 +221,28 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
         mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
 
-        mLocationCard = v.findViewById(R.id.status_location_card);
-        mLocationCard.setOnClickListener(view -> {
-            final Location location = mLocation;
-            // Copy location to clipboard
-            if (location != null) {
-                boolean includeAltitude = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
-                String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
-                String formattedLocation = UIUtils.formatLocationForDisplay(location, null, includeAltitude,
-                        null, null, null, coordinateFormat);
-                if (!TextUtils.isEmpty(formattedLocation)) {
-                    IOUtils.copyToClipboard(formattedLocation);
-                    Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+        GestureDetectorCompat detector = new GestureDetectorCompat(getContext(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                final Location location = mLocation;
+                // Copy location to clipboard
+                if (location != null) {
+                    boolean includeAltitude = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false);
+                    String coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key));
+                    String formattedLocation = UIUtils.formatLocationForDisplay(location, null, includeAltitude,
+                            null, null, null, coordinateFormat);
+                    if (!TextUtils.isEmpty(formattedLocation)) {
+                        IOUtils.copyToClipboard(formattedLocation);
+                        Toast.makeText(getActivity(), R.string.copied_to_clipboard, Toast.LENGTH_LONG).show();
+                    }
                 }
+                return false;
             }
+        });
+        locationScrollView = v.findViewById(R.id.status_location_scrollview);
+        locationScrollView.setOnTouchListener((view, motionEvent) -> {
+            detector.onTouchEvent(motionEvent);
+            return false;
         });
 
         // GNSS filter
