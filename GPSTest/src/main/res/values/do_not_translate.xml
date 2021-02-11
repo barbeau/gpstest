@@ -187,6 +187,8 @@
     <string name="capability_title_supported_sbas">Supported SBAS: %1$s\n</string>
     <string name="capability_title_sbas_cf">SBAS CFs: %1$s\n</string>
     <string name="capability_title_got_fix">Got fix: %1$b\n</string>
+    <string name="capability_title_num_antennas">Number GNSS antennas: %1$d\n</string>
+    <string name="capability_title_antenna_cfs">GNSS antenna CFs: %1$s\n</string>
 
     <string name="capability_value_unknown">UNKNOWN</string>
     <string name="capability_value_not_supported">NOT_SUPPORTED</string>

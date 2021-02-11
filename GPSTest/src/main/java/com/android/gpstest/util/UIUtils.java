@@ -356,8 +356,14 @@ public class UIUtils {
             // Automatic gain control
             body.append(Application.get().getString(R.string.capability_title_automatic_gain_control, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN))));
         }
+
         // GNSS Antenna Info
-        body.append(Application.get().getString(R.string.capability_title_gnss_antenna_info, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))));
+        String gnssAntennaInfo = Application.get().getString(R.string.capability_title_gnss_antenna_info, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)));
+        body.append(gnssAntennaInfo);
+        if (gnssAntennaInfo.equals(Application.get().getString(R.string.capability_value_supported))) {
+            body.append(Application.get().getString(R.string.capability_title_num_antennas, PreferenceUtils.getInt(Application.get().getString(R.string.capability_key_num_antenna), -1)));
+            body.append(Application.get().getString(R.string.capability_title_antenna_cfs, PreferenceUtils.getString(Application.get().getString(R.string.capability_key_antenna_cf))));
+        }
 
         if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
             body.append("\n" + BuildUtils.getPlayServicesVersion());
