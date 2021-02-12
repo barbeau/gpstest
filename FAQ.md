@@ -197,6 +197,10 @@ You'll probably need to enable the hidden "Force full GNSS measurements" setting
 No, but you can use the below tool to convert from the CSV log format that GPSTest supports to RINEX:
 https://github.com/rokubun/android_rinex
 
+## When logging data, I only see partial information in the file (like only the header). Where's my data?
+
+The file output from GPSTest is buffered, so if you manually copy the file off the device while the app is running you can end up with a partial file if the buffer hasn't been fully flushed. You can force the flush of the buffer by killing the app (e.g., via the Back button), and then if you refresh your file view you should get the complete file with all your data.
+
 ## My question wasn't answered here.  What's the next step?
 
 You can ask questions by:

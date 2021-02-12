@@ -12,6 +12,8 @@ Steps to log and view data:
 1. In the GPSTest app, go to "Settings", scroll down, tap on "Logging and Output" and under "File Output" make sure the box is checked for each data output type you'd like to see (see next sections).
 1. You can share CSV and JSON log files via the "Share" button in the top action bar of the app, or by copying them off internal memory or SD card over USB.
 
+** Note: The file output from GPSTest is buffered, so if you manually copy the file off the device while the app is running you can end up with a partial file if the buffer hasn't been fully flushed. You can force the flush of the buffer by killing the app (e.g., via the Back button), and then if you refresh your file view you should get the complete file with all your data.**
+
 #### Data output - CSV
 
 Here are the details of file logging:
