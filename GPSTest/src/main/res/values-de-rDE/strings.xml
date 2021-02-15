@@ -180,8 +180,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Beschwerden, Lob oder Fehlerberichte sind willkommen!\n\n\n</string>
-    <string name="feedback_error">Feedback kann nicht gesendet werden, da keine geeignete App gefunden wurde.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Was ist neu?</string>
     <string name="main_help_close">Schließen</string>
@@ -215,9 +213,6 @@
     <string name="pref_gps_min_distance_summary">Minimale Distanz zwischen den Positionsanzeigen in Meter</string>
     <string name="pref_gps_min_distance_dialog_title">Mindestabstand in Meter eingeben</string>
     <string name="pref_gps_min_distance_invalid_entry">Der Mindestabstand muss eine Zahl sein</string>
-
-    <string name="pref_stop_gnss_in_background_title">GNSS im Hintergrund anhalten</string>
-    <string name="pref_stop_gnss_in_background_summary">Wenn aktiviert, wird GNSS immer angehalten, wenn die App in den Hintergrund rückt (z.B. beim Drücken der Home- oder Multitasking-Tasten)</string>
 
     <string name="pref_display_category_title">Anzeige</string>
     <string name="pref_keep_screen_on_title">Display immer an</string>

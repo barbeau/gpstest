@@ -277,6 +277,8 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     </string>
     <string name="pref_file_location_output_title">Segnali di localizzazione</string>
     <string name="pref_file_location_output_summary">Registra dettagli relativi ai segnali di localizzazione su File</string>
+    <string name="pref_file_antenna_output_csv_title">Info antenna (CSV)</string>
+    <string name="pref_file_antenna_output_json_title">Info antenna (JSON)</string>
     <string name="logging_to_new_file">Registrazione su nuovo File in corso: %1$s</string>
     <string name="unable_to_close_all_file_streams">Impossibile chiudere tutti i flussi di lavoro.</string>
     <string name="could_not_initialize_file">Il conteggio non inizializza il File: %1$s</string>

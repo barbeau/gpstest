@@ -49,7 +49,6 @@
     <string name="send_log">Odesílání protokolu...</string>
     <string name="log_instructions">Povolte protokolování pro NMEA, prvotní měření, navigační zprávy, atd. v Nastavení.</string>
     <string name="log_error">Chyba při výstupu protokolu do souboru. Povolili jste oprávnění pro přístup do úložiště? Zkuste znovu povolit možnost výstupu protokolu do souboru v Nastavení a po zobrazení výzvy klikněte na „Povolit“.</string>
-    <string name="no_location">Sdílejte Vaší polohu po opravě GNSS.</string>
     <string name="include_altitude">Zahrnout nadm. výšku</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
@@ -115,7 +114,6 @@
     <string name="filter_text">Zobrazeno %1$d z %2$d satelitů</string>
     <string name="filter_showall">(zobrazit vše)</string>
     <string name="error_time_title">Neplatný čas GNNS</string>
-    <string name="error_time_message">Čas GNSS zařízení je:\n\n%1$s\n\n…je o více než %2$d den/dny/dnů odlišný od systémových hodin. Může to být způsobeno problémem s prodloužením týdne GPS - požádejte výrobce zařízení o podrobnosti. Více na http://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Neznámý</string>
     <string name="cancel">Zrušit</string>
 
@@ -188,8 +186,6 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Zpětná vazba</string>
     <string name="feedback_body">Zprávy o chybách jsou vítány!\n\n\n</string>
-    <string name="feedback_error">Nelze odeslat zpětnou vazbu: Nebyla nalezena žádná vhodná aplikace pro odeslání zprávy.</string>
-
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
@@ -238,9 +234,6 @@
     <string name="pref_gps_min_distance_dialog_title">Zadejte min. vzdálenost v metrech</string>
     <string name="pref_gps_min_distance_invalid_entry">Min. vzdálenost musí být číslo.</string>
 
-    <string name="pref_stop_gnss_in_background_title">Zastavit GNSS</string>
-    <string name="pref_stop_gnss_in_background_summary">Povolte zastavení GNSS při spuštění aplikace na pozadí (např. při použití tlačítka Domů nebo Multitasking pro přepínání aplikací).</string>
-
     <string name="pref_display_category_title">Zobrazení</string>
     <string name="pref_keep_screen_on_title">Zapnout obrazovku</string>
     <string name="pref_keep_screen_on_summary">Zamezte vypnutí obrazovky.</string>
@@ -269,9 +262,6 @@
     <string name="pref_file_navigation_message_output_summary">Povolte výstup navigačních zpráv GNSS do souboru (Android 7.0 a vyšší).</string>
     <string name="pref_file_location_output_title">Protokoly oprav polohy</string>
     <string name="pref_file_location_output_summary">Povolte výstup protokolů oprav polohy do souboru.</string>
-    <string name="pref_file_antenna_output_json_title">Informace o anténě (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Povolte výstup protokolů s podrobnostmi antény GNSS do souboru (Android 11 a vyšší). Tato funkce je k dispozici pouze na podporovaných zařízeních.</string>
-
     <string name="logging_to_new_file">Výstup protokolu do nového souboru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Nelze zavřít všechny soubory se streamy.</string>
     <string name="could_not_initialize_file">Nelze inicializovat soubor: %1$s</string>
