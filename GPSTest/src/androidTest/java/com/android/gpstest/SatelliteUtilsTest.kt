@@ -15,13 +15,14 @@
  */
 package com.android.gpstest
 
+import android.location.GnssMeasurement.*
 import android.os.Build
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.model.SbasType
 import com.android.gpstest.util.SatelliteUtils
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -180,5 +181,49 @@ class SatelliteUtilsTest {
         } else {
             assertEquals("1 NAVSTAR unsupported", gpsBadCfKey)
         }
+    }
+
+    /**
+     * Test checking support for accumulated delta range state
+     */
+    @Test
+    fun testAccumulatedDeltaRangeStateSupport() {
+        // Valid states
+        var adrState = ADR_STATE_VALID
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_VALID or ADR_STATE_HALF_CYCLE_REPORTED
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_VALID or ADR_STATE_HALF_CYCLE_RESOLVED
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_VALID or ADR_STATE_HALF_CYCLE_REPORTED or ADR_STATE_RESET
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_VALID or ADR_STATE_HALF_CYCLE_REPORTED or ADR_STATE_HALF_CYCLE_RESOLVED
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_VALID or ADR_STATE_HALF_CYCLE_REPORTED or ADR_STATE_HALF_CYCLE_RESOLVED or ADR_STATE_CYCLE_SLIP
+        assertTrue(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        // Invalid states
+        adrState = ADR_STATE_UNKNOWN
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_HALF_CYCLE_REPORTED
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_CYCLE_SLIP
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_RESET
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_CYCLE_SLIP or ADR_STATE_HALF_CYCLE_REPORTED
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+
+        adrState = ADR_STATE_CYCLE_SLIP or ADR_STATE_HALF_CYCLE_REPORTED or ADR_STATE_RESET
+        assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
     }
 }

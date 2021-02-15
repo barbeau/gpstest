@@ -280,16 +280,24 @@ public class SatelliteUtils {
      * @param gnssMeasurement
      * @return true if carrier phase is supported for this GNSS measurement, false if it is not
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static boolean isCarrierPhaseSupported(GnssMeasurement gnssMeasurement) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return gnssMeasurement.getAccumulatedDeltaRangeState() == GnssMeasurement.ADR_STATE_VALID
-                    && gnssMeasurement.getAccumulatedDeltaRangeMeters() != 0.0d;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return gnssMeasurement.hasCarrierPhase()
-                    && gnssMeasurement.getCarrierPhase() != 0.0d;
-        } else {
-            return false;
-        }
+        return isAccumulatedDeltaRangeStateValid(gnssMeasurement.getAccumulatedDeltaRangeState())
+                && gnssMeasurement.getAccumulatedDeltaRangeMeters() != 0.0d;
+    }
+
+
+    /**
+     * Returns the result of the GnssMeasurement.ADR_STATE_VALID bitmask being applied to the
+     * AccumulatedDeltaRangeState from a GnssMeasurement - true if the ADR state is valid,
+     * false if it is not
+     * @param accumulatedDeltaRangeState accumulatedDeltaRangeState from GnssMeasurement
+     * @return the result of the GnssMeasurement.ADR_STATE_VALID bitmask being applied to the
+     *      * AccumulatedDeltaRangeState of the given GnssMeasurement - true if the ADR state is valid,
+     *      * false if it is not
+     */
+    public static boolean isAccumulatedDeltaRangeStateValid(int accumulatedDeltaRangeState) {
+        return (GnssMeasurement.ADR_STATE_VALID & accumulatedDeltaRangeState) == GnssMeasurement.ADR_STATE_VALID;
     }
 
     /**
