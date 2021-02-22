@@ -207,6 +207,18 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Novità</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>Condivisione informazioni dispositivo</b>
+        - Possibilità di caricare le informazioni del proprio dispositivo attraverso il pulsante Condividi nella scheda Stato.Contribuirai in questo modo alla creazione del database pubblico \"GPSTest Device Database\" (https://bit.ly/gpstest-device-database).\n&#8226;\u0020
+        <b>Registro informazioni antenna</b>
+        - Aggiunto il supporto alla registrazione delle informazioni GnssAntennaInfo in un file JSON.\n&#8226;\u0020
+        <b>Aggiunta traduzione in Finlandese</b>
+        -  Grazie Ari Nygard!\n&#8226;\u0020
+        <b>Aggiunta traduzione in Danese</b>
+        -  Grazie Claus Østergaard!\n&#8226;\u0020
+        <b>Bug fixes</b>
+        - Per maggiori informazioni: https://bit.ly/gpstest-releases
+    </string>
     <string name="main_help_close">Chiudi</string>
 
     <!-- Preferences -->
@@ -278,7 +290,10 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_file_location_output_title">Segnali di localizzazione</string>
     <string name="pref_file_location_output_summary">Registra dettagli relativi ai segnali di localizzazione su File</string>
     <string name="pref_file_antenna_output_csv_title">Info antenna (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Registra i dati GNSS in un file CSV. Disponibile solo sui device supportati (Android 11 e superiori).</string>
     <string name="pref_file_antenna_output_json_title">Info antenna (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Registra i dati GNSS in un file JSON. Disponibile solo sui device supportati (Android 11 e superiori).</string>
+
     <string name="logging_to_new_file">Registrazione su nuovo File in corso: %1$s</string>
     <string name="unable_to_close_all_file_streams">Impossibile chiudere tutti i flussi di lavoro.</string>
     <string name="could_not_initialize_file">Il conteggio non inizializza il File: %1$s</string>
@@ -429,5 +444,6 @@ Per ulteriori informazioni: https://bit.ly/gpstest-file.\n\n
         &#8226;\u0020 Traduzione in ucraino a cura di Serhii Osmalchuk\n
         &#8226;\u0020 Traduzione in coreano a cura di snotree\n
         &#8226;\u0020 Traduzione in basco a cura di Alexander Gabilondo\n
-        &#8226;\u0020 Traduzione in finlandese a cura di Ari Nygard\n</string>
+        &#8226;\u0020 Traduzione in finlandese a cura di Ari Nygard\n
+       &#8226;\u0020 Traduzione in danese a cura di Claus Østergaard\n</string>
 </resources>

@@ -210,7 +210,9 @@
         <b>Log antenne info</b>
         - Understøttelse af logning af GnssAntennaInfo til CSV og JSON filer.\n&#8226;\u0020
         <b>Tilføjet finske oversættelser</b>
-        -  Tak Ari Nygard!\n&#8226;\u0020
+        - Tak Ari Nygard!\n&#8226;\u0020
+        <b>Tilføjet danske oversættelser</b>
+        -  Tak Claus Østergaard!\n&#8226;\u0020
         <b>Fejlrettelser</b>
         - Se https://bit.ly/gpstest-releases
     </string>
