@@ -1216,6 +1216,8 @@ public class GpsTestActivity extends AppCompatActivity
                     case STATUS_NOT_SUPPORTED:
                         statusMessage = getString(R.string.gnss_measurement_status_not_supported);
                         PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
                         break;
                     case STATUS_READY:
                         statusMessage = getString(R.string.gnss_measurement_status_ready);
