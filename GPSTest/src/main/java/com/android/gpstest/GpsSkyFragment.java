@@ -97,7 +97,7 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             color = getResources().getColor(android.R.color.secondary_text_dark);
             circleUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark);
             usedCn0Background = R.drawable.cn0_round_corner_background_used_dark;
-            usedCn0IndicatorColor = getResources().getColor(android.R.color.darker_gray);;
+            usedCn0IndicatorColor = getResources().getColor(android.R.color.darker_gray);
         } else {
             // Light theme
             color = getResources().getColor(R.color.body_text_2_light);

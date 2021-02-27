@@ -225,7 +225,7 @@ public class GpsMapFragment extends SupportMapFragment
                         .geodesic(true));
                 } else {
                     mErrorLine.setPoints(Arrays.asList(gt, current));
-                };
+                }
             }
             if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
                 // Draw line between this and last location

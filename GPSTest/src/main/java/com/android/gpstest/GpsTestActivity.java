@@ -1077,7 +1077,7 @@ public class GpsTestActivity extends AppCompatActivity
     @SuppressLint("NewApi")
     private void removeGnssAntennaListener() {
         if (mLocationManager != null && SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
-            mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);;
+            mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);
         }
     }
 

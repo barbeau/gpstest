@@ -53,13 +53,13 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private static int SAT_RADIUS;
 
-    private float mSnrThresholds[];
+    private float[] mSnrThresholds;
 
-    private int mSnrColors[];
+    private int[] mSnrColors;
 
-    private float mCn0Thresholds[];
+    private float[] mCn0Thresholds;
 
-    private int mCn0Colors[];
+    private int[] mCn0Colors;
 
     Context mContext;
 
@@ -73,15 +73,20 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private boolean mStarted;
 
-    private float mSnrCn0s[], mElevs[], mAzims[];  // Holds either SNR or C/N0 - see #65
+    private float[] mSnrCn0s;  // Holds either SNR or C/N0 - see #65
+    private float[] mElevs;
+    private float[] mAzims;
 
     private float mSnrCn0UsedAvg = 0.0f;
 
     private float mSnrCn0InViewAvg = 0.0f;
 
-    private boolean mHasEphemeris[], mHasAlmanac[], mUsedInFix[];
+    private boolean[] mHasEphemeris;
+    private boolean[] mHasAlmanac;
+    private boolean[] mUsedInFix;
 
-    private int mPrns[], mConstellationType[];
+    private int[] mPrns;
+    private int[] mConstellationType;
 
     private int mSvCount;
 
@@ -595,8 +600,8 @@ public class GpsSkyView extends View implements GpsTestListener {
      */
     public synchronized int getSatelliteColor(float snrCn0) {
         int numSteps;
-        final float thresholds[];
-        final int colors[];
+        final float[] thresholds;
+        final int[] colors;
 
         if (!mUseLegacyGnssApi || mIsSnrBad) {
             // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
