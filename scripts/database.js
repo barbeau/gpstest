@@ -1,8 +1,8 @@
 // **********************
 // * Sheet Column Index *
 // **********************
+// Production - https://docs.google.com/spreadsheets/d/1jXtRCoEnnFNWj6_oFlVWflsf-b0jkfZpyhN-BXsv7uo/edit#gid=0
 // Should be 1-based for writing to sheet, 0-based when working with arrays
-// Production Sheet - https://docs.google.com/spreadsheets/d/1jXtRCoEnnFNWj6_oFlVWflsf-b0jkfZpyhN-BXsv7uo/edit#gid=0
 
 var MANUFACTURER = 0;
 var MODEL = 1;
@@ -349,6 +349,12 @@ function whichToKeep(row, newData, j) {
   // If the ADR is now reported, replace the previous record
   if (//  Carrier phase (ADR)
       row[CARRIER_PHASE_ADR].length > 0 && newData[j][CARRIER_PHASE_ADR].length == 0
+  )  {
+    return true;
+  }
+  // If the ADR is now known, replace the previous unknown record
+  if (//  Carrier phase (ADR)
+      row[CARRIER_PHASE_ADR].length > 0 && row[CARRIER_PHASE_ADR] != "UNKNOWN" && newData[j][CARRIER_PHASE_ADR] == "UNKNOWN"
   )  {
     return true;
   }
