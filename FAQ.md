@@ -109,51 +109,13 @@ See http://www.insidegnss.com/auto/novdec10-Solutions.pdf for details.
 
 You can view the data output from GPSTest, including NMEA (Android 2.3 and higher) and pseudorange measurements and navigation messages (Android 7.0 and higher) in log format by using Android Monitor, which is included with [Android Studio](https://developer.android.com/studio/index.html).  Check out our [Data Output and Logging](LOGGING.md) page for more info.
 
-## What Android 7.0 and higher devices support logging raw pseudorange and navigation messages?
+## What GNSS features does my device support?
 
-Google is keeping a list on the [Raw GNSS Measurements page](https://developer.android.com/guide/topics/sensors/gnss.html#supported_devices).
+Check out the [GPSTest Database](https://bit.ly/gpstest-device-database).
 
-## What devices support the various functionality shown in GPSTest?
+This data has been crowd-sourced from users of the GPSTest app via the "Share->Device" feature.
 
-The below table is compiled from users of GPSTest, based on sending feedback via the "Send feedback" feature.  An "x" indicates that the feature is supported for a device, a blank value means the feature is not supported for a device, and a "?" means that support is unknown (no one has submitted data for this feature yet).
-
-Manufacturer | Model | Android version | GNSS HW Year | Raw measurements | Navigation messages | NMEA | Inject XTRA | Inject time | Delete assist
--- | -- | -- | -- | -- | -- | -- | -- | -- | --
-Google | Pixel 2 | 9 / 28 | 2017 | ? | ? | x |   | x | ?
-HTC | One M8 | 6.0 / 23 | N/A | N/A | N/A | x | x | ? | x
-HTC | One M9 | 7.1.2 / 25 | 2015 | ? | ? | x | ? | ? | ?
-LG | LG-AS993 (G6) | 7.0 / 24 | 2015 | ? | ? | x |   | x | ?
-Motorola | XT1028 (Moto G 2018) | 4.4.4 / 19 | N/A | N/A | N/A | x | x | x | x
-Nokia | 7 plus | 9 / 28 | 2017 | ? | ? | x |   | x | x
-Samsung | SM-A520F (Galaxy A5 2017) | 8.0.0 / 26 | 2015 or older | x | x | x | x | x |  
-Samsung | SM-J120G (Galaxy J1 4G) | 5.1.1 / 22 | N/A | N/A | N/A | x | x | x | x
-Samsung | SM-G955U (Galaxy S8+) | 8.0.0 / 26 | 2015 |   |   | x |   | x |  
-Samsung | SM-G965F (Galaxy S9+) | 8.0.0 / 26 | 2016 | ? | ? | x | ? | ? | ?
-Sony | G3121 (Xperia XA1) | 8.0.0 / 26 | 2015 | ? | ? | x |   | x | ?
-Sony | G8342 (Xperia XZ1) | 8.0.0 / 26 | 2016 | x |   | x |   | x | ?
-Sony | H8266 (Xperia XZ2) | 8.0.0 / 26 | 2017 | x |   | x |   | x | x
-Wileyfox | Spark | 7.1.2 / 25 | 2015 or older |   |   | x | x | x | x
-Xiaomi | MI 3W | 6.0.1 / 23 | N/A | N/A | N/A | x | x | ? | ?
-Xiaomi | MI 8 | 8.1.0 / 27 | 2018 | ? | ? | x | x | x | x
-Xiaomi | Redmi 4A | 7.1.2 / 25 | 2015 |   |   | x |   | ? | ?
-
-Is your device not above, or does it still have some question marks?
-
-By default the "Send feedback" email only contains the support information for features that the user has enabled/tried. 
-
-If you want to provide a full record for your device, in the navigation drawer first tap on:
-                 
-* Inject xtra
-* Inject time
-* Clear assist (Caution - some devices take a while to recover from this. I'd confirm you can inject the above before trying to clear the data)
-
-...and in Settings, you can check logging for the following features:
-                 
-* GNSS measurement data
-* Navigation messages
-* NMEA data
-
-Then tap on "Send feedback", and GPSTest it will capture success/failure for all the above.
+Don't see your device, or do you have a newer Android version than what's listed? Upload your own device info!
 
 ## Does GPSTest collect any personal information about me?
 
