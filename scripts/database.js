@@ -328,7 +328,7 @@ function isSameDevice(row, newData, j) {
 function whichToKeep(row, newData, j) {
   // If dual-frequency is now supported when it wasn't previously, replace the previous record
   if (  // Dual-frequency
-        row[DUAL_FREQUENCY] == "SUPPORTED" && newData[j][DUAL_FREQUENCY] == "UNSUPPORTED" &&
+        row[DUAL_FREQUENCY] == "SUPPORTED" && newData[j][DUAL_FREQUENCY] == "NOT_SUPPORTED" &&
         // ADR
         isAdrSame(row, newData, j))  {
     return true;
@@ -355,6 +355,13 @@ function whichToKeep(row, newData, j) {
   // If the ADR is now known, replace the previous unknown record
   if (//  Carrier phase (ADR)
       row[CARRIER_PHASE_ADR].length > 0 && row[CARRIER_PHASE_ADR] != "UNKNOWN" && newData[j][CARRIER_PHASE_ADR] == "UNKNOWN"
+  )  {
+    return true;
+  }
+  // If the ADR is SUPPORTED and was previously NOT_SUPPORTED, replace the previous unknown record
+  if (//  Carrier phase (ADR)
+      row[SUPPORTED_GNSS].length > 0 &&
+      row[CARRIER_PHASE_ADR] == "SUPPORTED" && newData[j][CARRIER_PHASE_ADR] == "NOT_SUPPORTED"
   )  {
     return true;
   }
