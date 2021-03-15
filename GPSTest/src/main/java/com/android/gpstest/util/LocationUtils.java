@@ -23,9 +23,10 @@ import java.text.NumberFormat;
 public class LocationUtils {
 
     /**
-     * Returns the human-readable details of a Location (provider, lat/long, accuracy, timestamp)
+     * Returns the human-readable details of a Location (provider, accuracy, timestamp) without
+     * including the user's exact location
      *
-     * @return the details of a Location (provider, lat/long, accuracy, timestamp) in a string
+     * @return the details of a Location (provider, accuracy, timestamp) in a string
      */
     public static String printLocationDetails(Location loc) {
         if (loc == null) {
@@ -41,13 +42,10 @@ public class LocationUtils {
 
         StringBuilder sb = new StringBuilder();
         sb.append(loc.getProvider());
-        sb.append(' ');
-        sb.append(loc.getLatitude());
-        sb.append(',');
-        sb.append(loc.getLongitude());
         if (loc.hasAccuracy()) {
-            sb.append(' ');
+            sb.append(", hor acc ");
             sb.append(loc.getAccuracy());
+            sb.append("m");
         }
         sb.append(", ");
         sb.append(String.format("%.0f", timeDiffSec) + " second(s) ago");
