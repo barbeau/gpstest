@@ -176,11 +176,17 @@ function addDeviceName() {
   // Loop through rows with empty device names and try to look them up in CSV
   var emptyRow = getFirstEmptyDeviceNameRow(sheet);
   while (emptyRow <= sheet.getDataRange().getLastRow()) {
-    // Get model from sheet
+    // Get model and name from sheet
     var model = sheet.getRange(emptyRow,2).getValue();
+    var name = sheet.getRange(emptyRow,3).getValue();
     if (model == "") {
       // No more model data - we're done
       break;
+    }
+    if (name != "") {
+      // We already filled in this name - skip to next row
+      emptyRow++;
+      continue;
     }
 
     // Find the name from the CSVs based on the model - try the Google CSV file first
