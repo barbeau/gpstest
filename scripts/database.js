@@ -249,14 +249,17 @@ function removeDuplicates() {
 
   var data = sheet.getDataRange().getValues();
   var newData = [];
-  var count = 0;
+  var duplicateCount = 0;
+  var nearDuplicateCount = 0;
   for (var i in data) {
     var row = data[i];
     var duplicate = false;
+    var skipInsertion = false;
     var sameDevice = false;
     for (var j in newData) {
       if (isDuplicate(row, newData, j)) {
         duplicate = true;
+        skipInsertion = true;
         break;
       } else {
         sameDevice = isSameDevice(row, newData, j);
@@ -264,25 +267,38 @@ function removeDuplicates() {
           // Figure out which record to keep - true keeps the row, while false keeps the newData
           var whichKeep = whichToKeep(row, newData, j);
           if (!whichKeep) {
-            // Keep the newData by skipping insertion as if it was a duplicate
-            duplicate = true;
+            // Keep the newData by skipping insertion (as if it was a duplicate)
+            Logger.log('Keeping near duplicate:');
+            printNewData(newData, j);
+            Logger.log('...instead of:');
+            printRow(row);
+            skipInsertion = true;
             break;
           } else {
-            // Keep the row by copying the fields over to the newData record
+            Logger.log('Keeping near duplicate:');
+            printRow(row);
+            Logger.log('...instead of:');
+            printNewData(newData, j);
+            // Keep the row by copying the fields over to the newData record, which will then be inserted
             copyRowToNewData(row, newData, j);
             break;
           }
         }
       }
     }
-    if (!duplicate && !sameDevice) {
+    if (!skipInsertion && !sameDevice) {
       // Keep the record
       newData.push(row);
-    } else {
-      count++;
+    }
+    if (duplicate) {
+      duplicateCount++;
+    }
+    if (sameDevice) {
+      nearDuplicateCount++;
     }
   }
-  Logger.log('Removed ' + count + ' record(s)');
+  Logger.log('Removed ' + duplicateCount + ' duplicate(s)');
+  Logger.log('Removed ' + nearDuplicateCount + ' near duplicate(s)');
   sheet.clearContents();
   sheet.getRange(1, 1, newData.length, newData[0].length).setValues(newData);
 }
@@ -309,6 +325,8 @@ function isDuplicate(row, newData, j) {
         row[ANDROID_SOFTWARE_BUILD] == newData[j][ANDROID_SOFTWARE_BUILD] &&
         // Android software codenm                                                 Number GNSS antennas                              GNSS antenna CFs
         row[ANDROID_SOFTWARE_CODENAME] == newData[j][ANDROID_SOFTWARE_CODENAME] && row[NUM_GNSS_ANTENNAS] == newData[j][NUM_GNSS_ANTENNAS] && row[GNSS_ANTENNA_CFS] == newData[j][GNSS_ANTENNA_CFS]) {
+        Logger.log('Removing duplicate row:');
+        printRow(row);
     return true;
   } else {
     return false;
@@ -337,31 +355,36 @@ function whichToKeep(row, newData, j) {
         row[DUAL_FREQUENCY] == "SUPPORTED" && newData[j][DUAL_FREQUENCY] == "NOT_SUPPORTED" &&
         // ADR
         isAdrSame(row, newData, j))  {
+    Logger.log('Dual-frequency is now supported (ADR same)');
     return true;
   }
   // If more GNSS support is now detected, replace the previous record
-  if (isGnssSameOrBetter(row, newData, j) &&
+  if (isGnssBetter(row, newData, j) &&
       // ADR
       isAdrSame(row, newData, j))  {
+    Logger.log('More GNSS detected (ADR same)');
     return true;
   }
   // If the GNSS are the same or better and SBAS is better, replace the previous record
   if (isGnssSameOrBetter(row, newData, j) &&
-      isSbasSameOrBetter(row, newData, j) &&
+      isSbasBetter(row, newData, j) &&
       // ADR
       isAdrSame(row, newData, j))  {
+    Logger.log('More SBAS detected (and GNSS same or better, ADR same)');
     return true;
   }
   // If the ADR is now reported, replace the previous record
   if (//  Carrier phase (ADR)
       row[CARRIER_PHASE_ADR].length > 0 && newData[j][CARRIER_PHASE_ADR].length == 0
   )  {
+    Logger.log('ADR now reported');
     return true;
   }
   // If the ADR is now known, replace the previous unknown record
   if (//  Carrier phase (ADR)
       row[CARRIER_PHASE_ADR].length > 0 && row[CARRIER_PHASE_ADR] != "UNKNOWN" && newData[j][CARRIER_PHASE_ADR] == "UNKNOWN"
   )  {
+    Logger.log('ADR now known (previously UNKNOWN)');
     return true;
   }
   // If the ADR is SUPPORTED and was previously NOT_SUPPORTED, replace the previous unknown record
@@ -369,10 +392,23 @@ function whichToKeep(row, newData, j) {
       row[SUPPORTED_GNSS].length > 0 &&
       row[CARRIER_PHASE_ADR] == "SUPPORTED" && newData[j][CARRIER_PHASE_ADR] == "NOT_SUPPORTED"
   )  {
+    Logger.log('ADR now SUPPORTED (previously NOT_SUPPORTED)');
     return true;
   }
   // Keep newData record
   return false;
+}
+
+// Returns true if the GNSS support and CFs are better in row and newData at the j index, and false if they are not
+function isGnssBetter(row, newData, j) {
+  if (// Supported GNSS
+    (row[SUPPORTED_GNSS].length > newData[j][SUPPORTED_GNSS].length) &&
+    // GNSS CFs
+    (row[GNSS_CFS].length >= newData[j][GNSS_CFS].length)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 // Returns true if the GNSS support and CFs are the same in row and newData at the j index, and false if they are not
@@ -387,12 +423,12 @@ function isGnssSameOrBetter(row, newData, j) {
   }
 }
 
-// Returns true if the SBAS support and CFs are the same or better in row and newData at the j index, and false if they are not
-function isSbasSameOrBetter(row, newData, j) {
+// Returns true if the SBAS support and CFs are better in row and newData at the j index, and false if they are not
+function isSbasBetter(row, newData, j) {
   if (// Supported SBAS
-    (row[SUPPORTED_SBAS].length >= newData[j][SUPPORTED_SBAS].length) &&
+    (row[SUPPORTED_SBAS].length > newData[j][SUPPORTED_SBAS].length) &&
       // SBAS CFs
-      (row[SBAS_CFS].length >= newData[j][SBAS_CFS].length)) {
+      (row[SBAS_CFS].length > newData[j][SBAS_CFS].length)) {
     return true;
   } else {
     return false;
@@ -415,4 +451,34 @@ function copyRowToNewData(row, newData, j) {
   for (k = 0; k < newData[j].length; k++) {
     newData[j][k] = row[k];
   }
+}
+
+// Prints the provided row to the logger
+function printRow(row) {
+  Logger.log(
+        row[MANUFACTURER] + ' ' + row[MODEL] + ' ' + row[NAME] + ' ' +
+        row[ANDROID_VERSION] + ' ' + row[API_LEVEL] + ' ' + row[GNSS_HARDWARE_YEAR] + ' ' +
+        row[GNSS_HARDWARE_NAME] + ' ' + row[DUAL_FREQUENCY] + ' ' + row[SUPPORTED_GNSS] + ' ' +
+        row[GNSS_CFS] + ' ' + row[SUPPORTED_SBAS] + ' ' + row[SBAS_CFS] + ' ' +
+        row[RAW_MEASUREMENTS] + ' ' + row[CARRIER_PHASE_ADR] + ' ' + row[NAV_MESSAGES] + ' ' + row[NMEA] + ' ' +
+        row[INJECT_PSDS] + ' ' + row[INJECT_TIME] + ' ' + row[DELETE_ASSIST] + ' ' +
+        row[AUTO_GAIN_CONTROL] + ' ' + row[GNSS_ANTENNA_INFO] + ' ' +
+        row[ANDROID_SOFTWARE_BUILD] + ' ' + row[ANDROID_SOFTWARE_CODENAME] + ' ' +
+        row[NUM_GNSS_ANTENNAS] + ' ' + row[GNSS_ANTENNA_CFS]
+        );
+}
+
+// Prints the provided newData to the logger
+function printNewData(newData, j) {
+  Logger.log(
+        newData[j][MANUFACTURER] + ' ' + newData[j][MODEL] + ' ' + newData[j][NAME] + ' ' +
+        newData[j][ANDROID_VERSION] + ' ' + newData[j][API_LEVEL] + ' ' + newData[j][GNSS_HARDWARE_YEAR] + ' ' +
+        newData[j][GNSS_HARDWARE_NAME] + ' ' + newData[j][DUAL_FREQUENCY] + ' ' + newData[j][SUPPORTED_GNSS] + ' ' +
+        newData[j][GNSS_CFS] + ' ' + newData[j][SUPPORTED_SBAS] + ' ' + newData[j][SBAS_CFS] + ' ' +
+        newData[j][RAW_MEASUREMENTS] + ' ' + newData[j][CARRIER_PHASE_ADR] + ' ' + newData[j][NAV_MESSAGES] + ' ' + newData[j][NMEA] + ' ' +
+        newData[j][INJECT_PSDS] + ' ' + newData[j][INJECT_TIME] + ' ' + newData[j][DELETE_ASSIST] + ' ' +
+        newData[j][AUTO_GAIN_CONTROL] + ' ' + newData[j][GNSS_ANTENNA_INFO] + ' ' +
+        newData[j][ANDROID_SOFTWARE_BUILD] + ' ' + newData[j][ANDROID_SOFTWARE_CODENAME] + ' ' +
+        newData[j][NUM_GNSS_ANTENNAS] + ' ' + newData[j][GNSS_ANTENNA_CFS]
+        );
 }
