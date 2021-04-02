@@ -1,4 +1,4 @@
-# GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Twitter Follow](https://img.shields.io/twitter/follow/sjbarbeau.svg?style=social&label=Follow)](https://twitter.com/sjbarbeau)
+# GPSTest [![Build Status](https://travis-ci.org/barbeau/gpstest.svg?branch=master)](https://travis-ci.org/barbeau/gpstest) [![Donate](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow)](https://www.buymeacoffee.com/barbeau) [![Twitter Follow](https://img.shields.io/twitter/follow/sjbarbeau.svg?style=social&label=Follow)](https://twitter.com/sjbarbeau)
 
 The #1 open-source global navigation satellite system (GNSS) testing app
 
@@ -28,15 +28,21 @@ It supports dual-frequency¹ GNSS for:
     
 ¹*Dual-frequency GNSS requires device hardware support and Android 8.0 Oreo or higher. See [Dual-frequency GNSS on Android](https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c) for more details.*
 
-Questions?  Check out the [FAQ](FAQ.md), our [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
+Questions?  Check out the [FAQ](FAQ.md), the [Slack group](https://gpstest-android.herokuapp.com/), and [Google Group](https://groups.google.com/forum/#!forum/gpstest_android).
 
 ## Beta Testing
 
-Get early access to new GPSTest versions, and help us squash bugs! See our [Testing Guide](BETA_TESTING.md) for details.
+Get early access to new GPSTest versions, and help us squash bugs! See the [Testing Guide](BETA_TESTING.md) for details.
 
 ## Data Output and Logging
 
-Want to know how to output GNSS data to the system log for further analysis?  Check out our [Data Output and Logging](LOGGING.md) page.
+Want to know how to output GNSS data to the system log for further analysis?  Check out the [Data Output and Logging](LOGGING.md) page.
+
+## Donate
+
+GPSTest is free and open-source, and I work on it on my lunch breaks as a side project! If you'd like to support GPSTest, please consider [buying me a coffee](https://www.buymeacoffee.com/barbeau).
+
+[![Donate by buying me a coffee](https://user-images.githubusercontent.com/928045/113343981-82476e80-92fe-11eb-9bc6-c7a281761bad.png)](https://www.buymeacoffee.com/barbeau)
 
 ## License
 
@@ -44,19 +50,19 @@ GPSTest is licensed under [Apache v2.0](https://www.apache.org/licenses/LICENSE-
 
 ## Building the project
 
-You can open and build this project using [Android Studio](https://developer.android.com/studio).  For more details, see our [Build documentation](BUILD.MD).
+You can open and build this project using [Android Studio](https://developer.android.com/studio).  For more details, see the [Build documentation](BUILD.MD).
 
 ## Contributing
 
-We welcome contributions to the project!  Please see our [Contributing Guide](.github/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
+I welcome contributions to the project!  Please see the [Contributing Guide](.github/CONTRIBUTING.md) for details, including Code Style Guidelines and Template.
 
 Don't know where to start?  Take a look at the issues marked with the [your-first-pr](https://github.com/barbeau/gpstest/labels/your-first-pr) label and comment to let me know if you're interested in working on it.
 
 ### Translations
 
-Want to improve existing translations, or add a new translation?  See our [Translations](/TRANSLATIONS.md) documentation.
+Want to improve existing translations, or add a new translation?  See the [Translations](/TRANSLATIONS.md) documentation.
 
-### Trusted by industry experts
+## Trusted by industry experts
 
 Notable appearances of GPSTest:
 
