@@ -340,7 +340,9 @@ function isSameDevice(row, newData, j) {
         // GNSS hardware year
         row[GNSS_HARDWARE_YEAR] == newData[j][GNSS_HARDWARE_YEAR] &&
         // GNSS hardware name
-        row[GNSS_HARDWARE_NAME] == newData[j][GNSS_HARDWARE_NAME]) {
+        row[GNSS_HARDWARE_NAME] == newData[j][GNSS_HARDWARE_NAME] &&
+        // Android software version
+        row[ANDROID_SOFTWARE_BUILD] == newData[j][ANDROID_SOFTWARE_BUILD]) {
     return true;
   } else {
     return false;
