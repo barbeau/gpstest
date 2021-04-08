@@ -189,13 +189,13 @@ function addDeviceName() {
       continue;
     }
 
-    // Find the name from the CSVs based on the model - try the Google CSV file first
-    Logger.log('Checking Google file...');
-    var foundDevice = setDeviceName(sheet, emptyRow, model, googleCsvData);
+    // Find the name from the CSVs based on the model - try the GPSTest supplement file so we can override things we don't like in Google's
+    Logger.log('Checking GPSTest file...');
+    var foundDevice = setDeviceName(sheet, emptyRow, model, gpsTestCsvData);
     if (!foundDevice) {
-      Logger.log('Checking GPSTest file...');
-      // Try the GPSTest supplement file
-      setDeviceName(sheet, emptyRow, model, gpsTestCsvData);
+      // Try the Google CSV file
+      Logger.log('Checking Google file...');
+      setDeviceName(sheet, emptyRow, model, googleCsvData);
     }
 
     emptyRow++;
