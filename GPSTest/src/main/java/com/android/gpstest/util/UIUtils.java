@@ -35,7 +35,6 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -567,17 +566,8 @@ public class UIUtils {
         }
 
         FragmentManager fm = activity.getSupportFragmentManager();
-        final ShareDialogFragment dialog;
-        final ShareDialogFragment cachedDialog = (ShareDialogFragment) fm.findFragmentByTag(ShareDialogFragment.Companion.getTAG());
-        if (cachedDialog == null) {
-            // No existing fragment was found, so create a new one
-            Log.d(TAG, "Creating new ShareDialogFragment");
-            dialog = new ShareDialogFragment();
-        } else {
-            // Use cached dialog
-            dialog = cachedDialog;
-        }
-        ShareDialogFragment.Listener shareListener = new ShareDialogFragment.Listener() {
+        final ShareDialogFragment dialog = new ShareDialogFragment();
+        final ShareDialogFragment.Listener shareListener = new ShareDialogFragment.Listener() {
             @Override
             public void onLogFileSent() {
                 if (csvFileLogger != null) {
