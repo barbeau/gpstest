@@ -111,6 +111,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         private const val TAG = "DevicePropsUploader"
         const val MANUFACTURER = "manufacturer"
         const val MODEL = "model"
+        const val DEVICE = "device"
         const val ANDROID_VERSION = "androidVersion"
         const val API_LEVEL = "apiLevel"
         const val GNSS_HARDWARE_YEAR = "gnssHardwareYear"

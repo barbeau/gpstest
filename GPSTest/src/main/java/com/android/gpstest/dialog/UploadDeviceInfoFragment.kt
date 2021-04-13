@@ -161,6 +161,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val bundle = bundleOf(
                     DevicePropertiesUploader.MANUFACTURER to Build.MANUFACTURER,
                     DevicePropertiesUploader.MODEL to Build.MODEL,
+                    DevicePropertiesUploader.DEVICE to Build.DEVICE,
                     DevicePropertiesUploader.ANDROID_VERSION to Build.VERSION.RELEASE,
                     DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
                     DevicePropertiesUploader.GNSS_HARDWARE_YEAR to getGnssHardwareYear(),
