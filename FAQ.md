@@ -25,11 +25,7 @@ More details are in the European Global Navigation Satellite System Agency (GSA)
     * Satellite Navigation Augmentation System (SNAS) (China)
     * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
 
-For a list of upcoming satellite launches, see http://gpsworld.com/resources/upcoming-gnss-satellite-launches/.
-
-Real-time satellites status:
-* Galileo - https://www.gsc-europa.eu/system-service-status/constellation-information
-* WAAS - http://www.nstb.tc.faa.gov/RT_WaasSatelliteStatus.htm
+For lists of upcoming satellite launches and real-time satellite status on-line see https://github.com/barbeau/awesome-gnss#lists.
 
 If you see one of these satellites in GPSTest without a flag label, open an issue and let us know!
 
