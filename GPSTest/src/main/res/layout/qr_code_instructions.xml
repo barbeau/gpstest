@@ -17,7 +17,7 @@
         android:paddingBottom="6dp"
         android:text="@string/qr_code_instructions_text"
         android:textSize="16sp"
-        android:autoLink="all"
+        android:autoLink="web"
         android:linksClickable="true" />
 
     <CheckBox
