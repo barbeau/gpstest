@@ -105,6 +105,10 @@ See the Android [`GpsSatellite` documentation](http://developer.android.com/refe
 
 See http://www.insidegnss.com/auto/novdec10-Solutions.pdf for details.
 
+## What's the difference between altitude and altitude (MSL) (mean sea level)?
+
+See https://www.esri.com/news/arcuser/0703/geoid1of3.html for details.
+
 ## Can I record any information with some type of logging tool using GPSTest?
 
 You can view the data output from GPSTest, including NMEA (Android 2.3 and higher) and pseudorange measurements and navigation messages (Android 7.0 and higher) in log format by using Android Monitor, which is included with [Android Studio](https://developer.android.com/studio/index.html).  Check out our [Data Output and Logging](LOGGING.md) page for more info.
