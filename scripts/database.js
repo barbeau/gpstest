@@ -37,6 +37,7 @@ var ANDROID_SOFTWARE_BUILD = 29;
 var ANDROID_SOFTWARE_CODENAME = 30;
 var NUM_GNSS_ANTENNAS = 31;
 var GNSS_ANTENNA_CFS = 32;
+var DEVICE=33;
 
 function doGet(e) {
   var GOOGLE_DOC_ID = "1jXtRCoEnnFNWj6_oFlVWflsf-b0jkfZpyhN-BXsv7uo";
@@ -147,6 +148,11 @@ function doGet(e) {
     var antennaCfs = e.parameter.antennaCfs;
     sheet.getRange(emptyRow,NUM_GNSS_ANTENNAS+1).setValue(numAntennas);
     sheet.getRange(emptyRow,GNSS_ANTENNA_CFS+1).setValue(antennaCfs);
+  }
+
+  if (typeof(e.parameter.device) != "undefined") {
+    var device = e.parameter.device
+    sheet.getRange(emptyRow,DEVICE+1).setValue(device);
   }
 
   return ContentService.createTextOutput("STATUS OK").setMimeType(ContentService.MimeType.TEXT);
