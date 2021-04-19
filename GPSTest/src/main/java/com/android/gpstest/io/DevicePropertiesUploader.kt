@@ -66,6 +66,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         return Uri.parse(Application.get().resources.getString(R.string.device_properties_upload_url)).buildUpon()
                 .appendQueryParameter(MANUFACTURER, inputData.getString(MANUFACTURER))
                 .appendQueryParameter(MODEL, inputData.getString(MODEL))
+                .appendQueryParameter(DEVICE, inputData.getString(DEVICE))
                 .appendQueryParameter(ANDROID_VERSION, inputData.getString(ANDROID_VERSION))
                 .appendQueryParameter(API_LEVEL, inputData.getString(API_LEVEL))
                 .appendQueryParameter(GNSS_HARDWARE_YEAR, inputData.getString(GNSS_HARDWARE_YEAR))
