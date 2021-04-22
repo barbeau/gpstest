@@ -44,6 +44,7 @@ class UploadDeviceInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val uploadNoLocationTextView: TextView = view.findViewById(R.id.upload_no_location)
+        val uploadGpsStatusApi: TextView = view.findViewById(R.id.upload_gps_status_api)
         val uploadDetails: TextView = view.findViewById(R.id.upload_details)
         val uploadProgress: ProgressBar = view.findViewById(R.id.upload_progress)
         val upload: MaterialButton = view.findViewById(R.id.upload)
@@ -51,6 +52,8 @@ class UploadDeviceInfoFragment : Fragment() {
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
         val deviceInfoViewModel = ViewModelProviders.of(activity!!).get(DeviceInfoViewModel::class.java)
         var userCountry = ""
+
+        val useGnssApis = Application.getPrefs().getBoolean(getString(R.string.pref_key_use_gnss_apis), true)
 
         // TODO - DeviceInfoViewModel is still largely updated in GnssStatusFragment, so we need
         // to check and make sure that the Status screen has been viewed even if we have a location
@@ -62,11 +65,19 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadDetails.visibility = View.GONE
             upload.visibility = View.GONE
             uploadNoLocationTextView.visibility = View.VISIBLE
+            uploadGpsStatusApi.visibility = View.GONE
+        } else if (SatelliteUtils.isGnssStatusListenerSupported() && !useGnssApis) {
+            // Android 7 and higher but using legacy GPSStatus API
+            uploadDetails.visibility = View.GONE
+            upload.visibility = View.GONE
+            uploadNoLocationTextView.visibility = View.GONE
+            uploadGpsStatusApi.visibility = View.VISIBLE
         } else {
-            // We have a location
+            // We have a location and using GNSS APIs if Android 7 or later
             uploadDetails.visibility = View.VISIBLE
             upload.visibility = View.VISIBLE
             uploadNoLocationTextView.visibility = View.GONE
+            uploadGpsStatusApi.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
                 val geocoder = Geocoder(context)
@@ -220,7 +231,6 @@ class UploadDeviceInfoFragment : Fragment() {
                     uploadProgress.visibility = View.INVISIBLE
                 }
             }
-
         }
     }
 }
