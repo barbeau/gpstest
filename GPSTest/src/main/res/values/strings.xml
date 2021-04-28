@@ -287,18 +287,18 @@
 
     <!-- File Output -->
     <string name="pref_file_output_category_title">File Output</string>
-    <string name="pref_file_nmea_output_summary">Logs NMEA sentences to a file</string>
-    <string name="pref_file_measurement_output_summary">Logs GNSS measurements to a file (Android
+    <string name="pref_file_nmea_output_summary">Logs NMEA sentences to the CSV file</string>
+    <string name="pref_file_measurement_output_summary">Logs GNSS measurements to the CSV file (Android
         7.0 and up)
     </string>
-    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to a file (Android 7.0 and up)
+    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to the CSV file (Android 7.0 and up)
     </string>
     <string name="pref_file_location_output_title">Location</string>
-    <string name="pref_file_location_output_summary">Logs location fix details to a file</string>
+    <string name="pref_file_location_output_summary">Logs location fix details to the CSV file</string>
     <string name="pref_file_antenna_output_csv_title">Antenna Info (CSV)</string>
-    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to a CSV file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. Only available on supported devices (Android 11 and up).</string>
     <string name="pref_file_antenna_output_json_title">Antenna Info (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to a JSON file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. Only available on supported devices (Android 11 and up).</string>
 
     <string name="logging_to_new_file">Logging to new file: %1$s</string>
     <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>
