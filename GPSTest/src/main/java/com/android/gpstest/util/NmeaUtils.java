@@ -112,8 +112,8 @@ public class NmeaUtils {
             if (!TextUtils.isEmpty(pdop) && !TextUtils.isEmpty(hdop) && !TextUtils.isEmpty(vdop)) {
                 DilutionOfPrecision dop = null;
                 try {
-                    dop = new DilutionOfPrecision(Double.valueOf(pdop), Double.valueOf(hdop),
-                            Double.valueOf(vdop));
+                    dop = new DilutionOfPrecision(Double.parseDouble(pdop), Double.parseDouble(hdop),
+                            Double.parseDouble(vdop));
                 } catch (NumberFormatException e) {
                     // See https://github.com/barbeau/gpstest/issues/71#issuecomment-263169174
                     Log.e(TAG, "Invalid DOP values in NMEA: " + nmeaSentence);

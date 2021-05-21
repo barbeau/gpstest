@@ -445,11 +445,11 @@ public class GpsMapFragment extends SupportMapFragment
     private void checkMapPreferences() {
         SharedPreferences settings = Application.getPrefs();
         if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
-            if (mMap.getMapType() != Integer.valueOf(
+            if (mMap.getMapType() != Integer.parseInt(
                     settings.getString(getString(R.string.pref_key_map_type),
                             String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
             )) {
-                mMap.setMapType(Integer.valueOf(
+                mMap.setMapType(Integer.parseInt(
                         settings.getString(getString(R.string.pref_key_map_type),
                                 String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
                 ));

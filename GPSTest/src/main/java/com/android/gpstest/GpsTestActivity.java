@@ -238,7 +238,7 @@ public class GpsTestActivity extends AppCompatActivity
     private GnssAntennaInfo.Listener gnssAntennaInfoListener;
 
     // Listeners for Fragments
-    private List<GpsTestListener> mGpsTestListeners = new ArrayList<GpsTestListener>();
+    private List<GpsTestListener> mGpsTestListeners = new ArrayList<>();
 
     private Location mLastLocation;
 
@@ -619,12 +619,12 @@ public class GpsTestActivity extends AppCompatActivity
         // Apply start state settings from preferences
         SharedPreferences settings = Application.getPrefs();
 
-        double tempMinTime = Double.valueOf(
+        double tempMinTime = Double.parseDouble(
                 settings.getString(getString(R.string.pref_key_gps_min_time),
                         getString(R.string.pref_gps_min_time_default_sec))
         );
         minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
-        minDistance = Float.valueOf(
+        minDistance = Float.parseFloat(
                 settings.getString(getString(R.string.pref_key_gps_min_distance),
                         getString(R.string.pref_gps_min_distance_default_meters))
         );
@@ -980,10 +980,10 @@ public class GpsTestActivity extends AppCompatActivity
             showProgressBar();
 
             // Show Toast only if the user has set minTime or minDistance to something other than default values
-            if (minTime != (long) (Double.valueOf(getString(R.string.pref_gps_min_time_default_sec))
+            if (minTime != (long) (Double.parseDouble(getString(R.string.pref_gps_min_time_default_sec))
                     * SECONDS_TO_MILLISECONDS) ||
                     minDistance != Float
-                            .valueOf(getString(R.string.pref_gps_min_distance_default_meters))) {
+                            .parseFloat(getString(R.string.pref_gps_min_distance_default_meters))) {
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
                         String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),
                         String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
@@ -1232,9 +1232,7 @@ public class GpsTestActivity extends AppCompatActivity
                 if (UIUtils.canManageDialog(GpsTestActivity.this) &&
                         (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile)) {
                     new Handler(Looper.getMainLooper()).postDelayed(
-                            () -> runOnUiThread(() -> {
-                                Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show();
-                            }), 3000);
+                            () -> runOnUiThread(() -> Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
                 }
             }
         };
@@ -1455,15 +1453,15 @@ public class GpsTestActivity extends AppCompatActivity
     @SuppressLint("MissingPermission")
     private void checkTimeAndDistance(SharedPreferences settings) {
         double tempMinTimeDouble = Double
-                .valueOf(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
+                .parseDouble(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
         long minTimeLong = (long) (tempMinTimeDouble * SECONDS_TO_MILLISECONDS);
 
         if (minTime != minTimeLong ||
-                minDistance != Float.valueOf(
+                minDistance != Float.parseFloat(
                         settings.getString(getString(R.string.pref_key_gps_min_distance), "0"))) {
             // User changed preference values, get the new ones
             minTime = minTimeLong;
-            minDistance = Float.valueOf(
+            minDistance = Float.parseFloat(
                     settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
             // If the GPS is started, reset the location listener with the new values
             if (mStarted && mProvider != null) {

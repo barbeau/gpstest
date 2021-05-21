@@ -533,9 +533,7 @@ public class UIUtils {
                 .setCancelable(false)
                 .setView(view)
                 .setPositiveButton(R.string.ok,
-                        (dialog, which) -> {
-                            IOUtils.openQrCodeReader(activity);
-                        }
+                        (dialog, which) -> IOUtils.openQrCodeReader(activity)
                 ).setNegativeButton(R.string.not_now,
                         (dialog, which) -> {
                             // No op
