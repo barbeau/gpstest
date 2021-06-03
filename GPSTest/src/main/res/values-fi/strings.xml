@@ -111,7 +111,7 @@
     <string name="clear_assist_warning">Joillakin laitteilla voi kestää 24 tuntia aputietojen automaattinen päivittäminen. Jos laitteesi ei tue käsin tehtävää syöttämistä, GNSS ei välttämättä toimi missään sovelluksessa, ennen kuin automaattinen päivitys on valmis. Oletko varma?</string>
     <string name="never_ask_again">Älä kysy uudestaan</string>
     <string name="qr_code_instructions_title">Skannaa QR Koodi</string>
-    <string name="qr_code_instructions_text">Tuo todellinen maa sijainti QR-koodilla Geo URI -muodossa (geo: 28.38434, -87.24334). Luo omat QR-koodisi osoitteessa https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_instructions_text">Tuo todellinen maa sijainti käyttäen QR-koodia Geo URI -muodossa (geo: 28.38434, -87.24334). Luo omat QR-koodisi osoitteessa https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Geo-URI: ta ei voitu lukea QR-koodista</string>
     <string name="never_show_again">Älä näytä uudelleen</string>
     <string name="not_now">Ei nyt</string>
@@ -204,6 +204,18 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Mikä on uutta?</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+<b>Lähdelaitteen ominaisuudet</b>
+ - Lisää laitteesi ominaisuudet julkiseen GPSTest-laitetietokantaan (https://bit.ly/gpstest-device-database) Jaa-näytön kautta.\n&#8226;\u0020
+<b> Loki antenni tiedot</b>
+ - Tuki Gnss Antenni tiedot kirjaamiseen JSON-tiedostoon.\n&#8226;\u0020
+<b> Lisätty suomenkielinen käännös</b>
+ - Kiitos Ari Nygard!\n&#8226;\u0020
+<b>Lisätty tanskankielinen käännös</b>
+ - Kiitos Claus Østergaard!\n&#8226;\u0020
+<b> Virheenkorjauksia</b>
+- Katso https://bit.ly/gpstest-releases
+</string>
     <string name="main_help_close">Sulje</string>
 
     <!-- Preferences -->

@@ -47,8 +47,12 @@
     <string name="share">Partekatu</string>
     <string name="copied_to_clipboard">Kokapena arbelera kopiatu da</string>
     <string name="send_log">Bidali erregistroa...</string>
+    <string name="log">Erregistroa</string>
+    <string name="file_name">Fitxategi-izena</string>
+    <string name="location">Kokapena</string>
     <string name="log_instructions">Ezarpenetan aktibatu NMEAren erregistroa, prozesatu gabeko neurriak, nabigazio mezuak eta gehiago</string>
     <string name="log_error">Zerbaitek huts egin du fitxategia erregistratzean. Baimendu al dituzu fitxategiak biltegiratzeko baimenak? Saiatu fitxategien erregistroa berriro gaitzen Ezarpenetan eta sakatu \"Baimendu\" galdetzean.</string>
+    <string name="no_location">Saiatu zure kokapena partekatzen GNSS konponbidea lortu ondoren...</string>
     <string name="include_altitude">Altitudea barne</string>
     <string name="set_fix_frequency">Ezarri seinale atzitzeko maiztasuna</string>
     <string name="force_time_injection_success">Denbora datuak behar bezala txertatu dira</string>
@@ -56,6 +60,12 @@
 
     <string name="force_psds_injection_success">PSDS datuak behar bezala txertatu dira.</string>
     <string name="force_psds_injection_failure">Gailuak ez du PSDS datuen txertatzea onartzen.</string>
+
+    <string name="device">Gailua</string>
+    <string name="upload_no_location">Mesedez, aldatu egoera pantailara, itxaron GNSS konponbidea eta, ondoren, gailuaren gaitasunak kargatu.</string>
+    <string name="upload_success">Gailuaren gaitasunak behar bezala kargatu dira.</string>
+    <string name="upload_failure">Huts egin du gailuaren gaitasunen karga. Saiatu berriro.</string>
+    <string name="upload_nothing_changed">Aurreko kargatik ez da ezer aldatu. Saiatu beranduago.</string>
 
     <string name="zoom_in">Handiagotu</string>
     <string name="zoom_out">Txikiagotu</string>
@@ -101,7 +111,6 @@
     <string name="clear_assist_warning">Gailu batzuk 24 ordu behar izaten dute laguntza datuak freskatzeko. Zure gailuak  eskuzko txertaketa onartzen ez badu, baliteke freskatzea burutu arte GNSS ez funtzionatzea aplikazioetan. Ziur zaude?</string>
     <string name="never_ask_again">Ez galdetu berriro</string>
     <string name="qr_code_instructions_title">Eskaneatu QR kodea</string>
-    <string name="qr_code_instructions_text">Inportatu lurreko benetako kokaleku bat QR kode bat erabiliz Geo URI formatuan (geo:28.38434, -87.24334). Sortu zure QR kodea https://zxing.appspot.com/generator/ webgunean.</string>
     <string name="qr_code_cannot_read_code">Ezin izan da Geo URI irakurri QR kodetik</string>
     <string name="never_show_again">Ez erakutsi berriro</string>
     <string name="not_now">Orain ez</string>
@@ -187,6 +196,8 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: iruzkina</string>
     <string name="feedback_body">Kexak, zorionak edo akatsen txostenak ongi etorriak dira!\n\n\n</string>
+    <string name="device_properties_upload_success">Gailuaren propietateak behar bezala kargatu dira. Eskerrik asko!</string>
+
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Zer berri?</string>
     <string name="main_help_close">Itxi</string>
@@ -252,10 +263,17 @@ GPSStatus klasikoa erabiliko du.</string>
     <string name="pref_file_navigation_message_output_summary">GNSS nabigazio mezuak fitxategi batean erregistratzen ditu (Android 7.0 eta goragokoak)</string>
     <string name="pref_file_location_output_title">Kokalekua</string>
     <string name="pref_file_location_output_summary">Kokalekuaren zehaztapenak fitxategi batean erregistratzen ditu</string>
+    <string name="pref_file_antenna_output_csv_title">Antenaren informazioa (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Erregistratu GNSS Antenaren xehetasunak CSV fitxategi batean. Onartutako gailuetan bakarrik erabil daiteke (Android 11 eta berriagoak).</string>
+    <string name="pref_file_antenna_output_json_title">Antenaren informazioa (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Erregistratu GNSS Antenaren xehetasunak JSON fitxategi batean. Onartutako gailuetan bakarrik erabil daiteke (Android 11 eta berriagoak).</string>
+
     <string name="logging_to_new_file">Erregistratzen fitxategi berrian: %1$s</string>
     <string name="unable_to_close_all_file_streams">Ezin izan da fitxategi-korronte guztiak itxi.</string>
     <string name="could_not_initialize_file">Ezin da fitxategia hasieratu: %1$s</string>
     <string name="error_writing_file">Arazoak fitxategira idaztean</string>
+    <string name="unable_to_open_json_generator">Ezin izan da JSON sorgailua ireki</string>
+
     <string name="pref_about_category_title">Honi buruz</string>
     <string name="pref_show_tutorial_title">Erakutsi tutoriala</string>
     <string name="pref_show_tutorial_summary">Erakutsi aplikazioa erabiltzeko jarraibideak</string>

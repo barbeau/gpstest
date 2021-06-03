@@ -206,7 +206,7 @@
     <string name="main_help_whatsnew_title">Hvad er nyt?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Crowd-source enhedsfunktioner</b>
-        - Du kan eventuelt bidrage med dine enhedsfunktioner til den offentlige GPSTest enhedsdatabase (https://bit.ly/gpstest-device-database) via skærmdelingen.\n&#8226;\u0020
+        - Du kan eventuelt bidrage med dine enhedsfunktioner til den offentlige GPSTest enhedsdatabase (https://bit.ly/gpstest-device-database) via skærmdelingen. Se https://bit.ly/gpstest-database-article for detaljer.\n&#8226;\u0020
         <b>Log antenne info</b>
         - Understøttelse af logning af GnssAntennaInfo til CSV og JSON filer.\n&#8226;\u0020
         <b>Tilføjet finske oversættelser</b>

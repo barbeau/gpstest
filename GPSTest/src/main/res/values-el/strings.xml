@@ -100,7 +100,6 @@
     <string name="clear_assist_warning">καθαρισμός σφάλματος βοηθητικών δεδομένων</string>
     <string name="never_ask_again">Να μην ερωτηθώ ξανά</string>
     <string name="qr_code_instructions_title">Κωδικός QR</string>
-    <string name="qr_code_instructions_text">Οδηγίες QR</string>
     <string name="qr_code_cannot_read_code">αδυναμία ανάγνωσης κωδικού QR</string>
     <string name="never_show_again">να μην εμφανιστεί ξανά</string>
     <string name="not_now">όχι τώρα</string>

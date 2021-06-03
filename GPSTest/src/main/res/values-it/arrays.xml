@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
 ** Copyright 2012, Sean J. Barbeau
@@ -30,7 +31,7 @@
 
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
-        <item>Mappa</item>
+        <item>Vista mappa</item>
         <item>Ibrida</item>
         <item>Satellite</item>
         <item>Terreno</item>

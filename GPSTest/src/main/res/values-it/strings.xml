@@ -62,13 +62,12 @@
     <string name="force_psds_injection_failure">Il dispositivo non supporta l\'inserimento di dati PSDS</string>
 
     <string name="device">Dispositivo</string>
-    <string name="upload_details">Carica le informazioni del tuo dispositivo sul database pubblico \"GPSTest Device Database\" (es: modello e produttore del dispositivo, sistemi GNSS supportati, sistemi SBAS supportati, dual-frequency supportata).
-.\n\nNessuna informazione privata relativa al tuo dispositivo verrà condivisa.
-Link database: https://bit.ly/gpstest-device-database</string>
-    <string name="upload_no_location">Perfavore passa alla scheda Stato, attendi di essere geolocalizzato e carica le informazioni del tuo dispositivo.</string>
+    <string name="upload_details">Condividi le informazioni del tuo dispositivo su \"GPSTest Device Database\" (es: modello e produttore del dispositivo, sistemi GNSS supportati, sistemi SBAS supportati, dual-frequency supportata).\n\nNessuna informazione privata verrà condivisa.
+Link: https://bit.ly/gpstest-device-database</string>
+    <string name="upload_no_location">Perfavore, attendi di essere geolocalizzato prima di condividere le informazioni del tuo dispositivo.</string>
     <string name="upload_success">Informazioni del dispositivo caricate correttamente!</string>
-    <string name="upload_failure">Il caricamento delle informazioni del dispositivo non è andato a buon fine. Prova di nuovo.</string>
-    <string name="upload_nothing_changed">Nessuna variazione rispetto all\'ultimo caricamento. Prova più tardi.</string>
+    <string name="upload_failure">La condivisione delle informazioni del dispositivo non è andata a buon fine. Prova di nuovo.</string>
+    <string name="upload_nothing_changed">Nessuna variazione rispetto all\'ultima condivisione. Prova più tardi.</string>
 
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
@@ -114,7 +113,7 @@ Link database: https://bit.ly/gpstest-device-database</string>
     <string name="never_ask_again">Non chiedere più</string>
     <string name="qr_code_instructions_title">Scansiona un QR Code</string>
     <string name="qr_code_instructions_text">Importa la posizione reale con l\'utilizzo di un QR Code nel formato Geo URI (es.:
-\"geo:28.38434,-87.24334\").
+\"geo:28.0587,-82.4139\").
 Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Impossibile leggere il riferimento Geo URI dal QR Code</string>
     <string name="never_show_again">Non mostrare più</string>
@@ -209,7 +208,7 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="main_help_whatsnew_title">Novità</string>
     <string name="main_help_whatsnew">&#8226;\u0020
         <b>Condivisione informazioni dispositivo</b>
-        - Possibilità di caricare le informazioni del proprio dispositivo attraverso il pulsante Condividi nella scheda Stato.Contribuirai in questo modo alla creazione del database pubblico \"GPSTest Device Database\" (https://bit.ly/gpstest-device-database).\n&#8226;\u0020
+        - Possibilità di caricare le informazioni del proprio dispositivo attraverso il pulsante Condividi nella scheda Stato (https://bit.ly/gpstest-device-database). Per maggiori informazioni: See https://bit.ly/gpstest-database-article;\n&#8226;\u0020
         <b>Registro informazioni antenna</b>
         - Aggiunto il supporto alla registrazione delle informazioni GnssAntennaInfo in un file JSON.\n&#8226;\u0020
         <b>Aggiunta traduzione in Finlandese</b>

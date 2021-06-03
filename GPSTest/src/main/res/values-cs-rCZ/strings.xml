@@ -47,8 +47,12 @@
     <string name="share">Sdílet</string>
     <string name="copied_to_clipboard">Poloha zkopírována do schránky</string>
     <string name="send_log">Odesílání protokolu...</string>
+    <string name="log">Protokol</string>
+    <string name="file_name">Název souboru</string>
+    <string name="location">Poloha</string>
     <string name="log_instructions">Povolte protokolování pro NMEA, prvotní měření, navigační zprávy, atd. v Nastavení.</string>
     <string name="log_error">Chyba při výstupu protokolu do souboru. Povolili jste oprávnění pro přístup do úložiště? Zkuste znovu povolit možnost výstupu protokolu do souboru v Nastavení a po zobrazení výzvy klikněte na „Povolit“.</string>
+    <string name="no_location">Zkuste sdílet svou polohu po získání opravy GNSS...</string>
     <string name="include_altitude">Zahrnout nadm. výšku</string>
     <string name="set_fix_frequency">Nastavit frekvenci</string>
     <string name="force_time_injection_success">Časové údaje úspěšně vloženy.</string>
@@ -56,6 +60,13 @@
 
     <string name="force_psds_injection_success">Údaje PSDS úspěšně vloženy.</string>
     <string name="force_psds_injection_failure">Zařízení nepodporuje vkládání údajů PSDS.</string>
+
+    <string name="device">Zařízení</string>
+    <string name="upload_details">Nahraje možnosti Vašeho zařízení (např. značku a model zařízení, podporovaný GNSS, podporovaný SBAS, podpora obou frekvencí, atd.) do veřejné databáze zařízení GPSTest (https://bit.ly/gpstest-device-database).\n\nNejsou sdíleny žádné soukromé informace z Vašeho zařízení. </string>
+    <string name="upload_no_location">Přepněte na obrazovku Stav, počkejte na opravu GNSS a poté nahrajte možnosti zařízení. </string>
+    <string name="upload_success">Možnosti zařízení byly úspěšně nahrány!</string>
+    <string name="upload_failure">Nelze nahrát možnosti zařízení. Zkuste to znovu.</string>
+    <string name="upload_nothing_changed">Od posledního nahrání se nic nezměnilo. Zkuste to později znovu.</string>
 
     <string name="zoom_in">Zvětšit</string>
     <string name="zoom_out">Zmenšit</string>
@@ -100,7 +111,7 @@
     <string name="clear_assist_warning">Některým zařízením může automatické obnovení asistenčních dat trvat až 24 hodin. Pokud Vaše zařízení nepodporuje ruční vložení, nemusí GNSS fungovat pro žádnou aplikaci, dokud nedokončí automatické obnovení. Jste si jistý?</string>
     <string name="never_ask_again">Znovu se nedotazovat</string>
     <string name="qr_code_instructions_title">Skenovat QR kód</string>
-    <string name="qr_code_instructions_text">Importujte polohu pomocí QR kódu ve formátu Geo URI (geo:28.38434,-87.24334). Vytvořte si vlastní QR kódy. Více na: https://zxing.appspot.com/generator/.</string>
+    <string name="qr_code_instructions_text">Importujte pozemní umístění pomocí QR kódu ve formátu Geo URI (geo: 28.0587,-82.4139).  Vytvořte si vlastní QR kódy na: https://zxing.appspot.com/generator/.</string>
     <string name="qr_code_cannot_read_code">Nelze z QR kódu přečíst Geo URI</string>
     <string name="never_show_again">Příště nezobrazovat</string>
     <string name="not_now">Nyní ne</string>
@@ -114,6 +125,7 @@
     <string name="filter_text">Zobrazeno %1$d z %2$d satelitů</string>
     <string name="filter_showall">(zobrazit vše)</string>
     <string name="error_time_title">Neplatný čas GNNS</string>
+    <string name="error_time_message">Čas GNSS zařízení:\n\n%1$s\n\n…je větší než %2$d dny, které jsou odlišné od Vašich systémových hodin. To může být způsobeno problémem s přechodem na týdenní GPS - požádejte o podrobnosti výrobce zařízení. Více na: https://bit.ly/gps-week-rollover.</string>
     <string name="unknown">Neznámý</string>
     <string name="cancel">Zrušit</string>
 
@@ -186,19 +198,20 @@
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Zpětná vazba</string>
     <string name="feedback_body">Zprávy o chybách jsou vítány!\n\n\n</string>
+    <string name="feedback_error">Nelze odeslat zpětnou vazbu. Nebyla nalezena žádná vhodná aplikace. </string>
+    <string name="device_properties_upload_success">Vlastnosti zařízení byly úspěšně nahrány. Děkujeme!</string>
+
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Co je nového?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Filtr pro zobrazení satelitů v záložce Stav</b>
-        - Umožní skrýt GNSS pomocí tlačítka na panelu akcí.\n&#8226;\u0020
-        <b>GNSS indikátor zámku</b>
-        - Během čekání na opravu GNSS se zobrazí indikátor průběhu a po získání polohy se zobrazí ikona zámku.\n&#8226;\u0020
-        <b>Vylepšený tmavý režim</b>
-        - Záložka Mapa a Kompas jsou nyní přizpůsobeny tmavému režimu.\n&#8226;\u0020
-        <b>Přidán baskický překlad</b>
-        - Poděkování Alexander Gabilondo!\n&#8226;\u0020
-        <b>Vylepšená ikona spouštěče</b>
-        - Podpora adaptivních ikon na podporovaných zařízeních.\n&#8226;\u0020
+        <b>Možnosti zdrojového zařízení</b>
+        - Volitelný příspěvek s možnostmi Vašeho zařízení do veřejné databáze GPSTest (https://bit.ly/gpstest-device-database) prostřednictvím obrazovky Sdílet . Více na: https://bit.ly/gpstest-database-article.\n&#8226;\u0020
+        <b>Výstup protokolů s podrobnostmi antény</b>
+        - Podpora výstupu protokolu s informacemi o anténě GNSS do CSV a JSON files.\n&#8226;\u0020
+        <b>Přidán finský překlad</b>
+        -  Poděkování Ari Nygard!\n&#8226;\u0020
+        <b>Přidán dánský překlad</b>
+        -  Poděkování Claus Østergaard!\n&#8226;\u0020
         <b>Oprava chyb</b>
         - Více na: https://bit.ly/gpstest-releases
     </string>
@@ -262,6 +275,11 @@
     <string name="pref_file_navigation_message_output_summary">Povolte výstup navigačních zpráv GNSS do souboru (Android 7.0 a vyšší).</string>
     <string name="pref_file_location_output_title">Protokoly oprav polohy</string>
     <string name="pref_file_location_output_summary">Povolte výstup protokolů oprav polohy do souboru.</string>
+    <string name="pref_file_antenna_output_csv_title">Informace o anténě (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">Povolte výstup protokolů s podrobnostmi antény GNSS do souboru CSV. Tato funkce je k dispozici pouze na podporovaných zařízeních. (Android 11 a vyšší). </string>
+    <string name="pref_file_antenna_output_json_title">Informace o anténě (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">Povolte výstup protokolů s podrobnostmi antény GNSS do souboru JSON. Tato funkce je k dispozici pouze na podporovaných zařízeních. (Android 11 a vyšší).</string>
+
     <string name="logging_to_new_file">Výstup protokolu do nového souboru: %1$s</string>
     <string name="unable_to_close_all_file_streams">Nelze zavřít všechny soubory se streamy.</string>
     <string name="could_not_initialize_file">Nelze inicializovat soubor: %1$s</string>
@@ -402,5 +420,7 @@
         &#8226;\u0020 Ukrainian translation provided by Serhii Osmalchuk\n
         &#8226;\u0020 Korean translation provided by snotree\n
         &#8226;\u0020 Basque translation provided by Alexander Gabilondo\n
+        &#8226;\u0020 Finnish translation provided by Ari Nygard\n
+        &#8226;\u0020 Danish translation provided by Claus Østergaard\n
     </string>
 </resources>
