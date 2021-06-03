@@ -175,12 +175,12 @@ public class IOUtils {
 
         String[] noPrefix = geoUri.split(":");
         String[] coords = noPrefix[1].split(",");
-        if (isValidLatitude(Double.valueOf(coords[0])) && isValidLongitude(Double.valueOf(coords[1]))) {
+        if (isValidLatitude(Double.parseDouble(coords[0])) && isValidLongitude(Double.parseDouble(coords[1]))) {
             l = new Location("Geo URI");
-            l.setLatitude(Double.valueOf(coords[0]));
-            l.setLongitude(Double.valueOf(coords[1]));
+            l.setLatitude(Double.parseDouble(coords[0]));
+            l.setLongitude(Double.parseDouble(coords[1]));
             if (coords.length == 3) {
-                l.setAltitude(Double.valueOf(coords[2]));
+                l.setAltitude(Double.parseDouble(coords[2]));
             }
         }
 
