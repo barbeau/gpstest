@@ -155,7 +155,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write(COMMENT_START);
             writer.newLine();
             writer.write(COMMENT_START);
-            writer.write("NMEA format (for [NMEA sentence] format see https://www.gpsinformation.org/dale/nmea.htm):");
+            writer.write("NMEA format (for [NMEA sentence] format see https://en.wikipedia.org/wiki/NMEA_0183):");
             writer.newLine();
             writer.write(COMMENT_START);
             writer.write("  NMEA,[NMEA sentence],(UTC)TimeInMs");
