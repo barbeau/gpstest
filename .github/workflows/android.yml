@@ -28,5 +28,5 @@ jobs:
         api-level: ${{ matrix.api-level }}
         target: ${{ matrix.target }}
         arch: x86_64
-        profile: Device
+        profile: Nexus 6
         script: ./gradlew test check connectedCheck -x lint --stacktrace
