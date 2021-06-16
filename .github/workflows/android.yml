@@ -22,6 +22,11 @@ jobs:
     - name: checkout
       uses: actions/checkout@v2
 
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
