@@ -307,7 +307,32 @@ public class SatelliteUtils {
      *      , false if it does not
      */
     public static boolean isGnssAntennaInfoSupported(LocationManager manager) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager != null && manager.getGnssCapabilities().hasGnssAntennaInfo();
+        if (manager == null) {
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return manager.getGnssCapabilities().hasAntennaInfo();
+        } else {
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager.getGnssCapabilities().hasGnssAntennaInfo();
+        }
+    }
+
+    /**
+     * Returns true if the platform supports GNSS measurements, false if it does not.
+     * @return true if the platform supports GNSS measurements, false if it does not
+     */
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    public static boolean isGnssMeasurementsSupported(LocationManager manager) {
+        return manager != null && manager.getGnssCapabilities().hasMeasurements();
+    }
+
+    /**
+     * Returns true if the platform supports navigation messsages, false if it does not.
+     * @return true if the platform supports navigation messsages, false if it does not
+     */
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    public static boolean isNavigationMessagesSupported(LocationManager manager) {
+        return manager != null && manager.getGnssCapabilities().hasNavigationMessages();
     }
 
     /**

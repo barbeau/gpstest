@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion "android-S"
     buildToolsVersion '29.0.3'
 
     defaultConfig {

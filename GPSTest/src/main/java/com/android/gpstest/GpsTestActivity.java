@@ -1164,6 +1164,11 @@ public class GpsTestActivity extends AppCompatActivity
             PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
             PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
             return;
+        } else {
+            // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                checkMeasurementSupport();
+            }
         }
         if (mGnssMeasurementsListener != null) {
             // Listener already registered
@@ -1207,36 +1212,62 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onStatusChanged(int status) {
-                final String statusMessage;
-                switch (status) {
-                    case STATUS_LOCATION_DISABLED:
-                        statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                        break;
-                    case STATUS_NOT_SUPPORTED:
-                        statusMessage = getString(R.string.gnss_measurement_status_not_supported);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                        break;
-                    case STATUS_READY:
-                        statusMessage = getString(R.string.gnss_measurement_status_ready);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
-                        break;
-                    default:
-                        statusMessage = getString(R.string.gnss_status_unknown);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+                // These status messages are deprecated on Android S and higher and should not be used
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    return;
                 }
-                Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
-                // Only show toast if the user has enabled logging
-                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
-                        (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile)) {
-                    new Handler(Looper.getMainLooper()).postDelayed(
-                            () -> runOnUiThread(() -> Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
-                }
+                handleLegacyMeasurementStatus(status);
             }
         };
         mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private void checkMeasurementSupport() {
+        final String statusMessage;
+        if (SatelliteUtils.isGnssMeasurementsSupported(mLocationManager)) {
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
+            statusMessage = getString(R.string.gnss_measurement_status_ready);
+        } else {
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+        }
+        // Only show toast if the user has enabled logging
+        maybeShowMeasurementsSupportToast(statusMessage);
+    }
+
+    private void handleLegacyMeasurementStatus(int status) {
+        final String statusMessage;
+        switch (status) {
+            case GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED:
+                statusMessage = getString(R.string.gnss_measurement_status_loc_disabled);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                break;
+            case GnssMeasurementsEvent.Callback.STATUS_NOT_SUPPORTED:
+                statusMessage = getString(R.string.gnss_measurement_status_not_supported);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                break;
+            case GnssMeasurementsEvent.Callback.STATUS_READY:
+                statusMessage = getString(R.string.gnss_measurement_status_ready);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_SUPPORTED);
+                break;
+            default:
+                statusMessage = getString(R.string.gnss_status_unknown);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+        }
+        Log.d(TAG, "GnssMeasurementsEvent.Callback.onStatusChanged() - " + statusMessage);
+        maybeShowMeasurementsSupportToast(statusMessage);
+    }
+
+    private void maybeShowMeasurementsSupportToast(String statusMessage) {
+        // Only show toast if the user has enabled logging
+        if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                (mWriteRawMeasurementToAndroidMonitor || mWriteRawMeasurementsToFile)) {
+            new Handler(Looper.getMainLooper()).postDelayed(
+                    () -> runOnUiThread(() -> Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 3000);
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -1373,6 +1404,11 @@ public class GpsTestActivity extends AppCompatActivity
             // Record capabilities that aren't supported related to nav messages
             PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
             return;
+        } else {
+            // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                checkNavMessageSupport();
+            }
         }
         if (mGnssNavMessageListener != null) {
             // Listener already registered
@@ -1392,35 +1428,60 @@ public class GpsTestActivity extends AppCompatActivity
 
             @Override
             public void onStatusChanged(int status) {
-                final String statusMessage;
-                switch (status) {
-                    case STATUS_LOCATION_DISABLED:
-                        statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
-                        break;
-                    case STATUS_NOT_SUPPORTED:
-                        statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-                        break;
-                    case STATUS_READY:
-                        statusMessage = getString(R.string.gnss_nav_msg_status_ready);
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
-                        break;
-                    default:
-                        statusMessage = getString(R.string.gnss_status_unknown);
+                // These status messages are deprecated on Android S and higher and should not be used
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    return;
                 }
-                Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
-                // Only show toast when user has enabled logging
-                if (UIUtils.canManageDialog(GpsTestActivity.this) &&
-                        (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile)) {
-                    // Delay this toast so it's not overwritten by other toasts
-                    new Handler(Looper.getMainLooper()).postDelayed(
-                            () -> runOnUiThread(() ->
-                                    Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
-                }
+                handleLegacyNavMessageStatus(status);
             }
         };
         mLocationManager.registerGnssNavigationMessageCallback(mGnssNavMessageListener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private void checkNavMessageSupport() {
+        final String statusMessage;
+        if (SatelliteUtils.isNavigationMessagesSupported(mLocationManager)) {
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
+            statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+        } else {
+            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+        }
+        maybeShowNavMessageSupportToast(statusMessage);
+    }
+
+    private void handleLegacyNavMessageStatus(int status) {
+        final String statusMessage;
+        switch (status) {
+            case GnssNavigationMessage.Callback.STATUS_LOCATION_DISABLED:
+                statusMessage = getString(R.string.gnss_nav_msg_status_loc_disabled);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_LOCATION_DISABLED);
+                break;
+            case GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED:
+                statusMessage = getString(R.string.gnss_nav_msg_status_not_supported);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+                break;
+            case GnssNavigationMessage.Callback.STATUS_READY:
+                statusMessage = getString(R.string.gnss_nav_msg_status_ready);
+                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_SUPPORTED);
+                break;
+            default:
+                statusMessage = getString(R.string.gnss_status_unknown);
+        }
+        Log.d(TAG, "GnssNavigationMessage.Callback.onStatusChanged() - " + statusMessage);
+        maybeShowNavMessageSupportToast(statusMessage);
+    }
+
+    private void maybeShowNavMessageSupportToast(String statusMessage) {
+        // Only show toast when user has enabled logging
+        if (UIUtils.canManageDialog(GpsTestActivity.this) &&
+                (mWriteNavMessageToAndroidMonitor || mWriteNavMessageToFile)) {
+            // Delay this toast so it's not overwritten by other toasts
+            new Handler(Looper.getMainLooper()).postDelayed(
+                    () -> runOnUiThread(() ->
+                            Toast.makeText(GpsTestActivity.this, statusMessage, Toast.LENGTH_SHORT).show()), 2000);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
