@@ -26,6 +26,7 @@ jobs:
       uses: actions/setup-java@v2
       with:
         java-version: 11
+        distribution: 'adopt'
 
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
