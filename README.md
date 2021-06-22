@@ -38,6 +38,14 @@ Get early access to new GPSTest versions, and help us squash bugs! See the [Test
 
 Want to know how to output GNSS data to the system log for further analysis?  Check out the [Data Output and Logging](LOGGING.md) page.
 
+## Accuracy
+
+Measuring your device GNSS accuracy? Check out the [Measuring Accuracy using GPSTest](ACCURACY.md) page, as well as the corresponding article [*Measuring GNSS accuracy on Android devices*](https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389).
+
+## Crowdsourcing GNSS data
+
+Interested in better understanding the state of GNSS feature support on Android devices? See the article [*Crowdsourcing GNSS features of Android devices*](https://barbeau.medium.com/crowdsourcing-gnss-capabilities-of-android-devices-d4228645cf25).
+
 ## Donate
 
 GPSTest is free and open-source, and I work on it on my lunch breaks as a side project! If you'd like to support GPSTest, please consider [buying me a coffee](https://www.buymeacoffee.com/barbeau).
