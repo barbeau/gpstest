@@ -15,6 +15,10 @@
  */
 package com.android.gpstest.util;
 
+import static android.content.Intent.ACTION_VIEW;
+import static com.android.gpstest.util.LocationUtils.isValidLatitude;
+import static com.android.gpstest.util.LocationUtils.isValidLongitude;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -47,9 +51,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.android.gpstest.util.LocationUtils.isValidLatitude;
-import static com.android.gpstest.util.LocationUtils.isValidLongitude;
-
 public class IOUtils {
 
     public static final String TAG = "IOUtils";
@@ -66,12 +67,12 @@ public class IOUtils {
 
     /**
      * Returns the ground truth location encapsulated in the Intent if the provided Intent has a
-     * SHOW_RADAR action (com.google.android.radar.SHOW_RADAR) with a valid latitude and longitude, or
+     * SHOW_RADAR action (com.google.android.radar.SHOW_RADAR) with a valid latitude and longitude or ACTION_VIEW action with geo URI, or
      * null if the Intent doesn't have a SHOW_RADAR action or the intent has an invalid latitude or longitude
      *
-     * @param intent Intent possibly containing the RADAR action
+     * @param intent Intent possibly containing the SHOW_RADAR or ACTION_VIEW action
      * @return the ground truth location encapsulated in the Intent if the provided Intent has a
-     * SHOW_RADAR action (com.google.android.radar.SHOW_RADAR) with a valid latitude and longitude, or
+     * SHOW_RADAR action (com.google.android.radar.SHOW_RADAR) with a valid latitude and longitude or ACTION_VIEW action with geo URI, or
      * null if the Intent doesn't have a SHOW_RADAR action or the intent has an invalid latitude or longitude
      */
     public static Location getLocationFromIntent(Intent intent) {
@@ -111,6 +112,8 @@ public class IOUtils {
                     }
                 }
             }
+        } else if (isGeoIntent(intent)) {
+            groundTruth = getLocationFromGeoUri(intent.getData().toString());
         }
         return groundTruth;
     }
@@ -125,6 +128,20 @@ public class IOUtils {
         return intent != null &&
                 intent.getAction() != null &&
                 intent.getAction().equals(Application.get().getString(R.string.show_radar_intent));
+    }
+
+    /**
+     * Returns true if the provided intent has the ACTION_VIEW action and contains a geo: URI, or false if it does not
+     *
+     * @param intent
+     * @return true if the provided intent has the ACTION_VIEW action and contains a geo: URI, or false if it does not
+     */
+    public static boolean isGeoIntent(Intent intent) {
+        return intent != null &&
+                intent.getAction() != null &&
+                intent.getAction().equals(ACTION_VIEW) &&
+                intent.getData() != null &&
+                intent.getData().toString().startsWith(Application.get().getString(R.string.geo_uri_prefix));
     }
 
     /**
@@ -173,8 +190,10 @@ public class IOUtils {
         }
         Location l = null;
 
-        String[] noPrefix = geoUri.split(":");
-        String[] coords = noPrefix[1].split(",");
+        String removedPrefix = geoUri.split(":")[1];
+        String removedQuery = removedPrefix.split("\\?")[0];
+        String removedMetadata = removedQuery.split(";")[0];
+        String[] coords = removedMetadata.split(",");
         if (isValidLatitude(Double.parseDouble(coords[0])) && isValidLongitude(Double.parseDouble(coords[1]))) {
             l = new Location("Geo URI");
             l.setLatitude(Double.parseDouble(coords[0]));

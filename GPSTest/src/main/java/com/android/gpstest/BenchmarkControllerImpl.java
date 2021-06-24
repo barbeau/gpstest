@@ -15,6 +15,11 @@
  */
 package com.android.gpstest;
 
+import static android.text.TextUtils.isEmpty;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.animation.LayoutTransition;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -62,11 +67,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import static android.text.TextUtils.isEmpty;
-import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 /**
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
@@ -338,9 +338,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             onCardCollapsed();
         } else {
             Location groundTruth;
-            // If a SHOW_RADAR intent was passed via an Intent (e.g., from BenchMap app), use that as ground truth
-            if (IOUtils.isShowRadarIntent(activity.getIntent())) {
+            // If a SHOW_RADAR or geo: URI was passed via an Intent (e.g., from BenchMap or OsmAnd app), use that as ground truth
+            if (IOUtils.isShowRadarIntent(activity.getIntent()) || IOUtils.isGeoIntent(activity.getIntent())) {
                 groundTruth = IOUtils.getLocationFromIntent(activity.getIntent());
+                if (IOUtils.isGeoIntent(activity.getIntent())) {
+                    groundTruth.removeAltitude(); // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
+                }
                 if (groundTruth != null) {
                     Toast.makeText(activity, Application.get().getString(R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
                     restoreGroundTruth(groundTruth);

@@ -43,7 +43,11 @@ Currently only latitude and longitude are supported by BenchMap (no altitude dat
 
 ### Implementing support in your own app
 
-GPSTest can receive a ground truth location from any app that implements the [`com.google.android.radar.SHOW_RADAR` intent](http://www.openintents.org/action/com-google-android-radar-show-radar/).
+GPSTest can receive a ground truth location from any app that implements the following features.
+
+#### SHOW_RADAR
+
+The [`com.google.android.radar.SHOW_RADAR` intent](http://www.openintents.org/action/com-google-android-radar-show-radar/).
 
 For example, if you add this code to your Android app, it will set the ground truth location in GPSTest:
 
@@ -53,6 +57,30 @@ public void startShowRadar(double lat, double lon, float alt) {
     intent.putExtra("latitude", lat); // double, in decimal degrees
     intent.putExtra("longitude", lon); // double, in decimal degrees
     intent.putExtra("altitude", alt); // float or double, in meters above the WGS84 ellipsoid
+    if (intent.resolveActivity(getPackageManager()) != null) { 
+        startActivity(intent);
+    }
+}
+~~~
+
+#### GEO URI
+
+An intent using [`ACTION_VIEW`](https://developer.android.com/reference/android/content/Intent#ACTION_VIEW) along with a data URI in the `geo:` scheme.
+
+For example:
+
+~~~
+geo:latitude,longitude
+~~~
+
+Please note that altitude is not yet supported as [RFC 5870](https://datatracker.ietf.org/doc/html/rfc5870) requires altitude to be othrometric, or height above the WGS-84 reference geoid. Support for geoid offset is discussed more in https://github.com/barbeau/gpstest/issues/296 and https://github.com/barbeau/gpstest/issues/530. 
+
+For example, if you add this code to your Android app, it will set the ground truth location in GPSTest:
+
+~~~
+public void startGeoUri(Uri geoUri) {
+    Intent intent = new Intent(ACTION_VIEW); 
+    intent.setData(geoUri);
     if (intent.resolveActivity(getPackageManager()) != null) { 
         startActivity(intent);
     }

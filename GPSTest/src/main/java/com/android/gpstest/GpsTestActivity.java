@@ -17,6 +17,22 @@
 
 package com.android.gpstest;
 
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
+import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
+import static com.android.gpstest.util.IOUtils.trimEnds;
+import static com.android.gpstest.util.IOUtils.writeGnssMeasurementToAndroidStudio;
+import static com.android.gpstest.util.IOUtils.writeNavMessageToAndroidStudio;
+import static com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -98,22 +114,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
-import static com.android.gpstest.util.IOUtils.trimEnds;
-import static com.android.gpstest.util.IOUtils.writeGnssMeasurementToAndroidStudio;
-import static com.android.gpstest.util.IOUtils.writeNavMessageToAndroidStudio;
-import static com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio;
 
 public class GpsTestActivity extends AppCompatActivity
         implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -323,7 +323,7 @@ public class GpsTestActivity extends AppCompatActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         // If another app is passing in a ground truth location, recreate the activity to initialize an existing instance
-        if (IOUtils.isShowRadarIntent(intent)) {
+        if (IOUtils.isShowRadarIntent(intent) || IOUtils.isGeoIntent(intent)) {
             recreateApp(intent);
         }
     }
@@ -431,7 +431,16 @@ public class GpsTestActivity extends AppCompatActivity
             // If we're creating the app because we got a SHOW_RADAR intent, copy over the intent action and extras
             i.setAction(currentIntent.getAction());
             i.putExtras(currentIntent.getExtras());
+        } else if (IOUtils.isGeoIntent(currentIntent)) {
+            // If we're creating the app because we got a geo: intent, turn it into a SHOW_RADAR intent for simplicity (they are used the same way)
+            Location l = IOUtils.getLocationFromGeoUri(currentIntent.getData().toString());
+            if (l != null) {
+                Intent showRadarIntent = IOUtils.createShowRadarIntent(l);
+                i.setAction(showRadarIntent.getAction());
+                i.putExtras(showRadarIntent.getExtras());
+            }
         }
+
         startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         // Restart process to destroy and recreate everything
         System.exit(0);

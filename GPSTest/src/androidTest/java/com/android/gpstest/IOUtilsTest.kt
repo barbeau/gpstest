@@ -174,6 +174,32 @@ class IOUtilsTest {
         assertEquals(87.1937, result2.longitude)
         assertEquals(15.0, result2.altitude)
 
+        val geoUriLatLonZoom = "geo:-28.9876,87.1937?z=14"
+        val resultWithZoom = IOUtils.getLocationFromGeoUri(geoUriLatLonZoom)
+        assertEquals(-28.9876, resultWithZoom.latitude)
+        assertEquals(87.1937, resultWithZoom.longitude)
+        assertFalse(resultWithZoom.hasAltitude())
+
+        val geoUriLatLonAltZoom = "geo:-28.9876,87.1937,15?z=14"
+        val resultWithAltZoom = IOUtils.getLocationFromGeoUri(geoUriLatLonAltZoom)
+        assertEquals(-28.9876, resultWithAltZoom.latitude)
+        assertEquals(87.1937, resultWithAltZoom.longitude)
+        assertEquals(15.0, resultWithAltZoom.altitude)
+        assertTrue(resultWithAltZoom.hasAltitude())
+
+        val geoUriLatLonCrs = "geo:32.3482,43.06480;crs=EPSG:32618"
+        val resultLatLonCrs = IOUtils.getLocationFromGeoUri(geoUriLatLonCrs)
+        assertEquals(32.3482, resultLatLonCrs.latitude)
+        assertEquals(43.06480, resultLatLonCrs.longitude)
+        assertFalse(resultLatLonCrs.hasAltitude())
+
+        val geoUriLatLonAltCrs = "geo:32.3482,43.06480,15;crs=EPSG:32618"
+        val resultLatLonAltCrs = IOUtils.getLocationFromGeoUri(geoUriLatLonAltCrs)
+        assertEquals(32.3482, resultLatLonAltCrs.latitude)
+        assertEquals(43.06480, resultLatLonAltCrs.longitude)
+        assertEquals(15.0, resultLatLonAltCrs.altitude)
+        assertTrue(resultLatLonAltCrs.hasAltitude())
+
         val invalidGeoUri = "http://not.a.geo.uri"
         val result3 = IOUtils.getLocationFromGeoUri(invalidGeoUri)
         assertNull(result3)
