@@ -408,6 +408,7 @@ public class GpsTestActivity extends AppCompatActivity
                 String geoUri = scanResult.getContents();
                 Location l = IOUtils.getLocationFromGeoUri(geoUri);
                 if (l != null) {
+                    l.removeAltitude(); // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
                     // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
                     Intent showRadar = IOUtils.createShowRadarIntent(l);
                     recreateApp(showRadar);

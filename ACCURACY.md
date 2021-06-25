@@ -23,9 +23,7 @@ You can scan a QR code that has a location embedded in the [Geo URI format (RFC 
 
 `geo:37.786971,-122.399677`
 
-If altitude is included, then:
-
-`geo:37.786971,-122.399677,15`
+Please note that altitude is not yet supported as [RFC 5870](https://datatracker.ietf.org/doc/html/rfc5870) requires altitude to be othrometric, or height above the WGS-84 reference geoid. Support for geoid offset is discussed more in https://github.com/barbeau/gpstest/issues/296 and https://github.com/barbeau/gpstest/issues/530.
 
 You can use the [ZXing QR Code Generator website](https://zxing.appspot.com/generator/) to create your own QR Codes.
 
