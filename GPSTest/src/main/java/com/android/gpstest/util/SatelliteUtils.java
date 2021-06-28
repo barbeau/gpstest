@@ -16,6 +16,15 @@
 
 package com.android.gpstest.util;
 
+import static com.android.gpstest.model.GnssType.BEIDOU;
+import static com.android.gpstest.model.GnssType.GALILEO;
+import static com.android.gpstest.model.GnssType.GLONASS;
+import static com.android.gpstest.model.GnssType.IRNSS;
+import static com.android.gpstest.model.GnssType.NAVSTAR;
+import static com.android.gpstest.model.GnssType.QZSS;
+import static com.android.gpstest.model.GnssType.SBAS;
+import static com.android.gpstest.model.GnssType.UNKNOWN;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -32,15 +41,6 @@ import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteName;
 import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.model.SbasType;
-
-import static com.android.gpstest.model.GnssType.BEIDOU;
-import static com.android.gpstest.model.GnssType.GALILEO;
-import static com.android.gpstest.model.GnssType.GLONASS;
-import static com.android.gpstest.model.GnssType.IRNSS;
-import static com.android.gpstest.model.GnssType.NAVSTAR;
-import static com.android.gpstest.model.GnssType.QZSS;
-import static com.android.gpstest.model.GnssType.SBAS;
-import static com.android.gpstest.model.GnssType.UNKNOWN;
 
 /**
  * Utilities to manage GNSS signal and satellite information
@@ -315,6 +315,14 @@ public class SatelliteUtils {
         } else {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager.getGnssCapabilities().hasGnssAntennaInfo();
         }
+    }
+
+    /**
+     * Returns true if "force full GNSS measurements" can be programmatically invoked, and false if not
+     * @return true if "force full GNSS measurements" can be programmatically invoked, and false if not
+     */
+    public static boolean isForceFullGnssMeasurementsSupported() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }
 
     /**

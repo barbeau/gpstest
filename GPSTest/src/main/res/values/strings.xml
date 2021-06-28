@@ -240,6 +240,10 @@
     </string>
 
     <string name="pref_gps_category_title">GNSS</string>
+
+    <string name="pref_force_full_gnss_measurements_title">Force full GNSS Measurements</string>
+    <string name="pref_force_full_gnss_measurements_summary">Available on Android 12 and higher. If checked, GNSS chipset switches off duty cycling so that no clock discontinuities are expected, and when supported, carrier phase should be continuous in good signal conditions. If unchecked, GNSS chipset optimizes power via duty cycling, constellations and frequency limits, etc.</string>
+
     <string name="pref_auto_start_gps_title">Auto-Start GNSS</string>
     <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
 

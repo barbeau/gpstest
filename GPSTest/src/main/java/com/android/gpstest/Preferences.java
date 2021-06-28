@@ -16,6 +16,8 @@
 
 package com.android.gpstest;
 
+import static com.android.gpstest.util.SatelliteUtils.isForceFullGnssMeasurementsSupported;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
@@ -41,6 +43,8 @@ import com.android.gpstest.util.UIUtils;
 
 public class Preferences extends PreferenceActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
+
+    CheckBoxPreference forceFullGnssMeasurements;
 
     EditTextPreference txtMinTime;
 
@@ -76,6 +80,13 @@ public class Preferences extends PreferenceActivity implements
         mActionBar.setTitle(getTitle());
 
         UIUtils.resetActivityTitle(this);
+
+        forceFullGnssMeasurements = (CheckBoxPreference) this
+                .findPreference(getString(R.string.pref_key_force_full_gnss_measurements));
+
+        if (!isForceFullGnssMeasurementsSupported()) {
+            forceFullGnssMeasurements.setEnabled(false);
+        }
 
         txtMinTime = (EditTextPreference) this
                 .findPreference(getString(R.string.pref_key_gps_min_time));

@@ -32,6 +32,7 @@ import static com.android.gpstest.util.IOUtils.trimEnds;
 import static com.android.gpstest.util.IOUtils.writeGnssMeasurementToAndroidStudio;
 import static com.android.gpstest.util.IOUtils.writeNavMessageToAndroidStudio;
 import static com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio;
+import static com.android.gpstest.util.SatelliteUtils.isForceFullGnssMeasurementsSupported;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -52,6 +53,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurement;
+import android.location.GnssMeasurementRequest;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
@@ -1229,7 +1231,17 @@ public class GpsTestActivity extends AppCompatActivity
                 handleLegacyMeasurementStatus(status);
             }
         };
-        mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+        if (isForceFullGnssMeasurementsSupported()) {
+            boolean forceFullMeasurements = Application.getPrefs().getBoolean(getString(R.string.pref_key_force_full_gnss_measurements), true);
+            Log.d(TAG,"Force full GNSS measurements = " + forceFullMeasurements);
+            // Request "force full GNSS measurements" explicitly (on <= Android R this is a manual developer setting)
+            GnssMeasurementRequest request = new GnssMeasurementRequest.Builder()
+                    .setFullTracking(forceFullMeasurements)
+                    .build();
+            mLocationManager.registerGnssMeasurementsCallback(request, getApplication().getMainExecutor(), mGnssMeasurementsListener);
+        } else {
+            mLocationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.S)
