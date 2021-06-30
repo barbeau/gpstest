@@ -25,11 +25,14 @@ import androidx.multidex.MultiDexApplication;
 
 import com.android.gpstest.lang.LocaleManager;
 
+import dagger.hilt.android.HiltAndroidApp;
+
 /**
  * Holds application-wide state
  *
  * @author Sean J. Barbeau
  */
+@HiltAndroidApp
 public class Application extends MultiDexApplication {
 
     private static Application mApp;

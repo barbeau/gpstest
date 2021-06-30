@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion "android-S"
@@ -16,6 +18,13 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Export the schema to the /schemas directory so we can track changes across DB versions
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     flavorDimensions "map"
@@ -112,11 +121,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-beta01"
@@ -133,7 +142,6 @@ dependencies {
     // Uploading device properties on user request
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
     implementation 'commons-io:commons-io:2.6'
 
     // Share dialog
@@ -146,6 +154,21 @@ dependencies {
     // Multidex - Needed for APIs < 21
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    // To launch co-routines within the Service to store location data in Room and observe the Room Flow in the Activity
+    def lifecycle_version = "2.4.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
+
+    // Room for storing location data and observing it via Flow
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // Hilt for dependency injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
     // Map (Google flavor only)
     googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
     // Calculating offset for camera target in map view (Google flavor only)
@@ -156,7 +179,7 @@ dependencies {
     //
     // Unit tests
     //
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     // Core library
     androidTestImplementation 'androidx.test:core:1.3.0'
 
