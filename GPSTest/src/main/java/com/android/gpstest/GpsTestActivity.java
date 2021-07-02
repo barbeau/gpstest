@@ -284,9 +284,7 @@ public class GpsTestActivity extends AppCompatActivity
             service = binder.getService();
             isServiceBound = true;
 
-            if (service != null) {
-                service.subscribeToLocationUpdates();
-            }
+            service.subscribeToLocationUpdates();
         }
 
         @Override
@@ -512,9 +510,6 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void init() {
-        if (service != null) {
-            service.subscribeToLocationUpdates();
-        }
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
         if (mProvider == null) {
