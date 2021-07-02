@@ -113,8 +113,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
             unsubscribeToLocationUpdates()
             stopSelf()
         }
-        // Tells the system not to recreate the service after it's been killed.
-        return super.onStartCommand(intent, flags, START_NOT_STICKY)
+        // Tells the system to recreate the service after it's been killed.
+        return super.onStartCommand(intent, flags, START_STICKY)
     }
 
     override fun onBind(intent: Intent): IBinder {
