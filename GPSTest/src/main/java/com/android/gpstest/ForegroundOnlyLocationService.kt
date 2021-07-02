@@ -28,6 +28,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.PRIORITY_LOW
 import androidx.lifecycle.LifecycleService
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.util.PreferenceUtils
@@ -229,7 +230,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID, titleText, NotificationManager.IMPORTANCE_DEFAULT)
+                NOTIFICATION_CHANNEL_ID, titleText, NotificationManager.IMPORTANCE_LOW)
 
             // Adds NotificationChannel to system. Attempting to create an
             // existing notification channel with its original values performs
@@ -267,6 +268,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setPriority(PRIORITY_LOW)
             .addAction(
                 R.drawable.ic_baseline_launch_24, getString(R.string.open),
                 activityPendingIntent
