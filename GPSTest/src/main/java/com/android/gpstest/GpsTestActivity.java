@@ -39,9 +39,11 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -67,6 +69,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -270,6 +273,29 @@ public class GpsTestActivity extends AppCompatActivity
 
     DeviceInfoViewModel deviceInfoViewModel;
 
+    private boolean isServiceBound = false;
+
+    private ForegroundOnlyLocationService service = null;
+
+    ServiceConnection foregroundOnlyServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            ForegroundOnlyLocationService.LocalBinder binder = (ForegroundOnlyLocationService.LocalBinder) iBinder;
+            service = binder.getService();
+            isServiceBound = true;
+
+            if (service != null) {
+                service.subscribeToLocationUpdates();
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            service = null;
+            isServiceBound = false;
+        }
+    };
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -319,6 +345,9 @@ public class GpsTestActivity extends AppCompatActivity
         jsonFileLogger = new JsonFileLogger(getApplicationContext());
 
         deviceInfoViewModel = ViewModelProviders.of(this).get(DeviceInfoViewModel.class);
+
+        Intent serviceIntent = new Intent(this, ForegroundOnlyLocationService.class);
+        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -483,6 +512,9 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void init() {
+        if (service != null) {
+            service.subscribeToLocationUpdates();
+        }
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
         if (mProvider == null) {

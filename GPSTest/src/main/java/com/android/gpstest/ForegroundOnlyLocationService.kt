@@ -19,7 +19,6 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.location.Location
@@ -30,10 +29,13 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.toText
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -51,8 +53,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private var serviceRunningInForeground = false
 
     private val localBinder = LocalBinder()
-
-    private lateinit var notificationManager: NotificationManager
+    private var isBound = false
+    private var isStarted = false
+    private var isForeground = false
 
 //    // FusedLocationProviderClient - Main class for receiving location updates.
 //    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -74,8 +77,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate()")
-
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // TODO - get onLocationChanged() callback and pass to Room
 
@@ -112,20 +113,24 @@ class ForegroundOnlyLocationService : LifecycleService() {
         if (cancelLocationTrackingFromNotification == true) {
             unsubscribeToLocationUpdates()
             stopSelf()
+        } else {
+            if (!isStarted) {
+                isStarted = true
+
+                // We may have been restarted by the system. Manage our lifetime accordingly.
+                goForegroundOrStopSelf()
+            }
         }
+
         // Tells the system to recreate the service after it's been killed.
-        return super.onStartCommand(intent, flags, START_STICKY)
+        return super.onStartCommand(intent, flags, START_NOT_STICKY)
     }
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         Log.d(TAG, "onBind()")
-
-        // MainActivity (client) comes into foreground and binds to service, so the service can
-        // become a background services.
-        //stopForeground(true)
-        //serviceRunningInForeground = false
         configurationChange = false
+        handleBind()
         return localBinder
     }
 
@@ -138,23 +143,32 @@ class ForegroundOnlyLocationService : LifecycleService() {
         //serviceRunningInForeground = false
         configurationChange = false
         super.onRebind(intent)
+        handleBind()
     }
 
-    override fun onUnbind(intent: Intent): Boolean {
-        Log.d(TAG, "onUnbind()")
-
-        // MainActivity (client) leaves foreground, so service needs to become a foreground service
-        // to maintain the 'while-in-use' label.
-        // NOTE: If this method is called due to a configuration change in MainActivity,
-        // we do nothing.
-        if (!configurationChange && PreferenceUtils.getServiceLocationTrackingPref()) {
-            Log.d(TAG, "Start foreground service")
-            val notification = generateNotification(currentLocation)
-            startForeground(NOTIFICATION_ID, notification)
-            serviceRunningInForeground = true
+    private fun handleBind() {
+        if (!isBound) {
+            isBound = true
+            // Start ourself. This will begin collecting exercise state if we aren't already.
+            //startService(Intent(this, this::class.java))
+            // As long as a UI client is bound to us, we can hide the ongoing activity notification.
+            //removeOngoingActivityNotification()
         }
+    }
 
-        // Ensures onRebind() is called if MainActivity (client) rebinds.
+
+    override fun onUnbind(intent: Intent): Boolean {
+        isBound = false
+        lifecycleScope.launch {
+            // Client can unbind because it went through a configuration change, in which case it
+            // will be recreated and bind again shortly. Wait a few seconds, and if still not bound,
+            // manage our lifetime accordingly.
+            delay(UNBIND_DELAY_MILLIS)
+            if (!isBound) {
+                goForegroundOrStopSelf()
+            }
+        }
+        // Allow clients to re-bind. We will be informed of this in onRebind().
         return true
     }
 
@@ -203,40 +217,59 @@ class ForegroundOnlyLocationService : LifecycleService() {
 //                }
 //            }
             PreferenceUtils.saveServiceLocationTrackingPref(false)
+            removeOngoingActivityNotification()
         } catch (unlikely: SecurityException) {
             PreferenceUtils.saveServiceLocationTrackingPref(true)
             Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
         }
     }
 
-    /*
-     * Generates a BIG_TEXT_STYLE Notification that represent latest location.
-     */
-    private fun generateNotification(location: Location?): Notification {
-        Log.d(TAG, "generateNotification()")
+    private fun goForegroundOrStopSelf() {
+        lifecycleScope.launch {
+            // We may have been restarted by the system - check if we're still monitoring data
+            if (PreferenceUtils.getServiceLocationTrackingPref()) {
+                // Monitoring GNSS data
+                postOngoingActivityNotification()
+            } else {
+                // We have nothing to do, so we can stop.
+                stopSelf()
+            }
+        }
+    }
 
-        // Main steps for building a BIG_TEXT_STYLE notification:
-        //      0. Get data
-        //      1. Create Notification Channel for O+
-        //      2. Build the BIG_TEXT_STYLE
-        //      3. Set up Intent / Pending Intent for notification
-        //      4. Build and issue the notification
+    private fun postOngoingActivityNotification() {
+        if (!isForeground) {
+            isForeground = true
+            Log.d(TAG, "Posting ongoing activity notification")
 
-        // 0. Get data
-        val mainNotificationText = location?.toText() ?: getString(R.string.no_location_text)
-        val titleText = getString(R.string.app_name)
+            createNotificationChannel()
+            startForeground(NOTIFICATION_ID, buildNotification(currentLocation))
+        }
+    }
 
-        // 1. Create Notification Channel for O+ and beyond devices (26+).
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             val notificationChannel = NotificationChannel(
-                NOTIFICATION_CHANNEL_ID, titleText, NotificationManager.IMPORTANCE_LOW)
+                NOTIFICATION_CHANNEL,
+                getString(R.string.app_name),
+                NotificationManager.IMPORTANCE_LOW
+            )
 
             // Adds NotificationChannel to system. Attempting to create an
             // existing notification channel with its original values performs
             // no operation, so it's safe to perform the below sequence.
-            notificationManager.createNotificationChannel(notificationChannel)
+            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(notificationChannel)
         }
+    }
+
+    /*
+     * Generates a BIG_TEXT_STYLE Notification that represent latest location.
+     */
+    private fun buildNotification(location: Location?): Notification {
+        Log.d(TAG, "generateNotification()")
+        val mainNotificationText = location?.toText() ?: getString(R.string.no_location_text)
+        val titleText = getString(R.string.app_name)
 
         // 2. Build the BIG_TEXT_STYLE.
         val bigTextStyle = NotificationCompat.BigTextStyle()
@@ -258,7 +291,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         // 4. Build and issue the notification.
         // Notification Channel Id is ignored for Android pre O (26).
         val notificationCompatBuilder =
-            NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL_ID)
+            NotificationCompat.Builder(applicationContext, NOTIFICATION_CHANNEL)
 
         return notificationCompatBuilder
             .setStyle(bigTextStyle)
@@ -281,12 +314,20 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .build()
     }
 
+    private fun removeOngoingActivityNotification() {
+        if (isForeground) {
+            Log.d(TAG, "Removing ongoing activity notification")
+            isForeground = false
+            stopForeground(true)
+        }
+    }
+
     /**
      * Class used for the client Binder.  Since this service runs in the same process as its
      * clients, we don't need to deal with IPC.
      */
     inner class LocalBinder : Binder() {
-        internal val service: ForegroundOnlyLocationService
+        val service: ForegroundOnlyLocationService
             get() = this@ForegroundOnlyLocationService
     }
 
@@ -300,6 +341,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
         private const val NOTIFICATION_ID = 12345678
 
-        private const val NOTIFICATION_CHANNEL_ID = "gsptest_channel_01"
+        private const val NOTIFICATION_CHANNEL = "gsptest_channel_01"
+
+        private const val UNBIND_DELAY_MILLIS = 3_000L
     }
 }
