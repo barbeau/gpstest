@@ -272,7 +272,7 @@
 
     <!-- Output category -->
     <string name="pref_output_category_title">Logging and Output</string>
-    <string name="pref_output_category_summary">Log NMEA, raw measurements, or navigation messsages to files or Android Studio</string>
+    <string name="pref_output_category_summary">Log NMEA, raw measurements, or navigation messages to files or Android Studio</string>
 
     <!-- Android Monitor Output -->
     <string name="pref_as_output_category_title">Android Monitor Output</string>
@@ -286,7 +286,7 @@
     </string>
     <string name="pref_navigation_message_output_title">Navigation Messages</string>
     <string name="pref_as_navigation_message_output_summary">Logs GNSS navigation messages to Android
-        Studio (Android 7.0 and up)
+        Studio (Android 7.0 and up, and only available on some devices)
     </string>
 
     <!-- File Output -->
@@ -295,14 +295,14 @@
     <string name="pref_file_measurement_output_summary">Logs GNSS measurements to the CSV file (Android
         7.0 and up)
     </string>
-    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to the CSV file (Android 7.0 and up)
+    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to the CSV file (Android 7.0 and up, and only available on some devices)
     </string>
     <string name="pref_file_location_output_title">Location</string>
     <string name="pref_file_location_output_summary">Logs location fix details to the CSV file</string>
     <string name="pref_file_antenna_output_csv_title">Antenna Info (CSV)</string>
-    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. (Android 11 and up, and only available on some devices)</string>
     <string name="pref_file_antenna_output_json_title">Antenna Info (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. (Android 11 and up, and only available on some devices)</string>
 
     <string name="logging_to_new_file">Logging to new file: %1$s</string>
     <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>
@@ -352,7 +352,7 @@
         <b>Alt</b>
         - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
         <b>Alt (MSL)</b>
-        - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
+        - Meters above Mean Sea Level. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>E H Acc</b>
         - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>E H/V Acc</b>
@@ -368,9 +368,9 @@
         <b># Sats</b>
         - # satellites used in fix / # satellites in view (with valid signal strength values) / # satellites known to device. On dual-frequency devices, a satellite is shown as used if at least one frequency from that satellite is in use, a satellite is shown as in view if at least one signal has a valid signal strength value, and is shown as known to device if there is information about at least one signal from the satellite.\n&#8226;\u0020
         <b>PDOP</b>
-        - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Position (3D) dilution of precision. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>H/V DOP</b>
-        - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Horizontal / vertical dilution of precision. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>TTFF</b>
         - Time to first fix\n&#8226;\u0020
         <b>ID or PRN</b>
@@ -413,8 +413,11 @@
         &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
         &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
-        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
-        <b>Vertical error</b>
+        <b>*** Accuracy View ***</b>\n\n
+
+        See https://barbeau.medium.com/measuring-gnss-accuracy-on-android-devices-6824492a1389 for details. \n\n
+
+        &#8226;\u0020 <b>Vertical error</b>
         - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
 
         &#8226;\u0020Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n\n
