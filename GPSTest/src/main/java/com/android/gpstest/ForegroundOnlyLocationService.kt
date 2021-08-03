@@ -211,7 +211,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
 //            removeTask.addOnCompleteListener { task ->
 //                if (task.isSuccessful) {
 //                    Log.d(TAG, "Location Callback removed.")
-//                    stopSelf()
+                    stopSelf()
+                    isStarted = false
 //                } else {
 //                    Log.d(TAG, "Failed to remove Location Callback.")
 //                }
@@ -233,6 +234,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             } else {
                 // We have nothing to do, so we can stop.
                 stopSelf()
+                isStarted = false
             }
         }
     }
