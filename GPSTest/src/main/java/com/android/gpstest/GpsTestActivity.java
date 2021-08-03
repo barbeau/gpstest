@@ -86,6 +86,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -121,7 +122,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements LocationListener, SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "GpsTestActivity";
 
@@ -218,6 +219,8 @@ public class GpsTestActivity extends AppCompatActivity
 
     private LocationProvider mProvider;
 
+    private LocationListener locationListener;
+
     /**
      * Android M (6.0.1) and below status and listener
      */
@@ -284,7 +287,7 @@ public class GpsTestActivity extends AppCompatActivity
             service = binder.getService();
             isServiceBound = true;
 
-            service.subscribeToLocationUpdates();
+            gpsStart();
         }
 
         @Override
@@ -516,6 +519,28 @@ public class GpsTestActivity extends AppCompatActivity
             Log.e(TAG, "Unable to get GPS_PROVIDER");
             Toast.makeText(this, getString(R.string.gps_not_supported),
                     Toast.LENGTH_SHORT).show();
+        }
+        if (locationListener == null) {
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    mLastLocation = location;
+                    Log.d(TAG, "Location from " + this + location);
+
+                    updateGeomagneticField();
+
+                    // Reset the options menu to trigger updates to action bar menu items
+                    invalidateOptionsMenu();
+
+                    for (GpsTestListener listener : mGpsTestListeners) {
+                        listener.onLocationChanged(location);
+                    }
+                    if (mWriteLocationToFile &&
+                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
+                        csvFileLogger.onLocationChanged(location);
+                    }
+                }
+            };
         }
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -1008,15 +1033,19 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressLint("MissingPermission")
     private synchronized void gpsStart() {
+        if (service != null) {
+            service.subscribeToLocationUpdates();
+        }
+        showProgressBar();
+
         if (mLocationManager == null || mProvider == null) {
             return;
         }
 
         if (!mStarted) {
             mLocationManager
-                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
             mStarted = true;
-            showProgressBar();
 
             // Show Toast only if the user has set minTime or minDistance to something other than default values
             if (minTime != (long) (Double.parseDouble(getString(R.string.pref_gps_min_time_default_sec))
@@ -1037,11 +1066,15 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private synchronized void gpsStop() {
+        if (service != null) {
+            service.unsubscribeToLocationUpdates();
+        }
+
         if (mLocationManager == null) {
             return;
         }
         if (mStarted) {
-            mLocationManager.removeUpdates(this);
+            mLocationManager.removeUpdates(locationListener);
             mStarted = false;
 
             // Reset the options menu to trigger updates to action bar menu items
@@ -1576,7 +1609,7 @@ public class GpsTestActivity extends AppCompatActivity
             // If the GPS is started, reset the location listener with the new values
             if (mStarted && mProvider != null) {
                 mLocationManager
-                        .requestLocationUpdates(mProvider.getName(), minTime, minDistance, this);
+                        .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
                         String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
                         Toast.LENGTH_SHORT
@@ -1711,24 +1744,6 @@ public class GpsTestActivity extends AppCompatActivity
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        Log.d(TAG, "Location from " + this + location);
-
-        updateGeomagneticField();
-
-        // Reset the options menu to trigger updates to action bar menu items
-        invalidateOptionsMenu();
-
-        for (GpsTestListener listener : mGpsTestListeners) {
-            listener.onLocationChanged(location);
-        }
-        if (mWriteLocationToFile &&
-                PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-            csvFileLogger.onLocationChanged(location);
         }
     }
 
