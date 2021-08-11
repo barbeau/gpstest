@@ -17,6 +17,13 @@
 
 package com.android.gpstest;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static com.android.gpstest.model.ConstellationType.GNSS;
+import static com.android.gpstest.model.ConstellationType.SBAS;
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -83,13 +90,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static android.util.TypedValue.COMPLEX_UNIT_PX;
-import static com.android.gpstest.model.ConstellationType.GNSS;
-import static com.android.gpstest.model.ConstellationType.SBAS;
-import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
-import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
@@ -950,9 +950,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             String[] items = args.getStringArray(ITEMS);
             mChecks = args.getBooleanArray(CHECKS);
             if (savedInstanceState != null) {
-                mChecks = args.getBooleanArray(CHECKS);
+                mChecks = savedInstanceState.getBooleanArray(CHECKS);
             }
-
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             return builder.setTitle(R.string.filter_dialog_title)
