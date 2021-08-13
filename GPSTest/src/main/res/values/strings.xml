@@ -209,14 +209,10 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Crowd-source device capabilities</b>
-        - Optionally contribute your device capabilities to the public GPSTest Database (https://bit.ly/gpstest-device-database) via the Share screen. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
-        <b>Log antenna info</b>
-        - Support for logging GnssAntennaInfo to CSV and JSON files.\n&#8226;\u0020
-        <b>Add Finnish translation</b>
-        -  Thanks Ari Nygard!\n&#8226;\u0020
-        <b>Add Danish translation</b>
-        -  Thanks Claus Østergaard!\n&#8226;\u0020
+        <b>\"Force full GNSS measurements\" setting (Android 12 and up)</b>
+        - No more digging into the Android system developer mode. See https://bit.ly/gnss-force-full-measurements for details.\n&#8226;\u0020
+        <b>Better capture of device GNSS capabilities (Android 12 and up)</b>
+        - Uses GnssCapabilities API for GPSTest Database. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
