@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+** Copyright 2008-2021 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -258,6 +258,8 @@
         - No more digging into the Android system developer mode. See https://bit.ly/gnss-force-full-measurements for details.\n&#8226;\u0020
         <b>Better capture of device GNSS capabilities (Android 12 and up)</b>
         - Uses GnssCapabilities API for GPSTest Database. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
+        <b>Improved accessibility</b>
+        - Better labels for buttons and images that are announced if TalkBack is enabled.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
