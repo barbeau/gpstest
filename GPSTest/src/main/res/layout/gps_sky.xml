@@ -37,7 +37,8 @@
             android:layout_marginTop="15dp"
             app:srcCompat="@drawable/ic_baseline_lock_24"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible"
+            android:contentDescription="@string/lock"/>
 
         <com.android.gpstest.view.GpsSkyView
             android:id="@+id/sky_view"

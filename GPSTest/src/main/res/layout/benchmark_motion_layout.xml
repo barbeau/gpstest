@@ -94,5 +94,6 @@
         app:icon="@drawable/ic_qrcode_black_36dp"
         app:layout_constraintBottom_toBottomOf="@+id/save"
         app:layout_constraintEnd_toEndOf="@+id/ground_truth_alt"
-        app:layout_constraintTop_toTopOf="@+id/save" />
+        app:layout_constraintTop_toTopOf="@+id/save"
+        android:contentDescription="@string/qr_code_instructions_title"/>
 </androidx.constraintlayout.motion.widget.MotionLayout>

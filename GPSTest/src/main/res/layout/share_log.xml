@@ -55,7 +55,8 @@
         android:layout_marginEnd="@dimen/button_margin"
         app:icon="@drawable/ic_folder_black_36dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/log_share" />
+        app:layout_constraintEnd_toStartOf="@id/log_share"
+        android:contentDescription="@string/browse_folder"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/log_share"
@@ -65,5 +66,6 @@
         android:layout_marginEnd="@dimen/button_margin"
         app:icon="@drawable/ic_share_black_36dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/share"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

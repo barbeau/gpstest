@@ -45,6 +45,7 @@
     <string name="delete_aiding_data_failure">Device does not support deleting assist data.
     </string>
     <string name="gps_switch">Off/On</string>
+    <string name="gps_switch_content_description">GNSS Off/On</string>
     <string name="share">Share</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
@@ -125,7 +126,9 @@
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellites not available</string>
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satellites not available</string>
     <string name="menu_option_sort_by">Sort by</string>
+    <string name="menu_option_sort_by_content_description">Sort signals by</string>
     <string name="menu_option_filter">Filter</string>
+    <string name="menu_option_filter_content_description">Filter signals</string>
     <string name="filter_dialog_title">Show only these GNSS</string>
     <string name="filter_text">Showing %1$d of %2$d satellites</string>
     <string name="filter_showall">(show all)</string>
@@ -133,6 +136,21 @@
     <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+
+    <string name="gps_content_description">GPS</string>
+    <string name="glonass_content_description">GLONASS</string>
+    <string name="galileo_content_description">Galileo</string>
+    <string name="qzss_content_description">QZSS</string>
+    <string name="beidou_content_description">BeiDou</string>
+    <string name="irnss_content_description">IRNSS</string>
+
+    <string name="waas_content_description">WAAS</string>
+    <string name="egnos_content_description">EGNOS</string>
+    <string name="gagan_content_description">GAGAN</string>
+    <string name="msas_content_description">MSAS</string>
+    <string name="sdcm_content_description">SDCM</string>
+    <string name="snas_content_description">SNAS</string>
+    <string name="saccsa_content_description">SACCSA</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
@@ -182,6 +200,33 @@
     <string name="sky_legend_shape_not_in_view">Not in view of device</string>
     <string name="sky_legend_shape_in_view">In view</string>
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
+
+    <!-- Content descriptions -->
+    <string name="lock">lock</string>
+    <string name="usa_flag">USA flag</string>
+    <string name="russia_flag">Russia flag</string>
+    <string name="eu_flag">EU flag</string>
+    <string name="china_flag">China flag</string>
+    <string name="japan_flag">Japan flag</string>
+    <string name="india_flag">India flag</string>
+    <string name="icao_flag">ICAO flag</string>
+
+    <string name="circle">circle</string>
+    <string name="square">square</string>
+    <string name="triangle">triangle</string>
+    <string name="pentagon">pentagon</string>
+    <string name="hexagon">hexagon</string>
+    <string name="oval">oval</string>
+    <string name="diamond">diamond</string>
+    <string name="empty_shape">empty shape</string>
+    <string name="filled_shape_no_border">filled shape no border</string>
+    <string name="filled_shape_with_border">filled shape with border</string>
+
+    <string name="copy">copy</string>
+    <string name="open_in_geohack">open in geohack</string>
+    <string name="open_in_map_app">open in map app</string>
+    <string name="browse_folder">browse folder</string>
+    <string name="upload">upload</string>
 
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider or Location is disabled, no updates until it\'s enabled</string>

@@ -107,7 +107,8 @@
             android:layout_marginEnd="@dimen/button_margin"
             app:icon="@drawable/ic_content_copy_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/location_geohack" />
+            app:layout_constraintEnd_toStartOf="@id/location_geohack"
+            android:contentDescription="@string/copy"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_geohack"
@@ -117,7 +118,8 @@
             android:layout_marginEnd="@dimen/button_margin"
             app:icon="@drawable/ic_public_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/location_launch_app" />
+            app:layout_constraintEnd_toStartOf="@id/location_launch_app"
+            android:contentDescription="@string/open_in_geohack"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_launch_app"
@@ -127,7 +129,8 @@
             android:layout_marginEnd="@dimen/button_margin"
             app:icon="@drawable/ic_open_in_new_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/location_share" />
+            app:layout_constraintEnd_toStartOf="@id/location_share"
+            android:contentDescription="@string/open_in_map_app"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/location_share"
@@ -137,6 +140,7 @@
             android:layout_marginEnd="@dimen/button_margin"
             app:icon="@drawable/ic_share_black_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/share"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
