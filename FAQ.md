@@ -154,6 +154,10 @@ If you do launch your own app, I would ask that you do the following when publis
 
 You'll probably need to enable the hidden "Force full GNSS measurements" setting in the Android "Developer options" menu. See [this article](https://barbeau.medium.com/gnss-interrupted-the-hidden-android-setting-you-need-to-know-d812d28a3821) for details.
 
+## On Android 12, there is an option in the GPSTest Settings for "Force full GNSS measurements". How does this interact with the hidden system setting mentioned above?
+
+On Android 12, the Android system Developer Options setting and setting within GPSTest are logically OR'd together at the Android platform level. So if at least one of them is true (set to active), then "Force full GNSS measurements" is true (i.e., duty cycling is disabled). If both of them are false, then "Force full GNSS measurements" is false (i.e., duty cycling is active, which is the default device setting).
+
 ## Does GPSTest support RINEX output?
 
 No, but you can use the below tool to convert from the CSV log format that GPSTest supports to RINEX:
