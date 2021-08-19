@@ -166,7 +166,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         @Override
         public void onChanged(@Nullable final SatelliteMetadata satelliteMetadata) {
             if (satelliteMetadata != null) {
-                Set<GnssType> filter = PreferenceUtils.getGnssFilter();
                 mNumSats.setText(mRes.getString(R.string.gps_num_sats_value,
                         satelliteMetadata.getNumSatsUsed(),
                         satelliteMetadata.getNumSatsInView(),
