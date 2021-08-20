@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+** Copyright 2008-2021 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@
     <string name="delete_aiding_data_failure">Device does not support deleting assist data.
     </string>
     <string name="gps_switch">Off/On</string>
+    <string name="gps_switch_content_description">GNSS Off/On</string>
     <string name="share">Share</string>
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
@@ -125,7 +126,9 @@
     <string name="gnss_not_available">Global Navigation Satellite System (GNSS) satellites not available</string>
     <string name="sbas_not_available">Satellite-based Augmentation System (SBAS) satellites not available</string>
     <string name="menu_option_sort_by">Sort by</string>
+    <string name="menu_option_sort_by_content_description">Sort signals by</string>
     <string name="menu_option_filter">Filter</string>
+    <string name="menu_option_filter_content_description">Filter signals</string>
     <string name="filter_dialog_title">Show only these GNSS</string>
     <string name="filter_text">Showing %1$d of %2$d satellites</string>
     <string name="filter_showall">(show all)</string>
@@ -133,6 +136,21 @@
     <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+
+    <string name="gps_content_description">GPS</string>
+    <string name="glonass_content_description">GLONASS</string>
+    <string name="galileo_content_description">Galileo</string>
+    <string name="qzss_content_description">QZSS</string>
+    <string name="beidou_content_description">BeiDou</string>
+    <string name="irnss_content_description">IRNSS</string>
+
+    <string name="waas_content_description">WAAS</string>
+    <string name="egnos_content_description">EGNOS</string>
+    <string name="gagan_content_description">GAGAN</string>
+    <string name="msas_content_description">MSAS</string>
+    <string name="sdcm_content_description">SDCM</string>
+    <string name="snas_content_description">SNAS</string>
+    <string name="saccsa_content_description">SACCSA</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
@@ -183,6 +201,33 @@
     <string name="sky_legend_shape_in_view">In view</string>
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
+    <!-- Content descriptions -->
+    <string name="lock">lock</string>
+    <string name="usa_flag">USA flag</string>
+    <string name="russia_flag">Russia flag</string>
+    <string name="eu_flag">EU flag</string>
+    <string name="china_flag">China flag</string>
+    <string name="japan_flag">Japan flag</string>
+    <string name="india_flag">India flag</string>
+    <string name="icao_flag">ICAO flag</string>
+
+    <string name="circle">circle</string>
+    <string name="square">square</string>
+    <string name="triangle">triangle</string>
+    <string name="pentagon">pentagon</string>
+    <string name="hexagon">hexagon</string>
+    <string name="oval">oval</string>
+    <string name="diamond">diamond</string>
+    <string name="empty_shape">empty shape</string>
+    <string name="filled_shape_no_border">filled shape no border</string>
+    <string name="filled_shape_with_border">filled shape with border</string>
+
+    <string name="copy">copy</string>
+    <string name="open_in_geohack">open in geohack</string>
+    <string name="open_in_map_app">open in map app</string>
+    <string name="browse_folder">browse folder</string>
+    <string name="upload">upload</string>
+
     <!-- GNSS Status callbacks -->
     <string name="gnss_nav_msg_status_loc_disabled">GNSS provider or Location is disabled, no updates until it\'s enabled</string>
     <string name="gnss_nav_msg_status_not_supported">Device does not support tracking of GNSS Navigation Messages</string>
@@ -209,14 +254,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Crowd-source device capabilities</b>
-        - Optionally contribute your device capabilities to the public GPSTest Database (https://bit.ly/gpstest-device-database) via the Share screen. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
-        <b>Log antenna info</b>
-        - Support for logging GnssAntennaInfo to CSV and JSON files.\n&#8226;\u0020
-        <b>Add Finnish translation</b>
-        -  Thanks Ari Nygard!\n&#8226;\u0020
-        <b>Add Danish translation</b>
-        -  Thanks Claus Østergaard!\n&#8226;\u0020
+        <b>\"Force full GNSS measurements\" setting (Android 12 and up)</b>
+        - No more digging into the Android system developer mode. See https://bit.ly/gnss-force-full-measurements for details.\n&#8226;\u0020
+        <b>Better capture of device GNSS capabilities (Android 12 and up)</b>
+        - Uses GnssCapabilities API for GPSTest Database. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
+        <b>Improved accessibility</b>
+        - Better labels for buttons and images that are announced if TalkBack is enabled.\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
@@ -272,7 +315,7 @@
 
     <!-- Output category -->
     <string name="pref_output_category_title">Logging and Output</string>
-    <string name="pref_output_category_summary">Log NMEA, raw measurements, or navigation messsages to files or Android Studio</string>
+    <string name="pref_output_category_summary">Log NMEA, raw measurements, or navigation messages to files or Android Studio</string>
 
     <!-- Android Monitor Output -->
     <string name="pref_as_output_category_title">Android Monitor Output</string>
@@ -286,7 +329,7 @@
     </string>
     <string name="pref_navigation_message_output_title">Navigation Messages</string>
     <string name="pref_as_navigation_message_output_summary">Logs GNSS navigation messages to Android
-        Studio (Android 7.0 and up)
+        Studio (Android 7.0 and up, and only available on some devices)
     </string>
 
     <!-- File Output -->
@@ -295,14 +338,14 @@
     <string name="pref_file_measurement_output_summary">Logs GNSS measurements to the CSV file (Android
         7.0 and up)
     </string>
-    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to the CSV file (Android 7.0 and up)
+    <string name="pref_file_navigation_message_output_summary">Logs GNSS navigation messages to the CSV file (Android 7.0 and up, and only available on some devices)
     </string>
     <string name="pref_file_location_output_title">Location</string>
     <string name="pref_file_location_output_summary">Logs location fix details to the CSV file</string>
     <string name="pref_file_antenna_output_csv_title">Antenna Info (CSV)</string>
-    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. (Android 11 and up, and only available on some devices)</string>
     <string name="pref_file_antenna_output_json_title">Antenna Info (JSON)</string>
-    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. Only available on supported devices (Android 11 and up).</string>
+    <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. (Android 11 and up, and only available on some devices)</string>
 
     <string name="logging_to_new_file">Logging to new file: %1$s</string>
     <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>
@@ -357,7 +400,7 @@
         <b>Alt</b>
         - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
         <b>Alt (MSL)</b>
-        - Meters above Mean Sea Level (requires NMEA support)\n&#8226;\u0020
+        - Meters above Mean Sea Level. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>E H Acc</b>
         - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>E H/V Acc</b>
@@ -373,9 +416,9 @@
         <b># Sats</b>
         - # satellites used in fix / # satellites in view (with valid signal strength values) / # satellites known to device. On dual-frequency devices, a satellite is shown as used if at least one frequency from that satellite is in use, a satellite is shown as in view if at least one signal has a valid signal strength value, and is shown as known to device if there is information about at least one signal from the satellite.\n&#8226;\u0020
         <b>PDOP</b>
-        - Position (3D) dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Position (3D) dilution of precision. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>H/V DOP</b>
-        - Horizontal / vertical dilution of precision (requires NMEA support)\n&#8226;\u0020
+        - Horizontal / vertical dilution of precision. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
         <b>TTFF</b>
         - Time to first fix\n&#8226;\u0020
         <b>ID or PRN</b>
@@ -418,8 +461,11 @@
         &#8226;\u0020 Expected C/N0 range is 10 dB-Hz (red) to 45 dB-Hz (green) on Android 7.0 and higher. \n
         &#8226;\u0020 If there is no SNR or C/N0 value for a satellite (i.e., it is not in view of the device), it will have a transparent light gray color. \n\n
 
-        <b>*** Accuracy View ***</b>\n\n&#8226;\u0020
-        <b>Vertical error</b>
+        <b>*** Accuracy View ***</b>\n\n
+
+        See https://barbeau.medium.com/measuring-gnss-accuracy-on-android-devices-6824492a1389 for details. \n\n
+
+        &#8226;\u0020 <b>Vertical error</b>
         - Vertical error measurements, unlike horizontal error, can be positive or negative.  When displayed in the Accuracy view, vertical error, and average vertical error, are both calculated using the absolute value of the error measurement.\n\n
 
         &#8226;\u0020Set your real location quickly using QR codes. See https://bit.ly/gpstest-qr-codes for details.\n\n

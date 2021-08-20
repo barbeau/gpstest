@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project
+<!-- Copyright (C) 2008-2021 The Android Open Source Project, Sean J. Barbeau
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <group
-        android:id="@+id/gps_group">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/gps_group">
         <item
             android:id="@+id/share"
             android:title="@string/share"
-              android:icon="@drawable/social_share"
-              android:orderInCategory="10"
-              app:showAsAction="ifRoom|withText"/>
+            android:icon="@drawable/social_share"
+            android:orderInCategory="10"
+            app:showAsAction="ifRoom|withText"
+            android:contentDescription="@string/share" />
 
         <item
             android:id="@+id/gps_switch_item"
             android:title="@string/gps_switch"
             android:orderInCategory="11"
             app:showAsAction="always|withText"
-            app:actionLayout="@layout/gps_switch" />
+            app:actionLayout="@layout/gps_switch"
+            android:contentDescription="@string/gps_switch_content_description"/>
     </group>
 </menu>

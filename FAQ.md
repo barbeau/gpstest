@@ -54,7 +54,7 @@ Here's a nice table (Source: [Rohde & Schwarz](https://www.rohde-schwarz-usa.com
 
 ![image](https://user-images.githubusercontent.com/928045/42654926-53581aa0-85e8-11e8-91ab-cd8ab6553bb7.png)
 
-Another reference chart is [here](https://www.novatel.com/assets/Documents/Downloads/NovAtelChartH.pdf) from NovAtel, and [here](https://gssc.esa.int/navipedia/images/c/cf/GNSS_All_Signals.png) from Navipedia.
+Another reference chart is [here](https://gssc.esa.int/navipedia/images/c/cf/GNSS_All_Signals.png) from Navipedia.
 
 For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
@@ -153,6 +153,10 @@ If you do launch your own app, I would ask that you do the following when publis
 ## I recorded raw measurements data but when visualizing the data it looks all choppy and interrupted. What's up?
 
 You'll probably need to enable the hidden "Force full GNSS measurements" setting in the Android "Developer options" menu. See [this article](https://barbeau.medium.com/gnss-interrupted-the-hidden-android-setting-you-need-to-know-d812d28a3821) for details.
+
+## On Android 12, there is an option in the GPSTest Settings for "Force full GNSS measurements". How does this interact with the hidden system setting mentioned above?
+
+On Android 12, the Android system Developer Options setting and setting within GPSTest are logically OR'd together at the Android platform level. So if at least one of them is true (set to active), then "Force full GNSS measurements" is true (i.e., duty cycling is disabled). If both of them are false, then "Force full GNSS measurements" is false (i.e., duty cycling is active, which is the default device setting).
 
 ## Does GPSTest support RINEX output?
 

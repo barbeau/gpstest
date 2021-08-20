@@ -17,6 +17,13 @@
 
 package com.android.gpstest;
 
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.COMPLEX_UNIT_PX;
+import static com.android.gpstest.model.ConstellationType.GNSS;
+import static com.android.gpstest.model.ConstellationType.SBAS;
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -83,13 +90,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import static android.util.TypedValue.COMPLEX_UNIT_DIP;
-import static android.util.TypedValue.COMPLEX_UNIT_PX;
-import static com.android.gpstest.model.ConstellationType.GNSS;
-import static com.android.gpstest.model.ConstellationType.SBAS;
-import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
-import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
 
 public class GpsStatusFragment extends Fragment implements GpsTestListener {
 
@@ -166,7 +166,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         @Override
         public void onChanged(@Nullable final SatelliteMetadata satelliteMetadata) {
             if (satelliteMetadata != null) {
-                Set<GnssType> filter = PreferenceUtils.getGnssFilter();
                 mNumSats.setText(mRes.getString(R.string.gps_num_sats_value,
                         satelliteMetadata.getNumSatsUsed(),
                         satelliteMetadata.getNumSatsInView(),
@@ -950,9 +949,8 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             String[] items = args.getStringArray(ITEMS);
             mChecks = args.getBooleanArray(CHECKS);
             if (savedInstanceState != null) {
-                mChecks = args.getBooleanArray(CHECKS);
+                mChecks = savedInstanceState.getBooleanArray(CHECKS);
             }
-
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             return builder.setTitle(R.string.filter_dialog_title)
@@ -1128,32 +1126,39 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                     case NAVSTAR:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagUsa);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.gps_content_description));
                         break;
                     case GLONASS:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagRussia);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.glonass_content_description));
                         break;
                     case QZSS:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagJapan);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.qzss_content_description));
                         break;
                     case BEIDOU:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagChina);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.beidou_content_description));
                         break;
                     case GALILEO:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagEU);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.galileo_content_description));
                         break;
                     case IRNSS:
                         v.getFlag().setVisibility(View.VISIBLE);
                         v.getFlag().setImageDrawable(mFlagIndia);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.irnss_content_description));
                         break;
                     case SBAS:
                         setSbasFlag(sats.get(dataRow), v.getFlag());
                         break;
                     case UNKNOWN:
                         v.getFlag().setVisibility(View.INVISIBLE);
+                        v.getFlag().setContentDescription(Application.get().getString(R.string.unknown));
                         break;
                 }
                 if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
@@ -1211,34 +1216,42 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
                 case WAAS:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagUsa);
+                    flag.setContentDescription(Application.get().getString(R.string.waas_content_description));
                     break;
                 case EGNOS:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagEU);
+                    flag.setContentDescription(Application.get().getString(R.string.egnos_content_description));
                     break;
                 case GAGAN:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagIndia);
+                    flag.setContentDescription(Application.get().getString(R.string.gagan_content_description));
                     break;
                 case MSAS:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagJapan);
+                    flag.setContentDescription(Application.get().getString(R.string.msas_content_description));
                     break;
                 case SDCM:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagRussia);
+                    flag.setContentDescription(Application.get().getString(R.string.sdcm_content_description));
                     break;
                 case SNAS:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagChina);
+                    flag.setContentDescription(Application.get().getString(R.string.snas_content_description));
                     break;
                 case SACCSA:
                     flag.setVisibility(View.VISIBLE);
                     flag.setImageDrawable(mFlagICAO);
+                    flag.setContentDescription(Application.get().getString(R.string.saccsa_content_description));
                     break;
                 case UNKNOWN:
                 default:
                     flag.setVisibility(View.INVISIBLE);
+                    flag.setContentDescription(Application.get().getString(R.string.unknown));
             }
         }
     }

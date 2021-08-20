@@ -57,7 +57,8 @@
                     android:layout_marginTop="6dp"
                     card_view:srcCompat="@drawable/ic_baseline_lock_24"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible"
+                    android:contentDescription="@string/lock"/>
 
                 <HorizontalScrollView
                     android:id="@+id/status_location_scrollview"

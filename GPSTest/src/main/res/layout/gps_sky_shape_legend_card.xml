@@ -51,7 +51,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/circle" />
+                    app:srcCompat="@drawable/circle"
+                    android:contentDescription="@string/circle"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line1a"
@@ -69,7 +70,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_usa" />
+                    app:srcCompat="@drawable/ic_flag_usa"
+                    android:contentDescription="@string/usa_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line1b"
@@ -97,7 +99,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/square" />
+                    app:srcCompat="@drawable/square"
+                    android:contentDescription="@string/square"/>/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line2a"
@@ -115,7 +118,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_russia" />
+                    app:srcCompat="@drawable/ic_flag_russia"
+                    android:contentDescription="@string/russia_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line2b"
@@ -143,7 +147,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/triangle" />
+                    app:srcCompat="@drawable/triangle"
+                    android:contentDescription="@string/triangle"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line3a"
@@ -161,7 +166,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_european_union" />
+                    app:srcCompat="@drawable/ic_flag_european_union"
+                    android:contentDescription="@string/eu_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line3b"
@@ -189,7 +195,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/pentagon" />
+                    app:srcCompat="@drawable/pentagon"
+                    android:contentDescription="@string/pentagon"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line4a"
@@ -207,7 +214,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_china" />
+                    app:srcCompat="@drawable/ic_flag_china"
+                    android:contentDescription="@string/china_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line4b"
@@ -235,7 +243,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/hexagon" />
+                    app:srcCompat="@drawable/hexagon"
+                    android:contentDescription="@string/hexagon"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line5a"
@@ -253,7 +262,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_japan" />
+                    app:srcCompat="@drawable/ic_flag_japan"
+                    android:contentDescription="@string/japan_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line5b"
@@ -281,7 +291,8 @@
                     android:layout_height="@dimen/sky_legend_shape_oval_height"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/circle" />
+                    app:srcCompat="@drawable/circle"
+                    android:contentDescription="@string/oval"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line16a"
@@ -299,7 +310,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_india" />
+                    app:srcCompat="@drawable/ic_flag_india"
+                    android:contentDescription="@string/india_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line16b"
@@ -347,7 +359,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line7a"
@@ -365,7 +378,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_usa" />
+                    app:srcCompat="@drawable/ic_flag_usa"
+                    android:contentDescription="@string/usa_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line7b"
@@ -393,7 +407,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line8a"
@@ -411,7 +426,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_european_union" />
+                    app:srcCompat="@drawable/ic_flag_european_union"
+                    android:contentDescription="@string/eu_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line8b"
@@ -439,7 +455,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line6a"
@@ -457,7 +474,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_india" />
+                    app:srcCompat="@drawable/ic_flag_india"
+                    android:contentDescription="@string/india_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line6b"
@@ -485,7 +503,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line9a"
@@ -503,7 +522,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_japan" />
+                    app:srcCompat="@drawable/ic_flag_japan"
+                    android:contentDescription="@string/japan_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line9b"
@@ -531,7 +551,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line10a"
@@ -549,7 +570,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_russia" />
+                    app:srcCompat="@drawable/ic_flag_russia"
+                    android:contentDescription="@string/russia_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line10b"
@@ -577,7 +599,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line14a"
@@ -595,7 +618,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_china" />
+                    app:srcCompat="@drawable/ic_flag_china"
+                    android:contentDescription="@string/china_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line14b"
@@ -623,7 +647,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/diamond" />
+                    app:srcCompat="@drawable/diamond"
+                    android:contentDescription="@string/diamond"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line15a"
@@ -641,7 +666,8 @@
                     android:layout_margin="5dp"
                     android:background="@color/body_text_2_light"
                     android:padding="1dp"
-                    app:srcCompat="@drawable/ic_flag_icao" />
+                    app:srcCompat="@drawable/ic_flag_icao"
+                    android:contentDescription="@string/icao_flag"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line15b"
@@ -689,7 +715,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/circle_not_in_view" />
+                    app:srcCompat="@drawable/circle_not_in_view"
+                    android:contentDescription="@string/empty_shape"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line11a"
@@ -717,7 +744,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/circle_in_view" />
+                    app:srcCompat="@drawable/circle_in_view"
+                    android:contentDescription="@string/filled_shape_no_border"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line12a"
@@ -745,7 +773,8 @@
                     android:layout_height="@dimen/sky_legend_shape_size"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
-                    app:srcCompat="@drawable/circle_used_in_fix" />
+                    app:srcCompat="@drawable/circle_used_in_fix"
+                    android:contentDescription="@string/filled_shape_with_border"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line13a"

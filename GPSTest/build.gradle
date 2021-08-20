@@ -4,16 +4,15 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion "android-S"
-    buildToolsVersion '29.0.3'
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 29
         multiDexEnabled true
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
-        versionCode 18089
-        versionName "3.9.12"
+        versionCode 18091
+        versionName "3.9.14"
 
         vectorDrawables.useSupportLibrary = true
 
