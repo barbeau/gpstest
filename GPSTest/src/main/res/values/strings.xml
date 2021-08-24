@@ -68,7 +68,6 @@
     <string name="device">Device</string>
     <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (https://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
     <string name="upload_no_location">Please switch to the Status screen, wait for a GNSS fix, and then return to this screen to upload device capabilities.</string>
-    <string name="upload_gps_status_api">Please enable \"Use GNSS APIs\" in Settings and then return to this screen to upload device capabilities.</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
     <string name="upload_nothing_changed">Nothing changed since last upload. Please try again later.</string>
@@ -98,7 +97,6 @@
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
     <string name="gps_carrier_column_label">CF</string>
-    <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="gps_avg_cn0_label">Avg</string>
     <string name="gps_elevation_column_label">Elev</string>
@@ -294,11 +292,6 @@
     <string name="pref_gps_min_time_summary">Time between GNSS fixes, in seconds</string>
     <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
     <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
-
-    <string name="pref_use_gnss_apis_title">Use GNSS APIs</string>
-    <string name="pref_use_gnss_apis_summary">Available on Android 7.0 and higher. If unchecked,
-        will use the legacy GPSStatus.Listener.
-    </string>
 
     <string name="pref_gps_min_distance_title">Min. Distance</string>
     <string name="pref_gps_min_distance_summary">Minimum distance between GNSS fixes, in meters

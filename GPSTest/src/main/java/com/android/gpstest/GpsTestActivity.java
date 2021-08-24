@@ -551,7 +551,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
         SharedPreferences settings = Application.getPrefs();
 
-        addStatusListener();
+        addGnssStatusListener();
 
         addOrientationSensorListener();
 
@@ -643,15 +643,11 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         // Remove status and location listeners
-        removeStatusListener();
+        removeGnssStatusListener();
         removeNmeaListener();
         removeGnssAntennaListener();
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            removeNavMessageListener();
-        }
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            removeGnssMeasurementsListener();
-        }
+        removeNavMessageListener();
+        removeGnssMeasurementsListener();
         if (mStarted) {
             gpsStop();
             // If GPS was started, we want to resume it after orientation change
@@ -1083,17 +1079,6 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    private void addStatusListener() {
-        SharedPreferences settings = Application.getPrefs();
-        boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
-
-        if (SatelliteUtils.isGnssStatusListenerSupported() && useGnssApis) {
-            addGnssStatusListener();
-        } else {
-            addLegacyStatusListener();
-        }
-    }
-
     @SuppressLint({"MissingPermission", "NewApi"})
     private void addGnssAntennaListener() {
         if (!SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager)) {
@@ -1210,17 +1195,10 @@ public class GpsTestActivity extends AppCompatActivity
         if (mLocationManager == null || !mStarted) {
             return;
         }
-        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
-            // Record capabilities that aren't supported related to raw measurements
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-            return;
-        } else {
-            // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                checkMeasurementSupport();
-            }
+
+        // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            checkMeasurementSupport();
         }
         if (mGnssMeasurementsListener != null) {
             // Listener already registered
@@ -1332,80 +1310,21 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void addLegacyStatusListener() {
-        mLegacyStatusListener = new GpsStatus.Listener() {
-            @SuppressLint("MissingPermission")
-            @Override
-            public void onGpsStatusChanged(int event) {
-                mLegacyStatus = mLocationManager.getGpsStatus(mLegacyStatus);
-
-                switch (event) {
-                    case GpsStatus.GPS_EVENT_STARTED:
-                        break;
-                    case GpsStatus.GPS_EVENT_STOPPED:
-                        break;
-                    case GpsStatus.GPS_EVENT_FIRST_FIX:
-                        hideProgressBar();
-                        for (GpsTestListener listener : gpsTestListeners) {
-                            listener.onGnssFixAcquired();
-                        }
-                        break;
-                    case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                        checkHaveFix();
-                        break;
-                }
-
-                for (GpsTestListener listener : gpsTestListeners) {
-                    listener.onGpsStatusChanged(event, mLegacyStatus);
-                }
-            }
-        };
-        mLocationManager.addGpsStatusListener(mLegacyStatusListener);
-    }
-
-    private void removeStatusListener() {
-        SharedPreferences settings = Application.getPrefs();
-        boolean useGnssApis = settings.getBoolean(getString(R.string.pref_key_use_gnss_apis), true);
-
-        if (SatelliteUtils.isGnssStatusListenerSupported() && useGnssApis) {
-            removeGnssStatusListener();
-        } else {
-            removeLegacyStatusListener();
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.N)
     private void removeGnssStatusListener() {
         if (mLocationManager != null) {
             mLocationManager.unregisterGnssStatusCallback(mGnssStatusListener);
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void removeGnssMeasurementsListener() {
         if (mLocationManager != null && mGnssMeasurementsListener != null) {
             mLocationManager.unregisterGnssMeasurementsCallback(mGnssMeasurementsListener);
         }
     }
 
-    private void removeLegacyStatusListener() {
-        if (mLocationManager != null && mLegacyStatusListener != null) {
-            mLocationManager.removeGpsStatusListener(mLegacyStatusListener);
-        }
-    }
-
-    private void addNmeaListener() {
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            addNmeaListenerAndroidN();
-        } else {
-            addLegacyNmeaListener();
-        }
-    }
-
     @SuppressLint("MissingPermission")
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void addNmeaListenerAndroidN() {
+    private void addNmeaListener() {
         if (mOnNmeaMessageListener == null) {
             mOnNmeaMessageListener = (message, timestamp) -> {
                 for (GpsTestListener listener : gpsTestListeners) {
@@ -1425,52 +1344,20 @@ public class GpsTestActivity extends AppCompatActivity
         mLocationManager.addNmeaListener(mOnNmeaMessageListener);
     }
 
-    @SuppressLint("MissingPermission")
-    private void addLegacyNmeaListener() {
-        if (mLegacyNmeaListener == null) {
-            mLegacyNmeaListener = (timestamp, nmea) -> {
-                for (GpsTestListener listener : gpsTestListeners) {
-                    listener.onNmeaMessage(nmea, timestamp);
-                }
-                if (mWriteNmeaToAndroidMonitor) {
-                    writeNmeaToAndroidStudio(nmea, mWriteNmeaTimestampToAndroidMonitor ? timestamp : Long.MIN_VALUE);
-                }
-                if (mWriteNmeaToFile &&
-                        PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                    csvFileLogger.onNmeaReceived(timestamp, nmea);
-                }
-                PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_SUPPORTED);
-            };
-        }
-        mLocationManager.addNmeaListener(mLegacyNmeaListener);
-    }
-
     private void removeNmeaListener() {
-        if (SatelliteUtils.isGnssStatusListenerSupported()) {
-            if (mLocationManager != null && mOnNmeaMessageListener != null) {
-                mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
-            }
-        } else {
-            if (mLocationManager != null && mLegacyNmeaListener != null) {
-                mLocationManager.removeNmeaListener(mLegacyNmeaListener);
-            }
+        if (mLocationManager != null && mOnNmeaMessageListener != null) {
+            mLocationManager.removeNmeaListener(mOnNmeaMessageListener);
         }
     }
 
-    @SuppressLint("NewApi")
     private void addNavMessageListener() {
         if (mLocationManager == null) {
             return;
         }
-        if (!SatelliteUtils.isGnssStatusListenerSupported()) {
-            // Record capabilities that aren't supported related to nav messages
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
-            return;
-        } else {
-            // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                checkNavMessageSupport();
-            }
+
+        // Check explicit support on Android S and higher here - Android R and lower are checked in status callbacks
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            checkNavMessageSupport();
         }
         if (mGnssNavMessageListener != null) {
             // Listener already registered
@@ -1680,9 +1567,7 @@ public class GpsTestActivity extends AppCompatActivity
                         if (!mSwitch.isChecked() && mStarted) {
                             gpsStop();
                             // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
-                            if (SatelliteUtils.isGnssStatusListenerSupported()) {
-                                removeGnssMeasurementsListener();
-                            }
+                            removeGnssMeasurementsListener();
                         } else {
                             if (mSwitch.isChecked() && !mStarted) {
                                 gpsStart();

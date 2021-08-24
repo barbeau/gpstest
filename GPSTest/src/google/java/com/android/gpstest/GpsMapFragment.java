@@ -17,23 +17,37 @@
 
 package com.android.gpstest;
 
+import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
+import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_BEARING;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_ACCURACY;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_MAP;
+import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
+import static com.android.gpstest.map.MapConstants.CAMERA_MAX_TILT;
+import static com.android.gpstest.map.MapConstants.CAMERA_MIN_TILT;
+import static com.android.gpstest.map.MapConstants.DRAW_LINE_THRESHOLD_METERS;
+import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
+import static com.android.gpstest.map.MapConstants.MODE;
+import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
+import static com.android.gpstest.map.MapConstants.MODE_MAP;
+import static com.android.gpstest.map.MapConstants.MOVE_MAP_INTERACTION_THRESHOLD;
+import static com.android.gpstest.map.MapConstants.PREFERENCE_SHOWED_DIALOG;
+import static com.android.gpstest.map.MapConstants.TARGET_OFFSET_METERS;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 
 import com.android.gpstest.map.MapViewModelController;
@@ -57,26 +71,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
-import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_BEARING;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_ACCURACY;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_MAP;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
-import static com.android.gpstest.map.MapConstants.CAMERA_MAX_TILT;
-import static com.android.gpstest.map.MapConstants.CAMERA_MIN_TILT;
-import static com.android.gpstest.map.MapConstants.DRAW_LINE_THRESHOLD_METERS;
-import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
-import static com.android.gpstest.map.MapConstants.MODE;
-import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
-import static com.android.gpstest.map.MapConstants.MODE_MAP;
-import static com.android.gpstest.map.MapConstants.MOVE_MAP_INTERACTION_THRESHOLD;
-import static com.android.gpstest.map.MapConstants.PREFERENCE_SHOWED_DIALOG;
-import static com.android.gpstest.map.MapConstants.TARGET_OFFSET_METERS;
+import java.util.List;
 
 public class GpsMapFragment extends SupportMapFragment
         implements GpsTestListener, View.OnClickListener, LocationSource,
@@ -249,10 +246,6 @@ public class GpsMapFragment extends SupportMapFragment
     public void onProviderDisabled(String provider) {
     }
 
-    @Deprecated
-    public void onGpsStatusChanged(int event, GpsStatus status) {
-    }
-
     @Override
     public void onGnssFirstFix(int ttffMillis) {
 
@@ -266,7 +259,6 @@ public class GpsMapFragment extends SupportMapFragment
     public void onGnssFixLost() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
     }

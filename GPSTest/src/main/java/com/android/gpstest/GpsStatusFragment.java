@@ -34,8 +34,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsSatellite;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,7 +84,6 @@ import com.android.gpstest.util.UIUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -549,33 +546,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
     public void onProviderDisabled(String provider) {
     }
 
-    @Deprecated
-    public void onGpsStatusChanged(int event, GpsStatus status) {
-        switch (event) {
-            case GpsStatus.GPS_EVENT_STARTED:
-                setStarted(true);
-                break;
-
-            case GpsStatus.GPS_EVENT_STOPPED:
-                setStarted(false);
-                break;
-
-            case GpsStatus.GPS_EVENT_FIRST_FIX:
-                mTtff = UIUtils.getTtffString(status.getTimeToFirstFix());
-                if (mTTFFView != null) {
-                    mTTFFView.setText(mTtff);
-                }
-                if (mViewModel != null) {
-                    mViewModel.setGotFirstFix(true);
-                }
-                break;
-
-            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                updateLegacyStatus(status);
-                break;
-        }
-    }
-
     @Override
     public void onGnssFirstFix(int ttffMillis) {
         mTtff = UIUtils.getTtffString(ttffMillis);
@@ -704,55 +674,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
             }
             svCount++;
         }
-        mViewModel.setStatuses(mGnssStatus, mSbasStatus);
-
-        refreshViews();
-    }
-
-    @Deprecated
-    private void updateLegacyStatus(GpsStatus status) {
-        mUseLegacyGnssApi = true;
-        setStarted(true);
-        updateFixTime();
-
-        if (!UIUtils.isFragmentAttached(this)) {
-            // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
-            return;
-        }
-
-        mSnrCn0Title = mRes.getString(R.string.gps_snr_column_label);
-
-        Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
-
-        svCount = 0;
-        svVisibleCount = 0;
-        mGnssStatus.clear();
-        mSbasStatus.clear();
-        mViewModel.reset();
-        Set<GnssType> filter = PreferenceUtils.getGnssFilter();
-        while (satellites.hasNext()) {
-            GpsSatellite satellite = satellites.next();
-
-            SatelliteStatus satStatus = new SatelliteStatus(satellite.getPrn(), SatelliteUtils.getGnssType(satellite.getPrn()),
-                    satellite.getSnr(),
-                    satellite.hasAlmanac(),
-                    satellite.hasEphemeris(),
-                    satellite.usedInFix(),
-                    satellite.getElevation(),
-                    satellite.getAzimuth());
-
-            if (filter.isEmpty() || filter.contains(satStatus.getGnssType())) {
-                svVisibleCount++;
-                if (satStatus.getGnssType() == GnssType.SBAS) {
-                    satStatus.setSbasType(SatelliteUtils.getSbasConstellationTypeLegacy(satStatus.getSvid()));
-                    mSbasStatus.add(satStatus);
-                } else {
-                    mGnssStatus.add(satStatus);
-                }
-            }
-            svCount++;
-        }
-
         mViewModel.setStatuses(mGnssStatus, mSbasStatus);
 
         refreshViews();

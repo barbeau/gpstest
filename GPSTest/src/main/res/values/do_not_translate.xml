@@ -61,12 +61,6 @@
     <string name="sky_legend_cn0_middle_high">36</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
 
     <!-- Values and units display - Accuracy View -->
     <string name="benchmark_lat_long">%1$.7f</string>
@@ -96,7 +90,6 @@
     <string name="pref_key_auto_start_gps">auto_start_gps</string>
     <string name="pref_key_gps_min_time">gps_min_time</string>
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
-    <string name="pref_key_use_gnss_apis">use_gnss_apis</string>
 
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>

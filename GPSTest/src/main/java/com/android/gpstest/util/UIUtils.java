@@ -15,6 +15,14 @@
  */
 package com.android.gpstest.util;
 
+import static android.content.Intent.createChooser;
+import static android.content.pm.PackageManager.GET_META_DATA;
+import static android.text.TextUtils.isEmpty;
+import static com.android.gpstest.util.IOUtils.replaceNavstar;
+import static com.android.gpstest.util.IOUtils.trimEnds;
+import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
+import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_CN0;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
@@ -65,16 +73,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static android.content.Intent.createChooser;
-import static android.content.pm.PackageManager.GET_META_DATA;
-import static android.text.TextUtils.isEmpty;
-import static com.android.gpstest.util.IOUtils.replaceNavstar;
-import static com.android.gpstest.util.IOUtils.trimEnds;
-import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
-import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_SNR;
-import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_CN0;
-import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_SNR;
 
 /**
  * Utilities for processing user inteface elements
@@ -166,34 +164,6 @@ public class UIUtils {
         } else {
             return TimeUnit.MILLISECONDS.toSeconds(ttff) + " sec";
         }
-    }
-
-    /**
-     * Converts the provided SNR values to a left margin value (pixels) for the avg SNR indicator ImageViews in gps_sky_signal
-     * Left margin range for the SNR indicator ImageViews in gps_sky_signal is determined by dimens.xml
-     * cn0_meter_width (based on device screen width) and cn0_indicator_min_left_margin values.
-     *
-     * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
-     *
-     * @param snr signal-to-noise ratio of the satellite in dB (from GpsSatellite)
-     * @return left margin value in pixels for the SNR indicator ImageViews
-     */
-    public static int snrToIndicatorLeftMarginPx(float snr, int minIndicatorMarginPx, int maxIndicatorMarginPx) {
-        return (int) MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, minIndicatorMarginPx, maxIndicatorMarginPx);
-    }
-
-    /**
-     * Converts the provided SNR values to a left margin value (pixels) for the avg SNR TextViews in gps_sky_signal
-     * Left margin range for the SNR indicator TextView in gps_sky_signal is determined by dimens.xml
-     * cn0_meter_width (based on device screen width) and cn0_textview_min_left_margin values.
-     *
-     * This is effectively an affine transform - https://math.stackexchange.com/a/377174/554287.
-     *
-     * @param snr signal-to-noise ratio of the satellite in dB (from GpsSatellite)
-     * @return left margin value in dp for the SNR TextViews
-     */
-    public static int snrToTextViewLeftMarginPx(float snr, int minTextViewMarginPx, int maxTextViewMarginPx) {
-        return (int) MathUtils.mapToRange(snr, MIN_VALUE_SNR, MAX_VALUE_SNR, minTextViewMarginPx, maxTextViewMarginPx);
     }
 
     /**

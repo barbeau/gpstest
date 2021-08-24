@@ -22,9 +22,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -58,13 +55,11 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
     private List<ImageView> mLegendShapes;
 
     private TextView mLegendCn0Title, mLegendCn0Units, mLegendCn0LeftText, mLegendCn0LeftCenterText,
-            mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, mSnrCn0InViewAvgText, mSnrCn0UsedAvgText;
+            mLegendCn0CenterText, mLegendCn0RightCenterText, mLegendCn0RightText, cn0InViewAvgText, cn0UsedAvgText;
 
-    private ImageView mSnrCn0InViewAvg, mSnrCn0UsedAvg, lock, circleUsedInFix;
+    private ImageView cn0InViewAvg, cn0UsedAvg, lock, circleUsedInFix;
 
-    Animation mSnrCn0InViewAvgAnimation, mSnrCn0UsedAvgAnimation, mSnrCn0InViewAvgAnimationTextView, mSnrCn0UsedAvgAnimationTextView;
-
-    private boolean mUseLegacyGnssApi = false;
+    Animation cn0InViewAvgAnimation, cn0UsedAvgAnimation, cn0InViewAvgAnimationTextView, cn0UsedAvgAnimationTextView;
 
     // Default light theme values
     int usedCn0Background = R.drawable.cn0_round_corner_background_used;
@@ -79,8 +74,8 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
 
         initLegendViews(v);
 
-        mSnrCn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view);
-        mSnrCn0UsedAvg = v.findViewById(R.id.cn0_indicator_used);
+        cn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view);
+        cn0UsedAvg = v.findViewById(R.id.cn0_indicator_used);
         lock = v.findViewById(R.id.sky_lock);
         circleUsedInFix = v.findViewById(R.id.sky_legend_used_in_fix);
 
@@ -146,13 +141,11 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         showLostFix();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
         mSkyView.setGnssStatus(status);
-        mUseLegacyGnssApi = false;
-        updateSnrCn0AvgMeterText();
-        updateSnrCn0Avgs();
+        updatecn0AvgMeterText();
+        updateCn0Avgs();
     }
 
     @Override
@@ -168,30 +161,9 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
         mSkyView.setGnssMeasurementEvent(event);
-    }
-
-    @Deprecated
-    public void onGpsStatusChanged(int event, GpsStatus status) {
-        switch (event) {
-            case GpsStatus.GPS_EVENT_STARTED:
-                mSkyView.setStarted();
-                break;
-
-            case GpsStatus.GPS_EVENT_STOPPED:
-                mSkyView.setStopped();
-                break;
-
-            case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
-                mSkyView.setSats(status);
-                mUseLegacyGnssApi = true;
-                updateSnrCn0AvgMeterText();
-                updateSnrCn0Avgs();
-                break;
-        }
     }
 
     @Override
@@ -292,37 +264,25 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         mLegendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text);
         mLegendCn0RightCenterText = v.findViewById(R.id.sky_legend_cn0_right_center_text);
         mLegendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text);
-        mSnrCn0InViewAvgText = v.findViewById(R.id.cn0_text_in_view);
-        mSnrCn0UsedAvgText = v.findViewById(R.id.cn0_text_used);
+        cn0InViewAvgText = v.findViewById(R.id.cn0_text_in_view);
+        cn0UsedAvgText = v.findViewById(R.id.cn0_text_used);
     }
 
-    private void updateSnrCn0AvgMeterText() {
-        if (!mUseLegacyGnssApi || (mSkyView != null && mSkyView.isSnrBad())) {
-            // C/N0
-            mLegendCn0Title.setText(R.string.gps_cn0_column_label);
-            mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
-            mLegendCn0LeftText.setText(R.string.sky_legend_cn0_low);
-            mLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle);
-            mLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle);
-            mLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high);
-            mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
-        } else {
-            // SNR for Android 6.0 and lower (or if user unchecked "Use GNSS APIs" setting and values conform to SNR range)
-            mLegendCn0Title.setText(R.string.gps_snr_column_label);
-            mLegendCn0Units.setText(R.string.sky_legend_snr_units);
-            mLegendCn0LeftText.setText(R.string.sky_legend_snr_low);
-            mLegendCn0LeftCenterText.setText(R.string.sky_legend_snr_low_middle);
-            mLegendCn0CenterText.setText(R.string.sky_legend_snr_middle);
-            mLegendCn0RightCenterText.setText(R.string.sky_legend_snr_middle_high);
-            mLegendCn0RightText.setText(R.string.sky_legend_snr_high);
-        }
+    private void updatecn0AvgMeterText() {
+        mLegendCn0Title.setText(R.string.gps_cn0_column_label);
+        mLegendCn0Units.setText(R.string.sky_legend_cn0_units);
+        mLegendCn0LeftText.setText(R.string.sky_legend_cn0_low);
+        mLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle);
+        mLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle);
+        mLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high);
+        mLegendCn0RightText.setText(R.string.sky_legend_cn0_high);
     }
 
-    private void updateSnrCn0Avgs() {
+    private void updateCn0Avgs() {
         if (mSkyView == null) {
             return;
         }
-        // Based on the avg SNR or C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
+        // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         int meterWidthPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_meter_width)
                 - UIUtils.dpToPixels(Application.get(), 7.0f); // Reduce width for padding
         int minIndicatorMarginPx = (int) Application.get().getResources().getDimension(R.dimen.cn0_indicator_min_left_margin);
@@ -333,32 +293,18 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         // When both "in view" and "used" indicators and TextViews are shown, slide the "in view" TextView by this amount to the left to avoid overlap
         float TEXTVIEW_NON_OVERLAP_OFFSET_DP = -16.0f;
 
-        // Calculate normal offsets for avg in view satellite SNR or C/N0 value TextViews
+        // Calculate normal offsets for avg in view satellite C/N0 value TextViews
         Integer leftInViewTextViewMarginPx = null;
-        if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
-            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
-                // C/N0
-                leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
-                        minTextViewMarginPx, maxTextViewMarginPx);
-            } else {
-                // SNR
-                leftInViewTextViewMarginPx = UIUtils.snrToTextViewLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
-                        minTextViewMarginPx, maxTextViewMarginPx);
-            }
+        if (MathUtils.isValidFloat(mSkyView.getCn0InViewAvg())) {
+            leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getCn0InViewAvg(),
+                    minTextViewMarginPx, maxTextViewMarginPx);
         }
 
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         Integer leftUsedTextViewMarginPx = null;
-        if (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg())) {
-            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
-                // C/N0
-                leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
-                        minTextViewMarginPx, maxTextViewMarginPx);
-            } else {
-                // SNR
-                leftUsedTextViewMarginPx = UIUtils.snrToTextViewLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
-                        minTextViewMarginPx, maxTextViewMarginPx);
-            }
+        if (MathUtils.isValidFloat(mSkyView.getCn0UsedAvg())) {
+            leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(mSkyView.getCn0UsedAvg(),
+                    minTextViewMarginPx, maxTextViewMarginPx);
         }
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
@@ -375,12 +321,12 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         int pSides = UIUtils.dpToPixels(Application.get(), 7);
         int pTopBottom = UIUtils.dpToPixels(Application.get(), 4);
 
-        // Set avg SNR or C/N0 of satellites in view of device
-        if (MathUtils.isValidFloat(mSkyView.getSnrCn0InViewAvg())) {
-            mSnrCn0InViewAvgText.setText(String.format("%.1f", mSkyView.getSnrCn0InViewAvg()));
+        // Set avg C/N0 of satellites in view of device
+        if (MathUtils.isValidFloat(mSkyView.getCn0InViewAvg())) {
+            cn0InViewAvgText.setText(String.format("%.1f", mSkyView.getCn0InViewAvg()));
 
             // Set color of TextView
-            int color = mSkyView.getSatelliteColor(mSkyView.getSnrCn0InViewAvg());
+            int color = mSkyView.getSatelliteColor(mSkyView.getCn0InViewAvg());
             LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), R.drawable.cn0_round_corner_background_in_view);
 
             // Fill
@@ -391,115 +337,99 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
             GradientDrawable borderGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_in_view_border);
             borderGradient.setColor(color);
 
-            mSnrCn0InViewAvgText.setBackground(background);
+            cn0InViewAvgText.setBackground(background);
 
             // Set padding
-            mSnrCn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+            cn0InViewAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
 
             // Set color of indicator
-            mSnrCn0InViewAvg.setColorFilter(color);
+            cn0InViewAvg.setColorFilter(color);
 
             // Set position and visibility of TextView
-            if (mSnrCn0InViewAvgText.getVisibility() == View.VISIBLE) {
-                animateSnrCn0Indicator(mSnrCn0InViewAvgText, leftInViewTextViewMarginPx, mSnrCn0InViewAvgAnimationTextView);
+            if (cn0InViewAvgText.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(cn0InViewAvgText, leftInViewTextViewMarginPx, cn0InViewAvgAnimationTextView);
             } else {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSnrCn0InViewAvgText.getLayoutParams();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) cn0InViewAvgText.getLayoutParams();
                 lp.setMargins(leftInViewTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                mSnrCn0InViewAvgText.setLayoutParams(lp);
-                mSnrCn0InViewAvgText.setVisibility(View.VISIBLE);
+                cn0InViewAvgText.setLayoutParams(lp);
+                cn0InViewAvgText.setVisibility(View.VISIBLE);
             }
 
             // Set position and visibility of indicator
-            int leftIndicatorMarginPx;
-            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
-                // C/N0
-                leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
-                        minIndicatorMarginPx, maxIndicatorMarginPx);
-            } else {
-                // SNR
-                leftIndicatorMarginPx = UIUtils.snrToIndicatorLeftMarginPx(mSkyView.getSnrCn0InViewAvg(),
-                        minIndicatorMarginPx, maxIndicatorMarginPx);
-            }
+            int leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getCn0InViewAvg(),
+                    minIndicatorMarginPx, maxIndicatorMarginPx);
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-            if (mSnrCn0InViewAvg.getVisibility() == View.VISIBLE) {
-                animateSnrCn0Indicator(mSnrCn0InViewAvg, leftIndicatorMarginPx, mSnrCn0InViewAvgAnimation);
+            if (cn0InViewAvg.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(cn0InViewAvg, leftIndicatorMarginPx, cn0InViewAvgAnimation);
             } else {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSnrCn0InViewAvg.getLayoutParams();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) cn0InViewAvg.getLayoutParams();
                 lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                mSnrCn0InViewAvg.setLayoutParams(lp);
-                mSnrCn0InViewAvg.setVisibility(View.VISIBLE);
+                cn0InViewAvg.setLayoutParams(lp);
+                cn0InViewAvg.setVisibility(View.VISIBLE);
             }
         } else {
-            mSnrCn0InViewAvgText.setText("");
-            mSnrCn0InViewAvgText.setVisibility(View.INVISIBLE);
-            mSnrCn0InViewAvg.setVisibility(View.INVISIBLE);
+            cn0InViewAvgText.setText("");
+            cn0InViewAvgText.setVisibility(View.INVISIBLE);
+            cn0InViewAvg.setVisibility(View.INVISIBLE);
         }
 
-        // Set avg SNR or C/N0 of satellites used in fix
-        if (MathUtils.isValidFloat(mSkyView.getSnrCn0UsedAvg())) {
-            mSnrCn0UsedAvgText.setText(String.format("%.1f", mSkyView.getSnrCn0UsedAvg()));
+        // Set avg C/N0 of satellites used in fix
+        if (MathUtils.isValidFloat(mSkyView.getCn0UsedAvg())) {
+            cn0UsedAvgText.setText(String.format("%.1f", mSkyView.getCn0UsedAvg()));
             // Set color of TextView
-            int color = mSkyView.getSatelliteColor(mSkyView.getSnrCn0UsedAvg());
+            int color = mSkyView.getSatelliteColor(mSkyView.getCn0UsedAvg());
             LayerDrawable background = (LayerDrawable) ContextCompat.getDrawable(Application.get(), usedCn0Background);
 
             // Fill
             GradientDrawable backgroundGradient = (GradientDrawable) background.findDrawableByLayerId(R.id.cn0_avg_used_fill);
             backgroundGradient.setColor(color);
 
-            mSnrCn0UsedAvgText.setBackground(background);
+            cn0UsedAvgText.setBackground(background);
 
             // Set padding
-            mSnrCn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
+            cn0UsedAvgText.setPadding(pSides, pTopBottom, pSides, pTopBottom);
 
             // Set color of indicator
-            mSnrCn0UsedAvg.setColorFilter(usedCn0IndicatorColor);
+            cn0UsedAvg.setColorFilter(usedCn0IndicatorColor);
 
             // Set position and visibility of TextView
-            if (mSnrCn0UsedAvgText.getVisibility() == View.VISIBLE) {
-                animateSnrCn0Indicator(mSnrCn0UsedAvgText, leftUsedTextViewMarginPx, mSnrCn0UsedAvgAnimationTextView);
+            if (cn0UsedAvgText.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(cn0UsedAvgText, leftUsedTextViewMarginPx, cn0UsedAvgAnimationTextView);
             } else {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSnrCn0UsedAvgText.getLayoutParams();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) cn0UsedAvgText.getLayoutParams();
                 lp.setMargins(leftUsedTextViewMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                mSnrCn0UsedAvgText.setLayoutParams(lp);
-                mSnrCn0UsedAvgText.setVisibility(View.VISIBLE);
+                cn0UsedAvgText.setLayoutParams(lp);
+                cn0UsedAvgText.setVisibility(View.VISIBLE);
             }
 
             // Set position and visibility of indicator
-            int leftMarginPx;
-            if (!mSkyView.isUsingLegacyGpsApi() || mSkyView.isSnrBad()) {
-                // C/N0
-                leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
+            int leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(mSkyView.getCn0UsedAvg(),
                         minIndicatorMarginPx, maxIndicatorMarginPx);
-            } else {
-                // SNR
-                leftMarginPx = UIUtils.snrToIndicatorLeftMarginPx(mSkyView.getSnrCn0UsedAvg(),
-                        minIndicatorMarginPx, maxIndicatorMarginPx);
-            }
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-            if (mSnrCn0UsedAvg.getVisibility() == View.VISIBLE) {
-                animateSnrCn0Indicator(mSnrCn0UsedAvg, leftMarginPx, mSnrCn0UsedAvgAnimation);
+            if (cn0UsedAvg.getVisibility() == View.VISIBLE) {
+                animateCn0Indicator(cn0UsedAvg, leftMarginPx, cn0UsedAvgAnimation);
             } else {
-                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mSnrCn0UsedAvg.getLayoutParams();
+                RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) cn0UsedAvg.getLayoutParams();
                 lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin);
-                mSnrCn0UsedAvg.setLayoutParams(lp);
-                mSnrCn0UsedAvg.setVisibility(View.VISIBLE);
+                cn0UsedAvg.setLayoutParams(lp);
+                cn0UsedAvg.setVisibility(View.VISIBLE);
             }
         } else {
-            mSnrCn0UsedAvgText.setText("");
-            mSnrCn0UsedAvgText.setVisibility(View.INVISIBLE);
-            mSnrCn0UsedAvg.setVisibility(View.INVISIBLE);
+            cn0UsedAvgText.setText("");
+            cn0UsedAvgText.setVisibility(View.INVISIBLE);
+            cn0UsedAvg.setVisibility(View.INVISIBLE);
         }
     }
 
     /**
-     * Animates a SNR or C/N0 indicator view from it's current location to the provided left margin location (in pixels)
+     * Animates a C/N0 indicator view from it's current location to the provided left margin location (in pixels)
      * @param v view to animate
      * @param goalLeftMarginPx the new left margin for the view that the view should animate to in pixels
      * @param animation Animation to use for the animation
      */
-    private void animateSnrCn0Indicator(final View v, final int goalLeftMarginPx, Animation animation) {
+    private void animateCn0Indicator(final View v, final int goalLeftMarginPx, Animation animation) {
         if (v == null) {
             return;
         }

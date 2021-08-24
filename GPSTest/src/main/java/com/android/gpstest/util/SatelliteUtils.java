@@ -25,7 +25,6 @@ import static com.android.gpstest.model.GnssType.QZSS;
 import static com.android.gpstest.model.GnssType.SBAS;
 import static com.android.gpstest.model.GnssType.UNKNOWN;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -50,50 +49,6 @@ public class SatelliteUtils {
     private static final String TAG = "SatelliteUtils";
 
     /**
-     * Returns the Global Navigation Satellite System (GNSS) for a satellite given the PRN.  For
-     * Android 6.0.1 (API Level 23) and lower.  Android 7.0 and higher should use getGnssConstellationType()
-     *
-     * @param prn PRN value provided by the GpsSatellite.getPrn() method
-     * @return GnssType for the given PRN
-     */
-    @Deprecated
-    public static GnssType getGnssType(int prn) {
-        if (prn >= 1 && prn <= 32) {
-            return NAVSTAR;
-        } else if (prn == 33) {
-            return SBAS;
-        } else if (prn == 39) {
-            // See Issue #205
-            return SBAS;
-        } else if (prn >= 40 && prn <= 41) {
-            // See Issue #92
-            return SBAS;
-        } else if (prn == 46) {
-            return SBAS;
-        } else if (prn == 48) {
-            return SBAS;
-        } else if (prn == 49) {
-            return SBAS;
-        } else if (prn == 51) {
-            return SBAS;
-        } else if (prn >= 65 && prn <= 96) {
-            // See Issue #26 for details
-            return GLONASS;
-        } else if (prn >= 193 && prn <= 200) {
-            // See Issue #54 for details
-            return QZSS;
-        } else if (prn >= 201 && prn <= 235) {
-            // See Issue #54 for details
-            return BEIDOU;
-        } else if (prn >= 301 && prn <= 336) {
-            // See https://github.com/barbeau/gpstest/issues/58#issuecomment-252235124 for details
-            return GALILEO;
-        } else {
-            return UNKNOWN;
-        }
-    }
-
-    /**
      * Returns the Global Navigation Satellite System (GNSS) for a satellite given the GnssStatus
      * constellation type.  For Android 7.0 and higher.  This is basically a translation to our
      * own GnssType enumeration that we use for Android 6.0.1 and lower.  Note that
@@ -103,7 +58,6 @@ public class SatelliteUtils {
      *                              method
      * @return GnssType for the given GnssStatus constellation type
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static GnssType getGnssConstellationType(int gnssConstellationType) {
         switch (gnssConstellationType) {
             case GnssStatus.CONSTELLATION_GPS:
@@ -134,7 +88,6 @@ public class SatelliteUtils {
      * @param svid identification number provided by the GnssStatus.getSvid() method
      * @return SbasType for the given GnssStatus svid for GnssStatus.CONSTELLATION_SBAS satellites
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static SbasType getSbasConstellationType(int svid) {
         if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
             return SbasType.EGNOS;
@@ -154,18 +107,6 @@ public class SatelliteUtils {
     }
 
     /**
-     * Returns the SBAS constellation type for a satellite for Android 6.0.1 and lower
-     *
-     * @param svid PRN provided by the GpsSatellite.getPrn() method method
-     * @return SbasType for the given GpsSatellite.getPrn() method
-     */
-    @SuppressLint("NewApi")
-    @Deprecated
-    public static SbasType getSbasConstellationTypeLegacy(int svid) {
-        return getSbasConstellationType(svid + 87);
-    }
-
-    /**
      * Returns the satellite name for a satellite given the constellation type and svid.  For
      * Android 7.0 and higher.
      *
@@ -173,7 +114,6 @@ public class SatelliteUtils {
      * @param svid identification number
      * @return SatelliteName for the given constellation type and svid
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static SatelliteName getSatelliteName(GnssType gnssType, int svid) {
         // TODO - support more satellite names
         switch (gnssType) {
@@ -229,15 +169,6 @@ public class SatelliteUtils {
     }
 
     /**
-     * Returns true if the device supports the Gnss status listener, false if it does not
-     *
-     * @return true if the device supports the Gnss status listener, false if it does not
-     */
-    public static boolean isGnssStatusListenerSupported() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
-    }
-
-    /**
      * Returns true if the platform supports providing carrier frequencies for each satellite, false if it does not
      *
      * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
@@ -280,7 +211,6 @@ public class SatelliteUtils {
      * @param gnssMeasurement
      * @return true if carrier phase is supported for this GNSS measurement, false if it is not
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static boolean isCarrierPhaseSupported(GnssMeasurement gnssMeasurement) {
         return isAccumulatedDeltaRangeStateValid(gnssMeasurement.getAccumulatedDeltaRangeState())
                 && gnssMeasurement.getAccumulatedDeltaRangeMeters() != 0.0d;

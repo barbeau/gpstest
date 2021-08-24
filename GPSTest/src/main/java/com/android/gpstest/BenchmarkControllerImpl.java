@@ -26,7 +26,6 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -586,11 +585,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     @Override
     public void gpsStop() {
-
-    }
-
-    @Override
-    public void onGpsStatusChanged(int event, GpsStatus status) {
 
     }
 

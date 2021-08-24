@@ -21,7 +21,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -334,10 +333,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
     }
 
     public void onProviderDisabled(String provider) {
-    }
-
-    @Deprecated
-    public void onGpsStatusChanged(int event, GpsStatus status) {
     }
 
     @Override
