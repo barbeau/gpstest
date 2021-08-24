@@ -155,11 +155,6 @@ public class GpsTestActivity extends AppCompatActivity
     private boolean mUseDarkTheme = false;
 
     /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
      * Currently selected navigation drawer position (so we don't unnecessarily swap fragments
      * if the same item is selected).  Initialized to -1 so the initial callback from
      * NavigationDrawerFragment always instantiates the fragments
@@ -375,11 +370,14 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void setupNavigationDrawer() {
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        /**
+         * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
+         */
+        NavigationDrawerFragment navDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+        navDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
     }
@@ -502,6 +500,7 @@ public class GpsTestActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(
             int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mUserDeniedPermission = false;
@@ -1116,10 +1115,10 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressLint("MissingPermission")
     private void addGnssAntennaListener() {
-        if (mLocationManager == null) {
+        if (!SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager)) {
             return;
         }
-        if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener == null) {
+        if (gnssAntennaInfoListener == null) {
             // TODO - move this and other callbacks to background threads and only run on UI thread when updating UI
            gnssAntennaInfoListener = list -> {
                // Capture capabilities in preferences
@@ -1595,9 +1594,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressLint("MissingPermission")
     private void checkTimeAndDistance(SharedPreferences settings) {
-        double tempMinTimeDouble = Double
+        double minTimeDouble = Double
                 .parseDouble(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
-        long minTimeLong = (long) (tempMinTimeDouble * SECONDS_TO_MILLISECONDS);
+        long minTimeLong = (long) (minTimeDouble * SECONDS_TO_MILLISECONDS);
 
         if (minTime != minTimeLong ||
                 minDistance != Float.parseFloat(
@@ -1611,7 +1610,7 @@ public class GpsTestActivity extends AppCompatActivity
                 mLocationManager
                         .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
                 Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                        String.valueOf(tempMinTimeDouble), String.valueOf(minDistance)),
+                        String.valueOf(minTimeDouble), String.valueOf(minDistance)),
                         Toast.LENGTH_SHORT
                 ).show();
             }
