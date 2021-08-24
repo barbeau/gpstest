@@ -77,31 +77,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate()")
-
-        // TODO - get onLocationChanged() callback and pass to Room
-
-//        locationCallback = object : LocationCallback() {
-//            override fun onLocationResult(locationResult: LocationResult) {
-//                super.onLocationResult(locationResult)
-//
-//                currentLocation = locationResult.lastLocation
-//
-//                // Notify our Activity that a new location was observed by adding to repository
-//                currentLocation.toLocation()?.let {
-//                    lifecycleScope.launch {
-//                        repository.updateLocation(it)
-//                    }
-//                }
-//
-//                // Updates notification content if this service is running as a foreground
-//                // service.
-//                if (serviceRunningInForeground) {
-//                    notificationManager.notify(
-//                        NOTIFICATION_ID,
-//                        generateNotification(currentLocation))
-//                }
-//            }
-//        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
