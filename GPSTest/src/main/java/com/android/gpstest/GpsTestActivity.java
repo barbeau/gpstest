@@ -41,7 +41,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -173,13 +172,13 @@ public class GpsTestActivity extends AppCompatActivity
     private GpsMapFragment mAccuracyFragment;
 
     // Holds sensor data
-    private static float[] mRotationMatrix = new float[16];
+    private static final float[] mRotationMatrix = new float[16];
 
-    private static float[] mRemappedMatrix = new float[16];
+    private static final float[] mRemappedMatrix = new float[16];
 
-    private static float[] mValues = new float[3];
+    private static final float[] mValues = new float[3];
 
-    private static float[] mTruncatedRotationVector = new float[4];
+    private static final float[] mTruncatedRotationVector = new float[4];
 
     private static boolean mTruncateVector = false;
 
@@ -241,7 +240,7 @@ public class GpsTestActivity extends AppCompatActivity
     private GnssAntennaInfo.Listener gnssAntennaInfoListener;
 
     // Listeners for Fragments
-    private List<GpsTestListener> mGpsTestListeners = new ArrayList<>();
+    private final List<GpsTestListener> gpsTestListeners = new ArrayList<>();
 
     private Location mLastLocation;
 
@@ -322,7 +321,7 @@ public class GpsTestActivity extends AppCompatActivity
 //        }
 
         mBenchmarkController = new BenchmarkControllerImpl(this, findViewById(R.id.mainlayout));
-        mGpsTestListeners.add(mBenchmarkController);
+        gpsTestListeners.add(mBenchmarkController);
 
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
         if (mAccuracyFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_ACCURACY) {
@@ -370,9 +369,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private void setupNavigationDrawer() {
-        /**
-         * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-         */
+        // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
         NavigationDrawerFragment navDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -499,7 +496,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     public void onRequestPermissionsResult(
-            int requestCode, String[] permissions, int[] grantResults) {
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -531,7 +528,7 @@ public class GpsTestActivity extends AppCompatActivity
                     // Reset the options menu to trigger updates to action bar menu items
                     invalidateOptionsMenu();
 
-                    for (GpsTestListener listener : mGpsTestListeners) {
+                    for (GpsTestListener listener : gpsTestListeners) {
                         listener.onLocationChanged(location);
                     }
                     if (mWriteLocationToFile &&
@@ -784,9 +781,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void showStatusFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        /**
-         * Hide everything that shouldn't be shown
-         */
+        // Hide everything that shouldn't be shown
         hideMapFragment();
         hideSkyFragment();
         hideAccuracyFragment();
@@ -794,9 +789,7 @@ public class GpsTestActivity extends AppCompatActivity
             mBenchmarkController.hide();
         }
 
-        /**
-         * Show fragment (we use show instead of replace to keep the map state)
-         */
+        // Show fragment (we use show instead of replace to keep the map state)
         if (mStatusFragment == null) {
             // First check to see if an instance of fragment already exists
             mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
@@ -825,18 +818,15 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void showMapFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        /**
-         * Hide everything that shouldn't be shown
-         */
+        // Hide everything that shouldn't be shown
         hideStatusFragment();
         hideSkyFragment();
         hideAccuracyFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
-        /**
-         * Show fragment (we use show instead of replace to keep the map state)
-         */
+
+        // Show fragment (we use show instead of replace to keep the map state)
         if (mMapFragment == null) {
             // First check to see if an instance of fragment already exists
             mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
@@ -868,19 +858,14 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void showSkyFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        /**
-         * Hide everything that shouldn't be shown
-         */
+        // Hide everything that shouldn't be shown
         hideStatusFragment();
         hideMapFragment();
         hideAccuracyFragment();
         if (mBenchmarkController != null) {
             mBenchmarkController.hide();
         }
-
-        /**
-         * Show fragment (we use show instead of replace to keep the map state)
-         */
+        // Show fragment (we use show instead of replace to keep the map state)
         if (mSkyFragment == null) {
             // First check to see if an instance of fragment already exists
             mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
@@ -909,15 +894,11 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void showAccuracyFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        /**
-         * Hide everything that shouldn't be shown
-         */
+        // Hide everything that shouldn't be shown
         hideStatusFragment();
         hideMapFragment();
         hideSkyFragment();
-        /**
-         * Show fragment (we use show instead of replace to keep the map state)
-         */
+        // Show fragment (we use show instead of replace to keep the map state)
         if (mAccuracyFragment == null) {
             // First check to see if an instance of fragment already exists
             mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
@@ -1027,7 +1008,7 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     void addListener(GpsTestListener listener) {
-        mGpsTestListeners.add(listener);
+        gpsTestListeners.add(listener);
     }
 
     @SuppressLint("MissingPermission")
@@ -1059,7 +1040,7 @@ public class GpsTestActivity extends AppCompatActivity
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu();
         }
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.gpsStart();
         }
     }
@@ -1082,7 +1063,7 @@ public class GpsTestActivity extends AppCompatActivity
                 progressBar.setVisibility(View.GONE);
             }
         }
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.gpsStop();
         }
     }
@@ -1113,7 +1094,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint({"MissingPermission", "NewApi"})
     private void addGnssAntennaListener() {
         if (!SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager)) {
             return;
@@ -1147,7 +1128,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     @SuppressLint("NewApi")
     private void removeGnssAntennaListener() {
-        if (mLocationManager != null && SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
+        if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
             mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);
         }
     }
@@ -1158,14 +1139,14 @@ public class GpsTestActivity extends AppCompatActivity
         mGnssStatusListener = new GnssStatus.Callback() {
             @Override
             public void onStarted() {
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssStarted();
                 }
             }
 
             @Override
             public void onStopped() {
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssStopped();
                 }
             }
@@ -1173,7 +1154,7 @@ public class GpsTestActivity extends AppCompatActivity
             @Override
             public void onFirstFix(int ttffMillis) {
                 hideProgressBar();
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssFirstFix(ttffMillis);
                     listener.onGnssFixAcquired();
                 }
@@ -1185,7 +1166,7 @@ public class GpsTestActivity extends AppCompatActivity
 
                 checkHaveFix();
 
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onSatelliteStatusChanged(mGnssStatus);
                 }
             }
@@ -1199,13 +1180,13 @@ public class GpsTestActivity extends AppCompatActivity
                     TimeUnit.MILLISECONDS.toNanos(minTime * 2)) {
                 // We lost the GNSS fix for two requested update intervals - show the progress bar while we try to obtain another one
                 showProgressBar();
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssFixLost();
                 }
             } else {
                 // We have a GNSS fix - hide the progress bar
                 hideProgressBar();
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssFixAcquired();
                 }
             }
@@ -1248,7 +1229,7 @@ public class GpsTestActivity extends AppCompatActivity
         mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
             @Override
             public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGnssMeasurementsReceived(event);
                 }
 
@@ -1366,7 +1347,7 @@ public class GpsTestActivity extends AppCompatActivity
                         break;
                     case GpsStatus.GPS_EVENT_FIRST_FIX:
                         hideProgressBar();
-                        for (GpsTestListener listener : mGpsTestListeners) {
+                        for (GpsTestListener listener : gpsTestListeners) {
                             listener.onGnssFixAcquired();
                         }
                         break;
@@ -1375,7 +1356,7 @@ public class GpsTestActivity extends AppCompatActivity
                         break;
                 }
 
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onGpsStatusChanged(event, mLegacyStatus);
                 }
             }
@@ -1427,7 +1408,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void addNmeaListenerAndroidN() {
         if (mOnNmeaMessageListener == null) {
             mOnNmeaMessageListener = (message, timestamp) -> {
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onNmeaMessage(message, timestamp);
                 }
                 if (mWriteNmeaToAndroidMonitor) {
@@ -1448,7 +1429,7 @@ public class GpsTestActivity extends AppCompatActivity
     private void addLegacyNmeaListener() {
         if (mLegacyNmeaListener == null) {
             mLegacyNmeaListener = (timestamp, nmea) -> {
-                for (GpsTestListener listener : mGpsTestListeners) {
+                for (GpsTestListener listener : gpsTestListeners) {
                     listener.onNmeaMessage(nmea, timestamp);
                 }
                 if (mWriteNmeaToAndroidMonitor) {
@@ -1619,11 +1600,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private void checkKeepScreenOn(SharedPreferences settings) {
 //        if (!mIsLargeScreen) {
-            if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-                mToolbar.setKeepScreenOn(true);
-            } else {
-                mToolbar.setKeepScreenOn(false);
-            }
+        mToolbar.setKeepScreenOn(settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true));
 //        } else {
 //            // TODO - After we fix large screen devices in #122, we can delete the below block and
 //            // use the above block with mToolbar.setKeepScreenOn() for all screen sizes
@@ -1747,19 +1724,19 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.onStatusChanged(provider, status, extras);
         }
     }
 
     public void onProviderEnabled(String provider) {
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.onProviderEnabled(provider);
         }
     }
 
     public void onProviderDisabled(String provider) {
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.onProviderDisabled(provider);
         }
     }
@@ -1842,7 +1819,7 @@ public class GpsTestActivity extends AppCompatActivity
             orientation = MathUtils.mod((float) orientation, 360.0f);
         }
 
-        for (GpsTestListener listener : mGpsTestListeners) {
+        for (GpsTestListener listener : gpsTestListeners) {
             listener.onOrientationChanged(orientation, tilt);
         }
     }
@@ -1921,11 +1898,7 @@ public class GpsTestActivity extends AppCompatActivity
         builder.setIcon(R.mipmap.ic_launcher);
         builder.setView(textView);
         builder.setNeutralButton(R.string.main_help_close,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dismissDialog(WHATSNEW_DIALOG);
-                    }
-                }
+                (dialog, which) -> dismissDialog(WHATSNEW_DIALOG)
         );
         return builder.create();
     }
@@ -1936,23 +1909,20 @@ public class GpsTestActivity extends AppCompatActivity
         builder.setTitle(R.string.title_help);
         int options = R.array.main_help_options;
         builder.setItems(options,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                showDialog(WHATSNEW_DIALOG);
-                                break;
-                            case 1:
-                                startActivity(new Intent(GpsTestActivity.getInstance(), HelpActivity.class));
-                                break;
-                        }
+                (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            showDialog(WHATSNEW_DIALOG);
+                            break;
+                        case 1:
+                            startActivity(new Intent(GpsTestActivity.getInstance(), HelpActivity.class));
+                            break;
                     }
                 }
         );
         return builder.create();
     }
 
-    @SuppressWarnings("deprecation")
     private Dialog createClearAssistWarningDialog() {
         View view = getLayoutInflater().inflate(R.layout.clear_assist_warning, null);
         CheckBox neverShowDialog = view.findViewById(R.id.clear_assist_never_ask_again);
@@ -1974,19 +1944,11 @@ public class GpsTestActivity extends AppCompatActivity
                 .setCancelable(false)
                 .setView(view)
                 .setPositiveButton(R.string.yes,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                deleteAidingData();
-                            }
-                        }
+                        (dialog, which) -> deleteAidingData()
                 )
                 .setNegativeButton(R.string.no,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // No-op
-                            }
+                        (dialog, which) -> {
+                            // No-op
                         }
                 );
         return builder.create();
@@ -2004,23 +1966,17 @@ public class GpsTestActivity extends AppCompatActivity
                 .setMessage(R.string.text_location_permission)
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Request permissions from the user
-                                ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
-                            }
+                        (dialog, which) -> {
+                            // Request permissions from the user
+                            ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
                         }
                 )
             .setNegativeButton(R.string.exit,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    (dialog, which) -> {
                         // Exit app
                         finish();
                     }
-                }
-        );
+            );
         builder.create().show();
     }
 }
