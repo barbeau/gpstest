@@ -56,14 +56,12 @@ class SharedLocationManager constructor(
 
     @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
-    private val _locationUpdates = callbackFlow<Location> {
-        val locationManager = context.getSystemService(android.content.Context.LOCATION_SERVICE) as LocationManager
-        val callback = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                Log.d(TAG, "New location: ${location.toText()}")
-                // Send the new location to the Flow observers
-                trySend(location)
-            }
+    private val _locationUpdates = callbackFlow {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val callback = LocationListener { location ->
+            Log.d(TAG, "New location: ${location.toText()}")
+            // Send the new location to the Flow observers
+            trySend(location)
         }
 
         if (!context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
