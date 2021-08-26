@@ -18,20 +18,20 @@ package com.android.gpstest.data
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.GnssStatus
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
+import android.os.SystemClock
 import android.util.Log
-import com.android.gpstest.Application
-import com.android.gpstest.R
+import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.hasPermission
-import com.android.gpstest.util.toText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import java.util.concurrent.TimeUnit
 
-private const val TAG = "SharedLocationManager"
+private const val TAG = "SharedGnssStatusManager"
 
 /**
  * Wraps the LocationManager in callbackFlow
@@ -43,51 +43,64 @@ class SharedGnssStatusManager constructor(
     private val context: Context,
     externalScope: CoroutineScope
 ) {
-    private val SECONDS_TO_MILLISECONDS = 1000
+    // State of GnssStatus
+    private val _statusState = MutableStateFlow<GnssStatusState>(GnssStatusState.Stopped)
+    val statusState: StateFlow<GnssStatusState> = _statusState
 
-    private val _receivingLocationUpdates: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
+    // State of ongoing GNSS fix
+    private val _fixState = MutableStateFlow<FixState>(FixState.NotAcquired)
+    val fixState: StateFlow<FixState> = _fixState
 
-    /**
-     * Status of location updates, i.e., whether the app is actively subscribed to location changes.
-     */
-    val receivingLocationUpdates: StateFlow<Boolean>
-        get() = _receivingLocationUpdates
+    // State of first GNSS fix
+    private val _firstFixState = MutableStateFlow<FirstFixState>(FirstFixState.NotAcquired)
+    val firstFixState: StateFlow<FirstFixState> = _firstFixState
 
     @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
-    private val _locationUpdates = callbackFlow {
+    private val _gnssStatusUpdates = callbackFlow {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val callback = LocationListener { location ->
-            Log.d(TAG, "New location: ${location.toText()}")
-            // Send the new location to the Flow observers
-            trySend(location)
+        val callback: GnssStatus.Callback = object : GnssStatus.Callback() {
+            override fun onStarted() {
+                _statusState.value = GnssStatusState.Started
+            }
+
+            override fun onStopped() {
+                _statusState.value = GnssStatusState.Stopped
+            }
+
+            override fun onFirstFix(ttffMillis: Int) {
+                _firstFixState.value = FirstFixState.Acquired(ttffMillis)
+                _fixState.value = FixState.Acquired
+            }
+
+            override fun onSatelliteStatusChanged(status: GnssStatus) {
+                val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                if (location != null) {
+                    _fixState.value = checkHaveFix(location)
+                } else {
+                    _fixState.value = FixState.NotAcquired
+                }
+                Log.d(TAG, "New gnssStatus: ${status.toString()}")
+                // Send the new location to the Flow observers
+                trySend(status)
+            }
         }
 
         if (!context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
             !context.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) close()
 
-        Log.d(TAG, "Starting location updates")
-        _receivingLocationUpdates.value = true
-
-        val minTimeDouble: Double =
-            Application.getPrefs().getString(context.getString(R.string.pref_key_gps_min_time), "1")
-                ?.toDouble() ?: 1.0
-        val minTimeMillis = (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
-        val minDistance = Application.getPrefs().getString(context.getString(R.string.pref_key_gps_min_distance), "0")
-            ?.toFloat() ?: 1.0f
+        Log.d(TAG, "Starting GnssStatus updates")
 
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, callback)
+            locationManager.registerGnssStatusCallback(callback)
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }
 
         awaitClose {
-            Log.d(TAG, "Stopping location updates")
-            _receivingLocationUpdates.value = false
-            locationManager.removeUpdates(callback) // clean up when Flow collection ends
+            Log.d(TAG, "Stopping GnssStatus updates")
+            locationManager.unregisterGnssStatusCallback(callback) // clean up when Flow collection ends
         }
     }.shareIn(
         externalScope,
@@ -96,7 +109,40 @@ class SharedGnssStatusManager constructor(
     )
 
     @ExperimentalCoroutinesApi
-    fun locationFlow(): Flow<Location> {
-        return _locationUpdates
+    fun statusFlow(): Flow<GnssStatus> {
+        return _gnssStatusUpdates
     }
+}
+
+private fun checkHaveFix(location: Location): FixState {
+    if (SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos >
+        TimeUnit.MILLISECONDS.toNanos(SharedPreferenceUtil.getMinTimeMillis() * 2)
+    ) {
+        // We lost the GNSS fix for two requested update intervals - notify
+        return FixState.NotAcquired
+    } else {
+        // We have a GNSS fix - notify
+        return FixState.Acquired
+    }
+}
+
+// Started/stopped states
+sealed class GnssStatusState {
+    object Started: GnssStatusState()
+    object Stopped: GnssStatusState()
+}
+
+// GNSS ongoing fix acquired states
+sealed class FixState {
+    object Acquired: FixState()
+    object NotAcquired: FixState()
+}
+
+// GNSS first fix state
+sealed class FirstFixState {
+    /**
+     * [ttffMillis] the time from start of GNSS to first fix in milliseconds.
+     */
+    data class Acquired(val ttffMillis: Int): FirstFixState()
+    object NotAcquired: FirstFixState()
 }

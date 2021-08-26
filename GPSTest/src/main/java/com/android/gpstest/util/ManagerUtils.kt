@@ -21,6 +21,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import com.android.gpstest.Application
+import com.android.gpstest.R
 
 /**
  * Returns the `location` object as a human readable string.
@@ -58,6 +59,7 @@ fun Context.hasPermission(permission: String): Boolean {
 internal object SharedPreferenceUtil {
 
     const val KEY_FOREGROUND_ENABLED = "tracking_foreground_location"
+    const val SECONDS_TO_MILLISECONDS = 1000
 
     /**
      * Returns true if requesting location updates, otherwise returns false.
@@ -75,4 +77,22 @@ internal object SharedPreferenceUtil {
         Application.getPrefs().edit {
             putBoolean(KEY_FOREGROUND_ENABLED, requestingLocationUpdates)
         }
+
+    /**
+     * Returns the minTime between location updates used for the LocationListener in milliseconds
+     */
+    fun getMinTimeMillis(): Long {
+        val minTimeDouble: Double =
+            Application.getPrefs().getString(Application.get().getString(R.string.pref_key_gps_min_time), "1")
+                ?.toDouble() ?: 1.0
+        return (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
+    }
+
+    /**
+     * Returns the minDistance between location updates used for the LocationLitsener in meters
+     */
+    fun getMinDistance(): Float {
+        return Application.getPrefs().getString(Application.get().getString(R.string.pref_key_gps_min_distance), "0")
+            ?.toFloat() ?: 0.0f
+    }
 }

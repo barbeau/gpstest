@@ -1121,7 +1121,7 @@ public class GpsTestActivity extends AppCompatActivity
     @SuppressLint("MissingPermission")
     @RequiresApi(Build.VERSION_CODES.N)
     private void addGnssStatusListener() {
-        mGnssStatusListener = new GnssStatus.Callback() {
+        GnssStatus.Callback mGnssStatusListener = new GnssStatus.Callback() {
             @Override
             public void onStarted() {
                 for (GpsTestListener listener : gpsTestListeners) {

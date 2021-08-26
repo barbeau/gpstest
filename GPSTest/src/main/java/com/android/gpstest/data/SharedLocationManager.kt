@@ -22,8 +22,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import com.android.gpstest.Application
-import com.android.gpstest.R
+import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
+import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
 import com.android.gpstest.util.hasPermission
 import com.android.gpstest.util.toText
 import kotlinx.coroutines.CoroutineScope
@@ -43,14 +43,8 @@ class SharedLocationManager constructor(
     private val context: Context,
     externalScope: CoroutineScope
 ) {
-    private val SECONDS_TO_MILLISECONDS = 1000
-
     private val _receivingLocationUpdates: MutableStateFlow<Boolean> =
         MutableStateFlow(false)
-
-    /**
-     * Status of location updates, i.e., whether the app is actively subscribed to location changes.
-     */
     val receivingLocationUpdates: StateFlow<Boolean>
         get() = _receivingLocationUpdates
 
@@ -71,15 +65,8 @@ class SharedLocationManager constructor(
         Log.d(TAG, "Starting location updates")
         _receivingLocationUpdates.value = true
 
-        val minTimeDouble: Double =
-            Application.getPrefs().getString(context.getString(R.string.pref_key_gps_min_time), "1")
-                ?.toDouble() ?: 1.0
-        val minTimeMillis = (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
-        val minDistance = Application.getPrefs().getString(context.getString(R.string.pref_key_gps_min_distance), "0")
-            ?.toFloat() ?: 1.0f
-
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTimeMillis, minDistance, callback)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback)
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }
