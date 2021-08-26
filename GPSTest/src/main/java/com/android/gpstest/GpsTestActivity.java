@@ -58,7 +58,6 @@ import android.location.GnssMeasurementRequest;
 import android.location.GnssMeasurementsEvent;
 import android.location.GnssNavigationMessage;
 import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -214,15 +213,6 @@ public class GpsTestActivity extends AppCompatActivity
     private LocationProvider mProvider;
 
     private LocationListener locationListener;
-
-    /**
-     * Android M (6.0.1) and below status and listener
-     */
-    private GpsStatus mLegacyStatus;
-
-    private GpsStatus.Listener mLegacyStatusListener;
-
-    private GpsStatus.NmeaListener mLegacyNmeaListener;
 
     /**
      * Android N (7.0) and above status and listeners
