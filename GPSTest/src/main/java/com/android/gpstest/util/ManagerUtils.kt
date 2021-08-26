@@ -18,6 +18,7 @@ package com.android.gpstest.util
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.GnssMeasurementsEvent
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import com.android.gpstest.Application
@@ -94,5 +95,36 @@ internal object SharedPreferenceUtil {
     fun getMinDistance(): Float {
         return Application.getPrefs().getString(Application.get().getString(R.string.pref_key_gps_min_distance), "0")
             ?.toFloat() ?: 0.0f
+    }
+
+    /**
+     * Saves device capabilities for GNSS measurements and related information from the given [event]
+     */
+    fun saveMeasurementCapabilities(event: GnssMeasurementsEvent) {
+        var agcSupport = PreferenceUtils.CAPABILITY_UNKNOWN
+        var carrierPhaseSupport = PreferenceUtils.CAPABILITY_UNKNOWN
+        // Loop through all measurements - if at least one supports, then mark as supported
+        for (measurement in event.measurements) {
+            if (SatelliteUtils.isAutomaticGainControlSupported(measurement)) {
+                agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED
+            } else if (agcSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
+                agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            }
+            if (SatelliteUtils.isCarrierPhaseSupported(measurement)) {
+                carrierPhaseSupport = PreferenceUtils.CAPABILITY_SUPPORTED
+            } else if (carrierPhaseSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
+                carrierPhaseSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            }
+        }
+        PreferenceUtils.saveInt(
+            Application.get()
+                .getString(R.string.capability_key_measurement_automatic_gain_control),
+            agcSupport
+        )
+        PreferenceUtils.saveInt(
+            Application.get()
+                .getString(R.string.capability_key_measurement_delta_range),
+            carrierPhaseSupport
+        )
     }
 }
