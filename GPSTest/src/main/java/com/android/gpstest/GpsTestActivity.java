@@ -1313,7 +1313,6 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     @SuppressLint("MissingPermission")
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void addNmeaListener() {
         if (mOnNmeaMessageListener == null) {
             mOnNmeaMessageListener = (message, timestamp) -> {
