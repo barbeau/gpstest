@@ -17,7 +17,6 @@
 
 package com.android.gpstest;
 
-import static android.hardware.SensorManager.SENSOR_DELAY_FASTEST;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
@@ -32,7 +31,6 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -43,10 +41,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.hardware.GeomagneticField;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurementsEvent;
@@ -67,7 +61,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -94,10 +87,8 @@ import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
-import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -108,7 +99,7 @@ import java.util.Date;
 import java.util.List;
 
 public class GpsTestActivity extends AppCompatActivity
-        implements SensorEventListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "GpsTestActivity";
 
@@ -158,22 +149,9 @@ public class GpsTestActivity extends AppCompatActivity
 
     private GpsMapFragment mAccuracyFragment;
 
-    // Holds sensor data
-    private static final float[] mRotationMatrix = new float[16];
-
-    private static final float[] mRemappedMatrix = new float[16];
-
-    private static final float[] mValues = new float[3];
-
-    private static final float[] mTruncatedRotationVector = new float[4];
-
-    private static boolean mTruncateVector = false;
-
     boolean mStarted;
 
     boolean gpsResume = false;
-
-    boolean mFaceTrueNorth;
 
     boolean mWriteNmeaToAndroidMonitor;
 
@@ -221,8 +199,6 @@ public class GpsTestActivity extends AppCompatActivity
     private final List<GpsTestListener> gpsTestListeners = new ArrayList<>();
 
     private Location mLastLocation;
-
-    private GeomagneticField mGeomagneticField;
 
     private long minTime; // Min Time between location updates, in milliseconds
 
@@ -494,16 +470,12 @@ public class GpsTestActivity extends AppCompatActivity
                     Toast.LENGTH_SHORT).show();
         }
 
-        // TODO - Observe flows here
-
         if (locationListener == null) {
             locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
                     mLastLocation = location;
                     Log.d(TAG, "Location from " + this + location);
-
-                    updateGeomagneticField();
 
                     // Reset the options menu to trigger updates to action bar menu items
                     invalidateOptionsMenu();
@@ -516,8 +488,6 @@ public class GpsTestActivity extends AppCompatActivity
             };
         }
 
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
         setupStartState(mLastSavedInstanceState);
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
@@ -527,8 +497,6 @@ public class GpsTestActivity extends AppCompatActivity
             recreate();
         }
         SharedPreferences settings = Application.getPrefs();
-
-        addOrientationSensorListener();
 
         checkNmeaOutput(settings);
 
@@ -545,8 +513,6 @@ public class GpsTestActivity extends AppCompatActivity
         checkKeepScreenOn(settings);
 
         checkTimeAndDistance(settings);
-
-        checkTrueNorth(settings);
 
         checkLocationOutput(settings);
 
@@ -609,10 +575,6 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     protected void onPause() {
-        if (mSensorManager != null) {
-            mSensorManager.unregisterListener(this);
-        }
-
         if (mStarted) {
             gpsStop();
             // If GPS was started, we want to resume it after orientation change
@@ -733,11 +695,6 @@ public class GpsTestActivity extends AppCompatActivity
                 break;
         }
         invalidateOptionsMenu();
-    }
-
-    // Return true if this HomeActivity has no active content fragments
-    private boolean noActiveFragments() {
-        return mStatusFragment == null && mMapFragment == null && mSkyFragment == null;
     }
 
     private void showStatusFragment() {
@@ -979,6 +936,8 @@ public class GpsTestActivity extends AppCompatActivity
             return;
         }
 
+        // TODO - Observe flows here
+
         if (!mStarted) {
             mLocationManager
                     .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
@@ -1015,21 +974,6 @@ public class GpsTestActivity extends AppCompatActivity
             invalidateOptionsMenu();
             if (progressBar != null) {
                 progressBar.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    private void addOrientationSensorListener() {
-        if (SatelliteUtils.isRotationVectorSensorSupported(this)) {
-            // Use the modern rotation vector sensors
-            Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener(this, vectorSensor, SENSOR_DELAY_FASTEST);
-        } else {
-            // Use the legacy orientation sensors
-            Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-            if (sensor != null) {
-                mSensorManager.registerListener(this, sensor,
-                        SensorManager.SENSOR_DELAY_GAME);
             }
         }
     }
@@ -1106,10 +1050,6 @@ public class GpsTestActivity extends AppCompatActivity
 //                }
 //            }
 //        }
-    }
-
-    private void checkTrueNorth(SharedPreferences settings) {
-        mFaceTrueNorth = settings.getBoolean(getString(R.string.pref_key_true_north), true);
     }
 
     private void checkGnssMeasurementOutput(SharedPreferences settings) {
@@ -1212,103 +1152,6 @@ public class GpsTestActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        double orientation = Double.NaN;
-        double tilt = Double.NaN;
-
-        switch (event.sensor.getType()) {
-            case Sensor.TYPE_ROTATION_VECTOR:
-                // Modern rotation vector sensors
-                if (!mTruncateVector) {
-                    try {
-                        SensorManager.getRotationMatrixFromVector(mRotationMatrix, event.values);
-                    } catch (IllegalArgumentException e) {
-                        // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
-                        // Truncate the array, since we can deal with only the first four values
-                        Log.e(TAG, "Samsung device error? Will truncate vectors - " + e);
-                        mTruncateVector = true;
-                        // Do the truncation here the first time the exception occurs
-                        getRotationMatrixFromTruncatedVector(event.values);
-                    }
-                } else {
-                    // Truncate the array to avoid the exception on some devices (see #39)
-                    getRotationMatrixFromTruncatedVector(event.values);
-                }
-
-                int rot = getWindowManager().getDefaultDisplay().getRotation();
-                switch (rot) {
-                    case Surface.ROTATION_0:
-                        // No orientation change, use default coordinate system
-                        SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(MODE_MAP, "Rotation-0");
-                        break;
-                    case Surface.ROTATION_90:
-                        // Log.d(MODE_MAP, "Rotation-90");
-                        SensorManager.remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_Y,
-                                SensorManager.AXIS_MINUS_X, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    case Surface.ROTATION_180:
-                        // Log.d(MODE_MAP, "Rotation-180");
-                        SensorManager
-                                .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_X,
-                                        SensorManager.AXIS_MINUS_Y, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    case Surface.ROTATION_270:
-                        // Log.d(MODE_MAP, "Rotation-270");
-                        SensorManager
-                                .remapCoordinateSystem(mRotationMatrix, SensorManager.AXIS_MINUS_Y,
-                                        SensorManager.AXIS_X, mRemappedMatrix);
-                        SensorManager.getOrientation(mRemappedMatrix, mValues);
-                        break;
-                    default:
-                        // This shouldn't happen - assume default orientation
-                        SensorManager.getOrientation(mRotationMatrix, mValues);
-                        // Log.d(MODE_MAP, "Rotation-Unknown");
-                        break;
-                }
-                orientation = Math.toDegrees(mValues[0]);  // azimuth
-                tilt = Math.toDegrees(mValues[1]);
-                break;
-            case Sensor.TYPE_ORIENTATION:
-                // Legacy orientation sensors
-                orientation = event.values[0];
-                break;
-            default:
-                // A sensor we're not using, so return
-                return;
-        }
-
-        // Correct for true north, if preference is set
-        if (mFaceTrueNorth && mGeomagneticField != null) {
-            orientation += mGeomagneticField.getDeclination();
-            // Make sure value is between 0-360
-            orientation = MathUtils.mod((float) orientation, 360.0f);
-        }
-
-        // TODO trySend() orientation and tilt
-    }
-
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    private void getRotationMatrixFromTruncatedVector(float[] vector) {
-        System.arraycopy(vector, 0, mTruncatedRotationVector, 0, 4);
-        SensorManager.getRotationMatrixFromVector(mRotationMatrix, mTruncatedRotationVector);
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-
-    private void updateGeomagneticField() {
-        mGeomagneticField = new GeomagneticField((float) mLastLocation.getLatitude(),
-                (float) mLastLocation.getLongitude(), (float) mLastLocation.getAltitude(),
-                mLastLocation.getTime());
     }
 
     private void share() {
