@@ -17,6 +17,7 @@
 
 package com.android.gpstest;
 
+import static android.hardware.SensorManager.SENSOR_DELAY_FASTEST;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
@@ -1022,7 +1023,7 @@ public class GpsTestActivity extends AppCompatActivity
         if (SatelliteUtils.isRotationVectorSensorSupported(this)) {
             // Use the modern rotation vector sensors
             Sensor vectorSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
-            mSensorManager.registerListener(this, vectorSensor, 16000); // ~60hz
+            mSensorManager.registerListener(this, vectorSensor, SENSOR_DELAY_FASTEST);
         } else {
             // Use the legacy orientation sensors
             Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
