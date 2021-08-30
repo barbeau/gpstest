@@ -28,7 +28,6 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_F
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
-import static com.android.gpstest.util.IOUtils.trimEnds;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -92,7 +91,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.map.MapConstants;
-import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
 import com.android.gpstest.util.MathUtils;
@@ -105,7 +103,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -539,7 +536,6 @@ public class GpsTestActivity extends AppCompatActivity
         checkNavMessageOutput(settings);
 
         checkGnssAntennaOutput(settings);
-        addGnssAntennaListener();
 
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             promptEnableGps();
@@ -616,7 +612,6 @@ public class GpsTestActivity extends AppCompatActivity
             mSensorManager.unregisterListener(this);
         }
 
-        removeGnssAntennaListener();
         if (mStarted) {
             gpsStop();
             // If GPS was started, we want to resume it after orientation change
@@ -1035,45 +1030,6 @@ public class GpsTestActivity extends AppCompatActivity
                 mSensorManager.registerListener(this, sensor,
                         SensorManager.SENSOR_DELAY_GAME);
             }
-        }
-    }
-
-    @SuppressLint({"MissingPermission", "NewApi"})
-    private void addGnssAntennaListener() {
-        if (!SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager)) {
-            return;
-        }
-        if (gnssAntennaInfoListener == null) {
-            // TODO - move this and other callbacks to background threads and only run on UI thread when updating UI
-           gnssAntennaInfoListener = list -> {
-               // Capture capabilities in preferences
-               PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_num_antenna), list.size());
-               List<String> cfs = new ArrayList<>(2);
-               for (GnssAntennaInfo info : list) {
-                   cfs.add(CarrierFreqUtils.getCarrierFrequencyLabel(info));
-               }
-               if (!cfs.isEmpty()) {
-                   Collections.sort(cfs);
-                   PreferenceUtils.saveString(Application.get().getString(R.string.capability_key_antenna_cf), trimEnds(cfs.toString()));
-               }
-
-               if (mWriteAntennaInfoToFileJson &&
-                       PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                   jsonFileLogger.onGnssAntennaInfoReceived(list);
-               }
-               if (mWriteAntennaInfoToFileCsv &&
-                       PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                   csvFileLogger.onGnssAntennaInfoReceived(list);
-               }
-           };
-            mLocationManager.registerAntennaInfoListener(getApplication().getMainExecutor(), gnssAntennaInfoListener);
-        }
-    }
-
-    @SuppressLint("NewApi")
-    private void removeGnssAntennaListener() {
-        if (SatelliteUtils.isGnssAntennaInfoSupported(mLocationManager) && gnssAntennaInfoListener != null) {
-            mLocationManager.unregisterAntennaInfoListener(gnssAntennaInfoListener);
         }
     }
 
