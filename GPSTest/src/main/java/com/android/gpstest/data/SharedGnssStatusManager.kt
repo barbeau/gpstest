@@ -80,7 +80,7 @@ class SharedGnssStatusManager constructor(
                 } else {
                     _fixState.value = FixState.NotAcquired
                 }
-                Log.d(TAG, "New gnssStatus: ${status.toString()}")
+                Log.d(TAG, "New gnssStatus: ${status}")
                 // Send the new location to the Flow observers
                 trySend(status)
             }

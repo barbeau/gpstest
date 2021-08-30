@@ -125,17 +125,17 @@ class SharedGnssMeasurementManager constructor(
 }
 
 private fun handleLegacyMeasurementStatus(status: Int) {
-    val statusMessage: String
+    val uiStatusMessage: String
     when (status) {
         GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED -> {
-            statusMessage = Application.get().getString(R.string.gnss_measurement_status_loc_disabled)
+            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_loc_disabled)
             PreferenceUtils.saveInt(
                 Application.get().getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_LOCATION_DISABLED
             )
         }
         GnssMeasurementsEvent.Callback.STATUS_NOT_SUPPORTED -> {
-            statusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
+            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
             PreferenceUtils.saveInt(
                 Application.get().getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
@@ -151,40 +151,36 @@ private fun handleLegacyMeasurementStatus(status: Int) {
             )
         }
         GnssMeasurementsEvent.Callback.STATUS_READY -> {
-            statusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
+            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
             PreferenceUtils.saveInt(
                 Application.get().getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         }
         else -> {
-            statusMessage = Application.get().getString(R.string.gnss_status_unknown)
+            uiStatusMessage = Application.get().getString(R.string.gnss_status_unknown)
             PreferenceUtils.saveInt(
                 Application.get().getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_UNKNOWN
             )
         }
     }
-    Log.d(
-        TAG,
-        "GnssMeasurementsEvent.Callback.onStatusChanged() - $statusMessage"
-    )
 }
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 private fun checkMeasurementSupport(lm: LocationManager) {
-    val statusMessage: String
+    val uiStatusMessage: String
     if (SatelliteUtils.isGnssMeasurementsSupported(lm)) {
         PreferenceUtils.saveInt(
             Application.get().getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_SUPPORTED
         )
-        statusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
+        uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
     } else {
         PreferenceUtils.saveInt(
             Application.get().getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_NOT_SUPPORTED
         )
-        statusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
+        uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
     }
 }
