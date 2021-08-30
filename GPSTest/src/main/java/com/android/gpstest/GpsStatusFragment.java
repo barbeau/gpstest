@@ -32,7 +32,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.os.Build;
@@ -88,7 +87,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class GpsStatusFragment extends Fragment implements GpsTestListener {
+public class GpsStatusFragment extends Fragment {
 
     public final static String TAG = "GpsStatusFragment";
 
@@ -281,8 +280,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         mSbasStatusList.setFocusableInTouchMode(false);
         mSbasStatusList.setLayoutManager(llmSbas);
         mSbasStatusList.setNestedScrollingEnabled(false);
-
-        GpsTestActivity.getInstance().addListener(this);
 
         mViewModel = ViewModelProviders.of(getActivity()).get(DeviceInfoViewModel.class);
         mViewModel.getSatelliteMetadata().observe(getActivity(), mSatelliteMetadataObserver);
@@ -537,16 +534,6 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         updateFixTime();
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
     public void onGnssFirstFix(int ttffMillis) {
         mTtff = UIUtils.getTtffString(ttffMillis);
         if (mTTFFView != null) {
@@ -557,43 +544,26 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
         }
     }
 
-    @Override
     public void onGnssFixAcquired() {
         showHaveFix();
     }
 
-    @Override
     public void onGnssFixLost() {
         showLostFix();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
         updateGnssStatus(status);
     }
 
-    @Override
     public void onGnssStarted() {
         setStarted(true);
     }
 
-    @Override
     public void onGnssStopped() {
         setStarted(false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-        // No-op
-    }
-
-    @Override
-    public void onOrientationChanged(double orientation, double tilt) {
-    }
-
-    @Override
     public void onNmeaMessage(String message, long timestamp) {
         if (!isAdded()) {
             // Do nothing if the Fragment isn't added

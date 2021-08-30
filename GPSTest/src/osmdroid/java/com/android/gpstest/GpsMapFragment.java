@@ -66,7 +66,7 @@ import static com.android.gpstest.map.MapConstants.MODE;
 import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
 import static com.android.gpstest.map.MapConstants.MODE_MAP;
 
-public class GpsMapFragment extends Fragment implements GpsTestListener, MapViewModelController.MapInterface {
+public class GpsMapFragment extends Fragment implements MapViewModelController.MapInterface {
 
     private static final String MAP_TYPE_SATELLITE = "mapbox.satellite";
 
@@ -116,8 +116,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
         mMap.invalidate();
 
         addMapClickListener();
-
-        GpsTestActivity.getInstance().addListener(this);
 
         return mMap;
     }
@@ -326,51 +324,6 @@ public class GpsMapFragment extends Fragment implements GpsTestListener, MapView
         mMap.invalidate();
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
-    public void onGnssFixAcquired() {
-    }
-
-    @Override
-    public void onGnssFixLost() {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onSatelliteStatusChanged(GnssStatus status) {
-    }
-
-    @Override
-    public void onGnssStarted() {
-    }
-
-    @Override
-    public void onGnssStopped() {
-    }
-
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
-    }
-
-    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         // For performance reasons, only proceed if this fragment is visible
         if (!getUserVisibleHint()) {

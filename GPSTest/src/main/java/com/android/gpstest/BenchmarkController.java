@@ -20,7 +20,7 @@ import android.location.Location;
 /**
  * An interface for controlling the Benchmark feature
  */
-interface BenchmarkController extends GpsTestListener {
+interface BenchmarkController {
 
     /**
      * Called when there is a map click on a location so the controller can be updated with that information

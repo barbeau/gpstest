@@ -24,11 +24,8 @@ import android.animation.LayoutTransition;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.location.GnssMeasurementsEvent;
-import android.location.GnssStatus;
 import android.location.Location;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -578,52 +575,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
     }
 
-    @Override
-    public void gpsStart() {
-
-    }
-
-    @Override
-    public void gpsStop() {
-
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
-    public void onSatelliteStatusChanged(GnssStatus status) {
-
-    }
-
-    @Override
-    public void onGnssStarted() {
-
-    }
-
-    @Override
-    public void onGnssStopped() {
-
-    }
-
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-
-    }
-
-    @Override
-    public void onOrientationChanged(double orientation, double tilt) {
-
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
-
-    }
-
-    @Override
     public void onLocationChanged(Location location) {
         mViewModel.addLocation(location);
     }
@@ -737,31 +688,6 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         set.setValueTextSize(9f);
         set.setDrawValues(false);
         return set;
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-
-    @Override
-    public void onGnssFixAcquired() {
-
-    }
-
-    @Override
-    public void onGnssFixLost() {
-
     }
 
     @Override

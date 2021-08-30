@@ -20,9 +20,7 @@ package com.android.gpstest;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,7 @@ import com.android.gpstest.view.GpsSkyView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GpsSkyFragment extends Fragment implements GpsTestListener {
+public class GpsSkyFragment extends Fragment {
 
     public final static String TAG = "GpsSkyFragment";
 
@@ -79,7 +77,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         lock = v.findViewById(R.id.sky_lock);
         circleUsedInFix = v.findViewById(R.id.sky_legend_used_in_fix);
 
-        GpsTestActivity.getInstance().addListener(this);
         return v;
     }
 
@@ -108,52 +105,24 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
     }
 
-    public void onLocationChanged(Location loc) {
-    }
-
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
-
-    public void gpsStart() {
-    }
-
-    public void gpsStop() {
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
     public void onGnssFixAcquired() {
         showHaveFix();
     }
 
-    @Override
     public void onGnssFixLost() {
         showLostFix();
     }
 
-    @Override
     public void onSatelliteStatusChanged(GnssStatus status) {
         mSkyView.setGnssStatus(status);
         updatecn0AvgMeterText();
         updateCn0Avgs();
     }
 
-    @Override
     public void onGnssStarted() {
         mSkyView.setStarted();
     }
 
-    @Override
     public void onGnssStopped() {
         mSkyView.setStopped();
         if (lock != null) {
@@ -161,12 +130,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         }
     }
 
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-        mSkyView.setGnssMeasurementEvent(event);
-    }
-
-    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         // For performance reasons, only proceed if this fragment is visible
         if (!getUserVisibleHint()) {
@@ -176,10 +139,6 @@ public class GpsSkyFragment extends Fragment implements GpsTestListener {
         if (mSkyView != null) {
             mSkyView.onOrientationChanged(orientation, tilt);
         }
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
     }
 
     /**

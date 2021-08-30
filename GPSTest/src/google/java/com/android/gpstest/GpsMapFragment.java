@@ -38,8 +38,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.GnssMeasurementsEvent;
-import android.location.GnssStatus;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -76,7 +74,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GpsMapFragment extends SupportMapFragment
-        implements GpsTestListener, View.OnClickListener, LocationSource,
+        implements View.OnClickListener, LocationSource,
         GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, MapViewModelController.MapInterface {
@@ -237,50 +235,6 @@ public class GpsMapFragment extends SupportMapFragment
         }
     }
 
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public void onProviderEnabled(String provider) {
-    }
-
-    public void onProviderDisabled(String provider) {
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
-    public void onGnssFixAcquired() {
-    }
-
-    @Override
-    public void onGnssFixLost() {
-    }
-
-    @Override
-    public void onSatelliteStatusChanged(GnssStatus status) {
-    }
-
-    @Override
-    public void onGnssStarted() {
-    }
-
-    @Override
-    public void onGnssStopped() {
-    }
-
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
-    }
-
-    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         // For performance reasons, only proceed if this fragment is visible
         if (!getUserVisibleHint()) {
@@ -415,8 +369,6 @@ public class GpsMapFragment extends SupportMapFragment
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.getUiSettings().setMapToolbarEnabled(false);
-
-        GpsTestActivity.getInstance().addListener(this);
     }
 
     /**

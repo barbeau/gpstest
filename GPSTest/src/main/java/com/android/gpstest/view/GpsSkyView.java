@@ -7,21 +7,15 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.Location;
-import android.os.Build;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.util.SatelliteUtils;
@@ -31,7 +25,7 @@ import com.android.gpstest.util.UIUtils;
 * View that shows satellite positions on a circle representing the sky
 */
 
-public class GpsSkyView extends View implements GpsTestListener {
+public class GpsSkyView extends View {
 
     public static final float MIN_VALUE_CN0 = 10.0f;
     public static final float MAX_VALUE_CN0 = 45.0f;
@@ -256,10 +250,6 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         mStarted = true;
         invalidate();
-    }
-
-    public void setGnssMeasurementEvent(GnssMeasurementsEvent event) {
-        // No-op
     }
 
     private void drawLine(Canvas c, float x1, float y1, float x2, float y2) {
@@ -568,72 +558,9 @@ public class GpsSkyView extends View implements GpsTestListener {
         setMeasuredDimension(specSize, specSize);
     }
 
-    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         mOrientation = orientation;
         invalidate();
-    }
-
-    @Override
-    public void gpsStart() {
-    }
-
-    @Override
-    public void gpsStop() {
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
-    public void onGnssFixAcquired() {
-
-    }
-
-    @Override
-    public void onGnssFixLost() {
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onSatelliteStatusChanged(GnssStatus status) {
-    }
-
-    @Override
-    public void onGnssStarted() {
-    }
-
-    @Override
-    public void onGnssStopped() {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
     }
 
     /**
