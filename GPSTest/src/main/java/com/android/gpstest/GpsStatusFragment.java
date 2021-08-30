@@ -110,12 +110,8 @@ public class GpsStatusFragment extends Fragment {
             mPdopLabelView, mPdopView, mHvdopLabelView, mHvdopView, mGnssNotAvailableView,
             mSbasNotAvailableView, mFixTimeErrorView;
 
-    private HorizontalScrollView locationScrollView;
-
     private ViewGroup filterGroup;
     private TextView filterTextView;
-    private TextView filterShowAllView;
-    private ClickableSpan filterShowAllClick;
 
     private Location mLocation;
 
@@ -142,8 +138,6 @@ public class GpsStatusFragment extends Fragment {
     private boolean mNavigating;
 
     private Drawable mFlagUsa, mFlagRussia, mFlagJapan, mFlagChina, mFlagIndia, mFlagEU, mFlagICAO;
-
-    private boolean mUseLegacyGnssApi = false;
 
     private String mTtff = "";
 
@@ -234,7 +228,7 @@ public class GpsStatusFragment extends Fragment {
                 return false;
             }
         });
-        locationScrollView = v.findViewById(R.id.status_location_scrollview);
+        HorizontalScrollView locationScrollView = v.findViewById(R.id.status_location_scrollview);
         locationScrollView.setOnTouchListener((view, motionEvent) -> {
             detector.onTouchEvent(motionEvent);
             return false;
@@ -243,11 +237,12 @@ public class GpsStatusFragment extends Fragment {
         // GNSS filter
         filterGroup = v.findViewById(R.id.status_filter_group);
         filterTextView = v.findViewById(R.id.filter_text);
-        filterShowAllView = v.findViewById(R.id.filter_show_all);
+        TextView filterShowAllView = v.findViewById(R.id.filter_show_all);
 
         // Remove any previous clickable spans to avoid issues with recycling views
         UIUtils.removeAllClickableSpans(filterShowAllView);
-        filterShowAllClick = new ClickableSpan() {
+        // Save an empty set to preferences to show all satellites
+        ClickableSpan filterShowAllClick = new ClickableSpan() {
             public void onClick(View v) {
                 // Save an empty set to preferences to show all satellites
                 PreferenceUtils.saveGnssFilter(new LinkedHashSet<>());
@@ -600,7 +595,6 @@ public class GpsStatusFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void updateGnssStatus(GnssStatus status) {
-        mUseLegacyGnssApi = false;
         setStarted(true);
         updateFixTime();
 
