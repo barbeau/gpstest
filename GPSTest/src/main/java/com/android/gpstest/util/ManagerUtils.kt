@@ -84,7 +84,8 @@ internal object SharedPreferenceUtil {
      */
     fun getMinTimeMillis(): Long {
         val minTimeDouble: Double =
-            Application.getPrefs().getString(Application.get().getString(R.string.pref_key_gps_min_time), "1")
+            Application.getPrefs()
+                .getString(Application.get().getString(R.string.pref_key_gps_min_time), "1")
                 ?.toDouble() ?: 1.0
         return (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
     }
@@ -93,8 +94,62 @@ internal object SharedPreferenceUtil {
      * Returns the minDistance between location updates used for the LocationLitsener in meters
      */
     fun getMinDistance(): Float {
-        return Application.getPrefs().getString(Application.get().getString(R.string.pref_key_gps_min_distance), "0")
+        return Application.getPrefs()
+            .getString(Application.get().getString(R.string.pref_key_gps_min_distance), "0")
             ?.toFloat() ?: 0.0f
+    }
+
+    /**
+     * Returns true if the user has selected to write locations to file output, false if they have not
+     */
+    fun getWriteLocationToFile(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_location_output), false)
+    }
+
+    fun getWriteRawMeasurementToAndroidMonitor(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_as_measurement_output), false)
+    }
+
+    fun getWriteRawMeasurementsToFile(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_measurement_output), false)
+    }
+
+    fun getWriteNmeaToAndroidMonitor(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_as_nmea_output), true)
+    }
+
+    fun getWriteNmeaTimestampToAndroidMonitor(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_as_nmea_timestamp_output), true)
+    }
+
+    fun getWriteNmeaToFile(): Boolean {
+      return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_nmea_output), false)
+    }
+
+    fun getWriteAntennaInfoToFileJson(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_antenna_output_json), false);
+    }
+
+    fun getWriteAntennaInfoToFileCsv(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_antenna_output_csv), false)
+    }
+
+    fun getWriteNavMessageToAndroidMonitor(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_as_navigation_message_output), false);
+    }
+
+    fun getWriteNavMessageToFile(): Boolean {
+        return Application.getPrefs()
+            .getBoolean(Application.get().getString(R.string.pref_key_file_navigation_message_output), false);
     }
 
     /**

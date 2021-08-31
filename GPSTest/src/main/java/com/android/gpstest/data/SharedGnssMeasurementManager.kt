@@ -24,6 +24,7 @@ import android.location.LocationManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.util.PreferenceUtils
@@ -97,7 +98,7 @@ class SharedGnssMeasurementManager constructor(
                     .build()
                 locationManager.registerGnssMeasurementsCallback(
                     request,
-                    Application.get().mainExecutor,
+                    ContextCompat.getMainExecutor(Application.get()),
                     callback
                 )
             } else {

@@ -20,6 +20,8 @@ import static android.content.pm.PackageManager.GET_META_DATA;
 import static android.text.TextUtils.isEmpty;
 import static com.android.gpstest.util.IOUtils.replaceNavstar;
 import static com.android.gpstest.util.IOUtils.trimEnds;
+import static com.android.gpstest.util.PermissionUtils.LOCATION_PERMISSION_REQUEST;
+import static com.android.gpstest.util.PermissionUtils.REQUIRED_PERMISSIONS;
 import static com.android.gpstest.view.GpsSkyView.MAX_VALUE_CN0;
 import static com.android.gpstest.view.GpsSkyView.MIN_VALUE_CN0;
 
@@ -30,6 +32,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -39,6 +42,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -52,12 +56,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.DeviceInfoViewModel;
+import com.android.gpstest.HelpActivity;
 import com.android.gpstest.R;
 import com.android.gpstest.dialog.ShareDialogFragment;
 import com.android.gpstest.io.CsvFileLogger;
@@ -89,6 +95,13 @@ public class UIUtils {
     public static final int ANIMATION_DURATION_SHORT_MS = 200;
     public static final int ANIMATION_DURATION_MEDIUM_MS = 400;
     public static final int ANIMATION_DURATION_LONG_MS = 500;
+
+    // Dialogs
+    public static final int WHATSNEW_DIALOG = 1;
+    public static final int HELP_DIALOG = 2;
+    public static final int CLEAR_ASSIST_WARNING_DIALOG = 3;
+
+    private static final String WHATS_NEW_VER = "whatsNewVer";
 
     /**
      * Formats a view so it is ignored for accessible access
@@ -760,5 +773,114 @@ public class UIUtils {
                         v.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    /**
+     * Shows the dialog to explain why location permissions are needed
+     *
+     * NOTE - this dialog can't be managed under the old dialog framework as the method
+     * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
+     */
+    public static void showLocationPermissionDialog(Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setTitle(R.string.title_location_permission)
+                .setMessage(R.string.text_location_permission)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok,
+                        (dialog, which) -> {
+                            // Request permissions from the user
+                            ActivityCompat.requestPermissions(activity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+                        }
+                )
+                .setNegativeButton(R.string.exit,
+                        (dialog, which) -> {
+                            // Exit app
+                            activity.finish();
+                        }
+                );
+        builder.create().show();
+    }
+
+    /**
+     * Ask the user if they want to enable GPS, and if so, show them system settings
+     */
+    public static void promptEnableGps(Activity activity) {
+        new AlertDialog.Builder(activity)
+                .setMessage(Application.get().getString(R.string.enable_gps_message))
+                .setPositiveButton(Application.get().getString(R.string.enable_gps_positive_button),
+                        (dialog, which) -> {
+                            Intent intent = new Intent(
+                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            activity.startActivity(intent);
+                        }
+                )
+                .setNegativeButton(Application.get().getString(R.string.enable_gps_negative_button),
+                        (dialog, which) -> {
+                        }
+                )
+                .show();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Dialog createHelpDialog(Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.title_help);
+        int options = R.array.main_help_options;
+        builder.setItems(options,
+                (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            activity.showDialog(WHATSNEW_DIALOG);
+                            break;
+                        case 1:
+                            activity.startActivity(new Intent(activity, HelpActivity.class));
+                            break;
+                    }
+                }
+        );
+        return builder.create();
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Dialog createWhatsNewDialog(Activity activity) {
+        TextView textView = (TextView) activity.getLayoutInflater().inflate(R.layout.whats_new_dialog, null);
+        textView.setText(R.string.main_help_whatsnew);
+
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.main_help_whatsnew_title);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setView(textView);
+        builder.setNeutralButton(R.string.main_help_close,
+                (dialog, which) -> activity.dismissDialog(WHATSNEW_DIALOG)
+        );
+        return builder.create();
+    }
+
+    /**
+     * Show the "What's New" message if a new version was just installed
+     */
+    @SuppressWarnings("deprecation")
+    public static void autoShowWhatsNew(Activity activity) {
+        SharedPreferences settings = Application.getPrefs();
+
+        // Get the current app version.
+        PackageManager pm = Application.get().getPackageManager();
+        PackageInfo appInfo = null;
+        try {
+            appInfo = pm.getPackageInfo(Application.get().getPackageName(),
+                    PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            // Do nothing
+            return;
+        }
+
+        final int oldVer = settings.getInt(WHATS_NEW_VER, 0);
+        final int newVer = appInfo.versionCode;
+
+        if (oldVer < newVer) {
+            activity.showDialog(WHATSNEW_DIALOG);
+            PreferenceUtils.saveInt(WHATS_NEW_VER, appInfo.versionCode);
+        }
     }
 }

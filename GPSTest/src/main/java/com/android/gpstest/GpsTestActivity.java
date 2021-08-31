@@ -28,8 +28,9 @@ import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_F
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
 import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
+import static com.android.gpstest.util.PermissionUtils.LOCATION_PERMISSION_REQUEST;
+import static com.android.gpstest.util.PermissionUtils.REQUIRED_PERMISSIONS;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -38,35 +39,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
-import android.location.GnssAntennaInfo;
-import android.location.GnssMeasurementsEvent;
-import android.location.GnssNavigationMessage;
-import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.location.OnNmeaMessageListener;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -75,6 +67,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
@@ -82,8 +75,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.gpstest.io.CsvFileLogger;
-import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.map.MapConstants;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.LocationUtils;
@@ -93,35 +84,16 @@ import com.android.gpstest.util.UIUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class GpsTestActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String TAG = "GpsTestActivity";
-
-    private static final int WHATSNEW_DIALOG = 1;
-
-    private static final int HELP_DIALOG = 2;
-
-    private static final int CLEAR_ASSIST_WARNING_DIALOG = 3;
-
-    private static final String WHATS_NEW_VER = "whatsNewVer";
 
     private static final int SECONDS_TO_MILLISECONDS = 1000;
 
     private static final String GPS_RESUME = "gps_resume";
     private static final String EXISTING_CSV_LOG_FILE = "existing_csv_log_file";
     private static final String EXISTING_JSON_LOG_FILE = "existing_json_log_file";
-
-    private static final int LOCATION_PERMISSION_REQUEST = 1;
-
-    private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
 
     static boolean mIsLargeScreen = false;
 
@@ -153,25 +125,6 @@ public class GpsTestActivity extends AppCompatActivity
 
     boolean gpsResume = false;
 
-    boolean mWriteNmeaToAndroidMonitor;
-
-    boolean mWriteNmeaTimestampToAndroidMonitor;
-
-    boolean mWriteNavMessageToAndroidMonitor;
-
-    boolean mWriteRawMeasurementToAndroidMonitor;
-
-    boolean mWriteNmeaToFile;
-
-    boolean mWriteNavMessageToFile;
-
-    boolean mWriteRawMeasurementsToFile;
-
-    boolean mWriteLocationToFile;
-
-    boolean mWriteAntennaInfoToFileJson;
-    boolean mWriteAntennaInfoToFileCsv;
-
     private Switch mSwitch;  // GPS on/off switch
 
     private LocationManager mLocationManager;
@@ -179,24 +132,6 @@ public class GpsTestActivity extends AppCompatActivity
     private LocationProvider mProvider;
 
     private LocationListener locationListener;
-
-    /**
-     * Android N (7.0) and above status and listeners
-     */
-    private GnssStatus mGnssStatus;
-
-    private GnssStatus.Callback mGnssStatusListener;
-
-    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener;
-
-    private OnNmeaMessageListener mOnNmeaMessageListener;
-
-    private GnssNavigationMessage.Callback mGnssNavMessageListener;
-
-    private GnssAntennaInfo.Listener gnssAntennaInfoListener;
-
-    // Listeners for Fragments
-    private final List<GpsTestListener> gpsTestListeners = new ArrayList<>();
 
     private Location mLastLocation;
 
@@ -213,10 +148,6 @@ public class GpsTestActivity extends AppCompatActivity
     private BenchmarkController mBenchmarkController;
 
     private String mInitialLanguage;
-
-    private CsvFileLogger csvFileLogger;
-
-    private JsonFileLogger jsonFileLogger;
 
     private boolean shareDialogOpen = false;
 
@@ -289,9 +220,6 @@ public class GpsTestActivity extends AppCompatActivity
 
         setupNavigationDrawer();
 
-        csvFileLogger = new CsvFileLogger(getApplicationContext());
-        jsonFileLogger = new JsonFileLogger(getApplicationContext());
-
         deviceInfoViewModel = ViewModelProviders.of(this).get(DeviceInfoViewModel.class);
 
         Intent serviceIntent = new Intent(this, ForegroundOnlyLocationService.class);
@@ -336,11 +264,11 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save GPS resume state
         outState.putBoolean(GPS_RESUME, gpsResume);
-         if (csvFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_CSV_LOG_FILE, csvFileLogger.getFile());
+         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_CSV_LOG_FILE, service.csvFileLogger.getFile());
          }
-         if (jsonFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_JSON_LOG_FILE, jsonFileLogger.getFile());
+         if (service.jsonFileLogger.isStarted() && !shareDialogOpen) {
+             outState.putSerializable(EXISTING_JSON_LOG_FILE, service.jsonFileLogger.getFile());
          }
         super.onSaveInstanceState(outState);
     }
@@ -355,7 +283,7 @@ public class GpsTestActivity extends AppCompatActivity
         } else {
             // Explain permission to user (don't request permission here directly to avoid infinite
             // loop if user selects "Don't ask again") in system permission prompt
-            showLocationPermissionDialog();
+            UIUtils.showLocationPermissionDialog(this);
         }
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
         if (Application.getPrefs().contains(getString(R.string.pref_key_language))) {
@@ -378,8 +306,8 @@ public class GpsTestActivity extends AppCompatActivity
                 Log.i(TAG, "Uri: " + uri.toString());
                 final Location location = mLastLocation;
                 shareDialogOpen = true;
-                UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
-                        csvFileLogger, jsonFileLogger, uri);
+                UIUtils.showShareFragmentDialog(this, location, service.isFileLoggingEnabled(),
+                        service.csvFileLogger, service.jsonFileLogger, uri);
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
@@ -479,11 +407,6 @@ public class GpsTestActivity extends AppCompatActivity
 
                     // Reset the options menu to trigger updates to action bar menu items
                     invalidateOptionsMenu();
-
-                    if (mWriteLocationToFile &&
-                            PermissionUtils.hasGrantedFileWritePermission(GpsTestActivity.this)) {
-                        csvFileLogger.onLocationChanged(location);
-                    }
                 }
             };
         }
@@ -496,81 +419,17 @@ public class GpsTestActivity extends AppCompatActivity
             mUseDarkTheme = useDarkTheme;
             recreate();
         }
-        SharedPreferences settings = Application.getPrefs();
-
-        checkNmeaOutput(settings);
-
-        checkGnssMeasurementOutput(settings);
-
-        checkNavMessageOutput(settings);
-
-        checkGnssAntennaOutput(settings);
-
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            promptEnableGps();
+            UIUtils.promptEnableGps(this);
         }
+
+        SharedPreferences settings = Application.getPrefs();
 
         checkKeepScreenOn(settings);
 
         checkTimeAndDistance(settings);
 
-        checkLocationOutput(settings);
-
-        Date date = new Date();
-        boolean isNewCSVFile = false;
-        boolean isNewJsonFile = false;
-        if (PermissionUtils.hasGrantedFileWritePermission(this)
-                && !csvFileLogger.isStarted() && isCsvLoggingEnabled()) {
-            // User has granted permissions and has chosen to log at least one data type
-            File existingCsvFile = null;
-            if (mLastSavedInstanceState != null) {
-                // See if this was an orientation change and we should continue logging to
-                // an existing file
-                existingCsvFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_CSV_LOG_FILE);
-            }
-            isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date);
-        }
-
-        if (PermissionUtils.hasGrantedFileWritePermission(this)
-                && !jsonFileLogger.isStarted() && isJsonLoggingEnabled()) {
-            // User has granted permissions and has chosen to log at least one data type
-            File existingJsonFile = null;
-            if (mLastSavedInstanceState != null) {
-                // See if this was an orientation change and we should continue logging to
-                // an existing file
-                existingJsonFile = (File) mLastSavedInstanceState.getSerializable(EXISTING_JSON_LOG_FILE);
-            }
-            isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date);
-        }
-
-        if (csvFileLogger.isStarted() && !jsonFileLogger.isStarted()) {
-            if (isNewCSVFile) {
-                // CSV logging only
-                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
-            }
-        } else if (!csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
-            // JSON logging only
-            if (isNewJsonFile) {
-                // CSV logging only
-                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, jsonFileLogger.getFile().getAbsolutePath()), Toast.LENGTH_LONG).show();
-            }
-        } else if (csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
-            // CSV and JSON logging
-            if (isNewCSVFile && isNewJsonFile) {
-                Toast.makeText(getApplicationContext(), Application.get().getString(R.string.logging_to_new_file, csvFileLogger.getFile().getAbsolutePath()) + " + .json", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        if (PermissionUtils.hasGrantedFileWritePermission(this) && (csvFileLogger.isStarted()|| jsonFileLogger.isStarted())) {
-            // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
-            File baseDirectory = csvFileLogger.getBaseDirectory();
-            if (baseDirectory == null) {
-                baseDirectory = jsonFileLogger.getBaseDirectory();
-            }
-            IOUtils.deleteOldFiles(baseDirectory, csvFileLogger.getFile(), jsonFileLogger.getFile());
-        }
-
-        autoShowWhatsNew();
+        UIUtils.autoShowWhatsNew(this);
     }
 
     @Override
@@ -584,18 +443,6 @@ public class GpsTestActivity extends AppCompatActivity
         }
 
         super.onPause();
-    }
-
-    private boolean isFileLoggingEnabled() {
-        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFileJson || mWriteAntennaInfoToFileCsv;
-    }
-
-    private boolean isCsvLoggingEnabled() {
-        return mWriteNmeaToFile || mWriteRawMeasurementsToFile || mWriteNavMessageToFile || mWriteLocationToFile || mWriteAntennaInfoToFileCsv;
-    }
-
-    private boolean isJsonLoggingEnabled() {
-        return mWriteAntennaInfoToFileJson;
     }
 
     private void setupStartState(Bundle savedInstanceState) {
@@ -667,7 +514,7 @@ public class GpsTestActivity extends AppCompatActivity
             case NAVDRAWER_ITEM_CLEAR_AIDING_DATA:
                 SharedPreferences prefs = Application.getPrefs();
                 if (!prefs.getBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), false)) {
-                    showDialog(CLEAR_ASSIST_WARNING_DIALOG);
+                    showDialog(UIUtils.CLEAR_ASSIST_WARNING_DIALOG);
                 } else {
                     deleteAidingData();
                 }
@@ -676,7 +523,7 @@ public class GpsTestActivity extends AppCompatActivity
                 startActivity(new Intent(this, Preferences.class));
                 break;
             case NAVDRAWER_ITEM_HELP:
-                showDialog(HELP_DIALOG);
+                showDialog(UIUtils.HELP_DIALOG);
                 break;
             case NAVDRAWER_ITEM_OPEN_SOURCE:
                 Intent i = new Intent(Intent.ACTION_VIEW);
@@ -897,11 +744,7 @@ public class GpsTestActivity extends AppCompatActivity
             Handler h = new Handler();
             // Restart the GPS, if it was previously started, with a slight delay,
             // to refresh the assistance data
-            h.postDelayed(new Runnable() {
-                public void run() {
-                    gpsStart();
-                }
-            }, 500);
+            h.postDelayed(this::gpsStart, 500);
         }
     }
 
@@ -960,6 +803,7 @@ public class GpsTestActivity extends AppCompatActivity
 
     private synchronized void gpsStop() {
         if (service != null) {
+            // TODO - Don't stop service when stopping Activity
             service.unsubscribeToLocationUpdates();
         }
 
@@ -978,6 +822,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
+    // TODO - On first fix
     private void hideProgressBar() {
         if (progressBar != null) {
             UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
@@ -990,25 +835,7 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Ask the user if they want to enable GPS
-     */
-    private void promptEnableGps() {
-        new AlertDialog.Builder(this)
-                .setMessage(getString(R.string.enable_gps_message))
-                .setPositiveButton(getString(R.string.enable_gps_positive_button),
-                        (dialog, which) -> {
-                            Intent intent = new Intent(
-                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(intent);
-                        }
-                )
-                .setNegativeButton(getString(R.string.enable_gps_negative_button),
-                        (dialog, which) -> {
-                        }
-                )
-                .show();
-    }
+
 
     @SuppressLint("MissingPermission")
     private void checkTimeAndDistance(SharedPreferences settings) {
@@ -1052,44 +879,6 @@ public class GpsTestActivity extends AppCompatActivity
 //        }
     }
 
-    private void checkGnssMeasurementOutput(SharedPreferences settings) {
-        mWriteRawMeasurementToAndroidMonitor = settings
-                .getBoolean(getString(R.string.pref_key_as_measurement_output), false);
-        mWriteRawMeasurementsToFile = settings.getBoolean(getString(R.string.pref_key_file_measurement_output), false);
-    }
-
-    private void checkNmeaOutput(SharedPreferences settings) {
-        mWriteNmeaToAndroidMonitor = settings.getBoolean(getString(R.string.pref_key_as_nmea_output), true);
-        mWriteNmeaTimestampToAndroidMonitor = settings
-                .getBoolean(getString(R.string.pref_key_as_nmea_timestamp_output), true);
-        mWriteNmeaToFile = settings
-                .getBoolean(getString(R.string.pref_key_file_nmea_output), false);
-    }
-
-    private void checkGnssAntennaOutput(SharedPreferences settings) {
-        mWriteAntennaInfoToFileJson = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_json), false);
-        mWriteAntennaInfoToFileCsv = settings.getBoolean(getString(R.string.pref_key_file_antenna_output_csv), false);
-    }
-
-    private void checkNavMessageOutput(SharedPreferences settings) {
-        mWriteNavMessageToAndroidMonitor = settings
-                .getBoolean(getString(R.string.pref_key_as_navigation_message_output), false);
-        mWriteNavMessageToFile = settings
-                .getBoolean(getString(R.string.pref_key_file_navigation_message_output), false);
-    }
-
-    private void checkLocationOutput(SharedPreferences settings) {
-        mWriteLocationToFile = settings
-                .getBoolean(getString(R.string.pref_key_file_location_output), false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        csvFileLogger.close();
-        jsonFileLogger.close();
-        super.onDestroy();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -1129,128 +918,59 @@ public class GpsTestActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item;
-
-        item = menu.findItem(R.id.share);
+        MenuItem item = menu.findItem(R.id.share);
         if (item != null) {
-            item.setVisible(mLastLocation != null || isFileLoggingEnabled());
+            item.setVisible(mLastLocation != null || service.isFileLoggingEnabled());
         }
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean success;
         // Handle menu item selection
-        switch (item.getItemId()) {
-            case R.id.gps_switch:
-                return true;
-            case R.id.share:
-                share();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        if (itemId == R.id.gps_switch) {
+            return true;
+        } else if (itemId == R.id.share) {
+            share();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void share() {
         final Location location = mLastLocation;
         shareDialogOpen = true;
-        UIUtils.showShareFragmentDialog(this, location, isFileLoggingEnabled(),
-                csvFileLogger, jsonFileLogger, null);
-    }
-
-    /**
-     * Show the "What's New" message if a new version was just installed
-     */
-    @SuppressWarnings("deprecation")
-    private void autoShowWhatsNew() {
-        SharedPreferences settings = Application.getPrefs();
-
-        // Get the current app version.
-        PackageManager pm = getPackageManager();
-        PackageInfo appInfo = null;
-        try {
-            appInfo = pm.getPackageInfo(getPackageName(),
-                    PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            // Do nothing
-            return;
-        }
-
-        final int oldVer = settings.getInt(WHATS_NEW_VER, 0);
-        final int newVer = appInfo.versionCode;
-
-        if (oldVer < newVer) {
-            showDialog(WHATSNEW_DIALOG);
-            PreferenceUtils.saveInt(WHATS_NEW_VER, appInfo.versionCode);
-        }
+        UIUtils.showShareFragmentDialog(this, location, service.isFileLoggingEnabled(),
+                service.csvFileLogger, service.jsonFileLogger, null);
     }
 
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
-            case WHATSNEW_DIALOG:
-                return createWhatsNewDialog();
-            case HELP_DIALOG:
-                return createHelpDialog();
-            case CLEAR_ASSIST_WARNING_DIALOG:
+            case UIUtils.WHATSNEW_DIALOG:
+                return UIUtils.createWhatsNewDialog(this);
+            case UIUtils.HELP_DIALOG:
+                return UIUtils.createHelpDialog(this);
+            case UIUtils.CLEAR_ASSIST_WARNING_DIALOG:
                 return createClearAssistWarningDialog();
         }
         return super.onCreateDialog(id);
-    }
-
-    @SuppressWarnings("deprecation")
-    private Dialog createWhatsNewDialog() {
-        TextView textView = (TextView) getLayoutInflater().inflate(R.layout.whats_new_dialog, null);
-        textView.setText(R.string.main_help_whatsnew);
-
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.main_help_whatsnew_title);
-        builder.setIcon(R.mipmap.ic_launcher);
-        builder.setView(textView);
-        builder.setNeutralButton(R.string.main_help_close,
-                (dialog, which) -> dismissDialog(WHATSNEW_DIALOG)
-        );
-        return builder.create();
-    }
-
-    @SuppressWarnings("deprecation")
-    private Dialog createHelpDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.title_help);
-        int options = R.array.main_help_options;
-        builder.setItems(options,
-                (dialog, which) -> {
-                    switch (which) {
-                        case 0:
-                            showDialog(WHATSNEW_DIALOG);
-                            break;
-                        case 1:
-                            startActivity(new Intent(GpsTestActivity.getInstance(), HelpActivity.class));
-                            break;
-                    }
-                }
-        );
-        return builder.create();
     }
 
     private Dialog createClearAssistWarningDialog() {
         View view = getLayoutInflater().inflate(R.layout.clear_assist_warning, null);
         CheckBox neverShowDialog = view.findViewById(R.id.clear_assist_never_ask_again);
 
-        neverShowDialog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                // Save the preference
-                PreferenceUtils.saveBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), isChecked);
-            }
+        neverShowDialog.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            // Save the preference
+            PreferenceUtils.saveBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), isChecked);
         });
 
-        Drawable icon = getResources().getDrawable(R.drawable.ic_delete);
-        DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
+        Drawable icon = ContextCompat.getDrawable(Application.get(), R.drawable.ic_delete);
+        if (icon != null) {
+            DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.clear_assist_warning_title)
@@ -1266,31 +986,5 @@ public class GpsTestActivity extends AppCompatActivity
                         }
                 );
         return builder.create();
-    }
-
-    /**
-     * Shows the dialog to explain why location permissions are needed
-     *
-     * NOTE - this dialog can't be managed under the old dialog framework as the method
-     * ActivityCompat.shouldShowRequestPermissionRationale() always returns false.
-     */
-    private void showLocationPermissionDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_location_permission)
-                .setMessage(R.string.text_location_permission)
-                .setCancelable(false)
-                .setPositiveButton(R.string.ok,
-                        (dialog, which) -> {
-                            // Request permissions from the user
-                            ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
-                        }
-                )
-            .setNegativeButton(R.string.exit,
-                    (dialog, which) -> {
-                        // Exit app
-                        finish();
-                    }
-            );
-        builder.create().show();
     }
 }

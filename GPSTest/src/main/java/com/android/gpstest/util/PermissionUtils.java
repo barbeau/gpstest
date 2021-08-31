@@ -18,7 +18,6 @@ package com.android.gpstest.util;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.os.Build;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -30,6 +29,13 @@ public class PermissionUtils {
     };
     private static final int FILE_WRITE_PERMISSION_REQUEST = 2;
 
+    public static final int LOCATION_PERMISSION_REQUEST = 1;
+
+    public static final String[] REQUIRED_PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
+
+
     /**
      * Returns true if all of the provided permissions in requiredPermissions have been granted, or false if they have not
      * @param activity
@@ -37,10 +43,6 @@ public class PermissionUtils {
      * @return true if all of the provided permissions in requiredPermissions have been granted, or false if they have not
      */
     public static boolean hasGrantedPermissions(Activity activity, String[] requiredPermissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // Permissions granted at install time
-            return true;
-        }
         for (String p : requiredPermissions) {
             if (ContextCompat.checkSelfPermission(activity, p) != PackageManager.PERMISSION_GRANTED) {
                 return false;
@@ -56,9 +58,7 @@ public class PermissionUtils {
      * @param activity
      */
     public static void requestFileWritePermission(Activity activity) {
-        if (hasGrantedFileWritePermission(activity)) {
-            // No-op
-        } else {
+        if (!hasGrantedFileWritePermission(activity)) {
             // Request permissions from the user
             ActivityCompat.requestPermissions(activity, FILE_WRITE_REQUIRED_PERMISSIONS, FILE_WRITE_PERMISSION_REQUEST);
         }

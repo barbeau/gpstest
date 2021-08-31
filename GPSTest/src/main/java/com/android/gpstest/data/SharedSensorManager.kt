@@ -73,85 +73,11 @@ class SharedSensorManager constructor(
                     when (event.sensor.type) {
                         Sensor.TYPE_ROTATION_VECTOR -> {
                             // Modern rotation vector sensors
-                            if (!truncateVector) {
-                                try {
-                                    SensorManager.getRotationMatrixFromVector(
-                                        rotationMatrix,
-                                        event.values
-                                    )
-                                } catch (e: IllegalArgumentException) {
-                                    // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
-                                    // Truncate the array, since we can deal with only the first four values
-                                    Log.e(
-                                        TAG,
-                                        "Samsung device error? Will truncate vectors - $e"
-                                    )
-                                    truncateVector = true
-                                    // Do the truncation here the first time the exception occurs
-                                    getRotationMatrixFromTruncatedVector(event.values)
-                                }
-                            } else {
-                                // Truncate the array to avoid the exception on some devices (see #39)
-                                getRotationMatrixFromTruncatedVector(event.values)
-                            }
+                            maybeTruncateVector(event)
 
-                            val display: Display? =
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                                    context.display
-                                } else {
-                                    val windowManager = context
-                                        .getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                                    windowManager.defaultDisplay
-                                }
-
-                            when (display?.rotation) {
-                                Surface.ROTATION_0 ->
-                                    // No orientation change, use default coordinate system
-                                    SensorManager.getOrientation(
-                                        rotationMatrix,
-                                        values
-                                    )
-                                Surface.ROTATION_90 -> {
-                                    // Log.d(MODE_MAP, "Rotation-90");
-                                    SensorManager.remapCoordinateSystem(
-                                        rotationMatrix, SensorManager.AXIS_Y,
-                                        SensorManager.AXIS_MINUS_X, remappedMatrix
-                                    )
-                                    SensorManager.getOrientation(
-                                        remappedMatrix,
-                                        values
-                                    )
-                                }
-                                Surface.ROTATION_180 -> {
-                                    // Log.d(MODE_MAP, "Rotation-180");
-                                    SensorManager
-                                        .remapCoordinateSystem(
-                                            rotationMatrix, SensorManager.AXIS_MINUS_X,
-                                            SensorManager.AXIS_MINUS_Y, remappedMatrix
-                                        )
-                                    SensorManager.getOrientation(
-                                        remappedMatrix,
-                                        values
-                                    )
-                                }
-                                Surface.ROTATION_270 -> {
-                                    // Log.d(MODE_MAP, "Rotation-270");
-                                    SensorManager
-                                        .remapCoordinateSystem(
-                                            rotationMatrix, SensorManager.AXIS_MINUS_Y,
-                                            SensorManager.AXIS_X, remappedMatrix
-                                        )
-                                    SensorManager.getOrientation(
-                                        remappedMatrix,
-                                        values
-                                    )
-                                }
-                                else ->
-                                    // This shouldn't happen - assume default orientation
-                                    SensorManager.getOrientation(
-                                        rotationMatrix,
-                                        values
-                                    )
+                            val display = getDisplay()
+                            if (display != null) {
+                                handleRotation(display.rotation)
                             }
                             orientation =
                                 Math.toDegrees(values[0].toDouble()) // azimuth
@@ -243,9 +169,95 @@ class SharedSensorManager constructor(
         }
     }
 
+    private fun maybeTruncateVector(event: SensorEvent) {
+        if (!truncateVector) {
+            try {
+                SensorManager.getRotationMatrixFromVector(
+                    rotationMatrix,
+                    event.values
+                )
+            } catch (e: IllegalArgumentException) {
+                // On some Samsung devices, an exception is thrown if this vector > 4 (see #39)
+                // Truncate the array, since we can deal with only the first four values
+                Log.e(
+                    TAG,
+                    "Samsung device error? Will truncate vectors - $e"
+                )
+                truncateVector = true
+                // Do the truncation here the first time the exception occurs
+                getRotationMatrixFromTruncatedVector(event.values)
+            }
+        } else {
+            // Truncate the array to avoid the exception on some devices (see #39)
+            getRotationMatrixFromTruncatedVector(event.values)
+        }
+    }
+
     private fun getRotationMatrixFromTruncatedVector(vector: FloatArray) {
         System.arraycopy(vector, 0, truncatedRotationVector, 0, 4)
         SensorManager.getRotationMatrixFromVector(rotationMatrix, truncatedRotationVector)
+    }
+
+    private fun getDisplay() : Display? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            context.display
+        } else {
+            val windowManager = context
+                .getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            windowManager.defaultDisplay
+        }
+    }
+
+    private fun handleRotation(rotation: Int) {
+        when (rotation) {
+            Surface.ROTATION_0 ->
+                // No orientation change, use default coordinate system
+                SensorManager.getOrientation(
+                    rotationMatrix,
+                    values
+                )
+            Surface.ROTATION_90 -> {
+                // Log.d(MODE_MAP, "Rotation-90");
+                SensorManager.remapCoordinateSystem(
+                    rotationMatrix, SensorManager.AXIS_Y,
+                    SensorManager.AXIS_MINUS_X, remappedMatrix
+                )
+                SensorManager.getOrientation(
+                    remappedMatrix,
+                    values
+                )
+            }
+            Surface.ROTATION_180 -> {
+                // Log.d(MODE_MAP, "Rotation-180");
+                SensorManager
+                    .remapCoordinateSystem(
+                        rotationMatrix, SensorManager.AXIS_MINUS_X,
+                        SensorManager.AXIS_MINUS_Y, remappedMatrix
+                    )
+                SensorManager.getOrientation(
+                    remappedMatrix,
+                    values
+                )
+            }
+            Surface.ROTATION_270 -> {
+                // Log.d(MODE_MAP, "Rotation-270");
+                SensorManager
+                    .remapCoordinateSystem(
+                        rotationMatrix, SensorManager.AXIS_MINUS_Y,
+                        SensorManager.AXIS_X, remappedMatrix
+                    )
+                SensorManager.getOrientation(
+                    remappedMatrix,
+                    values
+                )
+            }
+            else ->
+                // This shouldn't happen - assume default orientation
+                SensorManager.getOrientation(
+                    rotationMatrix,
+                    values
+                )
+        }
     }
 
     @ExperimentalCoroutinesApi

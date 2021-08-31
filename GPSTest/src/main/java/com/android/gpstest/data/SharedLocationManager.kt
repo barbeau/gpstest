@@ -22,6 +22,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
+import com.android.gpstest.Application
 import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
 import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
 import com.android.gpstest.util.hasPermission
@@ -66,7 +67,7 @@ class SharedLocationManager constructor(
         _receivingLocationUpdates.value = true
 
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback, Application.get().mainLooper)
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }
