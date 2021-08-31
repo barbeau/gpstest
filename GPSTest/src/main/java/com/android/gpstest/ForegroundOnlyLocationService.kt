@@ -335,7 +335,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         var isNewCSVFile = false
         var isNewJsonFile = false
         if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            && !csvFileLogger.isStarted() && isCsvLoggingEnabled()
+            && !csvFileLogger.isStarted && isCsvLoggingEnabled()
         ) {
             // User has granted permissions and has chosen to log at least one data type
             var existingCsvFile: File? = null
@@ -362,19 +362,19 @@ class ForegroundOnlyLocationService : LifecycleService() {
             isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date)
         }
 
-        if (csvFileLogger.isStarted() && !jsonFileLogger.isStarted()) {
+        if (csvFileLogger.isStarted && !jsonFileLogger.isStarted) {
             if (isNewCSVFile) {
                 // CSV logging only
                 Toast.makeText(
                     applicationContext,
                     Application.get().getString(
                         R.string.logging_to_new_file,
-                        csvFileLogger.getFile().getAbsolutePath()
+                        csvFileLogger.file.absolutePath
                     ),
                     Toast.LENGTH_LONG
                 ).show()
             }
-        } else if (!csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+        } else if (!csvFileLogger.isStarted && jsonFileLogger.isStarted) {
             // JSON logging only
             if (isNewJsonFile) {
                 // CSV logging only
@@ -382,19 +382,19 @@ class ForegroundOnlyLocationService : LifecycleService() {
                     applicationContext,
                     Application.get().getString(
                         R.string.logging_to_new_file,
-                        jsonFileLogger.getFile().getAbsolutePath()
+                        jsonFileLogger.file.absolutePath
                     ),
                     Toast.LENGTH_LONG
                 ).show()
             }
-        } else if (csvFileLogger.isStarted() && jsonFileLogger.isStarted()) {
+        } else if (csvFileLogger.isStarted && jsonFileLogger.isStarted) {
             // CSV and JSON logging
             if (isNewCSVFile && isNewJsonFile) {
                 Toast.makeText(
                     applicationContext,
                     Application.get().getString(
                         R.string.logging_to_new_file,
-                        csvFileLogger.getFile().getAbsolutePath()
+                        csvFileLogger.file.absolutePath
                     ) + " + .json",
                     Toast.LENGTH_LONG
                 ).show()
