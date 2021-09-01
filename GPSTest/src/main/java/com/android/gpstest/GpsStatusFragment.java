@@ -25,9 +25,7 @@ import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -59,7 +57,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GestureDetectorCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -71,6 +68,7 @@ import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SatelliteMetadata;
 import com.android.gpstest.model.SatelliteStatus;
+import com.android.gpstest.ui.GnssFilterDialog;
 import com.android.gpstest.util.CarrierFreqUtils;
 import com.android.gpstest.util.DateTimeUtils;
 import com.android.gpstest.util.IOUtils;
@@ -816,58 +814,6 @@ public class GpsStatusFragment extends Fragment {
         GnssFilterDialog frag = new GnssFilterDialog();
         frag.setArguments(args);
         frag.show(getActivity().getSupportFragmentManager(), ".GnssFilterDialog");
-    }
-
-    public static class GnssFilterDialog extends DialogFragment
-            implements DialogInterface.OnMultiChoiceClickListener,
-            DialogInterface.OnClickListener {
-
-        static final String ITEMS = ".items";
-
-        static final String CHECKS = ".checks";
-
-        private boolean[] mChecks;
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Bundle args = getArguments();
-            String[] items = args.getStringArray(ITEMS);
-            mChecks = args.getBooleanArray(CHECKS);
-            if (savedInstanceState != null) {
-                mChecks = savedInstanceState.getBooleanArray(CHECKS);
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            return builder.setTitle(R.string.filter_dialog_title)
-                    .setMultiChoiceItems(items, mChecks, this)
-                    .setPositiveButton(R.string.save, this)
-                    .setNegativeButton(R.string.cancel, null)
-                    .create();
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle outState) {
-            outState.putBooleanArray(CHECKS, mChecks);
-        }
-
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            Set<GnssType> filter = new LinkedHashSet<>();
-            GnssType[] gnssTypes = GnssType.values();
-            for (int i = 0; i < mChecks.length; i++) {
-                if (mChecks[i]) {
-                    filter.add(gnssTypes[i]);
-                }
-            }
-
-            PreferenceUtils.saveGnssFilter(filter);
-            dialog.dismiss();
-        }
-
-        @Override
-        public void onClick(DialogInterface arg0, int which, boolean isChecked) {
-            mChecks[which] = isChecked;
-        }
     }
 
     private class SatelliteStatusAdapter extends RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder> {

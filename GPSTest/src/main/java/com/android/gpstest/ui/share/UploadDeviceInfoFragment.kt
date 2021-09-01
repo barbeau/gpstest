@@ -1,4 +1,4 @@
-package com.android.gpstest.dialog
+package com.android.gpstest.ui.share
 
 import android.content.Context
 import android.content.pm.PackageInfo

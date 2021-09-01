@@ -1,4 +1,4 @@
-package com.android.gpstest.dialog
+package com.android.gpstest.ui.share
 
 import android.app.Dialog
 import android.net.Uri
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.android.gpstest.R
-import com.android.gpstest.dialog.ShareLogFragment.Listener
+import com.android.gpstest.ui.share.ShareLogFragment.Listener
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 

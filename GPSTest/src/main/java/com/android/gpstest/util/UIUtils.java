@@ -65,11 +65,11 @@ import com.android.gpstest.BuildConfig;
 import com.android.gpstest.DeviceInfoViewModel;
 import com.android.gpstest.HelpActivity;
 import com.android.gpstest.R;
-import com.android.gpstest.dialog.ShareDialogFragment;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SbasType;
+import com.android.gpstest.ui.share.ShareDialogFragment;
 import com.google.android.material.chip.Chip;
 
 import java.io.File;
