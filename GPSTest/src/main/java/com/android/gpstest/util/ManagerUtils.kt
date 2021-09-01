@@ -23,11 +23,13 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.util.SharedPreferenceUtil.METERS
+import com.android.gpstest.util.SharedPreferenceUtil.getPrefDistanceUnits
 
 /**
- * Returns the `location` object as a human readable string.
+ * Returns the `location` object as a human readable string for use in a notification title
  */
-fun android.location.Location?.toText(): String {
+fun android.location.Location?.toNotificationTitle(): String {
     return if (this != null) {
         toString(latitude, longitude)
     } else {
@@ -35,8 +37,103 @@ fun android.location.Location?.toText(): String {
     }
 }
 
+/**
+ * Returns the `location` object as a human readable string for use in a notification summary
+ */
+fun android.location.Location?.toNotificationSummary(): String {
+    return if (this != null) {
+        val coordinateFormat = Application.getPrefs().getString(
+            Application.get().getString(R.string.pref_key_coordinate_format),
+            Application.get().getString(R.string.preferences_coordinate_format_dd_key)
+        )
+        val resources = Application.get().resources
+        val lat: String
+        val lon: String
+        val alt: String
+        when (coordinateFormat) {
+            "dd" -> {
+                // Decimal degrees
+                lat =
+                    resources.getString(
+                        R.string.gps_latitude_value,
+                        this.latitude
+                    )
+                lon =
+                    resources.getString(
+                        R.string.gps_longitude_value,
+                        this.longitude
+                    )
+
+            }
+            "dms" -> {
+                // Degrees minutes seconds
+               lat =
+                    UIUtils.getDMSFromLocation(
+                        Application.get(),
+                        this.latitude,
+                        UIUtils.COORDINATE_LATITUDE
+                    )
+                lon =
+                    UIUtils.getDMSFromLocation(
+                        Application.get(),
+                        this.longitude,
+                        UIUtils.COORDINATE_LONGITUDE
+                    )
+            }
+            "ddm" -> {
+                // Degrees decimal minutes
+                lat =
+                    UIUtils.getDDMFromLocation(
+                        Application.get(),
+                        this.latitude,
+                        UIUtils.COORDINATE_LATITUDE
+                    )
+                lon =
+                    UIUtils.getDDMFromLocation(
+                        Application.get(),
+                        this.longitude,
+                        UIUtils.COORDINATE_LONGITUDE
+                    )
+            }
+            else -> {
+                // Decimal degrees
+                lat =
+                    resources.getString(
+                        R.string.gps_latitude_value,
+                        this.latitude
+                    )
+                lon =
+                    resources.getString(
+                        R.string.gps_longitude_value,
+                        this.longitude
+                    )
+            }
+        }
+        if (this.hasAltitude()) {
+            alt = if (getPrefDistanceUnits().equals(METERS, ignoreCase = true)) {
+                resources.getString(
+                    R.string.gps_altitude_value_meters,
+                    this.altitude
+                )
+            } else {
+                // Feet
+                resources.getString(
+                    R.string.gps_altitude_value_feet,
+                    UIUtils.toFeet(this.altitude)
+                )
+            }
+        } else {
+            alt = ""
+        }
+
+        "$lat $lon $alt"
+    } else {
+        "Unknown location"
+    }
+}
+
 fun toString(lat: Double, lon: Double): String {
-    return "($lat, $lon)"
+    return "$lat, $lon"
 }
 
 /**
@@ -61,6 +158,13 @@ internal object SharedPreferenceUtil {
 
     const val KEY_FOREGROUND_ENABLED = "tracking_foreground_location"
     const val SECONDS_TO_MILLISECONDS = 1000
+
+    val METERS =
+        Application.get().resources.getStringArray(R.array.preferred_distance_units_values)[0]
+    val METERS_PER_SECOND =
+        Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[0]
+    val KILOMETERS_PER_HOUR =
+        Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[1]
 
     /**
      * Returns true if requesting location updates, otherwise returns false.
@@ -151,6 +255,12 @@ internal object SharedPreferenceUtil {
         return Application.getPrefs()
             .getBoolean(Application.get().getString(R.string.pref_key_file_navigation_message_output), false);
     }
+
+    fun getPrefDistanceUnits(): String? {
+        return Application.getPrefs()
+            .getString(Application.get().getString(R.string.pref_key_preferred_distance_units_v2), METERS);
+    }
+
 
     /**
      * Saves device capabilities for GNSS measurements and related information from the given [event]

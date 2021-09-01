@@ -107,6 +107,13 @@ class ForegroundOnlyLocationService : LifecycleService() {
         } else {
             if (!isStarted) {
                 isStarted = true
+                initLogging()
+                try {
+                    registerLocationFlow()
+                } catch (unlikely: Exception) {
+                    PreferenceUtils.saveServiceLocationTrackingPref(false)
+                    Log.e(TAG, "Exception registering for updates: $unlikely")
+                }
 
                 // We may have been restarted by the system. Manage our lifetime accordingly.
                 goForegroundOrStopSelf()
@@ -184,15 +191,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
         // be officially started (which we do here).
         startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
-
-        initLogging()
-
-        try {
-            registerLocationFlow()
-        } catch (unlikely: Exception) {
-            PreferenceUtils.saveServiceLocationTrackingPref(false)
-            Log.e(TAG, "Exception registering for updates: $unlikely")
-        }
     }
 
     fun registerLocationFlow() {
@@ -200,7 +198,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service location: ${it.toText()}")
+                Log.d(TAG, "Service location: ${it.toNotificationTitle()}")
                 currentLocation = it
 
                 // Show location in notification
@@ -276,12 +274,12 @@ class ForegroundOnlyLocationService : LifecycleService() {
      */
     private fun buildNotification(location: Location?): Notification {
         Log.d(TAG, "generateNotification()")
-        val mainNotificationText = location?.toText() ?: getString(R.string.no_location_text)
-        val titleText = getString(R.string.app_name)
+        val titleText = location?.toNotificationTitle() ?: getString(R.string.no_location_text)
+        val summaryText = location?.toNotificationSummary() ?: ""
 
         // 2. Build the BIG_TEXT_STYLE.
         val bigTextStyle = NotificationCompat.BigTextStyle()
-            .bigText(mainNotificationText)
+            .bigText(summaryText)
             .setBigContentTitle(titleText)
 
         // 3. Set up main Intent/Pending Intents for notification.
@@ -304,7 +302,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         return notificationCompatBuilder
             .setStyle(bigTextStyle)
             .setContentTitle(titleText)
-            .setContentText(mainNotificationText)
+            .setContentText(summaryText)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
@@ -339,12 +337,14 @@ class ForegroundOnlyLocationService : LifecycleService() {
         ) {
             // User has granted permissions and has chosen to log at least one data type
             var existingCsvFile: File? = null
-            if (mLastSavedInstanceState != null) {
-                // See if this was an orientation change and we should continue logging to
-                // an existing file
-                existingCsvFile =
-                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_CSV_LOG_FILE)
-            }
+
+            //TODO - handle restart of logging
+//            if (mLastSavedInstanceState != null) {
+//                // See if this was an orientation change and we should continue logging to
+//                // an existing file
+//                existingCsvFile =
+//                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_CSV_LOG_FILE)
+//            }
             isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date)
         }
 
@@ -353,12 +353,13 @@ class ForegroundOnlyLocationService : LifecycleService() {
         ) {
             // User has granted permissions and has chosen to log at least one data type
             var existingJsonFile: File? = null
-            if (mLastSavedInstanceState != null) {
-                // See if this was an orientation change and we should continue logging to
-                // an existing file
-                existingJsonFile =
-                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_JSON_LOG_FILE)
-            }
+            //TODO - handle restart of logging
+//            if (mLastSavedInstanceState != null) {
+//                // See if this was an orientation change and we should continue logging to
+//                // an existing file
+//                existingJsonFile =
+//                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_JSON_LOG_FILE)
+//            }
             isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date)
         }
 

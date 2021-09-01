@@ -264,12 +264,12 @@ public class GpsTestActivity extends AppCompatActivity
     public void onSaveInstanceState(Bundle outState) {
         // Save GPS resume state
         outState.putBoolean(GPS_RESUME, gpsResume);
-         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_CSV_LOG_FILE, service.csvFileLogger.getFile());
-         }
-         if (service.jsonFileLogger.isStarted() && !shareDialogOpen) {
-             outState.putSerializable(EXISTING_JSON_LOG_FILE, service.jsonFileLogger.getFile());
-         }
+//         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
+//             outState.putSerializable(EXISTING_CSV_LOG_FILE, service.csvFileLogger.getFile());
+//         }
+//         if (service.jsonFileLogger.isStarted() && !shareDialogOpen) {
+//             outState.putSerializable(EXISTING_JSON_LOG_FILE, service.jsonFileLogger.getFile());
+//         }
         super.onSaveInstanceState(outState);
     }
 
@@ -802,11 +802,6 @@ public class GpsTestActivity extends AppCompatActivity
     }
 
     private synchronized void gpsStop() {
-        if (service != null) {
-            // TODO - Don't stop service when stopping Activity
-            service.unsubscribeToLocationUpdates();
-        }
-
         if (mLocationManager == null) {
             return;
         }
@@ -822,13 +817,14 @@ public class GpsTestActivity extends AppCompatActivity
         }
     }
 
-    // TODO - On first fix
+    // TODO - On first fix, on any fix
     private void hideProgressBar() {
         if (progressBar != null) {
             UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
         }
     }
 
+    // TODO - On lost fix
     private void showProgressBar() {
         if (progressBar != null) {
             UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);

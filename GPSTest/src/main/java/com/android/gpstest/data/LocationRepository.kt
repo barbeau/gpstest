@@ -1,5 +1,6 @@
 package com.android.gpstest.data
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
@@ -14,5 +15,6 @@ class LocationRepository @Inject constructor(
     /**
      * Observable flow for location updates
      */
+    @ExperimentalCoroutinesApi
     fun getLocations() = sharedLocationManager.locationFlow()
 }
