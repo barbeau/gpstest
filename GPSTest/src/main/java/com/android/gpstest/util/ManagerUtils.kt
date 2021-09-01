@@ -171,7 +171,7 @@ internal object SharedPreferenceUtil {
      *
      * @param context The [Context].
      */
-    fun getLocationTrackingPref(context: Context): Boolean =
+    fun isTrackingStarted(context: Context): Boolean =
         Application.getPrefs().getBoolean(KEY_FOREGROUND_ENABLED, false)
 
     /**

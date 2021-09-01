@@ -14,187 +14,129 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.gpstest
 
-package com.android.gpstest;
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
+import android.content.*
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.IBinder
+import android.preference.PreferenceManager
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.GravityCompat
+import androidx.core.view.MenuItemCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.android.gpstest.ForegroundOnlyLocationService
+import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
+import com.android.gpstest.GpsTestActivity
+import com.android.gpstest.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.map.MapConstants
+import com.android.gpstest.util.*
+import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
+import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
+import com.android.gpstest.util.SharedPreferenceUtil.isTrackingStarted
+import com.google.zxing.integration.android.IntentIntegrator
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_HELP;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_MAP;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY;
-import static com.android.gpstest.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS;
-import static com.android.gpstest.util.PermissionUtils.LOCATION_PERMISSION_REQUEST;
-import static com.android.gpstest.util.PermissionUtils.REQUIRED_PERMISSIONS;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.hardware.SensorManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
-import android.widget.Switch;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
-
-import com.android.gpstest.map.MapConstants;
-import com.android.gpstest.util.IOUtils;
-import com.android.gpstest.util.LocationUtils;
-import com.android.gpstest.util.PermissionUtils;
-import com.android.gpstest.util.PreferenceUtils;
-import com.android.gpstest.util.UIUtils;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-public class GpsTestActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-
-    private static final String TAG = "GpsTestActivity";
-
-    private static final int SECONDS_TO_MILLISECONDS = 1000;
-
-    private static final String GPS_RESUME = "gps_resume";
-    private static final String EXISTING_CSV_LOG_FILE = "existing_csv_log_file";
-    private static final String EXISTING_JSON_LOG_FILE = "existing_json_log_file";
-
-    static boolean mIsLargeScreen = false;
-
-    private static GpsTestActivity mActivity;
-
-    private Toolbar mToolbar;
-
-    private boolean mUseDarkTheme = false;
+@AndroidEntryPoint
+class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
+    private var mToolbar: Toolbar? = null
+    private var mUseDarkTheme = false
 
     /**
      * Currently selected navigation drawer position (so we don't unnecessarily swap fragments
      * if the same item is selected).  Initialized to -1 so the initial callback from
      * NavigationDrawerFragment always instantiates the fragments
      */
-    private int mCurrentNavDrawerPosition = -1;
+    private var mCurrentNavDrawerPosition = -1
 
     //
     // Fragments controlled by the nav drawer
     //
-    private GpsStatusFragment mStatusFragment;
-
-    private GpsMapFragment mMapFragment;
-
-    private GpsSkyFragment mSkyFragment;
-
-    private GpsMapFragment mAccuracyFragment;
-
-    boolean mStarted;
-
-    boolean gpsResume = false;
-
-    private Switch mSwitch;  // GPS on/off switch
-
-    private LocationManager mLocationManager;
-
-    private LocationProvider mProvider;
-
-    private LocationListener locationListener;
-
-    private Location mLastLocation;
-
-    private long minTime; // Min Time between location updates, in milliseconds
-
-    private float minDistance; // Min Distance between location updates, in meters
-
-    private SensorManager mSensorManager;
-
-    Bundle mLastSavedInstanceState;
-
-    private boolean mUserDeniedPermission = false;
-
-    private BenchmarkController mBenchmarkController;
-
-    private String mInitialLanguage;
-
-    private boolean shareDialogOpen = false;
-
-    private ProgressBar progressBar = null;
-
-    DeviceInfoViewModel deviceInfoViewModel;
-
-    private boolean isServiceBound = false;
-
-    private ForegroundOnlyLocationService service = null;
-
-    ServiceConnection foregroundOnlyServiceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            ForegroundOnlyLocationService.LocalBinder binder = (ForegroundOnlyLocationService.LocalBinder) iBinder;
-            service = binder.getService();
-            isServiceBound = true;
-
-            gpsStart();
+    private var mStatusFragment: GpsStatusFragment? = null
+    private var mMapFragment: GpsMapFragment? = null
+    private var mSkyFragment: GpsSkyFragment? = null
+    private var mAccuracyFragment: GpsMapFragment? = null
+    var gpsResume = false
+    private var mSwitch // GPS on/off switch
+            : Switch? = null
+    private var locationListener: LocationListener? = null
+    private var mLastLocation: Location? = null
+    var mLastSavedInstanceState: Bundle? = null
+    private var mUserDeniedPermission = false
+    private var mBenchmarkController: BenchmarkController? = null
+    private var mInitialLanguage: String? = null
+    private var shareDialogOpen = false
+    private var progressBar: ProgressBar? = null
+    var deviceInfoViewModel: DeviceInfoViewModel? = null
+    private var isServiceBound = false
+    private var service: ForegroundOnlyLocationService? = null
+    var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
+            val binder = iBinder as LocalBinder
+            service = binder.service
+            isServiceBound = true
+            gpsStart()
         }
 
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            service = null;
-            isServiceBound = false;
+        override fun onServiceDisconnected(componentName: ComponentName) {
+            service = null
+            isServiceBound = false
         }
-    };
+    }
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    // Repository of location data that the service will observe, injected via Hilt
+    @Inject
+    lateinit var repository: LocationRepository
+
+    // Get a reference to the Job from the Flow so we can stop it from UI events
+    private var locationFlow: Job? = null
+
+    /** Called when the activity is first created.  */
+    public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
-            setTheme(R.style.AppTheme_Dark_NoActionBar);
-            mUseDarkTheme = true;
+            setTheme(R.style.AppTheme_Dark_NoActionBar)
+            mUseDarkTheme = true
         }
-        super.onCreate(savedInstanceState);
-        mActivity = this;
+        super.onCreate(savedInstanceState)
+        instance = this
         // Reset the activity title to make sure dynamic locale changes are shown
-        UIUtils.resetActivityTitle(this);
-
-        saveInstanceState(savedInstanceState);
+        UIUtils.resetActivityTitle(this)
+        saveInstanceState(savedInstanceState)
 
         // Set the default values from the XML file if this is the first
         // execution of the app
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        mInitialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+        mInitialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
 
         // If we have a large screen, show all the fragments in one layout
         // TODO - Fix large screen layouts (see #122)
@@ -202,36 +144,32 @@ public class GpsTestActivity extends AppCompatActivity
 //            setContentView(R.layout.activity_main_large_screen);
 //            mIsLargeScreen = true;
 //        } else {
-            setContentView(R.layout.activity_main);
-//        }
-
-        mBenchmarkController = new BenchmarkControllerImpl(this, findViewById(R.id.mainlayout));
+        setContentView(R.layout.activity_main)
+        //        }
+        mBenchmarkController = BenchmarkControllerImpl(this, findViewById(R.id.mainlayout))
 
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
-        if (mAccuracyFragment != null && mCurrentNavDrawerPosition == NAVDRAWER_ITEM_ACCURACY) {
-            initAccuracy();
+        if (mAccuracyFragment != null && mCurrentNavDrawerPosition == NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
+            initAccuracy()
         } else {
-            mBenchmarkController.hide();
+            (mBenchmarkController as BenchmarkControllerImpl).hide()
         }
-
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        progressBar = findViewById(R.id.progress_horizontal);
-
-        setupNavigationDrawer();
-
-        deviceInfoViewModel = ViewModelProviders.of(this).get(DeviceInfoViewModel.class);
-
-        Intent serviceIntent = new Intent(this, ForegroundOnlyLocationService.class);
-        bindService(serviceIntent, foregroundOnlyServiceConnection, Context.BIND_AUTO_CREATE);
+        mToolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(mToolbar)
+        progressBar = findViewById(R.id.progress_horizontal)
+        setupNavigationDrawer()
+        deviceInfoViewModel = ViewModelProviders.of(this).get(
+            DeviceInfoViewModel::class.java
+        )
+        val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
+        bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
         // If another app is passing in a ground truth location, recreate the activity to initialize an existing instance
         if (IOUtils.isShowRadarIntent(intent) || IOUtils.isGeoIntent(intent)) {
-            recreateApp(intent);
+            recreateApp(intent)
         }
     }
 
@@ -239,90 +177,91 @@ public class GpsTestActivity extends AppCompatActivity
      * Save instance state locally so we can use it after the permission callback
      * @param savedInstanceState instance state to save
      */
-    private void saveInstanceState(Bundle savedInstanceState) {
+    private fun saveInstanceState(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                mLastSavedInstanceState = savedInstanceState.deepCopy();
+            mLastSavedInstanceState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                savedInstanceState.deepCopy()
             } else {
-                mLastSavedInstanceState = savedInstanceState;
+                savedInstanceState
             }
         }
     }
 
-    private void setupNavigationDrawer() {
+    private fun setupNavigationDrawer() {
         // Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-        NavigationDrawerFragment navDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        val navDrawerFragment =
+            supportFragmentManager.findFragmentById(R.id.navigation_drawer) as NavigationDrawerFragment?
 
         // Set up the drawer.
-        navDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.nav_drawer_left_pane));
+        navDrawerFragment!!.setUp(
+            R.id.navigation_drawer,
+            findViewById<View>(R.id.nav_drawer_left_pane) as DrawerLayout
+        )
     }
 
-     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public override fun onSaveInstanceState(outState: Bundle) {
         // Save GPS resume state
-        outState.putBoolean(GPS_RESUME, gpsResume);
-//         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
+        outState.putBoolean(GPS_RESUME, gpsResume)
+        //         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
 //             outState.putSerializable(EXISTING_CSV_LOG_FILE, service.csvFileLogger.getFile());
 //         }
 //         if (service.jsonFileLogger.isStarted() && !shareDialogOpen) {
 //             outState.putSerializable(EXISTING_JSON_LOG_FILE, service.jsonFileLogger.getFile());
 //         }
-        super.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState)
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        shareDialogOpen = false;
-
+    override fun onResume() {
+        super.onResume()
+        shareDialogOpen = false
         if (!mUserDeniedPermission) {
-            requestPermissionAndInit(this);
+            requestPermissionAndInit(this)
         } else {
             // Explain permission to user (don't request permission here directly to avoid infinite
             // loop if user selects "Don't ask again") in system permission prompt
-            UIUtils.showLocationPermissionDialog(this);
+            UIUtils.showLocationPermissionDialog(this)
         }
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
         if (Application.getPrefs().contains(getString(R.string.pref_key_language))) {
-            String currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language));
-            if (!currentLanguage.equals(mInitialLanguage)) {
-                mInitialLanguage = currentLanguage;
-                recreateApp(null);
+            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
+            if (currentLanguage != mInitialLanguage) {
+                mInitialLanguage = currentLanguage
+                recreateApp(null)
             }
         }
-        mBenchmarkController.onResume();
+        mBenchmarkController!!.onResume()
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == RESULT_OK) {
             // User picked a file to share from the Share dialog - update the dialog
             if (data != null) {
-                Uri uri = data.getData();
-                Log.i(TAG, "Uri: " + uri.toString());
-                final Location location = mLastLocation;
-                shareDialogOpen = true;
-                UIUtils.showShareFragmentDialog(this, location, service.isFileLoggingEnabled(),
-                        service.csvFileLogger, service.jsonFileLogger, uri);
+                val uri = data.data
+                Log.i(TAG, "Uri: " + uri.toString())
+                val location = mLastLocation
+                shareDialogOpen = true
+                UIUtils.showShareFragmentDialog(
+                    this, location, service!!.isFileLoggingEnabled(),
+                    service!!.csvFileLogger, service!!.jsonFileLogger, uri
+                )
             }
         } else {
             // See if this result was a scanned QR Code with a ground truth location
-            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            val scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (scanResult != null) {
-                String geoUri = scanResult.getContents();
-                Location l = IOUtils.getLocationFromGeoUri(geoUri);
+                val geoUri = scanResult.contents
+                val l = IOUtils.getLocationFromGeoUri(geoUri)
                 if (l != null) {
-                    l.removeAltitude(); // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
+                    l.removeAltitude() // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
                     // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
-                    Intent showRadar = IOUtils.createShowRadarIntent(l);
-                    recreateApp(showRadar);
+                    val showRadar = IOUtils.createShowRadarIntent(l)
+                    recreateApp(showRadar)
                 } else {
-                    Toast.makeText(this, getString(R.string.qr_code_cannot_read_code),
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(
+                        this, getString(R.string.qr_code_cannot_read_code),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
@@ -334,534 +273,506 @@ public class GpsTestActivity extends AppCompatActivity
      * and partial state retention.
      * @param currentIntent the Intent to pass to the re-created app, or null if there is no intent to pass
      */
-    void recreateApp(Intent currentIntent) {
-        Intent i = new Intent(this, GpsTestActivity.class);
+    fun recreateApp(currentIntent: Intent?) {
+        val i = Intent(this, GpsTestActivity::class.java)
         if (IOUtils.isShowRadarIntent(currentIntent)) {
             // If we're creating the app because we got a SHOW_RADAR intent, copy over the intent action and extras
-            i.setAction(currentIntent.getAction());
-            i.putExtras(currentIntent.getExtras());
+            i.action = currentIntent!!.action
+            i.putExtras(currentIntent.extras!!)
         } else if (IOUtils.isGeoIntent(currentIntent)) {
             // If we're creating the app because we got a geo: intent, turn it into a SHOW_RADAR intent for simplicity (they are used the same way)
-            Location l = IOUtils.getLocationFromGeoUri(currentIntent.getData().toString());
+            val l = IOUtils.getLocationFromGeoUri(
+                currentIntent!!.data.toString()
+            )
             if (l != null) {
-                Intent showRadarIntent = IOUtils.createShowRadarIntent(l);
-                i.setAction(showRadarIntent.getAction());
-                i.putExtras(showRadarIntent.getExtras());
+                val showRadarIntent = IOUtils.createShowRadarIntent(l)
+                i.action = showRadarIntent.action
+                i.putExtras(showRadarIntent.extras!!)
             }
         }
-
-        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         // Restart process to destroy and recreate everything
-        System.exit(0);
+        System.exit(0)
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
+    override fun attachBaseContext(base: Context) {
         // For dynamically changing the locale
-        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
+        super.attachBaseContext(Application.getLocaleManager().setLocale(base))
     }
 
-    private void initAccuracy() {
-        mAccuracyFragment.setOnMapClickListener(location -> mBenchmarkController.onMapClick(location));
-        mBenchmarkController.show();
+    private fun initAccuracy() {
+        mAccuracyFragment!!.setOnMapClickListener { location: Location? ->
+            mBenchmarkController!!.onMapClick(
+                location
+            )
+        }
+        mBenchmarkController!!.show()
     }
 
-    private void requestPermissionAndInit(final Activity activity) {
-        if (PermissionUtils.hasGrantedPermissions(activity, REQUIRED_PERMISSIONS)) {
-            init();
+    private fun requestPermissionAndInit(activity: Activity) {
+        if (PermissionUtils.hasGrantedPermissions(activity, PermissionUtils.REQUIRED_PERMISSIONS)) {
+            init()
         } else {
             // Request permissions from the user
-            ActivityCompat.requestPermissions(mActivity, REQUIRED_PERMISSIONS, LOCATION_PERMISSION_REQUEST);
+            ActivityCompat.requestPermissions(
+                instance!!,
+                PermissionUtils.REQUIRED_PERMISSIONS,
+                PermissionUtils.LOCATION_PERMISSION_REQUEST
+            )
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(
-            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mUserDeniedPermission = false;
-                init();
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mUserDeniedPermission = false
+                init()
             } else {
-                mUserDeniedPermission = true;
+                mUserDeniedPermission = true
             }
         }
     }
 
-    private void init() {
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mProvider = mLocationManager.getProvider(LocationManager.GPS_PROVIDER);
-        if (mProvider == null) {
-            Log.e(TAG, "Unable to get GPS_PROVIDER");
-            Toast.makeText(this, getString(R.string.gps_not_supported),
-                    Toast.LENGTH_SHORT).show();
+    private fun init() {
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+        if (provider == null) {
+            Log.e(TAG, "Unable to get GPS_PROVIDER")
+            Toast.makeText(
+                this, getString(R.string.gps_not_supported),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-
-        if (locationListener == null) {
-            locationListener = new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    mLastLocation = location;
-                    Log.d(TAG, "Location from " + this + location);
-
-                    // Reset the options menu to trigger updates to action bar menu items
-                    invalidateOptionsMenu();
-                }
-            };
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            UIUtils.promptEnableGps(this)
         }
-
-        setupStartState(mLastSavedInstanceState);
+        setupStartState(mLastSavedInstanceState)
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
-        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
+        val useDarkTheme =
+            Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
         if (mUseDarkTheme != useDarkTheme) {
-            mUseDarkTheme = useDarkTheme;
-            recreate();
+            mUseDarkTheme = useDarkTheme
+            recreate()
         }
-        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            UIUtils.promptEnableGps(this);
-        }
-
-        SharedPreferences settings = Application.getPrefs();
-
-        checkKeepScreenOn(settings);
-
-        checkTimeAndDistance(settings);
-
-        UIUtils.autoShowWhatsNew(this);
+        val settings = Application.getPrefs()
+        checkKeepScreenOn(settings)
+        UIUtils.autoShowWhatsNew(this)
     }
 
-    @Override
-    protected void onPause() {
-        if (mStarted) {
-            gpsStop();
+    override fun onPause() {
+        gpsResume = if (isTrackingStarted(this)) {
+            gpsStop()
             // If GPS was started, we want to resume it after orientation change
-            gpsResume = true;
+            true
         } else {
-            gpsResume = false;
+            false
         }
-
-        super.onPause();
+        super.onPause()
     }
 
-    private void setupStartState(Bundle savedInstanceState) {
-        // Apply start state settings from preferences
-        SharedPreferences settings = Application.getPrefs();
-
-        double tempMinTime = Double.parseDouble(
-                settings.getString(getString(R.string.pref_key_gps_min_time),
-                        getString(R.string.pref_gps_min_time_default_sec))
-        );
-        minTime = (long) (tempMinTime * SECONDS_TO_MILLISECONDS);
-        minDistance = Float.parseFloat(
-                settings.getString(getString(R.string.pref_key_gps_min_distance),
-                        getString(R.string.pref_gps_min_distance_default_meters))
-        );
-
+    private fun setupStartState(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
             // Activity is being restarted and has previous state (e.g., user rotated device)
-            boolean gpsResume = savedInstanceState.getBoolean(GPS_RESUME, true);
+            val gpsResume = savedInstanceState.getBoolean(GPS_RESUME, true)
             if (gpsResume) {
-                gpsStart();
+                gpsStart()
             }
         } else {
             // Activity is starting without previous state - use "Auto-start GNSS" setting, or gpsResume (e.g., if app was backgrounded via Home button)
-            if (settings.getBoolean(getString(R.string.pref_key_auto_start_gps), true) || gpsResume) {
-                gpsStart();
+            if (Application.getPrefs().getBoolean(
+                    getString(R.string.pref_key_auto_start_gps),
+                    true
+                ) || gpsResume
+            ) {
+                gpsStart()
             }
         }
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        goToNavDrawerItem(position);
+    override fun onNavigationDrawerItemSelected(position: Int) {
+        goToNavDrawerItem(position)
     }
 
-    private void goToNavDrawerItem(int item) {
+    private fun goToNavDrawerItem(item: Int) {
         // Update the main content by replacing fragments
-        switch (item) {
-            case NAVDRAWER_ITEM_STATUS:
-                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_STATUS) {
-                    showStatusFragment();
-                    mCurrentNavDrawerPosition = item;
-                }
-                break;
-            case NAVDRAWER_ITEM_MAP:
-                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_MAP) {
-                    showMapFragment();
-                    mCurrentNavDrawerPosition = item;
-                }
-                break;
-            case NAVDRAWER_ITEM_SKY:
-                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_SKY) {
-                    showSkyFragment();
-                    mCurrentNavDrawerPosition = item;
-                }
-                break;
-            case NAVDRAWER_ITEM_ACCURACY:
-                if (mCurrentNavDrawerPosition != NAVDRAWER_ITEM_ACCURACY) {
-                    showAccuracyFragment();
-                    mCurrentNavDrawerPosition = item;
-                }
-                break;
-            case NAVDRAWER_ITEM_INJECT_PSDS_DATA:
-                forcePsdsInjection();
-                break;
-            case NAVDRAWER_ITEM_INJECT_TIME_DATA:
-                forceTimeInjection();
-                break;
-            case NAVDRAWER_ITEM_CLEAR_AIDING_DATA:
-                SharedPreferences prefs = Application.getPrefs();
-                if (!prefs.getBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), false)) {
-                    showDialog(UIUtils.CLEAR_ASSIST_WARNING_DIALOG);
+        when (item) {
+            NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS) {
+                showStatusFragment()
+                mCurrentNavDrawerPosition = item
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_MAP -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_MAP) {
+                showMapFragment()
+                mCurrentNavDrawerPosition = item
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_SKY -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_SKY) {
+                showSkyFragment()
+                mCurrentNavDrawerPosition = item
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
+                showAccuracyFragment()
+                mCurrentNavDrawerPosition = item
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
+            NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA -> forceTimeInjection()
+            NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA -> {
+                val prefs = Application.getPrefs()
+                if (!prefs.getBoolean(
+                        getString(R.string.pref_key_never_show_clear_assist_warning),
+                        false
+                    )
+                ) {
+                    showDialog(UIUtils.CLEAR_ASSIST_WARNING_DIALOG)
                 } else {
-                    deleteAidingData();
+                    deleteAidingData()
                 }
-                break;
-            case NAVDRAWER_ITEM_SETTINGS:
-                startActivity(new Intent(this, Preferences.class));
-                break;
-            case NAVDRAWER_ITEM_HELP:
-                showDialog(UIUtils.HELP_DIALOG);
-                break;
-            case NAVDRAWER_ITEM_OPEN_SOURCE:
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(getString(R.string.open_source_github)));
-                startActivity(i);
-                break;
-            case NAVDRAWER_ITEM_SEND_FEEDBACK:
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_SETTINGS -> startActivity(
+                Intent(
+                    this,
+                    Preferences::class.java
+                )
+            )
+            NavigationDrawerFragment.NAVDRAWER_ITEM_HELP -> showDialog(UIUtils.HELP_DIALOG)
+            NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE -> {
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(getString(R.string.open_source_github))
+                startActivity(i)
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK -> {
                 // Send App feedback
-                String email = getString(R.string.app_feedback_email);
-                String locationString = null;
+                val email = getString(R.string.app_feedback_email)
+                var locationString: String? = null
                 if (mLastLocation != null) {
-                    locationString = LocationUtils.printLocationDetails(mLastLocation);
+                    locationString = LocationUtils.printLocationDetails(mLastLocation)
                 }
-
-                UIUtils.sendEmail(this, email, locationString, deviceInfoViewModel);
-                break;
+                UIUtils.sendEmail(this, email, locationString, deviceInfoViewModel)
+            }
         }
-        invalidateOptionsMenu();
+        invalidateOptionsMenu()
     }
 
-    private void showStatusFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+    private fun showStatusFragment() {
+        val fm = supportFragmentManager
         // Hide everything that shouldn't be shown
-        hideMapFragment();
-        hideSkyFragment();
-        hideAccuracyFragment();
+        hideMapFragment()
+        hideSkyFragment()
+        hideAccuracyFragment()
         if (mBenchmarkController != null) {
-            mBenchmarkController.hide();
+            mBenchmarkController!!.hide()
         }
 
         // Show fragment (we use show instead of replace to keep the map state)
         if (mStatusFragment == null) {
             // First check to see if an instance of fragment already exists
-            mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
-
+            mStatusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
             if (mStatusFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsStatusFragment");
-                mStatusFragment = new GpsStatusFragment();
+                Log.d(TAG, "Creating new GpsStatusFragment")
+                mStatusFragment = GpsStatusFragment()
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mStatusFragment, GpsStatusFragment.TAG)
-                        .commit();
+                    .add(R.id.fragment_container, mStatusFragment!!, GpsStatusFragment.TAG)
+                    .commit()
             }
         }
-
-        getSupportFragmentManager().beginTransaction().show(mStatusFragment).commit();
-        setTitle(getResources().getString(R.string.gps_status_title));
+        supportFragmentManager.beginTransaction().show(mStatusFragment!!).commit()
+        title = resources.getString(R.string.gps_status_title)
     }
 
-    private void hideStatusFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        mStatusFragment = (GpsStatusFragment) fm.findFragmentByTag(GpsStatusFragment.TAG);
-        if (mStatusFragment != null && !mStatusFragment.isHidden()) {
-            fm.beginTransaction().hide(mStatusFragment).commit();
+    private fun hideStatusFragment() {
+        val fm = supportFragmentManager
+        mStatusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
+        if (mStatusFragment != null && !mStatusFragment!!.isHidden) {
+            fm.beginTransaction().hide(mStatusFragment!!).commit()
         }
     }
 
-    private void showMapFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+    private fun showMapFragment() {
+        val fm = supportFragmentManager
         // Hide everything that shouldn't be shown
-        hideStatusFragment();
-        hideSkyFragment();
-        hideAccuracyFragment();
+        hideStatusFragment()
+        hideSkyFragment()
+        hideAccuracyFragment()
         if (mBenchmarkController != null) {
-            mBenchmarkController.hide();
+            mBenchmarkController!!.hide()
         }
 
         // Show fragment (we use show instead of replace to keep the map state)
         if (mMapFragment == null) {
             // First check to see if an instance of fragment already exists
-            mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
-
+            mMapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
             if (mMapFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsMapFragment");
-                Bundle bundle = new Bundle();
-                bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP);
-                mMapFragment = new GpsMapFragment();
-                mMapFragment.setArguments(bundle);
+                Log.d(TAG, "Creating new GpsMapFragment")
+                val bundle = Bundle()
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP)
+                mMapFragment = GpsMapFragment()
+                mMapFragment!!.arguments = bundle
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mMapFragment, MapConstants.MODE_MAP)
-                        .commit();
+                    .add(R.id.fragment_container, mMapFragment!!, MapConstants.MODE_MAP)
+                    .commit()
             }
         }
-
-        getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
-        setTitle(getResources().getString(R.string.gps_map_title));
+        supportFragmentManager.beginTransaction().show(mMapFragment!!).commit()
+        title = resources.getString(R.string.gps_map_title)
     }
 
-    private void hideMapFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        mMapFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_MAP);
-        if (mMapFragment != null && !mMapFragment.isHidden()) {
-            fm.beginTransaction().hide(mMapFragment).commit();
+    private fun hideMapFragment() {
+        val fm = supportFragmentManager
+        mMapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
+        if (mMapFragment != null && !mMapFragment!!.isHidden) {
+            fm.beginTransaction().hide(mMapFragment!!).commit()
         }
     }
 
-    private void showSkyFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+    private fun showSkyFragment() {
+        val fm = supportFragmentManager
         // Hide everything that shouldn't be shown
-        hideStatusFragment();
-        hideMapFragment();
-        hideAccuracyFragment();
+        hideStatusFragment()
+        hideMapFragment()
+        hideAccuracyFragment()
         if (mBenchmarkController != null) {
-            mBenchmarkController.hide();
+            mBenchmarkController!!.hide()
         }
         // Show fragment (we use show instead of replace to keep the map state)
         if (mSkyFragment == null) {
             // First check to see if an instance of fragment already exists
-            mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
-
+            mSkyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
             if (mSkyFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsStatusFragment");
-                mSkyFragment = new GpsSkyFragment();
+                Log.d(TAG, "Creating new GpsStatusFragment")
+                mSkyFragment = GpsSkyFragment()
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mSkyFragment, GpsSkyFragment.TAG)
-                        .commit();
+                    .add(R.id.fragment_container, mSkyFragment!!, GpsSkyFragment.TAG)
+                    .commit()
             }
         }
-
-        getSupportFragmentManager().beginTransaction().show(mSkyFragment).commit();
-        setTitle(getResources().getString(R.string.gps_sky_title));
+        supportFragmentManager.beginTransaction().show(mSkyFragment!!).commit()
+        title = resources.getString(R.string.gps_sky_title)
     }
 
-    private void hideSkyFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        mSkyFragment = (GpsSkyFragment) fm.findFragmentByTag(GpsSkyFragment.TAG);
-        if (mSkyFragment != null && !mSkyFragment.isHidden()) {
-            fm.beginTransaction().hide(mSkyFragment).commit();
+    private fun hideSkyFragment() {
+        val fm = supportFragmentManager
+        mSkyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
+        if (mSkyFragment != null && !mSkyFragment!!.isHidden) {
+            fm.beginTransaction().hide(mSkyFragment!!).commit()
         }
     }
 
-    private void showAccuracyFragment() {
-        FragmentManager fm = getSupportFragmentManager();
+    private fun showAccuracyFragment() {
+        val fm = supportFragmentManager
         // Hide everything that shouldn't be shown
-        hideStatusFragment();
-        hideMapFragment();
-        hideSkyFragment();
+        hideStatusFragment()
+        hideMapFragment()
+        hideSkyFragment()
         // Show fragment (we use show instead of replace to keep the map state)
         if (mAccuracyFragment == null) {
             // First check to see if an instance of fragment already exists
-            mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
-
+            mAccuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
             if (mAccuracyFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsMapFragment for Accuracy");
-                Bundle bundle = new Bundle();
-                bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY);
-                mAccuracyFragment = new GpsMapFragment();
-                mAccuracyFragment.setArguments(bundle);
+                Log.d(TAG, "Creating new GpsMapFragment for Accuracy")
+                val bundle = Bundle()
+                bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY)
+                mAccuracyFragment = GpsMapFragment()
+                mAccuracyFragment!!.arguments = bundle
                 fm.beginTransaction()
-                        .add(R.id.fragment_container, mAccuracyFragment, MapConstants.MODE_ACCURACY)
-                        .commit();
+                    .add(R.id.fragment_container, mAccuracyFragment!!, MapConstants.MODE_ACCURACY)
+                    .commit()
             }
         }
-
-        getSupportFragmentManager().beginTransaction().show(mAccuracyFragment).commit();
-        setTitle(getResources().getString(R.string.gps_accuracy_title));
-
+        supportFragmentManager.beginTransaction().show(mAccuracyFragment!!).commit()
+        title = resources.getString(R.string.gps_accuracy_title)
         if (mBenchmarkController != null) {
-            initAccuracy();
+            initAccuracy()
         }
     }
 
-    private void hideAccuracyFragment() {
-        FragmentManager fm = getSupportFragmentManager();
-        mAccuracyFragment = (GpsMapFragment) fm.findFragmentByTag(MapConstants.MODE_ACCURACY);
-        if (mAccuracyFragment != null && !mAccuracyFragment.isHidden()) {
-            fm.beginTransaction().hide(mAccuracyFragment).commit();
+    private fun hideAccuracyFragment() {
+        val fm = supportFragmentManager
+        mAccuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
+        if (mAccuracyFragment != null && !mAccuracyFragment!!.isHidden) {
+            fm.beginTransaction().hide(mAccuracyFragment!!).commit()
         }
     }
 
-    private void forcePsdsInjection() {
-        boolean success = IOUtils.forcePsdsInjection(mLocationManager);
+    private fun forcePsdsInjection() {
+        val success = IOUtils.forcePsdsInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
-            Toast.makeText(this, getString(R.string.force_psds_injection_success),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.force_psds_injection_success),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_inject_psds),
+                PreferenceUtils.CAPABILITY_SUPPORTED
+            )
         } else {
-            Toast.makeText(this, getString(R.string.force_psds_injection_failure),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.force_psds_injection_failure),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_inject_psds),
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            )
         }
     }
 
-    private void forceTimeInjection() {
-        boolean success = IOUtils.forceTimeInjection(mLocationManager);
+    private fun forceTimeInjection() {
+        val success = IOUtils.forceTimeInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
-            Toast.makeText(this, getString(R.string.force_time_injection_success),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.force_time_injection_success),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_inject_time),
+                PreferenceUtils.CAPABILITY_SUPPORTED
+            )
         } else {
-            Toast.makeText(this, getString(R.string.force_time_injection_failure),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.force_time_injection_failure),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_inject_time),
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            )
         }
     }
 
-    private void deleteAidingData() {
+    private fun deleteAidingData() {
         // If GPS is currently running, stop it
-        boolean lastStartState = mStarted;
-        if (mStarted) {
-            gpsStop();
+        val lastStartState = isTrackingStarted(this)
+        if (isTrackingStarted(this)) {
+            gpsStop()
         }
-        boolean success = IOUtils.deleteAidingData(mLocationManager);
+        val success = IOUtils.deleteAidingData(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
-            Toast.makeText(this, getString(R.string.delete_aiding_data_success),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.delete_aiding_data_success),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_delete_assist),
+                PreferenceUtils.CAPABILITY_SUPPORTED
+            )
         } else {
-            Toast.makeText(this, getString(R.string.delete_aiding_data_failure),
-                    Toast.LENGTH_SHORT).show();
-            PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_NOT_SUPPORTED);
+            Toast.makeText(
+                this, getString(R.string.delete_aiding_data_failure),
+                Toast.LENGTH_SHORT
+            ).show()
+            PreferenceUtils.saveInt(
+                Application.get().getString(R.string.capability_key_delete_assist),
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            )
         }
-
         if (lastStartState) {
-            Handler h = new Handler();
+            val h = Handler()
             // Restart the GPS, if it was previously started, with a slight delay,
             // to refresh the assistance data
-            h.postDelayed(this::gpsStart, 500);
+            h.postDelayed({ gpsStart() }, 500)
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.nav_drawer_left_pane);
+    override fun onBackPressed() {
+        val drawer = findViewById<DrawerLayout>(R.id.nav_drawer_left_pane)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             // Close navigation drawer
-            drawer.closeDrawer(GravityCompat.START);
-            return;
+            drawer.closeDrawer(GravityCompat.START)
+            return
         } else if (mBenchmarkController != null) {
             // Close sliding drawer
-            if (mBenchmarkController.onBackPressed()) {
-                return;
+            if (mBenchmarkController!!.onBackPressed()) {
+                return
             }
         }
-        super.onBackPressed();
+        super.onBackPressed()
     }
 
-    static GpsTestActivity getInstance() {
-        return mActivity;
-    }
-
+    @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
-    private synchronized void gpsStart() {
-        if (service != null) {
-            service.subscribeToLocationUpdates();
+    @Synchronized
+    private fun gpsStart() {
+        service?.subscribeToLocationUpdates()
+        showProgressBar()
+
+        registerLocationFlow()
+
+        // Show Toast only if the user has set minTime or minDistance to something other than default values
+        if (getMinTimeMillis() != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
+            getMinDistance() != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
+        ) {
+            Toast.makeText(
+                this,
+                String.format(
+                    getString(R.string.gnss_running),
+                    (getMinTimeMillis().toDouble() / SECONDS_TO_MILLISECONDS).toString(),
+                    getMinDistance().toString()
+                ),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-        showProgressBar();
 
-        if (mLocationManager == null || mProvider == null) {
-            return;
-        }
-
-        // TODO - Observe flows here
-
-        if (!mStarted) {
-            mLocationManager
-                    .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
-            mStarted = true;
-
-            // Show Toast only if the user has set minTime or minDistance to something other than default values
-            if (minTime != (long) (Double.parseDouble(getString(R.string.pref_gps_min_time_default_sec))
-                    * SECONDS_TO_MILLISECONDS) ||
-                    minDistance != Float
-                            .parseFloat(getString(R.string.pref_gps_min_distance_default_meters))) {
-                Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                        String.valueOf((double) minTime / SECONDS_TO_MILLISECONDS),
-                        String.valueOf(minDistance)), Toast.LENGTH_SHORT).show();
-            }
-
-            // Reset the options menu to trigger updates to action bar menu items
-            invalidateOptionsMenu();
-        }
+        // Reset the options menu to trigger updates to action bar menu items
+        invalidateOptionsMenu()
     }
 
-    private synchronized void gpsStop() {
-        if (mLocationManager == null) {
-            return;
+    @ExperimentalCoroutinesApi
+    private fun registerLocationFlow() {
+        if (locationFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
         }
-        if (mStarted) {
-            mLocationManager.removeUpdates(locationListener);
-            mStarted = false;
+        // Observe locations via Flow as they are generated by the repository
+        locationFlow = repository.getLocations()
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                mLastLocation = it
+                Log.d(TAG, "Activity location: ${it.toNotificationTitle()}")
+
+                // Reset the options menu to trigger updates to action bar menu items
+                invalidateOptionsMenu()
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    @Synchronized
+    private fun gpsStop() {
+        if (isTrackingStarted(this)) {
+            locationFlow?.cancel()
 
             // Reset the options menu to trigger updates to action bar menu items
-            invalidateOptionsMenu();
+            invalidateOptionsMenu()
             if (progressBar != null) {
-                progressBar.setVisibility(View.GONE);
+                progressBar!!.visibility = View.GONE
             }
         }
     }
 
     // TODO - On first fix, on any fix
-    private void hideProgressBar() {
+    private fun hideProgressBar() {
         if (progressBar != null) {
-            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
     // TODO - On lost fix
-    private void showProgressBar() {
+    private fun showProgressBar() {
         if (progressBar != null) {
-            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS);
+            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
-
-
-    @SuppressLint("MissingPermission")
-    private void checkTimeAndDistance(SharedPreferences settings) {
-        double minTimeDouble = Double
-                .parseDouble(settings.getString(getString(R.string.pref_key_gps_min_time), "1"));
-        long minTimeLong = (long) (minTimeDouble * SECONDS_TO_MILLISECONDS);
-
-        if (minTime != minTimeLong ||
-                minDistance != Float.parseFloat(
-                        settings.getString(getString(R.string.pref_key_gps_min_distance), "0"))) {
-            // User changed preference values, get the new ones
-            minTime = minTimeLong;
-            minDistance = Float.parseFloat(
-                    settings.getString(getString(R.string.pref_key_gps_min_distance), "0"));
-            // If the GPS is started, reset the location listener with the new values
-            if (mStarted && mProvider != null) {
-                mLocationManager
-                        .requestLocationUpdates(mProvider.getName(), minTime, minDistance, locationListener);
-                Toast.makeText(this, String.format(getString(R.string.gps_set_location_listener),
-                        String.valueOf(minTimeDouble), String.valueOf(minDistance)),
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        }
-    }
-
-    private void checkKeepScreenOn(SharedPreferences settings) {
+    private fun checkKeepScreenOn(settings: SharedPreferences) {
 //        if (!mIsLargeScreen) {
-        mToolbar.setKeepScreenOn(settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true));
-//        } else {
+        mToolbar!!.keepScreenOn =
+            settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)
+        //        } else {
 //            // TODO - After we fix large screen devices in #122, we can delete the below block and
 //            // use the above block with mToolbar.setKeepScreenOn() for all screen sizes
 //            View v = findViewById(R.id.large_screen_layout);
@@ -875,112 +786,114 @@ public class GpsTestActivity extends AppCompatActivity
 //        }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        initGpsSwitch(menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        initGpsSwitch(menu)
+        return true
     }
 
-    private void initGpsSwitch(Menu menu) {
-        MenuItem item = menu.findItem(R.id.gps_switch_item);
+    private fun initGpsSwitch(menu: Menu) {
+        val item = menu.findItem(R.id.gps_switch_item)
         if (item != null) {
-            mSwitch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch);
+            mSwitch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
             if (mSwitch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                mSwitch.setChecked(mStarted);
+                mSwitch!!.isChecked = isTrackingStarted(this)
 
                 // Set up listener for GPS on/off switch
-                mSwitch.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Turn GPS on or off
-                        if (!mSwitch.isChecked() && mStarted) {
-                            gpsStop();
-                            // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
-                            // TODO - removeGnssMeasurementsListener();
-                        } else {
-                            if (mSwitch.isChecked() && !mStarted) {
-                                gpsStart();
-                                // Measurements need to be started again
-                                // TODO - addGnssMeasurementsListener();
-                            }
+                mSwitch!!.setOnClickListener {
+                    // Turn GPS on or off
+                    if (!mSwitch!!.isChecked && isTrackingStarted(this)) {
+                        gpsStop()
+                        service?.unsubscribeToLocationUpdates()
+                        // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
+                        // TODO - removeGnssMeasurementsListener();
+                    } else {
+                        if (mSwitch!!.isChecked && !isTrackingStarted(this)) {
+                            gpsStart()
+                            // Measurements need to be started again
+                            // TODO - addGnssMeasurementsListener();
                         }
                     }
-                });
+                }
             }
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.share);
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val item = menu.findItem(R.id.share)
         if (item != null) {
-            item.setVisible(mLastLocation != null || service.isFileLoggingEnabled());
+            item.isVisible = mLastLocation != null || service!!.isFileLoggingEnabled()
         }
-        return true;
+        return true
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle menu item selection
-        int itemId = item.getItemId();
+        val itemId = item.itemId
         if (itemId == R.id.gps_switch) {
-            return true;
+            return true
         } else if (itemId == R.id.share) {
-            share();
-            return true;
+            share()
+            return true
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item)
     }
 
-    private void share() {
-        final Location location = mLastLocation;
-        shareDialogOpen = true;
-        UIUtils.showShareFragmentDialog(this, location, service.isFileLoggingEnabled(),
-                service.csvFileLogger, service.jsonFileLogger, null);
+    private fun share() {
+        val location = mLastLocation
+        shareDialogOpen = true
+        UIUtils.showShareFragmentDialog(
+            this, location, service!!.isFileLoggingEnabled(),
+            service!!.csvFileLogger, service!!.jsonFileLogger, null
+        )
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case UIUtils.WHATSNEW_DIALOG:
-                return UIUtils.createWhatsNewDialog(this);
-            case UIUtils.HELP_DIALOG:
-                return UIUtils.createHelpDialog(this);
-            case UIUtils.CLEAR_ASSIST_WARNING_DIALOG:
-                return createClearAssistWarningDialog();
+    override fun onCreateDialog(id: Int): Dialog {
+        when (id) {
+            UIUtils.WHATSNEW_DIALOG -> return UIUtils.createWhatsNewDialog(this)
+            UIUtils.HELP_DIALOG -> return UIUtils.createHelpDialog(this)
+            UIUtils.CLEAR_ASSIST_WARNING_DIALOG -> return createClearAssistWarningDialog()
         }
-        return super.onCreateDialog(id);
+        return super.onCreateDialog(id)
     }
 
-    private Dialog createClearAssistWarningDialog() {
-        View view = getLayoutInflater().inflate(R.layout.clear_assist_warning, null);
-        CheckBox neverShowDialog = view.findViewById(R.id.clear_assist_never_ask_again);
-
-        neverShowDialog.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+    private fun createClearAssistWarningDialog(): Dialog {
+        val view = layoutInflater.inflate(R.layout.clear_assist_warning, null)
+        val neverShowDialog = view.findViewById<CheckBox>(R.id.clear_assist_never_ask_again)
+        neverShowDialog.setOnCheckedChangeListener { compoundButton: CompoundButton?, isChecked: Boolean ->
             // Save the preference
-            PreferenceUtils.saveBoolean(getString(R.string.pref_key_never_show_clear_assist_warning), isChecked);
-        });
-
-        Drawable icon = ContextCompat.getDrawable(Application.get(), R.drawable.ic_delete);
-        if (icon != null) {
-            DrawableCompat.setTint(icon, getResources().getColor(R.color.colorPrimary));
+            PreferenceUtils.saveBoolean(
+                getString(R.string.pref_key_never_show_clear_assist_warning),
+                isChecked
+            )
         }
+        val icon = ContextCompat.getDrawable(Application.get(), R.drawable.ic_delete)
+        if (icon != null) {
+            DrawableCompat.setTint(icon, resources.getColor(R.color.colorPrimary))
+        }
+        val builder = AlertDialog.Builder(this)
+            .setTitle(R.string.clear_assist_warning_title)
+            .setIcon(icon)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.yes
+            ) { dialog: DialogInterface?, which: Int -> deleteAidingData() }
+            .setNegativeButton(
+                R.string.no
+            ) { dialog: DialogInterface?, which: Int -> }
+        return builder.create()
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.clear_assist_warning_title)
-                .setIcon(icon)
-                .setCancelable(false)
-                .setView(view)
-                .setPositiveButton(R.string.yes,
-                        (dialog, which) -> deleteAidingData()
-                )
-                .setNegativeButton(R.string.no,
-                        (dialog, which) -> {
-                            // No-op
-                        }
-                );
-        return builder.create();
+    companion object {
+        private const val TAG = "GpsTestActivity"
+        private const val SECONDS_TO_MILLISECONDS = 1000
+        private const val GPS_RESUME = "gps_resume"
+        private const val EXISTING_CSV_LOG_FILE = "existing_csv_log_file"
+        private const val EXISTING_JSON_LOG_FILE = "existing_json_log_file"
+        var mIsLargeScreen = false
+        var instance: GpsTestActivity? = null
+            private set
     }
 }

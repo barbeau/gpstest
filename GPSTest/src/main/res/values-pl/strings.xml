@@ -107,7 +107,7 @@
     <string name="enable_gps_message">GPS/GNSS jest wyłączony. Włączyć teraz?</string>
     <string name="enable_gps_positive_button">Włącz GPS/GNSS</string>
     <string name="enable_gps_negative_button">Nie</string>
-    <string name="gps_set_location_listener">Uruchomiono GNSS z interwałem = %1$ss, min. dist. = %2$sm
+    <string name="gnss_running">Uruchomiono GNSS z interwałem = %1$ss, min. dist. = %2$sm
     </string>
     <string name="clear_assist_warning_title">Usunąć dane pomocnicze?</string>
     <string name="clear_assist_warning">Automatyczne odświeżanie danych asystenta przez niektóre urządzenia może potrwać 24 godziny.  Jeśli Twoje urządzenie nie obsługuje ręcznej iniekcji, GNSS może nie działać dla żadnej aplikacji do czasu zakończenia automatycznego odświeżania. Jesteś pewny?</string>

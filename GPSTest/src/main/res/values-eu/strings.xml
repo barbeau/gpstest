@@ -105,7 +105,7 @@
     <string name="enable_gps_message">GPS/GNSS desaktibatuta dago. Gaitu nahi duzu orain?</string>
     <string name="enable_gps_positive_button">Gaitu GPS/GNSS</string>
     <string name="enable_gps_negative_button">Ez</string>
-    <string name="gps_set_location_listener">Martxan dago GNSS: tartea = %1$ss, eta gutxieneko distantzia = %2$sm
+    <string name="gnss_running">Martxan dago GNSS: tartea = %1$ss, eta gutxieneko distantzia = %2$sm
     </string>
     <string name="clear_assist_warning_title">Ezabatu laguntza datuak?</string>
     <string name="clear_assist_warning">Gailu batzuk 24 ordu behar izaten dute laguntza datuak freskatzeko. Zure gailuak  eskuzko txertaketa onartzen ez badu, baliteke freskatzea burutu arte GNSS ez funtzionatzea aplikazioetan. Ziur zaude?</string>

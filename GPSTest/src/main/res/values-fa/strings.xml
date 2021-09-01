@@ -95,7 +95,7 @@
     <string name="enable_gps_message">GPS/GNSS خاموش است. اکنون روشن می‌کنید؟</string>
     <string name="enable_gps_positive_button">روشن‌کردن GPS/GNSS</string>
     <string name="enable_gps_negative_button">خیر</string>
-    <string name="gps_set_location_listener">‏GNSS آغاز شد با interval = %1$ss, min. dist. = %2$sm
+    <string name="gnss_running">‏GNSS آغاز شد با interval = %1$ss, min. dist. = %2$sm
     </string>
     <string name="clear_assist_warning_title">حذف دادهٔ کمکی؟</string>
     <string name="clear_assist_warning">در برخی دستگاه‌ها ممکن است تازه‌سازی خودکارِ دادهٔ کمکی تا ۲۴ ساعت زمان ببرد. اگر دستگاه شما از تزریق دستی پشتیبانی نمی‌کند، احتمال دارد تا تکمیل‌شدن تازه‌سازی خودکار، GNSS برای هیچ برنامه‌ای کار نکند. مطمئن هستید؟</string>

@@ -95,7 +95,7 @@
     <string name="enable_gps_message">GPS/GNSS ist deaktiviert. Jetzt aktivieren?</string>
     <string name="enable_gps_positive_button">GPS/GNSS aktivieren</string>
     <string name="enable_gps_negative_button">Nein</string>
-    <string name="gps_set_location_listener">GNSS gestartet mit Intervall = %1$ss, min. Entfernung = %2$sm</string>
+    <string name="gnss_running">GNSS gestartet mit Intervall = %1$ss, min. Entfernung = %2$sm</string>
     <string name="clear_assist_warning_title">Hilfsdaten löschen?</string>
     <string name="clear_assist_warning">Bei einigen Geräten kann es 24 Stunden dauern, bis die Hilfsdaten automatisch aktualisiert werden. Wenn dein Gerät die manuelle Dateneingabe nicht unterstützt, funktioniert GNSS möglicherweise für keine Anwendung, bis die automatische Aktualisierung abgeschlossen ist. Bist du dir sicher?</string>
     <string name="never_ask_again">Nicht noch einmal fragen</string>

@@ -106,7 +106,7 @@
     <string name="enable_gps_message">GPS / GNSS on poistettu käytöstä. Ota se käyttöön nyt?</string>
     <string name="enable_gps_positive_button">Käytä GPS / GNSS</string>
     <string name="enable_gps_negative_button">Ei</string>
-    <string name="gps_set_location_listener">Käynnistettiin GNSS välillä = %1$s s, min. dist. = %2$sm</string>
+    <string name="gnss_running">Käynnistettiin GNSS välillä = %1$s s, min. dist. = %2$sm</string>
     <string name="clear_assist_warning_title">Poistetaanko aputiedot?</string>
     <string name="clear_assist_warning">Joillakin laitteilla voi kestää 24 tuntia aputietojen automaattinen päivittäminen. Jos laitteesi ei tue käsin tehtävää syöttämistä, GNSS ei välttämättä toimi missään sovelluksessa, ennen kuin automaattinen päivitys on valmis. Oletko varma?</string>
     <string name="never_ask_again">Älä kysy uudestaan</string>

@@ -109,7 +109,7 @@
     <string name="enable_gps_message">GPS/GNSS tidak aktif. Aktifkan sekarang?</string>
     <string name="enable_gps_positive_button">Aktifkan GPS/GNSS</string>
     <string name="enable_gps_negative_button">Tidak</string>
-    <string name="gps_set_location_listener">Memulai GNSS dengan selang = %1$sd, jarak min. = %2$sm
+    <string name="gnss_running">Memulai GNSS dengan selang = %1$sd, jarak min. = %2$sm
     </string>
     <string name="clear_assist_warning_title">Hapus data bantuan?</string>
     <string name="clear_assist_warning">Beberapa perangkat mungkin membutuhkan waktu 24 jam untuk memperbarui data bantuan secara otomatis. Jika perangkat Anda tidak mendukung injeksi secara manual, GNSS mungkin tidak bekerja untuk beberapa apl sampai refresh-otomatis selesai. Apakah Anda yakin?</string>

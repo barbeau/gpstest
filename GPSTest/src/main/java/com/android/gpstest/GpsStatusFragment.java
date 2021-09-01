@@ -76,6 +76,7 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.NmeaUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.SatelliteUtils;
+import com.android.gpstest.util.SharedPreferenceUtil;
 import com.android.gpstest.util.SortUtil;
 import com.android.gpstest.util.UIUtils;
 
@@ -317,7 +318,7 @@ public class GpsStatusFragment extends Fragment {
     }
 
     private void updateFixTime() {
-        if (mFixTime == 0 || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
+        if (mFixTime == 0 || !SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext())) {
             mFixTimeView.setText("");
             mFixTimeErrorView.setText("");
             mFixTimeErrorView.setVisibility(View.GONE);
@@ -410,9 +411,7 @@ public class GpsStatusFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        GpsTestActivity gta = GpsTestActivity.getInstance();
-        setStarted(gta.mStarted);
-
+        setStarted(SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext()));
         setupUnitPreferences();
     }
 
@@ -698,7 +697,7 @@ public class GpsStatusFragment extends Fragment {
             return;
         }
         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
-        if ((GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted) || filter.isEmpty()) {
+        if (!SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext()) || filter.isEmpty()) {
             filterGroup.setVisibility(View.GONE);
             // Set num sats view back to normal
             mNumSats.setTypeface(null, Typeface.NORMAL);

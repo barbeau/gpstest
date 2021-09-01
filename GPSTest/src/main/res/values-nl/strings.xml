@@ -95,7 +95,7 @@
     <string name="enable_gps_message">Locatiebepaling is uitgeschakeld. Nu inschakelen?</string>
     <string name="enable_gps_positive_button">Locatiebepaling inschakelen</string>
     <string name="enable_gps_negative_button">Nee</string>
-    <string name="gps_set_location_listener">Locatiebepaling gestart met interval = %1$s s, minimale afstand = %2$s m
+    <string name="gnss_running">Locatiebepaling gestart met interval = %1$s s, minimale afstand = %2$s m
 </string>
     <string name="clear_assist_warning_title">Verwijder hulp-gegevens?</string>
     <string name="clear_assist_warning">Sommige apparaten hebben 24 uur nodig om de hulpgegevens automatisch te vernieuwen. Als je apparaat handmatige invoer niet ondersteunt, zal locatiebepaling bij geen enkele andere app meer werken voordat automatisch vernieuwen is voltooid. Weet je het zeker?</string>

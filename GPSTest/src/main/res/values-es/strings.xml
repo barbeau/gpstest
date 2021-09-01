@@ -95,7 +95,7 @@
     <string name="enable_gps_message">El GPS/GNSS está desactivado. ¿Activar ahora?</string>
     <string name="enable_gps_positive_button">Activar GPS/GNSS</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">Se ha iniciado el GNSS con intervalo = %1$ss, min. dist. = %2$sm
+    <string name="gnss_running">Se ha iniciado el GNSS con intervalo = %1$ss, min. dist. = %2$sm
 </string>
     <string name="clear_assist_warning_title">Borrar datos de asistencia?</string>
     <string name="clear_assist_warning">Algunos dispositivos pueden necesitar 24 horas para auto-refrescar los datos de asistencia. Si tu dispositivo no soporta inyección manual, el GNSS puede no funcionar con ninguna app hasta que el auto-refresco se complete. ¿Estás seguro?</string>

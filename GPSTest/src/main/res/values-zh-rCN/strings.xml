@@ -106,7 +106,7 @@
     <string name="enable_gps_message">GPS/GNSS 已禁用。要启用吗？</string>
     <string name="enable_gps_positive_button">启用 GPS/GNSS</string>
     <string name="enable_gps_negative_button">不启用</string>
-    <string name="gps_set_location_listener">已以时间间隔 %1$ss，最小距离 %2$sm 启动 GNSS</string>
+    <string name="gnss_running">已以时间间隔 %1$ss，最小距离 %2$sm 启动 GNSS</string>
     <string name="clear_assist_warning_title">要清除辅助数据吗？</string>
     <string name="clear_assist_warning">一些设备可能需要24小时自动刷新辅助数据。如果你的设备不支持手动导入，在24小时的自动刷新以前任何应用都无法使用 GNSS。你确定要继续吗?</string>
     <string name="never_ask_again">不再询问</string>

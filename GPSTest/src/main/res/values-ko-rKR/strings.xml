@@ -97,7 +97,7 @@
     <string name="enable_gps_message">GPS/GNSS가 비활성화됨. 지금 활성화 하시겠습니까?</string>
     <string name="enable_gps_positive_button">GPS/GNSS 활성화</string>
     <string name="enable_gps_negative_button">아니오</string>
-    <string name="gps_set_location_listener">인터벌을 적용해 GNSS 시작됨, 시간 = %1$ss, 최소 거리 = %2$sm
+    <string name="gnss_running">인터벌을 적용해 GNSS 시작됨, 시간 = %1$ss, 최소 거리 = %2$sm
 </string>
     <string name="clear_assist_warning_title">보조 데이터를 삭제합니까?</string>
     <string name="clear_assist_warning">일부 기기는 자동으로 보조 데이터가 업데이트 하는데 24시간이 걸립니다. 만약 기기가 수동 주입을 지원하지 않는다면, 자동 업데이트가 완료될 때까지 GNSS가 모든 앱에서 작동하지 않을 수도 있습니다. 정말로 진행하시겠습니까?</string>
