@@ -240,7 +240,7 @@ public class PreferenceUtils {
      * Returns true if service location tracking is active, and false if it is not
      * @return true if service location tracking is active, and false if it is not
      */
-    public static boolean getServiceLocationTrackingPref() {
+    public static boolean isTrackingStarted() {
         return Application.getPrefs().getBoolean(KEY_SERVICE_TRACKING_ENABLED, false);
     }
 
@@ -248,7 +248,7 @@ public class PreferenceUtils {
      * Saves the provided value as the current service location tracking state
      * @param value true if service location tracking is active, and false if it is not
      */
-    public static void saveServiceLocationTrackingPref(boolean value) {
+    public static void saveTrackingStarted(boolean value) {
         saveBoolean(KEY_SERVICE_TRACKING_ENABLED, value);
     }
 }

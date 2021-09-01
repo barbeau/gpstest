@@ -47,16 +47,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
-import com.android.gpstest.GpsTestActivity
 import com.android.gpstest.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.util.*
+import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
 import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
-import com.android.gpstest.util.SharedPreferenceUtil.isTrackingStarted
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -102,7 +100,10 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             val binder = iBinder as LocalBinder
             service = binder.service
             isServiceBound = true
-            gpsStart() // TODO - is this right? To start automatically when bound?
+            if (locationFlow?.isActive == true) {
+                // Activity started location updates but service wasn't bound yet - tell service to start now
+                service?.subscribeToLocationUpdates()
+            }
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
@@ -126,7 +127,6 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             mUseDarkTheme = true
         }
         super.onCreate(savedInstanceState)
-        instance = this
         // Reset the activity title to make sure dynamic locale changes are shown
         UIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
@@ -313,7 +313,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         } else {
             // Request permissions from the user
             ActivityCompat.requestPermissions(
-                instance!!,
+                activity,
                 PermissionUtils.REQUIRED_PERMISSIONS,
                 PermissionUtils.LOCATION_PERMISSION_REQUEST
             )
@@ -362,7 +362,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onPause() {
-        gpsResume = if (isTrackingStarted(this)) {
+        gpsResume = if (isTrackingStarted()) {
             gpsStop()
             // If GPS was started, we want to resume it after orientation change
             true
@@ -645,8 +645,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun deleteAidingData() {
         // If GPS is currently running, stop it
-        val lastStartState = isTrackingStarted(this)
-        if (isTrackingStarted(this)) {
+        val lastStartState = isTrackingStarted()
+        if (isTrackingStarted()) {
             gpsStop()
         }
         val success = IOUtils.deleteAidingData(getSystemService(LOCATION_SERVICE) as LocationManager)
@@ -696,6 +696,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @SuppressLint("MissingPermission")
     @Synchronized
     private fun gpsStart() {
+        PreferenceUtils.saveTrackingStarted(true)
         service?.subscribeToLocationUpdates()
         showProgressBar()
 
@@ -733,6 +734,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 mLastLocation = it
                 Log.d(TAG, "Activity location: ${it.toNotificationTitle()}")
 
+                hideProgressBar()
+
                 // Reset the options menu to trigger updates to action bar menu items
                 invalidateOptionsMenu()
             }
@@ -741,14 +744,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @Synchronized
     private fun gpsStop() {
-        if (isTrackingStarted(this)) {
+        if (isTrackingStarted()) {
             locationFlow?.cancel()
 
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu()
-            if (progressBar != null) {
-                progressBar!!.visibility = View.GONE
-            }
+            progressBar?.visibility = View.GONE
         }
     }
 
@@ -796,18 +797,18 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             mSwitch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
             if (mSwitch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                mSwitch!!.isChecked = isTrackingStarted(this)
+                mSwitch!!.isChecked = isTrackingStarted()
 
                 // Set up listener for GPS on/off switch
                 mSwitch!!.setOnClickListener {
                     // Turn GPS on or off
-                    if (!mSwitch!!.isChecked && isTrackingStarted(this)) {
+                    if (!mSwitch!!.isChecked && isTrackingStarted()) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
                         // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
                         // TODO - removeGnssMeasurementsListener();
                     } else {
-                        if (mSwitch!!.isChecked && !isTrackingStarted(this)) {
+                        if (mSwitch!!.isChecked && !isTrackingStarted()) {
                             gpsStart()
                             // Measurements need to be started again
                             // TODO - addGnssMeasurementsListener();
@@ -891,7 +892,5 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         private const val EXISTING_CSV_LOG_FILE = "existing_csv_log_file"
         private const val EXISTING_JSON_LOG_FILE = "existing_json_log_file"
         var mIsLargeScreen = false
-        var instance: GpsTestActivity? = null
-            private set
     }
 }

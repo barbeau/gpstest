@@ -23,6 +23,7 @@ import static com.android.gpstest.model.ConstellationType.GNSS;
 import static com.android.gpstest.model.ConstellationType.SBAS;
 import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
 import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+import static com.android.gpstest.util.PreferenceUtils.isTrackingStarted;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -76,7 +77,6 @@ import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.NmeaUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.SatelliteUtils;
-import com.android.gpstest.util.SharedPreferenceUtil;
 import com.android.gpstest.util.SortUtil;
 import com.android.gpstest.util.UIUtils;
 
@@ -318,7 +318,7 @@ public class GpsStatusFragment extends Fragment {
     }
 
     private void updateFixTime() {
-        if (mFixTime == 0 || !SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext())) {
+        if (mFixTime == 0 || !isTrackingStarted()) {
             mFixTimeView.setText("");
             mFixTimeErrorView.setText("");
             mFixTimeErrorView.setVisibility(View.GONE);
@@ -411,7 +411,7 @@ public class GpsStatusFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setStarted(SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext()));
+        setStarted(isTrackingStarted());
         setupUnitPreferences();
     }
 
@@ -697,7 +697,7 @@ public class GpsStatusFragment extends Fragment {
             return;
         }
         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
-        if (!SharedPreferenceUtil.INSTANCE.isTrackingStarted(getContext()) || filter.isEmpty()) {
+        if (isTrackingStarted() || filter.isEmpty()) {
             filterGroup.setVisibility(View.GONE);
             // Set num sats view back to normal
             mNumSats.setTypeface(null, Typeface.NORMAL);

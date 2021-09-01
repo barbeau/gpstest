@@ -114,7 +114,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 try {
                     registerLocationFlow()
                 } catch (unlikely: Exception) {
-                    PreferenceUtils.saveServiceLocationTrackingPref(false)
+                    PreferenceUtils.saveTrackingStarted(false)
                     Log.e(TAG, "Exception registering for updates: $unlikely")
                 }
 
@@ -188,7 +188,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
     fun subscribeToLocationUpdates() {
         Log.d(TAG, "subscribeToLocationUpdates()")
 
-        PreferenceUtils.saveServiceLocationTrackingPref(true)
+        PreferenceUtils.saveTrackingStarted(true)
 
         // Binding to this service doesn't actually trigger onStartCommand(). That is needed to
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
@@ -203,10 +203,11 @@ class ForegroundOnlyLocationService : LifecycleService() {
             locationFlow?.cancel()
             stopSelf()
             isStarted = false
-            PreferenceUtils.saveServiceLocationTrackingPref(false)
+            PreferenceUtils.saveTrackingStarted(false)
             removeOngoingActivityNotification()
+            currentLocation = null
         } catch (unlikely: SecurityException) {
-            PreferenceUtils.saveServiceLocationTrackingPref(true)
+            PreferenceUtils.saveTrackingStarted(true)
             Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
         }
     }
@@ -241,7 +242,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private fun goForegroundOrStopSelf() {
         lifecycleScope.launch {
             // We may have been restarted by the system - check if we're still monitoring data
-            if (PreferenceUtils.getServiceLocationTrackingPref()) {
+            if (PreferenceUtils.isTrackingStarted()) {
                 // Monitoring GNSS data
                 postOngoingActivityNotification()
             } else {

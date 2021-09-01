@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.GnssMeasurementsEvent
 import androidx.core.app.ActivityCompat
-import androidx.core.content.edit
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
@@ -165,23 +164,6 @@ internal object SharedPreferenceUtil {
         Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[0]
     val KILOMETERS_PER_HOUR =
         Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[1]
-
-    /**
-     * Returns true if requesting location updates, otherwise returns false.
-     *
-     * @param context The [Context].
-     */
-    fun isTrackingStarted(context: Context): Boolean =
-        Application.getPrefs().getBoolean(KEY_FOREGROUND_ENABLED, false)
-
-    /**
-     * Stores the location updates state in SharedPreferences.
-     * @param requestingLocationUpdates The location updates state.
-     */
-    fun saveLocationTrackingPref(context: Context, requestingLocationUpdates: Boolean) =
-        Application.getPrefs().edit {
-            putBoolean(KEY_FOREGROUND_ENABLED, requestingLocationUpdates)
-        }
 
     /**
      * Returns the minTime between location updates used for the LocationListener in milliseconds
