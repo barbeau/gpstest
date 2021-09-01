@@ -22,7 +22,6 @@ import android.app.Dialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
@@ -88,7 +87,6 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var gpsResume = false
     private var mSwitch // GPS on/off switch
             : Switch? = null
-    private var locationListener: LocationListener? = null
     private var mLastLocation: Location? = null
     var mLastSavedInstanceState: Bundle? = null
     private var mUserDeniedPermission = false
@@ -99,12 +97,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var deviceInfoViewModel: DeviceInfoViewModel? = null
     private var isServiceBound = false
     private var service: ForegroundOnlyLocationService? = null
-    var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
+    private var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
             val binder = iBinder as LocalBinder
             service = binder.service
             isServiceBound = true
-            gpsStart()
+            gpsStart() // TODO - is this right? To start automatically when bound?
         }
 
         override fun onServiceDisconnected(componentName: ComponentName) {
