@@ -2,6 +2,7 @@ package com.android.gpstest.di
 
 
 import android.content.Context
+import com.android.gpstest.data.SharedGnssStatusManager
 import com.android.gpstest.data.SharedLocationManager
 import dagger.Module
 import dagger.Provides
@@ -24,4 +25,11 @@ object DataModule {
         @ApplicationContext context: Context
     ): SharedLocationManager =
         SharedLocationManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun provideSharedGnssStatusManager(
+        @ApplicationContext context: Context
+    ): SharedGnssStatusManager =
+        SharedGnssStatusManager(context, GlobalScope)
 }

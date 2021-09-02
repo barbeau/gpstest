@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
-    private val sharedLocationManager: SharedLocationManager
+    private val sharedLocationManager: SharedLocationManager,
+    private val sharedGnssStatusManager: SharedGnssStatusManager
 ) {
     /**
      * Status of whether the app is actively subscribed to location changes.
@@ -17,4 +18,20 @@ class LocationRepository @Inject constructor(
      */
     @ExperimentalCoroutinesApi
     fun getLocations() = sharedLocationManager.locationFlow()
+
+    /**
+     * Observable flow for GnssStatus updates
+     */
+    @ExperimentalCoroutinesApi
+    fun getGnssStatus() = sharedGnssStatusManager.statusFlow()
+
+    /**
+     * GnssStatus fix state
+     */
+    val fixState: StateFlow<FixState> = sharedGnssStatusManager.fixState
+
+    /**
+     * GnssStatus first fix state
+     */
+    val firstFixState: StateFlow<FirstFixState> = sharedGnssStatusManager.firstFixState
 }

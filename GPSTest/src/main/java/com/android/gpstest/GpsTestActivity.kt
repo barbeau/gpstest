@@ -49,6 +49,8 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.data.FirstFixState
+import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.util.*
@@ -700,7 +702,9 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         service?.subscribeToLocationUpdates()
         showProgressBar()
 
-        registerLocationFlow()
+        // Observe flows
+        observeLocationFlow()
+        observeGnssStates()
 
         // Show Toast only if the user has set minTime or minDistance to something other than default values
         if (getMinTimeMillis() != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
@@ -722,7 +726,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     @ExperimentalCoroutinesApi
-    private fun registerLocationFlow() {
+    private fun observeLocationFlow() {
         if (locationFlow?.isActive == true) {
             // If we're already observing updates, don't register again
             return
@@ -742,6 +746,27 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             .launchIn(lifecycleScope)
     }
 
+    private fun observeGnssStates() {
+        repository.firstFixState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when(it) {
+                    is FirstFixState.Acquired -> hideProgressBar()
+                    is FirstFixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
+                }
+            }
+            .launchIn(lifecycleScope)
+        repository.fixState
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when(it) {
+                    is FixState.Acquired -> hideProgressBar()
+                    is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
     @Synchronized
     private fun gpsStop() {
         if (isTrackingStarted()) {
@@ -753,14 +778,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
-    // TODO - On first fix, on any fix
     private fun hideProgressBar() {
         if (progressBar != null) {
             UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
-    // TODO - On lost fix
     private fun showProgressBar() {
         if (progressBar != null) {
             UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
