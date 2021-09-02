@@ -33,7 +33,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.GnssStatus;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
@@ -53,9 +52,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.Fragment;
@@ -201,13 +201,13 @@ public class GpsStatusFragment extends Fragment {
         mLatitudeView.setText(EMPTY_LAT_LONG);
         mLongitudeView.setText(EMPTY_LAT_LONG);
 
-        mFlagUsa = getResources().getDrawable(R.drawable.ic_flag_usa);
-        mFlagRussia = getResources().getDrawable(R.drawable.ic_flag_russia);
-        mFlagJapan = getResources().getDrawable(R.drawable.ic_flag_japan);
-        mFlagChina = getResources().getDrawable(R.drawable.ic_flag_china);
-        mFlagIndia = getResources().getDrawable(R.drawable.ic_flag_india);
-        mFlagEU = getResources().getDrawable(R.drawable.ic_flag_european_union);
-        mFlagICAO = getResources().getDrawable(R.drawable.ic_flag_icao);
+        mFlagUsa = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_usa);
+        mFlagRussia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_russia);
+        mFlagJapan = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_japan);
+        mFlagChina = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_china);
+        mFlagIndia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_india);
+        mFlagEU = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_european_union);
+        mFlagICAO = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_icao);
 
         GestureDetectorCompat detector = new GestureDetectorCompat(getContext(), new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -281,6 +281,7 @@ public class GpsStatusFragment extends Fragment {
         return v;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setStarted(boolean navigating) {
         if (navigating != mNavigating) {
             if (!navigating) {
@@ -416,7 +417,7 @@ public class GpsStatusFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.status_menu, menu);
     }
 
@@ -590,7 +591,6 @@ public class GpsStatusFragment extends Fragment {
         mHvdopView.setVisibility(View.VISIBLE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void updateGnssStatus(GnssStatus status) {
         setStarted(true);
         updateFixTime();
@@ -640,6 +640,7 @@ public class GpsStatusFragment extends Fragment {
         refreshViews();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void refreshViews() {
         sortLists();
         updateFilterView();
@@ -765,8 +766,8 @@ public class GpsStatusFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.error_time_title);
         builder.setView(textView);
-        Drawable drawable = getResources().getDrawable(android.R.drawable.ic_dialog_alert);
-        DrawableCompat.setTint(drawable, getResources().getColor(R.color.colorPrimary));
+        Drawable drawable = ContextCompat.getDrawable(Application.get(), android.R.drawable.ic_dialog_alert);
+        DrawableCompat.setTint(drawable, ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         builder.setIcon(drawable);
         builder.setNeutralButton(R.string.main_help_close,
                 (dialog, which) -> dialog.dismiss()
