@@ -101,9 +101,9 @@ class GpsStatusFragment : Fragment() {
     private var flagEU: Drawable? = null
     private var flagICAO: Drawable? = null
     private var ttff = ""
-    var prefDistanceUnits: String? = null
-    var prefSpeedUnits: String? = null
-    var viewModel: DeviceInfoViewModel? = null
+    private var prefDistanceUnits: String? = null
+    private var prefSpeedUnits: String? = null
+    private var viewModel: DeviceInfoViewModel? = null
 
     // Repository of location data that the service will observe, injected via Hilt
     @Inject
