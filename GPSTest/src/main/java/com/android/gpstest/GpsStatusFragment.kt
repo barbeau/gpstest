@@ -223,6 +223,7 @@ class GpsStatusFragment : Fragment() {
         )
         viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
+        // TODO - should observing all flows and states be based on LocationUpdateStates?
         observeLocationFlow()
         observeLocationUpdateStates()
         observeGnssFlow()
