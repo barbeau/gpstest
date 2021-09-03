@@ -20,7 +20,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
 import android.location.OnNmeaMessageListener
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.NmeaWithTime
@@ -69,7 +73,11 @@ class SharedNmeaManager constructor(
         Log.d(TAG, "Starting NMEA updates")
 
         try {
-            locationManager.addNmeaListener(callback)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                locationManager.addNmeaListener(ContextCompat.getMainExecutor(context), callback)
+            } else {
+                locationManager.addNmeaListener(callback, Handler(Looper.getMainLooper()))
+            }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }

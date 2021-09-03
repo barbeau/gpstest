@@ -22,6 +22,8 @@ import android.location.GnssMeasurementRequest
 import android.location.GnssMeasurementsEvent
 import android.location.LocationManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -98,11 +100,15 @@ class SharedGnssMeasurementManager constructor(
                     .build()
                 locationManager.registerGnssMeasurementsCallback(
                     request,
-                    ContextCompat.getMainExecutor(Application.get()),
+                    ContextCompat.getMainExecutor(context),
                     callback
                 )
             } else {
-                locationManager.registerGnssMeasurementsCallback(callback)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    locationManager.registerGnssMeasurementsCallback(ContextCompat.getMainExecutor(context), callback)
+                } else {
+                    locationManager.registerGnssMeasurementsCallback(callback, Handler(Looper.getMainLooper()))
+                }
             }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow

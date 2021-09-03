@@ -6,7 +6,8 @@ import javax.inject.Inject
 
 class LocationRepository @Inject constructor(
     private val sharedLocationManager: SharedLocationManager,
-    private val sharedGnssStatusManager: SharedGnssStatusManager
+    private val sharedGnssStatusManager: SharedGnssStatusManager,
+    private val sharedNmeaManager: SharedNmeaManager
 ) {
     /**
      * Status of whether the app is actively subscribed to location changes.
@@ -34,4 +35,10 @@ class LocationRepository @Inject constructor(
      * GnssStatus first fix state
      */
     val firstFixState: StateFlow<FirstFixState> = sharedGnssStatusManager.firstFixState
+
+    /**
+     * Observable flow for NMEA updates
+     */
+    @ExperimentalCoroutinesApi
+    fun getNmea() = sharedNmeaManager.nmeaFlow()
 }

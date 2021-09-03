@@ -22,7 +22,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import com.android.gpstest.Application
 import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
 import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
 import com.android.gpstest.util.hasPermission
@@ -68,7 +67,7 @@ class SharedLocationManager constructor(
 
         try {
             // TODO - handle case where service is still running and user changes preferences for minTime and minDistance
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback, Application.get().mainLooper)
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback, context.mainLooper)
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }

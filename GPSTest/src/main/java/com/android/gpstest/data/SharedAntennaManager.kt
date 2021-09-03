@@ -85,7 +85,7 @@ class SharedAntennaManager constructor(
         Log.d(TAG, "Starting antenna updates")
 
         try {
-            locationManager.registerAntennaInfoListener(Application.get().mainExecutor, callback)
+            locationManager.registerAntennaInfoListener(context.mainExecutor, callback)
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }

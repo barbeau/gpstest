@@ -21,8 +21,12 @@ import android.content.Context
 import android.location.GnssStatus
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
@@ -93,7 +97,11 @@ class SharedGnssStatusManager constructor(
         Log.d(TAG, "Starting GnssStatus updates")
 
         try {
-            locationManager.registerGnssStatusCallback(callback)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                locationManager.registerGnssStatusCallback(ContextCompat.getMainExecutor(context), callback)
+            } else {
+                locationManager.registerGnssStatusCallback(callback, Handler(Looper.getMainLooper()))
+            }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }

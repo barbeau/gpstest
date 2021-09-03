@@ -21,8 +21,11 @@ import android.content.Context
 import android.location.GnssNavigationMessage
 import android.location.LocationManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.util.PreferenceUtils
@@ -80,7 +83,11 @@ class SharedNavMessageManager constructor(
         Log.d(TAG, "Starting NavMessage updates")
 
         try {
-            locationManager.registerGnssNavigationMessageCallback(callback)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                locationManager.registerGnssNavigationMessageCallback(ContextCompat.getMainExecutor(context), callback)
+            } else {
+                locationManager.registerGnssNavigationMessageCallback(callback, Handler(Looper.getMainLooper()))
+            }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }
