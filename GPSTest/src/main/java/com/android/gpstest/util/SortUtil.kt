@@ -15,7 +15,6 @@
  */
 package com.android.gpstest.util
 
-import android.os.Build
 import com.android.gpstest.model.SatelliteStatus
 
 /**
@@ -27,102 +26,77 @@ class SortUtil {
         /**
          * Sorts the [list] by the SatelliteStatus gnssType then svid asc and returns the sorted list
          */
-        fun sortByGnssThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortByGnssThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareBy(SatelliteStatus::gnssType, SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus sbasType then svid asc and returns the sorted list
          */
-        fun sortBySbasThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortBySbasThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareBy(SatelliteStatus::sbasType, SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus usedInFix desc then svid asc and returns the sorted list
          */
-        fun sortByUsedThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return list.sortedWith(compareByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
-            } else {
-                // We don't explicitly sort by ID on M and lower
-                return list.sortedWith(compareByDescending(SatelliteStatus::usedInFix)).toMutableList()
-            }
+        fun sortByUsedThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
+            return list.sortedWith(compareByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus C/N0 desc and returns the sorted list
          */
-        fun sortByCn0(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortByCn0(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus carrier frequency then svid and returns the sorted list
          */
-        fun sortByCarrierFrequencyThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortByCarrierFrequencyThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareBy(SatelliteStatus::carrierFrequencyHz, SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus gnssType then usedInFix desc then svid asc and returns the sorted list
          */
-        fun sortByGnssThenUsedThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return list.sortedWith(compareBy(SatelliteStatus::gnssType).thenByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
-            } else {
-                // We sort all by ascending on M and lower
-                return list.sortedWith(compareBy(SatelliteStatus::gnssType, SatelliteStatus::usedInFix, SatelliteStatus::svid)).toMutableList()
-            }
+        fun sortByGnssThenUsedThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
+            return list.sortedWith(compareBy(SatelliteStatus::gnssType).thenByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus sbasType then usedInFix desc then svid asc and returns the sorted list
          */
-        fun sortBySbasThenUsedThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return list.sortedWith(compareBy(SatelliteStatus::sbasType).thenByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
-            } else {
-                // We sort all by ascending on M and lower
-                return list.sortedWith(compareBy(SatelliteStatus::sbasType, SatelliteStatus::usedInFix, SatelliteStatus::svid)).toMutableList()
-            }
+        fun sortBySbasThenUsedThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
+            return list.sortedWith(compareBy(SatelliteStatus::sbasType).thenByDescending(SatelliteStatus::usedInFix).thenComparing(SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus gnssType then C/N0 desc and returns the sorted list
          */
-        fun sortByGnssThenCn0ThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return list.sortedWith(compareBy(SatelliteStatus::gnssType).thenByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
-            } else {
-                // We sort all by ascending on M and lower
-                return list.sortedWith(compareBy(SatelliteStatus::gnssType, SatelliteStatus::cn0DbHz)).toMutableList()
-            }
+        fun sortByGnssThenCn0ThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
+            return list.sortedWith(compareBy(SatelliteStatus::gnssType).thenByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus sbasType then C/N0 desc and returns the sorted list
          */
-        fun sortBySbasThenCn0ThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return list.sortedWith(compareBy(SatelliteStatus::sbasType).thenByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
-            } else {
-                // We sort all by ascending on M and lower
-                return list.sortedWith(compareBy(SatelliteStatus::sbasType, SatelliteStatus::cn0DbHz)).toMutableList()
-            }
+        fun sortBySbasThenCn0ThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
+            return list.sortedWith(compareBy(SatelliteStatus::sbasType).thenByDescending(SatelliteStatus::cn0DbHz)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus gnssType then carrier frequency then svid and returns the sorted list
          */
-        fun sortByGnssThenCarrierFrequencyThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortByGnssThenCarrierFrequencyThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareBy(SatelliteStatus::gnssType, SatelliteStatus::carrierFrequencyHz, SatelliteStatus::svid)).toMutableList()
         }
 
         /**
          * Sorts the [list] by the SatelliteStatus sbasType then carrier frequency then svid and returns the sorted list
          */
-        fun sortBySbasThenCarrierFrequencyThenId(list: List<SatelliteStatus>): List<SatelliteStatus> {
+        fun sortBySbasThenCarrierFrequencyThenId(list: List<SatelliteStatus>): MutableList<SatelliteStatus> {
             return list.sortedWith(compareBy(SatelliteStatus::sbasType, SatelliteStatus::carrierFrequencyHz, SatelliteStatus::svid)).toMutableList()
         }
     }
