@@ -30,7 +30,10 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -43,6 +46,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.databinding.GpsStatusBinding
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.GnssFilterDialog
 import com.android.gpstest.util.*
@@ -71,60 +75,35 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GpsStatusFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
-    var mTimeFormat// See #117
+    var timeFormat// See #117
             = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss" else "hh:mm:ss a"
+        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss.S" else "hh:mm:ss.S a"
     )
-    var mTimeAndDateFormat = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss MMM d, yyyy z" else "hh:mm:ss a MMM d, yyyy z"
+    var timeAndDateFormat = SimpleDateFormat(
+        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss.S MMM d, yyyy z" else "hh:mm:ss.S a MMM d, yyyy z"
     )
-    private var mLatitudeView: TextView? = null
-    private var mLongitudeView: TextView? = null
-    private var mFixTimeView: TextView? = null
-    private var mTTFFView: TextView? = null
-    private var mAltitudeView: TextView? = null
-    private var mAltitudeMslView: TextView? = null
-    private var mHorVertAccuracyLabelView: TextView? = null
-    private var mHorVertAccuracyView: TextView? = null
-    private var mSpeedView: TextView? = null
-    private var mSpeedAccuracyView: TextView? = null
-    private var mBearingView: TextView? = null
-    private var mBearingAccuracyView: TextView? = null
-    private var mNumSats: TextView? = null
-    private var mPdopLabelView: TextView? = null
-    private var mPdopView: TextView? = null
-    private var mHvdopLabelView: TextView? = null
-    private var mHvdopView: TextView? = null
-    private var mGnssNotAvailableView: TextView? = null
-    private var mSbasNotAvailableView: TextView? = null
-    private var mFixTimeErrorView: TextView? = null
-    private var filterGroup: ViewGroup? = null
-    private var filterTextView: TextView? = null
-    private var mLocation: Location? = null
-    private var mSpeedBearingAccuracyRow: TableRow? = null
-    private var mGnssStatusList: RecyclerView? = null
-    private var mSbasStatusList: RecyclerView? = null
-    private var mGnssAdapter: SatelliteStatusAdapter? = null
-    private var mSbasAdapter: SatelliteStatusAdapter? = null
-    private var mGnssStatus: MutableList<SatelliteStatus> = ArrayList()
-    private var mSbasStatus: MutableList<SatelliteStatus> = ArrayList()
+
+    private var location: Location? = null
+    private var gnssAdapter: SatelliteStatusAdapter? = null
+    private var sbasAdapter: SatelliteStatusAdapter? = null
+    private var gnssStatus: MutableList<SatelliteStatus> = ArrayList()
+    private var sbasStatus: MutableList<SatelliteStatus> = ArrayList()
     private var svCount = 0
     private var svVisibleCount = 0
-    private var mSnrCn0Title: String? = null
-    private var mFixTime: Long = 0
-    private var mNavigating = false
-    private var mFlagUsa: Drawable? = null
-    private var mFlagRussia: Drawable? = null
-    private var mFlagJapan: Drawable? = null
-    private var mFlagChina: Drawable? = null
-    private var mFlagIndia: Drawable? = null
-    private var mFlagEU: Drawable? = null
-    private var mFlagICAO: Drawable? = null
-    private var mTtff = ""
-    var mPrefDistanceUnits: String? = null
-    var mPrefSpeedUnits: String? = null
-    var mViewModel: DeviceInfoViewModel? = null
-    var lock: ImageView? = null
+    private var cn0Title: String? = null
+    private var fixTime: Long = 0
+    private var navigating = false
+    private var flagUsa: Drawable? = null
+    private var flagRussia: Drawable? = null
+    private var flagJapan: Drawable? = null
+    private var flagChina: Drawable? = null
+    private var flagIndia: Drawable? = null
+    private var flagEU: Drawable? = null
+    private var flagICAO: Drawable? = null
+    private var ttff = ""
+    var prefDistanceUnits: String? = null
+    var prefSpeedUnits: String? = null
+    var viewModel: DeviceInfoViewModel? = null
 
     // Repository of location data that the service will observe, injected via Hilt
     @Inject
@@ -135,10 +114,11 @@ class GpsStatusFragment : Fragment() {
     private var gnssFlow: Job? = null
     private var nmeaFlow: Job? = null
 
-    private val mSatelliteMetadataObserver: Observer<SatelliteMetadata> =
+    // Observers of view model
+    private val satelliteMetadataObserver: Observer<SatelliteMetadata> =
         Observer { satelliteMetadata ->
             if (satelliteMetadata != null) {
-                mNumSats!!.text = resources!!.getString(
+                binding.numSats.text = resources.getString(
                     R.string.gps_num_sats_value,
                     satelliteMetadata.numSatsUsed,
                     satelliteMetadata.numSatsInView,
@@ -147,53 +127,38 @@ class GpsStatusFragment : Fragment() {
             }
         }
 
+    private var _binding: GpsStatusBinding? = null
+    private val binding get() = _binding!!
+
+    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setupUnitPreferences()
-        val v = inflater.inflate(R.layout.gps_status, container, false)
-        lock = v.findViewById(R.id.status_lock)
-        mLatitudeView = v.findViewById(R.id.latitude)
-        mLongitudeView = v.findViewById(R.id.longitude)
-        mLatitudeView?.text = EMPTY_LAT_LONG
-        mLongitudeView?.text = EMPTY_LAT_LONG
+        _binding = GpsStatusBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-        mFixTimeView = v.findViewById(R.id.fix_time)
-        mFixTimeErrorView = v.findViewById(R.id.fix_time_error)
-        mFixTimeErrorView!!.setOnClickListener(View.OnClickListener {
+        setupUnitPreferences()
+
+        binding.latitude.text = EMPTY_LAT_LONG
+        binding.longitude.text = EMPTY_LAT_LONG
+        binding.fixTimeError.setOnClickListener(View.OnClickListener {
             showTimeErrorDialog(
-                mFixTime
+                fixTime
             )
         })
 
-        mTTFFView = v.findViewById(R.id.ttff)
-        mAltitudeView = v.findViewById(R.id.altitude)
-        mAltitudeMslView = v.findViewById(R.id.altitude_msl)
-        mHorVertAccuracyLabelView = v.findViewById(R.id.hor_vert_accuracy_label)
-        mHorVertAccuracyView = v.findViewById(R.id.hor_vert_accuracy)
-        mSpeedView = v.findViewById(R.id.speed)
-        mSpeedAccuracyView = v.findViewById(R.id.speed_acc)
-        mBearingView = v.findViewById(R.id.bearing)
-        mBearingAccuracyView = v.findViewById(R.id.bearing_acc)
-        mNumSats = v.findViewById(R.id.num_sats)
-        mPdopLabelView = v.findViewById(R.id.pdop_label)
-        mPdopView = v.findViewById(R.id.pdop)
-        mHvdopLabelView = v.findViewById(R.id.hvdop_label)
-        mHvdopView = v.findViewById(R.id.hvdop)
-        mSpeedBearingAccuracyRow = v.findViewById(R.id.speed_bearing_acc_row)
-        mGnssNotAvailableView = v.findViewById(R.id.gnss_not_available)
-        mSbasNotAvailableView = v.findViewById(R.id.sbas_not_available)
-        mFlagUsa = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_usa)
-        mFlagRussia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_russia)
-        mFlagJapan = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_japan)
-        mFlagChina = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_china)
-        mFlagIndia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_india)
-        mFlagEU = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_european_union)
-        mFlagICAO = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_icao)
+        flagUsa = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_usa)
+        flagRussia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_russia)
+        flagJapan = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_japan)
+        flagChina = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_china)
+        flagIndia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_india)
+        flagEU = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_european_union)
+        flagICAO = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_icao)
+
         val detector = GestureDetectorCompat(context, object : SimpleOnGestureListener() {
             override fun onSingleTapUp(e: MotionEvent): Boolean {
-                val location = mLocation
+                val location = location
                 // Copy location to clipboard
                 if (location != null) {
                     val includeAltitude = Application.getPrefs().getBoolean(
@@ -216,20 +181,13 @@ class GpsStatusFragment : Fragment() {
                 return false
             }
         })
-        val locationScrollView =
-            v.findViewById<HorizontalScrollView>(R.id.status_location_scrollview)
-        locationScrollView.setOnTouchListener { view: View?, motionEvent: MotionEvent? ->
+        binding.statusLocationScrollview.setOnTouchListener { view: View?, motionEvent: MotionEvent? ->
             detector.onTouchEvent(motionEvent)
             false
         }
 
-        // GNSS filter
-        filterGroup = v.findViewById(R.id.status_filter_group)
-        filterTextView = v.findViewById(R.id.filter_text)
-        val filterShowAllView = v.findViewById<TextView>(R.id.filter_show_all)
-
         // Remove any previous clickable spans to avoid issues with recycling views
-        UIUtils.removeAllClickableSpans(filterShowAllView)
+        UIUtils.removeAllClickableSpans(binding.filterShowAll)
         // Save an empty set to preferences to show all satellites
         val filterShowAllClick: ClickableSpan = object : ClickableSpan() {
             override fun onClick(v: View) {
@@ -237,35 +195,33 @@ class GpsStatusFragment : Fragment() {
                 PreferenceUtils.saveGnssFilter(LinkedHashSet())
             }
         }
-        UIUtils.setClickableSpan(filterShowAllView, filterShowAllClick)
+        UIUtils.setClickableSpan(binding.filterShowAll, filterShowAllClick)
 
         // GNSS
         val llmGnss = LinearLayoutManager(context)
         llmGnss.isAutoMeasureEnabled = true
         llmGnss.orientation = RecyclerView.VERTICAL
-        mGnssStatusList = v.findViewById(R.id.gnss_status_list)
-        mGnssAdapter = SatelliteStatusAdapter(ConstellationType.GNSS)
-        mGnssStatusList?.adapter = mGnssAdapter
-        mGnssStatusList?.isFocusable = false
-        mGnssStatusList?.isFocusableInTouchMode = false
-        mGnssStatusList?.layoutManager = llmGnss
-        mGnssStatusList?.isNestedScrollingEnabled = false
+        gnssAdapter = SatelliteStatusAdapter(ConstellationType.GNSS)
+        binding.gnssStatusList.adapter = gnssAdapter
+        binding.gnssStatusList.isFocusable = false
+        binding.gnssStatusList.isFocusableInTouchMode = false
+        binding.gnssStatusList.layoutManager = llmGnss
+        binding.gnssStatusList.isNestedScrollingEnabled = false
 
         // SBAS
         val llmSbas = LinearLayoutManager(context)
         llmSbas.isAutoMeasureEnabled = true
         llmSbas.orientation = RecyclerView.VERTICAL
-        mSbasStatusList = v.findViewById(R.id.sbas_status_list)
-        mSbasAdapter = SatelliteStatusAdapter(ConstellationType.SBAS)
-        mSbasStatusList?.adapter = mSbasAdapter
-        mSbasStatusList?.isFocusable = false
-        mSbasStatusList?.isFocusableInTouchMode = false
-        mSbasStatusList?.layoutManager = llmSbas
-        mSbasStatusList?.isNestedScrollingEnabled = false
-        mViewModel = ViewModelProviders.of(requireActivity()).get(
+        sbasAdapter = SatelliteStatusAdapter(ConstellationType.SBAS)
+        binding.sbasStatusList.adapter = sbasAdapter
+        binding.sbasStatusList.isFocusable = false
+        binding.sbasStatusList.isFocusableInTouchMode = false
+        binding.sbasStatusList.layoutManager = llmSbas
+        binding.sbasStatusList.isNestedScrollingEnabled = false
+        viewModel = ViewModelProviders.of(requireActivity()).get(
             DeviceInfoViewModel::class.java
         )
-        mViewModel!!.satelliteMetadata.observe(requireActivity(), mSatelliteMetadataObserver)
+        viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
         observeLocationFlow()
         observeLocationUpdateStates()
@@ -273,9 +229,10 @@ class GpsStatusFragment : Fragment() {
         observeGnssStates()
         observeNmeaFlow()
 
-        return v
+        return view
     }
 
+    @ExperimentalCoroutinesApi
     private fun observeLocationFlow() {
         if (locationFlow?.isActive == true) {
             // If we're already observing updates, don't register again
@@ -360,54 +317,52 @@ class GpsStatusFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setStarted(navigating: Boolean) {
-        if (navigating != mNavigating) {
+        if (navigating != this.navigating) {
             if (!navigating) {
-                mViewModel!!.reset()
-                mLatitudeView!!.text = EMPTY_LAT_LONG
-                mLongitudeView!!.text = EMPTY_LAT_LONG
-                mFixTime = 0
+                viewModel!!.reset()
+                binding.latitude.text = EMPTY_LAT_LONG
+                binding.longitude!!.text = EMPTY_LAT_LONG
+                fixTime = 0
                 updateFixTime()
                 updateFilterView()
-                mTTFFView!!.text = ""
-                mAltitudeView!!.text = ""
-                mAltitudeMslView!!.text = ""
-                mHorVertAccuracyView!!.text = ""
-                mSpeedView!!.text = ""
-                mSpeedAccuracyView!!.text = ""
-                mBearingView!!.text = ""
-                mBearingAccuracyView!!.text = ""
-                mNumSats!!.text = ""
-                mPdopView!!.text = ""
-                mHvdopView!!.text = ""
-                if (lock != null) {
-                    lock!!.visibility = View.GONE
-                }
+                binding.ttff.text = ""
+                binding.altitude.text = ""
+                binding.altitudeMsl.text = ""
+                binding.horVertAccuracy.text = ""
+                binding.speed.text = ""
+                binding.speedAcc.text = ""
+                binding.bearing.text = ""
+                binding.bearingAcc.text = ""
+                binding.numSats.text = ""
+                binding.pdop.text = ""
+                binding.hvdop.text = ""
+                binding.statusLock.visibility = View.GONE
                 svCount = 0
                 svVisibleCount = 0
-                mGnssStatus.clear()
-                mSbasStatus.clear()
-                mGnssAdapter!!.notifyDataSetChanged()
-                mSbasAdapter!!.notifyDataSetChanged()
+                gnssStatus.clear()
+                sbasStatus.clear()
+                gnssAdapter!!.notifyDataSetChanged()
+                sbasAdapter!!.notifyDataSetChanged()
             }
-            mNavigating = navigating
+            this.navigating = navigating
         }
     }
 
     private fun updateFixTime() {
-        if (mFixTime == 0L || !PreferenceUtils.isTrackingStarted()) {
-            mFixTimeView?.text = ""
-            mFixTimeErrorView?.text = ""
-            mFixTimeErrorView?.visibility = View.GONE
+        if (fixTime == 0L || !PreferenceUtils.isTrackingStarted()) {
+            binding.fixTime.text = ""
+            binding.fixTimeError.text = ""
+            binding.fixTimeError.visibility = View.GONE
         } else {
-            if (isTimeValid(mFixTime)) {
-                mFixTimeErrorView?.visibility = View.GONE
-                mFixTimeView?.visibility = View.VISIBLE
-                mFixTimeView?.text = formatFixTimeDate(mFixTime)
+            if (isTimeValid(fixTime)) {
+                binding.fixTimeError.visibility = View.GONE
+                binding.fixTime.visibility = View.VISIBLE
+                binding.fixTime.text = formatFixTimeDate(fixTime)
             } else {
                 // Error in fix time
-                mFixTimeErrorView?.visibility = View.VISIBLE
-                mFixTimeView?.visibility = View.GONE
-                mFixTimeErrorView?.text = formatFixTimeDate(mFixTime)
+                binding.fixTimeError.visibility = View.VISIBLE
+                binding.fixTimeError.text = formatFixTimeDate(fixTime)
+                binding.fixTime.visibility = View.GONE
             }
         }
     }
@@ -418,7 +373,7 @@ class GpsStatusFragment : Fragment() {
      */
     private fun formatFixTimeDate(fixTime: Long): String {
         val context = context ?: return ""
-        return if (UIUtils.isWideEnoughForDate(context)) mTimeAndDateFormat.format(fixTime) else mTimeFormat.format(
+        return if (UIUtils.isWideEnoughForDate(context)) timeAndDateFormat.format(fixTime) else timeFormat.format(
             fixTime
         )
     }
@@ -429,16 +384,16 @@ class GpsStatusFragment : Fragment() {
      */
     private fun updateLocationAccuracies(location: Location) {
         if (SatelliteUtils.isVerticalAccuracySupported(location)) {
-            mHorVertAccuracyLabelView!!.setText(R.string.gps_hor_and_vert_accuracy_label)
-            if (mPrefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                mHorVertAccuracyView!!.text = resources.getString(
+            binding.horVertAccuracyLabel.setText(R.string.gps_hor_and_vert_accuracy_label)
+            if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
+                binding.horVertAccuracy.text = resources.getString(
                     R.string.gps_hor_and_vert_accuracy_value_meters,
                     location.accuracy,
                     location.verticalAccuracyMeters
                 )
             } else {
                 // Feet
-                mHorVertAccuracyView!!.text = resources.getString(
+                binding.horVertAccuracy.text = resources.getString(
                     R.string.gps_hor_and_vert_accuracy_value_feet,
                     UIUtils.toFeet(location.accuracy.toDouble()),
                     UIUtils.toFeet(location.verticalAccuracyMeters.toDouble())
@@ -446,18 +401,18 @@ class GpsStatusFragment : Fragment() {
             }
         } else {
             if (location.hasAccuracy()) {
-                if (mPrefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                    mHorVertAccuracyView!!.text =
+                if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
+                    binding.horVertAccuracy.text =
                         resources.getString(R.string.gps_accuracy_value_meters, location.accuracy)
                 } else {
                     // Feet
-                    mHorVertAccuracyView!!.text = resources.getString(
+                    binding.horVertAccuracy.text = resources.getString(
                         R.string.gps_accuracy_value_feet,
                         UIUtils.toFeet(location.accuracy.toDouble())
                     )
                 }
             } else {
-                mHorVertAccuracyView!!.text = ""
+                binding.horVertAccuracy.text = ""
             }
         }
     }
@@ -468,38 +423,38 @@ class GpsStatusFragment : Fragment() {
      */
     private fun updateSpeedAndBearingAccuracies(location: Location) {
         if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
-            mSpeedBearingAccuracyRow!!.visibility = View.VISIBLE
+            binding.speedBearingAccRow.visibility = View.VISIBLE
             if (location.hasSpeedAccuracy()) {
-                if (mPrefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
-                    mSpeedAccuracyView!!.text = resources!!.getString(
+                if (prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
+                    binding.speedAcc.text = resources.getString(
                         R.string.gps_speed_acc_value_meters_sec,
                         location.speedAccuracyMetersPerSecond
                     )
-                } else if (mPrefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
-                    mSpeedAccuracyView!!.text = resources!!.getString(
+                } else if (prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
+                    binding.speedAcc.text = resources.getString(
                         R.string.gps_speed_acc_value_km_hour,
                         UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
                     )
                 } else {
                     // Miles per hour
-                    mSpeedAccuracyView!!.text = resources!!.getString(
+                    binding.speedAcc.text = resources.getString(
                         R.string.gps_speed_acc_value_miles_hour,
                         UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
                     )
                 }
             } else {
-                mSpeedAccuracyView!!.text = ""
+                binding.speedAcc.text = ""
             }
             if (location.hasBearingAccuracy()) {
-                mBearingAccuracyView!!.text = resources!!.getString(
+                binding.bearingAcc.text = resources.getString(
                     R.string.gps_bearing_acc_value,
                     location.bearingAccuracyDegrees
                 )
             } else {
-                mBearingAccuracyView!!.text = ""
+                binding.bearingAcc.text = ""
             }
         } else {
-            mSpeedBearingAccuracyRow!!.visibility = View.GONE
+            binding.speedBearingAccRow.visibility = View.GONE
         }
     }
 
@@ -543,12 +498,12 @@ class GpsStatusFragment : Fragment() {
         }
 
         // Cache location for copy to clipboard operation
-        mLocation = location
+        this.location = location
 
         // Make sure TTFF is shown/set, if the TTFF is acquired before the mTTFFView/this fragment is initialized
-        mTTFFView!!.text = mTtff
-        if (mViewModel != null) {
-            mViewModel!!.setGotFirstFix(true)
+        binding.ttff.text = ttff
+        if (viewModel != null) {
+            viewModel!!.setGotFirstFix(true)
         }
         val coordinateFormat = Application.getPrefs().getString(
             getString(R.string.pref_key_coordinate_format),
@@ -557,19 +512,19 @@ class GpsStatusFragment : Fragment() {
         when (coordinateFormat) {
             "dd" -> {
                 // Decimal degrees
-                mLatitudeView!!.text =
+                binding.latitude.text =
                     getString(R.string.gps_latitude_value, location.latitude)
-                mLongitudeView!!.text =
+                binding.longitude.text =
                     getString(R.string.gps_longitude_value, location.longitude)
             }
             "dms" -> {
                 // Degrees minutes seconds
-                mLatitudeView!!.text = UIUtils.getDMSFromLocation(
+                binding.latitude.text = UIUtils.getDMSFromLocation(
                     Application.get(),
                     location.latitude,
                     UIUtils.COORDINATE_LATITUDE
                 )
-                mLongitudeView!!.text = UIUtils.getDMSFromLocation(
+                binding.longitude.text = UIUtils.getDMSFromLocation(
                     Application.get(),
                     location.longitude,
                     UIUtils.COORDINATE_LONGITUDE
@@ -577,12 +532,12 @@ class GpsStatusFragment : Fragment() {
             }
             "ddm" -> {
                 // Degrees decimal minutes
-                mLatitudeView!!.text = UIUtils.getDDMFromLocation(
+                binding.latitude.text = UIUtils.getDDMFromLocation(
                     Application.get(),
                     location.latitude,
                     UIUtils.COORDINATE_LATITUDE
                 )
-                mLongitudeView!!.text = UIUtils.getDDMFromLocation(
+                binding.longitude.text = UIUtils.getDDMFromLocation(
                     Application.get(),
                     location.longitude,
                     UIUtils.COORDINATE_LONGITUDE
@@ -590,50 +545,50 @@ class GpsStatusFragment : Fragment() {
             }
             else -> {
                 // Decimal degrees
-                mLatitudeView!!.text =
+                binding.latitude.text =
                     getString(R.string.gps_latitude_value, location.latitude)
-                mLongitudeView!!.text =
+                binding.longitude.text =
                     getString(R.string.gps_longitude_value, location.longitude)
             }
         }
-        mFixTime = location.time
+        fixTime = location.time
         if (location.hasAltitude()) {
-            if (mPrefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                mAltitudeView!!.text =
+            if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
+                binding.altitude.text =
                     getString(R.string.gps_altitude_value_meters, location.altitude)
             } else {
                 // Feet
-                mAltitudeView!!.text = getString(
+                binding.altitude.text = getString(
                     R.string.gps_altitude_value_feet,
                     UIUtils.toFeet(location.altitude)
                 )
             }
         } else {
-            mAltitudeView!!.text = ""
+            binding.altitude.text = ""
         }
         if (location.hasSpeed()) {
-            if (mPrefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
-                mSpeedView!!.text =
+            if (prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
+                binding.speed.text =
                     getString(R.string.gps_speed_value_meters_sec, location.speed)
-            } else if (mPrefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
-                mSpeedView!!.text = resources.getString(
+            } else if (prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
+                binding.speed.text = resources.getString(
                     R.string.gps_speed_value_kilometers_hour,
                     UIUtils.toKilometersPerHour(location.speed)
                 )
             } else {
                 // Miles per hour
-                mSpeedView!!.text = resources.getString(
+                binding.speed.text = resources.getString(
                     R.string.gps_speed_value_miles_hour,
                     UIUtils.toMilesPerHour(location.speed)
                 )
             }
         } else {
-            mSpeedView!!.text = ""
+            binding.speed.text = ""
         }
         if (location.hasBearing()) {
-            mBearingView!!.text = getString(R.string.gps_bearing_value, location.bearing)
+            binding.bearing.text = getString(R.string.gps_bearing_value, location.bearing)
         } else {
-            mBearingView!!.text = ""
+            binding.bearing.text = ""
         }
         updateLocationAccuracies(location)
         updateSpeedAndBearingAccuracies(location)
@@ -641,12 +596,10 @@ class GpsStatusFragment : Fragment() {
     }
 
     fun onGnssFirstFix(ttffMillis: Int) {
-        mTtff = UIUtils.getTtffString(ttffMillis)
-        if (mTTFFView != null) {
-            mTTFFView!!.text = mTtff
-        }
-        if (mViewModel != null) {
-            mViewModel!!.setGotFirstFix(true)
+        ttff = UIUtils.getTtffString(ttffMillis)
+        binding.ttff.text = ttff
+        if (viewModel != null) {
+            viewModel!!.setGotFirstFix(true)
         }
     }
 
@@ -673,12 +626,12 @@ class GpsStatusFragment : Fragment() {
         }
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
             val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
-            if (altitudeMsl != null && mNavigating) {
-                if (mPrefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                    mAltitudeMslView!!.text =
+            if (altitudeMsl != null && navigating) {
+                if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
+                    binding.altitudeMsl.text =
                         getString(R.string.gps_altitude_msl_value_meters, altitudeMsl)
                 } else {
-                    mAltitudeMslView!!.text =
+                    binding.altitudeMsl.text =
                         getString(
                             R.string.gps_altitude_msl_value_feet,
                             UIUtils.toFeet(altitudeMsl)
@@ -688,10 +641,10 @@ class GpsStatusFragment : Fragment() {
         }
         if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
             val dop = NmeaUtils.getDop(message)
-            if (dop != null && mNavigating) {
+            if (dop != null && navigating) {
                 showDopViews()
-                mPdopView!!.text = getString(R.string.pdop_value, dop.positionDop)
-                mHvdopView!!.text = getString(
+                binding.pdop.text = getString(R.string.pdop_value, dop.positionDop)
+                binding.hvdop.text = getString(
                     R.string.hvdop_value, dop.horizontalDop,
                     dop.verticalDop
                 )
@@ -700,10 +653,10 @@ class GpsStatusFragment : Fragment() {
     }
 
     private fun showDopViews() {
-        mPdopLabelView!!.visibility = View.VISIBLE
-        mPdopView!!.visibility = View.VISIBLE
-        mHvdopLabelView!!.visibility = View.VISIBLE
-        mHvdopView!!.visibility = View.VISIBLE
+        binding.pdopLabel.visibility = View.VISIBLE
+        binding.pdop.visibility = View.VISIBLE
+        binding.hvdopLabel.visibility = View.VISIBLE
+        binding.hvdop.visibility = View.VISIBLE
     }
 
     private fun updateGnssStatus(status: GnssStatus) {
@@ -713,13 +666,13 @@ class GpsStatusFragment : Fragment() {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return
         }
-        mSnrCn0Title = getString(R.string.gps_cn0_column_label)
+        cn0Title = getString(R.string.gps_cn0_column_label)
         val length = status.satelliteCount
         svCount = 0
         svVisibleCount = 0
-        mGnssStatus.clear()
-        mSbasStatus.clear()
-        mViewModel!!.reset()
+        gnssStatus.clear()
+        sbasStatus.clear()
+        viewModel!!.reset()
         val filter = PreferenceUtils.getGnssFilter()
         while (svCount < length) {
             val satStatus = SatelliteStatus(
@@ -742,14 +695,14 @@ class GpsStatusFragment : Fragment() {
                 svVisibleCount++
                 if (satStatus.gnssType == GnssType.SBAS) {
                     satStatus.sbasType = SatelliteUtils.getSbasConstellationType(satStatus.svid)
-                    mSbasStatus.add(satStatus)
+                    sbasStatus.add(satStatus)
                 } else {
-                    mGnssStatus.add(satStatus)
+                    gnssStatus.add(satStatus)
                 }
             }
             svCount++
         }
-        mViewModel!!.setStatuses(mGnssStatus, mSbasStatus)
+        viewModel!!.setStatuses(gnssStatus, sbasStatus)
         refreshViews()
     }
 
@@ -758,46 +711,46 @@ class GpsStatusFragment : Fragment() {
         sortLists()
         updateFilterView()
         updateListVisibility()
-        mGnssAdapter!!.notifyDataSetChanged()
-        mSbasAdapter!!.notifyDataSetChanged()
+        gnssAdapter!!.notifyDataSetChanged()
+        sbasAdapter!!.notifyDataSetChanged()
     }
 
     private fun sortLists() {
         when (PreferenceUtils.getSatSortOrderFromPreferences()) {
             0 -> {
                 // Sort by Constellation
-                mGnssStatus = sortByGnssThenId(mGnssStatus)
-                mSbasStatus = sortBySbasThenId(mSbasStatus)
+                gnssStatus = sortByGnssThenId(gnssStatus)
+                sbasStatus = sortBySbasThenId(sbasStatus)
             }
             1 -> {
                 // Sort by Carrier Frequency
-                mGnssStatus = sortByCarrierFrequencyThenId(mGnssStatus)
-                mSbasStatus = sortByCarrierFrequencyThenId(mSbasStatus)
+                gnssStatus = sortByCarrierFrequencyThenId(gnssStatus)
+                sbasStatus = sortByCarrierFrequencyThenId(sbasStatus)
             }
             2 -> {
                 // Sort by Signal Strength
-                mGnssStatus = sortByCn0(mGnssStatus)
-                mSbasStatus = sortByCn0(mSbasStatus)
+                gnssStatus = sortByCn0(gnssStatus)
+                sbasStatus = sortByCn0(sbasStatus)
             }
             3 -> {
                 // Sort by Used in Fix
-                mGnssStatus = sortByUsedThenId(mGnssStatus)
-                mSbasStatus = sortByUsedThenId(mSbasStatus)
+                gnssStatus = sortByUsedThenId(gnssStatus)
+                sbasStatus = sortByUsedThenId(sbasStatus)
             }
             4 -> {
                 // Sort by Constellation, Carrier Frequency
-                mGnssStatus = sortByGnssThenCarrierFrequencyThenId(mGnssStatus)
-                mSbasStatus = sortBySbasThenCarrierFrequencyThenId(mSbasStatus)
+                gnssStatus = sortByGnssThenCarrierFrequencyThenId(gnssStatus)
+                sbasStatus = sortBySbasThenCarrierFrequencyThenId(sbasStatus)
             }
             5 -> {
                 // Sort by Constellation, Signal Strength
-                mGnssStatus = sortByGnssThenCn0ThenId(mGnssStatus)
-                mSbasStatus = sortBySbasThenCn0ThenId(mSbasStatus)
+                gnssStatus = sortByGnssThenCn0ThenId(gnssStatus)
+                sbasStatus = sortBySbasThenCn0ThenId(sbasStatus)
             }
             6 -> {
                 // Sort by Constellation, Used in Fix
-                mGnssStatus = sortByGnssThenUsedThenId(mGnssStatus)
-                mSbasStatus = sortBySbasThenUsedThenId(mSbasStatus)
+                gnssStatus = sortByGnssThenUsedThenId(gnssStatus)
+                sbasStatus = sortBySbasThenUsedThenId(sbasStatus)
             }
         }
     }
@@ -806,24 +759,24 @@ class GpsStatusFragment : Fragment() {
         val c = context ?: return
         val filter = PreferenceUtils.getGnssFilter()
         if (PreferenceUtils.isTrackingStarted() || filter.isEmpty()) {
-            filterGroup!!.visibility = View.GONE
+            binding.statusFilterGroup.visibility = View.GONE
             // Set num sats view back to normal
-            mNumSats!!.setTypeface(null, Typeface.NORMAL)
+            binding.numSats.setTypeface(null, Typeface.NORMAL)
         } else {
             // Show filter text
-            filterGroup!!.visibility = View.VISIBLE
-            filterTextView!!.text = c.getString(R.string.filter_text, svVisibleCount, svCount)
+            binding.statusFilterGroup.visibility = View.VISIBLE
+            binding.filterText.text = c.getString(R.string.filter_text, svVisibleCount, svCount)
             // Set num sats view to italics to match filter text
-            mNumSats!!.setTypeface(mNumSats!!.typeface, Typeface.ITALIC)
+            binding.numSats.setTypeface(binding.numSats.typeface, Typeface.ITALIC)
         }
     }
 
     private fun setupUnitPreferences() {
         val settings = Application.getPrefs()
         val app = Application.get()
-        mPrefDistanceUnits = settings
+        prefDistanceUnits = settings
             .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS)
-        mPrefSpeedUnits = settings
+        prefSpeedUnits = settings
             .getString(app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND)
     }
 
@@ -831,19 +784,19 @@ class GpsStatusFragment : Fragment() {
      * Sets the visibility of the lists
      */
     private fun updateListVisibility() {
-        if (mGnssStatus.isNotEmpty()) {
-            mGnssNotAvailableView!!.visibility = View.GONE
-            mGnssStatusList!!.visibility = View.VISIBLE
+        if (gnssStatus.isNotEmpty()) {
+            binding.gnssNotAvailable.visibility = View.GONE
+            binding.gnssStatusList.visibility = View.VISIBLE
         } else {
-            mGnssNotAvailableView!!.visibility = View.VISIBLE
-            mGnssStatusList!!.visibility = View.GONE
+            binding.gnssNotAvailable.visibility = View.VISIBLE
+            binding.gnssStatusList.visibility = View.GONE
         }
-        if (mSbasStatus.isNotEmpty()) {
-            mSbasNotAvailableView!!.visibility = View.GONE
-            mSbasStatusList!!.visibility = View.VISIBLE
+        if (sbasStatus.isNotEmpty()) {
+            binding.sbasNotAvailable.visibility = View.GONE
+            binding.sbasStatusList.visibility = View.VISIBLE
         } else {
-            mSbasNotAvailableView!!.visibility = View.VISIBLE
-            mSbasStatusList!!.visibility = View.GONE
+            binding.sbasNotAvailable.visibility = View.VISIBLE
+            binding.sbasStatusList.visibility = View.GONE
         }
     }
 
@@ -928,6 +881,11 @@ class GpsStatusFragment : Fragment() {
         frag.show(requireActivity().supportFragmentManager, ".GnssFilterDialog")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private inner class SatelliteStatusAdapter(var mConstellationType: ConstellationType) :
         RecyclerView.Adapter<SatelliteStatusAdapter.ViewHolder>() {
         inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -951,9 +909,9 @@ class GpsStatusFragment : Fragment() {
         override fun getItemCount(): Int {
             // Add 1 for header row
             return if (mConstellationType == ConstellationType.GNSS) {
-                mGnssStatus.size + 1
+                gnssStatus.size + 1
             } else {
-                mSbasStatus.size + 1
+                sbasStatus.size + 1
             }
         }
 
@@ -979,7 +937,7 @@ class GpsStatusFragment : Fragment() {
                 } else {
                     v.carrierFrequency.visibility = View.GONE
                 }
-                v.signal.text = mSnrCn0Title
+                v.signal.text = cn0Title
                 v.signal.setTypeface(v.signal.typeface, Typeface.BOLD)
                 v.elevation.text = resources!!.getString(R.string.gps_elevation_column_label)
                 v.elevation.setTypeface(v.elevation.typeface, Typeface.BOLD)
@@ -991,9 +949,9 @@ class GpsStatusFragment : Fragment() {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 val dataRow = position - 1
                 val sats: List<SatelliteStatus> = if (mConstellationType == ConstellationType.GNSS) {
-                    mGnssStatus
+                    gnssStatus
                 } else {
-                    mSbasStatus
+                    sbasStatus
                 }
 
                 // Show the row field for the GNSS flag mImage and hide the header
@@ -1007,37 +965,37 @@ class GpsStatusFragment : Fragment() {
                 when (sats[dataRow].gnssType) {
                     GnssType.NAVSTAR -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagUsa)
+                        v.flag.setImageDrawable(flagUsa)
                         v.flag.contentDescription =
                             getString(R.string.gps_content_description)
                     }
                     GnssType.GLONASS -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagRussia)
+                        v.flag.setImageDrawable(flagRussia)
                         v.flag.contentDescription =
                             getString(R.string.glonass_content_description)
                     }
                     GnssType.QZSS -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagJapan)
+                        v.flag.setImageDrawable(flagJapan)
                         v.flag.contentDescription =
                             getString(R.string.qzss_content_description)
                     }
                     GnssType.BEIDOU -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagChina)
+                        v.flag.setImageDrawable(flagChina)
                         v.flag.contentDescription =
                             getString(R.string.beidou_content_description)
                     }
                     GnssType.GALILEO -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagEU)
+                        v.flag.setImageDrawable(flagEU)
                         v.flag.contentDescription =
                             getString(R.string.galileo_content_description)
                     }
                     GnssType.IRNSS -> {
                         v.flag.visibility = View.VISIBLE
-                        v.flag.setImageDrawable(mFlagIndia)
+                        v.flag.setImageDrawable(flagIndia)
                         v.flag.contentDescription =
                             getString(R.string.irnss_content_description)
                     }
@@ -1105,43 +1063,43 @@ class GpsStatusFragment : Fragment() {
             when (status.sbasType) {
                 SbasType.WAAS -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagUsa)
+                    flag.setImageDrawable(flagUsa)
                     flag.contentDescription =
                         getString(R.string.waas_content_description)
                 }
                 SbasType.EGNOS -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagEU)
+                    flag.setImageDrawable(flagEU)
                     flag.contentDescription =
                         getString(R.string.egnos_content_description)
                 }
                 SbasType.GAGAN -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagIndia)
+                    flag.setImageDrawable(flagIndia)
                     flag.contentDescription =
                         getString(R.string.gagan_content_description)
                 }
                 SbasType.MSAS -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagJapan)
+                    flag.setImageDrawable(flagJapan)
                     flag.contentDescription =
                         getString(R.string.msas_content_description)
                 }
                 SbasType.SDCM -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagRussia)
+                    flag.setImageDrawable(flagRussia)
                     flag.contentDescription =
                         getString(R.string.sdcm_content_description)
                 }
                 SbasType.SNAS -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagChina)
+                    flag.setImageDrawable(flagChina)
                     flag.contentDescription =
                         getString(R.string.snas_content_description)
                 }
                 SbasType.SACCSA -> {
                     flag.visibility = View.VISIBLE
-                    flag.setImageDrawable(mFlagICAO)
+                    flag.setImageDrawable(flagICAO)
                     flag.contentDescription =
                         getString(R.string.saccsa_content_description)
                 }
@@ -1158,15 +1116,11 @@ class GpsStatusFragment : Fragment() {
     }
 
     private fun showHaveFix() {
-        if (lock != null) {
-            UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
+        UIUtils.showViewWithAnimation(binding.statusLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     private fun showLostFix() {
-        if (lock != null) {
-            UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
+        UIUtils.hideViewWithAnimation(binding.statusLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     companion object {
