@@ -142,11 +142,9 @@ class GpsStatusFragment : Fragment() {
 
         binding.latitude.text = EMPTY_LAT_LONG
         binding.longitude.text = EMPTY_LAT_LONG
-        binding.fixTimeError.setOnClickListener(View.OnClickListener {
-            showTimeErrorDialog(
-                fixTime
-            )
-        })
+        binding.fixTimeError.setOnClickListener {
+            showTimeErrorDialog(fixTime)
+        }
 
         flagUsa = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_usa)
         flagRussia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_russia)
