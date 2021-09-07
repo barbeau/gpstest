@@ -28,7 +28,7 @@ public class MapUtils {
      * @param lon The longitude.
      * @return A LatLng representing this latitude/longitude.
      */
-    public static final LatLng makeLatLng(double lat, double lon) {
+    public static LatLng makeLatLng(double lat, double lon) {
         return new LatLng(lat, lon);
     }
 
@@ -38,7 +38,7 @@ public class MapUtils {
      * @param l Location to convert
      * @return A LatLng representing this Location.
      */
-    public static final LatLng makeLatLng(Location l) {
+    public static LatLng makeLatLng(Location l) {
         return makeLatLng(l.getLatitude(), l.getLongitude());
     }
 
@@ -48,7 +48,7 @@ public class MapUtils {
      * @param latLng LatLng to convert
      * @return A Location representing this LatLng.
      */
-    public static final Location makeLocation(LatLng latLng) {
+    public static Location makeLocation(LatLng latLng) {
         Location l = new Location("FromLatLng");
         l.setLatitude(latLng.latitude);
         l.setLongitude(latLng.longitude);

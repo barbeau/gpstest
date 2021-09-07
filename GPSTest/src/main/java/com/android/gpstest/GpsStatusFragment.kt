@@ -92,7 +92,7 @@ class GpsStatusFragment : Fragment() {
     private var svVisibleCount = 0
     private var cn0Title: String? = null
     private var fixTime: Long = 0
-    private var navigating = false
+    private var started = false
     private var flagUsa: Drawable? = null
     private var flagRussia: Drawable? = null
     private var flagJapan: Drawable? = null
@@ -221,12 +221,7 @@ class GpsStatusFragment : Fragment() {
         )
         viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
-        // TODO - should observing all flows and states be based on LocationUpdateStates?
-        observeLocationFlow()
         observeLocationUpdateStates()
-        observeGnssFlow()
-        observeGnssStates()
-        observeNmeaFlow()
 
         return view
     }
@@ -247,11 +242,12 @@ class GpsStatusFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    @ExperimentalCoroutinesApi
     private fun observeLocationUpdateStates() {
         repository.receivingLocationUpdates
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it) {
+                when (it) {
                     true -> onGnssStarted()
                     false -> onGnssStopped()
                 }
@@ -279,7 +275,7 @@ class GpsStatusFragment : Fragment() {
         repository.firstFixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it) {
+                when (it) {
                     is FirstFixState.Acquired -> {
                         onGnssFirstFix(it.ttffMillis)
                         onGnssFixAcquired()
@@ -291,7 +287,7 @@ class GpsStatusFragment : Fragment() {
         repository.fixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it) {
+                when (it) {
                     is FixState.Acquired -> onGnssFixAcquired()
                     is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
                 }
@@ -314,13 +310,27 @@ class GpsStatusFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    @ExperimentalCoroutinesApi
     @SuppressLint("NotifyDataSetChanged")
-    private fun setStarted(navigating: Boolean) {
-        if (navigating != this.navigating) {
-            if (!navigating) {
+    private fun setStarted(started: Boolean) {
+        if (started != this.started) {
+            if (started) {
+                // Activity or service is observing updates, so observe here too
+                observeLocationFlow()
+                observeGnssFlow()
+                observeGnssStates()
+                observeNmeaFlow()
+            } else {
+                // Cancel updates (Note that these are canceled via GlobalScope in main Activity too,
+                // otherwise updates won't stop because this Fragment doesn't get the switch UI event.
+                // But cancel() here too for good practice)
+                locationFlow?.cancel()
+                gnssFlow?.cancel()
+
+                // Reset views
                 viewModel!!.reset()
                 binding.latitude.text = EMPTY_LAT_LONG
-                binding.longitude!!.text = EMPTY_LAT_LONG
+                binding.longitude.text = EMPTY_LAT_LONG
                 fixTime = 0
                 updateFixTime()
                 updateFilterView()
@@ -343,7 +353,7 @@ class GpsStatusFragment : Fragment() {
                 gnssAdapter!!.notifyDataSetChanged()
                 sbasAdapter!!.notifyDataSetChanged()
             }
-            this.navigating = navigating
+            this.started = started
         }
     }
 
@@ -424,22 +434,26 @@ class GpsStatusFragment : Fragment() {
         if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
             binding.speedBearingAccRow.visibility = View.VISIBLE
             if (location.hasSpeedAccuracy()) {
-                if (prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
-                    binding.speedAcc.text = resources.getString(
-                        R.string.gps_speed_acc_value_meters_sec,
-                        location.speedAccuracyMetersPerSecond
-                    )
-                } else if (prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
-                    binding.speedAcc.text = resources.getString(
-                        R.string.gps_speed_acc_value_km_hour,
-                        UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
-                    )
-                } else {
-                    // Miles per hour
-                    binding.speedAcc.text = resources.getString(
-                        R.string.gps_speed_acc_value_miles_hour,
-                        UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
-                    )
+                when {
+                    prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true) -> {
+                        binding.speedAcc.text = resources.getString(
+                            R.string.gps_speed_acc_value_meters_sec,
+                            location.speedAccuracyMetersPerSecond
+                        )
+                    }
+                    prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                        binding.speedAcc.text = resources.getString(
+                            R.string.gps_speed_acc_value_km_hour,
+                            UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
+                        )
+                    }
+                    else -> {
+                        // Miles per hour
+                        binding.speedAcc.text = resources.getString(
+                            R.string.gps_speed_acc_value_miles_hour,
+                            UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
+                        )
+                    }
                 }
             } else {
                 binding.speedAcc.text = ""
@@ -459,7 +473,6 @@ class GpsStatusFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setStarted(PreferenceUtils.isTrackingStarted())
         setupUnitPreferences()
     }
 
@@ -480,14 +493,6 @@ class GpsStatusFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    fun onGpsStarted() {
-        setStarted(true)
-    }
-
-    fun onGpsStopped() {
-        setStarted(false)
     }
 
     fun onLocationChanged(location: Location) {
@@ -594,7 +599,7 @@ class GpsStatusFragment : Fragment() {
         updateFixTime()
     }
 
-    fun onGnssFirstFix(ttffMillis: Int) {
+    private fun onGnssFirstFix(ttffMillis: Int) {
         ttff = UIUtils.getTtffString(ttffMillis)
         binding.ttff.text = ttff
         if (viewModel != null) {
@@ -602,30 +607,32 @@ class GpsStatusFragment : Fragment() {
         }
     }
 
-    fun onGnssFixAcquired() {
+    private fun onGnssFixAcquired() {
         showHaveFix()
     }
 
-    fun onGnssFixLost() {
+    private fun onGnssFixLost() {
         showLostFix()
     }
 
+    @ExperimentalCoroutinesApi
     fun onGnssStarted() {
         setStarted(true)
     }
 
-    fun onGnssStopped() {
+    @ExperimentalCoroutinesApi
+    private fun onGnssStopped() {
         setStarted(false)
     }
 
-    fun onNmeaMessage(message: String, timestamp: Long) {
+    private fun onNmeaMessage(message: String, timestamp: Long) {
         if (!isAdded) {
             // Do nothing if the Fragment isn't added
             return
         }
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
             val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
-            if (altitudeMsl != null && navigating) {
+            if (altitudeMsl != null && started) {
                 if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
                     binding.altitudeMsl.text =
                         getString(R.string.gps_altitude_msl_value_meters, altitudeMsl)
@@ -640,7 +647,7 @@ class GpsStatusFragment : Fragment() {
         }
         if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
             val dop = NmeaUtils.getDop(message)
-            if (dop != null && navigating) {
+            if (dop != null && started) {
                 showDopViews()
                 binding.pdop.text = getString(R.string.pdop_value, dop.positionDop)
                 binding.hvdop.text = getString(
@@ -658,8 +665,8 @@ class GpsStatusFragment : Fragment() {
         binding.hvdop.visibility = View.VISIBLE
     }
 
+    @ExperimentalCoroutinesApi
     private fun updateGnssStatus(status: GnssStatus) {
-        setStarted(true)
         updateFixTime()
         if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
@@ -831,7 +838,10 @@ class GpsStatusFragment : Fragment() {
         builder.setView(textView)
         val drawable =
             ContextCompat.getDrawable(Application.get(), android.R.drawable.ic_dialog_alert)
-        DrawableCompat.setTint(drawable!!, ContextCompat.getColor(requireActivity(), R.color.colorPrimary))
+        DrawableCompat.setTint(
+            drawable!!,
+            ContextCompat.getColor(requireActivity(), R.color.colorPrimary)
+        )
         builder.setIcon(drawable)
         builder.setNeutralButton(
             R.string.main_help_close
@@ -938,20 +948,21 @@ class GpsStatusFragment : Fragment() {
                 }
                 v.signal.text = cn0Title
                 v.signal.setTypeface(v.signal.typeface, Typeface.BOLD)
-                v.elevation.text = resources!!.getString(R.string.gps_elevation_column_label)
+                v.elevation.text = resources.getString(R.string.gps_elevation_column_label)
                 v.elevation.setTypeface(v.elevation.typeface, Typeface.BOLD)
-                v.azimuth.text = resources!!.getString(R.string.gps_azimuth_column_label)
+                v.azimuth.text = resources.getString(R.string.gps_azimuth_column_label)
                 v.azimuth.setTypeface(v.azimuth.typeface, Typeface.BOLD)
-                v.statusFlags.text = resources!!.getString(R.string.gps_flags_column_label)
+                v.statusFlags.text = resources.getString(R.string.gps_flags_column_label)
                 v.statusFlags.setTypeface(v.statusFlags.typeface, Typeface.BOLD)
             } else {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
                 val dataRow = position - 1
-                val sats: List<SatelliteStatus> = if (mConstellationType == ConstellationType.GNSS) {
-                    gnssStatus
-                } else {
-                    sbasStatus
-                }
+                val sats: List<SatelliteStatus> =
+                    if (mConstellationType == ConstellationType.GNSS) {
+                        gnssStatus
+                    } else {
+                        sbasStatus
+                    }
 
                 // Show the row field for the GNSS flag mImage and hide the header
                 v.flagHeader.visibility = View.GONE
@@ -1103,10 +1114,6 @@ class GpsStatusFragment : Fragment() {
                         getString(R.string.saccsa_content_description)
                 }
                 SbasType.UNKNOWN -> {
-                    flag.visibility = View.INVISIBLE
-                    flag.contentDescription = getString(R.string.unknown)
-                }
-                else -> {
                     flag.visibility = View.INVISIBLE
                     flag.contentDescription = getString(R.string.unknown)
                 }
