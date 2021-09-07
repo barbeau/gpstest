@@ -14,404 +14,442 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.gpstest
 
-package com.android.gpstest;
+import android.content.Intent
+import android.graphics.Color
+import android.location.Location
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.map.MapConstants
+import com.android.gpstest.map.MapViewModelController
+import com.android.gpstest.map.MapViewModelController.MapInterface
+import com.android.gpstest.map.OnMapClickListener
+import com.android.gpstest.util.MapUtils
+import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.toNotificationTitle
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.*
+import com.google.android.gms.maps.LocationSource
+import com.google.android.gms.maps.LocationSource.OnLocationChangedListener
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.SphericalUtil
+import com.google.maps.android.ktx.awaitMap
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import java.util.*
+import javax.inject.Inject
 
-import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
-import static com.android.gpstest.map.MapConstants.CAMERA_ANCHOR_ZOOM;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_BEARING;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_ACCURACY;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_TILT_MAP;
-import static com.android.gpstest.map.MapConstants.CAMERA_INITIAL_ZOOM;
-import static com.android.gpstest.map.MapConstants.CAMERA_MAX_TILT;
-import static com.android.gpstest.map.MapConstants.CAMERA_MIN_TILT;
-import static com.android.gpstest.map.MapConstants.DRAW_LINE_THRESHOLD_METERS;
-import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
-import static com.android.gpstest.map.MapConstants.MODE;
-import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
-import static com.android.gpstest.map.MapConstants.MODE_MAP;
-import static com.android.gpstest.map.MapConstants.MOVE_MAP_INTERACTION_THRESHOLD;
-import static com.android.gpstest.map.MapConstants.PREFERENCE_SHOWED_DIALOG;
-import static com.android.gpstest.map.MapConstants.TARGET_OFFSET_METERS;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.location.Location;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.appcompat.app.AlertDialog;
-
-import com.android.gpstest.map.MapViewModelController;
-import com.android.gpstest.map.OnMapClickListener;
-import com.android.gpstest.util.MapUtils;
-import com.android.gpstest.util.MathUtils;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.SphericalUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class GpsMapFragment extends SupportMapFragment
-        implements View.OnClickListener, LocationSource,
-        GoogleMap.OnCameraChangeListener, GoogleMap.OnMapClickListener,
-        GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMyLocationButtonClickListener, OnMapReadyCallback, MapViewModelController.MapInterface {
-
-    private Bundle mSavedInstanceState;
-
-    private GoogleMap mMap;
-
-    private LatLng mLatLng;
-
-    private OnLocationChangedListener mListener; //Used to update the map with new location
+@AndroidEntryPoint
+class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
+    OnCameraChangeListener, GoogleMap.OnMapClickListener, OnMapLongClickListener,
+    OnMyLocationButtonClickListener, MapInterface {
+    private var savedInstanceState: Bundle? = null
+    private var map: GoogleMap? = null
+    private var latLng: LatLng? = null
+    private var listener //Used to update the map with new location
+            : OnLocationChangedListener? = null
 
     // Camera control
-    private long mLastMapTouchTime = 0;
-
-    private CameraPosition mlastCameraPosition;
-
-    private boolean mGotFix;
+    private var lastMapTouchTime: Long = 0
+    private var lastCameraPosition: CameraPosition? = null
+    private var gotFix = false
 
     // User preferences for map rotation and tilt based on sensors
-    private boolean mRotate;
+    private var rotate = false
+    private var tiltEnabled = false
+    private var onMapClickListener: OnMapClickListener? = null
+    private var groundTruthMarker: Marker? = null
+    private var errorLine: Polyline? = null
+    private var lastLocation: Location? = null
+    private var pathLines: MutableList<Polyline> = ArrayList()
+    var mapController: MapViewModelController? = null
 
-    private boolean mTilt;
+    // Repository of location data that the service will observe, injected via Hilt
+    @Inject
+    lateinit var repository: LocationRepository
 
-    private OnMapClickListener mOnMapClickListener;
+    // Get a reference to the Job from the Flow so we can stop it from UI events
+    private var locationFlow: Job? = null
+    private var sensorFlow: Job? = null
 
-    private Marker mGroundTruthMarker;
-
-    private Polyline mErrorLine;
-
-    private Location mLastLocation;
-
-    private List<Polyline> mPathLines = new ArrayList<>();
-
-    MapViewModelController mMapController;
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
-        mLastLocation = null;
-
-        if (isGooglePlayServicesInstalled()) {
+    @ExperimentalCoroutinesApi
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val v = super.onCreateView(inflater, container, savedInstanceState)
+        lastLocation = null
+        if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
-            mSavedInstanceState = savedInstanceState;
-            // Register for an async callback when the map is ready
-            getMapAsync(this);
+            this.savedInstanceState = savedInstanceState
+            val mapFragment = this
+            lifecycle.coroutineScope.launchWhenCreated {
+                val googleMap = awaitMap()
+                setupMap(mapFragment, googleMap)
+                observeLocationUpdateStates()
+            }
         } else {
-            final SharedPreferences sp = Application.getPrefs();
-            if (!sp.getBoolean(PREFERENCE_SHOWED_DIALOG, false)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(getString(R.string.please_install_google_maps));
-                builder.setPositiveButton(getString(R.string.install),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                sp.edit().putBoolean(PREFERENCE_SHOWED_DIALOG, true).commit();
-                                Intent intent = new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse(
-                                                "market://details?id=com.google.android.apps.maps"));
-                                startActivity(intent);
-                            }
-                        }
-                );
-                builder.setNegativeButton(getString(R.string.no_thanks),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                sp.edit().putBoolean(PREFERENCE_SHOWED_DIALOG, true).commit();
-                            }
-                        }
-                );
-                AlertDialog dialog = builder.create();
-                dialog.show();
+            val sp = Application.getPrefs()
+            if (!sp.getBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, false)) {
+                val builder = AlertDialog.Builder(
+                    requireActivity()
+                )
+                builder.setMessage(getString(R.string.please_install_google_maps))
+                builder.setPositiveButton(
+                    getString(R.string.install)
+                ) { dialog, which ->
+                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                    val intent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            "market://details?id=com.google.android.apps.maps"
+                        )
+                    )
+                    startActivity(intent)
+                }
+                builder.setNegativeButton(
+                    getString(R.string.no_thanks)
+                ) { dialog, which ->
+                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                }
+                val dialog = builder.create()
+                dialog.show()
             }
         }
-        mMapController = new MapViewModelController(getActivity(), this);
-        return v;
+        mapController = MapViewModelController(activity, this)
+        return v
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {
-        bundle.putString(MODE, mMapController.getMode());
-        bundle.putBoolean(ALLOW_GROUND_TRUTH_CHANGE, mMapController.allowGroundTruthChange());
-        if (mMapController.getGroundTruthLocation() != null) {
-            bundle.putParcelable(GROUND_TRUTH, mMapController.getGroundTruthLocation());
+    override fun onSaveInstanceState(bundle: Bundle) {
+        bundle.putString(MapConstants.MODE, mapController!!.mode)
+        bundle.putBoolean(
+            MapConstants.ALLOW_GROUND_TRUTH_CHANGE,
+            mapController!!.allowGroundTruthChange()
+        )
+        if (mapController!!.groundTruthLocation != null) {
+            bundle.putParcelable(MapConstants.GROUND_TRUTH, mapController!!.groundTruthLocation)
         }
-        super.onSaveInstanceState(bundle);
+        super.onSaveInstanceState(bundle)
     }
 
-    @Override
-    public void onResume() {
-        checkMapPreferences();
-
-        super.onResume();
+    override fun onResume() {
+        checkMapPreferences()
+        super.onResume()
     }
 
-    public void onClick(View v) {
-    }
+    override fun onClick(v: View) {}
 
-    public void gpsStart() {
-        mGotFix = false;
-    }
+    private fun setupMap(mapFragment: GpsMapFragment, googleMap: GoogleMap) {
+        map = googleMap
+        mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
+        checkMapPreferences()
 
-    public void gpsStop() {
-    }
-
-    public void onLocationChanged(Location loc) {
-        //Update real-time location on map
-        if (mListener != null) {
-            mListener.onLocationChanged(loc);
+        // Show the location on the map
+        try {
+            googleMap.isMyLocationEnabled = true
+        } catch (e: SecurityException) {
+            Log.e(mapController!!.mode, "Tried to initialize my location on Google Map - $e")
         }
+        // Set location source
+        googleMap.setLocationSource(mapFragment)
+        // Listener for camera changes
+        googleMap.setOnCameraChangeListener(mapFragment)
+        // Listener for map / My Location button clicks, to disengage map camera control
+        googleMap.setOnMapClickListener(mapFragment)
+        googleMap.setOnMapLongClickListener(mapFragment)
+        googleMap.setOnMyLocationButtonClickListener(mapFragment)
+        googleMap.uiSettings.isMapToolbarEnabled = false
+    }
 
-        mLatLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-
-        if (mMap != null) {
-            //Get bounds for detection of real-time location within bounds
-            LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-            if (!mGotFix &&
-                    (!bounds.contains(mLatLng) ||
-                            mMap.getCameraPosition().zoom < (mMap.getMaxZoomLevel() / 2))) {
-                float tilt = mMapController.getMode().equals(MODE_MAP) ? CAMERA_INITIAL_TILT_MAP : CAMERA_INITIAL_TILT_ACCURACY;
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(mLatLng)
-                        .zoom(CAMERA_INITIAL_ZOOM)
-                        .bearing(CAMERA_INITIAL_BEARING)
-                        .tilt(tilt)
-                        .build();
-
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    @ExperimentalCoroutinesApi
+    private fun observeLocationUpdateStates() {
+        repository.receivingLocationUpdates
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                when (it) {
+                    true -> onGnssStarted()
+                    false -> onGnssStopped()
+                }
             }
-            mGotFix = true;
+            .launchIn(lifecycleScope)
+    }
 
-            if (mMapController.getMode().equals(MODE_ACCURACY) && !mMapController.allowGroundTruthChange() && mMapController.getGroundTruthLocation() != null) {
+    @ExperimentalCoroutinesApi
+    private fun onGnssStarted() {
+        gotFix = false
+        observeFlows()
+    }
+
+    private fun onGnssStopped() {
+        // Cancel updates (Note that these are canceled via scope in main Activity too,
+        // otherwise updates won't stop because this Fragment doesn't get the switch UI event.
+        // But cancel() here too for good practice)
+        locationFlow?.cancel()
+        sensorFlow?.cancel()
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun observeFlows() {
+        observeLocationFlow()
+        observeSensorFlow()
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun observeLocationFlow() {
+        if (locationFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        // Observe locations via Flow as they are generated by the repository
+        locationFlow = repository.getLocations()
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(GpsStatusFragment.TAG, "Map location: ${it.toNotificationTitle()}")
+                onLocationChanged(it)
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    @ExperimentalCoroutinesApi
+    private fun observeSensorFlow() {
+        if (sensorFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        // Observe locations via Flow as they are generated by the repository
+        sensorFlow = repository.getSensorUpdates()
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
+                onOrientationChanged(it.orientation, it.tilt)
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun onLocationChanged(loc: Location) {
+        // Update real-time location on map
+        listener?.onLocationChanged(loc)
+
+        val latLng = LatLng(loc.latitude, loc.longitude)
+        this.latLng = latLng
+        val googleMap = map
+        if (googleMap != null) {
+            // Get bounds for detection of real-time location within bounds
+            val bounds = googleMap.projection.visibleRegion.latLngBounds
+            if (!gotFix &&
+                (!bounds.contains(latLng) ||
+                        googleMap.cameraPosition.zoom < googleMap.maxZoomLevel / 2)
+            ) {
+                val tilt =
+                    if (mapController!!.mode == MapConstants.MODE_MAP) MapConstants.CAMERA_INITIAL_TILT_MAP else MapConstants.CAMERA_INITIAL_TILT_ACCURACY
+                val cameraPosition = CameraPosition.Builder()
+                    .target(latLng)
+                    .zoom(MapConstants.CAMERA_INITIAL_ZOOM)
+                    .bearing(MapConstants.CAMERA_INITIAL_BEARING)
+                    .tilt(tilt)
+                    .build()
+                googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            }
+            gotFix = true
+            if (mapController!!.mode == MapConstants.MODE_ACCURACY && !mapController!!.allowGroundTruthChange() && mapController!!.groundTruthLocation != null) {
                 // Draw error line between ground truth and calculated position
-                LatLng gt = MapUtils.makeLatLng(mMapController.getGroundTruthLocation());
-                LatLng current = MapUtils.makeLatLng(loc);
-
-                if (mErrorLine == null) {
-                    mErrorLine = mMap.addPolyline(new PolylineOptions()
-                        .add(gt, current)
-                        .color(Color.WHITE)
-                        .geodesic(true));
+                val gt = MapUtils.makeLatLng(mapController!!.groundTruthLocation)
+                val current = MapUtils.makeLatLng(loc)
+                if (errorLine == null) {
+                    errorLine = googleMap.addPolyline(
+                        PolylineOptions()
+                            .add(gt, current)
+                            .color(Color.WHITE)
+                            .geodesic(true)
+                    )
                 } else {
-                    mErrorLine.setPoints(Arrays.asList(gt, current));
+                    errorLine!!.points = listOf(gt, current)
                 }
             }
-            if (mMapController.getMode().equals(MODE_ACCURACY) && mLastLocation != null) {
+            if (mapController!!.mode == MapConstants.MODE_ACCURACY && lastLocation != null) {
                 // Draw line between this and last location
-                boolean drawn = drawPathLine(mLastLocation, loc);
+                val drawn = drawPathLine(lastLocation!!, loc)
                 if (drawn) {
-                    mLastLocation = loc;
+                    lastLocation = loc
                 }
             }
         }
-        if (mLastLocation == null) {
-            mLastLocation = loc;
+        if (lastLocation == null) {
+            lastLocation = loc
         }
     }
 
-    public void onOrientationChanged(double orientation, double tilt) {
+    private fun onOrientationChanged(orientation: Double, tilt: Double) {
         // For performance reasons, only proceed if this fragment is visible
-        if (!getUserVisibleHint()) {
-            return;
+        if (!userVisibleHint) {
+            return
         }
         // Only proceed if map is not null and we're in MAP mode
-        if (mMap == null || !mMapController.getMode().equals(MODE_MAP)) {
-            return;
+        if (map == null || mapController!!.mode != MapConstants.MODE_MAP) {
+            return
         }
+        var mutableTilt = tilt
 
         /*
         If we have a location fix, and we have a preference to rotate the map based on sensors,
         and the user hasn't touched the map lately, then do the map camera reposition
         */
-        if (mLatLng != null && mRotate
-                && System.currentTimeMillis() - mLastMapTouchTime
-                > MOVE_MAP_INTERACTION_THRESHOLD) {
-
-            if (!mTilt || Double.isNaN(tilt)) {
-                tilt = mlastCameraPosition != null ? mlastCameraPosition.tilt : 0;
+        if (latLng != null && rotate
+            && (System.currentTimeMillis() - lastMapTouchTime
+                    > MapConstants.MOVE_MAP_INTERACTION_THRESHOLD)
+        ) {
+            if (!tiltEnabled || java.lang.Double.isNaN(mutableTilt)) {
+                mutableTilt =
+                    if (lastCameraPosition != null) lastCameraPosition!!.tilt.toDouble() else 0.toDouble()
             }
-
-            float clampedTilt = (float) MathUtils.clamp(CAMERA_MIN_TILT, tilt, CAMERA_MAX_TILT);
-
-            double offset = TARGET_OFFSET_METERS * (clampedTilt / CAMERA_MAX_TILT);
-
-            CameraPosition cameraPosition = CameraPosition.builder().
-                    tilt(clampedTilt).
-                    bearing((float) orientation).
-                    zoom((float) (CAMERA_ANCHOR_ZOOM + (tilt / CAMERA_MAX_TILT))).
-                    target(mTilt ? SphericalUtil.computeOffset(mLatLng, offset, orientation)
-                            : mLatLng).
-                    build();
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            val clampedTilt = MathUtils.clamp(
+                MapConstants.CAMERA_MIN_TILT.toDouble(),
+                mutableTilt,
+                MapConstants.CAMERA_MAX_TILT.toDouble()
+            ).toFloat()
+            val offset =
+                MapConstants.TARGET_OFFSET_METERS * (clampedTilt / MapConstants.CAMERA_MAX_TILT)
+            val cameraPosition = CameraPosition.builder().tilt(clampedTilt).bearing(
+                orientation.toFloat()
+            )
+                .zoom((MapConstants.CAMERA_ANCHOR_ZOOM + mutableTilt / MapConstants.CAMERA_MAX_TILT).toFloat())
+                .target(
+                    if (tiltEnabled) SphericalUtil.computeOffset(
+                        latLng,
+                        offset,
+                        orientation
+                    ) else latLng
+                ).build()
+            map!!.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         }
     }
 
     /**
      * Maps V2 Location updates
      */
-    @Override
-    public void activate(OnLocationChangedListener listener) {
-        mListener = listener;
+    override fun activate(listener: OnLocationChangedListener) {
+        this.listener = listener
     }
 
     /**
      * Maps V2 Location updates
      */
-    @Override
-    public void deactivate() {
-        mListener = null;
+    override fun deactivate() {
+        listener = null
     }
 
-    @Override
-    public void onCameraChange(CameraPosition cameraPosition) {
-        if (System.currentTimeMillis() - mLastMapTouchTime < MOVE_MAP_INTERACTION_THRESHOLD) {
+    override fun onCameraChange(cameraPosition: CameraPosition) {
+        if (System.currentTimeMillis() - lastMapTouchTime < MapConstants.MOVE_MAP_INTERACTION_THRESHOLD) {
             /*
             If the user recently interacted with the map (causing a camera change), extend the
             touch time before automatic map movements based on sensors will kick in
             */
-            mLastMapTouchTime = System.currentTimeMillis();
+            lastMapTouchTime = System.currentTimeMillis()
         }
-        mlastCameraPosition = cameraPosition;
+        lastCameraPosition = cameraPosition
     }
 
-    @Override
-    public void onMapClick(LatLng latLng) {
-        mLastMapTouchTime = System.currentTimeMillis();
-        if (!mMapController.getMode().equals(MODE_ACCURACY) || !mMapController.allowGroundTruthChange()) {
+    override fun onMapClick(latLng: LatLng) {
+        lastMapTouchTime = System.currentTimeMillis()
+        if (mapController!!.mode != MapConstants.MODE_ACCURACY || !mapController!!.allowGroundTruthChange()) {
             // Don't allow changes to the ground truth location, so don't pass taps to listener
-            return;
+            return
         }
-        if (mMap != null) {
-            addGroundTruthMarker(MapUtils.makeLocation(latLng));
+        if (map != null) {
+            addGroundTruthMarker(MapUtils.makeLocation(latLng))
         }
-
-        if (mOnMapClickListener != null) {
-            Location location = new Location("OnMapClick");
-            location.setLatitude(latLng.latitude);
-            location.setLongitude(latLng.longitude);
-            mOnMapClickListener.onMapClick(location);
+        if (onMapClickListener != null) {
+            val location = Location("OnMapClick")
+            location.latitude = latLng.latitude
+            location.longitude = latLng.longitude
+            onMapClickListener!!.onMapClick(location)
         }
     }
 
-    @Override
-    public void addGroundTruthMarker(Location location) {
-        if (mMap == null) {
-            return;
+    override fun addGroundTruthMarker(location: Location) {
+        if (map == null) {
+            return
         }
-        LatLng latLng = MapUtils.makeLatLng(location);
-        if (mGroundTruthMarker == null) {
-            mGroundTruthMarker = mMap.addMarker(new MarkerOptions()
+        val latLng = MapUtils.makeLatLng(location)
+        if (groundTruthMarker == null) {
+            groundTruthMarker = map!!.addMarker(
+                MarkerOptions()
                     .position(latLng)
-                    .title(Application.get().getString(R.string.ground_truth_marker_title)));
+                    .title(Application.get().getString(R.string.ground_truth_marker_title))
+            )
         } else {
-            mGroundTruthMarker.setPosition(latLng);
+            groundTruthMarker!!.position = latLng
         }
     }
 
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        mLastMapTouchTime = System.currentTimeMillis();
+    override fun onMapLongClick(latLng: LatLng) {
+        lastMapTouchTime = System.currentTimeMillis()
     }
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        mLastMapTouchTime = System.currentTimeMillis();
+    override fun onMyLocationButtonClick(): Boolean {
+        lastMapTouchTime = System.currentTimeMillis()
         // Return false, so button still functions as normal
-        return false;
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        mMapController.restoreState(mSavedInstanceState, getArguments(), mGroundTruthMarker == null);
-
-        checkMapPreferences();
-
-        // Show the location on the map
-        try {
-            mMap.setMyLocationEnabled(true);
-        } catch (SecurityException e) {
-            Log.e(mMapController.getMode(), "Tried to initialize my location on Google Map - " + e);
-        }
-        // Set location source
-        mMap.setLocationSource(this);
-        // Listener for camera changes
-        mMap.setOnCameraChangeListener(this);
-        // Listener for map / My Location button clicks, to disengage map camera control
-        mMap.setOnMapClickListener(this);
-        mMap.setOnMapLongClickListener(this);
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-    }
-
-    /**
-     * Returns true if Google Play Services is available, false if it is not
-     */
-    private static boolean isGooglePlayServicesInstalled() {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS;
+        return false
     }
 
     /**
      * Sets the listener that should receive map click events
      * @param listener the listener that should receive map click events
      */
-    public void setOnMapClickListener(OnMapClickListener listener) {
-        mOnMapClickListener = listener;
+    fun setOnMapClickListener(listener: OnMapClickListener?) {
+        onMapClickListener = listener
     }
 
-    private void checkMapPreferences() {
-        SharedPreferences settings = Application.getPrefs();
-        if (mMap != null && mMapController.getMode().equals(MODE_MAP)) {
-            if (mMap.getMapType() != Integer.parseInt(
-                    settings.getString(getString(R.string.pref_key_map_type),
-                            String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-            )) {
-                mMap.setMapType(Integer.parseInt(
-                        settings.getString(getString(R.string.pref_key_map_type),
-                                String.valueOf(GoogleMap.MAP_TYPE_NORMAL))
-                ));
+    private fun checkMapPreferences() {
+        val settings = Application.getPrefs()
+        if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
+            if (map!!.mapType !=
+                settings.getString(
+                    getString(R.string.pref_key_map_type),
+                    GoogleMap.MAP_TYPE_NORMAL.toString()
+                )
+                    ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
+            ) {
+                map!!.mapType = settings.getString(
+                    getString(R.string.pref_key_map_type),
+                    GoogleMap.MAP_TYPE_NORMAL.toString()
+                )
+                    ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
             }
-        } else if (mMap != null && mMapController.getMode().equals(MODE_ACCURACY)) {
-            mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        } else if (map != null && mapController!!.mode == MapConstants.MODE_ACCURACY) {
+            map!!.mapType = GoogleMap.MAP_TYPE_SATELLITE
         }
-        if (mMapController.getMode().equals(MODE_MAP)) {
-            mRotate = settings
-                    .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true);
-            mTilt = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true);
+        if (mapController!!.mode == MapConstants.MODE_MAP) {
+            rotate = settings
+                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true)
+            tiltEnabled = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true)
         }
-
-        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
-        if (mMap != null && getActivity() != null && useDarkTheme) {
-            mMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                            getActivity(), R.raw.dark_theme));
+        val useDarkTheme =
+            Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+        if (map != null && activity != null && useDarkTheme) {
+            map!!.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    activity, R.raw.dark_theme
+                )
+            )
         }
     }
 
@@ -421,28 +459,39 @@ public class GpsMapFragment extends SupportMapFragment
      * @param loc1
      * @param loc2
      */
-    @Override
-    public boolean drawPathLine(Location loc1, Location loc2) {
-        if (loc1.distanceTo(loc2) < DRAW_LINE_THRESHOLD_METERS) {
-            return false;
+    override fun drawPathLine(loc1: Location, loc2: Location): Boolean {
+        if (loc1.distanceTo(loc2) < MapConstants.DRAW_LINE_THRESHOLD_METERS) {
+            return false
         }
-        Polyline line = mMap.addPolyline(new PolylineOptions()
+        val line = map!!.addPolyline(
+            PolylineOptions()
                 .add(MapUtils.makeLatLng(loc1), MapUtils.makeLatLng(loc2))
                 .color(Color.RED)
                 .width(2.0f)
-                .geodesic(true));
-        mPathLines.add(line);
-        return true;
+                .geodesic(true)
+        )
+        pathLines.add(line)
+        return true
     }
 
     /**
      * Removes all path lines from the map
      */
-    @Override
-    public void removePathLines() {
-        for (Polyline line : mPathLines) {
-            line.remove();
+    override fun removePathLines() {
+        for (line in pathLines) {
+            line.remove()
         }
-        mPathLines = new ArrayList<>();
+        pathLines = ArrayList()
+    }
+
+    companion object {
+        const val TAG = "GpsMapFragment"
+
+        /**
+         * Returns true if Google Play Services is available, false if it is not
+         */
+        private val isGooglePlayServicesInstalled: Boolean
+            get() = GoogleApiAvailability.getInstance()
+                .isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context
 import com.android.gpstest.data.SharedGnssStatusManager
 import com.android.gpstest.data.SharedLocationManager
 import com.android.gpstest.data.SharedNmeaManager
+import com.android.gpstest.data.SharedSensorManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +41,11 @@ object DataModule {
         @ApplicationContext context: Context
     ): SharedNmeaManager =
         SharedNmeaManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun provideSharedSensorManager(
+        @ApplicationContext context: Context
+    ): SharedSensorManager =
+        SharedSensorManager(context, GlobalScope)
 }

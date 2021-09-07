@@ -7,7 +7,8 @@ import javax.inject.Inject
 class LocationRepository @Inject constructor(
     private val sharedLocationManager: SharedLocationManager,
     private val sharedGnssStatusManager: SharedGnssStatusManager,
-    private val sharedNmeaManager: SharedNmeaManager
+    private val sharedNmeaManager: SharedNmeaManager,
+    private val sharedSensorManager: SharedSensorManager
 ) {
     /**
      * Status of whether the app is actively subscribed to location changes.
@@ -41,4 +42,10 @@ class LocationRepository @Inject constructor(
      */
     @ExperimentalCoroutinesApi
     fun getNmea() = sharedNmeaManager.nmeaFlow()
+
+    /**
+     * Observable flow for orientation sensor updates
+     */
+    @ExperimentalCoroutinesApi
+    fun getSensorUpdates() = sharedSensorManager.sensorFlow()
 }

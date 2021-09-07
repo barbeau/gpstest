@@ -19,12 +19,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.hardware.*
+import android.hardware.display.DisplayManager
 import android.location.LocationManager
-import android.os.Build
 import android.util.Log
 import android.view.Display
 import android.view.Surface
-import android.view.WindowManager
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.OrientationAndTilt
@@ -76,11 +75,8 @@ class SharedSensorManager constructor(
                             maybeTruncateVector(event)
 
                             val display = getDisplay()
-                            if (display != null) {
-                                handleRotation(display.rotation)
-                            }
-                            orientation =
-                                Math.toDegrees(values[0].toDouble()) // azimuth
+                            if (display != null) handleRotation(display.rotation)
+                            orientation = Math.toDegrees(values[0].toDouble()) // azimuth
                             tilt = Math.toDegrees(values[1].toDouble())
                         }
                         Sensor.TYPE_ORIENTATION ->
@@ -199,13 +195,8 @@ class SharedSensorManager constructor(
     }
 
     private fun getDisplay() : Display? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display
-        } else {
-            val windowManager = context
-                .getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            windowManager.defaultDisplay
-        }
+        val displayManager = Application.get().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        return displayManager.getDisplay(0)
     }
 
     private fun handleRotation(rotation: Int) {
