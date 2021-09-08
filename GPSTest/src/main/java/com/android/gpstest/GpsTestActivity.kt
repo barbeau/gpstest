@@ -67,31 +67,31 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
-    private var mToolbar: Toolbar? = null
-    private var mUseDarkTheme = false
+    private var toolbar: Toolbar? = null
+    private var useDarkTheme = false
 
     /**
      * Currently selected navigation drawer position (so we don't unnecessarily swap fragments
      * if the same item is selected).  Initialized to -1 so the initial callback from
      * NavigationDrawerFragment always instantiates the fragments
      */
-    private var mCurrentNavDrawerPosition = -1
+    private var currentNavDrawerPosition = -1
 
     //
     // Fragments controlled by the nav drawer
     //
-    private var mStatusFragment: GpsStatusFragment? = null
-    private var mMapFragment: GpsMapFragment? = null
-    private var mSkyFragment: GpsSkyFragment? = null
-    private var mAccuracyFragment: GpsMapFragment? = null
+    private var statusFragment: GpsStatusFragment? = null
+    private var mapFragment: GpsMapFragment? = null
+    private var skyFragment: GpsSkyFragment? = null
+    private var accuracyFragment: GpsMapFragment? = null
     var gpsResume = false
     private var mSwitch // GPS on/off switch
             : Switch? = null
     private var lastLocation: Location? = null
-    var mLastSavedInstanceState: Bundle? = null
-    private var mUserDeniedPermission = false
-    private var mBenchmarkController: BenchmarkController? = null
-    private var mInitialLanguage: String? = null
+    var lastSavedInstanceState: Bundle? = null
+    private var userDeniedPermission = false
+    private var benchmarkController: BenchmarkController? = null
+    private var initialLanguage: String? = null
     private var shareDialogOpen = false
     private var progressBar: ProgressBar? = null
     var deviceInfoViewModel: DeviceInfoViewModel? = null
@@ -126,7 +126,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Set theme
         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             setTheme(R.style.AppTheme_Dark_NoActionBar)
-            mUseDarkTheme = true
+            useDarkTheme = true
         }
         super.onCreate(savedInstanceState)
         // Reset the activity title to make sure dynamic locale changes are shown
@@ -136,7 +136,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Set the default values from the XML file if this is the first
         // execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        mInitialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
+        initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
 
         // If we have a large screen, show all the fragments in one layout
         // TODO - Fix large screen layouts (see #122)
@@ -146,16 +146,16 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 //        } else {
         setContentView(R.layout.activity_main)
         //        }
-        mBenchmarkController = BenchmarkControllerImpl(this, findViewById(R.id.mainlayout))
+        benchmarkController = BenchmarkControllerImpl(this, findViewById(R.id.mainlayout))
 
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
-        if (mAccuracyFragment != null && mCurrentNavDrawerPosition == NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
+        if (accuracyFragment != null && currentNavDrawerPosition == NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
             initAccuracy()
         } else {
-            (mBenchmarkController as BenchmarkControllerImpl).hide()
+            (benchmarkController as BenchmarkControllerImpl).hide()
         }
-        mToolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(mToolbar)
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
         progressBar = findViewById(R.id.progress_horizontal)
         setupNavigationDrawer()
         deviceInfoViewModel = ViewModelProviders.of(this).get(
@@ -179,7 +179,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
      */
     private fun saveInstanceState(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
-            mLastSavedInstanceState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            lastSavedInstanceState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 savedInstanceState.deepCopy()
             } else {
                 savedInstanceState
@@ -214,7 +214,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onResume() {
         super.onResume()
         shareDialogOpen = false
-        if (!mUserDeniedPermission) {
+        if (!userDeniedPermission) {
             requestPermissionAndInit(this)
         } else {
             // Explain permission to user (don't request permission here directly to avoid infinite
@@ -224,12 +224,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
         if (Application.getPrefs().contains(getString(R.string.pref_key_language))) {
             val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
-            if (currentLanguage != mInitialLanguage) {
-                mInitialLanguage = currentLanguage
+            if (currentLanguage != initialLanguage) {
+                initialLanguage = currentLanguage
                 recreateApp(null)
             }
         }
-        mBenchmarkController!!.onResume()
+        benchmarkController!!.onResume()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -301,12 +301,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun initAccuracy() {
-        mAccuracyFragment!!.setOnMapClickListener { location: Location? ->
-            mBenchmarkController!!.onMapClick(
+        accuracyFragment!!.setOnMapClickListener { location: Location? ->
+            benchmarkController!!.onMapClick(
                 location
             )
         }
-        mBenchmarkController!!.show()
+        benchmarkController!!.show()
     }
 
     private fun requestPermissionAndInit(activity: Activity) {
@@ -328,10 +328,10 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mUserDeniedPermission = false
+                userDeniedPermission = false
                 init()
             } else {
-                mUserDeniedPermission = true
+                userDeniedPermission = true
             }
         }
     }
@@ -349,13 +349,13 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             UIUtils.promptEnableGps(this)
         }
-        setupStartState(mLastSavedInstanceState)
+        setupStartState(lastSavedInstanceState)
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
         val useDarkTheme =
             Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
-        if (mUseDarkTheme != useDarkTheme) {
-            mUseDarkTheme = useDarkTheme
+        if (this.useDarkTheme != useDarkTheme) {
+            this.useDarkTheme = useDarkTheme
             recreate()
         }
         val settings = Application.getPrefs()
@@ -400,21 +400,21 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun goToNavDrawerItem(item: Int) {
         // Update the main content by replacing fragments
         when (item) {
-            NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS) {
+            NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS) {
                 showStatusFragment()
-                mCurrentNavDrawerPosition = item
+                currentNavDrawerPosition = item
             }
-            NavigationDrawerFragment.NAVDRAWER_ITEM_MAP -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_MAP) {
+            NavigationDrawerFragment.NAVDRAWER_ITEM_MAP -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_MAP) {
                 showMapFragment()
-                mCurrentNavDrawerPosition = item
+                currentNavDrawerPosition = item
             }
-            NavigationDrawerFragment.NAVDRAWER_ITEM_SKY -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_SKY) {
+            NavigationDrawerFragment.NAVDRAWER_ITEM_SKY -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_SKY) {
                 showSkyFragment()
-                mCurrentNavDrawerPosition = item
+                currentNavDrawerPosition = item
             }
-            NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY -> if (mCurrentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
+            NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
                 showAccuracyFragment()
-                mCurrentNavDrawerPosition = item
+                currentNavDrawerPosition = item
             }
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA -> forceTimeInjection()
@@ -461,32 +461,32 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideMapFragment()
         hideSkyFragment()
         hideAccuracyFragment()
-        if (mBenchmarkController != null) {
-            mBenchmarkController!!.hide()
+        if (benchmarkController != null) {
+            benchmarkController!!.hide()
         }
 
         // Show fragment (we use show instead of replace to keep the map state)
-        if (mStatusFragment == null) {
+        if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            mStatusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
-            if (mStatusFragment == null) {
+            statusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
+            if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsStatusFragment")
-                mStatusFragment = GpsStatusFragment()
+                statusFragment = GpsStatusFragment()
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, mStatusFragment!!, GpsStatusFragment.TAG)
+                    .add(R.id.fragment_container, statusFragment!!, GpsStatusFragment.TAG)
                     .commit()
             }
         }
-        supportFragmentManager.beginTransaction().show(mStatusFragment!!).commit()
+        supportFragmentManager.beginTransaction().show(statusFragment!!).commit()
         title = resources.getString(R.string.gps_status_title)
     }
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        mStatusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
-        if (mStatusFragment != null && !mStatusFragment!!.isHidden) {
-            fm.beginTransaction().hide(mStatusFragment!!).commit()
+        statusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
+        if (statusFragment != null && !statusFragment!!.isHidden) {
+            fm.beginTransaction().hide(statusFragment!!).commit()
         }
     }
 
@@ -496,35 +496,35 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideSkyFragment()
         hideAccuracyFragment()
-        if (mBenchmarkController != null) {
-            mBenchmarkController!!.hide()
+        if (benchmarkController != null) {
+            benchmarkController!!.hide()
         }
 
         // Show fragment (we use show instead of replace to keep the map state)
-        if (mMapFragment == null) {
+        if (mapFragment == null) {
             // First check to see if an instance of fragment already exists
-            mMapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
-            if (mMapFragment == null) {
+            mapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
+            if (mapFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment")
                 val bundle = Bundle()
                 bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP)
-                mMapFragment = GpsMapFragment()
-                mMapFragment!!.arguments = bundle
+                mapFragment = GpsMapFragment()
+                mapFragment!!.arguments = bundle
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, mMapFragment!!, MapConstants.MODE_MAP)
+                    .add(R.id.fragment_container, mapFragment!!, MapConstants.MODE_MAP)
                     .commit()
             }
         }
-        supportFragmentManager.beginTransaction().show(mMapFragment!!).commit()
+        supportFragmentManager.beginTransaction().show(mapFragment!!).commit()
         title = resources.getString(R.string.gps_map_title)
     }
 
     private fun hideMapFragment() {
         val fm = supportFragmentManager
-        mMapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
-        if (mMapFragment != null && !mMapFragment!!.isHidden) {
-            fm.beginTransaction().hide(mMapFragment!!).commit()
+        mapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as GpsMapFragment?
+        if (mapFragment != null && !mapFragment!!.isHidden) {
+            fm.beginTransaction().hide(mapFragment!!).commit()
         }
     }
 
@@ -534,31 +534,31 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideMapFragment()
         hideAccuracyFragment()
-        if (mBenchmarkController != null) {
-            mBenchmarkController!!.hide()
+        if (benchmarkController != null) {
+            benchmarkController!!.hide()
         }
         // Show fragment (we use show instead of replace to keep the map state)
-        if (mSkyFragment == null) {
+        if (skyFragment == null) {
             // First check to see if an instance of fragment already exists
-            mSkyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
-            if (mSkyFragment == null) {
+            skyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
+            if (skyFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsStatusFragment")
-                mSkyFragment = GpsSkyFragment()
+                skyFragment = GpsSkyFragment()
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, mSkyFragment!!, GpsSkyFragment.TAG)
+                    .add(R.id.fragment_container, skyFragment!!, GpsSkyFragment.TAG)
                     .commit()
             }
         }
-        supportFragmentManager.beginTransaction().show(mSkyFragment!!).commit()
+        supportFragmentManager.beginTransaction().show(skyFragment!!).commit()
         title = resources.getString(R.string.gps_sky_title)
     }
 
     private fun hideSkyFragment() {
         val fm = supportFragmentManager
-        mSkyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
-        if (mSkyFragment != null && !mSkyFragment!!.isHidden) {
-            fm.beginTransaction().hide(mSkyFragment!!).commit()
+        skyFragment = fm.findFragmentByTag(GpsSkyFragment.TAG) as GpsSkyFragment?
+        if (skyFragment != null && !skyFragment!!.isHidden) {
+            fm.beginTransaction().hide(skyFragment!!).commit()
         }
     }
 
@@ -569,33 +569,33 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideMapFragment()
         hideSkyFragment()
         // Show fragment (we use show instead of replace to keep the map state)
-        if (mAccuracyFragment == null) {
+        if (accuracyFragment == null) {
             // First check to see if an instance of fragment already exists
-            mAccuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
-            if (mAccuracyFragment == null) {
+            accuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
+            if (accuracyFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsMapFragment for Accuracy")
                 val bundle = Bundle()
                 bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY)
-                mAccuracyFragment = GpsMapFragment()
-                mAccuracyFragment!!.arguments = bundle
+                accuracyFragment = GpsMapFragment()
+                accuracyFragment!!.arguments = bundle
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, mAccuracyFragment!!, MapConstants.MODE_ACCURACY)
+                    .add(R.id.fragment_container, accuracyFragment!!, MapConstants.MODE_ACCURACY)
                     .commit()
             }
         }
-        supportFragmentManager.beginTransaction().show(mAccuracyFragment!!).commit()
+        supportFragmentManager.beginTransaction().show(accuracyFragment!!).commit()
         title = resources.getString(R.string.gps_accuracy_title)
-        if (mBenchmarkController != null) {
+        if (benchmarkController != null) {
             initAccuracy()
         }
     }
 
     private fun hideAccuracyFragment() {
         val fm = supportFragmentManager
-        mAccuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
-        if (mAccuracyFragment != null && !mAccuracyFragment!!.isHidden) {
-            fm.beginTransaction().hide(mAccuracyFragment!!).commit()
+        accuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as GpsMapFragment?
+        if (accuracyFragment != null && !accuracyFragment!!.isHidden) {
+            fm.beginTransaction().hide(accuracyFragment!!).commit()
         }
     }
 
@@ -685,9 +685,9 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             // Close navigation drawer
             drawer.closeDrawer(GravityCompat.START)
             return
-        } else if (mBenchmarkController != null) {
+        } else if (benchmarkController != null) {
             // Close sliding drawer
-            if (mBenchmarkController!!.onBackPressed()) {
+            if (benchmarkController!!.onBackPressed()) {
                 return
             }
         }
@@ -743,7 +743,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 // Reset the options menu to trigger updates to action bar menu items
                 invalidateOptionsMenu()
 
-                mBenchmarkController?.onLocationChanged(it)
+                benchmarkController?.onLocationChanged(it)
             }
             .launchIn(lifecycleScope)
     }
@@ -796,7 +796,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun checkKeepScreenOn(settings: SharedPreferences) {
 //        if (!mIsLargeScreen) {
-        mToolbar!!.keepScreenOn =
+        toolbar!!.keepScreenOn =
             settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)
         //        } else {
 //            // TODO - After we fix large screen devices in #122, we can delete the below block and
@@ -818,6 +818,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         return true
     }
 
+    @ExperimentalCoroutinesApi
     private fun initGpsSwitch(menu: Menu) {
         val item = menu.findItem(R.id.gps_switch_item)
         if (item != null) {
@@ -887,7 +888,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun createClearAssistWarningDialog(): Dialog {
         val view = layoutInflater.inflate(R.layout.clear_assist_warning, null)
         val neverShowDialog = view.findViewById<CheckBox>(R.id.clear_assist_never_ask_again)
-        neverShowDialog.setOnCheckedChangeListener { compoundButton: CompoundButton?, isChecked: Boolean ->
+        neverShowDialog.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             // Save the preference
             PreferenceUtils.saveBoolean(
                 getString(R.string.pref_key_never_show_clear_assist_warning),
@@ -905,10 +906,10 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             .setView(view)
             .setPositiveButton(
                 R.string.yes
-            ) { dialog: DialogInterface?, which: Int -> deleteAidingData() }
+            ) { _: DialogInterface?, _: Int -> deleteAidingData() }
             .setNegativeButton(
                 R.string.no
-            ) { dialog: DialogInterface?, which: Int -> }
+            ) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
