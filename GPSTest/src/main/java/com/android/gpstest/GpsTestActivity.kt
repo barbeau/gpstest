@@ -87,7 +87,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var gpsResume = false
     private var mSwitch // GPS on/off switch
             : Switch? = null
-    private var mLastLocation: Location? = null
+    private var lastLocation: Location? = null
     var mLastSavedInstanceState: Bundle? = null
     private var mUserDeniedPermission = false
     private var mBenchmarkController: BenchmarkController? = null
@@ -239,7 +239,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             if (data != null) {
                 val uri = data.data
                 Log.i(TAG, "Uri: " + uri.toString())
-                val location = mLastLocation
+                val location = lastLocation
                 shareDialogOpen = true
                 UIUtils.showShareFragmentDialog(
                     this, location, service!!.isFileLoggingEnabled(),
@@ -446,8 +446,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 // Send App feedback
                 val email = getString(R.string.app_feedback_email)
                 var locationString: String? = null
-                if (mLastLocation != null) {
-                    locationString = LocationUtils.printLocationDetails(mLastLocation)
+                if (lastLocation != null) {
+                    locationString = LocationUtils.printLocationDetails(lastLocation)
                 }
                 UIUtils.sendEmail(this, email, locationString, deviceInfoViewModel)
             }
@@ -735,13 +735,15 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                mLastLocation = it
+                lastLocation = it
                 Log.d(TAG, "Activity location: ${it.toNotificationTitle()}")
 
                 hideProgressBar()
 
                 // Reset the options menu to trigger updates to action bar menu items
                 invalidateOptionsMenu()
+
+                mBenchmarkController?.onLocationChanged(it)
             }
             .launchIn(lifecycleScope)
     }
@@ -847,7 +849,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.share)
         if (item != null) {
-            item.isVisible = mLastLocation != null || service!!.isFileLoggingEnabled()
+            item.isVisible = lastLocation != null || service!!.isFileLoggingEnabled()
         }
         return true
     }
@@ -865,7 +867,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun share() {
-        val location = mLastLocation
+        val location = lastLocation
         shareDialogOpen = true
         UIUtils.showShareFragmentDialog(
             this, location, service!!.isFileLoggingEnabled(),

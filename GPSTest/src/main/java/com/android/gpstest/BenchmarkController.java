@@ -43,6 +43,11 @@ interface BenchmarkController {
     void onResume();
 
     /**
+     * Called from the hosting Activity when a new location should be added to the benchmark session
+     */
+    void onLocationChanged(Location location);
+
+    /**
      * Show the Benchmark views
      */
     void show();
