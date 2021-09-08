@@ -169,7 +169,7 @@ dependencies {
     // Use suspend coroutines instead of callbacks (Google flavor only)
     implementation 'com.google.maps.android:maps-ktx:3.1.0'
     // OSM Droid (fdroid flavor only)
-    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.4'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.11'
 
     //
     // Unit tests

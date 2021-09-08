@@ -90,7 +90,6 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
 
-    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -115,7 +114,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
                 builder.setMessage(getString(R.string.please_install_google_maps))
                 builder.setPositiveButton(
                     getString(R.string.install)
-                ) { dialog, which ->
+                ) { _, _ ->
                     sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
                     val intent = Intent(
                         Intent.ACTION_VIEW,
@@ -127,7 +126,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
                 }
                 builder.setNegativeButton(
                     getString(R.string.no_thanks)
-                ) { dialog, which ->
+                ) { _, _ ->
                     sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
                 }
                 val dialog = builder.create()
@@ -485,7 +484,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
     }
 
     companion object {
-        const val TAG = "GpsMapFragment"
+        private const val TAG = "GpsMapFragment"
 
         /**
          * Returns true if Google Play Services is available, false if it is not
