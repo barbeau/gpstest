@@ -173,7 +173,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sp = Application.getPrefs();
+        SharedPreferences sp = Application.Companion.getPrefs();
 
         if (IOUtils.isShowRadarIntent(getActivity().getIntent())) {
             // If another app (e.g., BenchMap) passed in a ground truth location, show the Accuracy view
@@ -304,7 +304,7 @@ public class NavigationDrawerFragment extends Fragment {
      * Set the selected position as a preference
      */
     public void setSavedPosition(int position) {
-        SharedPreferences sp = Application.getPrefs();
+        SharedPreferences sp = Application.Companion.getPrefs();
         sp.edit().putInt(STATE_SELECTED_POSITION, position).apply();
     }
 
@@ -429,7 +429,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Set background color of nav drawer
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             mDrawerItemsListContainer.setBackgroundColor(getContext().getResources().getColor(R.color.navdrawer_background_dark));
         }
 
@@ -465,7 +465,7 @@ public class NavigationDrawerFragment extends Fragment {
             return view;
         }
 
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+        if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
                 && layoutToInflate == R.layout.navdrawer_item) {
             // Dark theme
             view.setBackgroundResource(R.drawable.navdrawer_item_selectable_dark);
@@ -538,7 +538,7 @@ public class NavigationDrawerFragment extends Fragment {
             // Show the category as not highlighted, if its not currently selected
             if (itemId != mCurrentSelectedPosition) {
                 view.setSelected(false);
-                if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+                if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
                     // Dark theme
                     titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color_dark));
                     iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_dark));

@@ -376,7 +376,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 // CSV logging only
                 Toast.makeText(
                     applicationContext,
-                    Application.get().getString(
+                    Application.app.getString(
                         R.string.logging_to_new_file,
                         csvFileLogger.file.absolutePath
                     ),
@@ -389,7 +389,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 // CSV logging only
                 Toast.makeText(
                     applicationContext,
-                    Application.get().getString(
+                    Application.app.getString(
                         R.string.logging_to_new_file,
                         jsonFileLogger.file.absolutePath
                     ),
@@ -401,7 +401,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             if (isNewCSVFile && isNewJsonFile) {
                 Toast.makeText(
                     applicationContext,
-                    Application.get().getString(
+                    Application.app.getString(
                         R.string.logging_to_new_file,
                         csvFileLogger.file.absolutePath
                     ) + " + .json",

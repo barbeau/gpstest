@@ -106,7 +106,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
                 observeLocationUpdateStates()
             }
         } else {
-            val sp = Application.getPrefs()
+            val sp = Application.prefs
             if (!sp.getBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, false)) {
                 val builder = AlertDialog.Builder(
                     requireActivity()
@@ -392,7 +392,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
             groundTruthMarker = map!!.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title(Application.get().getString(R.string.ground_truth_marker_title))
+                    .title(Application.app.getString(R.string.ground_truth_marker_title))
             )
         } else {
             groundTruthMarker!!.position = latLng
@@ -418,7 +418,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
     }
 
     private fun checkMapPreferences() {
-        val settings = Application.getPrefs()
+        val settings = Application.prefs
         if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
             if (map!!.mapType !=
                 settings.getString(
@@ -442,7 +442,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
             tiltEnabled = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true)
         }
         val useDarkTheme =
-            Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+            Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)
         if (map != null && activity != null && useDarkTheme) {
             map!!.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
@@ -491,6 +491,6 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
          */
         private val isGooglePlayServicesInstalled: Boolean
             get() = GoogleApiAvailability.getInstance()
-                .isGooglePlayServicesAvailable(Application.get()) == ConnectionResult.SUCCESS
+                .isGooglePlayServicesAvailable(Application.app) == ConnectionResult.SUCCESS
     }
 }

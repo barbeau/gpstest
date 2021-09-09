@@ -56,7 +56,7 @@ class SharedNmeaManager constructor(
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val callback = OnNmeaMessageListener { message: String, timestamp: Long ->
             PreferenceUtils.saveInt(
-                Application.get()
+                Application.app
                     .getString(R.string.capability_key_nmea),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )

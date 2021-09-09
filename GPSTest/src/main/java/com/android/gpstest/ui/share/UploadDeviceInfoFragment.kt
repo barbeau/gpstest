@@ -88,16 +88,16 @@ class UploadDeviceInfoFragment : Fragment() {
             var versionName = ""
             var versionCode = ""
             try {
-                val info: PackageInfo = Application.get().packageManager.getPackageInfo(Application.get().packageName, 0)
+                val info: PackageInfo = Application.app.packageManager.getPackageInfo(Application.app.packageName, 0)
                 versionName = info.versionName
                 versionCode = info.versionCode.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            val locationManager = Application.get().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationManager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             // Inject PSDS capability
-            val capabilityInjectPsdsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityInjectPsdsInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
             val psdsSuccessBoolean: Boolean
             val psdsSuccessString: String
             if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
@@ -108,7 +108,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // Inject time
-            val capabilityInjectTimeInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityInjectTimeInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN)
             val timeSuccessBoolean: Boolean
             val timeSuccessString: String
             if (capabilityInjectTimeInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
@@ -119,7 +119,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // Delete assist capability
-            val capabilityDeleteAssistInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityDeleteAssistInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN)
             val deleteAssistSuccessString: String
             if (capabilityDeleteAssistInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 // Deleting assist data can be destructive, so don't force it - just use existing info
@@ -129,7 +129,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // GNSS measurements
-            val capabilityMeasurementsInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityMeasurementsInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityMeasurementsString: String
             if (capabilityMeasurementsInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 capabilityMeasurementsString = PreferenceUtils.getCapabilityDescription(capabilityMeasurementsInt)
@@ -138,7 +138,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // GNSS navigation message
-            val capabilityNavMessagesInt = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityNavMessagesInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityNavMessagesString: String
             if (capabilityNavMessagesInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 capabilityNavMessagesString = PreferenceUtils.getCapabilityDescription(capabilityNavMessagesInt)
@@ -149,9 +149,9 @@ class UploadDeviceInfoFragment : Fragment() {
             val gnssAntennaInfo = PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
             val numAntennas: String
             val antennaCfs: String
-            if (gnssAntennaInfo.equals(Application.get().getString(R.string.capability_value_supported))) {
-                numAntennas = PreferenceUtils.getInt(Application.get().getString(R.string.capability_key_num_antenna), -1).toString()
-                antennaCfs = PreferenceUtils.getString(Application.get().getString(R.string.capability_key_antenna_cf))
+            if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
+                numAntennas = PreferenceUtils.getInt(Application.app.getString(R.string.capability_key_num_antenna), -1).toString()
+                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf))
             } else {
                 numAntennas = ""
                 antennaCfs = ""
@@ -173,15 +173,15 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.SBAS_CFS to trimEnds(deviceInfoViewModel.supportedSbasCfs.sorted().toString()),
                     DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
                     DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
-                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
                     DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
-                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     // TODO - Add below clock values? What should they be to generalize across all of the same model?
                     DevicePropertiesUploader.HARDWARE_CLOCK to "",
                     DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
-                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to gnssAntennaInfo,
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
                     DevicePropertiesUploader.USER_COUNTRY to userCountry,
@@ -194,10 +194,10 @@ class UploadDeviceInfoFragment : Fragment() {
             upload.isEnabled = false
 
             // Check to see if anything changed since last upload
-            val lastUpload = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_last_upload_hash), Int.MAX_VALUE)
+            val lastUpload = Application.prefs.getInt(Application.app.getString(R.string.capability_key_last_upload_hash), Int.MAX_VALUE)
             if (lastUpload != Int.MAX_VALUE && lastUpload == bundle.toString().hashCode()) {
                 // Nothing changed since last upload
-                Toast.makeText(Application.get(), R.string.upload_nothing_changed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(Application.app, R.string.upload_nothing_changed, Toast.LENGTH_SHORT).show()
                 upload.isEnabled = true
             } else {
                 // First upload, or something changed since last upload - add app version and upload data
@@ -208,13 +208,13 @@ class UploadDeviceInfoFragment : Fragment() {
                 lifecycle.coroutineScope.launch {
                     val uploader = DevicePropertiesUploader(bundle)
                     if (uploader.upload()) {
-                        Toast.makeText(Application.get(), R.string.upload_success, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(Application.app, R.string.upload_success, Toast.LENGTH_SHORT).show()
                         // Remove app version and code, and then save hash to compare against next upload attempt
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_NAME)
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_CODE)
-                        PreferenceUtils.saveInt(Application.get().getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode())
+                        PreferenceUtils.saveInt(Application.app.getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode())
                     } else {
-                        Toast.makeText(Application.get(), R.string.upload_failure, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(Application.app, R.string.upload_failure, Toast.LENGTH_SHORT).show()
                     }
                     upload.isEnabled = true
                     uploadProgress.visibility = View.INVISIBLE

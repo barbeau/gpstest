@@ -5,6 +5,9 @@
 
 package com.android.gpstest.lang;
 
+import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
+import static android.os.Build.VERSION_CODES.N;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,9 +20,6 @@ import com.android.gpstest.R;
 import com.android.gpstest.util.LocaleUtils;
 
 import java.util.Locale;
-
-import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
-import static android.os.Build.VERSION_CODES.N;
 
 /**
  * Dynamically changes the app locale
@@ -54,7 +54,7 @@ public class LocaleManager {
     private void persistLanguage(String language) {
         // use commit() instead of apply(), because sometimes we kill the application process immediately
         // which will prevent apply() to finish
-        prefs.edit().putString(Application.get().getString(R.string.pref_key_language), language).commit();
+        prefs.edit().putString(Application.Companion.getApp().getString(R.string.pref_key_language), language).commit();
     }
 
     private Context updateResources(Context context, String language) {

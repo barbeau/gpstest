@@ -58,17 +58,17 @@ class SharedAntennaManager constructor(
         val callback = GnssAntennaInfo.Listener { list: List<GnssAntennaInfo> ->
             // Capture capabilities in preferences
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_num_antenna),
+                Application.app.getString(R.string.capability_key_num_antenna),
                 list.size
             )
             val cfs: MutableList<String> = ArrayList(2)
             for (info in list) {
                 cfs.add(CarrierFreqUtils.getCarrierFrequencyLabel(info))
             }
-            if (!cfs.isEmpty()) {
-                Collections.sort(cfs)
+            if (cfs.isNotEmpty()) {
+                cfs.sort()
                 PreferenceUtils.saveString(
-                    Application.get().getString(R.string.capability_key_antenna_cf),
+                    Application.app.getString(R.string.capability_key_antenna_cf),
                     IOUtils.trimEnds(cfs.toString())
                 )
             }

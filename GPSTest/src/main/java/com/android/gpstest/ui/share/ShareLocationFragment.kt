@@ -59,13 +59,13 @@ class ShareLocationFragment : Fragment() {
         // Set default state of include altitude view
 
         // Set default state of include altitude view
-        val includeAltitudePref = Application.getPrefs().getBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), false)
+        val includeAltitudePref = Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), false)
         includeAltitude.isChecked = includeAltitudePref
 
         // Check selected coordinate format and show in UI
 
         // Check selected coordinate format and show in UI
-        val coordinateFormat = Application.getPrefs().getString(Application.get().getString(R.string.pref_key_coordinate_format), Application.get().getString(R.string.preferences_coordinate_format_dd_key))
+        val coordinateFormat = Application.prefs.getString(Application.app.getString(R.string.pref_key_coordinate_format), Application.app.getString(R.string.preferences_coordinate_format_dd_key))
         UIUtils.formatLocationForDisplay(location, locationValue, includeAltitude.isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat)
 
         // Change the location text when the user toggles the altitude checkbox
@@ -81,7 +81,7 @@ class ShareLocationFragment : Fragment() {
                 format = "ddm"
             }
             UIUtils.formatLocationForDisplay(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format)
-            PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_share_include_altitude), isChecked)
+            PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked)
         }
 
         chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -92,8 +92,8 @@ class ShareLocationFragment : Fragment() {
         chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.app, location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.app, location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
                             if (location.hasAltitude() && includeAltitude.isChecked) java.lang.Double.toString(location.getAltitude()) else null)
                 }
             }
@@ -101,8 +101,8 @@ class ShareLocationFragment : Fragment() {
         chipDegreesDecimalMin.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.app, location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.app, location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
                             if (location.hasAltitude() && includeAltitude.isChecked) java.lang.Double.toString(location.getAltitude()) else null)
                 }
             }
@@ -120,7 +120,7 @@ class ShareLocationFragment : Fragment() {
             // Open the browser to the GeoHack site with lots of coordinate conversions
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
-                val geohackUrl = Application.get().getString(R.string.geohack_url) +
+                val geohackUrl = Application.app.getString(R.string.geohack_url) +
                         location.getLatitude() + ";" +
                         location.getLongitude()
                 intent.data = Uri.parse(geohackUrl)
@@ -150,7 +150,7 @@ class ShareLocationFragment : Fragment() {
                 }
                 intent.putExtra(Intent.EXTRA_TEXT, text)
                 intent.type = "text/plain"
-                activity!!.startActivity(Intent.createChooser(intent, Application.get().getString(R.string.share)))
+                activity!!.startActivity(Intent.createChooser(intent, Application.app.getString(R.string.share)))
             }
         }
     }

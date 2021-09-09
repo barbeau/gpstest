@@ -124,7 +124,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             setTheme(R.style.AppTheme_Dark_NoActionBar)
             useDarkTheme = true
         }
@@ -222,7 +222,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             UIUtils.showLocationPermissionDialog(this)
         }
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
-        if (Application.getPrefs().contains(getString(R.string.pref_key_language))) {
+        if (Application.prefs.contains(getString(R.string.pref_key_language))) {
             val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
             if (currentLanguage != initialLanguage) {
                 initialLanguage = currentLanguage
@@ -297,7 +297,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     override fun attachBaseContext(base: Context) {
         // For dynamically changing the locale
-        super.attachBaseContext(Application.getLocaleManager().setLocale(base))
+        super.attachBaseContext(Application.localeManager.setLocale(base))
     }
 
     private fun initAccuracy() {
@@ -353,12 +353,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
         val useDarkTheme =
-            Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+            Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)
         if (this.useDarkTheme != useDarkTheme) {
             this.useDarkTheme = useDarkTheme
             recreate()
         }
-        val settings = Application.getPrefs()
+        val settings = Application.prefs
         checkKeepScreenOn(settings)
         UIUtils.autoShowWhatsNew(this)
     }
@@ -383,7 +383,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
         } else {
             // Activity is starting without previous state - use "Auto-start GNSS" setting, or gpsResume (e.g., if app was backgrounded via Home button)
-            if (Application.getPrefs().getBoolean(
+            if (Application.prefs.getBoolean(
                     getString(R.string.pref_key_auto_start_gps),
                     true
                 ) || gpsResume
@@ -419,7 +419,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA -> forceTimeInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA -> {
-                val prefs = Application.getPrefs()
+                val prefs = Application.prefs
                 if (!prefs.getBoolean(
                         getString(R.string.pref_key_never_show_clear_assist_warning),
                         false
@@ -607,7 +607,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_inject_psds),
+                Application.app.getString(R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         } else {
@@ -616,7 +616,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_inject_psds),
+                Application.app.getString(R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
@@ -630,7 +630,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_inject_time),
+                Application.app.getString(R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         } else {
@@ -639,7 +639,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_inject_time),
+                Application.app.getString(R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
@@ -658,7 +658,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_delete_assist),
+                Application.app.getString(R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         } else {
@@ -667,7 +667,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_delete_assist),
+                Application.app.getString(R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
@@ -850,7 +850,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.share)
         if (item != null) {
-            item.isVisible = lastLocation != null || service!!.isFileLoggingEnabled()
+            item.isVisible = lastLocation != null || service?.isFileLoggingEnabled() == true
         }
         return true
     }
@@ -895,7 +895,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 isChecked
             )
         }
-        val icon = ContextCompat.getDrawable(Application.get(), R.drawable.ic_delete)
+        val icon = ContextCompat.getDrawable(Application.app, R.drawable.ic_delete)
         if (icon != null) {
             DrawableCompat.setTint(icon, resources.getColor(R.color.colorPrimary))
         }

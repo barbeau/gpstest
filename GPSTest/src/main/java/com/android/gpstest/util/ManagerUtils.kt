@@ -41,11 +41,11 @@ fun android.location.Location?.toNotificationTitle(): String {
  */
 fun android.location.Location?.toNotificationSummary(): String {
     return if (this != null) {
-        val coordinateFormat = Application.getPrefs().getString(
-            Application.get().getString(R.string.pref_key_coordinate_format),
-            Application.get().getString(R.string.preferences_coordinate_format_dd_key)
+        val coordinateFormat = Application.prefs.getString(
+            Application.app.getString(R.string.pref_key_coordinate_format),
+            Application.app.getString(R.string.preferences_coordinate_format_dd_key)
         )
-        val resources = Application.get().resources
+        val resources = Application.app.resources
         val lat: String
         val lon: String
         val alt: String
@@ -68,13 +68,13 @@ fun android.location.Location?.toNotificationSummary(): String {
                 // Degrees minutes seconds
                lat =
                     UIUtils.getDMSFromLocation(
-                        Application.get(),
+                        Application.app,
                         this.latitude,
                         UIUtils.COORDINATE_LATITUDE
                     )
                 lon =
                     UIUtils.getDMSFromLocation(
-                        Application.get(),
+                        Application.app,
                         this.longitude,
                         UIUtils.COORDINATE_LONGITUDE
                     )
@@ -83,13 +83,13 @@ fun android.location.Location?.toNotificationSummary(): String {
                 // Degrees decimal minutes
                 lat =
                     UIUtils.getDDMFromLocation(
-                        Application.get(),
+                        Application.app,
                         this.latitude,
                         UIUtils.COORDINATE_LATITUDE
                     )
                 lon =
                     UIUtils.getDDMFromLocation(
-                        Application.get(),
+                        Application.app,
                         this.longitude,
                         UIUtils.COORDINATE_LONGITUDE
                     )
@@ -159,19 +159,19 @@ internal object SharedPreferenceUtil {
     const val SECONDS_TO_MILLISECONDS = 1000
 
     val METERS =
-        Application.get().resources.getStringArray(R.array.preferred_distance_units_values)[0]
+        Application.app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
     val METERS_PER_SECOND =
-        Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[0]
+        Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
     val KILOMETERS_PER_HOUR =
-        Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[1]
+        Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
 
     /**
      * Returns the minTime between location updates used for the LocationListener in milliseconds
      */
     fun getMinTimeMillis(): Long {
         val minTimeDouble: Double =
-            Application.getPrefs()
-                .getString(Application.get().getString(R.string.pref_key_gps_min_time), "1")
+            Application.prefs
+                .getString(Application.app.getString(R.string.pref_key_gps_min_time), "1")
                 ?.toDouble() ?: 1.0
         return (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
     }
@@ -180,8 +180,8 @@ internal object SharedPreferenceUtil {
      * Returns the minDistance between location updates used for the LocationLitsener in meters
      */
     fun getMinDistance(): Float {
-        return Application.getPrefs()
-            .getString(Application.get().getString(R.string.pref_key_gps_min_distance), "0")
+        return Application.prefs
+            .getString(Application.app.getString(R.string.pref_key_gps_min_distance), "0")
             ?.toFloat() ?: 0.0f
     }
 
@@ -189,58 +189,58 @@ internal object SharedPreferenceUtil {
      * Returns true if the user has selected to write locations to file output, false if they have not
      */
     fun getWriteLocationToFile(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_location_output), false)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_location_output), false)
     }
 
     fun getWriteRawMeasurementToAndroidMonitor(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_as_measurement_output), false)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_as_measurement_output), false)
     }
 
     fun getWriteRawMeasurementsToFile(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_measurement_output), false)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_measurement_output), false)
     }
 
     fun getWriteNmeaToAndroidMonitor(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_as_nmea_output), true)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_output), true)
     }
 
     fun getWriteNmeaTimestampToAndroidMonitor(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_as_nmea_timestamp_output), true)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_timestamp_output), true)
     }
 
     fun getWriteNmeaToFile(): Boolean {
-      return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_nmea_output), false)
+      return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_nmea_output), false)
     }
 
     fun getWriteAntennaInfoToFileJson(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_antenna_output_json), false);
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_json), false);
     }
 
     fun getWriteAntennaInfoToFileCsv(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_antenna_output_csv), false)
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_csv), false)
     }
 
     fun getWriteNavMessageToAndroidMonitor(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_as_navigation_message_output), false);
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_as_navigation_message_output), false);
     }
 
     fun getWriteNavMessageToFile(): Boolean {
-        return Application.getPrefs()
-            .getBoolean(Application.get().getString(R.string.pref_key_file_navigation_message_output), false);
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_file_navigation_message_output), false);
     }
 
     fun getPrefDistanceUnits(): String? {
-        return Application.getPrefs()
-            .getString(Application.get().getString(R.string.pref_key_preferred_distance_units_v2), METERS);
+        return Application.prefs
+            .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
     }
 
 
@@ -264,12 +264,12 @@ internal object SharedPreferenceUtil {
             }
         }
         PreferenceUtils.saveInt(
-            Application.get()
+            Application.app
                 .getString(R.string.capability_key_measurement_automatic_gain_control),
             agcSupport
         )
         PreferenceUtils.saveInt(
-            Application.get()
+            Application.app
                 .getString(R.string.capability_key_measurement_delta_range),
             carrierPhaseSupport
         )

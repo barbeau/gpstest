@@ -169,7 +169,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write("  GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta");
             writer.newLine();
         } catch (IOException e) {
-            logException(Application.get().getString(R.string.could_not_initialize_file, filePath), e);
+            logException(Application.Companion.getApp().getString(R.string.could_not_initialize_file, filePath), e);
             return;
         }
     }
@@ -195,7 +195,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                     fileWriter.write(locationStream);
                     fileWriter.newLine();
                 } catch (IOException e) {
-                    logException(Application.get().getString(R.string.error_writing_file), e);
+                    logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
                 }
             }
         }
@@ -212,7 +212,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 try {
                     writeGnssMeasurementToFile(gnssClock, measurement);
                 } catch (IOException e) {
-                    logException(Application.get().getString(R.string.error_writing_file), e);
+                    logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
                 }
             }
         }
@@ -246,7 +246,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 fileWriter.write(builder.toString());
                 fileWriter.newLine();
             } catch (IOException e) {
-                logException(Application.get().getString(R.string.error_writing_file), e);
+                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
             }
         }
     }
@@ -261,7 +261,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 fileWriter.write(nmeaStream);
                 fileWriter.newLine();
             } catch (IOException e) {
-                logException(Application.get().getString(R.string.error_writing_file), e);
+                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
             }
         }
     }

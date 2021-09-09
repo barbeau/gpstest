@@ -92,8 +92,8 @@ class SharedSensorManager constructor(
                     if (!::geomagneticField.isInitialized) {
                         initMagField()
                     }
-                    if (::geomagneticField.isInitialized && Application.getPrefs().getBoolean(
-                            Application.get().getString(R.string.pref_key_true_north),
+                    if (::geomagneticField.isInitialized && Application.prefs.getBoolean(
+                            Application.app.getString(R.string.pref_key_true_north),
                             true
                         )
                     ) {
@@ -116,7 +116,7 @@ class SharedSensorManager constructor(
 
         val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         try {
-            if (SatelliteUtils.isRotationVectorSensorSupported(Application.get())) {
+            if (SatelliteUtils.isRotationVectorSensorSupported(Application.app)) {
                 // Use the modern rotation vector sensors
                 val vectorSensor: Sensor =
                     sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
@@ -195,7 +195,7 @@ class SharedSensorManager constructor(
     }
 
     private fun getDisplay() : Display? {
-        val displayManager = Application.get().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val displayManager = Application.app.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         return displayManager.getDisplay(0)
     }
 

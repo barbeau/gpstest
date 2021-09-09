@@ -90,7 +90,7 @@ public class GpsSkyView extends View {
         int textColor;
         int backgroundColor;
         int satStrokeColorUsed;
-        if (Application.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
             textColor = getResources().getColor(android.R.color.secondary_text_dark);
             backgroundColor = ContextCompat.getColor(context, R.color.navdrawer_background_dark);

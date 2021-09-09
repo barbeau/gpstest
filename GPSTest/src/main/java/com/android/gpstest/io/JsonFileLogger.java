@@ -66,7 +66,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
                     jsonGenerator.writeStartArray();
                 }
             } catch (IOException e) {
-                logException(Application.get().getString(R.string.unable_to_open_json_generator), e);
+                logException(Application.Companion.getApp().getString(R.string.unable_to_open_json_generator), e);
                 return false;
             }
         }

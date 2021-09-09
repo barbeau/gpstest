@@ -113,16 +113,16 @@ private fun checkNavMessageSupport(locationManager: LocationManager) {
     val uiStatusMessage: String
     if (SatelliteUtils.isNavigationMessagesSupported(locationManager)) {
         PreferenceUtils.saveInt(
-            Application.get().getString(R.string.capability_key_nav_messages),
+            Application.app.getString(R.string.capability_key_nav_messages),
             PreferenceUtils.CAPABILITY_SUPPORTED
         )
-        uiStatusMessage = Application.get().getString(R.string.gnss_nav_msg_status_ready)
+        uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_ready)
     } else {
         PreferenceUtils.saveInt(
-            Application.get().getString(R.string.capability_key_nav_messages),
+            Application.app.getString(R.string.capability_key_nav_messages),
             PreferenceUtils.CAPABILITY_NOT_SUPPORTED
         )
-        uiStatusMessage = Application.get().getString(R.string.gnss_nav_msg_status_not_supported)
+        uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_not_supported)
     }
 }
 
@@ -130,27 +130,27 @@ private fun handleLegacyNavMessageStatus(status: Int) {
     val uiStatusMessage: String
     when (status) {
         GnssNavigationMessage.Callback.STATUS_LOCATION_DISABLED -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_nav_msg_status_loc_disabled)
+            uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_loc_disabled)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_nav_messages),
+                Application.app.getString(R.string.capability_key_nav_messages),
                 PreferenceUtils.CAPABILITY_LOCATION_DISABLED
             )
         }
         GnssNavigationMessage.Callback.STATUS_NOT_SUPPORTED -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_nav_msg_status_not_supported)
+            uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_not_supported)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_nav_messages),
+                Application.app.getString(R.string.capability_key_nav_messages),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
         GnssNavigationMessage.Callback.STATUS_READY -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_nav_msg_status_ready)
+            uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_ready)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_nav_messages),
+                Application.app.getString(R.string.capability_key_nav_messages),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         }
-        else -> uiStatusMessage = Application.get().getString(R.string.gnss_status_unknown)
+        else -> uiStatusMessage = Application.app.getString(R.string.gnss_status_unknown)
     }
     Log.d(
         TAG,

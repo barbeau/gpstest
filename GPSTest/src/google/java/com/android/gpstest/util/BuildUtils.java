@@ -32,7 +32,7 @@ public class BuildUtils {
      * @return the Google Play Services app version as well as the Google Play Services library version
      */
     public static String getPlayServicesVersion() {
-        PackageManager pm = Application.get().getPackageManager();
+        PackageManager pm = Application.Companion.getApp().getPackageManager();
         StringBuilder builder = new StringBuilder();
 
         PackageInfo appInfoPlayServices;

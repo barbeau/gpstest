@@ -133,7 +133,7 @@ public abstract class BaseFileLogger implements FileLogger {
                 file = currentFile;
                 fileWriter = writer;
 
-                Log.d(TAG, Application.get().getString(R.string.logging_to_new_file, currentFilePath));
+                Log.d(TAG, Application.Companion.getApp().getString(R.string.logging_to_new_file, currentFilePath));
                 isNewFile = true;
             }
 
@@ -152,7 +152,7 @@ public abstract class BaseFileLogger implements FileLogger {
             try {
                 fileWriter.close();
             } catch (IOException e) {
-                logException(Application.get().getString(R.string.unable_to_close_all_file_streams), e);
+                logException(Application.Companion.getApp().getString(R.string.unable_to_close_all_file_streams), e);
                 return false;
             }
         }

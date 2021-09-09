@@ -108,7 +108,7 @@ class GpsSkyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val color: Int
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
             color = resources.getColor(android.R.color.secondary_text_dark)
             circleUsedInFix!!.setImageResource(R.drawable.circle_used_in_fix_dark)
@@ -343,13 +343,13 @@ class GpsSkyFragment : Fragment() {
             return
         }
         // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
-        val meterWidthPx = (Application.get().resources.getDimension(R.dimen.cn0_meter_width)
+        val meterWidthPx = (Application.app.resources.getDimension(R.dimen.cn0_meter_width)
             .toInt()
-                - UIUtils.dpToPixels(Application.get(), 7.0f)) // Reduce width for padding
-        val minIndicatorMarginPx = Application.get().resources
+                - UIUtils.dpToPixels(Application.app, 7.0f)) // Reduce width for padding
+        val minIndicatorMarginPx = Application.app.resources
             .getDimension(R.dimen.cn0_indicator_min_left_margin).toInt()
         val maxIndicatorMarginPx = meterWidthPx + minIndicatorMarginPx
-        val minTextViewMarginPx = Application.get().resources
+        val minTextViewMarginPx = Application.app.resources
             .getDimension(R.dimen.cn0_textview_min_left_margin).toInt()
         val maxTextViewMarginPx = meterWidthPx + minTextViewMarginPx
 
@@ -376,7 +376,7 @@ class GpsSkyFragment : Fragment() {
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
         if (leftInViewTextViewMarginPx != null && leftUsedTextViewMarginPx != null) {
-            val offset = UIUtils.dpToPixels(Application.get(), TEXTVIEW_NON_OVERLAP_OFFSET_DP)
+            val offset = UIUtils.dpToPixels(Application.app, TEXTVIEW_NON_OVERLAP_OFFSET_DP)
             if (leftInViewTextViewMarginPx <= leftUsedTextViewMarginPx) {
                 leftInViewTextViewMarginPx += offset
             } else {
@@ -385,8 +385,8 @@ class GpsSkyFragment : Fragment() {
         }
 
         // Define paddings used for TextViews
-        val pSides = UIUtils.dpToPixels(Application.get(), 7f)
-        val pTopBottom = UIUtils.dpToPixels(Application.get(), 4f)
+        val pSides = UIUtils.dpToPixels(Application.app, 7f)
+        val pTopBottom = UIUtils.dpToPixels(Application.app, 4f)
 
         // Set avg C/N0 of satellites in view of device
         if (MathUtils.isValidFloat(skyView!!.cn0InViewAvg)) {
@@ -395,7 +395,7 @@ class GpsSkyFragment : Fragment() {
             // Set color of TextView
             val color = skyView!!.getSatelliteColor(skyView!!.cn0InViewAvg)
             val background = ContextCompat.getDrawable(
-                Application.get(),
+                Application.app,
                 R.drawable.cn0_round_corner_background_in_view
             ) as LayerDrawable?
 
@@ -462,7 +462,7 @@ class GpsSkyFragment : Fragment() {
             // Set color of TextView
             val color = skyView!!.getSatelliteColor(skyView!!.cn0UsedAvg)
             val background =
-                ContextCompat.getDrawable(Application.get(), usedCn0Background) as LayerDrawable?
+                ContextCompat.getDrawable(Application.app, usedCn0Background) as LayerDrawable?
 
             // Fill
             val backgroundGradient =

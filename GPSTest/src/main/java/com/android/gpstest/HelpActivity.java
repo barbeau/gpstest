@@ -73,6 +73,6 @@ public class HelpActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context base) {
         // For dynamically changing the locale
-        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
+        super.attachBaseContext(Application.Companion.getLocaleManager().setLocale(base));
     }
 }

@@ -92,8 +92,8 @@ class GpsMapFragment : Fragment(), MapInterface {
         savedInstanceState: Bundle?
     ): View {
         Configuration.getInstance().load(
-            Application.get(), PreferenceManager.getDefaultSharedPreferences(
-                Application.get()
+            Application.app, PreferenceManager.getDefaultSharedPreferences(
+                Application.app
             )
         )
         val map = MapView(inflater.context)
@@ -115,7 +115,7 @@ class GpsMapFragment : Fragment(), MapInterface {
 
     override fun onResume() {
         super.onResume()
-        val settings = Application.getPrefs()
+        val settings = Application.prefs
         if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
             try {
                 setMapBoxTileSource(MAP_TYPE_STREETS)
@@ -319,7 +319,7 @@ class GpsMapFragment : Fragment(), MapInterface {
                     horAccPolygon!!.strokeWidth = 0.5f
                     horAccPolygon!!.setOnClickListener { _: Polygon?, _: MapView?, _: GeoPoint? -> false }
                     horAccPolygon!!.fillColor =
-                        ContextCompat.getColor(Application.get(), R.color.horizontal_accuracy)
+                        ContextCompat.getColor(Application.app, R.color.horizontal_accuracy)
                     map!!.overlays.add(horAccPolygon)
                 }
             }
@@ -353,7 +353,7 @@ class GpsMapFragment : Fragment(), MapInterface {
         if (!map!!.overlays.contains(myLocationMarker)) {
             // This is the first fix when this fragment is active
             myLocationMarker!!.icon =
-                ContextCompat.getDrawable(Application.get(), R.drawable.my_location)
+                ContextCompat.getDrawable(Application.app, R.drawable.my_location)
             myLocationMarker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map!!.overlays.remove(myLocationMarker)
             map!!.overlays.add(myLocationMarker)
@@ -391,8 +391,8 @@ class GpsMapFragment : Fragment(), MapInterface {
         }
         groundTruthMarker!!.position = MapUtils.makeGeoPoint(location)
         groundTruthMarker!!.icon =
-            ContextCompat.getDrawable(Application.get(), R.drawable.ic_ground_truth)
-        groundTruthMarker!!.title = Application.get().getString(R.string.ground_truth_marker_title)
+            ContextCompat.getDrawable(Application.app, R.drawable.ic_ground_truth)
+        groundTruthMarker!!.title = Application.app.getString(R.string.ground_truth_marker_title)
         groundTruthMarker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         if (!map!!.overlays.contains(groundTruthMarker)) {
             map!!.overlays.add(groundTruthMarker)

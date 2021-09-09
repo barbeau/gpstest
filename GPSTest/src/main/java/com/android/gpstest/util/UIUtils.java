@@ -229,7 +229,7 @@ public class UIUtils {
      * @param deviceInfoViewModel view model that contains state of GNSS
      */
     public static void sendEmail(Context context, String email, String location, DeviceInfoViewModel deviceInfoViewModel) {
-        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) Application.Companion.getApp().getSystemService(Context.LOCATION_SERVICE);
         PackageManager pm = context.getPackageManager();
         PackageInfo appInfo;
 
@@ -269,82 +269,82 @@ public class UIUtils {
         }
 
         // Raw GNSS measurement capability
-        int capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
+        int capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_raw_measurements, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_raw_measurements, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Navigation messages capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN);
+        capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_nav_messages, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_nav_messages, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // NMEA capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN);
+        capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_nmea, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_nmea, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Inject PSDS capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN);
+        capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_inject_psds, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_inject_psds, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Inject time capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN);
+        capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_inject_time, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_inject_time, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Delete assist capability
-        capability = Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN);
+        capability = Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN);
         if (capability != PreferenceUtils.CAPABILITY_UNKNOWN) {
-            body.append(Application.get().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_delete_assist, PreferenceUtils.getCapabilityDescription(capability)));
         }
 
         // Got fix
-        body.append(Application.get().getString(R.string.capability_title_got_fix, location != null && deviceInfoViewModel.gotFirstFix()));
+        body.append(Application.Companion.getApp().getString(R.string.capability_title_got_fix, location != null && deviceInfoViewModel.gotFirstFix()));
 
         // We need a fix to determine these attributes reliably
         if (location != null && deviceInfoViewModel.gotFirstFix()) {
             // Dual frequency
-            body.append(Application.get().getString(R.string.capability_title_dual_frequency, PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView())));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_dual_frequency, PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView())));
             // Supported GNSS
             List<GnssType> gnss = new ArrayList<>(deviceInfoViewModel.getSupportedGnss());
             Collections.sort(gnss);
-            body.append(Application.get().getString(R.string.capability_title_supported_gnss, trimEnds(replaceNavstar(gnss.toString()))));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_supported_gnss, trimEnds(replaceNavstar(gnss.toString()))));
             // GNSS CF
             List<String> gnssCfs = new ArrayList<>(deviceInfoViewModel.getSupportedGnssCfs());
             if (!gnssCfs.isEmpty()) {
                 Collections.sort(gnssCfs);
-                body.append(Application.get().getString(R.string.capability_title_gnss_cf, trimEnds(gnssCfs.toString())));
+                body.append(Application.Companion.getApp().getString(R.string.capability_title_gnss_cf, trimEnds(gnssCfs.toString())));
             }
             // Supported SBAS
             List<SbasType> sbas = new ArrayList<>(deviceInfoViewModel.getSupportedSbas());
             if (!sbas.isEmpty()) {
                 Collections.sort(sbas);
-                body.append(Application.get().getString(R.string.capability_title_supported_sbas, trimEnds(sbas.toString())));
+                body.append(Application.Companion.getApp().getString(R.string.capability_title_supported_sbas, trimEnds(sbas.toString())));
             }
             // SBAS CF
             List<String> sbasCfs = new ArrayList<>(deviceInfoViewModel.getSupportedSbasCfs());
             if (!sbasCfs.isEmpty()) {
                 Collections.sort(sbasCfs);
-                body.append(Application.get().getString(R.string.capability_title_sbas_cf, trimEnds(sbasCfs.toString())));
+                body.append(Application.Companion.getApp().getString(R.string.capability_title_sbas_cf, trimEnds(sbasCfs.toString())));
             }
             // Accumulated delta range
-            body.append(Application.get().getString(R.string.capability_title_accumulated_delta_range, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN))));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_accumulated_delta_range, PreferenceUtils.getCapabilityDescription(Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN))));
             // Automatic gain control
-            body.append(Application.get().getString(R.string.capability_title_automatic_gain_control, PreferenceUtils.getCapabilityDescription(Application.getPrefs().getInt(Application.get().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN))));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_automatic_gain_control, PreferenceUtils.getCapabilityDescription(Application.Companion.getPrefs().getInt(Application.Companion.getApp().getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN))));
         }
 
         // GNSS Antenna Info
-        String gnssAntennaInfo = Application.get().getString(R.string.capability_title_gnss_antenna_info, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)));
+        String gnssAntennaInfo = Application.Companion.getApp().getString(R.string.capability_title_gnss_antenna_info, PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager)));
         body.append(gnssAntennaInfo);
-        if (gnssAntennaInfo.equals(Application.get().getString(R.string.capability_value_supported))) {
-            body.append(Application.get().getString(R.string.capability_title_num_antennas, PreferenceUtils.getInt(Application.get().getString(R.string.capability_key_num_antenna), -1)));
-            body.append(Application.get().getString(R.string.capability_title_antenna_cfs, PreferenceUtils.getString(Application.get().getString(R.string.capability_key_antenna_cf))));
+        if (gnssAntennaInfo.equals(Application.Companion.getApp().getString(R.string.capability_value_supported))) {
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_num_antennas, PreferenceUtils.getInt(Application.Companion.getApp().getString(R.string.capability_key_num_antenna), -1)));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_antenna_cfs, PreferenceUtils.getString(Application.Companion.getApp().getString(R.string.capability_key_antenna_cf))));
         }
 
         if (!TextUtils.isEmpty(BuildUtils.getPlayServicesVersion())) {
@@ -466,21 +466,21 @@ public class UIUtils {
      * @return true if the latitude, longitude, and latitude are valid, false if any of them are not
      */
     public static boolean isValidLocationWithErrorDialog(AppCompatActivity activity, String lat, String lon, String alt) {
-        String dialogTitle = Application.get().getString(R.string.ground_truth_invalid_location_title);
+        String dialogTitle = Application.Companion.getApp().getString(R.string.ground_truth_invalid_location_title);
         String dialogMessage;
 
         if (!LocationUtils.isValidLatitude(lat)) {
-            dialogMessage = Application.get().getString(R.string.ground_truth_invalid_lat);
+            dialogMessage = Application.Companion.getApp().getString(R.string.ground_truth_invalid_lat);
             UIUtils.showLocationErrorDialog(activity, dialogTitle, dialogMessage);
             return false;
         }
         if (!LocationUtils.isValidLongitude(lon)) {
-            dialogMessage = Application.get().getString(R.string.ground_truth_invalid_long);
+            dialogMessage = Application.Companion.getApp().getString(R.string.ground_truth_invalid_long);
             UIUtils.showLocationErrorDialog(activity, dialogTitle, dialogMessage);
             return false;
         }
         if (!isEmpty(alt) && !LocationUtils.isValidAltitude(alt)) {
-            dialogMessage = Application.get().getString(R.string.ground_truth_invalid_alt);
+            dialogMessage = Application.Companion.getApp().getString(R.string.ground_truth_invalid_alt);
             UIUtils.showLocationErrorDialog(activity, dialogTitle, dialogMessage);
             return false;
         }
@@ -508,7 +508,7 @@ public class UIUtils {
 
         neverShowDialog.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             // Save the preference
-            PreferenceUtils.saveBoolean(Application.get().getString(R.string.pref_key_never_show_qr_code_instructions), isChecked);
+            PreferenceUtils.saveBoolean(Application.Companion.getApp().getString(R.string.pref_key_never_show_qr_code_instructions), isChecked);
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
@@ -617,8 +617,8 @@ public class UIUtils {
             case "dms":
                 // Degrees minutes seconds
                 if (location != null) {
-                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
                             (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
                 }
                 if (chipDMS != null) {
@@ -628,8 +628,8 @@ public class UIUtils {
             case "ddm":
                 // Degrees decimal minutes
                 if (location != null) {
-                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.get(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.get(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
                             (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
                 }
                 if (chipDegreesDecimalMin != null) {
@@ -806,15 +806,15 @@ public class UIUtils {
      */
     public static void promptEnableGps(Activity activity) {
         new AlertDialog.Builder(activity)
-                .setMessage(Application.get().getString(R.string.enable_gps_message))
-                .setPositiveButton(Application.get().getString(R.string.enable_gps_positive_button),
+                .setMessage(Application.Companion.getApp().getString(R.string.enable_gps_message))
+                .setPositiveButton(Application.Companion.getApp().getString(R.string.enable_gps_positive_button),
                         (dialog, which) -> {
                             Intent intent = new Intent(
                                     Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                             activity.startActivity(intent);
                         }
                 )
-                .setNegativeButton(Application.get().getString(R.string.enable_gps_negative_button),
+                .setNegativeButton(Application.Companion.getApp().getString(R.string.enable_gps_negative_button),
                         (dialog, which) -> {
                         }
                 )
@@ -862,13 +862,13 @@ public class UIUtils {
      */
     @SuppressWarnings("deprecation")
     public static void autoShowWhatsNew(Activity activity) {
-        SharedPreferences settings = Application.getPrefs();
+        SharedPreferences settings = Application.Companion.getPrefs();
 
         // Get the current app version.
-        PackageManager pm = Application.get().getPackageManager();
+        PackageManager pm = Application.Companion.getApp().getPackageManager();
         PackageInfo appInfo = null;
         try {
-            appInfo = pm.getPackageInfo(Application.get().getPackageName(),
+            appInfo = pm.getPackageInfo(Application.Companion.getApp().getPackageName(),
                     PackageManager.GET_META_DATA);
         } catch (PackageManager.NameNotFoundException e) {
             // Do nothing

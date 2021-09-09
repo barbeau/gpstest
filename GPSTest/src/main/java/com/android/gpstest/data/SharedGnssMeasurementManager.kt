@@ -91,8 +91,8 @@ class SharedGnssMeasurementManager constructor(
 
         try {
             if (SatelliteUtils.isForceFullGnssMeasurementsSupported()) {
-                val forceFullMeasurements = Application.getPrefs()
-                    .getBoolean(Application.get().getString(R.string.pref_key_force_full_gnss_measurements), true)
+                val forceFullMeasurements = Application.prefs
+                    .getBoolean(Application.app.getString(R.string.pref_key_force_full_gnss_measurements), true)
                 Log.d(TAG, "Force full GNSS measurements = $forceFullMeasurements")
                 // Request "force full GNSS measurements" explicitly (on <= Android R this is a manual developer setting)
                 val request = GnssMeasurementRequest.Builder()
@@ -135,39 +135,39 @@ private fun handleLegacyMeasurementStatus(status: Int) {
     val uiStatusMessage: String
     when (status) {
         GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_loc_disabled)
+            uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_loc_disabled)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_raw_measurements),
+                Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_LOCATION_DISABLED
             )
         }
         GnssMeasurementsEvent.Callback.STATUS_NOT_SUPPORTED -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
+            uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_not_supported)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_raw_measurements),
+                Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
             PreferenceUtils.saveInt(
-                Application.get()
+                Application.app
                     .getString(R.string.capability_key_measurement_automatic_gain_control),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_measurement_delta_range),
+                Application.app.getString(R.string.capability_key_measurement_delta_range),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
         GnssMeasurementsEvent.Callback.STATUS_READY -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
+            uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_ready)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_raw_measurements),
+                Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
         }
         else -> {
-            uiStatusMessage = Application.get().getString(R.string.gnss_status_unknown)
+            uiStatusMessage = Application.app.getString(R.string.gnss_status_unknown)
             PreferenceUtils.saveInt(
-                Application.get().getString(R.string.capability_key_raw_measurements),
+                Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_UNKNOWN
             )
         }
@@ -179,15 +179,15 @@ private fun checkMeasurementSupport(lm: LocationManager) {
     val uiStatusMessage: String
     if (SatelliteUtils.isGnssMeasurementsSupported(lm)) {
         PreferenceUtils.saveInt(
-            Application.get().getString(R.string.capability_key_raw_measurements),
+            Application.app.getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_SUPPORTED
         )
-        uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_ready)
+        uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_ready)
     } else {
         PreferenceUtils.saveInt(
-            Application.get().getString(R.string.capability_key_raw_measurements),
+            Application.app.getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_NOT_SUPPORTED
         )
-        uiStatusMessage = Application.get().getString(R.string.gnss_measurement_status_not_supported)
+        uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_not_supported)
     }
 }

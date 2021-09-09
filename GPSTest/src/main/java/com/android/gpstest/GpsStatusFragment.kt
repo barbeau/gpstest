@@ -77,10 +77,10 @@ class GpsStatusFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     var timeFormat// See #117
             = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss.S" else "hh:mm:ss.S a"
+        if (DateFormat.is24HourFormat(Application.app.applicationContext)) "HH:mm:ss.S" else "hh:mm:ss.S a"
     )
     var timeAndDateFormat = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.get().applicationContext)) "HH:mm:ss.S MMM d, yyyy z" else "hh:mm:ss.S a MMM d, yyyy z"
+        if (DateFormat.is24HourFormat(Application.app.applicationContext)) "HH:mm:ss.S MMM d, yyyy z" else "hh:mm:ss.S a MMM d, yyyy z"
     )
 
     private var location: Location? = null
@@ -146,25 +146,25 @@ class GpsStatusFragment : Fragment() {
             showTimeErrorDialog(fixTime)
         }
 
-        flagUsa = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_usa)
-        flagRussia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_russia)
-        flagJapan = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_japan)
-        flagChina = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_china)
-        flagIndia = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_india)
-        flagEU = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_european_union)
-        flagICAO = ContextCompat.getDrawable(Application.get(), R.drawable.ic_flag_icao)
+        flagUsa = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_usa)
+        flagRussia = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_russia)
+        flagJapan = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_japan)
+        flagChina = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_china)
+        flagIndia = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_india)
+        flagEU = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_european_union)
+        flagICAO = ContextCompat.getDrawable(Application.app, R.drawable.ic_flag_icao)
 
         val detector = GestureDetectorCompat(context, object : SimpleOnGestureListener() {
             override fun onSingleTapUp(e: MotionEvent): Boolean {
                 val location = location
                 // Copy location to clipboard
                 if (location != null) {
-                    val includeAltitude = Application.getPrefs().getBoolean(
-                        Application.get().getString(R.string.pref_key_share_include_altitude), false
+                    val includeAltitude = Application.prefs.getBoolean(
+                        Application.app.getString(R.string.pref_key_share_include_altitude), false
                     )
-                    val coordinateFormat = Application.getPrefs().getString(
-                        Application.get().getString(R.string.pref_key_coordinate_format),
-                        Application.get().getString(R.string.preferences_coordinate_format_dd_key)
+                    val coordinateFormat = Application.prefs.getString(
+                        Application.app.getString(R.string.pref_key_coordinate_format),
+                        Application.app.getString(R.string.preferences_coordinate_format_dd_key)
                     )
                     val formattedLocation = UIUtils.formatLocationForDisplay(
                         location, null, includeAltitude,
@@ -509,7 +509,7 @@ class GpsStatusFragment : Fragment() {
         if (viewModel != null) {
             viewModel!!.setGotFirstFix(true)
         }
-        val coordinateFormat = Application.getPrefs().getString(
+        val coordinateFormat = Application.prefs.getString(
             getString(R.string.pref_key_coordinate_format),
             getString(R.string.preferences_coordinate_format_dd_key)
         )
@@ -524,12 +524,12 @@ class GpsStatusFragment : Fragment() {
             "dms" -> {
                 // Degrees minutes seconds
                 binding.latitude.text = UIUtils.getDMSFromLocation(
-                    Application.get(),
+                    Application.app,
                     location.latitude,
                     UIUtils.COORDINATE_LATITUDE
                 )
                 binding.longitude.text = UIUtils.getDMSFromLocation(
-                    Application.get(),
+                    Application.app,
                     location.longitude,
                     UIUtils.COORDINATE_LONGITUDE
                 )
@@ -537,12 +537,12 @@ class GpsStatusFragment : Fragment() {
             "ddm" -> {
                 // Degrees decimal minutes
                 binding.latitude.text = UIUtils.getDDMFromLocation(
-                    Application.get(),
+                    Application.app,
                     location.latitude,
                     UIUtils.COORDINATE_LATITUDE
                 )
                 binding.longitude.text = UIUtils.getDDMFromLocation(
-                    Application.get(),
+                    Application.app,
                     location.longitude,
                     UIUtils.COORDINATE_LONGITUDE
                 )
@@ -778,8 +778,8 @@ class GpsStatusFragment : Fragment() {
     }
 
     private fun setupUnitPreferences() {
-        val settings = Application.getPrefs()
-        val app = Application.get()
+        val settings = Application.prefs
+        val app = Application.app
         prefDistanceUnits = settings
             .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS)
         prefSpeedUnits = settings
@@ -837,7 +837,7 @@ class GpsStatusFragment : Fragment() {
         builder.setTitle(R.string.error_time_title)
         builder.setView(textView)
         val drawable =
-            ContextCompat.getDrawable(Application.get(), android.R.drawable.ic_dialog_alert)
+            ContextCompat.getDrawable(Application.app, android.R.drawable.ic_dialog_alert)
         DrawableCompat.setTint(
             drawable!!,
             ContextCompat.getColor(requireActivity(), R.color.colorPrimary)
@@ -857,7 +857,7 @@ class GpsStatusFragment : Fragment() {
      * @param index the index of R.array.sort_sats that should be set
      */
     private fun setSortByClause(index: Int) {
-        val sortOptions = Application.get().resources.getStringArray(R.array.sort_sats)
+        val sortOptions = Application.app.resources.getStringArray(R.array.sort_sats)
         PreferenceUtils.saveString(
             resources
                 .getString(R.string.pref_key_default_sat_sort),
@@ -1133,10 +1133,10 @@ class GpsStatusFragment : Fragment() {
         const val TAG = "GpsStatusFragment"
         private const val EMPTY_LAT_LONG = "             "
         private val METERS =
-            Application.get().resources.getStringArray(R.array.preferred_distance_units_values)[0]
+            Application.app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
         private val METERS_PER_SECOND =
-            Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[0]
+            Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
         private val KILOMETERS_PER_HOUR =
-            Application.get().resources.getStringArray(R.array.preferred_speed_units_values)[1]
+            Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
     }
 }

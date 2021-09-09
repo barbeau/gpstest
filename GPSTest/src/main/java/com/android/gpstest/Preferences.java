@@ -71,7 +71,7 @@ public class Preferences extends PreferenceActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // Set theme
-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             setTheme(R.style.AppTheme_Dark);
         }
         super.onCreate(savedInstanceState);
@@ -153,7 +153,7 @@ public class Preferences extends PreferenceActivity implements
 
         language = (ListPreference) findPreference(getString(R.string.pref_key_language));
         language.setOnPreferenceChangeListener((preference, newValue) -> {
-            Application.getLocaleManager().setNewLocale(Application.get(), newValue.toString());
+            Application.Companion.getLocaleManager().setNewLocale(Application.Companion.getApp(), newValue.toString());
             // Destroy and recreate Activity
             recreate();
             return true;
@@ -222,7 +222,7 @@ public class Preferences extends PreferenceActivity implements
             chkLogFileAntennaCsv.setEnabled(false);
         }
 
-        Application.getPrefs().registerOnSharedPreferenceChangeListener(this);
+        Application.Companion.getPrefs().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -254,7 +254,7 @@ public class Preferences extends PreferenceActivity implements
     @Override
     protected void attachBaseContext(Context base) {
         // For dynamically changing the locale
-        super.attachBaseContext(Application.getLocaleManager().setLocale(base));
+        super.attachBaseContext(Application.Companion.getLocaleManager().setLocale(base));
     }
 
     /**
@@ -298,24 +298,24 @@ public class Preferences extends PreferenceActivity implements
      */
     private void changePreferenceSummary(String prefKey) {
         if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_distance_units_v2))) {
-            String[] values = Application.get().getResources().getStringArray(R.array.preferred_distance_units_values);
-            String[] entries = Application.get().getResources().getStringArray(R.array.preferred_distance_units_entries);
+            String[] values = Application.Companion.getApp().getResources().getStringArray(R.array.preferred_distance_units_values);
+            String[] entries = Application.Companion.getApp().getResources().getStringArray(R.array.preferred_distance_units_entries);
             for (int i = 0; i < values.length; i++) {
                 if (values[i].equals(preferredDistanceUnits.getValue())) {
                     preferredDistanceUnits.setSummary(entries[i]);
                 }
             }
         } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_preferred_speed_units_v2))) {
-            String[] values = Application.get().getResources().getStringArray(R.array.preferred_speed_units_values);
-            String[] entries = Application.get().getResources().getStringArray(R.array.preferred_speed_units_entries);
+            String[] values = Application.Companion.getApp().getResources().getStringArray(R.array.preferred_speed_units_values);
+            String[] entries = Application.Companion.getApp().getResources().getStringArray(R.array.preferred_speed_units_entries);
             for (int i = 0; i < values.length; i++) {
                 if (values[i].equals(preferredSpeedUnits.getValue())) {
                     preferredSpeedUnits.setSummary(entries[i]);
                 }
             }
         } else if (prefKey.equalsIgnoreCase(getString(R.string.pref_key_language))) {
-            String[] values = Application.get().getResources().getStringArray(R.array.language_values);
-            String[] entries = Application.get().getResources().getStringArray(R.array.language_entries);
+            String[] values = Application.Companion.getApp().getResources().getStringArray(R.array.language_values);
+            String[] entries = Application.Companion.getApp().getResources().getStringArray(R.array.language_entries);
             for (int i = 0; i < values.length; i++) {
                 if (values[i].equals(language.getValue())) {
                     language.setSummary(entries[i]);
