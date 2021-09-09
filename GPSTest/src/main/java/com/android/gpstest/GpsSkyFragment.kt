@@ -30,7 +30,6 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -40,45 +39,39 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.databinding.GpsSkyBinding
+import com.android.gpstest.databinding.GpsSkyLegendCardBinding
+import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.UIUtils
-import com.android.gpstest.view.GpsSkyView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 import javax.inject.Inject
 import kotlin.math.abs
 
 @AndroidEntryPoint
 class GpsSkyFragment : Fragment() {
-    private var skyView: GpsSkyView? = null
-    private var legendLines: MutableList<View>? = null
-    private var legendShapes: MutableList<ImageView>? = null
-    private var legendCn0Title: TextView? = null
-    private var legendCn0Units: TextView? = null
-    private var legendCn0LeftText: TextView? = null
-    private var legendCn0LeftCenterText: TextView? = null
-    private var legendCn0CenterText: TextView? = null
-    private var legendCn0RightCenterText: TextView? = null
-    private var legendCn0RightText: TextView? = null
-    private var cn0InViewAvgText: TextView? = null
-    private var cn0UsedAvgText: TextView? = null
-    private var cn0InViewAvg: ImageView? = null
-    private var cn0UsedAvg: ImageView? = null
-    private var lock: ImageView? = null
-    private var circleUsedInFix: ImageView? = null
-    var cn0InViewAvgAnimation: Animation? = null
+    // Binding variables
+    private var _binding: GpsSkyBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var legendLines: List<View>
+    private lateinit var legendShapes: List<ImageView>
+    private lateinit var meter: GpsSkySignalMeterBinding
+    private lateinit var legend: GpsSkyLegendCardBinding
+
+    // Animations for cn0 indicators
+    private var cn0InViewAvgAnimation: Animation? = null
     var cn0UsedAvgAnimation: Animation? = null
     var cn0InViewAvgAnimationTextView: Animation? = null
     var cn0UsedAvgAnimationTextView: Animation? = null
 
     // Default light theme values
-    var usedCn0Background = R.drawable.cn0_round_corner_background_used
-    var usedCn0IndicatorColor = Color.BLACK
+    private var usedCn0Background = R.drawable.cn0_round_corner_background_used
+    private var usedCn0IndicatorColor = Color.BLACK
 
     // Repository of location data that the service will observe, injected via Hilt
     @Inject
@@ -91,14 +84,13 @@ class GpsSkyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val v = inflater.inflate(R.layout.gps_sky, container, false)
-        skyView = v.findViewById(R.id.sky_view)
-        initLegendViews(v)
-        cn0InViewAvg = v.findViewById(R.id.cn0_indicator_in_view)
-        cn0UsedAvg = v.findViewById(R.id.cn0_indicator_used)
-        lock = v.findViewById(R.id.sky_lock)
-        circleUsedInFix = v.findViewById(R.id.sky_legend_used_in_fix)
+    ): View {
+        _binding = GpsSkyBinding.inflate(inflater, container, false)
+        val v = binding.root
+        meter = binding.skyCn0IndicatorCard.gpsSkySignalMeter
+        legend = binding.skyLegendCard
+
+        initLegendViews()
 
         observeLocationUpdateStates()
 
@@ -110,23 +102,28 @@ class GpsSkyFragment : Fragment() {
         val color: Int
         if (Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
-            color = resources.getColor(android.R.color.secondary_text_dark)
-            circleUsedInFix!!.setImageResource(R.drawable.circle_used_in_fix_dark)
+            color = ContextCompat.getColor(requireContext(), android.R.color.secondary_text_dark)
+            legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark)
             usedCn0Background = R.drawable.cn0_round_corner_background_used_dark
             usedCn0IndicatorColor = resources.getColor(android.R.color.darker_gray)
         } else {
             // Light theme
-            color = resources.getColor(R.color.body_text_2_light)
-            circleUsedInFix!!.setImageResource(R.drawable.circle_used_in_fix)
+            color = ContextCompat.getColor(requireContext(), R.color.body_text_2_light)
+            legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix)
             usedCn0Background = R.drawable.cn0_round_corner_background_used
             usedCn0IndicatorColor = Color.BLACK
         }
-        for (v in legendLines!!) {
+        for (v in legendLines) {
             v.setBackgroundColor(color)
         }
-        for (v in legendShapes!!) {
+        for (v in legendShapes) {
             v.setColorFilter(color)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     @ExperimentalCoroutinesApi
@@ -206,14 +203,14 @@ class GpsSkyFragment : Fragment() {
     }
 
     private fun updateGnssStatus(status: GnssStatus) {
-        skyView!!.setGnssStatus(status)
-        updatecn0AvgMeterText()
+        binding.skyView.setGnssStatus(status)
+        updateCn0AvgMeterText()
         updateCn0Avgs()
     }
 
     @ExperimentalCoroutinesApi
     private fun onGnssStarted() {
-        skyView!!.setStarted()
+        binding.skyView.setStarted()
         // Activity or service is observing updates, so observe here too
         observeGnssFlow()
         observeGnssStates()
@@ -227,10 +224,8 @@ class GpsSkyFragment : Fragment() {
         sensorFlow?.cancel()
         gnssFlow?.cancel()
 
-        skyView!!.setStopped()
-        if (lock != null) {
-            lock!!.visibility = View.GONE
-        }
+        binding.skyView.setStopped()
+        binding.skyLock.visibility = View.GONE
     }
 
     private fun onOrientationChanged(orientation: Double, tilt: Double) {
@@ -238,110 +233,52 @@ class GpsSkyFragment : Fragment() {
         if (!userVisibleHint) {
             return
         }
-        if (skyView != null) {
-            skyView!!.onOrientationChanged(orientation, tilt)
-        }
+        binding.skyView.onOrientationChanged(orientation, tilt)
     }
 
     /**
      * Initialize the views in the C/N0 and Shape legends
-     * @param v view in which the legend view IDs can be found via view.findViewById()
      */
-    private fun initLegendViews(v: View) {
-        if (legendLines == null) {
-            legendLines = LinkedList()
-        } else {
-            legendLines!!.clear()
-        }
-        if (legendShapes == null) {
-            legendShapes = LinkedList()
-        } else {
-            legendShapes!!.clear()
-        }
-
+    private fun initLegendViews() {
         // Avg C/N0 indicator lines
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_left_line4))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_left_line3))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_left_line2))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_left_line1))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_center_line))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_right_line1))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_right_line2))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_right_line3))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_cn0_right_line4))
-
-        // Shape Legend lines
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line1a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line1b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line2a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line2b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line3a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line3b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line4a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line4b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line5a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line5b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line6a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line6b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line7a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line7b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line8a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line8b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line9a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line9b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line10a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line10b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line11a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line12a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line13a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line14a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line14b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line15a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line15b))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line16a))
-        legendLines!!.add(v.findViewById(R.id.sky_legend_shape_line16b))
+        val cn0 = meter.signalMeterTicksAndText
+        legendLines = listOf(cn0.skyLegendCn0LeftLine4, cn0.skyLegendCn0LeftLine3,
+            cn0.skyLegendCn0LeftLine2, cn0.skyLegendCn0LeftLine1, cn0.skyLegendCn0CenterLine,
+            cn0.skyLegendCn0RightLine1, cn0.skyLegendCn0RightLine2, cn0.skyLegendCn0RightLine3,
+            cn0.skyLegendCn0RightLine4, legend.skyLegendShapeLine1a, legend.skyLegendShapeLine1b,
+            legend.skyLegendShapeLine2a, legend.skyLegendShapeLine2b, legend.skyLegendShapeLine3a,
+            legend.skyLegendShapeLine3b, legend.skyLegendShapeLine4a, legend.skyLegendShapeLine4b,
+            legend.skyLegendShapeLine5a, legend.skyLegendShapeLine5b, legend.skyLegendShapeLine6a,
+            legend.skyLegendShapeLine6b, legend.skyLegendShapeLine7a, legend.skyLegendShapeLine7b,
+            legend.skyLegendShapeLine8a, legend.skyLegendShapeLine8b, legend.skyLegendShapeLine9a,
+            legend.skyLegendShapeLine9b, legend.skyLegendShapeLine10a, legend.skyLegendShapeLine10b,
+            legend.skyLegendShapeLine11a, legend.skyLegendShapeLine12a, legend.skyLegendShapeLine13a,
+            legend.skyLegendShapeLine14a, legend.skyLegendShapeLine14b, legend.skyLegendShapeLine15a,
+            legend.skyLegendShapeLine15b, legend.skyLegendShapeLine16a, legend.skyLegendShapeLine16b
+        )
 
         // Shape Legend shapes
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_circle) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_square) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_pentagon) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_triangle) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_hexagon1) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_oval) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond1) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond2) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond3) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond4) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond5) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond6) as ImageView)
-        legendShapes!!.add(v.findViewById<View>(R.id.sky_legend_diamond7) as ImageView)
-
-        // C/N0 Legend text
-        legendCn0Title = v.findViewById(R.id.sky_legend_cn0_title)
-        legendCn0Units = v.findViewById(R.id.sky_legend_cn0_units)
-        legendCn0LeftText = v.findViewById(R.id.sky_legend_cn0_left_text)
-        legendCn0LeftCenterText = v.findViewById(R.id.sky_legend_cn0_left_center_text)
-        legendCn0CenterText = v.findViewById(R.id.sky_legend_cn0_center_text)
-        legendCn0RightCenterText = v.findViewById(R.id.sky_legend_cn0_right_center_text)
-        legendCn0RightText = v.findViewById(R.id.sky_legend_cn0_right_text)
-        cn0InViewAvgText = v.findViewById(R.id.cn0_text_in_view)
-        cn0UsedAvgText = v.findViewById(R.id.cn0_text_used)
+        legendShapes = listOf(legend.skyLegendCircle, legend.skyLegendSquare, legend.skyLegendPentagon,
+            legend.skyLegendTriangle, legend.skyLegendHexagon1, legend.skyLegendOval, legend.skyLegendDiamond1,
+            legend.skyLegendDiamond2, legend.skyLegendDiamond3, legend.skyLegendDiamond4, legend.skyLegendDiamond5,
+            legend.skyLegendDiamond6, legend.skyLegendDiamond7)
     }
 
-    private fun updatecn0AvgMeterText() {
-        legendCn0Title!!.setText(R.string.gps_cn0_column_label)
-        legendCn0Units!!.setText(R.string.sky_legend_cn0_units)
-        legendCn0LeftText!!.setText(R.string.sky_legend_cn0_low)
-        legendCn0LeftCenterText!!.setText(R.string.sky_legend_cn0_low_middle)
-        legendCn0CenterText!!.setText(R.string.sky_legend_cn0_middle)
-        legendCn0RightCenterText!!.setText(R.string.sky_legend_cn0_middle_high)
-        legendCn0RightText!!.setText(R.string.sky_legend_cn0_high)
+    private fun updateCn0AvgMeterText() {
+        binding.skyCn0IndicatorCard.gpsSkySignalTitle.apply {
+            skyLegendCn0Title.setText(R.string.gps_cn0_column_label)
+            skyLegendCn0Units.setText(R.string.sky_legend_cn0_units)
+        }
+        meter.signalMeterTicksAndText.apply {
+            skyLegendCn0LeftText.setText(R.string.sky_legend_cn0_low)
+            skyLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle)
+            skyLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle)
+            skyLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high)
+            skyLegendCn0RightText.setText(R.string.sky_legend_cn0_high)
+        }
     }
 
     private fun updateCn0Avgs() {
-        if (skyView == null) {
-            return
-        }
         // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         val meterWidthPx = (Application.app.resources.getDimension(R.dimen.cn0_meter_width)
             .toInt()
@@ -358,18 +295,18 @@ class GpsSkyFragment : Fragment() {
 
         // Calculate normal offsets for avg in view satellite C/N0 value TextViews
         var leftInViewTextViewMarginPx: Int? = null
-        if (MathUtils.isValidFloat(skyView!!.cn0InViewAvg)) {
+        if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
             leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(
-                skyView!!.cn0InViewAvg,
+                binding.skyView.cn0InViewAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
         }
 
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         var leftUsedTextViewMarginPx: Int? = null
-        if (MathUtils.isValidFloat(skyView!!.cn0UsedAvg)) {
+        if (MathUtils.isValidFloat(binding.skyView.cn0UsedAvg)) {
             leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(
-                skyView!!.cn0UsedAvg,
+                binding.skyView.cn0UsedAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
         }
@@ -389,11 +326,11 @@ class GpsSkyFragment : Fragment() {
         val pTopBottom = UIUtils.dpToPixels(Application.app, 4f)
 
         // Set avg C/N0 of satellites in view of device
-        if (MathUtils.isValidFloat(skyView!!.cn0InViewAvg)) {
-            cn0InViewAvgText!!.text = String.format("%.1f", skyView!!.cn0InViewAvg)
+        if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
+            meter.cn0TextInView.cn0TextInView.text = String.format("%.1f", binding.skyView.cn0InViewAvg)
 
             // Set color of TextView
-            val color = skyView!!.getSatelliteColor(skyView!!.cn0InViewAvg)
+            val color = binding.skyView.getSatelliteColor(binding.skyView.cn0InViewAvg)
             val background = ContextCompat.getDrawable(
                 Application.app,
                 R.drawable.cn0_round_corner_background_in_view
@@ -408,59 +345,59 @@ class GpsSkyFragment : Fragment() {
             val borderGradient =
                 background.findDrawableByLayerId(R.id.cn0_avg_in_view_border) as GradientDrawable
             borderGradient.setColor(color)
-            cn0InViewAvgText!!.background = background
+            meter.cn0TextInView.cn0TextInView.background = background
 
             // Set padding
-            cn0InViewAvgText!!.setPadding(pSides, pTopBottom, pSides, pTopBottom)
+            meter.cn0TextInView.cn0TextInView.setPadding(pSides, pTopBottom, pSides, pTopBottom)
 
             // Set color of indicator
-            cn0InViewAvg!!.setColorFilter(color)
+            meter.cn0IndicatorInView.setColorFilter(color)
 
             // Set position and visibility of TextView
-            if (cn0InViewAvgText!!.visibility == View.VISIBLE) {
+            if (meter.cn0TextInView.cn0TextInView.visibility == View.VISIBLE) {
                 animateCn0Indicator(
-                    cn0InViewAvgText,
+                    meter.cn0TextInView.cn0TextInView,
                     leftInViewTextViewMarginPx!!,
                     cn0InViewAvgAnimationTextView
                 )
             } else {
-                val lp = cn0InViewAvgText!!.layoutParams as RelativeLayout.LayoutParams
+                val lp = meter.cn0TextInView.cn0TextInView.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(
                     leftInViewTextViewMarginPx!!,
                     lp.topMargin,
                     lp.rightMargin,
                     lp.bottomMargin
                 )
-                cn0InViewAvgText!!.layoutParams = lp
-                cn0InViewAvgText!!.visibility = View.VISIBLE
+                meter.cn0TextInView.cn0TextInView.layoutParams = lp
+                meter.cn0TextInView.cn0TextInView.visibility = View.VISIBLE
             }
 
             // Set position and visibility of indicator
             val leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(
-                skyView!!.cn0InViewAvg,
+                binding.skyView.cn0InViewAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-            if (cn0InViewAvg!!.visibility == View.VISIBLE) {
-                animateCn0Indicator(cn0InViewAvg, leftIndicatorMarginPx, cn0InViewAvgAnimation)
+            if (meter.cn0IndicatorInView.visibility == View.VISIBLE) {
+                animateCn0Indicator(meter.cn0IndicatorInView, leftIndicatorMarginPx, cn0InViewAvgAnimation)
             } else {
-                val lp = cn0InViewAvg!!.layoutParams as RelativeLayout.LayoutParams
+                val lp = meter.cn0IndicatorInView.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin)
-                cn0InViewAvg!!.layoutParams = lp
-                cn0InViewAvg!!.visibility = View.VISIBLE
+                meter.cn0IndicatorInView.layoutParams = lp
+                meter.cn0IndicatorInView.visibility = View.VISIBLE
             }
         } else {
-            cn0InViewAvgText!!.text = ""
-            cn0InViewAvgText!!.visibility = View.INVISIBLE
-            cn0InViewAvg!!.visibility = View.INVISIBLE
+            meter.cn0TextInView.cn0TextInView.text = ""
+            meter.cn0TextInView.cn0TextInView.visibility = View.INVISIBLE
+            meter.cn0IndicatorInView.visibility = View.INVISIBLE
         }
 
         // Set avg C/N0 of satellites used in fix
-        if (MathUtils.isValidFloat(skyView!!.cn0UsedAvg)) {
-            cn0UsedAvgText!!.text = String.format("%.1f", skyView!!.cn0UsedAvg)
+        if (MathUtils.isValidFloat(binding.skyView.cn0UsedAvg)) {
+            meter.cn0TextUsed.cn0TextUsed.text = String.format("%.1f", binding.skyView.cn0UsedAvg)
             // Set color of TextView
-            val color = skyView!!.getSatelliteColor(skyView!!.cn0UsedAvg)
+            val color = binding.skyView.getSatelliteColor(binding.skyView.cn0UsedAvg)
             val background =
                 ContextCompat.getDrawable(Application.app, usedCn0Background) as LayerDrawable?
 
@@ -468,52 +405,52 @@ class GpsSkyFragment : Fragment() {
             val backgroundGradient =
                 background!!.findDrawableByLayerId(R.id.cn0_avg_used_fill) as GradientDrawable
             backgroundGradient.setColor(color)
-            cn0UsedAvgText!!.background = background
+            meter.cn0TextUsed.cn0TextUsed.background = background
 
             // Set padding
-            cn0UsedAvgText!!.setPadding(pSides, pTopBottom, pSides, pTopBottom)
+            meter.cn0TextUsed.cn0TextUsed.setPadding(pSides, pTopBottom, pSides, pTopBottom)
 
             // Set color of indicator
-            cn0UsedAvg!!.setColorFilter(usedCn0IndicatorColor)
+            meter.cn0IndicatorUsed.setColorFilter(usedCn0IndicatorColor)
 
             // Set position and visibility of TextView
-            if (cn0UsedAvgText!!.visibility == View.VISIBLE) {
+            if (meter.cn0TextUsed.cn0TextUsed.visibility == View.VISIBLE) {
                 animateCn0Indicator(
-                    cn0UsedAvgText,
+                    meter.cn0TextUsed.cn0TextUsed,
                     leftUsedTextViewMarginPx!!,
                     cn0UsedAvgAnimationTextView
                 )
             } else {
-                val lp = cn0UsedAvgText!!.layoutParams as RelativeLayout.LayoutParams
+                val lp = meter.cn0TextUsed.cn0TextUsed.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(
                     leftUsedTextViewMarginPx!!,
                     lp.topMargin,
                     lp.rightMargin,
                     lp.bottomMargin
                 )
-                cn0UsedAvgText!!.layoutParams = lp
-                cn0UsedAvgText!!.visibility = View.VISIBLE
+                meter.cn0TextUsed.cn0TextUsed.layoutParams = lp
+                meter.cn0TextUsed.cn0TextUsed.visibility = View.VISIBLE
             }
 
             // Set position and visibility of indicator
             val leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(
-                skyView!!.cn0UsedAvg,
+                binding.skyView.cn0UsedAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
-            if (cn0UsedAvg!!.visibility == View.VISIBLE) {
-                animateCn0Indicator(cn0UsedAvg, leftMarginPx, cn0UsedAvgAnimation)
+            if (meter.cn0IndicatorUsed.visibility == View.VISIBLE) {
+                animateCn0Indicator(meter.cn0IndicatorUsed, leftMarginPx, cn0UsedAvgAnimation)
             } else {
-                val lp = cn0UsedAvg!!.layoutParams as RelativeLayout.LayoutParams
+                val lp = meter.cn0IndicatorUsed.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(leftMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin)
-                cn0UsedAvg!!.layoutParams = lp
-                cn0UsedAvg!!.visibility = View.VISIBLE
+                meter.cn0IndicatorUsed.layoutParams = lp
+                meter.cn0IndicatorUsed.visibility = View.VISIBLE
             }
         } else {
-            cn0UsedAvgText!!.text = ""
-            cn0UsedAvgText!!.visibility = View.INVISIBLE
-            cn0UsedAvg!!.visibility = View.INVISIBLE
+            meter.cn0TextUsed.cn0TextUsed.text = ""
+            meter.cn0TextUsed.cn0TextUsed.visibility = View.INVISIBLE
+            meter.cn0IndicatorUsed.visibility = View.INVISIBLE
         }
     }
 
@@ -557,15 +494,11 @@ class GpsSkyFragment : Fragment() {
     }
 
     private fun showHaveFix() {
-        if (lock != null) {
-            UIUtils.showViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
+        UIUtils.showViewWithAnimation(binding.skyLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     private fun showLostFix() {
-        if (lock != null) {
-            UIUtils.hideViewWithAnimation(lock, UIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
+        UIUtils.hideViewWithAnimation(binding.skyLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     companion object {

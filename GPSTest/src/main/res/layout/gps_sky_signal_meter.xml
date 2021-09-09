@@ -54,9 +54,9 @@
         android:layout_marginLeft="@dimen/cn0_indicator_min_left_margin"
         android:layout_marginStart="@dimen/cn0_indicator_min_left_margin"
         android:layout_marginBottom="-3dp"
-        android:tint="@color/red"
         app:srcCompat="@drawable/ic_cn0_indicator"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        app:tint="@color/red" />
 
     <include
         android:id="@+id/cn0_text_in_view"
@@ -95,6 +95,7 @@
 
     <include
         layout="@layout/signal_meter_ticks_and_text"
+        android:id="@+id/signal_meter_ticks_and_text"
         android:layout_width="@dimen/cn0_meter_width"
         android:layout_height="wrap_content"
         android:layout_below="@id/sky_legend_cn0"

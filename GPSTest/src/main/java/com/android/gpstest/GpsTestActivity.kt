@@ -33,16 +33,17 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.flowWithLifecycle
@@ -52,11 +53,13 @@ import com.android.gpstest.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.util.*
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
 import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -67,7 +70,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
-    private var toolbar: Toolbar? = null
+    private lateinit var binding: ActivityMainBinding
+
     private var useDarkTheme = false
 
     /**
@@ -85,8 +89,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var skyFragment: GpsSkyFragment? = null
     private var accuracyFragment: GpsMapFragment? = null
     var gpsResume = false
-    private var mSwitch // GPS on/off switch
-            : Switch? = null
+    private var switch // GPS on/off switch
+            : SwitchMaterial? = null
     private var lastLocation: Location? = null
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
@@ -133,19 +137,14 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         UIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
 
-        // Set the default values from the XML file if this is the first
-        // execution of the app
+        // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
         initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
 
-        // If we have a large screen, show all the fragments in one layout
-        // TODO - Fix large screen layouts (see #122)
-//        if (SatelliteUtils.isLargeScreen(this)) {
-//            setContentView(R.layout.activity_main_large_screen);
-//            mIsLargeScreen = true;
-//        } else {
-        setContentView(R.layout.activity_main)
-        //        }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         benchmarkController = BenchmarkControllerImpl(this, findViewById(R.id.mainlayout))
 
         // Set initial Benchmark view visibility here - we can't do it before setContentView() b/c views aren't inflated yet
@@ -154,8 +153,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         } else {
             (benchmarkController as BenchmarkControllerImpl).hide()
         }
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         progressBar = findViewById(R.id.progress_horizontal)
         setupNavigationDrawer()
         deviceInfoViewModel = ViewModelProviders.of(this).get(
@@ -195,7 +193,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Set up the drawer.
         navDrawerFragment!!.setUp(
             R.id.navigation_drawer,
-            findViewById<View>(R.id.nav_drawer_left_pane) as DrawerLayout
+            binding.navDrawerLeftPane
         )
     }
 
@@ -680,10 +678,9 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById<DrawerLayout>(R.id.nav_drawer_left_pane)
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
             // Close navigation drawer
-            drawer.closeDrawer(GravityCompat.START)
+            binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
             return
         } else if (benchmarkController != null) {
             // Close sliding drawer
@@ -795,21 +792,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun checkKeepScreenOn(settings: SharedPreferences) {
-//        if (!mIsLargeScreen) {
-        toolbar!!.keepScreenOn =
+        binding.toolbar.keepScreenOn =
             settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)
-        //        } else {
-//            // TODO - After we fix large screen devices in #122, we can delete the below block and
-//            // use the above block with mToolbar.setKeepScreenOn() for all screen sizes
-//            View v = findViewById(R.id.large_screen_layout);
-//            if (v != null) {
-//                if (settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)) {
-//                    v.setKeepScreenOn(true);
-//                } else {
-//                    v.setKeepScreenOn(false);
-//                }
-//            }
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -822,21 +806,21 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun initGpsSwitch(menu: Menu) {
         val item = menu.findItem(R.id.gps_switch_item)
         if (item != null) {
-            mSwitch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
-            if (mSwitch != null) {
+            switch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
+            if (switch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                mSwitch!!.isChecked = isTrackingStarted()
+                switch!!.isChecked = isTrackingStarted()
 
                 // Set up listener for GPS on/off switch
-                mSwitch!!.setOnClickListener {
+                switch!!.setOnClickListener {
                     // Turn GPS on or off
-                    if (!mSwitch!!.isChecked && isTrackingStarted()) {
+                    if (!switch!!.isChecked && isTrackingStarted()) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
                         // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
                         // TODO - removeGnssMeasurementsListener();
                     } else {
-                        if (mSwitch!!.isChecked && !isTrackingStarted()) {
+                        if (switch!!.isChecked && !isTrackingStarted()) {
                             gpsStart()
                             // Measurements need to be started again
                             // TODO - addGnssMeasurementsListener();
@@ -919,6 +903,5 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         private const val GPS_RESUME = "gps_resume"
         private const val EXISTING_CSV_LOG_FILE = "existing_csv_log_file"
         private const val EXISTING_JSON_LOG_FILE = "existing_json_log_file"
-        var mIsLargeScreen = false
     }
 }
