@@ -13,9 +13,10 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-    - name: Push English strings to Transifex
-      uses: actions/checkout@v2
-      run: |
-        chmod +x ./scripts/push-to-transifex.sh
-        ./scripts/push-to-transifex.sh
-      shell: bash
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run script to push English strings to Transifex
+        run: |
+          chmod +x ./scripts/push-to-transifex.sh
+          ./scripts/push-to-transifex.sh
+        shell: bash
