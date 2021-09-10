@@ -1,4 +1,4 @@
-name: Android CI Build
+name: Transifex
 
 on:
   # Triggers the workflow on push events only for the master branch
