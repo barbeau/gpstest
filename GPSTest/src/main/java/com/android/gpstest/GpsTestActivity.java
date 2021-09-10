@@ -79,7 +79,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +106,7 @@ import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.PreferenceUtils;
 import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -209,7 +209,7 @@ public class GpsTestActivity extends AppCompatActivity
     boolean mWriteAntennaInfoToFileJson;
     boolean mWriteAntennaInfoToFileCsv;
 
-    private Switch mSwitch;  // GPS on/off switch
+    private SwitchMaterial mSwitch;  // GPS on/off switch
 
     private LocationManager mLocationManager;
 
