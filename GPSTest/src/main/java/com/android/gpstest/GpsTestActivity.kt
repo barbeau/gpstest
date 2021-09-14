@@ -755,6 +755,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 }
             }
             .launchIn(lifecycleScope)
+
         repository.fixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
@@ -769,9 +770,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @Synchronized
     private fun gpsStop() {
         if (isTrackingStarted()) {
+            PreferenceUtils.saveTrackingStarted(false)
             locationFlow?.cancel()
-            // FIXME - Cancel all coroutines in the app (otherwise Fragments could still be observing - they don't get the UI event directly)
-            //GlobalScope.cancel() - Can't do this, it closes the app. Instead use "val applicationScope = CoroutineScope(SupervisorJob())" - see https://medium.com/androiddevelopers/coroutines-patterns-for-work-that-shouldnt-be-cancelled-e26c40f142ad
 
             // Reset the options menu to trigger updates to action bar menu items
             invalidateOptionsMenu()

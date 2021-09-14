@@ -109,6 +109,8 @@ class SharedGnssStatusManager constructor(
         awaitClose {
             Log.d(TAG, "Stopping GnssStatus updates")
             locationManager.unregisterGnssStatusCallback(callback) // clean up when Flow collection ends
+            _fixState.value = FixState.NotAcquired
+            _firstFixState.value = FirstFixState.NotAcquired
         }
     }.shareIn(
         externalScope,

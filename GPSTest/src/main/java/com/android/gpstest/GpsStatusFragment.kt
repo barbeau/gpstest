@@ -18,6 +18,7 @@ package com.android.gpstest
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.location.GnssStatus
@@ -114,6 +115,10 @@ class GpsStatusFragment : Fragment() {
     private var gnssFlow: Job? = null
     private var nmeaFlow: Job? = null
 
+    // Preference listener that will cancel the above flows when the user turns off tracking via UI
+    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newTrackingListener { cancelFlows() }
+
     // Observers of view model
     private val satelliteMetadataObserver: Observer<SatelliteMetadata> =
         Observer { satelliteMetadata ->
@@ -139,6 +144,8 @@ class GpsStatusFragment : Fragment() {
         val view = binding.root
 
         setupUnitPreferences()
+
+        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         binding.latitude.text = EMPTY_LAT_LONG
         binding.longitude.text = EMPTY_LAT_LONG
@@ -321,17 +328,17 @@ class GpsStatusFragment : Fragment() {
                 observeGnssStates()
                 observeNmeaFlow()
             } else {
-                // Cancel updates (Note that these are canceled via GlobalScope in main Activity too,
-                // otherwise updates won't stop because this Fragment doesn't get the switch UI event.
+                // Cancel updates (Note that these are canceled via trackingListener preference listener
+                // in the case where updates are stopped from the Activity UI switch.
                 // But cancel() here too for good practice)
-                locationFlow?.cancel()
-                gnssFlow?.cancel()
+                cancelFlows()
 
                 // Reset views
                 viewModel!!.reset()
                 binding.latitude.text = EMPTY_LAT_LONG
                 binding.longitude.text = EMPTY_LAT_LONG
                 fixTime = 0
+                ttff = ""
                 updateFixTime()
                 updateFilterView()
                 binding.ttff.text = ""
@@ -355,6 +362,12 @@ class GpsStatusFragment : Fragment() {
             }
             this.started = started
         }
+    }
+
+    private fun cancelFlows() {
+        locationFlow?.cancel()
+        gnssFlow?.cancel()
+        nmeaFlow?.cancel()
     }
 
     private fun updateFixTime() {

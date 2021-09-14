@@ -17,6 +17,7 @@ package com.android.gpstest.util
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.GnssMeasurementsEvent
 import androidx.core.app.ActivityCompat
@@ -154,8 +155,6 @@ fun Context.hasPermission(permission: String): Boolean {
  * Provides access to SharedPreferences for location to Activities and Services.
  */
 internal object SharedPreferenceUtil {
-
-    const val KEY_FOREGROUND_ENABLED = "tracking_foreground_location"
     const val SECONDS_TO_MILLISECONDS = 1000
 
     val METERS =
@@ -273,5 +272,22 @@ internal object SharedPreferenceUtil {
                 .getString(R.string.capability_key_measurement_delta_range),
             carrierPhaseSupport
         )
+    }
+
+    /**
+     * Creates a new preference listener that will invoke the provide [cancelFlows] function (e.g., to cancel jobs)
+     * when the user turns off tracking via the UI.
+     *
+     * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
+     * anonymous preference listeners tend to get GC'd by Andorid.
+     */
+    fun newTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
+        return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == PreferenceUtils.KEY_SERVICE_TRACKING_ENABLED) {
+                if (!PreferenceUtils.isTrackingStarted()) {
+                    cancelFlows()
+                }
+            }
+        }
     }
 }
