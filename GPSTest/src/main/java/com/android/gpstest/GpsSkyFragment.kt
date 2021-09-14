@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2013 The Android Open Source Project,
+ * Copyright (C) 2008-2021 The Android Open Source Project,
  * Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
  */
 package com.android.gpstest
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -44,6 +45,7 @@ import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.UIUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -81,6 +83,10 @@ class GpsSkyFragment : Fragment() {
     private var gnssFlow: Job? = null
     private var sensorFlow: Job? = null
 
+    // Preference listener that will cancel the above flows when the user turns off tracking via UI
+    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newTrackingListener { onGnssStopped() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,6 +97,8 @@ class GpsSkyFragment : Fragment() {
         legend = binding.skyLegendCard
 
         initLegendViews()
+
+        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         observeLocationUpdateStates()
 
@@ -218,9 +226,8 @@ class GpsSkyFragment : Fragment() {
     }
 
     private fun onGnssStopped() {
-        // Cancel updates (Note that these are canceled via GlobalScope in main Activity too,
-        // otherwise updates won't stop because this Fragment doesn't get the switch UI event.
-        // But cancel() here too for good practice)
+        // Cancel updates (Note that these are canceled via trackingListener preference listener
+        // in the case where updates are stopped from the Activity UI switch).
         sensorFlow?.cancel()
         gnssFlow?.cancel()
 

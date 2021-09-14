@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2013 The Android Open Source Project,
+ * Copyright (C) 2008-2021 The Android Open Source Project,
  * Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,6 +85,10 @@ class GpsMapFragment : Fragment(), MapInterface {
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
 
+    // Preference listener that will cancel the above flows when the user turns off tracking via UI
+    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newTrackingListener { onGnssStopped() }
+
     @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,6 +112,9 @@ class GpsMapFragment : Fragment(), MapInterface {
         mapController = MapViewModelController(activity, this)
         mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
         map.invalidate()
+
+        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+
         addMapClickListener()
         observeLocationUpdateStates()
         return map

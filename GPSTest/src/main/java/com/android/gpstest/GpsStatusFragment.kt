@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 The Android Open Source Project,
+ * Copyright (C) 2008-2021 The Android Open Source Project,
  * Sean J. Barbeau (sjbarbeau@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,7 +117,7 @@ class GpsStatusFragment : Fragment() {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newTrackingListener { cancelFlows() }
+        SharedPreferenceUtil.newTrackingListener { setStarted(false) }
 
     // Observers of view model
     private val satelliteMetadataObserver: Observer<SatelliteMetadata> =
@@ -144,6 +144,9 @@ class GpsStatusFragment : Fragment() {
         val view = binding.root
 
         setupUnitPreferences()
+
+        observeLocationUpdateStates()
+        observeGnssStates()
 
         Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
@@ -228,8 +231,6 @@ class GpsStatusFragment : Fragment() {
         )
         viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
-        observeLocationUpdateStates()
-
         return view
     }
 
@@ -302,6 +303,7 @@ class GpsStatusFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
+    @ExperimentalCoroutinesApi
     private fun observeNmeaFlow() {
         if (nmeaFlow?.isActive == true) {
             // If we're already observing updates, don't register again
@@ -320,48 +322,48 @@ class GpsStatusFragment : Fragment() {
     @ExperimentalCoroutinesApi
     @SuppressLint("NotifyDataSetChanged")
     private fun setStarted(started: Boolean) {
-        if (started != this.started) {
-            if (started) {
-                // Activity or service is observing updates, so observe here too
-                observeLocationFlow()
-                observeGnssFlow()
-                observeGnssStates()
-                observeNmeaFlow()
-            } else {
-                // Cancel updates (Note that these are canceled via trackingListener preference listener
-                // in the case where updates are stopped from the Activity UI switch.
-                // But cancel() here too for good practice)
-                cancelFlows()
-
-                // Reset views
-                viewModel!!.reset()
-                binding.latitude.text = EMPTY_LAT_LONG
-                binding.longitude.text = EMPTY_LAT_LONG
-                fixTime = 0
-                ttff = ""
-                updateFixTime()
-                updateFilterView()
-                binding.ttff.text = ""
-                binding.altitude.text = ""
-                binding.altitudeMsl.text = ""
-                binding.horVertAccuracy.text = ""
-                binding.speed.text = ""
-                binding.speedAcc.text = ""
-                binding.bearing.text = ""
-                binding.bearingAcc.text = ""
-                binding.numSats.text = ""
-                binding.pdop.text = ""
-                binding.hvdop.text = ""
-                binding.statusLock.visibility = View.GONE
-                svCount = 0
-                svVisibleCount = 0
-                gnssStatus.clear()
-                sbasStatus.clear()
-                gnssAdapter!!.notifyDataSetChanged()
-                sbasAdapter!!.notifyDataSetChanged()
-            }
-            this.started = started
+        if (started == this.started) {
+            // State hasn't changed - no op and return
+            return
         }
+        if (started) {
+            // Activity or service is observing updates, so observe here too
+            observeLocationFlow()
+            observeGnssFlow()
+            observeNmeaFlow()
+        } else {
+            // Cancel updates (Note that these are canceled via trackingListener preference listener
+            // in the case where updates are stopped from the Activity UI switch)
+            cancelFlows()
+
+            // Reset views
+            viewModel!!.reset()
+            binding.latitude.text = EMPTY_LAT_LONG
+            binding.longitude.text = EMPTY_LAT_LONG
+            fixTime = 0
+            ttff = ""
+            updateFixTime()
+            updateFilterView()
+            binding.ttff.text = ""
+            binding.altitude.text = ""
+            binding.altitudeMsl.text = ""
+            binding.horVertAccuracy.text = ""
+            binding.speed.text = ""
+            binding.speedAcc.text = ""
+            binding.bearing.text = ""
+            binding.bearingAcc.text = ""
+            binding.numSats.text = ""
+            binding.pdop.text = ""
+            binding.hvdop.text = ""
+            binding.statusLock.visibility = View.GONE
+            svCount = 0
+            svVisibleCount = 0
+            gnssStatus.clear()
+            sbasStatus.clear()
+            gnssAdapter!!.notifyDataSetChanged()
+            sbasAdapter!!.notifyDataSetChanged()
+        }
+        this.started = started
     }
 
     private fun cancelFlows() {
@@ -508,7 +510,7 @@ class GpsStatusFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    fun onLocationChanged(location: Location) {
+    private fun onLocationChanged(location: Location) {
         if (!UIUtils.isFragmentAttached(this)) {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008-2018 The Android Open Source Project,
+ * Copyright (C) 2008-2021 The Android Open Source Project,
  * Sean J. Barbeau
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -125,6 +125,10 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
 
+    // Preference listener that will cancel the above flows when the user turns off tracking via service notification
+    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newTrackingListener { gpsStop() }
+
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
@@ -136,6 +140,9 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Reset the activity title to make sure dynamic locale changes are shown
         UIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
+
+        // Observe stopping location updates from the service
+        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -772,14 +779,12 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @Synchronized
     private fun gpsStop() {
-        if (isTrackingStarted()) {
-            PreferenceUtils.saveTrackingStarted(false)
-            locationFlow?.cancel()
+        PreferenceUtils.saveTrackingStarted(false)
+        locationFlow?.cancel()
 
-            // Reset the options menu to trigger updates to action bar menu items
-            invalidateOptionsMenu()
-            progressBar?.visibility = View.GONE
-        }
+        // Reset the options menu to trigger updates to action bar menu items
+        invalidateOptionsMenu()
+        progressBar?.visibility = View.GONE
     }
 
     private fun hideProgressBar() {

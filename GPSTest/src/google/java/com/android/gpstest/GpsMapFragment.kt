@@ -17,6 +17,7 @@
 package com.android.gpstest
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.location.Location
 import android.net.Uri
@@ -37,6 +38,7 @@ import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.toNotificationTitle
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -90,12 +92,20 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
 
+    // Preference listener that will cancel the above flows when the user turns off tracking via UI
+    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newTrackingListener { onGnssStopped() }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = super.onCreateView(inflater, container, savedInstanceState)
+
         lastLocation = null
+
+        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+
         if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
             this.savedInstanceState = savedInstanceState
@@ -198,9 +208,12 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
     }
 
     private fun onGnssStopped() {
-        // Cancel updates (Note that these are canceled via scope in main Activity too,
-        // otherwise updates won't stop because this Fragment doesn't get the switch UI event.
-        // But cancel() here too for good practice)
+        cancelFlows()
+    }
+
+    private fun cancelFlows() {
+        // Cancel updates (Note that these are canceled via trackingListener preference listener
+        // in the case where updates are stopped from the Activity UI switch.
         locationFlow?.cancel()
         sensorFlow?.cancel()
     }
