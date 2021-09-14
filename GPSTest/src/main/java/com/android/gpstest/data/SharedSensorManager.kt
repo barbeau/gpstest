@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.shareIn
 
 
-private const val TAG = "SharedLocationManager"
+private const val TAG = "SharedSensorManager"
 
 /**
  * Wraps rotation sensor updates in callbackFlow
