@@ -92,7 +92,10 @@ class SharedGnssMeasurementManager constructor(
         try {
             if (SatelliteUtils.isForceFullGnssMeasurementsSupported()) {
                 val forceFullMeasurements = Application.prefs
-                    .getBoolean(Application.app.getString(R.string.pref_key_force_full_gnss_measurements), true)
+                    .getBoolean(
+                        Application.app.getString(R.string.pref_key_force_full_gnss_measurements),
+                        true
+                    )
                 Log.d(TAG, "Force full GNSS measurements = $forceFullMeasurements")
                 // Request "force full GNSS measurements" explicitly (on <= Android R this is a manual developer setting)
                 val request = GnssMeasurementRequest.Builder()
@@ -105,9 +108,16 @@ class SharedGnssMeasurementManager constructor(
                 )
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    locationManager.registerGnssMeasurementsCallback(ContextCompat.getMainExecutor(context), callback)
+                    locationManager.registerGnssMeasurementsCallback(
+                        ContextCompat.getMainExecutor(
+                            context
+                        ), callback
+                    )
                 } else {
-                    locationManager.registerGnssMeasurementsCallback(callback, Handler(Looper.getMainLooper()))
+                    locationManager.registerGnssMeasurementsCallback(
+                        callback,
+                        Handler(Looper.getMainLooper())
+                    )
                 }
             }
         } catch (e: Exception) {
@@ -132,17 +142,20 @@ class SharedGnssMeasurementManager constructor(
 }
 
 private fun handleLegacyMeasurementStatus(status: Int) {
+    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before?
     val uiStatusMessage: String
     when (status) {
         GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED -> {
-            uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_loc_disabled)
+            uiStatusMessage =
+                Application.app.getString(R.string.gnss_measurement_status_loc_disabled)
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_LOCATION_DISABLED
             )
         }
         GnssMeasurementsEvent.Callback.STATUS_NOT_SUPPORTED -> {
-            uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_not_supported)
+            uiStatusMessage =
+                Application.app.getString(R.string.gnss_measurement_status_not_supported)
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_raw_measurements),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
@@ -176,18 +189,18 @@ private fun handleLegacyMeasurementStatus(status: Int) {
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 private fun checkMeasurementSupport(lm: LocationManager) {
-    val uiStatusMessage: String
-    if (SatelliteUtils.isGnssMeasurementsSupported(lm)) {
+    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before?
+    val uiStatusMessage: String = if (SatelliteUtils.isGnssMeasurementsSupported(lm)) {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_SUPPORTED
         )
-        uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_ready)
+        Application.app.getString(R.string.gnss_measurement_status_ready)
     } else {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_NOT_SUPPORTED
         )
-        uiStatusMessage = Application.app.getString(R.string.gnss_measurement_status_not_supported)
+        Application.app.getString(R.string.gnss_measurement_status_not_supported)
     }
 }

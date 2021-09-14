@@ -242,26 +242,63 @@ class GpsSkyFragment : Fragment() {
     private fun initLegendViews() {
         // Avg C/N0 indicator lines
         val cn0 = meter.signalMeterTicksAndText
-        legendLines = listOf(cn0.skyLegendCn0LeftLine4, cn0.skyLegendCn0LeftLine3,
-            cn0.skyLegendCn0LeftLine2, cn0.skyLegendCn0LeftLine1, cn0.skyLegendCn0CenterLine,
-            cn0.skyLegendCn0RightLine1, cn0.skyLegendCn0RightLine2, cn0.skyLegendCn0RightLine3,
-            cn0.skyLegendCn0RightLine4, legend.skyLegendShapeLine1a, legend.skyLegendShapeLine1b,
-            legend.skyLegendShapeLine2a, legend.skyLegendShapeLine2b, legend.skyLegendShapeLine3a,
-            legend.skyLegendShapeLine3b, legend.skyLegendShapeLine4a, legend.skyLegendShapeLine4b,
-            legend.skyLegendShapeLine5a, legend.skyLegendShapeLine5b, legend.skyLegendShapeLine6a,
-            legend.skyLegendShapeLine6b, legend.skyLegendShapeLine7a, legend.skyLegendShapeLine7b,
-            legend.skyLegendShapeLine8a, legend.skyLegendShapeLine8b, legend.skyLegendShapeLine9a,
-            legend.skyLegendShapeLine9b, legend.skyLegendShapeLine10a, legend.skyLegendShapeLine10b,
-            legend.skyLegendShapeLine11a, legend.skyLegendShapeLine12a, legend.skyLegendShapeLine13a,
-            legend.skyLegendShapeLine14a, legend.skyLegendShapeLine14b, legend.skyLegendShapeLine15a,
-            legend.skyLegendShapeLine15b, legend.skyLegendShapeLine16a, legend.skyLegendShapeLine16b
+        legendLines = listOf(
+            cn0.skyLegendCn0LeftLine4,
+            cn0.skyLegendCn0LeftLine3,
+            cn0.skyLegendCn0LeftLine2,
+            cn0.skyLegendCn0LeftLine1,
+            cn0.skyLegendCn0CenterLine,
+            cn0.skyLegendCn0RightLine1,
+            cn0.skyLegendCn0RightLine2,
+            cn0.skyLegendCn0RightLine3,
+            cn0.skyLegendCn0RightLine4,
+            legend.skyLegendShapeLine1a,
+            legend.skyLegendShapeLine1b,
+            legend.skyLegendShapeLine2a,
+            legend.skyLegendShapeLine2b,
+            legend.skyLegendShapeLine3a,
+            legend.skyLegendShapeLine3b,
+            legend.skyLegendShapeLine4a,
+            legend.skyLegendShapeLine4b,
+            legend.skyLegendShapeLine5a,
+            legend.skyLegendShapeLine5b,
+            legend.skyLegendShapeLine6a,
+            legend.skyLegendShapeLine6b,
+            legend.skyLegendShapeLine7a,
+            legend.skyLegendShapeLine7b,
+            legend.skyLegendShapeLine8a,
+            legend.skyLegendShapeLine8b,
+            legend.skyLegendShapeLine9a,
+            legend.skyLegendShapeLine9b,
+            legend.skyLegendShapeLine10a,
+            legend.skyLegendShapeLine10b,
+            legend.skyLegendShapeLine11a,
+            legend.skyLegendShapeLine12a,
+            legend.skyLegendShapeLine13a,
+            legend.skyLegendShapeLine14a,
+            legend.skyLegendShapeLine14b,
+            legend.skyLegendShapeLine15a,
+            legend.skyLegendShapeLine15b,
+            legend.skyLegendShapeLine16a,
+            legend.skyLegendShapeLine16b
         )
 
         // Shape Legend shapes
-        legendShapes = listOf(legend.skyLegendCircle, legend.skyLegendSquare, legend.skyLegendPentagon,
-            legend.skyLegendTriangle, legend.skyLegendHexagon1, legend.skyLegendOval, legend.skyLegendDiamond1,
-            legend.skyLegendDiamond2, legend.skyLegendDiamond3, legend.skyLegendDiamond4, legend.skyLegendDiamond5,
-            legend.skyLegendDiamond6, legend.skyLegendDiamond7)
+        legendShapes = listOf(
+            legend.skyLegendCircle,
+            legend.skyLegendSquare,
+            legend.skyLegendPentagon,
+            legend.skyLegendTriangle,
+            legend.skyLegendHexagon1,
+            legend.skyLegendOval,
+            legend.skyLegendDiamond1,
+            legend.skyLegendDiamond2,
+            legend.skyLegendDiamond3,
+            legend.skyLegendDiamond4,
+            legend.skyLegendDiamond5,
+            legend.skyLegendDiamond6,
+            legend.skyLegendDiamond7
+        )
     }
 
     private fun updateCn0AvgMeterText() {
@@ -327,7 +364,8 @@ class GpsSkyFragment : Fragment() {
 
         // Set avg C/N0 of satellites in view of device
         if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
-            meter.cn0TextInView.cn0TextInView.text = String.format("%.1f", binding.skyView.cn0InViewAvg)
+            meter.cn0TextInView.cn0TextInView.text =
+                String.format("%.1f", binding.skyView.cn0InViewAvg)
 
             // Set color of TextView
             val color = binding.skyView.getSatelliteColor(binding.skyView.cn0InViewAvg)
@@ -361,7 +399,8 @@ class GpsSkyFragment : Fragment() {
                     cn0InViewAvgAnimationTextView
                 )
             } else {
-                val lp = meter.cn0TextInView.cn0TextInView.layoutParams as RelativeLayout.LayoutParams
+                val lp =
+                    meter.cn0TextInView.cn0TextInView.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(
                     leftInViewTextViewMarginPx!!,
                     lp.topMargin,
@@ -380,7 +419,11 @@ class GpsSkyFragment : Fragment() {
 
             // If the view is already visible, animate to the new position.  Otherwise just set the position and make it visible
             if (meter.cn0IndicatorInView.visibility == View.VISIBLE) {
-                animateCn0Indicator(meter.cn0IndicatorInView, leftIndicatorMarginPx, cn0InViewAvgAnimation)
+                animateCn0Indicator(
+                    meter.cn0IndicatorInView,
+                    leftIndicatorMarginPx,
+                    cn0InViewAvgAnimation
+                )
             } else {
                 val lp = meter.cn0IndicatorInView.layoutParams as RelativeLayout.LayoutParams
                 lp.setMargins(leftIndicatorMarginPx, lp.topMargin, lp.rightMargin, lp.bottomMargin)

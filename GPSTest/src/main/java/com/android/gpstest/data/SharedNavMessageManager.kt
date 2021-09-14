@@ -84,9 +84,16 @@ class SharedNavMessageManager constructor(
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                locationManager.registerGnssNavigationMessageCallback(ContextCompat.getMainExecutor(context), callback)
+                locationManager.registerGnssNavigationMessageCallback(
+                    ContextCompat.getMainExecutor(
+                        context
+                    ), callback
+                )
             } else {
-                locationManager.registerGnssNavigationMessageCallback(callback, Handler(Looper.getMainLooper()))
+                locationManager.registerGnssNavigationMessageCallback(
+                    callback,
+                    Handler(Looper.getMainLooper())
+                )
             }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow

@@ -67,7 +67,13 @@ class SharedLocationManager constructor(
 
         try {
             // TODO - handle case where service is still running and user changes preferences for minTime and minDistance
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, getMinTimeMillis(), getMinDistance(), callback, context.mainLooper)
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                getMinTimeMillis(),
+                getMinDistance(),
+                callback,
+                context.mainLooper
+            )
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
         }

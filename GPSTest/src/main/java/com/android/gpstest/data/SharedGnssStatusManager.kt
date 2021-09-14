@@ -98,9 +98,15 @@ class SharedGnssStatusManager constructor(
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                locationManager.registerGnssStatusCallback(ContextCompat.getMainExecutor(context), callback)
+                locationManager.registerGnssStatusCallback(
+                    ContextCompat.getMainExecutor(context),
+                    callback
+                )
             } else {
-                locationManager.registerGnssStatusCallback(callback, Handler(Looper.getMainLooper()))
+                locationManager.registerGnssStatusCallback(
+                    callback,
+                    Handler(Looper.getMainLooper())
+                )
             }
         } catch (e: Exception) {
             close(e) // in case of exception, close the Flow
@@ -138,14 +144,14 @@ private fun checkHaveFix(location: Location): FixState {
 
 // Started/stopped states
 sealed class GnssStatusState {
-    object Started: GnssStatusState()
-    object Stopped: GnssStatusState()
+    object Started : GnssStatusState()
+    object Stopped : GnssStatusState()
 }
 
 // GNSS ongoing fix acquired states
 sealed class FixState {
-    object Acquired: FixState()
-    object NotAcquired: FixState()
+    object Acquired : FixState()
+    object NotAcquired : FixState()
 }
 
 // GNSS first fix state
@@ -153,6 +159,6 @@ sealed class FirstFixState {
     /**
      * [ttffMillis] the time from start of GNSS to first fix in milliseconds.
      */
-    data class Acquired(val ttffMillis: Int): FirstFixState()
-    object NotAcquired: FirstFixState()
+    data class Acquired(val ttffMillis: Int) : FirstFixState()
+    object NotAcquired : FirstFixState()
 }

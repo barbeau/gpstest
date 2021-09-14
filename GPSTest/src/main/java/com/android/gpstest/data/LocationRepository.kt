@@ -13,7 +13,8 @@ class LocationRepository @Inject constructor(
     /**
      * Status of whether the app is actively subscribed to location changes.
      */
-    val receivingLocationUpdates: StateFlow<Boolean> = sharedLocationManager.receivingLocationUpdates
+    val receivingLocationUpdates: StateFlow<Boolean> =
+        sharedLocationManager.receivingLocationUpdates
 
     /**
      * Observable flow for location updates

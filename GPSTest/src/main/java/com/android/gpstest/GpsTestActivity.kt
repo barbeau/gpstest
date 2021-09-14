@@ -598,7 +598,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun forcePsdsInjection() {
-        val success = IOUtils.forcePsdsInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
+        val success =
+            IOUtils.forcePsdsInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.force_psds_injection_success),
@@ -621,7 +622,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun forceTimeInjection() {
-        val success = IOUtils.forceTimeInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
+        val success =
+            IOUtils.forceTimeInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.force_time_injection_success),
@@ -649,7 +651,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (isTrackingStarted()) {
             gpsStop()
         }
-        val success = IOUtils.deleteAidingData(getSystemService(LOCATION_SERVICE) as LocationManager)
+        val success =
+            IOUtils.deleteAidingData(getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.delete_aiding_data_success),
@@ -749,7 +752,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         repository.firstFixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it) {
+                when (it) {
                     is FirstFixState.Acquired -> hideProgressBar()
                     is FirstFixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
                 }
@@ -759,7 +762,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         repository.fixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when(it) {
+                when (it) {
                     is FixState.Acquired -> hideProgressBar()
                     is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
                 }

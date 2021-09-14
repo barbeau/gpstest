@@ -194,8 +194,9 @@ class SharedSensorManager constructor(
         SensorManager.getRotationMatrixFromVector(rotationMatrix, truncatedRotationVector)
     }
 
-    private fun getDisplay() : Display? {
-        val displayManager = Application.app.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    private fun getDisplay(): Display? {
+        val displayManager =
+            Application.app.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         return displayManager.getDisplay(0)
     }
 
