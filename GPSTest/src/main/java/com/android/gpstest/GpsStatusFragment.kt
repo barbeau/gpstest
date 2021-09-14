@@ -570,34 +570,41 @@ class GpsStatusFragment : Fragment() {
         }
         fixTime = location.time
         if (location.hasAltitude()) {
-            if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                binding.altitude.text =
-                    getString(R.string.gps_altitude_value_meters, location.altitude)
-            } else {
-                // Feet
-                binding.altitude.text = getString(
-                    R.string.gps_altitude_value_feet,
-                    UIUtils.toFeet(location.altitude)
-                )
+            when {
+                prefDistanceUnits.equals(METERS, ignoreCase = true) -> {
+                    binding.altitude.text =
+                        getString(R.string.gps_altitude_value_meters, location.altitude)
+                }
+                else -> {
+                    // Feet
+                    binding.altitude.text = getString(
+                        R.string.gps_altitude_value_feet,
+                        UIUtils.toFeet(location.altitude)
+                    )
+                }
             }
         } else {
             binding.altitude.text = ""
         }
         if (location.hasSpeed()) {
-            if (prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true)) {
-                binding.speed.text =
-                    getString(R.string.gps_speed_value_meters_sec, location.speed)
-            } else if (prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true)) {
-                binding.speed.text = resources.getString(
-                    R.string.gps_speed_value_kilometers_hour,
-                    UIUtils.toKilometersPerHour(location.speed)
-                )
-            } else {
-                // Miles per hour
-                binding.speed.text = resources.getString(
-                    R.string.gps_speed_value_miles_hour,
-                    UIUtils.toMilesPerHour(location.speed)
-                )
+            when {
+                prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true) -> {
+                    binding.speed.text =
+                        getString(R.string.gps_speed_value_meters_sec, location.speed)
+                }
+                prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                    binding.speed.text = resources.getString(
+                        R.string.gps_speed_value_kilometers_hour,
+                        UIUtils.toKilometersPerHour(location.speed)
+                    )
+                }
+                else -> {
+                    // Miles per hour
+                    binding.speed.text = resources.getString(
+                        R.string.gps_speed_value_miles_hour,
+                        UIUtils.toMilesPerHour(location.speed)
+                    )
+                }
             }
         } else {
             binding.speed.text = ""
