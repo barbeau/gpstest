@@ -2,10 +2,7 @@ package com.android.gpstest.di
 
 
 import android.content.Context
-import com.android.gpstest.data.SharedGnssStatusManager
-import com.android.gpstest.data.SharedLocationManager
-import com.android.gpstest.data.SharedNmeaManager
-import com.android.gpstest.data.SharedSensorManager
+import com.android.gpstest.data.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,4 +45,25 @@ object DataModule {
         @ApplicationContext context: Context
     ): SharedSensorManager =
         SharedSensorManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun provideSharedNavMessageManager(
+        @ApplicationContext context: Context
+    ): SharedNavMessageManager =
+        SharedNavMessageManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun provideSharedMeasurementsManager(
+        @ApplicationContext context: Context
+    ): SharedGnssMeasurementManager =
+        SharedGnssMeasurementManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun provideSharedAntennaManager(
+        @ApplicationContext context: Context
+    ): SharedAntennaManager =
+        SharedAntennaManager(context, GlobalScope)
 }

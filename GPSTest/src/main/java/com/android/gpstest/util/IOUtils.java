@@ -50,6 +50,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class IOUtils {
 
@@ -368,7 +369,7 @@ public class IOUtils {
      * Outputs the provided GNSS measurement to log
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeGnssMeasurementToAndroidStudio(GnssMeasurement measurement) {
+    public static void writeMeasurementToLogcat(GnssMeasurement measurement) {
         Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
     }
 

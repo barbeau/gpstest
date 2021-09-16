@@ -117,19 +117,20 @@ class SharedNavMessageManager constructor(
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 private fun checkNavMessageSupport(locationManager: LocationManager) {
+    // TODO - surface this status message in UI somewhere, like when user returned from Settings like before?
     val uiStatusMessage: String
-    if (SatelliteUtils.isNavigationMessagesSupported(locationManager)) {
+    uiStatusMessage = if (SatelliteUtils.isNavigationMessagesSupported(locationManager)) {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_nav_messages),
             PreferenceUtils.CAPABILITY_SUPPORTED
         )
-        uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_ready)
+        Application.app.getString(R.string.gnss_nav_msg_status_ready)
     } else {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_nav_messages),
             PreferenceUtils.CAPABILITY_NOT_SUPPORTED
         )
-        uiStatusMessage = Application.app.getString(R.string.gnss_nav_msg_status_not_supported)
+        Application.app.getString(R.string.gnss_nav_msg_status_not_supported)
     }
 }
 
