@@ -46,9 +46,12 @@ import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteAntennaInfoToFileCsv
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteAntennaInfoToFileJson
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteLocationToFile
+import com.android.gpstest.util.SharedPreferenceUtil.getWriteNavMessageToAndroidMonitor
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteNavMessageToFile
+import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaTimestampToAndroidMonitor
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaToAndroidMonitor
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaToFile
+import com.android.gpstest.util.SharedPreferenceUtil.getWriteRawMeasurementToAndroidMonitor
 import com.android.gpstest.util.SharedPreferenceUtil.getWriteRawMeasurementsToFile
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -60,10 +63,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import javax.inject.Inject
-
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNavMessageToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaTimestampToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteRawMeasurementToAndroidMonitor
 
 
 /**
@@ -284,7 +283,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         nmeaFlow = repository.getNmea()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service NMEA: $it")
+                //Log.d(TAG, "Service NMEA: $it")
                 if (getWriteNmeaToAndroidMonitor()) {
                     writeNmeaToAndroidStudio(
                         it.message,
@@ -310,7 +309,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         navMessageFlow = repository.getNavMessages()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service nav message: $it")
+                //Log.d(TAG, "Service nav message: $it")
                 if (getWriteNavMessageToAndroidMonitor()) {
                     writeNavMessageToAndroidStudio(it)
                 }
@@ -333,7 +332,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         measurementFlow = repository.getMeasurements()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service measurement: $it")
+                //Log.d(TAG, "Service measurement: $it")
                 if (getWriteRawMeasurementToAndroidMonitor()) {
                     for (m in it.measurements) {
                         writeMeasurementToLogcat(m)
@@ -359,7 +358,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         antennaFlow = repository.getAntennas()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service antennas: $it")
+                //Log.d(TAG, "Service antennas: $it")
                 if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     return@onEach
                 }

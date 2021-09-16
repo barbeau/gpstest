@@ -313,7 +313,7 @@ class GpsStatusFragment : Fragment() {
         nmeaFlow = repository.getNmea()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Status NMEA: ${it}")
+                //Log.d(TAG, "Status NMEA: ${it}")
                 onNmeaMessage(it.message, it.timestamp)
             }
             .launchIn(lifecycleScope)
