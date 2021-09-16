@@ -61,7 +61,7 @@ class SharedNmeaManager constructor(
                 PreferenceUtils.CAPABILITY_SUPPORTED
             )
             val nmeaWithTime = NmeaWithTime(timestamp, message)
-            Log.d(TAG, "New nmea: ${nmeaWithTime}")
+            //Log.d(TAG, "New nmea: ${nmeaWithTime}")
             // Send the new NMEA info to the Flow observers
             trySend(nmeaWithTime)
         }

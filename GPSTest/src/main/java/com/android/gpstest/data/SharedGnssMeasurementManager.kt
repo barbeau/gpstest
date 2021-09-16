@@ -68,7 +68,7 @@ class SharedGnssMeasurementManager constructor(
                 override fun onGnssMeasurementsReceived(event: GnssMeasurementsEvent) {
                     saveMeasurementCapabilities(event)
 
-                    Log.d(TAG, "New measurement: $event")
+                    //Log.d(TAG, "New measurement: $event")
                     // Send the new measurement to the Flow observers
                     trySend(event)
                 }

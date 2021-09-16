@@ -255,7 +255,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Service location: ${it.toNotificationTitle()}")
+                //Log.d(TAG, "Service location: ${it.toNotificationTitle()}")
                 currentLocation = it
 
                 // Show location in notification

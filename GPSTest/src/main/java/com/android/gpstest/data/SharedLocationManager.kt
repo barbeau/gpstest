@@ -25,7 +25,6 @@ import android.util.Log
 import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
 import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
 import com.android.gpstest.util.hasPermission
-import com.android.gpstest.util.toNotificationTitle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -53,7 +52,7 @@ class SharedLocationManager constructor(
     private val _locationUpdates = callbackFlow {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val callback = LocationListener { location ->
-            Log.d(TAG, "New location: ${location.toNotificationTitle()}")
+            //Log.d(TAG, "New location: ${location.toNotificationTitle()}")
             // Send the new location to the Flow observers
             trySend(location)
         }

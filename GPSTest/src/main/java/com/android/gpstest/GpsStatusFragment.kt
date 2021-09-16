@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.text.format.DateFormat
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -244,7 +243,7 @@ class GpsStatusFragment : Fragment() {
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Status location: ${it.toNotificationTitle()}")
+                //Log.d(TAG, "Status location: ${it.toNotificationTitle()}")
                 onLocationChanged(it)
             }
             .launchIn(lifecycleScope)
@@ -273,7 +272,7 @@ class GpsStatusFragment : Fragment() {
         gnssFlow = repository.getGnssStatus()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Status gnssStatus: ${it}")
+                //Log.d(TAG, "Status gnssStatus: ${it}")
                 updateGnssStatus(it)
             }
             .launchIn(lifecycleScope)

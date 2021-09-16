@@ -743,7 +743,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 lastLocation = it
-                Log.d(TAG, "Activity location: ${it.toNotificationTitle()}")
+                //Log.d(TAG, "Activity location: ${it.toNotificationTitle()}")
 
                 hideProgressBar()
 

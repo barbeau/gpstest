@@ -281,7 +281,7 @@ class GpsMapFragment : Fragment(), MapInterface {
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(GpsStatusFragment.TAG, "Map location: ${it.toNotificationTitle()}")
+                //Log.d(GpsStatusFragment.TAG, "Map location: ${it.toNotificationTitle()}")
                 onLocationChanged(it)
             }
             .launchIn(lifecycleScope)
@@ -297,7 +297,7 @@ class GpsMapFragment : Fragment(), MapInterface {
         sensorFlow = repository.getSensorUpdates()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
+                //Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
                 onOrientationChanged(it.orientation, it.tilt)
             }
             .launchIn(lifecycleScope)

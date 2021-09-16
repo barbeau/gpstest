@@ -102,7 +102,7 @@ class SharedSensorManager constructor(
                         orientation = MathUtils.mod(orientation.toFloat(), 360.0f).toDouble()
                     }
 
-                    Log.d(TAG, "New sensor: $orientation and $tilt")
+                    //Log.d(TAG, "New sensor: $orientation and $tilt")
                     // Send the new sensors to the Flow observers
                     trySend(OrientationAndTilt(orientation, tilt))
                 }

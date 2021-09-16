@@ -73,7 +73,7 @@ class SharedAntennaManager constructor(
                 )
             }
 
-            Log.d(TAG, "New antennas: $list")
+            //Log.d(TAG, "New antennas: $list")
             // Send the new antennas to the Flow observers
             trySend(list)
         }

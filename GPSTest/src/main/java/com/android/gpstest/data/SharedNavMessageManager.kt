@@ -62,7 +62,7 @@ class SharedNavMessageManager constructor(
         val callback: GnssNavigationMessage.Callback =
             object : GnssNavigationMessage.Callback() {
                 override fun onGnssNavigationMessageReceived(event: GnssNavigationMessage) {
-                    Log.d(TAG, "New nav message: ${event}")
+                    //Log.d(TAG, "New nav message: ${event}")
                     // Send the new nav message info to the Flow observers
                     trySend(event)
                 }

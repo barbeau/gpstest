@@ -196,7 +196,7 @@ class GpsSkyFragment : Fragment() {
         sensorFlow = repository.getSensorUpdates()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Sky sensor: orientation ${it.orientation}, tilt ${it.tilt}")
+                //Log.d(TAG, "Sky sensor: orientation ${it.orientation}, tilt ${it.tilt}")
                 onOrientationChanged(it.orientation, it.tilt)
             }
             .launchIn(lifecycleScope)

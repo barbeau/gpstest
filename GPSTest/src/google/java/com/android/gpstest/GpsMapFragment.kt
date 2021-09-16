@@ -39,7 +39,6 @@ import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.SharedPreferenceUtil
-import com.android.gpstest.util.toNotificationTitle
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -234,7 +233,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
         locationFlow = repository.getLocations()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(GpsStatusFragment.TAG, "Map location: ${it.toNotificationTitle()}")
+                //Log.d(GpsStatusFragment.TAG, "Map location: ${it.toNotificationTitle()}")
                 onLocationChanged(it)
             }
             .launchIn(lifecycleScope)
@@ -250,7 +249,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
         sensorFlow = repository.getSensorUpdates()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
+                //Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
                 onOrientationChanged(it.orientation, it.tilt)
             }
             .launchIn(lifecycleScope)
