@@ -61,7 +61,7 @@ class SharedLocationManager constructor(
             !context.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) close()
 
-        Log.d(TAG, "Starting location updates")
+        Log.d(TAG, "Starting location updates with minTime=${minTimeMillis()}ms and minDistance=${minDistance()}m")
         _receivingLocationUpdates.value = true
 
         try {
