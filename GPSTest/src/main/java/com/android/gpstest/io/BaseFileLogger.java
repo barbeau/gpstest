@@ -26,7 +26,6 @@ public abstract class BaseFileLogger implements FileLogger {
 
     protected final Context context;
 
-    protected final Object fileLock = new Object();
     protected BufferedWriter fileWriter;
     protected File file;
     protected boolean isStarted = false;
@@ -77,73 +76,71 @@ public abstract class BaseFileLogger implements FileLogger {
      * @param date The date and time to use for the file name
      * @return true if a new file was created, false if an existing file was used
      */
-    public boolean startLog(File existingFile, Date date) {
+    public synchronized boolean startLog(File existingFile, Date date) {
         boolean isNewFile = false;
-        synchronized (fileLock) {
-            String state = Environment.getExternalStorageState();
-            if (Environment.MEDIA_MOUNTED.equals(state)) {
-                baseDirectory = new File(Environment.getExternalStorageDirectory(), FILE_PREFIX);
-                baseDirectory.mkdirs();
-            } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-                logError("Cannot write to external storage.");
-                return false;
-            } else {
-                logError("Cannot read external storage.");
-                return false;
-            }
-
-            String currentFilePath;
-
-            if (existingFile != null) {
-                // Use existing file
-                currentFilePath = existingFile.getAbsolutePath();
-                BufferedWriter writer;
-                try {
-                    writer = new BufferedWriter(new FileWriter(existingFile, true));
-                } catch (IOException e) {
-                    logException("Could not open file: " + currentFilePath, e);
-                    return false;
-                }
-                if (!closeOldFileWriter()) {
-                    return false;
-                }
-                file = existingFile;
-                fileWriter = writer;
-                isNewFile = false;
-            } else {
-                // Create new logging file
-                SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
-                String fileName = String.format("%s_%s." + getFileExtension(), FILE_PREFIX, formatter.format(date));
-                File currentFile = new File(baseDirectory, fileName);
-                currentFilePath = currentFile.getAbsolutePath();
-                BufferedWriter writer;
-                try {
-                    writer = new BufferedWriter(new FileWriter(currentFile, true));
-                } catch (IOException e) {
-                    logException("Could not open file: " + currentFilePath, e);
-                    return false;
-                }
-
-                writeFileHeader(writer, currentFilePath);
-
-                if (!closeOldFileWriter()) {
-                    return false;
-                }
-
-                file = currentFile;
-                fileWriter = writer;
-
-                Log.d(TAG, Application.Companion.getApp().getString(R.string.logging_to_new_file, currentFilePath));
-                isNewFile = true;
-            }
-
-            boolean postInit = postFileInit(fileWriter, isNewFile);
-            if (!postInit) {
-                return false;
-            }
-
-            isStarted = true;
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            baseDirectory = new File(Environment.getExternalStorageDirectory(), FILE_PREFIX);
+            baseDirectory.mkdirs();
+        } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            logError("Cannot write to external storage.");
+            return false;
+        } else {
+            logError("Cannot read external storage.");
+            return false;
         }
+
+        String currentFilePath;
+
+        if (existingFile != null) {
+            // Use existing file
+            currentFilePath = existingFile.getAbsolutePath();
+            BufferedWriter writer;
+            try {
+                writer = new BufferedWriter(new FileWriter(existingFile, true));
+            } catch (IOException e) {
+                logException("Could not open file: " + currentFilePath, e);
+                return false;
+            }
+            if (!closeOldFileWriter()) {
+                return false;
+            }
+            file = existingFile;
+            fileWriter = writer;
+            isNewFile = false;
+        } else {
+            // Create new logging file
+            SimpleDateFormat formatter = new SimpleDateFormat("yyy_MM_dd_HH_mm_ss");
+            String fileName = String.format("%s_%s." + getFileExtension(), FILE_PREFIX, formatter.format(date));
+            File currentFile = new File(baseDirectory, fileName);
+            currentFilePath = currentFile.getAbsolutePath();
+            BufferedWriter writer;
+            try {
+                writer = new BufferedWriter(new FileWriter(currentFile, true));
+            } catch (IOException e) {
+                logException("Could not open file: " + currentFilePath, e);
+                return false;
+            }
+
+            writeFileHeader(writer, currentFilePath);
+
+            if (!closeOldFileWriter()) {
+                return false;
+            }
+
+            file = currentFile;
+            fileWriter = writer;
+
+            Log.d(TAG, Application.Companion.getApp().getString(R.string.logging_to_new_file, currentFilePath));
+            isNewFile = true;
+        }
+
+        boolean postInit = postFileInit(fileWriter, isNewFile);
+        if (!postInit) {
+            return false;
+        }
+
+        isStarted = true;
         return isNewFile;
     }
 
@@ -168,7 +165,7 @@ public abstract class BaseFileLogger implements FileLogger {
         return isStarted;
     }
 
-    public void close() {
+    public synchronized void close() {
         if (fileWriter != null) {
             try {
                 fileWriter.flush();

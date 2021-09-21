@@ -25,12 +25,10 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.text.InputType;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -52,7 +50,7 @@ public class Preferences extends PreferenceActivity implements
 
     CheckBoxPreference chkDarkTheme;
 
-    private Toolbar mActionBar;
+    private Toolbar actionBar;
 
     ListPreference preferredDistanceUnits;
 
@@ -77,7 +75,7 @@ public class Preferences extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        mActionBar.setTitle(getTitle());
+        actionBar.setTitle(getTitle());
 
         UIUtils.resetActivityTitle(this);
 
@@ -94,19 +92,16 @@ public class Preferences extends PreferenceActivity implements
                 .setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         // Verify minTime entry
-        txtMinTime.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (!verifyFloat(newValue)) {
-                    // Tell user that entry must be valid decimal
-                    Toast.makeText(
-                            Preferences.this,
-                            getString(R.string.pref_gps_min_time_invalid_entry),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                } else {
-                    return true;
-                }
+        txtMinTime.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (!verifyFloat(newValue)) {
+                // Tell user that entry must be valid decimal
+                Toast.makeText(
+                        Preferences.this,
+                        getString(R.string.pref_gps_min_time_invalid_entry),
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                return true;
             }
         });
 
@@ -116,19 +111,16 @@ public class Preferences extends PreferenceActivity implements
                 .setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         // Verify minDistance entry
-        txtMinDistance.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (!verifyFloat(newValue)) {
-                    // Tell user that entry must be valid decimal
-                    Toast.makeText(
-                            Preferences.this,
-                            getString(R.string.pref_gps_min_distance_invalid_entry),
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                } else {
-                    return true;
-                }
+        txtMinDistance.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (!verifyFloat(newValue)) {
+                // Tell user that entry must be valid decimal
+                Toast.makeText(
+                        Preferences.this,
+                        getString(R.string.pref_gps_min_distance_invalid_entry),
+                        Toast.LENGTH_SHORT).show();
+                return false;
+            } else {
+                return true;
             }
         });
 
@@ -136,13 +128,10 @@ public class Preferences extends PreferenceActivity implements
         chkDarkTheme = (CheckBoxPreference) this
                 .findPreference(getString(R.string.pref_key_dark_theme));
 
-        chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                // Destroy and recreate Activity
-                recreate();
-                return true;
-            }
+        chkDarkTheme.setOnPreferenceChangeListener((preference, newValue) -> {
+            // Destroy and recreate Activity
+            recreate();
+            return true;
         });
 
         preferredDistanceUnits = (ListPreference) findPreference(
@@ -277,15 +266,10 @@ public class Preferences extends PreferenceActivity implements
         ViewGroup contentView = (ViewGroup) LayoutInflater.from(this).inflate(
                 R.layout.settings_activity, new LinearLayout(this), false);
 
-        mActionBar = (Toolbar) contentView.findViewById(R.id.action_bar);
-        mActionBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        actionBar = contentView.findViewById(R.id.action_bar);
+        actionBar.setNavigationOnClickListener(v -> finish());
 
-        ViewGroup contentWrapper = (ViewGroup) contentView.findViewById(R.id.content_wrapper);
+        ViewGroup contentWrapper = contentView.findViewById(R.id.content_wrapper);
         LayoutInflater.from(this).inflate(layoutResID, contentWrapper, true);
 
         getWindow().setContentView(contentView);

@@ -23,6 +23,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.location.Location
 import android.location.LocationManager
@@ -30,7 +31,6 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
@@ -43,23 +43,22 @@ import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.util.*
 import com.android.gpstest.util.IOUtils.*
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteAntennaInfoToFileCsv
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteAntennaInfoToFileJson
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteLocationToFile
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNavMessageToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNavMessageToFile
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaTimestampToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteNmeaToFile
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteRawMeasurementToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.getWriteRawMeasurementsToFile
+import com.android.gpstest.util.SharedPreferenceUtil.isCsvLoggingEnabled
+import com.android.gpstest.util.SharedPreferenceUtil.isJsonLoggingEnabled
+import com.android.gpstest.util.SharedPreferenceUtil.writeAntennaInfoToFileCsv
+import com.android.gpstest.util.SharedPreferenceUtil.writeAntennaInfoToFileJson
+import com.android.gpstest.util.SharedPreferenceUtil.writeLocationToFile
+import com.android.gpstest.util.SharedPreferenceUtil.writeMeasurementToLogcat
+import com.android.gpstest.util.SharedPreferenceUtil.writeMeasurementsToFile
+import com.android.gpstest.util.SharedPreferenceUtil.writeNavMessageToFile
+import com.android.gpstest.util.SharedPreferenceUtil.writeNavMessageToLogcat
+import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaTimestampToLogcat
+import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaToAndroidMonitor
+import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaToFile
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 import javax.inject.Inject
@@ -102,6 +101,11 @@ class ForegroundOnlyLocationService : LifecycleService() {
     lateinit var csvFileLogger: CsvFileLogger
     lateinit var jsonFileLogger: JsonFileLogger
 
+    // Preference listener that will init the loggers if the user changes Settings while Service is running
+    private val loggingSettingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newFileLoggingListener { initLogging() }
+    private var deletedFiles = false
+
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate()")
@@ -109,6 +113,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
         csvFileLogger = CsvFileLogger(applicationContext)
         jsonFileLogger = JsonFileLogger(applicationContext)
+
+        // Observe logging setting changes
+        Application.prefs.registerOnSharedPreferenceChangeListener(loggingSettingListener)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -119,11 +126,12 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
         if (cancelLocationTrackingFromNotification == true) {
             unsubscribeToLocationUpdates()
-            stopSelf()
         } else {
             if (!isStarted) {
                 isStarted = true
-                initLogging()
+                GlobalScope.launch(Dispatchers.IO) {
+                    initLogging()
+                }
                 try {
                     observeFlows()
                 } catch (unlikely: Exception) {
@@ -188,8 +196,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy()")
-        csvFileLogger.close()
-        jsonFileLogger.close()
+        stopLogging()
         super.onDestroy()
     }
 
@@ -215,6 +222,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         try {
             cancelFlows()
             stopSelf()
+            stopLogging()
             isStarted = false
             PreferenceUtils.saveTrackingStarted(false)
             removeOngoingActivityNotification()
@@ -264,10 +272,13 @@ class ForegroundOnlyLocationService : LifecycleService() {
                     buildNotification(currentLocation)
                 )
 
-                if (getWriteLocationToFile() &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
-                    csvFileLogger.onLocationChanged(currentLocation)
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (writeLocationToFile() &&
+                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        initLogging()
+                        csvFileLogger.onLocationChanged(currentLocation)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -284,16 +295,19 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service NMEA: $it")
-                if (getWriteNmeaToAndroidMonitor()) {
-                    writeNmeaToAndroidStudio(
-                        it.message,
-                        if (getWriteNmeaTimestampToAndroidMonitor()) it.timestamp else Long.MIN_VALUE
-                    )
-                }
-                if (getWriteNmeaToFile() &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
-                    csvFileLogger.onNmeaReceived(it.timestamp, it.message)
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (writeNmeaToAndroidMonitor()) {
+                        writeNmeaToAndroidStudio(
+                            it.message,
+                            if (writeNmeaTimestampToLogcat()) it.timestamp else Long.MIN_VALUE
+                        )
+                    }
+                    if (writeNmeaToFile() &&
+                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        initLogging()
+                        csvFileLogger.onNmeaReceived(it.timestamp, it.message)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -310,13 +324,16 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service nav message: $it")
-                if (getWriteNavMessageToAndroidMonitor()) {
-                    writeNavMessageToAndroidStudio(it)
-                }
-                if (getWriteNavMessageToFile() &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
-                    csvFileLogger.onGnssNavigationMessageReceived(it)
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (writeNavMessageToLogcat()) {
+                        writeNavMessageToAndroidStudio(it)
+                    }
+                    if (writeNavMessageToFile() &&
+                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        initLogging()
+                        csvFileLogger.onGnssNavigationMessageReceived(it)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -333,15 +350,18 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service measurement: $it")
-                if (getWriteRawMeasurementToAndroidMonitor()) {
-                    for (m in it.measurements) {
-                        writeMeasurementToLogcat(m)
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (writeMeasurementToLogcat()) {
+                        for (m in it.measurements) {
+                            writeMeasurementToLogcat(m)
+                        }
                     }
-                }
-                if (getWriteRawMeasurementsToFile() &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
-                    csvFileLogger.onGnssMeasurementsReceived(it)
+                    if (writeMeasurementsToFile() &&
+                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        initLogging()
+                        csvFileLogger.onGnssMeasurementsReceived(it)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -359,14 +379,19 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service antennas: $it")
-                if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    return@onEach
-                }
-                if (getWriteAntennaInfoToFileCsv()) {
-                    csvFileLogger.onGnssAntennaInfoReceived(it)
-                }
-                if (getWriteAntennaInfoToFileJson()) {
-                    jsonFileLogger.onGnssAntennaInfoReceived(it)
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        return@launch
+                    }
+                    if (writeAntennaInfoToFileCsv() || writeAntennaInfoToFileJson()) {
+                        initLogging()
+                    }
+                    if (writeAntennaInfoToFileCsv()) {
+                        csvFileLogger.onGnssAntennaInfoReceived(it)
+                    }
+                    if (writeAntennaInfoToFileJson()) {
+                        jsonFileLogger.onGnssAntennaInfoReceived(it)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -471,13 +496,22 @@ class ForegroundOnlyLocationService : LifecycleService() {
         }
     }
 
+    /**
+     * Initialize and start logging if permissions have been granted.
+     *
+     * Note that this is called from each of the flows that log data, because when the user initially
+     * enables logging in the settings the preference change callback happens before the user grants
+     * file permissions. So we need to call this on each update in case the user just granted file
+     * permissions but logging hasn't been started yet.
+     */
     private fun initLogging() {
+        if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            return
+        }
         val date = Date()
         var isNewCSVFile = false
         var isNewJsonFile = false
-        if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            && !csvFileLogger.isStarted && isCsvLoggingEnabled()
-        ) {
+        if (!csvFileLogger.isStarted && isCsvLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
             var existingCsvFile: File? = null
 
@@ -491,9 +525,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date)
         }
 
-        if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            && !jsonFileLogger.isStarted && isJsonLoggingEnabled()
-        ) {
+        if (!jsonFileLogger.isStarted && isJsonLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
             var existingJsonFile: File? = null
             //TODO - handle restart of logging
@@ -506,45 +538,14 @@ class ForegroundOnlyLocationService : LifecycleService() {
             isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date)
         }
 
-        if (csvFileLogger.isStarted && !jsonFileLogger.isStarted) {
-            if (isNewCSVFile) {
-                // CSV logging only
-                Toast.makeText(
-                    applicationContext,
-                    Application.app.getString(
-                        R.string.logging_to_new_file,
-                        csvFileLogger.file.absolutePath
-                    ),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        } else if (!csvFileLogger.isStarted && jsonFileLogger.isStarted) {
-            // JSON logging only
-            if (isNewJsonFile) {
-                // CSV logging only
-                Toast.makeText(
-                    applicationContext,
-                    Application.app.getString(
-                        R.string.logging_to_new_file,
-                        jsonFileLogger.file.absolutePath
-                    ),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        } else if (csvFileLogger.isStarted && jsonFileLogger.isStarted) {
-            // CSV and JSON logging
-            if (isNewCSVFile && isNewJsonFile) {
-                Toast.makeText(
-                    applicationContext,
-                    Application.app.getString(
-                        R.string.logging_to_new_file,
-                        csvFileLogger.file.absolutePath
-                    ) + " + .json",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        maybeDeleteFiles()
+    }
 
+    private fun maybeDeleteFiles() {
+        if (deletedFiles) {
+            // If we've already deleted files on this application execution, don't do it again
+            return
+        }
         if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) && (csvFileLogger.isStarted || jsonFileLogger.isStarted)) {
             // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
             var baseDirectory: File = csvFileLogger.baseDirectory
@@ -552,19 +553,13 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 baseDirectory = jsonFileLogger.baseDirectory
             }
             deleteOldFiles(baseDirectory, csvFileLogger.file, jsonFileLogger.file)
+            deletedFiles = true
         }
     }
 
-    fun isFileLoggingEnabled(): Boolean {
-        return getWriteNmeaToFile() || getWriteRawMeasurementsToFile() || getWriteNavMessageToFile() || getWriteLocationToFile() || getWriteAntennaInfoToFileJson() || getWriteAntennaInfoToFileCsv()
-    }
-
-    private fun isCsvLoggingEnabled(): Boolean {
-        return getWriteNmeaToFile() || getWriteRawMeasurementsToFile() || getWriteNavMessageToFile() || getWriteLocationToFile() || getWriteAntennaInfoToFileCsv()
-    }
-
-    private fun isJsonLoggingEnabled(): Boolean {
-        return getWriteAntennaInfoToFileJson()
+    private fun stopLogging() {
+        csvFileLogger.close()
+        jsonFileLogger.close()
     }
 
     /**

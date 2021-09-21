@@ -195,6 +195,7 @@ class GpsStatusFragment : Fragment() {
 
         // Remove any previous clickable spans to avoid issues with recycling views
         UIUtils.removeAllClickableSpans(binding.filterShowAll)
+        // FIXME - filter text isn't showing in UI when filter is active
         // Save an empty set to preferences to show all satellites
         val filterShowAllClick: ClickableSpan = object : ClickableSpan() {
             override fun onClick(v: View) {

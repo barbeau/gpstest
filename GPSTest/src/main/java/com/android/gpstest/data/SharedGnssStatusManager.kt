@@ -132,7 +132,7 @@ class SharedGnssStatusManager constructor(
 
 private fun checkHaveFix(location: Location): FixState {
     return if (SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos >
-        TimeUnit.MILLISECONDS.toNanos(SharedPreferenceUtil.getMinTimeMillis() * 2)
+        TimeUnit.MILLISECONDS.toNanos(SharedPreferenceUtil.minTimeMillis() * 2)
     ) {
         // We lost the GNSS fix for two requested update intervals - notify
         FixState.NotAcquired

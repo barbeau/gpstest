@@ -57,8 +57,9 @@ import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.util.*
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
-import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
-import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
+import com.android.gpstest.util.SharedPreferenceUtil.isFileLoggingEnabled
+import com.android.gpstest.util.SharedPreferenceUtil.minDistance
+import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -247,7 +248,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 val location = lastLocation
                 shareDialogOpen = true
                 UIUtils.showShareFragmentDialog(
-                    this, location, service!!.isFileLoggingEnabled(),
+                    this, location, isFileLoggingEnabled(),
                     service!!.csvFileLogger, service!!.jsonFileLogger, uri
                 )
             }
@@ -714,15 +715,15 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         observeGnssStates()
 
         // Show Toast only if the user has set minTime or minDistance to something other than default values
-        if (getMinTimeMillis() != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
-            getMinDistance() != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
+        if (minTimeMillis() != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
+            minDistance() != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
         ) {
             Toast.makeText(
                 this,
                 String.format(
                     getString(R.string.gnss_running),
-                    (getMinTimeMillis().toDouble() / SECONDS_TO_MILLISECONDS).toString(),
-                    getMinDistance().toString()
+                    (minTimeMillis().toDouble() / SECONDS_TO_MILLISECONDS).toString(),
+                    minDistance().toString()
                 ),
                 Toast.LENGTH_SHORT
             ).show()
@@ -842,7 +843,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.share)
         if (item != null) {
-            item.isVisible = lastLocation != null || service?.isFileLoggingEnabled() == true
+            item.isVisible = lastLocation != null || isFileLoggingEnabled() == true
         }
         return true
     }
@@ -863,7 +864,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val location = lastLocation
         shareDialogOpen = true
         UIUtils.showShareFragmentDialog(
-            this, location, service!!.isFileLoggingEnabled(),
+            this, location, isFileLoggingEnabled(),
             service!!.csvFileLogger, service!!.jsonFileLogger, null
         )
     }

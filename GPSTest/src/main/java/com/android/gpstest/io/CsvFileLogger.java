@@ -28,9 +28,11 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
@@ -63,7 +65,14 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
 
     @Override
     boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile) {
-        // No-op for CSV files
+        ContextCompat.getMainExecutor(context).execute(() -> Toast.makeText(
+                Application.Companion.getApp().getApplicationContext(),
+                Application.Companion.getApp().getString(
+                        R.string.logging_to_new_file,
+                        file.getAbsolutePath()
+                ),
+                Toast.LENGTH_LONG
+        ).show());
         return true;
     }
 
@@ -174,76 +183,24 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
-    public void onLocationChanged(Location location) {
+    public synchronized void onLocationChanged(Location location) {
         if (location.getProvider().equals(LocationManager.GPS_PROVIDER)) {
-            synchronized (fileLock) {
-                if (fileWriter == null) {
-                    return;
-                }
-                String locationStream =
-                        String.format(
-                                Locale.US,
-                                "Fix,%s,%f,%f,%f,%f,%f,%d",
-                                location.getProvider(),
-                                location.getLatitude(),
-                                location.getLongitude(),
-                                location.getAltitude(),
-                                location.getSpeed(),
-                                location.getAccuracy(),
-                                location.getTime());
-                try {
-                    fileWriter.write(locationStream);
-                    fileWriter.newLine();
-                } catch (IOException e) {
-                    logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
-                }
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-        synchronized (fileLock) {
             if (fileWriter == null) {
                 return;
             }
-            GnssClock gnssClock = event.getClock();
-            for (GnssMeasurement measurement : event.getMeasurements()) {
-                try {
-                    writeGnssMeasurementToFile(gnssClock, measurement);
-                } catch (IOException e) {
-                    logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
-                }
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void onGnssNavigationMessageReceived(GnssNavigationMessage navigationMessage) {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
-            }
-            StringBuilder builder = new StringBuilder("Nav");
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getSvid());
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getType());
-            builder.append(RECORD_DELIMITER);
-
-            int status = navigationMessage.getStatus();
-            builder.append(status);
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getMessageId());
-            builder.append(RECORD_DELIMITER);
-            builder.append(navigationMessage.getSubmessageId());
-            byte[] data = navigationMessage.getData();
-            for (byte word : data) {
-                builder.append(RECORD_DELIMITER);
-                builder.append(word);
-            }
+            String locationStream =
+                    String.format(
+                            Locale.US,
+                            "Fix,%s,%f,%f,%f,%f,%f,%d",
+                            location.getProvider(),
+                            location.getLatitude(),
+                            location.getLongitude(),
+                            location.getAltitude(),
+                            location.getSpeed(),
+                            location.getAccuracy(),
+                            location.getTime());
             try {
-                fileWriter.write(builder.toString());
+                fileWriter.write(locationStream);
                 fileWriter.newLine();
             } catch (IOException e) {
                 logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
@@ -251,18 +208,62 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
-    public void onNmeaReceived(long timestamp, String s) {
-        synchronized (fileLock) {
-            if (fileWriter == null) {
-                return;
-            }
-            String nmeaStream = "NMEA," + s.trim() + "," + timestamp;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public synchronized void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
+        if (fileWriter == null) {
+            return;
+        }
+        GnssClock gnssClock = event.getClock();
+        for (GnssMeasurement measurement : event.getMeasurements()) {
             try {
-                fileWriter.write(nmeaStream);
-                fileWriter.newLine();
+                writeGnssMeasurementToFile(gnssClock, measurement);
             } catch (IOException e) {
                 logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public synchronized void onGnssNavigationMessageReceived(GnssNavigationMessage navigationMessage) {
+        if (fileWriter == null) {
+            return;
+        }
+        StringBuilder builder = new StringBuilder("Nav");
+        builder.append(RECORD_DELIMITER);
+        builder.append(navigationMessage.getSvid());
+        builder.append(RECORD_DELIMITER);
+        builder.append(navigationMessage.getType());
+        builder.append(RECORD_DELIMITER);
+
+        int status = navigationMessage.getStatus();
+        builder.append(status);
+        builder.append(RECORD_DELIMITER);
+        builder.append(navigationMessage.getMessageId());
+        builder.append(RECORD_DELIMITER);
+        builder.append(navigationMessage.getSubmessageId());
+        byte[] data = navigationMessage.getData();
+        for (byte word : data) {
+            builder.append(RECORD_DELIMITER);
+            builder.append(word);
+        }
+        try {
+            fileWriter.write(builder.toString());
+            fileWriter.newLine();
+        } catch (IOException e) {
+            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+        }
+    }
+
+    public synchronized void onNmeaReceived(long timestamp, String s) {
+        if (fileWriter == null) {
+            return;
+        }
+        String nmeaStream = "NMEA," + s.trim() + "," + timestamp;
+        try {
+            fileWriter.write(nmeaStream);
+            fileWriter.newLine();
+        } catch (IOException e) {
+            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
         }
     }
 
@@ -319,7 +320,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
+    public synchronized void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
         try {
             for (GnssAntennaInfo info : list) {
                 fileWriter.write(IOUtils.serialize(info));

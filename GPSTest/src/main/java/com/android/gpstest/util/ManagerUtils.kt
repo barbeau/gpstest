@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
-import com.android.gpstest.util.SharedPreferenceUtil.getPrefDistanceUnits
+import com.android.gpstest.util.SharedPreferenceUtil.prefDistanceUnits
 
 /**
  * Returns the `location` object as a human readable string for use in a notification title
@@ -110,7 +110,7 @@ fun android.location.Location?.toNotificationSummary(): String {
             }
         }
         if (this.hasAltitude()) {
-            alt = if (getPrefDistanceUnits().equals(METERS, ignoreCase = true)) {
+            alt = if (prefDistanceUnits().equals(METERS, ignoreCase = true)) {
                 resources.getString(
                     R.string.gps_altitude_value_meters,
                     this.altitude
@@ -167,7 +167,7 @@ internal object SharedPreferenceUtil {
     /**
      * Returns the minTime between location updates used for the LocationListener in milliseconds
      */
-    fun getMinTimeMillis(): Long {
+    fun minTimeMillis(): Long {
         val minTimeDouble: Double =
             Application.prefs
                 .getString(Application.app.getString(R.string.pref_key_gps_min_time), "1")
@@ -178,7 +178,7 @@ internal object SharedPreferenceUtil {
     /**
      * Returns the minDistance between location updates used for the LocationLitsener in meters
      */
-    fun getMinDistance(): Float {
+    fun minDistance(): Float {
         return Application.prefs
             .getString(Application.app.getString(R.string.pref_key_gps_min_distance), "0")
             ?.toFloat() ?: 0.0f
@@ -187,57 +187,69 @@ internal object SharedPreferenceUtil {
     /**
      * Returns true if the user has selected to write locations to file output, false if they have not
      */
-    fun getWriteLocationToFile(): Boolean {
+    fun writeLocationToFile(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_location_output), false)
     }
 
-    fun getWriteRawMeasurementToAndroidMonitor(): Boolean {
+    fun writeMeasurementToLogcat(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_as_measurement_output), false)
     }
 
-    fun getWriteRawMeasurementsToFile(): Boolean {
+    fun writeMeasurementsToFile(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_measurement_output), false)
     }
 
-    fun getWriteNmeaToAndroidMonitor(): Boolean {
+    fun writeNmeaToAndroidMonitor(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_output), true)
     }
 
-    fun getWriteNmeaTimestampToAndroidMonitor(): Boolean {
+    fun writeNmeaTimestampToLogcat(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_timestamp_output), true)
     }
 
-    fun getWriteNmeaToFile(): Boolean {
+    fun writeNmeaToFile(): Boolean {
       return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_nmea_output), false)
     }
 
-    fun getWriteAntennaInfoToFileJson(): Boolean {
+    fun writeAntennaInfoToFileJson(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_json), false);
     }
 
-    fun getWriteAntennaInfoToFileCsv(): Boolean {
+    fun writeAntennaInfoToFileCsv(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_csv), false)
     }
 
-    fun getWriteNavMessageToAndroidMonitor(): Boolean {
+    fun writeNavMessageToLogcat(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_as_navigation_message_output), false);
     }
 
-    fun getWriteNavMessageToFile(): Boolean {
+    fun writeNavMessageToFile(): Boolean {
         return Application.prefs
             .getBoolean(Application.app.getString(R.string.pref_key_file_navigation_message_output), false);
     }
 
-    fun getPrefDistanceUnits(): String? {
+    fun isFileLoggingEnabled(): Boolean {
+        return isCsvLoggingEnabled() || isJsonLoggingEnabled()
+    }
+
+    fun isCsvLoggingEnabled(): Boolean {
+        return writeNmeaToFile() || writeMeasurementsToFile() || writeNavMessageToFile() || writeLocationToFile() || writeAntennaInfoToFileCsv()
+    }
+
+    fun isJsonLoggingEnabled(): Boolean {
+        return writeAntennaInfoToFileJson()
+    }
+
+    fun prefDistanceUnits(): String? {
         return Application.prefs
             .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
     }
@@ -279,13 +291,76 @@ internal object SharedPreferenceUtil {
      * when the user turns off tracking via the UI.
      *
      * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
-     * anonymous preference listeners tend to get GC'd by Andorid.
+     * anonymous preference listeners tend to get GC'd by Android.
      */
     fun newTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
         return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == PreferenceUtils.KEY_SERVICE_TRACKING_ENABLED) {
                 if (!PreferenceUtils.isTrackingStarted()) {
                     cancelFlows()
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a new preference listener that will invoke the provide [initLogging] function
+     * when the user turns on file logging via any of the Settings options and all of the other file
+     * logging settings were previously off
+     *
+     * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
+     * anonymous preference listeners tend to get GC'd by Android.
+     */
+    fun newFileLoggingListener(initLogging: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
+        return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == Application.app.getString(R.string.pref_key_file_location_output) ||
+                key == Application.app.getString(R.string.pref_key_file_measurement_output) ||
+                key == Application.app.getString(R.string.pref_key_file_nmea_output) ||
+                key == Application.app.getString(R.string.pref_key_file_navigation_message_output) ||
+                key == Application.app.getString(R.string.pref_key_file_antenna_output_csv) ||
+                key == Application.app.getString(R.string.pref_key_file_antenna_output_json)) {
+
+                // Count number of file logging preferences that are enabled
+                val loggingEnabled = arrayOf(writeLocationToFile(), writeMeasurementsToFile(), writeNmeaToFile(), writeNavMessageToFile(), writeAntennaInfoToFileCsv(), writeAntennaInfoToFileJson())
+                val enabledCount = loggingEnabled.count { it }
+
+                if (enabledCount == 1) {
+                    if (key == Application.app.getString(R.string.pref_key_file_location_output) &&
+                        writeLocationToFile()
+                    ) {
+                        // Location file logging was just enabled
+                        initLogging()
+                    }
+                    if (key == Application.app.getString(R.string.pref_key_file_measurement_output) &&
+                        writeMeasurementsToFile()
+                    ) {
+                        // Measurement file logging was just enabled
+                        initLogging()
+                    }
+                    if (key == Application.app.getString(R.string.pref_key_file_nmea_output) &&
+                        writeNmeaToFile()
+                    ) {
+                        // NMEA file logging was just enabled
+                        initLogging()
+                    }
+                    if (key == Application.app.getString(R.string.pref_key_file_navigation_message_output) &&
+                        writeNavMessageToFile()
+                    ) {
+                        // Nav message file logging was just enabled
+                        initLogging()
+                    }
+                    if (key == Application.app.getString(R.string.pref_key_file_antenna_output_csv) &&
+                        writeAntennaInfoToFileCsv()
+                    ) {
+                        // Antenna CSV file logging was just enabled
+                        initLogging()
+                    }
+                    if (key == Application.app.getString(R.string.pref_key_file_antenna_output_json) &&
+                        writeAntennaInfoToFileJson()
+                    ) {
+                        // Antenna JSON file logging was just enabled
+                        initLogging()
+                    }
                 }
             }
         }

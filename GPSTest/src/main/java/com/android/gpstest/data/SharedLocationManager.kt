@@ -22,8 +22,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import com.android.gpstest.util.SharedPreferenceUtil.getMinDistance
-import com.android.gpstest.util.SharedPreferenceUtil.getMinTimeMillis
+import com.android.gpstest.util.SharedPreferenceUtil.minDistance
+import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -68,8 +68,8 @@ class SharedLocationManager constructor(
             // TODO - handle case where service is still running and user changes preferences for minTime and minDistance
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                getMinTimeMillis(),
-                getMinDistance(),
+                minTimeMillis(),
+                minDistance(),
                 callback,
                 context.mainLooper
             )
