@@ -1159,7 +1159,7 @@ class GpsStatusFragment : Fragment() {
         private val KILOMETERS_PER_HOUR =
             Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
 
-        // SimpleDateFormat, which can't do 1/10th of a second out-of-the-box
+        // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
         private const val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
         private const val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
         private const val SDF_DATE_24_HOUR = "HH:mm:ss.SSS MMM d, yyyy z"
