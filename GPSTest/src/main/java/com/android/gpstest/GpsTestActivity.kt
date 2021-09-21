@@ -474,13 +474,13 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Show fragment (we use show instead of replace to keep the map state)
         if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            statusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
+            statusFragment = fm.findFragmentByTag(TAG) as GpsStatusFragment?
             if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsStatusFragment")
                 statusFragment = GpsStatusFragment()
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, statusFragment!!, GpsStatusFragment.TAG)
+                    .add(R.id.fragment_container, statusFragment!!, TAG)
                     .commit()
             }
         }
@@ -490,7 +490,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        statusFragment = fm.findFragmentByTag(GpsStatusFragment.TAG) as GpsStatusFragment?
+        statusFragment = fm.findFragmentByTag(TAG) as GpsStatusFragment?
         if (statusFragment != null && !statusFragment!!.isHidden) {
             fm.beginTransaction().hide(statusFragment!!).commit()
         }

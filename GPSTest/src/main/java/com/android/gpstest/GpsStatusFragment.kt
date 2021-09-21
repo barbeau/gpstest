@@ -23,6 +23,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.location.GnssStatus
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.format.DateFormat
@@ -34,6 +35,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -69,18 +71,31 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class GpsStatusFragment : Fragment() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    val timeFormat: DateTimeFormatter =
+        DateTimeFormatter.ofPattern(
+            if (DateFormat.is24HourFormat(Application.app.applicationContext)) DTF_TIME_24_HOUR else DTF_TIME_12_HOUR
+        )
+    @RequiresApi(Build.VERSION_CODES.O)
+    val timeAndDateFormat: DateTimeFormatter =
+        DateTimeFormatter.ofPattern(
+            if (DateFormat.is24HourFormat(Application.app.applicationContext)) DTF_DATE_24_HOUR else DTF_DATE_12_HOUR
+        )
     @SuppressLint("SimpleDateFormat")
-    var timeFormat// See #117
+    var timeFormatLegacy // See #117
             = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.app.applicationContext)) "HH:mm:ss.S" else "hh:mm:ss.S a"
+        if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
     )
-    var timeAndDateFormat = SimpleDateFormat(
-        if (DateFormat.is24HourFormat(Application.app.applicationContext)) "HH:mm:ss.S MMM d, yyyy z" else "hh:mm:ss.S a MMM d, yyyy z"
+    @SuppressLint("SimpleDateFormat")
+    var timeAndDateFormatLegacy = SimpleDateFormat(
+        if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
     )
 
     private var location: Location? = null
@@ -395,10 +410,15 @@ class GpsStatusFragment : Fragment() {
      * @return a formatted version of the provided fixTime based on the width of the current display
      */
     private fun formatFixTimeDate(fixTime: Long): String {
-        val context = context ?: return ""
-        return if (UIUtils.isWideEnoughForDate(context)) timeAndDateFormat.format(fixTime) else timeFormat.format(
-            fixTime
-        )
+        return if (UIUtils.isWideEnoughForDate(context)) if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            timeAndDateFormat.format(Instant.ofEpochMilli(fixTime))
+        } else {
+            timeAndDateFormatLegacy.format(fixTime)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            timeFormat.format(Instant.ofEpochMilli(fixTime))
+        } else {
+            timeFormatLegacy.format(fixTime)
+        }
     }
 
     /**
@@ -1151,7 +1171,7 @@ class GpsStatusFragment : Fragment() {
     }
 
     companion object {
-        const val TAG = "GpsStatusFragment"
+        private const val TAG = "GpsStatusFragment"
         private const val EMPTY_LAT_LONG = "             "
         private val METERS =
             Application.app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
@@ -1159,5 +1179,17 @@ class GpsStatusFragment : Fragment() {
             Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
         private val KILOMETERS_PER_HOUR =
             Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
+
+        // SimpleDateFormat, which can't do 1/10th of a second out-of-the-box
+        private const val SDF_TIME_24_HOUR = "HH:mm:ss"
+        private const val SDF_TIME_12_HOUR = "hh:mm:ss a"
+        private const val SDF_DATE_24_HOUR = "HH:mm:ss MMM d, yyyy z"
+        private const val SDF_DATE_12_HOUR = "hh:mm:ss a MMM d, yyyy z"
+
+        // DateTimeFormatter formats for 1/10th of a second
+        private const val DTF_TIME_24_HOUR = "HH:mm:ss.S"
+        private const val DTF_TIME_12_HOUR = "hh:mm:ss.S a"
+        private const val DTF_DATE_24_HOUR = "HH:mm:ss.S MMM d, yyyy z"
+        private const val DTF_DATE_12_HOUR = "hh:mm:ss.S a MMM d, yyyy z"
     }
 }
