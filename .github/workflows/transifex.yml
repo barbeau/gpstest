@@ -20,3 +20,5 @@ jobs:
           chmod +x ./scripts/push-to-transifex.sh
           ./scripts/push-to-transifex.sh
         shell: bash
+        env:
+          TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
