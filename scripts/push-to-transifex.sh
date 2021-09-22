@@ -7,4 +7,5 @@ pip install virtualenv
 virtualenv ~/env
 source ~/env/bin/activate
 pip install transifex-client
-tx push -s --token=$TRANSIFEX_API_TOKEN --force --no-interactive
+export TX_TOKEN=$TRANSIFEX_API_TOKEN
+tx push -s --force --no-interactive
