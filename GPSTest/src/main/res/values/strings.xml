@@ -155,7 +155,7 @@
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
     <string name="ground_truth_longitude">Your longitude</string>
-    <string name="ground_truth_altitude">Your altitude in WGS84 (Optional)</string>
+    <string name="ground_truth_altitude">Meters above WGS84 ellipsoid (Optional)</string>
     <string name="set_ground_truth_title">Measure accuracy</string>
     <string name="set_ground_truth_subtitle">Tap on map or type your real location</string>
     <string name="save">Save</string>
