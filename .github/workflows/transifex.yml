@@ -5,6 +5,9 @@ on:
   push:
     branches: [ master ]
 
+env:
+  TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -20,5 +23,3 @@ jobs:
           chmod +x ./scripts/push-to-transifex.sh
           ./scripts/push-to-transifex.sh
         shell: bash
-        env:
-          TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
