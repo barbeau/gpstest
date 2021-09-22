@@ -93,7 +93,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newTrackingListener { onGnssStopped() }
+        SharedPreferenceUtil.newStopTrackingListener { onGnssStopped() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

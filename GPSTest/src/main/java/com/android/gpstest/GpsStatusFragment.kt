@@ -117,7 +117,7 @@ class GpsStatusFragment : Fragment() {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newTrackingListener { setStarted(false) }
+        SharedPreferenceUtil.newStopTrackingListener { setStarted(false) }
 
     // Observers of view model
     private val satelliteMetadataObserver: Observer<SatelliteMetadata> =

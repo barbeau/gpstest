@@ -127,8 +127,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var locationFlow: Job? = null
 
     // Preference listener that will cancel the above flows when the user turns off tracking via service notification
-    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newTrackingListener { gpsStop() }
+    private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferenceUtil.newStopTrackingListener { gpsStop() }
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -143,7 +143,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         saveInstanceState(savedInstanceState)
 
         // Observe stopping location updates from the service
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+        Application.prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -377,6 +377,8 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         } else {
             false
         }
+        // TODO - make following line contingent on "run in background" setting, false as default
+        service?.unsubscribeToLocationUpdates()
         super.onPause()
     }
 

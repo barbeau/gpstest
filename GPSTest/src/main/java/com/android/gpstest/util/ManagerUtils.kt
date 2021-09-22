@@ -293,7 +293,7 @@ internal object SharedPreferenceUtil {
      * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
      * anonymous preference listeners tend to get GC'd by Android.
      */
-    fun newTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
+    fun newStopTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
         return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == PreferenceUtils.KEY_SERVICE_TRACKING_ENABLED) {
                 if (!PreferenceUtils.isTrackingStarted()) {
