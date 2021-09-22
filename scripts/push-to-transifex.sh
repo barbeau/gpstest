@@ -7,5 +7,5 @@ pip install virtualenv
 virtualenv ~/env
 source ~/env/bin/activate
 pip install transifex-client
-sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\ntoken = '"$TRANSIFEX_API_TOKEN"$'\n' > ~/.transifexrc
+tx init --token=$TRANSIFEX_API_TOKEN --force --no-interactive
 tx push -s
