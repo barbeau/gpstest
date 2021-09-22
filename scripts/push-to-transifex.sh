@@ -2,6 +2,7 @@
 
 # Pushes updated English strings to Transifex so they can be translated by others
 echo "Pushing new English strings to Transifex..."
+echo $MY_TEST
 # analyze current branch and react accordingly
 pip install virtualenv
 virtualenv ~/env
