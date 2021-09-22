@@ -13,4 +13,5 @@ cat > ~/.transifexrc <<EOF
 hostname = https://www.transifex.com
 token = $TRANSIFEX_API_TOKEN
 EOF
+export TX_TOKEN=$TRANSIFEX_API_TOKEN
 tx push -s --force --no-interactive
