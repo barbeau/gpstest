@@ -509,35 +509,14 @@ class ForegroundOnlyLocationService : LifecycleService() {
             return
         }
         val date = Date()
-        var isNewCSVFile = false
-        var isNewJsonFile = false
         if (!csvFileLogger.isStarted && isCsvLoggingEnabled()) {
             // User has granted permissions and has chosen to log at least one data type
-            var existingCsvFile: File? = null
-
-            //TODO - handle restart of logging
-//            if (mLastSavedInstanceState != null) {
-//                // See if this was an orientation change and we should continue logging to
-//                // an existing file
-//                existingCsvFile =
-//                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_CSV_LOG_FILE)
-//            }
-            isNewCSVFile = csvFileLogger.startLog(existingCsvFile, date)
+            csvFileLogger.startLog(null, date)
         }
 
         if (!jsonFileLogger.isStarted && isJsonLoggingEnabled()) {
-            // User has granted permissions and has chosen to log at least one data type
-            var existingJsonFile: File? = null
-            //TODO - handle restart of logging
-//            if (mLastSavedInstanceState != null) {
-//                // See if this was an orientation change and we should continue logging to
-//                // an existing file
-//                existingJsonFile =
-//                    mLastSavedInstanceState.getSerializable(GpsTestActivity.EXISTING_JSON_LOG_FILE)
-//            }
-            isNewJsonFile = jsonFileLogger.startLog(existingJsonFile, date)
+            jsonFileLogger.startLog(null, date)
         }
-
         maybeDeleteFiles()
     }
 
