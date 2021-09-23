@@ -254,6 +254,11 @@ internal object SharedPreferenceUtil {
             .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
     }
 
+    fun runInBackground(): Boolean {
+        return Application.prefs
+            .getBoolean(Application.app.getString(R.string.pref_key_gnss_background), false)
+    }
+
 
     /**
      * Saves device capabilities for GNSS measurements and related information from the given [event]

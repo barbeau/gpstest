@@ -81,6 +81,11 @@
             android:summary="@string/pref_auto_start_gps_summary"
             android:defaultValue="true" />
         <CheckBoxPreference
+            android:key="@string/pref_key_gnss_background"
+            android:title="@string/pref_gnss_background_title"
+            android:summary="@string/pref_gnss_background_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="@string/pref_key_force_full_gnss_measurements"
             android:title="@string/pref_force_full_gnss_measurements_title"
             android:summary="@string/pref_force_full_gnss_measurements_summary"

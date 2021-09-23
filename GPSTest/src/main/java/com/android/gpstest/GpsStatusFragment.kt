@@ -285,6 +285,8 @@ class GpsStatusFragment : Fragment() {
             .onEach {
                 when (it) {
                     is FirstFixState.Acquired -> {
+                        // FIXME - if the service is running but the activity is destroyed and then created
+                        // we never see TTFF in the Status fragment.
                         onGnssFirstFix(it.ttffMillis)
                         onGnssFixAcquired()
                     }

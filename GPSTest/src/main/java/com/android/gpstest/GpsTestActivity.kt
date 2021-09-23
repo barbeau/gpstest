@@ -60,6 +60,7 @@ import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.android.gpstest.util.SharedPreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.util.SharedPreferenceUtil.minDistance
 import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
+import com.android.gpstest.util.SharedPreferenceUtil.runInBackground
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -377,8 +378,10 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         } else {
             false
         }
-        // TODO - make following line contingent on "run in background" setting, false as default
-        service?.unsubscribeToLocationUpdates()
+        // Stop the service if this isn't a configuration change and the user hasn't opted to run in background
+        if (!isChangingConfigurations && !runInBackground()) {
+            service?.unsubscribeToLocationUpdates()
+        }
         super.onPause()
     }
 

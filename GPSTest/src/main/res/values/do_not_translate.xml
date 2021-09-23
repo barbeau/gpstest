@@ -90,6 +90,9 @@
     <string name="pref_key_auto_start_gps">auto_start_gps</string>
     <string name="pref_key_gps_min_time">gps_min_time</string>
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
+    <string name="pref_key_gnss_background">gnss_background</string>
+
+    pref_key_run_gnss_in_background
 
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>
