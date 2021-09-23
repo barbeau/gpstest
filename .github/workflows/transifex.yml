@@ -7,7 +7,6 @@ on:
 
 env:
   TRANSIFEX_API_TOKEN: ${{ secrets.TRANSIFEX_API_TOKEN }}
-  MY_TEST: ${{ secrets.MY_TEST }}
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
