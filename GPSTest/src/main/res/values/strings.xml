@@ -393,9 +393,9 @@
         <b>Longitude</b>
         - In decimal degrees (WGS 84)\n&#8226;\u0020
         <b>Alt</b>
-        - Meters above the WGS 84 ellipsoid\n&#8226;\u0020
+        - Meters above the WGS 84 ellipsoid, also known as h\n&#8226;\u0020
         <b>Alt (MSL)</b>
-        - Meters above Mean Sea Level. Parsed from internal NMEA stream, so only available if your device supports this API.\n&#8226;\u0020
+        - Meters above Mean Sea Level, also known as Orthometric height or H. H = h - N, where N is the height of the geoid above the WGS84 ellipsoid. Parsed from internal NMEA stream, so it is only available if your device supports this API. Because this data comes from the chipset, the exact geoid model is unknown, however based on https://issuetracker.google.com/issues/191674805#comment16 it seems Qualcomm devices are using EGM84. \n&#8226;\u0020
         <b>E H Acc</b>
         - Estimated horizontal accuracy of the location (radius in meters of 68% confidence). In other words, if you draw a circle centered at this location\'s latitude and longitude, and with a radius equal to the accuracy, then there is a 68% probability that the true location is inside the circle. For details see https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389.\n&#8226;\u0020
         <b>E H/V Acc</b>
