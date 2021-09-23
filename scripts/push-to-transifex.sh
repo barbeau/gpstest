@@ -7,11 +7,5 @@ pip install virtualenv
 virtualenv ~/env
 source ~/env/bin/activate
 pip install transifex-client
-# Write .transifexrc file
-cat > ~/.transifexrc <<EOF
-[https://www.transifex.com]
-hostname = https://www.transifex.com
-token = $TRANSIFEX_API_TOKEN
-EOF
 export TX_TOKEN=$TRANSIFEX_API_TOKEN
 tx push -s --force --no-interactive
