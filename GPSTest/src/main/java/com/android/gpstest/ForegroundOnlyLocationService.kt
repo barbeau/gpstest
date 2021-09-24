@@ -449,17 +449,16 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setBigContentTitle(titleText)
 
         // 3. Set up main Intent/Pending Intents for notification.
+        // FIXME - when launching from this Intent the Activity re-starts and never shows info
         val launchActivityIntent = Intent(this, GpsTestActivity::class.java)
+        val openActivityPendingIntent = PendingIntent.getActivity(
+            this, 0, launchActivityIntent, 0
+        )
 
         val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         cancelIntent.putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)
-
-        val servicePendingIntent = PendingIntent.getService(
+        val stopServicePendingIntent = PendingIntent.getService(
             this, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val activityPendingIntent = PendingIntent.getActivity(
-            this, 0, launchActivityIntent, 0
         )
 
         // 4. Build and issue the notification.
@@ -471,19 +470,20 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setStyle(bigTextStyle)
             .setContentTitle(titleText)
             .setContentText(summaryText)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_sat_notification)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(PRIORITY_LOW)
+            .setContentIntent(openActivityPendingIntent)
             .addAction(
                 R.drawable.ic_baseline_launch_24, getString(R.string.open),
-                activityPendingIntent
+                openActivityPendingIntent
             )
             .addAction(
                 R.drawable.ic_baseline_cancel_24,
                 getString(R.string.stop),
-                servicePendingIntent
+                stopServicePendingIntent
             )
             .build()
     }
