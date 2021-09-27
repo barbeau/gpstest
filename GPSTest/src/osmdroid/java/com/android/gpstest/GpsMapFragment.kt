@@ -16,46 +16,45 @@
  */
 package com.android.gpstest
 
-import com.android.gpstest.map.MapViewModelController.MapInterface
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
-import com.android.gpstest.map.MapViewModelController
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.os.Bundle
-import android.preference.PreferenceManager
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.location.Location
-import com.android.gpstest.map.MapConstants
-import org.osmdroid.events.MapEventsReceiver
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.MapEventsOverlay
-import kotlin.Throws
-import org.osmdroid.tileprovider.tilesource.ITileSource
-import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
-import org.osmdroid.util.MapTileIndex
-import android.os.Build
+import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.map.MapConstants
+import com.android.gpstest.map.MapViewModelController
+import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.toNotificationTitle
+import com.android.gpstest.util.SharedPreferenceUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.osmdroid.config.Configuration
+import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.tileprovider.tilesource.ITileSource
+import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.util.MapTileIndex
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.Polyline
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import java.io.UnsupportedEncodingException
 import java.util.*
 import javax.inject.Inject
@@ -87,7 +86,7 @@ class GpsMapFragment : Fragment(), MapInterface {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newTrackingListener { onGnssStopped() }
+        SharedPreferenceUtil.newStopTrackingListener { onGnssStopped() }
 
     @ExperimentalCoroutinesApi
     override fun onCreateView(
