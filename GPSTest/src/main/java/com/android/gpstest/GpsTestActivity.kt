@@ -26,7 +26,6 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
 import android.util.Log
@@ -66,8 +65,10 @@ import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -658,6 +659,7 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun deleteAidingData() {
         // If GPS is currently running, stop it
         val lastStartState = isTrackingStarted()
@@ -685,11 +687,13 @@ class GpsTestActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             )
         }
+        // Restart the GPS, if it was previously started, with a slight delay,
+        // to refresh the assistance data
         if (lastStartState) {
-            val h = Handler()
-            // Restart the GPS, if it was previously started, with a slight delay,
-            // to refresh the assistance data
-            h.postDelayed({ gpsStart() }, 500)
+            lifecycleScope.launch {
+                delay(500)
+                gpsStart()
+            }
         }
     }
 

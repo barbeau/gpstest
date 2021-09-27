@@ -91,7 +91,6 @@ class GpsStatusFragment : Fragment() {
     private var sbasStatus: MutableList<SatelliteStatus> = ArrayList()
     private var svCount = 0
     private var svVisibleCount = 0
-    private var cn0Title: String? = null
     private var fixTime: Long = 0
     private var started = false
     private var flagUsa: Drawable? = null
@@ -694,7 +693,6 @@ class GpsStatusFragment : Fragment() {
             // Fragment isn't visible, so return to avoid IllegalStateException (see #85)
             return
         }
-        cn0Title = getString(R.string.gps_cn0_column_label)
         val length = status.satelliteCount
         svCount = 0
         svVisibleCount = 0
@@ -968,7 +966,7 @@ class GpsStatusFragment : Fragment() {
                 } else {
                     v.carrierFrequency.visibility = View.GONE
                 }
-                v.signal.text = cn0Title
+                v.signal.text = getString(R.string.gps_cn0_column_label)
                 v.signal.setTypeface(v.signal.typeface, Typeface.BOLD)
                 v.elevation.text = resources.getString(R.string.gps_elevation_column_label)
                 v.elevation.setTypeface(v.elevation.typeface, Typeface.BOLD)

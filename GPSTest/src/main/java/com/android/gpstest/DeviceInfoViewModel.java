@@ -15,6 +15,10 @@
  */
 package com.android.gpstest;
 
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
+import static com.android.gpstest.util.CarrierFreqUtils.CF_UNSUPPORTED;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -35,10 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
-import static com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN;
-import static com.android.gpstest.util.CarrierFreqUtils.CF_UNSUPPORTED;
 
 /**
  * View model that holds device properties
@@ -232,7 +232,6 @@ public class DeviceInfoViewModel extends AndroidViewModel {
         int numSignalsUsed = gnssSatellites.getSatelliteMetadata().getNumSignalsUsed() + sbasSatellites.getSatelliteMetadata().getNumSignalsUsed();
         int numSignalsInView = gnssSatellites.getSatelliteMetadata().getNumSignalsInView() + sbasSatellites.getSatelliteMetadata().getNumSignalsInView();
         int numSignalsTotal = gnssSatellites.getSatelliteMetadata().getNumSignalsTotal() + sbasSatellites.getSatelliteMetadata().getNumSignalsTotal();
-
 
         int numSatsUsed = gnssSatellites.getSatelliteMetadata().getNumSatsUsed() + sbasSatellites.getSatelliteMetadata().getNumSatsUsed();
         int numSatsInView = gnssSatellites.getSatelliteMetadata().getNumSatsInView() + sbasSatellites.getSatelliteMetadata().getNumSatsInView();
