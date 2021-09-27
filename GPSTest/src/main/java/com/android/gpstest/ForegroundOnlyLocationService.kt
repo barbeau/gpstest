@@ -23,6 +23,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.*
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.location.Location
@@ -34,6 +35,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.flowWithLifecycle
@@ -449,16 +451,28 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setBigContentTitle(titleText)
 
         // 3. Set up main Intent/Pending Intents for notification.
-        // FIXME - when launching from this Intent the Activity re-starts and never shows info
-        val launchActivityIntent = Intent(this, GpsTestActivity::class.java)
+        val launchActivityIntent = Intent(this, GpsTestActivity::class.java).apply {
+            flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+            // NOTE: The above causes the activity/viewmodel to be recreated from scratch for Accuracy when it's already visible
+            // and the notification is tapped (strangely if it's destroyed Accuracy viewmodel seems to keep it's state)
+            // FLAG_ACTIVITY_REORDER_TO_FRONT seems like it should work, but if this is used then onResume() is called
+            // again (and onPause() is never called). This seems to freeze up Status into a blank state because GNSS inits again.
+        }
         val openActivityPendingIntent = PendingIntent.getActivity(
-            this, 0, launchActivityIntent, 0
+            applicationContext,
+            System.currentTimeMillis().toInt(),
+            launchActivityIntent,
+            0
         )
 
-        val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java)
-        cancelIntent.putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)
+        val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java).apply {
+            putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)
+        }
         val stopServicePendingIntent = PendingIntent.getService(
-            this, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT
+            applicationContext,
+            System.currentTimeMillis().toInt(),
+            cancelIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
 
         // 4. Build and issue the notification.
@@ -471,6 +485,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setContentTitle(titleText)
             .setContentText(summaryText)
             .setSmallIcon(R.drawable.ic_sat_notification)
+            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
