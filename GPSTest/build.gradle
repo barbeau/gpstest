@@ -118,13 +118,13 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-beta01"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     // Sliding drawer in map view
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
@@ -138,20 +138,20 @@ dependencies {
     // Uploading device properties on user request
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
-    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-io:commons-io:2.8.0'
 
     // Share dialog
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     // Write GNSS antenna info to JSON
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
 
     // Multidex - Needed for APIs < 21
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    // To launch co-routines within the Service to store location data in Room and observe the Room Flow in the Activity
-    def lifecycle_version = "2.4.0-alpha01"
+    // To observe flows via co-routines within the Service
+    def lifecycle_version = "2.4.0-beta01"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
 
@@ -163,9 +163,9 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // Map (Google flavor only)
-    googleImplementation 'com.google.android.gms:play-services-maps:16.1.0'
+    googleImplementation 'com.google.android.gms:play-services-maps:17.0.1'
     // Calculating offset for camera target in map view (Google flavor only)
-    googleImplementation 'com.google.maps.android:android-maps-utils:2.2.5'
+    googleImplementation 'com.google.maps.android:android-maps-utils:2.2.6'
     // Use suspend coroutines instead of callbacks (Google flavor only)
     implementation 'com.google.maps.android:maps-ktx:3.1.0'
     // OSM Droid (fdroid flavor only)
@@ -176,11 +176,11 @@ dependencies {
     //
     testImplementation 'junit:junit:4.13.2'
     // Core library
-    androidTestImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation 'androidx.test:core:1.4.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 
     // Assertions
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"

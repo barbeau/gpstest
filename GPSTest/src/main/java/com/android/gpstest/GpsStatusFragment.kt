@@ -711,7 +711,7 @@ class GpsStatusFragment : Fragment() {
                 status.getElevationDegrees(svCount),
                 status.getAzimuthDegrees(svCount)
             )
-            if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
+            if (SatelliteUtils.isCfSupported()) {
                 if (status.hasCarrierFrequencyHz(svCount)) {
                     satStatus.hasCarrierFrequency = true
                     satStatus.carrierFrequencyHz = status.getCarrierFrequencyHz(svCount)
@@ -959,7 +959,7 @@ class GpsStatusFragment : Fragment() {
                 } else {
                     v.flagHeader.text = getString(R.string.sbas_flag_image_label)
                 }
-                if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
+                if (SatelliteUtils.isCfSupported()) {
                     v.carrierFrequency.visibility = View.VISIBLE
                     v.carrierFrequency.text = getString(R.string.gps_carrier_column_label)
                     v.carrierFrequency.setTypeface(v.carrierFrequency.typeface, Typeface.BOLD)
@@ -1035,7 +1035,7 @@ class GpsStatusFragment : Fragment() {
                         v.flag.contentDescription = getString(R.string.unknown)
                     }
                 }
-                if (SatelliteUtils.isGnssCarrierFrequenciesSupported()) {
+                if (SatelliteUtils.isCfSupported()) {
                     if (sats[dataRow].hasCarrierFrequency) {
                         val carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(sats[dataRow])
                         if (carrierLabel != CarrierFreqUtils.CF_UNKNOWN) {

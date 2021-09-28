@@ -44,7 +44,7 @@ public class CarrierFreqUtils {
      * frequency in MHz, "unsupported" if CF aren't supported on this device, or "unknown" if no carrier frequency label is found
      */
     public static String getCarrierFrequencyLabel(SatelliteStatus status) {
-        if (!SatelliteUtils.isGnssCarrierFrequenciesSupported() || !status.getHasCarrierFrequency()) {
+        if (!SatelliteUtils.isCfSupported() || !status.getHasCarrierFrequency()) {
             return CF_UNSUPPORTED;
         }
         float cfMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());

@@ -320,13 +320,17 @@ class IOUtilsTest {
                         3.4,0.2,
                         5.6,0.3))
         builder.setPhaseCenterVariationCorrections(
-                GnssAntennaInfo.SphericalCorrections(
-                        buildPhaseCenterVariationCorrectionsArray(),
-                        buildPhaseCenterVariationCorrectionsUncertaintyArray()))
+            GnssAntennaInfo.SphericalCorrections(
+                buildPhaseCenterVariationCorrectionsArray(),
+                buildPhaseCenterVariationCorrectionsUncertaintyArray()
+            )
+        )
         builder.setSignalGainCorrections(
-                GnssAntennaInfo.SphericalCorrections(
-                        buildSignalGainCorrectionsArray(),
-                        buildSignalGainCorrectionsUnvesrtaintyArray()))
+            GnssAntennaInfo.SphericalCorrections(
+                buildSignalGainCorrectionsArray(),
+                buildSignalGainCorrectionsUncertaintyArray()
+            )
+        )
 
         val expected = "GnssAntennaInfo,1575.42,1.2,0.1,3.4,0.2,5.6,0.3," +
                 "[11.22 33.44 55.66 77.88; 10.2 30.4 50.6 70.8; 12.2 34.4 56.6 78.8]," +
@@ -336,28 +340,28 @@ class IOUtilsTest {
         assertEquals(expected, IOUtils.serialize(builder.build()))
     }
 
-    fun buildPhaseCenterVariationCorrectionsArray() : Array<DoubleArray> {
+    private fun buildPhaseCenterVariationCorrectionsArray() : Array<DoubleArray> {
         val array1: DoubleArray = doubleArrayOf(11.22, 33.44, 55.66, 77.88)
         val array2: DoubleArray = doubleArrayOf(10.2, 30.4, 50.6, 70.8)
         val array3: DoubleArray = doubleArrayOf(12.2, 34.4, 56.6, 78.8)
         return arrayOf(array1, array2, array3)
     }
 
-    fun buildPhaseCenterVariationCorrectionsUncertaintyArray() : Array<DoubleArray> {
+    private fun buildPhaseCenterVariationCorrectionsUncertaintyArray() : Array<DoubleArray> {
         val array1: DoubleArray = doubleArrayOf(0.1, 0.2, 0.3, 0.4)
         val array2: DoubleArray = doubleArrayOf(1.1, 1.2, 1.3, 1.4)
         val array3: DoubleArray = doubleArrayOf(2.1, 2.2, 2.3, 2.4)
         return arrayOf(array1, array2, array3)
     }
 
-    fun buildSignalGainCorrectionsArray() : Array<DoubleArray> {
+    private fun buildSignalGainCorrectionsArray() : Array<DoubleArray> {
         val array1: DoubleArray = doubleArrayOf(9.8, 8.7, 7.6, 6.5)
         val array2: DoubleArray = doubleArrayOf(5.4, 4.3, 3.2, 2.1)
         val array3: DoubleArray = doubleArrayOf(1.3, 2.4, 3.5, 4.6)
         return arrayOf(array1, array2, array3)
     }
 
-    fun buildSignalGainCorrectionsUnvesrtaintyArray() : Array<DoubleArray> {
+    private fun buildSignalGainCorrectionsUncertaintyArray() : Array<DoubleArray> {
         val array1: DoubleArray = doubleArrayOf(0.11, 0.22, 0.33, 0.44)
         val array2: DoubleArray = doubleArrayOf(0.55, 0.66, 0.77, 0.88)
         val array3: DoubleArray = doubleArrayOf(0.91, 0.92, 0.93, 0.94)

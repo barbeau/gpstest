@@ -15,8 +15,8 @@
  */
 package com.android.gpstest.util
 
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.Instant
 import java.util.concurrent.TimeUnit

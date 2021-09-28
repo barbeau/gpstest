@@ -173,7 +173,7 @@ public class SatelliteUtils {
      *
      * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
      */
-    public static boolean isGnssCarrierFrequenciesSupported() {
+    public static boolean isCfSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
