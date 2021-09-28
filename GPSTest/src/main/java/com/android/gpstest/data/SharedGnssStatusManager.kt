@@ -27,12 +27,16 @@ import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.android.gpstest.model.GnssType
+import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "SharedGnssStatusManager"
@@ -161,4 +165,30 @@ sealed class FirstFixState {
      */
     data class Acquired(val ttffMillis: Int) : FirstFixState()
     object NotAcquired : FirstFixState()
+}
+
+fun GnssStatus.toSatelliteStatus() : List<SatelliteStatus> {
+    val satStatuses: MutableList<SatelliteStatus> = ArrayList()
+
+    for (i in 0 until this.satelliteCount) {
+        val satStatus = SatelliteStatus(
+            this.getSvid(i),
+            SatelliteUtils.getGnssConstellationType(this.getConstellationType(i)),
+            this.getCn0DbHz(i),
+            this.hasAlmanacData(i),
+            this.hasEphemerisData(i),
+            this.usedInFix(i),
+            this.getElevationDegrees(i),
+            this.getAzimuthDegrees(i)
+        )
+        if (SatelliteUtils.isCfSupported() && this.hasCarrierFrequencyHz(i)) {
+            satStatus.hasCarrierFrequency = true
+            satStatus.carrierFrequencyHz = this.getCarrierFrequencyHz(i)
+        }
+        if (satStatus.gnssType == GnssType.SBAS) {
+            satStatus.sbasType = SatelliteUtils.getSbasConstellationType(satStatus.svid)
+        }
+        satStatuses.add(satStatus)
+    }
+    return satStatuses
 }
