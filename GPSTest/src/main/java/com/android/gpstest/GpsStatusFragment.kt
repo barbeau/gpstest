@@ -91,7 +91,7 @@ class GpsStatusFragment : Fragment() {
     private var gnssStatus: MutableList<SatelliteStatus> = ArrayList()
     private var sbasStatus: MutableList<SatelliteStatus> = ArrayList()
     private var svCount = 0
-    private var svVisibleCount = 0
+    private var svShownCount = 0
     private var fixTime: Long = 0
     private var started = false
     private var flagUsa: Drawable? = null
@@ -360,7 +360,7 @@ class GpsStatusFragment : Fragment() {
             binding.hvdop.text = ""
             binding.statusLock.visibility = View.GONE
             svCount = 0
-            svVisibleCount = 0
+            svShownCount = 0
             gnssStatus.clear()
             sbasStatus.clear()
             gnssAdapter!!.notifyDataSetChanged()
@@ -702,11 +702,19 @@ class GpsStatusFragment : Fragment() {
         svCount = status.size
         // Count number of sats shown to user
         val filter = PreferenceUtils.getGnssFilter()
-        svVisibleCount = status.count { filter.isEmpty() || filter.contains(it.gnssType) }
 
-        // Split list into GNSS and SBAS statuses and update view model
-        gnssStatus = status.filter { it.gnssType != GnssType.SBAS } as MutableList<SatelliteStatus>
-        sbasStatus = status.filter { it.gnssType == GnssType.SBAS } as MutableList<SatelliteStatus>
+        // FIXME - this is actually counting number of signals shown, not number of satellites shown
+        svShownCount = status.count { filter.isEmpty() || filter.contains(it.gnssType) }
+
+        // Split list into GNSS and SBAS statuses, apply shown filter, and update view model
+        gnssStatus = status.filter {
+            it.gnssType != GnssType.SBAS &&
+                    (filter.isEmpty() || filter.contains(it.gnssType))
+        } as MutableList<SatelliteStatus>
+        sbasStatus = status.filter {
+            it.gnssType == GnssType.SBAS &&
+                    (filter.isEmpty() || filter.contains(it.gnssType))
+        } as MutableList<SatelliteStatus>
         viewModel!!.setStatuses(gnssStatus, sbasStatus)
         refreshViews()
     }
@@ -770,7 +778,7 @@ class GpsStatusFragment : Fragment() {
         } else {
             // Show filter text
             binding.statusFilterGroup.visibility = View.VISIBLE
-            binding.filterText.text = c.getString(R.string.filter_text, svVisibleCount, svCount)
+            binding.filterText.text = c.getString(R.string.filter_text, svShownCount, svCount)
             // Set num sats view to italics to match filter text
             binding.numSats.setTypeface(binding.numSats.typeface, Typeface.ITALIC)
         }
