@@ -33,7 +33,7 @@
         android:requestLegacyExternalStorage="true">
 
         <activity
-            android:name=".ui.GpsTestActivity"
+            android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleInstance">
             <intent-filter>
@@ -60,10 +60,10 @@
         <activity
             android:name=".ui.HelpActivity"
             android:label="@string/title_help"
-            android:parentActivityName=".ui.GpsTestActivity">
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.android.gpstest.ui.GpsTestActivity" />
+                android:value="com.android.gpstest.ui.MainActivity" />
         </activity>
         <!-- For sending the log file -->
         <provider

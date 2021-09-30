@@ -75,7 +75,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GpsStatusFragment : Fragment() {
+class StatusFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     var timeFormat // See #117
             = SimpleDateFormat(

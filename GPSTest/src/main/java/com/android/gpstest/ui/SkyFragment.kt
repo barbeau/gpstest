@@ -58,7 +58,7 @@ import javax.inject.Inject
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class GpsSkyFragment : Fragment() {
+class SkyFragment : Fragment() {
     // Binding variables
     private var _binding: GpsSkyBinding? = null
     private val binding get() = _binding!!

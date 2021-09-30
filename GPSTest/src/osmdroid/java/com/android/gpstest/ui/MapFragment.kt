@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest
+package com.android.gpstest.ui
 
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -30,6 +30,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.android.gpstest.Application
+import com.android.gpstest.R
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
@@ -60,7 +62,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GpsMapFragment : Fragment(), MapInterface {
+class MapFragment : Fragment(), MapInterface {
     private var map: MapView? = null
     var rotationGestureOverlay: RotationGestureOverlay? = null
     var myLocationMarker: Marker? = null

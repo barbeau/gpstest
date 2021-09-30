@@ -23,7 +23,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.android.gpstest.ui.GpsTestActivity">
+    tools:context="com.android.gpstest.ui.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"

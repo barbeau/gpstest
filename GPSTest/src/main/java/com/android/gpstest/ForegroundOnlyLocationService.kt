@@ -43,7 +43,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
-import com.android.gpstest.ui.GpsTestActivity
+import com.android.gpstest.ui.MainActivity
 import com.android.gpstest.util.*
 import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.SharedPreferenceUtil.isCsvLoggingEnabled
@@ -452,7 +452,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setBigContentTitle(titleText)
 
         // 3. Set up main Intent/Pending Intents for notification.
-        val launchActivityIntent = Intent(this, GpsTestActivity::class.java).apply {
+        val launchActivityIntent = Intent(this, MainActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
             // NOTE: The above causes the activity/viewmodel to be recreated from scratch for Accuracy when it's already visible
             // and the notification is tapped (strangely if it's destroyed Accuracy viewmodel seems to keep it's state)

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest
+package com.android.gpstest.ui
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -31,6 +31,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.android.gpstest.Application
+import com.android.gpstest.R
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
@@ -59,7 +61,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
+class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     OnCameraChangeListener, GoogleMap.OnMapClickListener, OnMapLongClickListener,
     OnMyLocationButtonClickListener, MapInterface {
     private var savedInstanceState: Bundle? = null
@@ -165,7 +167,7 @@ class GpsMapFragment : SupportMapFragment(), View.OnClickListener, LocationSourc
 
     override fun onClick(v: View) {}
 
-    private fun setupMap(mapFragment: GpsMapFragment, googleMap: GoogleMap) {
+    private fun setupMap(mapFragment: MapFragment, googleMap: GoogleMap) {
         map = googleMap
         mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
         checkMapPreferences()

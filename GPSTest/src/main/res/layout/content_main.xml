@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:showIn="@layout/app_bar_main"
-                tools:context="com.android.gpstest.ui.GpsTestActivity"/>
+                tools:context="com.android.gpstest.ui.MainActivity"/>
 
             <!-- Top card to enter ground truth information - CardView first, then MotionLayout
                  (MotionLayout doesn't resize dynamically well during animations, so instead of
