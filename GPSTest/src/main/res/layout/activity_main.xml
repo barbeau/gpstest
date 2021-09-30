@@ -23,7 +23,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.android.gpstest.GpsTestActivity">
+    tools:context="com.android.gpstest.ui.GpsTestActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_width="@dimen/navigation_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:name="com.android.gpstest.NavigationDrawerFragment"
+            android:name="com.android.gpstest.ui.NavigationDrawerFragment"
             tools:layout="@layout/navigation_drawer"/>
     </androidx.drawerlayout.widget.DrawerLayout>
 </LinearLayout>

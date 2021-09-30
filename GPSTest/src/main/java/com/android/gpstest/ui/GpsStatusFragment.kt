@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest
+package com.android.gpstest.ui
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
@@ -42,13 +42,14 @@ import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.gpstest.Application
+import com.android.gpstest.R
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.data.toSatelliteStatus
 import com.android.gpstest.databinding.GpsStatusBinding
 import com.android.gpstest.model.*
-import com.android.gpstest.ui.GnssFilterDialog
 import com.android.gpstest.util.*
 import com.android.gpstest.util.DateTimeUtils.Companion.NUM_DAYS_TIME_VALID
 import com.android.gpstest.util.DateTimeUtils.Companion.isTimeValid

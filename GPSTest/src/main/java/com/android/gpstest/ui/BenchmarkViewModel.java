@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import android.app.Application;
 import android.location.Location;
 import android.util.Pair;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;
@@ -25,11 +30,6 @@ import com.android.gpstest.util.BenchmarkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 /**
  * View model that holds GNSS benchmarking (ground truth and error measurement) information

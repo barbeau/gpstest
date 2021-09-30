@@ -1,24 +1,24 @@
 package com.android.gpstest.map;
 
+import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
+import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
+import static com.android.gpstest.map.MapConstants.MODE;
+import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
+import static com.android.gpstest.map.MapConstants.MODE_MAP;
+
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Pair;
-
-import com.android.gpstest.BenchmarkViewModel;
-import com.android.gpstest.model.MeasuredError;
-
-import java.lang.ref.WeakReference;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.android.gpstest.map.MapConstants.ALLOW_GROUND_TRUTH_CHANGE;
-import static com.android.gpstest.map.MapConstants.GROUND_TRUTH;
-import static com.android.gpstest.map.MapConstants.MODE;
-import static com.android.gpstest.map.MapConstants.MODE_ACCURACY;
-import static com.android.gpstest.map.MapConstants.MODE_MAP;
+import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.ui.BenchmarkViewModel;
+
+import java.lang.ref.WeakReference;
 
 public class MapViewModelController {
 

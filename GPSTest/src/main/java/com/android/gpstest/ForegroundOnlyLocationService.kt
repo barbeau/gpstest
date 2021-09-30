@@ -43,6 +43,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
+import com.android.gpstest.ui.GpsTestActivity
 import com.android.gpstest.util.*
 import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.SharedPreferenceUtil.isCsvLoggingEnabled

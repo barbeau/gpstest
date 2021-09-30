@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import android.location.Location;
 

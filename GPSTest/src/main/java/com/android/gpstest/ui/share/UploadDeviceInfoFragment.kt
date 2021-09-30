@@ -22,9 +22,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.coroutineScope
 import com.android.gpstest.Application
 import com.android.gpstest.BuildConfig
-import com.android.gpstest.DeviceInfoViewModel
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
+import com.android.gpstest.ui.DeviceInfoViewModel
 import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils

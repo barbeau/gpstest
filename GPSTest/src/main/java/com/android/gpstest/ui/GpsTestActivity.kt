@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest
+package com.android.gpstest.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -47,13 +47,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.android.gpstest.Application
+import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
-import com.android.gpstest.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.GpsMapFragment
+import com.android.gpstest.R
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
+import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.util.*
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.android.gpstest.util.SharedPreferenceUtil.isFileLoggingEnabled

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import static android.text.TextUtils.isEmpty;
 import static android.view.View.GONE;
@@ -43,6 +43,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
 import com.android.gpstest.chart.DistanceValueFormatter;
 import com.android.gpstest.model.AvgError;
 import com.android.gpstest.model.MeasuredError;

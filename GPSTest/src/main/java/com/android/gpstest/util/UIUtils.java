@@ -62,13 +62,13 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
-import com.android.gpstest.DeviceInfoViewModel;
-import com.android.gpstest.HelpActivity;
 import com.android.gpstest.R;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SbasType;
+import com.android.gpstest.ui.DeviceInfoViewModel;
+import com.android.gpstest.ui.HelpActivity;
 import com.android.gpstest.ui.share.ShareDialogFragment;
 import com.google.android.material.chip.Chip;
 

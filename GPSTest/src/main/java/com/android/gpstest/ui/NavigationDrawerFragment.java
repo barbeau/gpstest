@@ -20,7 +20,7 @@
  * and a generated NavigationDrawer app from Android Studio, modified for OneBusAway by USF,
  * modified for GPSTest by Sean J. Barbeau
  */
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -42,6 +42,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.R;
 import com.android.gpstest.util.IOUtils;
 import com.android.gpstest.util.UIUtils;
 import com.android.gpstest.view.ScrimInsetsScrollView;

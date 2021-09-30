@@ -23,6 +23,7 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SbasType
+import com.android.gpstest.ui.DeviceInfoViewModel
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test

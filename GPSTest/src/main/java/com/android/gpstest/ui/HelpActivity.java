@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -24,6 +24,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
+import com.android.gpstest.R;
 import com.android.gpstest.util.IOUtils;
 
 public class HelpActivity extends AppCompatActivity {

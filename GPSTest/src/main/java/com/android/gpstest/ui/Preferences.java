@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.gpstest;
+package com.android.gpstest.ui;
 
 import static com.android.gpstest.util.SatelliteUtils.isForceFullGnssMeasurementsSupported;
 
@@ -35,6 +35,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.gpstest.Application;
+import com.android.gpstest.BuildConfig;
+import com.android.gpstest.R;
 import com.android.gpstest.util.PermissionUtils;
 import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
