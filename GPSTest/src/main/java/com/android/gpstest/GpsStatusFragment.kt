@@ -707,6 +707,7 @@ class GpsStatusFragment : Fragment() {
         svShownCount = status.count { filter.isEmpty() || filter.contains(it.gnssType) }
 
         // Split list into GNSS and SBAS statuses, apply shown filter, and update view model
+        // FIXME - use .partition when moving to ViewModel - val (gnssStatus, sbasStatus) = status.partition { it.gnssType != GnssType.SBAS }
         gnssStatus = status.filter {
             it.gnssType != GnssType.SBAS &&
                     (filter.isEmpty() || filter.contains(it.gnssType))
