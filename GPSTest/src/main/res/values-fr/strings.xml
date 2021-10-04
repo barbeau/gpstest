@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+** Copyright 2008-2021 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -45,6 +45,11 @@
     <string name="delete_aiding_data_failure">Le matériel ne supporte pas l\'effacement des données d\'assistance</string>
     <string name="gps_switch">Off/On</string>
     <string name="share">Partager</string>
+    <string name="copied_to_clipboard">Localisation copiée dans le presse papier</string>
+    <string name="log">Log</string>
+    <string name="file_name">Nom du fichier</string>
+    <string name="location">Localisation</string>
+    <string name="include_altitude">Inclure l\'altitude</string>
     <string name="set_fix_frequency">Force la Fréquence de Verrouillage</string>
     <string name="force_time_injection_success">Données horaires importées</string>
     <string name="force_time_injection_failure">Le matériel ne supporte pas l\'injection de données horaires</string>
@@ -52,6 +57,7 @@
     <string name="force_psds_injection_success">Données PSDS importées</string>
     <string name="force_psds_injection_failure">Le matériel ne supporte pas l\'injection de données PSDS</string>
 
+    <string name="device">Appareil</string>
     <string name="zoom_in">Zoom +</string>
     <string name="zoom_out">Zoom -</string>
     <string name="mode_map">Carte</string>
@@ -99,10 +105,12 @@
     <string name="gnss_not_available">Les satellites du Global Navigation Satellite System (GNSS) ne sont pas disponibles</string>
     <string name="sbas_not_available">Les satellites Satellite Based Augmentation System (SBAS) ne sont pas disponibles</string>
     <string name="menu_option_sort_by">Trier par</string>
+    <string name="unknown">Inconnu</string>
+    <string name="cancel">Annuler</string>
+
     <!-- Map view -->
     <string name="ground_truth_latitude">Votre latitude</string>
     <string name="ground_truth_longitude">Votre longitude</string>
-    <string name="ground_truth_altitude">Votre altitude en WGS84 (Optionnel)</string>
     <string name="set_ground_truth_title">Précision de la mesure</string>
     <string name="set_ground_truth_subtitle">Taper sur la carte ou écrivez votre position réelle</string>
     <string name="save">Sauvegarder</string>
@@ -189,6 +197,7 @@ vous tenez le téléphone verticalement
 </string>
 
     <string name="pref_gps_category_title">GNSS</string>
+
     <string name="pref_auto_start_gps_title">Démarrage automatique GNSS</string>
     <string name="pref_auto_start_gps_summary">Démarre le GNSS lorsque l\'application est lancée</string>
 
