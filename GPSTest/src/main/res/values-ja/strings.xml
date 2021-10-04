@@ -2,7 +2,7 @@
 <!--
 /* //device/apps/common/assets/res/any/strings.xml
 **
-** Copyright 2008-2018 The Android Open Source Project, Sean J. Barbeau
+** Copyright 2008-2021 The Android Open Source Project, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -94,7 +94,6 @@
     <!-- Map view -->
     <string name="ground_truth_latitude">緯度</string>
     <string name="ground_truth_longitude">経度</string>
-    <string name="ground_truth_altitude">WGS84座標系（オプション）</string>
     <string name="set_ground_truth_title">測定精度</string>
     <string name="save">保存</string>
     <string name="edit">編集</string>
@@ -164,6 +163,7 @@
     <string name="pref_tilt_map_with_sensors_summary">デバイスを持ち上げたときに一人称マップビューに変更する</string>
 
     <string name="pref_gps_category_title">GNSS</string>
+
     <string name="pref_auto_start_gps_title">GNSS自動起動</string>
     <string name="pref_auto_start_gps_summary">アプリの起動時にGNSSを起動する</string>
 
