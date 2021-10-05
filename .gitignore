@@ -3,3 +3,5 @@
 /.idea/
 *.iml
 .DS_Store
+secure.properties
+build/
