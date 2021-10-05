@@ -43,31 +43,22 @@ android {
         disable 'MissingTranslation', 'ExtraTranslation'
     }
 
-    if (project.hasProperty("secure.properties")
-            && new File(project.property("secure.properties")).exists()) {
 
-        Properties props = new Properties()
-        props.load(new FileInputStream(file(project.property("secure.properties"))))
-
-        signingConfigs {
-            debug {
-                storeFile file("gpstest.debug.keystore")
+    signingConfigs {
+        debug {
+             storeFile file("gpstest.debug.keystore")
             }
+        
+        release {
+            if (rootProject.file("secure.properties").exists()) {
+                Properties props = new Properties()
+                props.load(new FileInputStream(rootProject.file("secure.properties")))
 
-            release {
                 storeFile file(props['key.store'])
                 keyAlias props['key.alias']
                 storePassword props['key.storepassword']
                 keyPassword props['key.keypassword']
-            }
-        }
-    } else {
-        signingConfigs {
-            debug {
-                storeFile file("gpstest.debug.keystore")
-            }
-
-            release {
+            } else {
                 // Nothing here
             }
         }
