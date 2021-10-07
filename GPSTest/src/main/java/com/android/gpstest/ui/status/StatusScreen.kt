@@ -37,7 +37,7 @@ fun StatusScreen(viewModel: DeviceInfoViewModel) {
     val SDF_DATE_24_HOUR = "HH:mm:ss.SSS MMM d, yyyy z"
     val SDF_DATE_12_HOUR = "hh:mm:ss.SSS a MMM d, yyyy z"
 
-    val location: Location by viewModel.location.observeAsState(previewLocation())
+    val location: Location by viewModel.location.observeAsState(Location("default"))
 
     // Save these states if variables are updated independently
     val savedLocation = rememberSaveable { location }
@@ -63,7 +63,7 @@ fun LocationCardPreview() {
 }
 
 fun previewLocation(): Location {
-    val l = Location("temp")
+    val l = Location("preview")
     l.apply {
         latitude = 28.38473847
         longitude = -87.32837456
@@ -94,11 +94,14 @@ fun LocationCard(
             ValueColumn2(location)
         }
     }
-
 }
 
 @Composable
 fun ValueColumn1(location: Location) {
+//    if (location.provider.equals("default") {
+//        // TODO - return blank column
+//        return Column()
+//    }
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -123,6 +126,10 @@ fun ValueColumn1(location: Location) {
 
 @Composable
 fun ValueColumn2(location: Location) {
+//    if (location.provider.equals("default") {
+//        // TODO - return blank column
+//        return Column()
+//    }
     Column(
         modifier = Modifier
             .wrapContentHeight()
