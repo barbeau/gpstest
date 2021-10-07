@@ -83,7 +83,7 @@ fun LocationCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp),
-        elevation = 5.dp
+        elevation = 2.dp
     ) {
         Row(
             modifier = Modifier
