@@ -20,6 +20,6 @@ package com.android.gpstest.model
  * SBAS) and [satelliteMetadata]. [satellites] are stored as a map, and the key to the map is the
  * combination of constellation and ID created using SatelliteUtils.createGnssSatelliteKey().
  */
-data class ConstellationFamily(
+data class SatelliteGroup(
         val satellites: Map<String, Satellite>,
         val satelliteMetadata: SatelliteMetadata)

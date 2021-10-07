@@ -53,6 +53,11 @@ import com.android.gpstest.model.*
 import com.android.gpstest.util.*
 import com.android.gpstest.util.DateTimeUtils.Companion.NUM_DAYS_TIME_VALID
 import com.android.gpstest.util.DateTimeUtils.Companion.isTimeValid
+import com.android.gpstest.util.SharedPreferenceUtil.KILOMETERS_PER_HOUR
+import com.android.gpstest.util.SharedPreferenceUtil.METERS
+import com.android.gpstest.util.SharedPreferenceUtil.METERS_PER_SECOND
+import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
+import com.android.gpstest.util.SharedPreferenceUtil.speedUnits
 import com.android.gpstest.util.SortUtil.Companion.sortByCarrierFrequencyThenId
 import com.android.gpstest.util.SortUtil.Companion.sortByCn0
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenCarrierFrequencyThenId
@@ -103,8 +108,6 @@ class StatusFragment : Fragment() {
     private var flagEU: Drawable? = null
     private var flagICAO: Drawable? = null
     private var ttff = ""
-    private var prefDistanceUnits: String? = null
-    private var prefSpeedUnits: String? = null
     private var viewModel: DeviceInfoViewModel? = null
 
     // Repository of location data that the service will observe, injected via Hilt
@@ -405,45 +408,6 @@ class StatusFragment : Fragment() {
     }
 
     /**
-     * Update views for horizontal and vertical location accuracies based on the provided location
-     * @param location
-     */
-    private fun updateLocationAccuracies(location: Location) {
-        if (SatelliteUtils.isVerticalAccuracySupported(location)) {
-            binding.horVertAccuracyLabel.setText(R.string.gps_hor_and_vert_accuracy_label)
-            if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                binding.horVertAccuracy.text = resources.getString(
-                    R.string.gps_hor_and_vert_accuracy_value_meters,
-                    location.accuracy,
-                    location.verticalAccuracyMeters
-                )
-            } else {
-                // Feet
-                binding.horVertAccuracy.text = resources.getString(
-                    R.string.gps_hor_and_vert_accuracy_value_feet,
-                    UIUtils.toFeet(location.accuracy.toDouble()),
-                    UIUtils.toFeet(location.verticalAccuracyMeters.toDouble())
-                )
-            }
-        } else {
-            if (location.hasAccuracy()) {
-                if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
-                    binding.horVertAccuracy.text =
-                        resources.getString(R.string.gps_accuracy_value_meters, location.accuracy)
-                } else {
-                    // Feet
-                    binding.horVertAccuracy.text = resources.getString(
-                        R.string.gps_accuracy_value_feet,
-                        UIUtils.toFeet(location.accuracy.toDouble())
-                    )
-                }
-            } else {
-                binding.horVertAccuracy.text = ""
-            }
-        }
-    }
-
-    /**
      * Update views for speed and bearing location accuracies based on the provided location
      * @param location
      */
@@ -452,13 +416,13 @@ class StatusFragment : Fragment() {
             binding.speedBearingAccRow.visibility = View.VISIBLE
             if (location.hasSpeedAccuracy()) {
                 when {
-                    prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true) -> {
+                    speedUnits().equals(METERS_PER_SECOND, ignoreCase = true) -> {
                         binding.speedAcc.text = resources.getString(
                             R.string.gps_speed_acc_value_meters_sec,
                             location.speedAccuracyMetersPerSecond
                         )
                     }
-                    prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                    speedUnits().equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
                         binding.speedAcc.text = resources.getString(
                             R.string.gps_speed_acc_value_km_hour,
                             UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
@@ -575,7 +539,7 @@ class StatusFragment : Fragment() {
         fixTime = location.time
         if (location.hasAltitude()) {
             when {
-                prefDistanceUnits.equals(METERS, ignoreCase = true) -> {
+                distanceUnits().equals(METERS, ignoreCase = true) -> {
                     binding.altitude.text =
                         getString(R.string.gps_altitude_value_meters, location.altitude)
                 }
@@ -592,11 +556,11 @@ class StatusFragment : Fragment() {
         }
         if (location.hasSpeed()) {
             when {
-                prefSpeedUnits.equals(METERS_PER_SECOND, ignoreCase = true) -> {
+                speedUnits().equals(METERS_PER_SECOND, ignoreCase = true) -> {
                     binding.speed.text =
                         getString(R.string.gps_speed_value_meters_sec, location.speed)
                 }
-                prefSpeedUnits.equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                speedUnits().equals(KILOMETERS_PER_HOUR, ignoreCase = true) -> {
                     binding.speed.text = resources.getString(
                         R.string.gps_speed_value_kilometers_hour,
                         UIUtils.toKilometersPerHour(location.speed)
@@ -618,7 +582,6 @@ class StatusFragment : Fragment() {
         } else {
             binding.bearing.text = ""
         }
-        updateLocationAccuracies(location)
         updateSpeedAndBearingAccuracies(location)
         updateFixTime()
     }
@@ -657,7 +620,7 @@ class StatusFragment : Fragment() {
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
             val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
             if (altitudeMsl != null && started) {
-                if (prefDistanceUnits.equals(METERS, ignoreCase = true)) {
+                if (distanceUnits().equals(METERS, ignoreCase = true)) {
                     binding.altitudeMsl.text =
                         getString(R.string.gps_altitude_msl_value_meters, altitudeMsl)
                 } else {
@@ -789,10 +752,6 @@ class StatusFragment : Fragment() {
     private fun setupUnitPreferences() {
         val settings = Application.prefs
         val app = Application.app
-        prefDistanceUnits = settings
-            .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS)
-        prefSpeedUnits = settings
-            .getString(app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND)
     }
 
     /**
@@ -941,7 +900,7 @@ class StatusFragment : Fragment() {
                 v.flagLayout.visibility = View.GONE
 
                 // Populate the header fields
-                v.svId.text = getString(R.string.gps_prn_column_label)
+                v.svId.text = getString(R.string.id_column_label)
                 v.svId.setTypeface(v.svId.typeface, Typeface.BOLD)
                 if (mConstellationType == ConstellationType.GNSS) {
                     v.flagHeader.text = getString(R.string.gnss_flag_image_label)
@@ -950,18 +909,18 @@ class StatusFragment : Fragment() {
                 }
                 if (SatelliteUtils.isCfSupported()) {
                     v.carrierFrequency.visibility = View.VISIBLE
-                    v.carrierFrequency.text = getString(R.string.gps_carrier_column_label)
+                    v.carrierFrequency.text = getString(R.string.cf_column_label)
                     v.carrierFrequency.setTypeface(v.carrierFrequency.typeface, Typeface.BOLD)
                 } else {
                     v.carrierFrequency.visibility = View.GONE
                 }
                 v.signal.text = getString(R.string.gps_cn0_column_label)
                 v.signal.setTypeface(v.signal.typeface, Typeface.BOLD)
-                v.elevation.text = resources.getString(R.string.gps_elevation_column_label)
+                v.elevation.text = resources.getString(R.string.elevation_column_label)
                 v.elevation.setTypeface(v.elevation.typeface, Typeface.BOLD)
-                v.azimuth.text = resources.getString(R.string.gps_azimuth_column_label)
+                v.azimuth.text = resources.getString(R.string.azimuth_column_label)
                 v.azimuth.setTypeface(v.azimuth.typeface, Typeface.BOLD)
-                v.statusFlags.text = resources.getString(R.string.gps_flags_column_label)
+                v.statusFlags.text = resources.getString(R.string.flags_aeu_column_label)
                 v.statusFlags.setTypeface(v.statusFlags.typeface, Typeface.BOLD)
             } else {
                 // There is a header at 0, so the first data row will be at position - 1, etc.
@@ -1141,12 +1100,6 @@ class StatusFragment : Fragment() {
     companion object {
         private const val TAG = "GpsStatusFragment"
         private const val EMPTY_LAT_LONG = "             "
-        private val METERS =
-            Application.app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
-        private val METERS_PER_SECOND =
-            Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
-        private val KILOMETERS_PER_HOUR =
-            Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
 
         // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
         private const val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"

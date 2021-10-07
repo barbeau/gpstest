@@ -24,7 +24,7 @@ import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
-import com.android.gpstest.util.SharedPreferenceUtil.prefDistanceUnits
+import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
 
 /**
  * Returns the `location` object as a human readable string for use in a notification title
@@ -110,7 +110,7 @@ fun android.location.Location?.toNotificationSummary(): String {
             }
         }
         if (this.hasAltitude()) {
-            alt = if (prefDistanceUnits().equals(METERS, ignoreCase = true)) {
+            alt = if (distanceUnits().equals(METERS, ignoreCase = true)) {
                 resources.getString(
                     R.string.gps_altitude_value_meters,
                     this.altitude
@@ -249,9 +249,14 @@ internal object SharedPreferenceUtil {
         return writeAntennaInfoToFileJson()
     }
 
-    fun prefDistanceUnits(): String? {
+    fun distanceUnits(): String {
         return Application.prefs
-            .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
+            .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS) ?: METERS
+    }
+
+    fun speedUnits(): String {
+        return Application.prefs
+            .getString(Application.app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND) ?: METERS_PER_SECOND
     }
 
     fun runInBackground(): Boolean {

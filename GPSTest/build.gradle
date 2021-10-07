@@ -19,6 +19,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        compose true
+    }
+
     flavorDimensions "map"
 
     productFlavors {
@@ -105,6 +110,10 @@ android {
         unitTests.includeAndroidResources true
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.3'
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -121,7 +130,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
@@ -170,6 +179,27 @@ dependencies {
     implementation 'com.google.maps.android:maps-ktx:3.1.0'
     // OSM Droid (fdroid flavor only)
     osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.11'
+
+    //
+    // Jetpack Compose for UI
+    //
+
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.0.3'
+    // Bridging XML themes to Compose
+    implementation "com.google.android.material:compose-theme-adapter:1.0.3"
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.0.3'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.0.2'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0-rc01'
+    //Integration with LiveData
+    implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-alpha05'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.2'
 
     //
     // Unit tests

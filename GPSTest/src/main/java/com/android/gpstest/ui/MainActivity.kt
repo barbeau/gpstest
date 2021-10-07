@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     //
     // Fragments controlled by the nav drawer
     //
-    private var statusFragment: StatusFragment? = null
+    private var statusFragment: StatusFragment2? = null
     private var mapFragment: MapFragment? = null
     private var skyFragment: SkyFragment? = null
     private var accuracyFragment: MapFragment? = null
@@ -483,11 +483,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Show fragment (we use show instead of replace to keep the map state)
         if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment2?
             if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new GpsStatusFragment")
-                statusFragment = StatusFragment()
+                statusFragment = StatusFragment2()
                 fm.beginTransaction()
                     .add(R.id.fragment_container, statusFragment!!, TAG)
                     .commit()
@@ -499,7 +499,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment2?
         if (statusFragment != null && !statusFragment!!.isHidden) {
             fm.beginTransaction().hide(statusFragment!!).commit()
         }
