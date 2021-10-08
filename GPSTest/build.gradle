@@ -40,10 +40,18 @@ android {
         }
     }
 
-    // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
     packagingOptions {
+        // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
+        // for JNA and JNA-platform
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+        // for byte-buddy
+        exclude "META-INF/licenses/ASM"
+        pickFirst "win32-x86-64/attach_hotspot_windows.dll"
+        pickFirst "win32-x86/attach_hotspot_windows.dll"
     }
 
     lintOptions {
