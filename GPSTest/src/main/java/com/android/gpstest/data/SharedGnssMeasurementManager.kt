@@ -132,7 +132,7 @@ class SharedGnssMeasurementManager constructor(
     }.shareIn(
         externalScope,
         replay = 0,
-        started = SharingStarted.WhileSubscribed()
+        started = SharingStarted.WhileSubscribed(5000)
     )
 
     @ExperimentalCoroutinesApi
