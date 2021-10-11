@@ -94,7 +94,8 @@ fun LocationCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(5.dp),
         elevation = 2.dp
     ) {
         Row {
@@ -210,7 +211,7 @@ fun LabelColumn1() {
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(start = 5.dp, top = 5.dp, bottom = 5.dp, end = 2.dp),
+            .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
@@ -230,7 +231,7 @@ fun LabelColumn2() {
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(start = 5.dp, top = 5.dp, bottom = 5.dp, end = 2.dp),
+            .padding(top = 5.dp, bottom = 5.dp, end = 5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
@@ -248,7 +249,7 @@ fun LabelColumn2() {
 fun LocationLabel(@StringRes id: Int) {
     Text(
         text = stringResource(id),
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(start = 4.dp, end = 4.dp),
         fontWeight = FontWeight.Bold,
         fontSize = 13.sp,
     )
