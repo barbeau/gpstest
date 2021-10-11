@@ -1,6 +1,7 @@
 package com.android.gpstest.ui.status
 
 import android.location.Location
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -17,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.ui.DeviceInfoViewModel
-import com.android.gpstest.util.SatelliteUtils
+import com.android.gpstest.util.SatelliteUtils.isSpeedAndBearingAccuracySupported
+import com.android.gpstest.util.SatelliteUtils.isVerticalAccuracySupported
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
 import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
 import com.android.gpstest.util.UIUtils
@@ -58,8 +62,14 @@ fun StatusScreen(viewModel: DeviceInfoViewModel) {
 
 @Preview
 @Composable
-fun LocationCardPreview() {
-    LocationCard(previewLocation())
+fun LocationCardPreview(
+    @PreviewParameter(LocationPreviewParameterProvider::class) location: Location
+) {
+    LocationCard(location)
+}
+
+class LocationPreviewParameterProvider : PreviewParameterProvider<Location> {
+    override val values = sequenceOf(previewLocation())
 }
 
 fun previewLocation(): Location {
@@ -71,6 +81,9 @@ fun previewLocation(): Location {
         altitude = 13.5
         speed = 21.5f
         bearing = 240f
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            bearingAccuracyDegrees = 5f
+        }
     }
     return l
 }
@@ -81,13 +94,10 @@ fun LocationCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
+            .fillMaxWidth(),
         elevation = 2.dp
     ) {
-        Row(
-            modifier = Modifier
-                .padding(5.dp)) {
+        Row {
             LabelColumn1()
             ValueColumn1(location)
             LabelColumn2()
@@ -98,15 +108,11 @@ fun LocationCard(
 
 @Composable
 fun ValueColumn1(location: Location) {
-//    if (location.provider.equals("default") {
-//        // TODO - return blank column
-//        return Column()
-//    }
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(5.dp),
+            .padding(top = 5.dp, bottom = 5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
@@ -117,7 +123,7 @@ fun ValueColumn1(location: Location) {
         LocationValue(location.altitude.toString())
         LocationValue("") // FIXME - Alt MSL
         LocationValue(location.speed.toString())
-        if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
+        if (isSpeedAndBearingAccuracySupported()) {
             LocationValue(if (location.hasSpeedAccuracy()) location.speedAccuracyMetersPerSecond.toString() else "")
         }
         LocationValue("") // FIXME - PDOP
@@ -126,15 +132,11 @@ fun ValueColumn1(location: Location) {
 
 @Composable
 fun ValueColumn2(location: Location) {
-//    if (location.provider.equals("default") {
-//        // TODO - return blank column
-//        return Column()
-//    }
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(5.dp),
+            .padding(top = 5.dp, bottom = 5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
@@ -142,10 +144,10 @@ fun ValueColumn2(location: Location) {
         // TODO - use hasX() method for relevant values
         LocationValue(location.time.toString())
         LocationValue("") // FIXME - TTFF
-        Accuracy(location)
+        //Accuracy(location) // FIXME - This seems to break the preview - uncomment when we don't need the preview anymore
         LocationValue("") // FIXME - Num sats
         LocationValue(location.bearing.toString())
-        if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
+        if (isSpeedAndBearingAccuracySupported()) {
             LocationValue(if (location.hasBearingAccuracy()) location.bearingAccuracyDegrees.toString() else "")
         }
         LocationValue("") // FIXME - H/V DOP
@@ -153,12 +155,12 @@ fun ValueColumn2(location: Location) {
 }
 
 /**
- * Update views for horizontal and vertical location accuracies based on the provided location
+ * Horizontal and vertical location accuracies based on the provided location
  * @param location
  */
 @Composable
 fun Accuracy(location: Location) {
-    if (SatelliteUtils.isVerticalAccuracySupported(location)) {
+    if (isVerticalAccuracySupported(location)) {
         if (distanceUnits().equals(METERS, ignoreCase = true)) {
             LocationValue(
                 stringResource(
@@ -208,7 +210,7 @@ fun LabelColumn1() {
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(5.dp),
+            .padding(start = 5.dp, top = 5.dp, bottom = 5.dp, end = 2.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
@@ -228,7 +230,7 @@ fun LabelColumn2() {
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(5.dp),
+            .padding(start = 5.dp, top = 5.dp, bottom = 5.dp, end = 2.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
