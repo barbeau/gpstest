@@ -82,6 +82,7 @@ class SignalInfoViewModel @Inject constructor(
         viewModelScope.launch {
             observeLocationUpdateStates()
             observeGnssStates()
+            com.android.gpstest.Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
         }
     }
 
