@@ -38,13 +38,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.List
-import kotlin.collections.Map
-import kotlin.collections.MutableList
-import kotlin.collections.MutableMap
-import kotlin.collections.MutableSet
-import kotlin.collections.Set
-import kotlin.collections.filter
 import kotlin.collections.set
 
 /**
@@ -56,10 +49,6 @@ class SignalInfoViewModel @Inject constructor(
     application: Application,
     private val repository: LocationRepository
 ) : AndroidViewModel(application) {
-    // Repository of location data that the service will observe, injected via Hilt
-//    @Inject
-//    lateinit var repository: LocationRepository
-
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var gnssFlow: Job? = null
@@ -97,6 +86,15 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     @ExperimentalCoroutinesApi
+    private fun observeLocationUpdateStates() {
+        repository.receivingLocationUpdates
+            .onEach {
+                setStarted(it)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    @ExperimentalCoroutinesApi
     private fun observeLocationFlow() {
         if (locationFlow?.isActive == true) {
             // If we're already observing updates, don't register again
@@ -107,15 +105,6 @@ class SignalInfoViewModel @Inject constructor(
             .onEach {
                 //Log.d(TAG, "SignalInfoViewModel location: ${it.toNotificationTitle()}")
                 _location.value = it
-            }
-            .launchIn(viewModelScope)
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        repository.receivingLocationUpdates
-            .onEach {
-                setStarted(it)
             }
             .launchIn(viewModelScope)
     }
