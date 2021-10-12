@@ -56,6 +56,7 @@ import com.android.gpstest.util.DateTimeUtils.Companion.isTimeValid
 import com.android.gpstest.util.SharedPreferenceUtil.KILOMETERS_PER_HOUR
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
 import com.android.gpstest.util.SharedPreferenceUtil.METERS_PER_SECOND
+import com.android.gpstest.util.SharedPreferenceUtil.coordinateFormat
 import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
 import com.android.gpstest.util.SharedPreferenceUtil.speedUnits
 import com.android.gpstest.util.SortUtil.Companion.sortByCarrierFrequencyThenId
@@ -108,7 +109,7 @@ class StatusFragment : Fragment() {
     private var flagEU: Drawable? = null
     private var flagICAO: Drawable? = null
     private var ttff = ""
-    private var viewModel: DeviceInfoViewModel? = null
+    private var viewModel: SignalInfoViewModel? = null
 
     // Repository of location data that the service will observe, injected via Hilt
     @Inject
@@ -231,7 +232,7 @@ class StatusFragment : Fragment() {
         binding.sbasStatusList.layoutManager = llmSbas
         binding.sbasStatusList.isNestedScrollingEnabled = false
         viewModel = ViewModelProviders.of(requireActivity()).get(
-            DeviceInfoViewModel::class.java
+            SignalInfoViewModel::class.java
         )
         viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
@@ -259,10 +260,7 @@ class StatusFragment : Fragment() {
         repository.receivingLocationUpdates
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when (it) {
-                    true -> onGnssStarted()
-                    false -> onGnssStopped()
-                }
+                setStarted(it)
             }
             .launchIn(lifecycleScope)
     }
@@ -490,29 +488,25 @@ class StatusFragment : Fragment() {
         if (viewModel != null) {
             viewModel!!.setGotFirstFix(true)
         }
-        val coordinateFormat = Application.prefs.getString(
-            getString(R.string.pref_key_coordinate_format),
-            getString(R.string.preferences_coordinate_format_dd_key)
-        )
-        when (coordinateFormat) {
+        when (coordinateFormat()) {
             "dd" -> {
                 // Decimal degrees
                 binding.latitude.text =
-                    getString(R.string.gps_latitude_value, location.latitude)
+                    getString(R.string.lat_or_lon, location.latitude)
                 binding.longitude.text =
-                    getString(R.string.gps_longitude_value, location.longitude)
+                    getString(R.string.lat_or_lon, location.longitude)
             }
             "dms" -> {
                 // Degrees minutes seconds
                 binding.latitude.text = UIUtils.getDMSFromLocation(
                     Application.app,
                     location.latitude,
-                    UIUtils.COORDINATE_LATITUDE
+                    CoordinateType.LATITUDE
                 )
                 binding.longitude.text = UIUtils.getDMSFromLocation(
                     Application.app,
                     location.longitude,
-                    UIUtils.COORDINATE_LONGITUDE
+                    CoordinateType.LONGITUDE
                 )
             }
             "ddm" -> {
@@ -520,20 +514,20 @@ class StatusFragment : Fragment() {
                 binding.latitude.text = UIUtils.getDDMFromLocation(
                     Application.app,
                     location.latitude,
-                    UIUtils.COORDINATE_LATITUDE
+                    CoordinateType.LATITUDE
                 )
                 binding.longitude.text = UIUtils.getDDMFromLocation(
                     Application.app,
                     location.longitude,
-                    UIUtils.COORDINATE_LONGITUDE
+                    CoordinateType.LONGITUDE
                 )
             }
             else -> {
                 // Decimal degrees
                 binding.latitude.text =
-                    getString(R.string.gps_latitude_value, location.latitude)
+                    getString(R.string.lat_or_lon, location.latitude)
                 binding.longitude.text =
-                    getString(R.string.gps_longitude_value, location.longitude)
+                    getString(R.string.lat_or_lon, location.longitude)
             }
         }
         fixTime = location.time
@@ -600,16 +594,6 @@ class StatusFragment : Fragment() {
 
     private fun onGnssFixLost() {
         showLostFix()
-    }
-
-    @ExperimentalCoroutinesApi
-    fun onGnssStarted() {
-        setStarted(true)
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun onGnssStopped() {
-        setStarted(false)
     }
 
     private fun onNmeaMessage(message: String, timestamp: Long) {

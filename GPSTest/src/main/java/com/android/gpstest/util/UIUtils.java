@@ -65,10 +65,11 @@ import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.io.CsvFileLogger;
 import com.android.gpstest.io.JsonFileLogger;
+import com.android.gpstest.model.CoordinateType;
 import com.android.gpstest.model.GnssType;
 import com.android.gpstest.model.SbasType;
-import com.android.gpstest.ui.DeviceInfoViewModel;
 import com.android.gpstest.ui.HelpActivity;
+import com.android.gpstest.ui.SignalInfoViewModel;
 import com.android.gpstest.ui.share.ShareDialogFragment;
 import com.google.android.material.chip.Chip;
 
@@ -86,9 +87,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UIUtils {
     public static final String TAG = "UIUtils";
-
-    public static final String COORDINATE_LATITUDE = "lat";
-    public static final String COORDINATE_LONGITUDE = "lon";
 
     public static int PICKFILE_REQUEST_CODE = 101;
 
@@ -226,9 +224,9 @@ public class UIUtils {
      * Opens email apps based on the given email address
      * @param email address
      * @param location string that shows the current location
-     * @param deviceInfoViewModel view model that contains state of GNSS
+     * @param signalInfoViewModel view model that contains state of GNSS
      */
-    public static void sendEmail(Context context, String email, String location, DeviceInfoViewModel deviceInfoViewModel) {
+    public static void sendEmail(Context context, String email, String location, SignalInfoViewModel signalInfoViewModel) {
         LocationManager locationManager = (LocationManager) Application.Companion.getApp().getSystemService(Context.LOCATION_SERVICE);
         PackageManager pm = context.getPackageManager();
         PackageInfo appInfo;
@@ -305,30 +303,30 @@ public class UIUtils {
         }
 
         // Got fix
-        body.append(Application.Companion.getApp().getString(R.string.capability_title_got_fix, location != null && deviceInfoViewModel.gotFirstFix()));
+        body.append(Application.Companion.getApp().getString(R.string.capability_title_got_fix, location != null && signalInfoViewModel.gotFirstFix()));
 
         // We need a fix to determine these attributes reliably
-        if (location != null && deviceInfoViewModel.gotFirstFix()) {
+        if (location != null && signalInfoViewModel.gotFirstFix()) {
             // Dual frequency
-            body.append(Application.Companion.getApp().getString(R.string.capability_title_dual_frequency, PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView())));
+            body.append(Application.Companion.getApp().getString(R.string.capability_title_dual_frequency, PreferenceUtils.getCapabilityDescription(signalInfoViewModel.isNonPrimaryCarrierFreqInView())));
             // Supported GNSS
-            List<GnssType> gnss = new ArrayList<>(deviceInfoViewModel.getSupportedGnss());
+            List<GnssType> gnss = new ArrayList<>(signalInfoViewModel.getSupportedGnss());
             Collections.sort(gnss);
             body.append(Application.Companion.getApp().getString(R.string.capability_title_supported_gnss, trimEnds(replaceNavstar(gnss.toString()))));
             // GNSS CF
-            List<String> gnssCfs = new ArrayList<>(deviceInfoViewModel.getSupportedGnssCfs());
+            List<String> gnssCfs = new ArrayList<>(signalInfoViewModel.getSupportedGnssCfs());
             if (!gnssCfs.isEmpty()) {
                 Collections.sort(gnssCfs);
                 body.append(Application.Companion.getApp().getString(R.string.capability_title_gnss_cf, trimEnds(gnssCfs.toString())));
             }
             // Supported SBAS
-            List<SbasType> sbas = new ArrayList<>(deviceInfoViewModel.getSupportedSbas());
+            List<SbasType> sbas = new ArrayList<>(signalInfoViewModel.getSupportedSbas());
             if (!sbas.isEmpty()) {
                 Collections.sort(sbas);
                 body.append(Application.Companion.getApp().getString(R.string.capability_title_supported_sbas, trimEnds(sbas.toString())));
             }
             // SBAS CF
-            List<String> sbasCfs = new ArrayList<>(deviceInfoViewModel.getSupportedSbasCfs());
+            List<String> sbasCfs = new ArrayList<>(signalInfoViewModel.getSupportedSbasCfs());
             if (!sbasCfs.isEmpty()) {
                 Collections.sort(sbasCfs);
                 body.append(Application.Companion.getApp().getString(R.string.capability_title_sbas_cf, trimEnds(sbasCfs.toString())));
@@ -373,9 +371,10 @@ public class UIUtils {
     /**
      * Returns the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
      * @param coordinate latitude or longitude to convert to DMS format
+     * @param coordinateType whether the coordinate is latitude or longitude
      * @return the provided latitude or longitude value in Degrees Minutes Seconds (DMS) format
      */
-    public static String getDMSFromLocation(Context context, double coordinate, String latOrLon) {
+    public static String getDMSFromLocation(Context context, double coordinate, CoordinateType coordinateType) {
         BigDecimal loc = new BigDecimal(coordinate);
         BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
         BigDecimal minTemp = loc.subtract(degrees).multiply((new BigDecimal(60))).abs();
@@ -384,7 +383,7 @@ public class UIUtils {
 
         String hemisphere;
         int output_string;
-        if (latOrLon.equals(UIUtils.COORDINATE_LATITUDE)) {
+        if (coordinateType.equals(CoordinateType.LATITUDE)) {
             hemisphere = (coordinate < 0 ? "S" : "N");
             output_string = R.string.gps_lat_dms_value;
         } else {
@@ -399,16 +398,16 @@ public class UIUtils {
      * Returns the provided latitude or longitude value in Decimal Degree Minutes (DDM) format
      *
      * @param coordinate latitude or longitude to convert to DDM format
-     * @param latOrLon   lat or lon to format hemisphere
+     * @param coordinateType lat or lon to format hemisphere
      * @return the provided latitude or longitude value in Decimal Degree Minutes (DDM) format
      */
-    public static String getDDMFromLocation(Context context, double coordinate, String latOrLon) {
+    public static String getDDMFromLocation(Context context, double coordinate, CoordinateType coordinateType) {
         BigDecimal loc = new BigDecimal(coordinate);
         BigDecimal degrees = loc.setScale(0, RoundingMode.DOWN);
         BigDecimal minutes = loc.subtract(degrees).multiply((new BigDecimal(60))).abs().setScale(3, RoundingMode.HALF_UP);
         String hemisphere;
         int output_string;
-        if (latOrLon.equals(COORDINATE_LATITUDE)) {
+        if (coordinateType.equals(CoordinateType.LATITUDE)) {
             hemisphere = (coordinate < 0 ? "S" : "N");
             output_string = R.string.gps_lat_ddm_value;
         } else {
@@ -617,8 +616,8 @@ public class UIUtils {
             case "dms":
                 // Degrees minutes seconds
                 if (location != null) {
-                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLatitude(), CoordinateType.LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.Companion.getApp(), location.getLongitude(), CoordinateType.LONGITUDE),
                             (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
                 }
                 if (chipDMS != null) {
@@ -628,8 +627,8 @@ public class UIUtils {
             case "ddm":
                 // Degrees decimal minutes
                 if (location != null) {
-                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
+                    formattedLocation = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLatitude(), CoordinateType.LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.Companion.getApp(), location.getLongitude(), CoordinateType.LONGITUDE),
                             (location.hasAltitude() && includeAltitude) ? Double.toString(location.getAltitude()) : null);
                 }
                 if (chipDegreesDecimalMin != null) {

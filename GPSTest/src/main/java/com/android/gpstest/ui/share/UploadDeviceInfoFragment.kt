@@ -24,7 +24,7 @@ import com.android.gpstest.Application
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
-import com.android.gpstest.ui.DeviceInfoViewModel
+import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
@@ -49,7 +49,7 @@ class UploadDeviceInfoFragment : Fragment() {
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
-        val deviceInfoViewModel = ViewModelProviders.of(requireActivity()).get(DeviceInfoViewModel::class.java)
+        val deviceInfoViewModel = ViewModelProviders.of(requireActivity()).get(SignalInfoViewModel::class.java)
         var userCountry = ""
 
         // TODO - DeviceInfoViewModel is still largely updated in GnssStatusFragment, so we need

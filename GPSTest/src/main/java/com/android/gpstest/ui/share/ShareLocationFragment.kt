@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.UIUtils
@@ -92,18 +93,18 @@ class ShareLocationFragment : Fragment() {
         chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.app, location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.app, location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                            if (location.hasAltitude() && includeAltitude.isChecked) java.lang.Double.toString(location.getAltitude()) else null)
+                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
+                            UIUtils.getDMSFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                            if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
                 }
             }
         }
         chipDegreesDecimalMin.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.app, location.getLatitude(), UIUtils.COORDINATE_LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.app, location.getLongitude(), UIUtils.COORDINATE_LONGITUDE),
-                            if (location.hasAltitude() && includeAltitude.isChecked) java.lang.Double.toString(location.getAltitude()) else null)
+                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
+                            UIUtils.getDDMFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                            if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
                 }
             }
         }

@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var initialLanguage: String? = null
     private var shareDialogOpen = false
     private var progressBar: ProgressBar? = null
-    var deviceInfoViewModel: DeviceInfoViewModel? = null
+    var signalInfoViewModel: SignalInfoViewModel? = null
     private var isServiceBound = false
     private var service: ForegroundOnlyLocationService? = null
     private var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
@@ -169,8 +169,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setSupportActionBar(binding.toolbar)
         progressBar = findViewById(R.id.progress_horizontal)
         setupNavigationDrawer()
-        deviceInfoViewModel = ViewModelProviders.of(this).get(
-            DeviceInfoViewModel::class.java
+        signalInfoViewModel = ViewModelProviders.of(this).get(
+            SignalInfoViewModel::class.java
         )
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
@@ -464,7 +464,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 if (lastLocation != null) {
                     locationString = LocationUtils.printLocationDetails(lastLocation)
                 }
-                UIUtils.sendEmail(this, email, locationString, deviceInfoViewModel)
+                UIUtils.sendEmail(this, email, locationString, signalInfoViewModel)
             }
         }
         invalidateOptionsMenu()

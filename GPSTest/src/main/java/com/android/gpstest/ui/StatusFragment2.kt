@@ -24,7 +24,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import com.android.gpstest.ui.status.StatusScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,9 +38,7 @@ class StatusFragment2 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel = ViewModelProviders.of(requireActivity()).get(
-            DeviceInfoViewModel::class.java
-        )
+        val viewModel: SignalInfoViewModel by activityViewModels()
         return ComposeView(requireContext()).apply {
             // Dispose the Composition when the view's LifecycleOwner
             // is destroyed

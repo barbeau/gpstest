@@ -23,7 +23,9 @@ import android.location.GnssMeasurementsEvent
 import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
+import com.android.gpstest.util.SharedPreferenceUtil.coordinateFormat
 import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
 
 /**
@@ -40,27 +42,24 @@ fun android.location.Location?.toNotificationTitle(): String {
 /**
  * Returns the `location` object as a human readable string for use in a notification summary
  */
+// FIXME - Collapse this into other formatting functions in StatusScreen
 fun android.location.Location?.toNotificationSummary(): String {
     return if (this != null) {
-        val coordinateFormat = Application.prefs.getString(
-            Application.app.getString(R.string.pref_key_coordinate_format),
-            Application.app.getString(R.string.preferences_coordinate_format_dd_key)
-        )
         val resources = Application.app.resources
         val lat: String
         val lon: String
         val alt: String
-        when (coordinateFormat) {
+        when (coordinateFormat()) {
             "dd" -> {
                 // Decimal degrees
                 lat =
                     resources.getString(
-                        R.string.gps_latitude_value,
+                        R.string.lat_or_lon,
                         this.latitude
                     )
                 lon =
                     resources.getString(
-                        R.string.gps_longitude_value,
+                        R.string.lat_or_lon,
                         this.longitude
                     )
 
@@ -71,13 +70,13 @@ fun android.location.Location?.toNotificationSummary(): String {
                     UIUtils.getDMSFromLocation(
                         Application.app,
                         this.latitude,
-                        UIUtils.COORDINATE_LATITUDE
+                        CoordinateType.LATITUDE
                     )
                 lon =
                     UIUtils.getDMSFromLocation(
                         Application.app,
                         this.longitude,
-                        UIUtils.COORDINATE_LONGITUDE
+                        CoordinateType.LONGITUDE
                     )
             }
             "ddm" -> {
@@ -86,25 +85,25 @@ fun android.location.Location?.toNotificationSummary(): String {
                     UIUtils.getDDMFromLocation(
                         Application.app,
                         this.latitude,
-                        UIUtils.COORDINATE_LATITUDE
+                        CoordinateType.LATITUDE
                     )
                 lon =
                     UIUtils.getDDMFromLocation(
                         Application.app,
                         this.longitude,
-                        UIUtils.COORDINATE_LONGITUDE
+                        CoordinateType.LONGITUDE
                     )
             }
             else -> {
                 // Decimal degrees
                 lat =
                     resources.getString(
-                        R.string.gps_latitude_value,
+                        R.string.lat_or_lon,
                         this.latitude
                     )
                 lon =
                     resources.getString(
-                        R.string.gps_longitude_value,
+                        R.string.lat_or_lon,
                         this.longitude
                     )
             }
@@ -257,6 +256,13 @@ internal object SharedPreferenceUtil {
     fun speedUnits(): String {
         return Application.prefs
             .getString(Application.app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND) ?: METERS_PER_SECOND
+    }
+
+    fun coordinateFormat(): String {
+        return Application.prefs.getString(
+            Application.app.getString(R.string.pref_key_coordinate_format),
+            Application.app.getString(R.string.preferences_coordinate_format_dd_key)
+        ) ?: Application.app.getString(R.string.preferences_coordinate_format_dd_key)
     }
 
     fun runInBackground(): Boolean {

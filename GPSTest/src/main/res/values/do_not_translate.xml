@@ -22,9 +22,8 @@
     <string name="app_name">GPSTest</string>
 
     <!-- Values and units display - Status -->
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="lat_or_lon">%1$.7f\u00B0</string>
     <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_lat_dms_value">%1$s\t\u2007%2$02d\u00B0 %3$2d\' %4$05.2f\"</string>
     <string name="gps_lon_dms_value">%1$s\t%2$03d\u00B0 %3$2d\' %4$05.2f\"</string>
     <string name="gps_lat_ddm_value">%1$s\t\u2007%2$02d\u00B0 %3$06.3f</string>

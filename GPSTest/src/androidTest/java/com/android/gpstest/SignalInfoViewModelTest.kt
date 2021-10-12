@@ -23,14 +23,14 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SbasType
-import com.android.gpstest.ui.DeviceInfoViewModel
+import com.android.gpstest.ui.SignalInfoViewModel
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class DeviceInfoViewModelTest {
+class SignalInfoViewModelTest {
 
     // Required to allow LiveData to execute
     @get:Rule
@@ -41,11 +41,11 @@ class DeviceInfoViewModelTest {
      */
     @Test
     fun testDeviceInfoViewModel() {
-        val modelEmpty = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelEmpty = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelEmpty.setStatuses(emptyList(), emptyList())
 
         // Test GPS L1 - should be 1 satellite, no L5 or dual-frequency
-        val modelGpsL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelGpsL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL1.setStatuses(listOf(gpsL1(1, true)), emptyList())
         assertEquals(1, modelGpsL1.gnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
@@ -97,7 +97,7 @@ class DeviceInfoViewModelTest {
 
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
-        val modelGpsL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelGpsL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL1L5.setStatuses(listOf(gpsL1(1, false), gpsL5(1, true)), emptyList())
         assertEquals(1, modelGpsL1L5.gnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
@@ -267,7 +267,7 @@ class DeviceInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L5 not in use - should be 1 satellites, non-primary frequency in view, but not dual-frequency in view or use
-        val modelGpsL5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelGpsL5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL5.setStatuses(listOf(gpsL5(1, false)), emptyList())
         assertEquals(1, modelGpsL5.gnssSatellites.value?.size)
         assertEquals(1, modelGpsL5.getSupportedGnss().size)
@@ -302,7 +302,7 @@ class DeviceInfoViewModelTest {
         }
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
-        val modelGpsL1GlonassL1 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelGpsL1GlonassL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGpsL1GlonassL1.setStatuses(listOf(gpsL1(1, true), glonassL1variant1()), emptyList())
         assertEquals(2, modelGpsL1GlonassL1.gnssSatellites.value?.size)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
@@ -328,7 +328,7 @@ class DeviceInfoViewModelTest {
         }
 
         // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
-        val modelGalileoE1E5a = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelGalileoE1E5a = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(2, true)), emptyList())
         assertEquals(2, modelGalileoE1E5a.gnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
@@ -398,7 +398,7 @@ class DeviceInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
-        val modelWaasL1L5 = DeviceInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
+        val modelWaasL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application)
         modelWaasL1L5.setStatuses(emptyList(), listOf(galaxy15_135L1(true)))
         assertEquals(1, modelWaasL1L5.sbasSatellites.value?.size)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
