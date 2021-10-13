@@ -29,6 +29,7 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.data.toSatelliteStatus
 import com.android.gpstest.model.*
 import com.android.gpstest.util.*
+import com.android.gpstest.util.FormatUtils.formatTtff
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -49,11 +50,16 @@ class SignalInfoViewModel @Inject constructor(
     application: Application,
     private val repository: LocationRepository
 ) : AndroidViewModel(application) {
-    // Get a reference to the Job from the Flow so we can stop it from UI events
+    //
+    // Flows from the repository
+    //
     private var locationFlow: Job? = null
     private var gnssFlow: Job? = null
     private var nmeaFlow: Job? = null
 
+    //
+    // LiveData observed by Composables
+    //
     private val _gnssStatuses = MutableLiveData<List<SatelliteStatus>>()
     val gnssStatuses: LiveData<List<SatelliteStatus>> = _gnssStatuses
 
@@ -71,6 +77,12 @@ class SignalInfoViewModel @Inject constructor(
 
     private val _ttff = MutableLiveData<String>()
     val ttff: LiveData<String> = _ttff
+
+    private val _altitudeMsl = MutableLiveData<Double>()
+    val altitudeMsl: LiveData<Double> = _altitudeMsl
+
+    private val _dop = MutableLiveData<DilutionOfPrecision>()
+    val dop: LiveData<DilutionOfPrecision> = _dop
 
     private var started = false
 
@@ -167,8 +179,6 @@ class SignalInfoViewModel @Inject constructor(
 
     @ExperimentalCoroutinesApi
     private fun updateStatus(status: List<SatelliteStatus>) {
-        reset()
-
         //svCount = status.size
 
         // Count number of sats shown to user
@@ -191,7 +201,7 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     private fun onGnssFirstFix(ttffMillis: Int) {
-        _ttff.value = UIUtils.getTtffString(ttffMillis)
+        _ttff.value = formatTtff(ttffMillis)
         setGotFirstFix(true)
     }
 
@@ -209,13 +219,13 @@ class SignalInfoViewModel @Inject constructor(
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
             val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
             if (altitudeMsl != null && started) {
-
+                _altitudeMsl.value = altitudeMsl
             }
         }
         if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
             val dop = NmeaUtils.getDop(message)
             if (dop != null && started) {
-
+                _dop.value = dop
             }
         }
     }
@@ -547,6 +557,10 @@ class SignalInfoViewModel @Inject constructor(
         _sbasStatuses.value = emptyList()
         _gnssSatellites.value = emptyMap()
         _sbasSatellites.value = emptyMap()
+        _location.value = Location("reset")
+        _ttff.value = ""
+        _altitudeMsl.value = Double.NaN
+        _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
         satelliteMetadata.value = null
         mDuplicateCarrierStatuses = HashMap()
         mUnknownCarrierStatuses = HashMap()

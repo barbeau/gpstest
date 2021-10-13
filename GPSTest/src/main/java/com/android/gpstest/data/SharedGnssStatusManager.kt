@@ -125,7 +125,7 @@ class SharedGnssStatusManager constructor(
     }.shareIn(
         externalScope,
         replay = 0,
-        started = SharingStarted.WhileSubscribed(5000)
+        started = SharingStarted.WhileSubscribed()
     )
 
     @ExperimentalCoroutinesApi

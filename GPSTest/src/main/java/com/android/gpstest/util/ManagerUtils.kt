@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.GnssMeasurementsEvent
+import android.location.Location
 import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
@@ -27,6 +28,8 @@ import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
 import com.android.gpstest.util.SharedPreferenceUtil.coordinateFormat
 import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
+import com.android.gpstest.util.SharedPreferenceUtil.speedUnits
+import java.util.concurrent.TimeUnit
 
 /**
  * Returns the `location` object as a human readable string for use in a notification title
@@ -379,6 +382,119 @@ internal object SharedPreferenceUtil {
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * Provides access to formatting utilities for view in the UI
+ **/
+internal object FormatUtils {
+    fun formatLatOrLon(latOrLong: Double, coordinateType: CoordinateType): String {
+        if (latOrLong == 0.0) return "             "
+
+        when (coordinateFormat()) {
+            "dd" -> {
+                // Decimal degrees
+                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+            }
+            "dms" -> {
+                // Degrees minutes seconds
+                return UIUtils.getDMSFromLocation(
+                    Application.app,
+                    latOrLong,
+                    coordinateType
+                )
+            }
+            "ddm" -> {
+                // Degrees decimal minutes
+                return UIUtils.getDDMFromLocation(
+                    Application.app,
+                    latOrLong,
+                    coordinateType
+                )
+            }
+            else -> {
+                // Decimal degrees
+                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+            }
+        }
+    }
+
+    fun formatAltitude(location: Location): String {
+        if (location.hasAltitude()) {
+            val text = when {
+                distanceUnits().equals(METERS, ignoreCase = true) -> {
+                    Application.app.getString(R.string.gps_altitude_value_meters, location.altitude)
+                }
+                else -> {
+                    // Feet
+                    Application.app.getString(
+                        R.string.gps_altitude_value_feet,
+                        UIUtils.toFeet(location.altitude)
+                    )
+                }
+            }
+            return text
+        } else {
+            return ""
+        }
+    }
+
+    fun formatSpeed(location: Location): String {
+        if (location.hasSpeed()) {
+            val text = when {
+                speedUnits()
+                    .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
+                    Application.app.getString(R.string.gps_speed_value_meters_sec, location.speed)
+                }
+                speedUnits()
+                    .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                    Application.app.getString(
+                        R.string.gps_speed_value_kilometers_hour,
+                        UIUtils.toKilometersPerHour(location.speed)
+                    )
+                }
+                else -> {
+                    // Miles per hour
+                    Application.app.getString(
+                        R.string.gps_speed_value_miles_hour,
+                        UIUtils.toMilesPerHour(location.speed)
+                    )
+                }
+            }
+            return text
+        } else {
+            return ""
+        }
+    }
+
+    /**
+     * Returns a human-readable description of the time-to-first-fix, such as "38 sec"
+     *
+     * @param ttff time-to-first fix, in milliseconds
+     * @return a human-readable description of the time-to-first-fix, such as "38 sec"
+     */
+    fun formatTtff(ttff: Int): String {
+        return if (ttff == 0) {
+            ""
+        } else {
+            TimeUnit.MILLISECONDS.toSeconds(ttff.toLong()).toString() + " sec"
+        }
+    }
+
+    fun formatAltitudeMsl(altitudeMsl: Double): String {
+        if (altitudeMsl.isNaN()) return ""
+
+        return if (distanceUnits().equals(METERS, ignoreCase = true)) {
+            Application.app.getString(
+                R.string.gps_altitude_msl_value_meters,
+                altitudeMsl)
+        } else {
+            Application.app.getString(
+                R.string.gps_altitude_msl_value_feet,
+                UIUtils.toFeet(altitudeMsl)
+            )
         }
     }
 }

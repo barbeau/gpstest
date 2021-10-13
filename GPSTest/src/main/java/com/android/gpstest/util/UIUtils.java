@@ -79,7 +79,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Utilities for processing user inteface elements
@@ -161,20 +160,6 @@ public class UIUtils {
      */
     public static boolean isFragmentAttached(Fragment f) {
         return f.getActivity() != null && f.isAdded();
-    }
-
-    /**
-     * Returns a human-readable description of the time-to-first-fix, such as "38 sec"
-     *
-     * @param ttff time-to-first fix, in milliseconds
-     * @return a human-readable description of the time-to-first-fix, such as "38 sec"
-     */
-    public static String getTtffString(int ttff) {
-        if (ttff == 0) {
-            return "";
-        } else {
-            return TimeUnit.MILLISECONDS.toSeconds(ttff) + " sec";
-        }
     }
 
     /**

@@ -53,6 +53,7 @@ import com.android.gpstest.model.*
 import com.android.gpstest.util.*
 import com.android.gpstest.util.DateTimeUtils.Companion.NUM_DAYS_TIME_VALID
 import com.android.gpstest.util.DateTimeUtils.Companion.isTimeValid
+import com.android.gpstest.util.FormatUtils.formatTtff
 import com.android.gpstest.util.SharedPreferenceUtil.KILOMETERS_PER_HOUR
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
 import com.android.gpstest.util.SharedPreferenceUtil.METERS_PER_SECOND
@@ -581,7 +582,7 @@ class StatusFragment : Fragment() {
     }
 
     private fun onGnssFirstFix(ttffMillis: Int) {
-        ttff = UIUtils.getTtffString(ttffMillis)
+        ttff = formatTtff(ttffMillis)
         binding.ttff.text = ttff
         if (viewModel != null) {
             viewModel!!.setGotFirstFix(true)

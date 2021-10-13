@@ -1,6 +1,8 @@
 package com.android.gpstest.ui.status
 
+import android.annotation.SuppressLint
 import android.location.Location
+import android.text.format.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
@@ -11,8 +13,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,20 +27,33 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
+import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.ui.SignalInfoViewModel
-import com.android.gpstest.util.SharedPreferenceUtil
+import com.android.gpstest.util.DateTimeUtils
+import com.android.gpstest.util.FormatUtils.formatAltitude
+import com.android.gpstest.util.FormatUtils.formatAltitudeMsl
+import com.android.gpstest.util.FormatUtils.formatLatOrLon
+import com.android.gpstest.util.FormatUtils.formatSpeed
+import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SatelliteUtils.isSpeedAndBearingAccuracySupported
+import com.android.gpstest.util.SatelliteUtils.isVerticalAccuracySupported
+import com.android.gpstest.util.SharedPreferenceUtil.METERS
+import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
 import com.android.gpstest.util.UIUtils
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.SimpleDateFormat
 
+@ExperimentalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
 fun StatusScreen(viewModel: SignalInfoViewModel) {
-    // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
-    val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
-    val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
-    val SDF_DATE_24_HOUR = "HH:mm:ss.SSS MMM d, yyyy z"
-    val SDF_DATE_12_HOUR = "hh:mm:ss.SSS a MMM d, yyyy z"
-
+    //
+    // Observe LiveData from ViewModel
+    //
     val location: Location by viewModel.location.observeAsState(Location("default"))
+    val ttff: String by viewModel.ttff.observeAsState("")
+    val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
+    val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
 
     Box(
         modifier = Modifier
@@ -44,7 +61,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             .verticalScroll(rememberScrollState())
     ) {
         Column {
-            LocationCard(location)
+            LocationCard(location, ttff, altitudeMsl, dop)
 //            Filter()
 //            GnssStatusCard()
 //            SbasStatusCard()
@@ -57,7 +74,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
 fun LocationCardPreview(
     @PreviewParameter(LocationPreviewParameterProvider::class) location: Location
 ) {
-    LocationCard(location)
+    LocationCard(location, "5 sec", 1.4, DilutionOfPrecision(1.0,2.0,3.0))
 }
 
 class LocationPreviewParameterProvider : PreviewParameterProvider<Location> {
@@ -73,17 +90,20 @@ fun previewLocation(): Location {
         altitude = 13.5
         speed = 21.5f
         bearing = 240f
-        // FIXME - Uncomment after preview bug is fixed
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            bearingAccuracyDegrees = 5f
-//        }
+        if (isSpeedAndBearingAccuracySupported()) {
+            bearingAccuracyDegrees = 5.6f
+            speedAccuracyMetersPerSecond = 6.1f
+        }
     }
     return l
 }
 
 @Composable
 fun LocationCard(
-    location: Location
+    location: Location,
+    ttff: String,
+    altitudeMsl: Double,
+    dop: DilutionOfPrecision,
 ) {
     Card(
         modifier = Modifier
@@ -93,15 +113,19 @@ fun LocationCard(
     ) {
         Row {
             LabelColumn1()
-            ValueColumn1(location)
+            ValueColumn1(location, altitudeMsl, dop)
             LabelColumn2()
-            ValueColumn2(location)
+            ValueColumn2(location, ttff, dop)
         }
     }
 }
 
 @Composable
-fun ValueColumn1(location: Location) {
+fun ValueColumn1(
+    location: Location,
+    altitudeMsl: Double,
+    dop: DilutionOfPrecision,
+) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -110,55 +134,64 @@ fun ValueColumn1(location: Location) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        // TODO - support formatting values
-        // TODO - use hasX() method for relevant values
-        LocationValue(formatLatOrLon(location.latitude, CoordinateType.LATITUDE))
-        LocationValue(formatLatOrLon(location.longitude, CoordinateType.LONGITUDE))
-        LocationValue(location.altitude.toString())
-        LocationValue("") // FIXME - Alt MSL
-        LocationValue(location.speed.toString())
-        // FIXME - Uncomment after preview bug is fixed
-//        if (isSpeedAndBearingAccuracySupported()) {
-//            LocationValue(if (location.hasSpeedAccuracy()) location.speedAccuracyMetersPerSecond.toString() else "")
-//        }
-        LocationValue("") // FIXME - PDOP
+        Latitude(location)
+        Longitude(location)
+        Altitude(location)
+        AltitudeMsl(altitudeMsl)
+        Speed(location)
+        SpeedAccuracy(location)
+        Pdop(dop)
     }
 }
 
 @Composable
-private fun formatLatOrLon(latOrLong: Double, coordinateType: CoordinateType): String {
-    if (latOrLong == 0.0) return "             "
+fun Latitude(location: Location) {
+    LocationValue(formatLatOrLon(location.latitude, CoordinateType.LATITUDE))
+}
 
-    when (SharedPreferenceUtil.coordinateFormat()) {
-        "dd" -> {
-            // Decimal degrees
-            return stringResource(R.string.lat_or_lon, latOrLong)
-        }
-        "dms" -> {
-            // Degrees minutes seconds
-            return UIUtils.getDMSFromLocation(
-                Application.app,
-                latOrLong,
-                coordinateType
-            )
-        }
-        "ddm" -> {
-            // Degrees decimal minutes
-            return UIUtils.getDDMFromLocation(
-                Application.app,
-                latOrLong,
-                coordinateType
-            )
-        }
-        else -> {
-            // Decimal degrees
-            return stringResource(R.string.lat_or_lon, latOrLong)
-        }
+@Composable
+fun Longitude(location: Location) {
+    LocationValue(formatLatOrLon(location.longitude, CoordinateType.LONGITUDE))
+}
+
+@Composable
+fun Altitude(location: Location) {
+    LocationValue(formatAltitude(location))
+}
+
+@Composable
+fun AltitudeMsl(altitudeMsl: Double) {
+    LocationValue(formatAltitudeMsl(altitudeMsl))
+}
+
+@Composable
+fun Speed(location: Location) {
+    LocationValue(formatSpeed(location))
+}
+
+@Composable
+fun SpeedAccuracy(location: Location) {
+    // FIX ME - format from StatusFragment
+    if (isSpeedAndBearingAccuracySupported()) {
+        LocationValue(if (location.hasSpeedAccuracy()) location.speedAccuracyMetersPerSecond.toString() else "")
     }
 }
 
 @Composable
-fun ValueColumn2(location: Location) {
+fun Pdop(dop: DilutionOfPrecision) {
+    if (dop.positionDop.isNaN()) {
+        LocationValue("")
+    } else {
+        LocationValue(stringResource(R.string.pdop_value, dop.positionDop))
+    }
+}
+
+@Composable
+fun ValueColumn2(
+    location: Location,
+    ttff: String,
+    dop: DilutionOfPrecision,
+) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -167,71 +200,155 @@ fun ValueColumn2(location: Location) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        // TODO - support formatting values
-        // TODO - use hasX() method for relevant values
-        LocationValue(location.time.toString())
-        LocationValue("") // FIXME - TTFF
-        //Accuracy(location) // FIXME - This seems to break the preview - uncomment when we don't need the preview anymore
-        LocationValue("") // FIXME - Num sats
-        LocationValue(location.bearing.toString())
-        // FIXME - Uncomment after preview bug is fixed
-//        if (isSpeedAndBearingAccuracySupported()) {
-//            LocationValue(if (location.hasBearingAccuracy()) location.bearingAccuracyDegrees.toString() else "")
-//        }
-        LocationValue("") // FIXME - H/V DOP
+        Time(location)
+        TTFF(ttff)
+        Accuracy(location)
+        NumSats(location)
+        Bearing(location)
+        BearingAccuracy(location)
+        HVDOP(dop)
     }
+}
+
+@Composable
+fun Time(location: Location) {
+    if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
+        LocationValue("")
+    } else {
+        if (DateTimeUtils.isTimeValid(location.time)) {
+            formatTime(location.time)
+        } else {
+            // Error in fix time - FIXME - show error view instead
+//            binding.fixTimeError.visibility = View.VISIBLE
+//            binding.fixTimeError.text = formatFixTimeDate(location.time)
+//            binding.fixTime.visibility = View.GONE
+            LocationValue("")
+        }
+    }
+}
+
+@Composable
+private fun formatTime(fixTime: Long) {
+    // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
+    val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
+    val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
+    val SDF_DATE_24_HOUR = "HH:mm:ss.SSS MMM d, yyyy z"
+    val SDF_DATE_12_HOUR = "hh:mm:ss.SSS a MMM d, yyyy z"
+
+    // See #117
+    @SuppressLint("SimpleDateFormat")
+    val timeFormat = remember {
+        SimpleDateFormat(
+            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
+        )
+    }
+    @SuppressLint("SimpleDateFormat")
+    val timeAndDateFormat = remember {
+        SimpleDateFormat(
+            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
+        )
+    }
+
+    if (LocalConfiguration.current.screenWidthDp > 450) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+        // Time and date
+        LocationValue(timeAndDateFormat.format(fixTime))
+    } else {
+        // Just time
+        LocationValue(timeFormat.format(fixTime))
+    }
+}
+
+@Composable
+fun TTFF(ttff: String) {
+    LocationValue(ttff)
 }
 
 /**
  * Horizontal and vertical location accuracies based on the provided location
  * @param location
  */
-// FIXME - Uncomment after preview bug is fixed
-//@Composable
-//fun Accuracy(location: Location) {
-//    if (isVerticalAccuracySupported(location)) {
-//        if (distanceUnits().equals(METERS, ignoreCase = true)) {
-//            LocationValue(
-//                stringResource(
-//                    R.string.gps_hor_and_vert_accuracy_value_meters,
-//                    location.accuracy,
-//                    location.verticalAccuracyMeters
-//                )
-//            )
-//        } else {
-//            // Feet
-//            LocationValue(
-//                stringResource(
-//                    R.string.gps_hor_and_vert_accuracy_value_feet,
-//                    UIUtils.toFeet(location.accuracy.toDouble()),
-//                    UIUtils.toFeet(
-//                        location.verticalAccuracyMeters.toDouble()
-//                    )
-//                )
-//            )
-//        }
-//    } else {
-//        if (location.hasAccuracy()) {
-//            if (distanceUnits().equals(METERS, ignoreCase = true)) {
-//                LocationValue(
-//                    stringResource(
-//                        R.string.gps_accuracy_value_meters, location.accuracy
-//                    )
-//                )
-//            } else {
-//                // Feet
-//                LocationValue(
-//                    stringResource(
-//                        R.string.gps_accuracy_value_feet,
-//                        UIUtils.toFeet(location.accuracy.toDouble())
-//                    )
-//                )
-//            }
-//        } else {
-//            LocationValue("")
-//        }
-//    }
-//}
+@Composable
+fun Accuracy(location: Location) {
+    if (isVerticalAccuracySupported(location)) {
+        if (distanceUnits().equals(METERS, ignoreCase = true)) {
+            LocationValue(
+                stringResource(
+                    R.string.gps_hor_and_vert_accuracy_value_meters,
+                    location.accuracy,
+                    location.verticalAccuracyMeters
+                )
+            )
+        } else {
+            // Feet
+            LocationValue(
+                stringResource(
+                    R.string.gps_hor_and_vert_accuracy_value_feet,
+                    UIUtils.toFeet(location.accuracy.toDouble()),
+                    UIUtils.toFeet(
+                        location.verticalAccuracyMeters.toDouble()
+                    )
+                )
+            )
+        }
+    } else {
+        if (location.hasAccuracy()) {
+            if (distanceUnits().equals(METERS, ignoreCase = true)) {
+                LocationValue(
+                    stringResource(
+                        R.string.gps_accuracy_value_meters, location.accuracy
+                    )
+                )
+            } else {
+                // Feet
+                LocationValue(
+                    stringResource(
+                        R.string.gps_accuracy_value_feet,
+                        UIUtils.toFeet(location.accuracy.toDouble())
+                    )
+                )
+            }
+        } else {
+            LocationValue("")
+        }
+    }
+}
+
+@Composable
+fun NumSats(location: Location) {
+    LocationValue("") // FIXME - Num sats
+}
+
+@Composable
+fun Bearing(location: Location) {
+    // FIXME - format from StatusFragment
+    if (location.hasBearing()) {
+        LocationValue(stringResource(R.string.gps_bearing_value, location.bearing))
+    } else {
+        LocationValue("")
+    }
+}
+
+@Composable
+fun BearingAccuracy(location: Location) {
+    // FIX ME - format from StatusFragment
+    if (isSpeedAndBearingAccuracySupported()) {
+        LocationValue(if (location.hasBearingAccuracy()) location.bearingAccuracyDegrees.toString() else "")
+    }
+}
+
+@Composable
+fun HVDOP(dop: DilutionOfPrecision) {
+    if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) {
+        LocationValue("")
+    } else {
+        LocationValue(
+            stringResource(
+                R.string.hvdop_value, dop.horizontalDop,
+                dop.verticalDop
+            )
+        )
+    }
+}
 
 @Composable
 fun LabelColumn1() {
@@ -239,7 +356,7 @@ fun LabelColumn1() {
         modifier = Modifier
             .wrapContentHeight()
             .wrapContentWidth()
-            .padding(top = 5.dp, bottom = 5.dp, start = 5.dp),
+            .padding(top = 5.dp, bottom = 5.dp, start = 5.dp, end = 5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
