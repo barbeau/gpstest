@@ -543,10 +543,10 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     fun reset() {
-        _gnssStatuses.value = null
-        _sbasStatuses.value = null
-        _gnssSatellites.value = null
-        _sbasSatellites.value = null
+        _gnssStatuses.value = emptyList()
+        _sbasStatuses.value = emptyList()
+        _gnssSatellites.value = emptyMap()
+        _sbasSatellites.value = emptyMap()
         satelliteMetadata.value = null
         mDuplicateCarrierStatuses = HashMap()
         mUnknownCarrierStatuses = HashMap()
