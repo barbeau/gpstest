@@ -320,7 +320,6 @@ fun NumSats(location: Location) {
 
 @Composable
 fun Bearing(location: Location) {
-    // FIXME - format from StatusFragment
     if (location.hasBearing()) {
         Value(stringResource(R.string.gps_bearing_value, location.bearing))
     } else {
