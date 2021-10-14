@@ -1,0 +1,4 @@
+• "Force full GNSS measurements" setting (Android 12 and up) - No more digging into the Android system developer mode. See https://bit.ly/gnss-force-full-measurements for details.
+• Better capture of device GNSS capabilities (Android 12 and up) - Uses GnssCapabilities API for GPSTest Database. See https://bit.ly/gpstest-database-article for details.
+• Improved app accessibility - Better labels that are announced if TalkBack is enabled.
+• Bug fixes - see http://bit.ly/gpstest-releases
