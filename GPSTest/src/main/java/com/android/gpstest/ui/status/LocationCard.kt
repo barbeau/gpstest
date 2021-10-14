@@ -114,40 +114,40 @@ fun ValueColumn1(
 
 @Composable
 fun Latitude(location: Location) {
-    Value(FormatUtils.formatLatOrLon(location.latitude, CoordinateType.LATITUDE))
+    LocationValue(FormatUtils.formatLatOrLon(location.latitude, CoordinateType.LATITUDE))
 }
 
 @Composable
 fun Longitude(location: Location) {
-    Value(FormatUtils.formatLatOrLon(location.longitude, CoordinateType.LONGITUDE))
+    LocationValue(FormatUtils.formatLatOrLon(location.longitude, CoordinateType.LONGITUDE))
 }
 
 @Composable
 fun Altitude(location: Location) {
-    Value(FormatUtils.formatAltitude(location))
+    LocationValue(FormatUtils.formatAltitude(location))
 }
 
 @Composable
 fun AltitudeMsl(altitudeMsl: Double) {
-    Value(FormatUtils.formatAltitudeMsl(altitudeMsl))
+    LocationValue(FormatUtils.formatAltitudeMsl(altitudeMsl))
 }
 
 @Composable
 fun Speed(location: Location) {
-    Value(FormatUtils.formatSpeed(location))
+    LocationValue(FormatUtils.formatSpeed(location))
 }
 
 @Composable
 fun SpeedAccuracy(location: Location) {
-    Value(FormatUtils.formatSpeedAccuracy(location))
+    LocationValue(FormatUtils.formatSpeedAccuracy(location))
 }
 
 @Composable
 fun Pdop(dop: DilutionOfPrecision) {
     if (dop.positionDop.isNaN()) {
-        Value("")
+        LocationValue("")
     } else {
-        Value(stringResource(R.string.pdop_value, dop.positionDop))
+        LocationValue(stringResource(R.string.pdop_value, dop.positionDop))
     }
 }
 
@@ -179,7 +179,7 @@ fun ValueColumn2(
 @Composable
 fun Time(location: Location) {
     if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
-        Value("")
+        LocationValue("")
     } else {
         if (DateTimeUtils.isTimeValid(location.time)) {
             formatTime(location.time)
@@ -188,7 +188,7 @@ fun Time(location: Location) {
 //            binding.fixTimeError.visibility = View.VISIBLE
 //            binding.fixTimeError.text = formatFixTimeDate(location.time)
 //            binding.fixTime.visibility = View.GONE
-            Value("")
+            LocationValue("")
         }
     }
 }
@@ -217,16 +217,16 @@ private fun formatTime(fixTime: Long) {
 
     if (LocalConfiguration.current.screenWidthDp > 450) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
         // Time and date
-        Value(timeAndDateFormat.format(fixTime))
+        LocationValue(timeAndDateFormat.format(fixTime))
     } else {
         // Just time
-        Value(timeFormat.format(fixTime))
+        LocationValue(timeFormat.format(fixTime))
     }
 }
 
 @Composable
 fun TTFF(ttff: String) {
-    Value(ttff)
+    LocationValue(ttff)
 }
 
 /**
@@ -235,12 +235,12 @@ fun TTFF(ttff: String) {
  */
 @Composable
 fun Accuracy(location: Location) {
-    Value(FormatUtils.formatAccuracy(location))
+    LocationValue(FormatUtils.formatAccuracy(location))
 }
 
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
-    Value(
+    LocationValue(
         stringResource(
             R.string.gps_num_sats_value,
             satelliteMetadata.numSatsUsed,
@@ -253,23 +253,23 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun Bearing(location: Location) {
     if (location.hasBearing()) {
-        Value(stringResource(R.string.gps_bearing_value, location.bearing))
+        LocationValue(stringResource(R.string.gps_bearing_value, location.bearing))
     } else {
-        Value("")
+        LocationValue("")
     }
 }
 
 @Composable
 fun BearingAccuracy(location: Location) {
-    Value(FormatUtils.formatBearingAccuracy(location))
+    LocationValue(FormatUtils.formatBearingAccuracy(location))
 }
 
 @Composable
 fun HVDOP(dop: DilutionOfPrecision) {
     if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) {
-        Value("")
+        LocationValue("")
     } else {
-        Value(
+        LocationValue(
             stringResource(
                 R.string.hvdop_value, dop.horizontalDop,
                 dop.verticalDop
@@ -288,13 +288,13 @@ fun LabelColumn1() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
-        Label(R.string.latitude_label)
-        Label(R.string.longitude_label)
-        Label(R.string.altitude_label)
-        Label(R.string.altitude_msl_label)
-        Label(R.string.speed_label)
-        Label(R.string.speed_acc_label)
-        Label(R.string.pdop_label)
+        LocationLabel(R.string.latitude_label)
+        LocationLabel(R.string.longitude_label)
+        LocationLabel(R.string.altitude_label)
+        LocationLabel(R.string.altitude_msl_label)
+        LocationLabel(R.string.speed_label)
+        LocationLabel(R.string.speed_acc_label)
+        LocationLabel(R.string.pdop_label)
     }
 }
 
@@ -308,18 +308,18 @@ fun LabelColumn2() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
-        Label(R.string.fix_time_label)
-        Label(R.string.ttff_label)
-        Label(R.string.hor_and_vert_accuracy_label) // FIXME - change to just H if only H is supported
-        Label(R.string.num_sats_label)
-        Label(R.string.bearing_label)
-        Label(R.string.bearing_acc_label)
-        Label(R.string.hvdop_label)
+        LocationLabel(R.string.fix_time_label)
+        LocationLabel(R.string.ttff_label)
+        LocationLabel(R.string.hor_and_vert_accuracy_label) // FIXME - change to just H if only H is supported
+        LocationLabel(R.string.num_sats_label)
+        LocationLabel(R.string.bearing_label)
+        LocationLabel(R.string.bearing_acc_label)
+        LocationLabel(R.string.hvdop_label)
     }
 }
 
 @Composable
-fun Label(@StringRes id: Int) {
+fun LocationLabel(@StringRes id: Int) {
     Text(
         text = stringResource(id),
         modifier = Modifier.padding(start = 4.dp, end = 4.dp),
@@ -329,7 +329,7 @@ fun Label(@StringRes id: Int) {
 }
 
 @Composable
-fun Value(text: String) {
+fun LocationValue(text: String) {
     Text(
         text = text,
         modifier = Modifier.padding(end = 4.dp),
