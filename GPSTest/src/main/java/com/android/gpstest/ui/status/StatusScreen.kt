@@ -28,6 +28,7 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
+import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.FormatUtils.formatAltitude
@@ -54,6 +55,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
+    val satelliteMetadata: SatelliteMetadata by viewModel.satelliteMetadata.observeAsState(SatelliteMetadata(0,0,0,0,0,0))
 
     Box(
         modifier = Modifier
@@ -61,7 +63,12 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             .verticalScroll(rememberScrollState())
     ) {
         Column {
-            LocationCard(location, ttff, altitudeMsl, dop)
+            LocationCard(
+                location,
+                ttff,
+                altitudeMsl,
+                dop,
+                satelliteMetadata)
 //            Filter() // TODO - annotated text - https://foso.github.io/Jetpack-Compose-Playground/material/card/
 //            GnssStatusCard()
 //            SbasStatusCard()
@@ -74,7 +81,13 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
 fun LocationCardPreview(
     @PreviewParameter(LocationPreviewParameterProvider::class) location: Location
 ) {
-    LocationCard(location, "5 sec", 1.4, DilutionOfPrecision(1.0,2.0,3.0))
+    LocationCard(
+        location,
+        "5 sec",
+        1.4,
+        DilutionOfPrecision(1.0, 2.0, 3.0),
+        SatelliteMetadata(0, 0, 0, 0, 0, 0)
+    )
 }
 
 class LocationPreviewParameterProvider : PreviewParameterProvider<Location> {
@@ -104,6 +117,7 @@ fun LocationCard(
     ttff: String,
     altitudeMsl: Double,
     dop: DilutionOfPrecision,
+    satelliteMetadata: SatelliteMetadata,
 ) {
     Card(
         modifier = Modifier
@@ -115,7 +129,7 @@ fun LocationCard(
             LabelColumn1()
             ValueColumn1(location, altitudeMsl, dop)
             LabelColumn2()
-            ValueColumn2(location, ttff, dop)
+            ValueColumn2(location, ttff, dop, satelliteMetadata)
         }
     }
 }
@@ -191,6 +205,7 @@ fun ValueColumn2(
     location: Location,
     ttff: String,
     dop: DilutionOfPrecision,
+    satelliteMetadata: SatelliteMetadata,
 ) {
     Column(
         modifier = Modifier
@@ -203,7 +218,7 @@ fun ValueColumn2(
         Time(location)
         TTFF(ttff)
         Accuracy(location)
-        NumSats(location)
+        NumSats(satelliteMetadata)
         Bearing(location)
         BearingAccuracy(location)
         HVDOP(dop)
@@ -314,8 +329,15 @@ fun Accuracy(location: Location) {
 }
 
 @Composable
-fun NumSats(location: Location) {
-    Value("") // FIXME - Num sats
+fun NumSats(satelliteMetadata: SatelliteMetadata) {
+    Value(
+        stringResource(
+            R.string.gps_num_sats_value,
+            satelliteMetadata.numSatsUsed,
+            satelliteMetadata.numSatsInView,
+            satelliteMetadata.numSatsTotal
+        )
+    )
 }
 
 @Composable
