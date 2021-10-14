@@ -47,6 +47,8 @@ To build the release build, run:
 
 `gradlew assembleRelease`
 
+We also need to add the changelog in a new file for the F-Droid release in [fastlane/metadata/android/en-US/changelogs](fastlane/metadata/android/en-US/changelogs), where the file name is the `version_code` (see [#559](https://github.com/barbeau/gpstest/issues/559)).
+
 ## Troubleshooting
 
 ### When importing to Android Studio, I get an error "You are using an old, unsupported version of Gradle..."
