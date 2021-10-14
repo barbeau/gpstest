@@ -85,6 +85,9 @@ class SignalInfoViewModel @Inject constructor(
     private val _dop = MutableLiveData<DilutionOfPrecision>()
     val dop: LiveData<DilutionOfPrecision> = _dop
 
+    private val _satelliteMetadata = MutableLiveData<SatelliteMetadata>()
+    val satelliteMetadata: LiveData<SatelliteMetadata> = _satelliteMetadata
+
     private var started = false
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
@@ -303,16 +306,6 @@ class SignalInfoViewModel @Inject constructor(
     private var supportedSbasCfs: MutableSet<String> = HashSet()
 
     /**
-     * Returns the metadata about a group of satellites
-     *
-     * @return the metadata about a group of satellites
-     */
-    /**
-     * A set of metadata about all satellites the device knows of
-     */
-    val satelliteMetadata = MutableLiveData<SatelliteMetadata>()
-
-    /**
      * Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
      * has been detected as having duplicate carrier frequency data with another signal
      */
@@ -422,7 +415,7 @@ class SignalInfoViewModel @Inject constructor(
         val numSatsTotal =
             gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal
 
-        satelliteMetadata.value = SatelliteMetadata(
+        _satelliteMetadata.value = SatelliteMetadata(
             numSignalsInView,
             numSignalsUsed,
             numSignalsTotal,
@@ -563,7 +556,7 @@ class SignalInfoViewModel @Inject constructor(
         _ttff.value = ""
         _altitudeMsl.value = Double.NaN
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
-        satelliteMetadata.value = null
+        _satelliteMetadata.value = SatelliteMetadata(0,0,0,0,0,0)
         mDuplicateCarrierStatuses = HashMap()
         mUnknownCarrierStatuses = HashMap()
         supportedGnss = HashSet()

@@ -483,6 +483,42 @@ internal object FormatUtils {
         }
     }
 
+    fun formatAccuracy(location: Location): String {
+        if (SatelliteUtils.isVerticalAccuracySupported(location)) {
+            if (distanceUnits().equals(METERS, ignoreCase = true)) {
+                return Application.app.getString(
+                        R.string.gps_hor_and_vert_accuracy_value_meters,
+                        location.accuracy,
+                        location.verticalAccuracyMeters
+                    )
+            } else {
+                // Feet
+                return Application.app.getString(
+                        R.string.gps_hor_and_vert_accuracy_value_feet,
+                        UIUtils.toFeet(location.accuracy.toDouble()),
+                        UIUtils.toFeet(
+                            location.verticalAccuracyMeters.toDouble()
+                        )
+                    )
+            }
+        } else {
+            if (location.hasAccuracy()) {
+                return if (distanceUnits().equals(METERS, ignoreCase = true)) {
+                    Application.app.getString(
+                        R.string.gps_accuracy_value_meters, location.accuracy
+                    )
+                } else {
+                    // Feet
+                    Application.app.getString(
+                        R.string.gps_accuracy_value_feet,
+                        UIUtils.toFeet(location.accuracy.toDouble())
+                    )
+                }
+            }
+        }
+        return ""
+    }
+
     fun formatAltitudeMsl(altitudeMsl: Double): String {
         if (altitudeMsl.isNaN()) return ""
 
@@ -495,6 +531,46 @@ internal object FormatUtils {
                 R.string.gps_altitude_msl_value_feet,
                 UIUtils.toFeet(altitudeMsl)
             )
+        }
+    }
+
+    fun formatSpeedAccuracy(location: Location): String {
+        if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasSpeedAccuracy()) {
+            when {
+                speedUnits()
+                    .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
+                    return Application.app.getString(
+                        R.string.gps_speed_acc_value_meters_sec,
+                        location.speedAccuracyMetersPerSecond
+                    )
+                }
+                speedUnits()
+                    .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                    return Application.app.getString(
+                        R.string.gps_speed_acc_value_km_hour,
+                        UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
+                    )
+                }
+                else -> {
+                    // Miles per hour
+                    return Application.app.getString(
+                        R.string.gps_speed_acc_value_miles_hour,
+                        UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
+                    )
+                }
+            }
+        }
+        return ""
+    }
+
+    fun formatBearingAccuracy(location: Location): String {
+        return if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasBearingAccuracy()) {
+            Application.app.getString(
+                R.string.gps_bearing_acc_value,
+                location.bearingAccuracyDegrees
+            )
+        } else {
+            ""
         }
     }
 }

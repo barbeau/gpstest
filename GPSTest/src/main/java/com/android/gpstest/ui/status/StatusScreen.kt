@@ -31,16 +31,15 @@ import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.DateTimeUtils
+import com.android.gpstest.util.FormatUtils.formatAccuracy
 import com.android.gpstest.util.FormatUtils.formatAltitude
 import com.android.gpstest.util.FormatUtils.formatAltitudeMsl
+import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.FormatUtils.formatLatOrLon
 import com.android.gpstest.util.FormatUtils.formatSpeed
+import com.android.gpstest.util.FormatUtils.formatSpeedAccuracy
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils.isSpeedAndBearingAccuracySupported
-import com.android.gpstest.util.SatelliteUtils.isVerticalAccuracySupported
-import com.android.gpstest.util.SharedPreferenceUtil.METERS
-import com.android.gpstest.util.SharedPreferenceUtil.distanceUnits
-import com.android.gpstest.util.UIUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 
@@ -185,10 +184,7 @@ fun Speed(location: Location) {
 
 @Composable
 fun SpeedAccuracy(location: Location) {
-    // FIX ME - format from StatusFragment
-    if (isSpeedAndBearingAccuracySupported()) {
-        Value(if (location.hasSpeedAccuracy()) location.speedAccuracyMetersPerSecond.toString() else "")
-    }
+    Value(formatSpeedAccuracy(location))
 }
 
 @Composable
@@ -284,48 +280,7 @@ fun TTFF(ttff: String) {
  */
 @Composable
 fun Accuracy(location: Location) {
-    if (isVerticalAccuracySupported(location)) {
-        if (distanceUnits().equals(METERS, ignoreCase = true)) {
-            Value(
-                stringResource(
-                    R.string.gps_hor_and_vert_accuracy_value_meters,
-                    location.accuracy,
-                    location.verticalAccuracyMeters
-                )
-            )
-        } else {
-            // Feet
-            Value(
-                stringResource(
-                    R.string.gps_hor_and_vert_accuracy_value_feet,
-                    UIUtils.toFeet(location.accuracy.toDouble()),
-                    UIUtils.toFeet(
-                        location.verticalAccuracyMeters.toDouble()
-                    )
-                )
-            )
-        }
-    } else {
-        if (location.hasAccuracy()) {
-            if (distanceUnits().equals(METERS, ignoreCase = true)) {
-                Value(
-                    stringResource(
-                        R.string.gps_accuracy_value_meters, location.accuracy
-                    )
-                )
-            } else {
-                // Feet
-                Value(
-                    stringResource(
-                        R.string.gps_accuracy_value_feet,
-                        UIUtils.toFeet(location.accuracy.toDouble())
-                    )
-                )
-            }
-        } else {
-            Value("")
-        }
-    }
+    Value(formatAccuracy(location))
 }
 
 @Composable
@@ -351,10 +306,7 @@ fun Bearing(location: Location) {
 
 @Composable
 fun BearingAccuracy(location: Location) {
-    // FIX ME - format from StatusFragment
-    if (isSpeedAndBearingAccuracySupported()) {
-        Value(if (location.hasBearingAccuracy()) location.bearingAccuracyDegrees.toString() else "")
-    }
+    Value(formatBearingAccuracy(location))
 }
 
 @Composable
