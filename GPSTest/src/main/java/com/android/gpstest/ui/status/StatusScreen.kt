@@ -62,7 +62,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     ) {
         Column {
             LocationCard(location, ttff, altitudeMsl, dop)
-//            Filter()
+//            Filter() // TODO - annotated text - https://foso.github.io/Jetpack-Compose-Playground/material/card/
 //            GnssStatusCard()
 //            SbasStatusCard()
         }

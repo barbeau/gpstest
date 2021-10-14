@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
 import android.location.Location
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -398,6 +399,7 @@ class SignalInfoViewModel @Inject constructor(
      * @param gnssStatuses a new set of GNSS status objects (signals)
      * @param sbasStatuses a new set of SBAS status objects (signals)
      */
+    @VisibleForTesting
     fun setStatuses(gnssStatuses: List<SatelliteStatus>, sbasStatuses: List<SatelliteStatus>) {
         this._gnssStatuses.value = gnssStatuses
         this._sbasStatuses.value = sbasStatuses
