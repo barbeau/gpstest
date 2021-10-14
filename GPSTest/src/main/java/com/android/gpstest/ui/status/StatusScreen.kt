@@ -100,14 +100,8 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
             .wrapContentHeight()
             .padding(top = 5.dp, start = 16.dp, end = 16.dp)
     ) {
-        val minWidth = Modifier.defaultMinSize(
-            minWidth = dimensionResource(
-                id = R.dimen.min_column_width
-            )
-        )
-        val minWidthSmall = Modifier.defaultMinSize(
-            minWidth = 36.dp
-        )
+        val minWidth = Modifier.defaultMinSize(dimensionResource(R.dimen.min_column_width))
+        val minWidthSmall = Modifier.defaultMinSize(36.dp)
 
         StatusValue(satelliteStatus.svid.toString(), minWidthSmall)
         StatusValue("flag") // FIXME - flag image
