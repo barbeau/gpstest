@@ -353,7 +353,11 @@ public class IOUtils {
             mNmeaOutput.append(",");
         }
         mNmeaOutput.append(nmea);
-        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString());
+        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString()); // FIXME?     java.lang.StringIndexOutOfBoundsException: length=122; regionStart=0; regionLength=144
+//        at java.lang.StringFactory.newStringFromChars(StringFactory.java:110)
+//        at java.lang.StringBuilder.toString(StringBuilder.java:413)
+//        at com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio(IOUtils.java:356)
+//        at com.android.gpstest.ForegroundOnlyLocationService$observeNmeaFlow$1$1.invokeSuspend(ForegroundOnlyLocationService.kt:303)
     }
 
     /**

@@ -1,12 +1,10 @@
 package com.android.gpstest.ui.status
 
 import android.location.Location
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.util.CarrierFreqUtils
+import com.android.gpstest.util.MathUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -107,7 +108,7 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
 
         Svid(satelliteStatus, minWidthSmall)
         Flag(satelliteStatus, minWidth)
-        StatusValue(satelliteStatus.carrierFrequencyHz.toString(), minWidthSmall) // FIXME - format label extension function
+        CarrierFrequency(satelliteStatus, minWidthSmall)
         StatusValue(satelliteStatus.cn0DbHz.toString(), minWidth) // FIXME - format
         StatusValue(satelliteStatus.hasEphemeris.toString(), minWidth) // FIXME - do all booleans
         StatusValue(satelliteStatus.elevationDegrees.toString(), minWidth) // FIXME - format
@@ -116,54 +117,30 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
 }
 
 @Composable
-fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
     StatusValue(satelliteStatus.svid.toString(), modifier = modifier)
 }
 
 @Composable
-fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
     when (satelliteStatus.gnssType) {
         GnssType.NAVSTAR -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_usa),
-                contentDescription = stringResource(id = R.string.gps_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_usa, R.string.gps_content_description, modifier)
         }
         GnssType.GLONASS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_russia),
-                contentDescription = stringResource(id = R.string.glonass_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_russia, R.string.glonass_content_description, modifier)
         }
         GnssType.QZSS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_japan),
-                contentDescription = stringResource(id = R.string.qzss_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_japan, R.string.qzss_content_description, modifier)
         }
         GnssType.BEIDOU -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_china),
-                contentDescription = stringResource(id = R.string.beidou_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_china, R.string.beidou_content_description, modifier)
         }
         GnssType.GALILEO -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_european_union),
-                contentDescription = stringResource(id = R.string.galileo_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_european_union, R.string.galileo_content_description, modifier)
         }
         GnssType.IRNSS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_india),
-                contentDescription = stringResource(id = R.string.irnss_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_india, R.string.irnss_content_description, modifier)
         }
         GnssType.SBAS -> SbasFlag(satelliteStatus, modifier)
         GnssType.UNKNOWN -> {
@@ -176,56 +153,28 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
 }
 
 @Composable
-fun SbasFlag(status: SatelliteStatus, modifier: Modifier) {
+fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
     when (status.sbasType) {
         SbasType.WAAS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_usa),
-                contentDescription = stringResource(id = R.string.waas_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_usa, R.string.waas_content_description, modifier)
         }
         SbasType.EGNOS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_european_union),
-                contentDescription = stringResource(id = R.string.egnos_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_european_union, R.string.egnos_content_description, modifier)
         }
         SbasType.GAGAN -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_india),
-                contentDescription = stringResource(id = R.string.gagan_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_india, R.string.gagan_content_description, modifier)
         }
         SbasType.MSAS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_japan),
-                contentDescription = stringResource(id = R.string.msas_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_japan, R.string.msas_content_description, modifier)
         }
         SbasType.SDCM -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_russia),
-                contentDescription = stringResource(id = R.string.sdcm_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_russia, R.string.sdcm_content_description, modifier)
         }
         SbasType.SNAS -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_china),
-                contentDescription = stringResource(id = R.string.snas_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_china, R.string.snas_content_description, modifier)
         }
         SbasType.SACCSA -> {
-            Image(
-                painter = painterResource(id = R.drawable.ic_flag_icao),
-                contentDescription = stringResource(id = R.string.saccsa_content_description),
-                modifier = modifier
-            )
+            FlagImage(R.drawable.ic_flag_icao, R.string.saccsa_content_description, modifier)
         }
         SbasType.UNKNOWN -> {
             Box(
@@ -233,6 +182,46 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier) {
                 modifier = modifier
             )
         }
+    }
+}
+
+@Composable
+fun FlagImage(@DrawableRes flagId: Int, @StringRes contentDescriptionId: Int, modifier: Modifier = Modifier) {
+    // FIXME - the border currently draws on top of the image
+    Box(modifier = modifier
+        .wrapContentHeight()
+        .wrapContentWidth()
+        .border(BorderStroke(1.dp, Color.Black))
+        // FIXME - Theme border color - modifier = modifier.border(BorderStroke(1.dp, contentColorFor(MaterialTheme.colors.primarySurface))) see https://developer.android.com/jetpack/compose/themes/material
+    ) {
+        Image(
+            painter = painterResource(id = flagId),
+            contentDescription = stringResource(id = contentDescriptionId),
+        )
+    }
+}
+
+@Composable
+fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
+    if (satelliteStatus.hasCarrierFrequency) {
+        val carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(satelliteStatus)
+        if (carrierLabel != CarrierFreqUtils.CF_UNKNOWN) {
+            StatusValue(carrierLabel)
+        } else {
+            // Shrink the size so we can show raw number, convert Hz to MHz
+            // TODO - test with invalid CFs
+            val carrierMhz = MathUtils.toMhz(satelliteStatus.carrierFrequencyHz)
+            Text(
+                text = String.format("%.3f", carrierMhz),
+                modifier = modifier.padding(start = 3.dp, end = 3.dp),
+                fontSize = 10.sp,
+                textAlign = TextAlign.Start
+            )
+        }
+    } else {
+        Box(
+            modifier = modifier
+        )
     }
 }
 
