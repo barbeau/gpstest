@@ -105,16 +105,17 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
             .padding(start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val minWidth = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-        val minWidthSmall = Modifier.defaultMinSize(minWidth = 36.dp)
+        val small = Modifier.defaultMinSize(minWidth = 36.dp)
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
-        Svid(satelliteStatus, minWidthSmall)
-        Flag(satelliteStatus, minWidth)
-        CarrierFrequency(satelliteStatus, minWidthSmall)
-        Cn0(satelliteStatus, minWidth)
-        AEU(satelliteStatus, minWidth)
-        Elevation(satelliteStatus, minWidth)
-        Azimuth(satelliteStatus, minWidth)
+        Svid(satelliteStatus, small)
+        Flag(satelliteStatus, large)
+        CarrierFrequency(satelliteStatus, small)
+        Cn0(satelliteStatus, medium)
+        AEU(satelliteStatus, medium)
+        Elevation(satelliteStatus, medium)
+        Azimuth(satelliteStatus, medium)
     }
 }
 
@@ -287,20 +288,21 @@ fun StatusRowHeader(isGnss: Boolean) {
             .padding(top = 5.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val minWidth = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-        val minWidthSmall = Modifier.defaultMinSize(minWidth = 36.dp)
+        val small = Modifier.defaultMinSize(minWidth = 36.dp)
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
-        StatusLabel(R.string.id_column_label, minWidthSmall)
+        StatusLabel(R.string.id_column_label, small)
         if (isGnss) {
-            StatusLabel(R.string.gnss_flag_image_label, minWidth)
+            StatusLabel(R.string.gnss_flag_image_label, large)
         } else {
-            StatusLabel(R.string.sbas_flag_image_label, minWidth)
+            StatusLabel(R.string.sbas_flag_image_label, large)
         }
-        StatusLabel(R.string.cf_column_label, minWidthSmall)
-        StatusLabel(R.string.gps_cn0_column_label, minWidth)
-        StatusLabel(R.string.flags_aeu_column_label, minWidth)
-        StatusLabel(R.string.elevation_column_label, minWidth)
-        StatusLabel(R.string.azimuth_column_label, minWidth)
+        StatusLabel(R.string.cf_column_label, small)
+        StatusLabel(R.string.gps_cn0_column_label, medium)
+        StatusLabel(R.string.flags_aeu_column_label, medium)
+        StatusLabel(R.string.elevation_column_label, medium)
+        StatusLabel(R.string.azimuth_column_label, medium)
     }
 }
 
