@@ -85,11 +85,13 @@ fun StatusCard(
             .padding(5.dp),
         elevation = 2.dp
     ) {
+        // TODO - if empty list, show "no data" message for GNSS/SBAS
         Column {
             StatusRowHeader(isGnss)
             satStatuses.forEach {
                 StatusRow(it)
             }
+            StatusRowFooter()
         }
     }
 }
@@ -100,29 +102,29 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(top = 5.dp, start = 16.dp, end = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        val minWidth = Modifier.defaultMinSize(dimensionResource(R.dimen.min_column_width))
-        val minWidthSmall = Modifier.defaultMinSize(36.dp)
+        val minWidth = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val minWidthSmall = Modifier.defaultMinSize(minWidth = 36.dp)
 
         Svid(satelliteStatus, minWidthSmall)
         Flag(satelliteStatus, minWidth)
         CarrierFrequency(satelliteStatus, minWidthSmall)
-        StatusValue(satelliteStatus.cn0DbHz.toString(), minWidth) // FIXME - format
-        StatusValue(satelliteStatus.hasEphemeris.toString(), minWidth) // FIXME - do all booleans
-        StatusValue(satelliteStatus.elevationDegrees.toString(), minWidth) // FIXME - format
-        StatusValue(satelliteStatus.azimuthDegrees.toString(), minWidth) // FIXME - format
+        Cn0(satelliteStatus, minWidth)
+        AEU(satelliteStatus, minWidth)
+        Elevation(satelliteStatus, minWidth)
+        Azimuth(satelliteStatus, minWidth)
     }
 }
 
 @Composable
-fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
+fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     StatusValue(satelliteStatus.svid.toString(), modifier = modifier)
 }
 
 @Composable
-fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
+fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     when (satelliteStatus.gnssType) {
         GnssType.NAVSTAR -> {
             FlagImage(R.drawable.ic_flag_usa, R.string.gps_content_description, modifier)
@@ -145,7 +147,7 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
         GnssType.SBAS -> SbasFlag(satelliteStatus, modifier)
         GnssType.UNKNOWN -> {
             Box(
-                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box?
+                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box? Use Spacer?
                 modifier = modifier
             )
         }
@@ -178,7 +180,7 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
         }
         SbasType.UNKNOWN -> {
             Box(
-                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box?
+                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box? Use Spacer?
                 modifier = modifier
             )
         }
@@ -186,27 +188,30 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun FlagImage(@DrawableRes flagId: Int, @StringRes contentDescriptionId: Int, modifier: Modifier = Modifier) {
-    // FIXME - the border currently draws on top of the image
-    Box(modifier = modifier
-        .wrapContentHeight()
-        .wrapContentWidth()
-        .border(BorderStroke(1.dp, Color.Black))
-        // FIXME - Theme border color - modifier = modifier.border(BorderStroke(1.dp, contentColorFor(MaterialTheme.colors.primarySurface))) see https://developer.android.com/jetpack/compose/themes/material
+fun FlagImage(@DrawableRes flagId: Int, @StringRes contentDescriptionId: Int, modifier: Modifier) {
+    Box(
+        modifier = modifier.padding(start = 3.dp, end = 3.dp)
     ) {
-        Image(
-            painter = painterResource(id = flagId),
-            contentDescription = stringResource(id = contentDescriptionId),
-        )
+        Box(
+            modifier = Modifier
+                .border(BorderStroke(1.dp, Color.Black))
+            // FIXME - Theme border color - modifier = modifier.border(BorderStroke(1.dp, contentColorFor(MaterialTheme.colors.primarySurface))) see https://developer.android.com/jetpack/compose/themes/material
+        ) {
+            Image(
+                painter = painterResource(id = flagId),
+                contentDescription = stringResource(id = contentDescriptionId),
+                Modifier.padding(1.dp)
+            )
+        }
     }
 }
 
 @Composable
-fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier = Modifier) {
+fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     if (satelliteStatus.hasCarrierFrequency) {
         val carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(satelliteStatus)
         if (carrierLabel != CarrierFreqUtils.CF_UNKNOWN) {
-            StatusValue(carrierLabel)
+            StatusValue(carrierLabel, modifier)
         } else {
             // Shrink the size so we can show raw number, convert Hz to MHz
             // TODO - test with invalid CFs
@@ -226,22 +231,64 @@ fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier = Modi
 }
 
 @Composable
+fun Cn0(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+    if (satelliteStatus.cn0DbHz != SatelliteStatus.NO_DATA) {
+        StatusValue(String.format("%.1f", satelliteStatus.cn0DbHz), modifier)
+    } else {
+        StatusValue("", modifier)
+    }
+}
+
+@Composable
+fun AEU(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+    val flags = CharArray(3)
+    flags[0] = if (satelliteStatus.hasAlmanac) 'A' else ' '
+    flags[1] = if (satelliteStatus.hasEphemeris) 'E' else ' '
+    flags[2] = if (satelliteStatus.usedInFix) 'U' else ' '
+    StatusValue(String(flags), modifier)
+}
+
+@Composable
+fun Elevation(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+    if (satelliteStatus.elevationDegrees != SatelliteStatus.NO_DATA) {
+        StatusValue(
+            stringResource(
+                R.string.gps_elevation_column_value,
+                satelliteStatus.elevationDegrees
+            ).replace(".0", "").replace(",0", ""),
+            modifier
+        )
+    } else {
+        StatusValue("", modifier)
+    }
+}
+
+@Composable
+fun Azimuth(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+    if (satelliteStatus.azimuthDegrees != SatelliteStatus.NO_DATA) {
+        StatusValue(
+            stringResource(
+                R.string.gps_azimuth_column_value,
+                satelliteStatus.azimuthDegrees
+            ).replace(".0", "").replace(",0", ""),
+            modifier
+        )
+    } else {
+        StatusValue("", modifier)
+    }
+}
+
+@Composable
 fun StatusRowHeader(isGnss: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .padding(top = 5.dp, bottom = 5.dp, start = 16.dp, end = 16.dp),
+            .padding(top = 5.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val minWidth = Modifier.defaultMinSize(
-            minWidth = dimensionResource(
-                id = R.dimen.min_column_width
-            )
-        )
-        val minWidthSmall = Modifier.defaultMinSize(
-            minWidth = 36.dp,
-        )
+        val minWidth = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val minWidthSmall = Modifier.defaultMinSize(minWidth = 36.dp)
 
         StatusLabel(R.string.id_column_label, minWidthSmall)
         if (isGnss) {
@@ -276,4 +323,9 @@ fun StatusValue(text: String, modifier: Modifier = Modifier) {
         fontSize = 13.sp,
         textAlign = TextAlign.Start
     )
+}
+
+@Composable
+fun StatusRowFooter() {
+    Spacer(modifier = Modifier.padding(bottom = 5.dp))
 }
