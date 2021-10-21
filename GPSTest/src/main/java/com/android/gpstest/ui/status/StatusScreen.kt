@@ -85,13 +85,18 @@ fun StatusCard(
             .padding(5.dp),
         elevation = 2.dp
     ) {
-        // TODO - if empty list, show "no data" message for GNSS/SBAS
-        Column {
-            StatusRowHeader(isGnss)
-            satStatuses.forEach {
-                StatusRow(it)
+        // TODO - Only show "not available" for SBAS to match behavior of v3. Should we change this?
+        if (isGnss ||
+            (!isGnss && satStatuses.isNotEmpty())) {
+            Column {
+                StatusRowHeader(isGnss)
+                satStatuses.forEach {
+                    StatusRow(it)
+                }
+                StatusRowFooter()
             }
-            StatusRowFooter()
+        } else {
+            NotAvailable(isGnss)
         }
     }
 }
@@ -324,6 +329,26 @@ fun StatusValue(text: String, modifier: Modifier = Modifier) {
         modifier = modifier.padding(start = 3.dp, end = 3.dp),
         fontSize = 13.sp,
         textAlign = TextAlign.Start
+    )
+}
+
+@Composable
+fun NotAvailable(isGnss: Boolean) {
+    val message = if (isGnss) {
+        stringResource(R.string.gnss_not_available)
+    } else {
+        stringResource(R.string.sbas_not_available)
+    }
+    NotAvailableText(message)
+}
+
+@Composable
+fun NotAvailableText(text: String) {
+    Text(
+        text = text,
+        modifier = Modifier.padding(10.dp),
+        fontSize = 13.sp,
+        textAlign = TextAlign.Center
     )
 }
 
