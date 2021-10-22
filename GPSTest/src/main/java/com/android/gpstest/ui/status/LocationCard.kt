@@ -169,6 +169,7 @@ fun ValueColumn2(
         horizontalAlignment = Alignment.Start
     ) {
         // FIXME - Time can flow off the right side of S21+ pushing everything down one column. Need to cut seconds down to just one decimal place.
+        // Also make it horizontally scrollable?
         Time(location)
         TTFF(ttff)
         Accuracy(location)
