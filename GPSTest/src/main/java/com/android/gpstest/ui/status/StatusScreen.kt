@@ -213,7 +213,6 @@ fun FlagImage(@DrawableRes flagId: Int, @StringRes contentDescriptionId: Int, mo
         Box(
             modifier = Modifier
                 .border(BorderStroke(1.dp, Color.Black))
-            // FIXME - Theme border color - modifier = modifier.border(BorderStroke(1.dp, contentColorFor(MaterialTheme.colors.primarySurface))) see https://developer.android.com/jetpack/compose/themes/material
         ) {
             Image(
                 painter = painterResource(id = flagId),
