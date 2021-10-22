@@ -59,6 +59,7 @@ import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.util.*
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
+import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
 import com.android.gpstest.util.SharedPreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.util.SharedPreferenceUtil.minDistance
 import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
-        if (Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (darkTheme()) {
             setTheme(R.style.AppTheme_Dark_NoActionBar)
             useDarkTheme = true
         }
@@ -363,8 +364,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupStartState(lastSavedInstanceState)
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
-        val useDarkTheme =
-            Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)
+        val useDarkTheme = darkTheme()
         if (this.useDarkTheme != useDarkTheme) {
             this.useDarkTheme = useDarkTheme
             recreate()

@@ -48,6 +48,7 @@ import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SharedPreferenceUtil
+import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -110,7 +111,7 @@ class SkyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val color: Int
-        if (Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+        if (darkTheme()) {
             // Dark theme
             color = ContextCompat.getColor(requireContext(), android.R.color.secondary_text_dark)
             legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark)
