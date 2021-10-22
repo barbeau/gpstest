@@ -45,6 +45,9 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by viewModel.gnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.sbasStatuses.observeAsState(emptyList())
 
+    // TODO - figure out how to manage Sort menu option. Does that need to stay in fragment?
+    // TODO - Move Filter menu option to Activity - it will be used for Sky view as well
+
     Box(
         modifier = Modifier
             .fillMaxSize()
