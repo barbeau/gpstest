@@ -28,13 +28,16 @@ import androidx.compose.ui.graphics.Color
 // * https://material.io/blog/android-dark-theme-tutorial
 
 private val Purple500 = Color(0xFF3F51B5)
+private val Purple700 = Color(0xFF303F9F)
 
 private val lightColors = lightColors(
     primary = Purple500,
+    primaryVariant = Purple700
 )
 
 private val darkColors = darkColors(
     primary = Purple500,
+    primaryVariant = Purple700
 )
 
 @Composable

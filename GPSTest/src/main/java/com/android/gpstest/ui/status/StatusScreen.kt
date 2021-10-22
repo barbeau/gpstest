@@ -43,8 +43,6 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by viewModel.gnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.sbasStatuses.observeAsState(emptyList())
 
-    // TODO - dark and light themes
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -79,15 +77,20 @@ fun StatusCard(
     satStatuses: List<SatelliteStatus>,
     isGnss: Boolean,
 ) {
+    val modifier = Modifier
+        .fillMaxWidth()
+        .padding(5.dp)
+
+    if (showList(isGnss, satStatuses)) {
+        // Only scroll if we're showing satellites - we don't want "Not available" text to extend offscreen
+        modifier.horizontalScroll(rememberScrollState())
+    }
+
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
+        modifier = modifier,
         elevation = 2.dp
     ) {
-        // TODO - Only show "not available" for SBAS to match behavior of v3. Should we change this?
-        if (isGnss ||
-            (!isGnss && satStatuses.isNotEmpty())) {
+        if (showList(isGnss, satStatuses)) {
             Column {
                 StatusRowHeader(isGnss)
                 satStatuses.forEach {
@@ -99,6 +102,12 @@ fun StatusCard(
             NotAvailable(isGnss)
         }
     }
+}
+
+private fun showList(isGnss: Boolean, satStatuses: List<SatelliteStatus>): Boolean {
+    // TODO - Currently we only show "not available" for SBAS to match behavior of v3. Should we change this?
+    return isGnss ||
+            (!isGnss && satStatuses.isNotEmpty())
 }
 
 @Composable
@@ -261,12 +270,17 @@ fun Elevation(satelliteStatus: SatelliteStatus, modifier: Modifier) {
             stringResource(
                 R.string.gps_elevation_column_value,
                 satelliteStatus.elevationDegrees
-            ).replace(".0", "").replace(",0", ""),
+            ).trimZeros(),
             modifier
         )
     } else {
         StatusValue("", modifier)
     }
+}
+
+private fun String.trimZeros(): String {
+    return this.replace(".0", "")
+        .replace(",0", "")
 }
 
 @Composable
@@ -276,7 +290,7 @@ fun Azimuth(satelliteStatus: SatelliteStatus, modifier: Modifier) {
             stringResource(
                 R.string.gps_azimuth_column_value,
                 satelliteStatus.azimuthDegrees
-            ).replace(".0", "").replace(",0", ""),
+            ).trimZeros(),
             modifier
         )
     } else {

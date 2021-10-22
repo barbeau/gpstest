@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.text.format.DateFormat
 import androidx.annotation.StringRes
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +19,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
@@ -81,7 +85,9 @@ fun LocationCard(
         elevation = 2.dp
     ) {
         // TODO - add lock icon
-        Row {
+        Row(modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+        ) {
             LabelColumn1()
             ValueColumn1(location, altitudeMsl, dop)
             LabelColumn2()
@@ -168,8 +174,6 @@ fun ValueColumn2(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        // FIXME - Time can flow off the right side of S21+ pushing everything down one column. Need to cut seconds down to just one decimal place.
-        // Also make it horizontally scrollable?
         Time(location)
         TTFF(ttff)
         Accuracy(location)
@@ -221,11 +225,16 @@ private fun formatTime(fixTime: Long) {
 
     if (LocalConfiguration.current.screenWidthDp > 450) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
         // Time and date
-        LocationValue(timeAndDateFormat.format(fixTime))
+        LocationValue(timeAndDateFormat.format(fixTime).trimZeros())
     } else {
         // Just time
-        LocationValue(timeFormat.format(fixTime))
+        LocationValue(timeFormat.format(fixTime).trimZeros())
     }
+}
+
+private fun String.trimZeros(): String {
+    return this.replace(".000", "")
+        .replace(",000", "")
 }
 
 @Composable
@@ -324,19 +333,48 @@ fun LabelColumn2() {
 
 @Composable
 fun LocationLabel(@StringRes id: Int) {
-    Text(
-        text = stringResource(id),
-        modifier = Modifier.padding(start = 4.dp, end = 4.dp),
-        fontWeight = FontWeight.Bold,
-        fontSize = 13.sp,
-    )
+    if (reduceSpacing()) {
+        Text(
+            text = stringResource(id),
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+            fontWeight = FontWeight.Bold,
+            fontSize = 13.sp,
+            letterSpacing = letterSpacing(),
+        )
+    } else {
+        Text(
+            text = stringResource(id),
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+            fontWeight = FontWeight.Bold,
+            fontSize = 13.sp,
+        )
+    }
 }
 
 @Composable
 fun LocationValue(text: String) {
-    Text(
-        text = text,
-        modifier = Modifier.padding(end = 4.dp),
-        fontSize = 13.sp,
-    )
+    if (reduceSpacing()) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(end = 2.dp),
+            fontSize = 13.sp,
+            letterSpacing = letterSpacing()
+        )
+    } else {
+        Text(
+            text = text,
+            modifier = Modifier.padding(end = 4.dp),
+            fontSize = 13.sp,
+        )
+    }
+}
+
+@Composable
+private fun reduceSpacing(): Boolean {
+    return LocalConfiguration.current.screenWidthDp < 365 // Galaxy S21+ is 384dp wide, Galaxy S8 is 326dp
+}
+
+private fun letterSpacing(): TextUnit {
+    // Reduce text spacing on narrow displays to make both columns fit
+    return (-0.01).em
 }
