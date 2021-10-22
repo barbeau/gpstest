@@ -21,6 +21,12 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+// TODO - For more theme colors and dark mode see:
+// * https://material.io/design/color/the-color-system.html#tools-for-picking-colors
+// * https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=3f50b5&primary.text.color=ffffff
+// * https://material.io/blog/android-material-theme-color
+// * https://material.io/blog/android-dark-theme-tutorial
+
 private val Purple500 = Color(0xFF3F51B5)
 
 private val lightColors = lightColors(
