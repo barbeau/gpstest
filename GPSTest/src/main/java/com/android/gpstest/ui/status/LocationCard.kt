@@ -4,16 +4,19 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.text.format.DateFormat
 import androidx.annotation.StringRes
+import androidx.compose.animation.*
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +28,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.data.FixState
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
@@ -45,7 +49,8 @@ fun LocationCardPreview(
         "5 sec",
         1.4,
         DilutionOfPrecision(1.0, 2.0, 3.0),
-        SatelliteMetadata(0, 0, 0, 0, 0, 0)
+        SatelliteMetadata(0, 0, 0, 0, 0, 0),
+        FixState.Acquired
     )
 }
 
@@ -70,6 +75,7 @@ fun previewLocation(): Location {
     return l
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LocationCard(
     location: Location,
@@ -77,6 +83,7 @@ fun LocationCard(
     altitudeMsl: Double,
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
+    fixState: FixState,
 ) {
     Card(
         modifier = Modifier
@@ -84,14 +91,17 @@ fun LocationCard(
             .padding(5.dp),
         elevation = 2.dp
     ) {
-        // TODO - add lock icon
-        Row(modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-        ) {
-            LabelColumn1()
-            ValueColumn1(location, altitudeMsl, dop)
-            LabelColumn2()
-            ValueColumn2(location, ttff, dop, satelliteMetadata)
+        Box {
+            Row(
+                modifier = Modifier
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                LabelColumn1()
+                ValueColumn1(location, altitudeMsl, dop)
+                LabelColumn2()
+                ValueColumn2(location, ttff, dop, satelliteMetadata)
+            }
+            LockIcon(fixState)
         }
     }
 }
@@ -377,4 +387,23 @@ private fun reduceSpacing(): Boolean {
 private fun letterSpacing(): TextUnit {
     // Reduce text spacing on narrow displays to make both columns fit
     return (-0.01).em
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun LockIcon(fixState: FixState) {
+    var visible by remember { mutableStateOf(false) }
+    visible = fixState == FixState.Acquired
+    AnimatedVisibility(
+        visible = visible,
+        enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
+        exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_baseline_lock_24),
+            contentDescription = stringResource(id = R.string.lock),
+            tint = MaterialTheme.colors.onBackground,
+            modifier = Modifier.padding(6.dp)
+        )
+    }
 }

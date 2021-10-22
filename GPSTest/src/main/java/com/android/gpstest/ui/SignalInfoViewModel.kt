@@ -38,7 +38,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.set
 
@@ -87,6 +86,9 @@ class SignalInfoViewModel @Inject constructor(
 
     private val _satelliteMetadata = MutableLiveData<SatelliteMetadata>()
     val satelliteMetadata: LiveData<SatelliteMetadata> = _satelliteMetadata
+
+    private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
+    val fixState: LiveData<FixState> = _fixState
 
     private var started = false
 
@@ -210,13 +212,11 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     private fun onGnssFixAcquired() {
-        // FIX ME - pass to Screen
-        //showHaveFix()
+        _fixState.value = FixState.Acquired
     }
 
     private fun onGnssFixLost() {
-        // FIX ME - pass to Screen
-        //showLostFix()
+        _fixState.value = FixState.NotAcquired
     }
 
     private fun onNmeaMessage(message: String, timestamp: Long) {
@@ -557,6 +557,7 @@ class SignalInfoViewModel @Inject constructor(
         _altitudeMsl.value = Double.NaN
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
         _satelliteMetadata.value = SatelliteMetadata(0,0,0,0,0,0)
+        _fixState.value = FixState.NotAcquired
         mDuplicateCarrierStatuses = HashMap()
         mUnknownCarrierStatuses = HashMap()
         supportedGnss = HashSet()

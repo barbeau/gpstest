@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
+import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.CarrierFreqUtils
@@ -39,6 +40,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
     val satelliteMetadata: SatelliteMetadata by viewModel.satelliteMetadata.observeAsState(SatelliteMetadata(0,0,0,0,0,0))
+    val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     // TODO - apply filter and sort on statuses in ViewModel
     val gnssStatuses: List<SatelliteStatus> by viewModel.gnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.sbasStatuses.observeAsState(emptyList())
@@ -54,7 +56,8 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 ttff,
                 altitudeMsl,
                 dop,
-                satelliteMetadata)
+                satelliteMetadata,
+                fixState)
 //            Filter() // TODO - annotated text - https://foso.github.io/Jetpack-Compose-Playground/material/card/
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
