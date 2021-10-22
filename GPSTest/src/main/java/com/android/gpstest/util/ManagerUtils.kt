@@ -273,6 +273,9 @@ internal object SharedPreferenceUtil {
             .getBoolean(Application.app.getString(R.string.pref_key_gnss_background), false)
     }
 
+    fun darkTheme(): Boolean {
+        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_dark_theme), false)
+    }
 
     /**
      * Saves device capabilities for GNSS measurements and related information from the given [event]

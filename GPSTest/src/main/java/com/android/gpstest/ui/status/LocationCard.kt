@@ -26,6 +26,7 @@ import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.FormatUtils
+import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import java.text.SimpleDateFormat
@@ -79,6 +80,7 @@ fun LocationCard(
             .padding(5.dp),
         elevation = 2.dp
     ) {
+        // TODO - add lock icon
         Row {
             LabelColumn1()
             ValueColumn1(location, altitudeMsl, dop)
@@ -166,6 +168,7 @@ fun ValueColumn2(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
+        // FIXME - Time can flow off the right side of S21+ pushing everything down one column. Need to cut seconds down to just one decimal place.
         Time(location)
         TTFF(ttff)
         Accuracy(location)
@@ -261,7 +264,7 @@ fun Bearing(location: Location) {
 
 @Composable
 fun BearingAccuracy(location: Location) {
-    LocationValue(FormatUtils.formatBearingAccuracy(location))
+    LocationValue(formatBearingAccuracy(location))
 }
 
 @Composable

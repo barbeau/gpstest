@@ -26,6 +26,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.android.gpstest.ui.status.StatusScreen
+import com.android.gpstest.ui.theme.AppTheme
+import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -44,7 +46,12 @@ class StatusFragment2 : Fragment() {
             // is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                StatusScreen(viewModel = viewModel)
+                AppTheme(
+                    // TODO - add "system dark setting" as an option in preferences
+                    darkTheme = darkTheme()
+                ) {
+                    StatusScreen(viewModel = viewModel)
+                }
             }
         }
     }
