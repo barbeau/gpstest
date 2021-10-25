@@ -18,7 +18,7 @@ package com.android.gpstest.model
 /**
  * A container class that holds a group of [satellites] from multiple constellations (e.g., GNSS,
  * SBAS) and [satelliteMetadata]. [satellites] are stored as a map, and the key to the map is the
- * combination of constellation and ID created using SatelliteUtils.createGnssSatelliteKey().
+ * combination of constellation and svID. The key is created using SatelliteUtils.createGnssSatelliteKey().
  */
 data class SatelliteGroup(
         val satellites: Map<String, Satellite>,
