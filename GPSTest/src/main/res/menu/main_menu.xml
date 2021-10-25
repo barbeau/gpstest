@@ -18,6 +18,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/gps_group">
         <item
+            android:id="@+id/filter_sats"
+            android:title="@string/menu_option_filter"
+            android:icon="@drawable/ic_baseline_filter_list_24"
+            android:orderInCategory="2"
+            app:showAsAction="ifRoom"
+            android:contentDescription="@string/menu_option_filter_content_description" />
+        <item
             android:id="@+id/share"
             android:title="@string/share"
             android:icon="@drawable/social_share"

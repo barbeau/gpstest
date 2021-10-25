@@ -27,7 +27,6 @@ import com.android.gpstest.R
 import com.android.gpstest.ui.status.StatusScreen
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
-import com.android.gpstest.util.UIUtils.showFilterDialog
 import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,8 +64,6 @@ class StatusFragment2 : Fragment() {
         val id = item.itemId
         if (id == R.id.sort_sats) {
             showSortByDialog(requireActivity())
-        } else if (id == R.id.filter_sats) {
-            showFilterDialog(requireActivity())
         }
         return false
     }

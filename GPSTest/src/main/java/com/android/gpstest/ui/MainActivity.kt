@@ -865,12 +865,17 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle menu item selection
-        val itemId = item.itemId
-        if (itemId == R.id.gps_switch) {
-            return true
-        } else if (itemId == R.id.share) {
-            share()
-            return true
+        when (item.itemId) {
+            R.id.gps_switch -> {
+                return true
+            }
+            R.id.share -> {
+                share()
+                return true
+            }
+            R.id.filter_sats -> {
+                UIUtils.showFilterDialog(this)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
