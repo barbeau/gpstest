@@ -48,7 +48,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
@@ -1039,7 +1038,7 @@ internal object UIUtils {
         // For each GnssType, if it is in the enabled list, mark it as checked.
         for (i in 0 until len) {
             val gnssType = gnssTypes[i]
-            items[i] = UIUtils.getGnssDisplayName(Application.app, gnssType)
+            items[i] = getGnssDisplayName(app, gnssType)
             if (filter.contains(gnssType)) {
                 checks[i] = true
             }
