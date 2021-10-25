@@ -39,7 +39,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.gpstest.Application
@@ -78,7 +77,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -402,7 +400,7 @@ class StatusFragment : Fragment() {
      * @return a formatted version of the provided fixTime based on the width of the current display
      */
     private fun formatFixTimeDate(fixTime: Long): String {
-        return if (UIUtils.isWideEnoughForDate(context)) timeAndDateFormat.format(fixTime)
+        return if (UIUtils.isWideEnoughForDate(requireActivity())) timeAndDateFormat.format(fixTime)
         else timeFormat.format(fixTime)
     }
 
@@ -828,7 +826,7 @@ class StatusFragment : Fragment() {
         // For each GnssType, if it is in the enabled list, mark it as checked.
         for (i in 0 until len) {
             val gnssType = gnssTypes[i]
-            items[i] = UIUtils.getGnssDisplayName(context, gnssType)
+            items[i] = UIUtils.getGnssDisplayName(Application.app, gnssType)
             if (filter.contains(gnssType)) {
                 checks[i] = true
             }

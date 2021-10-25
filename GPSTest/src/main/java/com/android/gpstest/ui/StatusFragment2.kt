@@ -17,17 +17,18 @@
 package com.android.gpstest.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.android.gpstest.R
 import com.android.gpstest.ui.status.StatusScreen
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
+import com.android.gpstest.util.UIUtils.showFilterDialog
+import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -54,5 +55,24 @@ class StatusFragment2 : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.status_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == R.id.sort_sats) {
+            showSortByDialog(requireActivity())
+        } else if (id == R.id.filter_sats) {
+            showFilterDialog(requireActivity())
+        }
+        return false
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 }

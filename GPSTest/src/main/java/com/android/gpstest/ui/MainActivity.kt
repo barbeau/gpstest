@@ -36,6 +36,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -44,7 +45,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
@@ -95,6 +95,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var mapFragment: MapFragment? = null
     private var skyFragment: SkyFragment? = null
     private var accuracyFragment: MapFragment? = null
+
+    // Main signal view model
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val signalInfoViewModel: SignalInfoViewModel by viewModels()
+
     var gpsResume = false
     private var switch // GPS on/off switch
             : SwitchMaterial? = null
@@ -105,7 +110,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var initialLanguage: String? = null
     private var shareDialogOpen = false
     private var progressBar: ProgressBar? = null
-    var signalInfoViewModel: SignalInfoViewModel? = null
     private var isServiceBound = false
     private var service: ForegroundOnlyLocationService? = null
     private var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
@@ -170,9 +174,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setSupportActionBar(binding.toolbar)
         progressBar = findViewById(R.id.progress_horizontal)
         setupNavigationDrawer()
-        signalInfoViewModel = ViewModelProviders.of(this).get(
-            SignalInfoViewModel::class.java
-        )
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
     }
@@ -248,9 +249,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == RESULT_OK) {
             // User picked a file to share from the Share dialog - update the dialog
-            if (data != null) {
-                val uri = data.data
-                Log.i(TAG, "Uri: " + uri.toString())
+            val uri = data?.data
+            if (uri != null) {
+                Log.i(TAG, "Uri: $uri")
                 val location = lastLocation
                 shareDialogOpen = true
                 UIUtils.showShareFragmentDialog(
@@ -801,14 +802,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun hideProgressBar() {
-        if (progressBar != null) {
-            UIUtils.hideViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
+        val p = progressBar
+        if (p != null) {
+            UIUtils.hideViewWithAnimation(p, UIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
     private fun showProgressBar() {
-        if (progressBar != null) {
-            UIUtils.showViewWithAnimation(progressBar, UIUtils.ANIMATION_DURATION_SHORT_MS)
+        val p = progressBar
+        if (p != null) {
+            UIUtils.showViewWithAnimation(p, UIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
