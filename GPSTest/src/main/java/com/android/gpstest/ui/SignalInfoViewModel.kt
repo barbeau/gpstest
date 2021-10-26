@@ -60,17 +60,30 @@ class SignalInfoViewModel @Inject constructor(
     //
     // LiveData observed by Composables
     //
-    private val _gnssStatuses = MutableLiveData<List<SatelliteStatus>>()
-    val gnssStatuses: LiveData<List<SatelliteStatus>> = _gnssStatuses
 
-    private val _sbasStatuses = MutableLiveData<List<SatelliteStatus>>()
-    val sbasStatuses: LiveData<List<SatelliteStatus>> = _sbasStatuses
+    // All statuses BEFORE filtering
+    private val _allStatuses = MutableLiveData<List<SatelliteStatus>>()
+    val allStatuses: LiveData<List<SatelliteStatus>> = _allStatuses
 
-    private val _gnssSatellites = MutableLiveData<Map<String, Satellite>>()
-    val gnssSatellites : LiveData<Map<String, Satellite>> = _gnssSatellites
+    // GNSS Statuses AFTER applying filter
+    private val _filteredGnssStatuses = MutableLiveData<List<SatelliteStatus>>()
+    val filteredGnssStatuses: LiveData<List<SatelliteStatus>> = _filteredGnssStatuses
 
-    private val _sbasSatellites = MutableLiveData<Map<String, Satellite>>()
-    val sbasSatellites : LiveData<Map<String, Satellite>> = _sbasSatellites
+    // SBAS Statuses AFTER applying filter
+    private val _filteredSbasStatuses = MutableLiveData<List<SatelliteStatus>>()
+    val filteredSbasStatuses: LiveData<List<SatelliteStatus>> = _filteredSbasStatuses
+
+    // GNSS Satellites AFTER applying filter
+    private val _filteredGnssSatellites = MutableLiveData<Map<String, Satellite>>()
+    val filteredGnssSatellites : LiveData<Map<String, Satellite>> = _filteredGnssSatellites
+
+    // SBAS Satellites AFTER applying filter
+    private val _filteredSbasSatellites = MutableLiveData<Map<String, Satellite>>()
+    val filteredSbasSatellites : LiveData<Map<String, Satellite>> = _filteredSbasSatellites
+
+    // Satellite metadata AFTER applying filter
+    private val _filteredSatelliteMetadata = MutableLiveData<SatelliteMetadata>()
+    val filteredSatelliteMetadata: LiveData<SatelliteMetadata> = _filteredSatelliteMetadata
 
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
@@ -83,9 +96,6 @@ class SignalInfoViewModel @Inject constructor(
 
     private val _dop = MutableLiveData<DilutionOfPrecision>()
     val dop: LiveData<DilutionOfPrecision> = _dop
-
-    private val _satelliteMetadata = MutableLiveData<SatelliteMetadata>()
-    val satelliteMetadata: LiveData<SatelliteMetadata> = _satelliteMetadata
 
     private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
     val fixState: LiveData<FixState> = _fixState
@@ -185,24 +195,22 @@ class SignalInfoViewModel @Inject constructor(
 
     @ExperimentalCoroutinesApi
     private fun updateStatus(status: List<SatelliteStatus>) {
-        //svCount = status.size
+        _allStatuses.value = status
 
         // Count number of sats shown to user
-        val filter = PreferenceUtils.getGnssFilter()
+        val filter = PreferenceUtils.gnssFilter()
 
-        // FIXME - this is actually counting number of signals shown, not number of satellites shown
-        //svShownCount = status.count { filter.isEmpty() || filter.contains(it.gnssType) }
+        // Split list into GNSS and SBAS statuses, apply "shown" filter, and update view model
+        val (gnssStatus, sbasStatus) = status
+            .filter {
+                filter.isEmpty() || filter.contains(it.gnssType)
+            }
+            .partition {
+                it.gnssType != GnssType.SBAS
+            }
 
-        // Split list into GNSS and SBAS statuses, apply shown filter, and update view model
-        // FIXME - use .partition when moving to ViewModel - val (gnssStatus, sbasStatus) = status.partition { it.gnssType != GnssType.SBAS }
-        val gnssStatus = status.filter {
-            it.gnssType != GnssType.SBAS &&
-                    (filter.isEmpty() || filter.contains(it.gnssType))
-        } as MutableList<SatelliteStatus>
-        val sbasStatus = status.filter {
-            it.gnssType == GnssType.SBAS &&
-                    (filter.isEmpty() || filter.contains(it.gnssType))
-        } as MutableList<SatelliteStatus>
+        // TODO - sort both lists here
+
         setStatuses(gnssStatus, sbasStatus)
     }
 
@@ -387,20 +395,21 @@ class SignalInfoViewModel @Inject constructor(
 
     /**
      * Adds a new set of GNSS and SBAS status objects (signals) so they can be analyzed and grouped
-     * into satellites
+     * into satellites. Filter should have been applied before calling this method so only signals
+     * and satellites that will be shown to the user are included.
      *
      * @param gnssStatuses a new set of GNSS status objects (signals)
      * @param sbasStatuses a new set of SBAS status objects (signals)
      */
     @VisibleForTesting
     fun setStatuses(gnssStatuses: List<SatelliteStatus>, sbasStatuses: List<SatelliteStatus>) {
-        this._gnssStatuses.value = gnssStatuses
-        this._sbasStatuses.value = sbasStatuses
+        this._filteredGnssStatuses.value = gnssStatuses
+        this._filteredSbasStatuses.value = sbasStatuses
 
         val gnssSatellites = getSatellitesFromStatuses(gnssStatuses)
-        this._gnssSatellites.value = gnssSatellites.satellites
+        this._filteredGnssSatellites.value = gnssSatellites.satellites
         val sbasSatellites = getSatellitesFromStatuses(sbasStatuses)
-        this._sbasSatellites.value = sbasSatellites.satellites
+        this._filteredSbasSatellites.value = sbasSatellites.satellites
 
         val numSignalsUsed =
             gnssSatellites.satelliteMetadata.numSignalsUsed + sbasSatellites.satelliteMetadata.numSignalsUsed
@@ -415,7 +424,7 @@ class SignalInfoViewModel @Inject constructor(
         val numSatsTotal =
             gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal
 
-        _satelliteMetadata.value = SatelliteMetadata(
+        _filteredSatelliteMetadata.value = SatelliteMetadata(
             numSignalsInView,
             numSignalsUsed,
             numSignalsTotal,
@@ -548,15 +557,15 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     fun reset() {
-        _gnssStatuses.value = emptyList()
-        _sbasStatuses.value = emptyList()
-        _gnssSatellites.value = emptyMap()
-        _sbasSatellites.value = emptyMap()
+        _filteredGnssStatuses.value = emptyList()
+        _filteredSbasStatuses.value = emptyList()
+        _filteredGnssSatellites.value = emptyMap()
+        _filteredSbasSatellites.value = emptyMap()
         _location.value = Location("reset")
         _ttff.value = ""
         _altitudeMsl.value = Double.NaN
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
-        _satelliteMetadata.value = SatelliteMetadata(0,0,0,0,0,0)
+        _filteredSatelliteMetadata.value = SatelliteMetadata(0,0,0,0,0,0)
         _fixState.value = FixState.NotAcquired
         mDuplicateCarrierStatuses = HashMap()
         mUnknownCarrierStatuses = HashMap()

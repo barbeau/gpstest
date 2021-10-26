@@ -263,6 +263,7 @@ fun Accuracy(location: Location) {
 
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
+    // TODO - make this italic if filter is active
     LocationValue(
         stringResource(
             R.string.gps_num_sats_value,

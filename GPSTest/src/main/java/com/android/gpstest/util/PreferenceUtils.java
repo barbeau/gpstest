@@ -192,7 +192,7 @@ public class PreferenceUtils {
      * Gets a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
      * @return a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
      */
-    public static Set<GnssType> getGnssFilter() {
+    public static Set<GnssType> gnssFilter() {
         Set<GnssType> filter = new LinkedHashSet<>();
         Resources r = Application.Companion.getApp().getResources();
         String filterString = getString(r.getString(R.string.pref_key_default_sat_filter));

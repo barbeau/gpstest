@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,8 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
@@ -26,6 +32,8 @@ import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.PreferenceUtils.gnssFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -39,14 +47,11 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
-    val satelliteMetadata: SatelliteMetadata by viewModel.satelliteMetadata.observeAsState(SatelliteMetadata(0,0,0,0,0,0))
+    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata(0,0,0,0,0,0))
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
-    // TODO - apply filter and sort on statuses in ViewModel
-    val gnssStatuses: List<SatelliteStatus> by viewModel.gnssStatuses.observeAsState(emptyList())
-    val sbasStatuses: List<SatelliteStatus> by viewModel.sbasStatuses.observeAsState(emptyList())
-
-    // TODO - figure out how to manage Sort menu option. Does that need to stay in fragment?
-    // TODO - Move Filter menu option to Activity - it will be used for Sky view as well
+    val gnssStatuses: List<SatelliteStatus> by viewModel.filteredGnssStatuses.observeAsState(emptyList())
+    val sbasStatuses: List<SatelliteStatus> by viewModel.filteredSbasStatuses.observeAsState(emptyList())
+    val allStatuses: List<SatelliteStatus> by viewModel.allStatuses.observeAsState(emptyList())
 
     Box(
         modifier = Modifier
@@ -61,10 +66,55 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 dop,
                 satelliteMetadata,
                 fixState)
-//            Filter() // TODO - annotated text - https://foso.github.io/Jetpack-Compose-Playground/material/card/
+            if (gnssFilter().isNotEmpty()) {
+                Filter(allStatuses, satelliteMetadata)
+            }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
         }
+    }
+}
+
+@Composable
+fun Filter(allStatuses: List<SatelliteStatus>, satelliteMetadata: SatelliteMetadata) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(1.dp)
+    ) {
+        Text(
+            text = stringResource(
+                id = R.string.filter_signal_text,
+                satelliteMetadata.numSignalsTotal,
+                allStatuses.size
+            ),
+            fontSize = 13.sp,
+            fontStyle = FontStyle.Italic,
+            color = MaterialTheme.colors.onBackground
+        )
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colors.primary,
+                        textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    append(stringResource(id = R.string.filter_showall))
+                }
+            },
+            fontStyle = FontStyle.Italic,
+            fontSize = 13.sp,
+            modifier = Modifier
+                .padding(start = 2.dp)
+                .clickable {
+                    // Save an empty set to preferences to show all satellites
+                    PreferenceUtils.saveGnssFilter(emptySet())
+                }
+        )
     }
 }
 

@@ -233,7 +233,7 @@ class StatusFragment : Fragment() {
         viewModel = ViewModelProviders.of(requireActivity()).get(
             SignalInfoViewModel::class.java
         )
-        viewModel!!.satelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
+        viewModel!!.filteredSatelliteMetadata.observe(requireActivity(), satelliteMetadataObserver)
 
         return view
     }
@@ -648,7 +648,7 @@ class StatusFragment : Fragment() {
 
         svCount = status.size
         // Count number of sats shown to user
-        val filter = PreferenceUtils.getGnssFilter()
+        val filter = PreferenceUtils.gnssFilter()
 
         // FIXME - this is actually counting number of signals shown, not number of satellites shown
         svShownCount = status.count { filter.isEmpty() || filter.contains(it.gnssType) }
@@ -718,7 +718,7 @@ class StatusFragment : Fragment() {
 
     private fun updateFilterView() {
         val c = context ?: return
-        val filter = PreferenceUtils.getGnssFilter()
+        val filter = PreferenceUtils.gnssFilter()
         if (!PreferenceUtils.isTrackingStarted() || filter.isEmpty()) {
             binding.statusFilterGroup.visibility = View.GONE
             // Set num sats view back to normal
@@ -726,7 +726,7 @@ class StatusFragment : Fragment() {
         } else {
             // Show filter text
             binding.statusFilterGroup.visibility = View.VISIBLE
-            binding.filterText.text = c.getString(R.string.filter_text, svShownCount, svCount)
+            binding.filterText.text = c.getString(R.string.filter_signal_text, svShownCount, svCount)
             // Set num sats view to italics to match filter text
             binding.numSats.setTypeface(binding.numSats.typeface, Typeface.ITALIC)
         }
@@ -819,7 +819,7 @@ class StatusFragment : Fragment() {
     private fun showFilterDialog() {
         val gnssTypes = GnssType.values()
         val len = gnssTypes.size
-        val filter = PreferenceUtils.getGnssFilter()
+        val filter = PreferenceUtils.gnssFilter()
         val items = arrayOfNulls<String>(len)
         val checks = BooleanArray(len)
 

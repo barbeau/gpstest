@@ -1031,7 +1031,7 @@ internal object UIUtils {
     fun showFilterDialog(activity: FragmentActivity) {
         val gnssTypes = GnssType.values()
         val len = gnssTypes.size
-        val filter = PreferenceUtils.getGnssFilter()
+        val filter = PreferenceUtils.gnssFilter()
         val items = arrayOfNulls<String>(len)
         val checks = BooleanArray(len)
 
