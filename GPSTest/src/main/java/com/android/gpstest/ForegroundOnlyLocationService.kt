@@ -23,7 +23,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.*
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.location.Location
@@ -298,6 +299,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service NMEA: $it")
+                // TODO - test logging
                 GlobalScope.launch(Dispatchers.IO) {
                     if (writeNmeaToAndroidMonitor()) {
                         writeNmeaToAndroidStudio(
@@ -443,6 +445,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
      * Generates a BIG_TEXT_STYLE Notification that represent latest location.
      */
     private fun buildNotification(location: Location?): Notification {
+       // TODO - format notification text and decide on content
         val titleText = location?.toNotificationTitle() ?: getString(R.string.no_location_text)
         val summaryText = location?.toNotificationSummary() ?: ""
 

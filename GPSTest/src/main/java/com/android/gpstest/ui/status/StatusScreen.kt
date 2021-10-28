@@ -161,7 +161,6 @@ fun StatusCard(
 }
 
 private fun showList(isGnss: Boolean, satStatuses: List<SatelliteStatus>): Boolean {
-    // TODO - Currently we only show "not available" for SBAS to match behavior of v3. Should we change this?
     return isGnss ||
             (!isGnss && satStatuses.isNotEmpty())
 }
@@ -284,12 +283,11 @@ fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier) {
             StatusValue(carrierLabel, modifier)
         } else {
             // Shrink the size so we can show raw number, convert Hz to MHz
-            // TODO - test with invalid CFs
             val carrierMhz = MathUtils.toMhz(satelliteStatus.carrierFrequencyHz)
             Text(
                 text = String.format("%.3f", carrierMhz),
-                modifier = modifier.padding(start = 3.dp, end = 3.dp),
-                fontSize = 10.sp,
+                modifier = modifier.padding(start = 3.dp, end = 2.dp),
+                fontSize = 9.sp,
                 textAlign = TextAlign.Start
             )
         }

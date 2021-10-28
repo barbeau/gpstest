@@ -74,6 +74,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
@@ -286,7 +287,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
      * and partial state retention.
      * @param currentIntent the Intent to pass to the re-created app, or null if there is no intent to pass
      */
-    fun recreateApp(currentIntent: Intent?) {
+    private fun recreateApp(currentIntent: Intent?) {
         val i = Intent(this, MainActivity::class.java)
         if (IOUtils.isShowRadarIntent(currentIntent)) {
             // If we're creating the app because we got a SHOW_RADAR intent, copy over the intent action and extras
@@ -305,7 +306,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
         startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
         // Restart process to destroy and recreate everything
-        System.exit(0)
+        exitProcess(0)
     }
 
     override fun attachBaseContext(base: Context) {
@@ -340,7 +341,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
-            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 userDeniedPermission = false
                 init()
             } else {
@@ -390,6 +391,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         super.onPause()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun setupStartState(savedInstanceState: Bundle?) {
         if (savedInstanceState != null) {
             // Activity is being restarted and has previous state (e.g., user rotated device)
@@ -413,6 +415,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         goToNavDrawerItem(position)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun goToNavDrawerItem(item: Int) {
         // Update the main content by replacing fragments
         when (item) {
@@ -820,6 +823,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         initGpsSwitch(menu)
@@ -841,13 +845,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                     if (!switch!!.isChecked && isTrackingStarted()) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
-                        // Measurements need to be stopped to prevent GnssStatus from updating - Samsung bug?
-                        // TODO - removeGnssMeasurementsListener();
                     } else {
                         if (switch!!.isChecked && !isTrackingStarted()) {
                             gpsStart()
-                            // Measurements need to be started again
-                            // TODO - addGnssMeasurementsListener();
                         }
                     }
                 }
@@ -898,6 +898,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         return super.onCreateDialog(id)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun createClearAssistWarningDialog(): Dialog {
         val view = layoutInflater.inflate(R.layout.clear_assist_warning, null)
         val neverShowDialog = view.findViewById<CheckBox>(R.id.clear_assist_never_ask_again)

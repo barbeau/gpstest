@@ -249,6 +249,7 @@ private fun String.trimZeros(): String {
 
 @Composable
 fun TTFF(ttff: String) {
+    // TODO - TTFF doesn't show up if fragment isn't running when it happens
     LocationValue(ttff)
 }
 
