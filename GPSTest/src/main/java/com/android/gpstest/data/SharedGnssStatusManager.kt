@@ -36,7 +36,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "SharedGnssStatusManager"
@@ -77,6 +76,7 @@ class SharedGnssStatusManager constructor(
             }
 
             override fun onFirstFix(ttffMillis: Int) {
+                // TODO - Figure out if we should call through to both fix states here - can lead to double-triggering actions downstream
                 _firstFixState.value = FirstFixState.Acquired(ttffMillis)
                 _fixState.value = FixState.Acquired
             }
