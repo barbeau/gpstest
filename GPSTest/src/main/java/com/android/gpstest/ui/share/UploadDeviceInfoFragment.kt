@@ -18,7 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import com.android.gpstest.Application
 import com.android.gpstest.BuildConfig
@@ -29,6 +29,7 @@ import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -42,6 +43,7 @@ class UploadDeviceInfoFragment : Fragment() {
         return inflater.inflate(R.layout.share_upload, container, false)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val uploadNoLocationTextView: TextView = view.findViewById(R.id.upload_no_location)
         val uploadDetails: TextView = view.findViewById(R.id.upload_details)
@@ -49,15 +51,11 @@ class UploadDeviceInfoFragment : Fragment() {
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
         val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
-        val deviceInfoViewModel = ViewModelProviders.of(requireActivity()).get(SignalInfoViewModel::class.java)
+        val signalInfoViewModel: SignalInfoViewModel by activityViewModels()
         var userCountry = ""
 
-        // TODO - DeviceInfoViewModel is still largely updated in GnssStatusFragment, so we need
-        // to check and make sure that the Status screen has been viewed even if we have a location
-        // to ensure we capture dual-frequency capability, supported GNSS, etc.
-        // Future work should move DeviceInfoViewModel so it's contained in the Activity instead
-        // so no matter what fragment is visible all the DeviceInfoViewModel are still updated.
-        if (location == null || !deviceInfoViewModel.gotFirstFix()) {
+        // TODO - test this
+        if (location == null || !signalInfoViewModel.gotFirstFix()) {
             // No location
             uploadDetails.visibility = View.GONE
             upload.visibility = View.GONE
@@ -166,11 +164,11 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
                     DevicePropertiesUploader.GNSS_HARDWARE_YEAR to getGnssHardwareYear(),
                     DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to getGnssHardwareModelName(),
-                    DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(deviceInfoViewModel.isNonPrimaryCarrierFreqInView),
-                    DevicePropertiesUploader.SUPPORTED_GNSS to trimEnds(replaceNavstar(deviceInfoViewModel.getSupportedGnss().sorted().toString())),
-                    DevicePropertiesUploader.GNSS_CFS to trimEnds(deviceInfoViewModel.getSupportedGnssCfs().sorted().toString()),
-                    DevicePropertiesUploader.SUPPORTED_SBAS to trimEnds(deviceInfoViewModel.getSupportedSbas().sorted().toString()),
-                    DevicePropertiesUploader.SBAS_CFS to trimEnds(deviceInfoViewModel.getSupportedSbasCfs().sorted().toString()),
+                    DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(signalInfoViewModel.isNonPrimaryCarrierFreqInView),
+                    DevicePropertiesUploader.SUPPORTED_GNSS to trimEnds(replaceNavstar(signalInfoViewModel.getSupportedGnss().sorted().toString())),
+                    DevicePropertiesUploader.GNSS_CFS to trimEnds(signalInfoViewModel.getSupportedGnssCfs().sorted().toString()),
+                    DevicePropertiesUploader.SUPPORTED_SBAS to trimEnds(signalInfoViewModel.getSupportedSbas().sorted().toString()),
+                    DevicePropertiesUploader.SBAS_CFS to trimEnds(signalInfoViewModel.getSupportedSbasCfs().sorted().toString()),
                     DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
                     DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
                     DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
