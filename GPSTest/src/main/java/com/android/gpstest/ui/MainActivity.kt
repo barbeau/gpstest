@@ -102,8 +102,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     val signalInfoViewModel: SignalInfoViewModel by viewModels()
 
     var gpsResume = false
-    private var switch // GPS on/off switch
-            : SwitchMaterial? = null
+    private var switch: SwitchMaterial? = null
     private var lastLocation: Location? = null
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
@@ -931,7 +930,5 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         private const val TAG = "GpsTestActivity"
         private const val SECONDS_TO_MILLISECONDS = 1000
         private const val GPS_RESUME = "gps_resume"
-        private const val EXISTING_CSV_LOG_FILE = "existing_csv_log_file"
-        private const val EXISTING_JSON_LOG_FILE = "existing_json_log_file"
     }
 }
