@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @OptIn(ExperimentalCoroutinesApi::class)
     val signalInfoViewModel: SignalInfoViewModel by viewModels()
 
-    var gpsResume = false
     private var switch: SwitchMaterial? = null
     private var lastLocation: Location? = null
     var lastSavedInstanceState: Bundle? = null
@@ -209,18 +208,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             R.id.navigation_drawer,
             binding.navDrawerLeftPane
         )
-    }
-
-    public override fun onSaveInstanceState(outState: Bundle) {
-        // Save GPS resume state
-        outState.putBoolean(GPS_RESUME, gpsResume)
-        //         if (service.csvFileLogger.isStarted() && !shareDialogOpen) {
-//             outState.putSerializable(EXISTING_CSV_LOG_FILE, service.csvFileLogger.getFile());
-//         }
-//         if (service.jsonFileLogger.isStarted() && !shareDialogOpen) {
-//             outState.putSerializable(EXISTING_JSON_LOG_FILE, service.jsonFileLogger.getFile());
-//         }
-        super.onSaveInstanceState(outState)
     }
 
     override fun onResume() {
@@ -375,14 +362,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onPause() {
-        gpsResume = if (isTrackingStarted()) {
-            gpsStop()
-            // If GPS was started, we want to resume it after orientation change
-            true
-        } else {
-            false
-        }
-        // Stop the service if this isn't a configuration change and the user hasn't opted to run in background
+        // Stop GNSS if this isn't a configuration change and the user hasn't opted to run in background
         if (!isChangingConfigurations && !runInBackground()) {
             service?.unsubscribeToLocationUpdates()
         }
@@ -391,21 +371,13 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun setupStartState(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            // Activity is being restarted and has previous state (e.g., user rotated device)
-            val gpsResume = savedInstanceState.getBoolean(GPS_RESUME, true)
-            if (gpsResume) {
-                gpsStart()
-            }
-        } else {
-            // Activity is starting without previous state - use "Auto-start GNSS" setting, or gpsResume (e.g., if app was backgrounded via Home button)
-            if (Application.prefs.getBoolean(
-                    getString(R.string.pref_key_auto_start_gps),
-                    true
-                ) || gpsResume
-            ) {
-                gpsStart()
-            }
+        // Use "Auto-start GNSS" setting, or existing tracking state (e.g., if service is running)
+        if (Application.prefs.getBoolean(
+                getString(R.string.pref_key_auto_start_gps),
+                true
+            ) || isTrackingStarted()
+        ) {
+            gpsStart()
         }
     }
 

@@ -42,9 +42,7 @@ class StatusFragment2 : Fragment() {
     ): View {
         val viewModel: SignalInfoViewModel by activityViewModels()
         return ComposeView(requireContext()).apply {
-            // Dispose the Composition when the view's LifecycleOwner
-            // is destroyed
-            // TODO - test rotations, resuming fragment - do updates stop?
+            // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme(
