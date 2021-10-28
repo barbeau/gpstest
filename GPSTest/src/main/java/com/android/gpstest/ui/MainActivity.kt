@@ -51,7 +51,6 @@ import com.android.gpstest.Application
 import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
-import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
@@ -772,16 +771,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     private fun observeGnssStates() {
-        repository.firstFixState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                when (it) {
-                    is FirstFixState.Acquired -> hideProgressBar()
-                    is FirstFixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
-                }
-            }
-            .launchIn(lifecycleScope)
-
         repository.fixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {

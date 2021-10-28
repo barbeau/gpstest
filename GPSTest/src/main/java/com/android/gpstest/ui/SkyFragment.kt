@@ -39,7 +39,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
 import com.android.gpstest.R
-import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.databinding.GpsSkyBinding
@@ -167,17 +166,6 @@ class SkyFragment : Fragment() {
     }
 
     private fun observeGnssStates() {
-        repository.firstFixState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                when (it) {
-                    is FirstFixState.Acquired -> {
-                        onGnssFixAcquired()
-                    }
-                    is FirstFixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
-                }
-            }
-            .launchIn(lifecycleScope)
         repository.fixState
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
