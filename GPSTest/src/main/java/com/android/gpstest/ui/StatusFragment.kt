@@ -290,7 +290,6 @@ class StatusFragment : Fragment() {
                         // FIXME - if the service is running but the activity is destroyed and then created
                         // we never see TTFF in the Status fragment.
                         onGnssFirstFix(it.ttffMillis)
-                        onGnssFixAcquired()
                     }
                     is FirstFixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
                 }
