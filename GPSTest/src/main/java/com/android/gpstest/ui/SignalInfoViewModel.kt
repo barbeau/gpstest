@@ -88,7 +88,7 @@ class SignalInfoViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
-    private val _ttff = MutableLiveData<String>()
+    private val _ttff = MutableLiveData("")
     val ttff: LiveData<String> = _ttff
 
     private val _altitudeMsl = MutableLiveData<Double>()

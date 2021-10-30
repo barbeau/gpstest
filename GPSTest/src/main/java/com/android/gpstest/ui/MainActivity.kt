@@ -45,6 +45,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
@@ -98,7 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     // Main signal view model
     @OptIn(ExperimentalCoroutinesApi::class)
-    val signalInfoViewModel: SignalInfoViewModel by viewModels()
+    private val signalInfoViewModel: SignalInfoViewModel by viewModels()
 
     private var switch: SwitchMaterial? = null
     private var lastLocation: Location? = null
@@ -721,6 +722,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @ExperimentalCoroutinesApi
     private fun observeLocationFlow() {
+        // TODO - convert this to viewModel LiveData observer too?
         if (locationFlow?.isActive == true) {
             // If we're already observing updates, don't register again
             return
@@ -742,16 +744,19 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             .launchIn(lifecycleScope)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeGnssStates() {
-        repository.fixState
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                when (it) {
-                    is FixState.Acquired -> hideProgressBar()
-                    is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
-                }
+        // Use ViewModel here to ensure that it's populated for fragments as well -
+        // otherwise ViewModel is lazily initialized and we don't save TTFF if viewed later in Status (e.g., if started in Accuracy or Map)
+        val gnssStateObserver = Observer<FixState> { fixState ->
+            when (fixState) {
+                is FixState.Acquired -> hideProgressBar()
+                is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
             }
-            .launchIn(lifecycleScope)
+        }
+        signalInfoViewModel.fixState.observe(
+    this, gnssStateObserver
+        )
     }
 
     @Synchronized
