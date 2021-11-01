@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest.ui
+package com.android.gpstest.ui.status
 
 import android.os.Bundle
 import android.view.*
@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.android.gpstest.R
-import com.android.gpstest.ui.status.StatusScreen
+import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils.showSortByDialog
