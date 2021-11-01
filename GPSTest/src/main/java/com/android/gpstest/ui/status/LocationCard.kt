@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -36,6 +37,7 @@ import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.FormatUtils
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.PreferenceUtils.gnssFilter
 import com.android.gpstest.util.SatelliteUtils
 import java.text.SimpleDateFormat
 
@@ -263,14 +265,20 @@ fun Accuracy(location: Location) {
 
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
-    // TODO - make this italic if filter is active
+    val fontStyle = if (gnssFilter().isNotEmpty()) {
+        // Make text italic so it matches filter text
+        FontStyle.Italic
+    } else {
+        FontStyle.Normal
+    }
     LocationValue(
         stringResource(
             R.string.gps_num_sats_value,
             satelliteMetadata.numSatsUsed,
             satelliteMetadata.numSatsInView,
             satelliteMetadata.numSatsTotal
-        )
+        ),
+        fontStyle
     )
 }
 
@@ -363,19 +371,21 @@ fun LocationLabel(@StringRes id: Int) {
 }
 
 @Composable
-fun LocationValue(text: String) {
+fun LocationValue(text: String, fontStyle: FontStyle = FontStyle.Normal) {
     if (reduceSpacing()) {
         Text(
             text = text,
             modifier = Modifier.padding(end = 2.dp),
             fontSize = 13.sp,
-            letterSpacing = letterSpacing()
+            letterSpacing = letterSpacing(),
+            fontStyle = fontStyle
         )
     } else {
         Text(
             text = text,
             modifier = Modifier.padding(end = 4.dp),
             fontSize = 13.sp,
+            fontStyle = fontStyle
         )
     }
 }
