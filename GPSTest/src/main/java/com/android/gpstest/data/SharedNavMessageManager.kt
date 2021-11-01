@@ -117,9 +117,9 @@ class SharedNavMessageManager constructor(
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 private fun checkNavMessageSupport(locationManager: LocationManager) {
-    // TODO - surface this status message in UI somewhere, like when user returned from Settings like before?
+    // TODO - surface this status message in UI somewhere, like when user returned from Settings like before?  For now just disable logging option in Settings, will surface in Dashboard later
     val uiStatusMessage: String
-    uiStatusMessage = if (SatelliteUtils.isNavigationMessagesSupported(locationManager)) {
+    uiStatusMessage = if (SatelliteUtils.isNavMessagesSupported(locationManager)) {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_nav_messages),
             PreferenceUtils.CAPABILITY_SUPPORTED

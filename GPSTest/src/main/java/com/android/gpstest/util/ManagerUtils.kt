@@ -21,8 +21,12 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.GnssMeasurementsEvent
 import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.util.SharedPreferenceUtil.METERS
@@ -275,6 +279,40 @@ internal object SharedPreferenceUtil {
 
     fun darkTheme(): Boolean {
         return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_dark_theme), false)
+    }
+
+    /**
+     * Returns true if preferences related to raw measurements should be enabled,
+     * false if they should be disabled
+     */
+    fun enableMeasurementsPref(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val manager = app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            return SatelliteUtils.isMeasurementsSupported(manager)
+        }
+        // Legacy versions before Android S
+        val capabilityMeasurementsInt = prefs.getInt(
+            app.getString(R.string.capability_key_raw_measurements),
+            PreferenceUtils.CAPABILITY_UNKNOWN
+        )
+        return capabilityMeasurementsInt != PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+    }
+
+    /**
+     * Returns true if preferences related to navigation messages should be enabled,
+     * false if they should be disabled
+     */
+    fun enableNavMessagesPref(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val manager = app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            return SatelliteUtils.isNavMessagesSupported(manager)
+        }
+        // Legacy versions before Android S
+        val capabilityNavMessagesInt = prefs.getInt(
+            app.getString(R.string.capability_key_nav_messages),
+            PreferenceUtils.CAPABILITY_UNKNOWN
+        )
+        return capabilityNavMessagesInt != PreferenceUtils.CAPABILITY_NOT_SUPPORTED
     }
 
     /**

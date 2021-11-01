@@ -142,7 +142,7 @@ class SharedGnssMeasurementManager constructor(
 }
 
 private fun handleLegacyMeasurementStatus(status: Int) {
-    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before?
+    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before? For now just disable logging option in Settings, will surface in Dashboard later
     val uiStatusMessage: String
     when (status) {
         GnssMeasurementsEvent.Callback.STATUS_LOCATION_DISABLED -> {
@@ -189,8 +189,8 @@ private fun handleLegacyMeasurementStatus(status: Int) {
 
 @RequiresApi(api = Build.VERSION_CODES.S)
 private fun checkMeasurementSupport(lm: LocationManager) {
-    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before?
-    val uiStatusMessage: String = if (SatelliteUtils.isGnssMeasurementsSupported(lm)) {
+    // TODO - surface this state message in UI somewhere, like when user returned from Settings like before?  For now just disable logging option in Settings, will surface in Dashboard later
+    val uiStatusMessage: String = if (SatelliteUtils.isMeasurementsSupported(lm)) {
         PreferenceUtils.saveInt(
             Application.app.getString(R.string.capability_key_raw_measurements),
             PreferenceUtils.CAPABILITY_SUPPORTED

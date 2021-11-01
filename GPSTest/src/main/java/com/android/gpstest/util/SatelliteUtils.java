@@ -260,16 +260,16 @@ public class SatelliteUtils {
      * @return true if the platform supports GNSS measurements, false if it does not
      */
     @RequiresApi(api = Build.VERSION_CODES.S)
-    public static boolean isGnssMeasurementsSupported(LocationManager manager) {
+    public static boolean isMeasurementsSupported(LocationManager manager) {
         return manager != null && manager.getGnssCapabilities().hasMeasurements();
     }
 
     /**
-     * Returns true if the platform supports navigation messsages, false if it does not.
-     * @return true if the platform supports navigation messsages, false if it does not
+     * Returns true if the platform supports navigation messages, false if it does not.
+     * @return true if the platform supports navigation messages, false if it does not
      */
     @RequiresApi(api = Build.VERSION_CODES.S)
-    public static boolean isNavigationMessagesSupported(LocationManager manager) {
+    public static boolean isNavMessagesSupported(LocationManager manager) {
         return manager != null && manager.getGnssCapabilities().hasNavigationMessages();
     }
 
