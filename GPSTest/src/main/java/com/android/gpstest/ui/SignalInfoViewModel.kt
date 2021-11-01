@@ -212,6 +212,11 @@ class SignalInfoViewModel @Inject constructor(
         setStatuses(sort(gnssStatus, true), sort(sbasStatus, false))
     }
 
+    /**
+     * Returns a sorted version of the provided [status] list according to the sort preference of
+     * the user, with [isGnss] set to true if the list contains all GNSS signals and false if
+     * it contains all SBAS signals
+     */
     private fun sort(status: List<SatelliteStatus>, isGnss: Boolean): List<SatelliteStatus> {
         return when (PreferenceUtils.getSatSortOrderFromPreferences()) {
             0 -> {
