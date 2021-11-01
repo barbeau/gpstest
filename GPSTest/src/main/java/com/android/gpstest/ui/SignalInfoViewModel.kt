@@ -30,6 +30,7 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.data.toSatelliteStatus
 import com.android.gpstest.model.*
 import com.android.gpstest.util.*
+import com.android.gpstest.util.CarrierFreqUtils.getCarrierFrequencyLabel
 import com.android.gpstest.util.FormatUtils.formatTtff
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -208,9 +209,97 @@ class SignalInfoViewModel @Inject constructor(
                 it.gnssType != GnssType.SBAS
             }
 
-        // TODO - sort both lists here
+        setStatuses(sort(gnssStatus, true), sort(sbasStatus, false))
+    }
 
-        setStatuses(gnssStatus, sbasStatus)
+    private fun sort(status: List<SatelliteStatus>, isGnss: Boolean): List<SatelliteStatus> {
+        return when (PreferenceUtils.getSatSortOrderFromPreferences()) {
+            0 -> {
+                // Sort by Constellation
+                if (isGnss) {
+                    status.sortedWith(compareBy(SatelliteStatus::gnssType, SatelliteStatus::svid))
+                } else {
+                    status.sortedWith(compareBy(SatelliteStatus::sbasType, SatelliteStatus::svid))
+                }
+            }
+            1 -> {
+                // Sort by Carrier Frequency (raw CF, then label to group L5s, E5a, etc.)
+                status.sortedWith(
+                    compareBy<SatelliteStatus> {
+                        it.carrierFrequencyHz
+                    }.thenBy {
+                        getCarrierFrequencyLabel(it)
+                    }.thenBy {
+                        it.svid
+                    }
+                )
+            }
+            2 -> {
+                // Sort by Signal Strength
+                status.sortedWith(compareByDescending(SatelliteStatus::cn0DbHz))
+            }
+            3 -> {
+                // Sort by Used in Fix
+                status.sortedWith(
+                    compareByDescending(SatelliteStatus::usedInFix).thenComparing(
+                        SatelliteStatus::svid
+                    )
+                )
+            }
+            4 -> {
+                // Sort by Constellation, Carrier Frequency
+                if (isGnss) {
+                    status.sortedWith(
+                        compareBy(
+                            SatelliteStatus::gnssType,
+                            SatelliteStatus::carrierFrequencyHz,
+                            SatelliteStatus::svid
+                        )
+                    )
+                } else {
+                    status.sortedWith(
+                        compareBy(
+                            SatelliteStatus::sbasType,
+                            SatelliteStatus::carrierFrequencyHz,
+                            SatelliteStatus::svid
+                        )
+                    )
+                }
+            }
+            5 -> {
+                // Sort by Constellation, Signal Strength
+                if (isGnss) {
+                    status.sortedWith(
+                        compareBy(SatelliteStatus::gnssType).thenByDescending(
+                            SatelliteStatus::cn0DbHz
+                        )
+                    )
+                } else {
+                    status.sortedWith(
+                        compareBy(SatelliteStatus::sbasType).thenByDescending(
+                            SatelliteStatus::cn0DbHz
+                        )
+                    )
+                }
+            }
+            6 -> {
+                // Sort by Constellation, Used in Fix
+                if (isGnss) {
+                    status.sortedWith(
+                        compareBy(SatelliteStatus::gnssType).thenByDescending(
+                            SatelliteStatus::usedInFix
+                        ).thenComparing(SatelliteStatus::svid)
+                    )
+                } else {
+                    status.sortedWith(
+                        compareBy(SatelliteStatus::sbasType).thenByDescending(
+                            SatelliteStatus::usedInFix
+                        ).thenComparing(SatelliteStatus::svid)
+                    )
+                }
+            }
+            else -> status
+        }
     }
 
     private fun onGnssFirstFix(ttffMillis: Int) {

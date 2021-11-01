@@ -236,7 +236,7 @@ public class CarrierFreqUtils {
 
     /**
      * Returns the carrier frequency label (e.g. "L1") for the provided GNSS antenna's
-     * carrier frequency
+     * carrier frequency. TODO - combine this with getCarrierFrequencyLabel(SatelliteStatus status)?
      * @param gnssAntennaInfo
      * @return the carrier frequency label (e.g. "L1") for the provided GNSS antenna's
      * carrier frequency
