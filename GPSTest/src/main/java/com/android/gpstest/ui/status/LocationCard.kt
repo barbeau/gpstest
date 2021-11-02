@@ -5,16 +5,17 @@ import android.location.Location
 import android.text.format.DateFormat
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -201,20 +202,12 @@ fun Time(location: Location) {
     if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
         LocationValue("")
     } else {
-        if (DateTimeUtils.isTimeValid(location.time)) {
-            formatTime(location.time)
-        } else {
-            // Error in fix time - FIXME - show error view instead
-//            binding.fixTimeError.visibility = View.VISIBLE
-//            binding.fixTimeError.text = formatFixTimeDate(location.time)
-//            binding.fixTime.visibility = View.GONE
-            LocationValue("")
-        }
+        formatTime(location.time)
     }
 }
 
 @Composable
-private fun formatTime(fixTime: Long) {
+private fun formatTime(time: Long) {
     // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
     val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
     val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
@@ -235,12 +228,17 @@ private fun formatTime(fixTime: Long) {
         )
     }
 
-    if (LocalConfiguration.current.screenWidthDp > 450) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValid(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+        val dateAndTime = timeAndDateFormat.format(time).trimZeros()
         // Time and date
-        LocationValue(timeAndDateFormat.format(fixTime).trimZeros())
+        if (DateTimeUtils.isTimeValid(time)) {
+            LocationValue(dateAndTime)
+        } else {
+            ErrorTime(dateAndTime, time)
+        }
     } else {
-        // Just time
-        LocationValue(timeFormat.format(fixTime).trimZeros())
+        // Time
+        LocationValue(timeFormat.format(time).trimZeros())
     }
 }
 
@@ -386,6 +384,72 @@ fun LocationValue(text: String, fontStyle: FontStyle = FontStyle.Normal) {
             modifier = Modifier.padding(end = 4.dp),
             fontSize = 13.sp,
             fontStyle = fontStyle
+        )
+    }
+}
+
+@Composable
+fun ErrorTime(timeText: String, timeMs: Long) {
+    var openDialog = remember { mutableStateOf(false) }
+    // Red time box
+    Box(
+        Modifier
+            .wrapContentHeight()
+            .wrapContentWidth()
+            .clip(RoundedCornerShape(4.dp))
+            .background(MaterialTheme.colors.error)
+            .clickable {
+                openDialog.value = true
+            }
+    ) {
+        Text(
+            text = timeText,
+            modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+            fontSize = 13.sp,
+            color = MaterialTheme.colors.onError
+        )
+    }
+
+    // Alert Dialog
+    val format = remember {
+        SimpleDateFormat.getDateTimeInstance(
+            java.text.DateFormat.LONG,
+            java.text.DateFormat.LONG
+        )
+    }
+
+    val message by remember {
+        mutableStateOf(
+            Application.app.getString(
+                R.string.error_time_message, format.format(timeMs),
+                DateTimeUtils.NUM_DAYS_TIME_VALID
+            )
+        )
+    }
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                // TODO - hyperlink URL in text
+                Text(stringResource(R.string.error_time_title))
+            },
+            text = {
+                Column() {
+                    Text(message)
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
         )
     }
 }

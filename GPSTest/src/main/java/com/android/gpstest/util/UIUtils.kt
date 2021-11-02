@@ -1054,6 +1054,7 @@ internal object UIUtils {
     }
 
     fun showSortByDialog(activity: FragmentActivity) {
+        // TODO - convert all dialogs to MaterialAlertDialog (https://material.io/components/dialogs/android#using-dialogs)
         val builder = AlertDialog.Builder(
             activity
         )
