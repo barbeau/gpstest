@@ -217,7 +217,6 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
         GnssType.SBAS -> SbasFlag(satelliteStatus, modifier)
         GnssType.UNKNOWN -> {
             Box(
-                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box? Use Spacer?
                 modifier = modifier
             )
         }
@@ -250,7 +249,6 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
         }
         SbasType.UNKNOWN -> {
             Box(
-                // contentDescription = stringResource(R.string.unknown) // FIXME - how to do content description on a blank box? Use Spacer?
                 modifier = modifier
             )
         }
