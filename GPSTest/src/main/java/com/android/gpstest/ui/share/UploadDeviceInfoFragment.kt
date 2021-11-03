@@ -54,7 +54,6 @@ class UploadDeviceInfoFragment : Fragment() {
         val signalInfoViewModel: SignalInfoViewModel by activityViewModels()
         var userCountry = ""
 
-        // TODO - test this
         if (location == null || !signalInfoViewModel.gotFirstFix()) {
             // No location
             uploadDetails.visibility = View.GONE
