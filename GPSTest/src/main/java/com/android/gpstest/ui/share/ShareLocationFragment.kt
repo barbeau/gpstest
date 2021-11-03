@@ -58,18 +58,22 @@ class ShareLocationFragment : Fragment() {
         }
 
         // Set default state of include altitude view
-
-        // Set default state of include altitude view
         val includeAltitudePref = Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), false)
         includeAltitude.isChecked = includeAltitudePref
 
         // Check selected coordinate format and show in UI
-
-        // Check selected coordinate format and show in UI
         val coordinateFormat = Application.prefs.getString(Application.app.getString(R.string.pref_key_coordinate_format), Application.app.getString(R.string.preferences_coordinate_format_dd_key))
-        UIUtils.formatLocationForDisplay(location, locationValue, includeAltitude.isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, coordinateFormat)
-
-        // Change the location text when the user toggles the altitude checkbox
+        if (location != null) {
+            UIUtils.formatLocationForDisplay(
+                location,
+                locationValue,
+                includeAltitude.isChecked,
+                chipDecimalDegrees,
+                chipDMS,
+                chipDegreesDecimalMin,
+                coordinateFormat
+            )
+        }
 
         // Change the location text when the user toggles the altitude checkbox
         includeAltitude.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -81,13 +85,26 @@ class ShareLocationFragment : Fragment() {
             } else if (chipDegreesDecimalMin.isChecked) {
                 format = "ddm"
             }
-            UIUtils.formatLocationForDisplay(location, locationValue, isChecked, chipDecimalDegrees, chipDMS, chipDegreesDecimalMin, format)
+            if (location != null) {
+                UIUtils.formatLocationForDisplay(
+                    location,
+                    locationValue,
+                    isChecked,
+                    chipDecimalDegrees,
+                    chipDMS,
+                    chipDegreesDecimalMin,
+                    format
+                )
+            }
             PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked)
         }
 
         chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
-                locationValue.text = IOUtils.createLocationShare(location, includeAltitude.isChecked)
+                if (location != null) {
+                    locationValue.text =
+                        IOUtils.createLocationShare(location, includeAltitude.isChecked)
+                }
             }
         }
         chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -122,10 +139,10 @@ class ShareLocationFragment : Fragment() {
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
                 val geohackUrl = Application.app.getString(R.string.geohack_url) +
-                        location.getLatitude() + ";" +
-                        location.getLongitude()
+                        location.latitude + ";" +
+                        location.longitude
                 intent.data = Uri.parse(geohackUrl)
-                activity!!.startActivity(intent)
+                requireActivity().startActivity(intent)
             }
         }
         locationLaunchApp.setOnClickListener { _: View? ->
@@ -133,8 +150,8 @@ class ShareLocationFragment : Fragment() {
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(IOUtils.createGeoUri(location, includeAltitude.isChecked))
-                if (intent.resolveActivity(activity!!.packageManager) != null) {
-                    activity!!.startActivity(intent)
+                if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                    requireActivity().startActivity(intent)
                 }
             }
         }
@@ -143,15 +160,14 @@ class ShareLocationFragment : Fragment() {
             // selected, otherwise send plain text version
             if (location != null) {
                 val intent = Intent(Intent.ACTION_SEND)
-                val text: String
-                text = if (chipDecimalDegrees.isChecked) {
+                val text: String = if (chipDecimalDegrees.isChecked) {
                     IOUtils.createGeoUri(location, includeAltitude.isChecked)
                 } else {
                     locationValue.text.toString()
                 }
                 intent.putExtra(Intent.EXTRA_TEXT, text)
                 intent.type = "text/plain"
-                activity!!.startActivity(Intent.createChooser(intent, Application.app.getString(R.string.share)))
+                requireActivity().startActivity(Intent.createChooser(intent, Application.app.getString(R.string.share)))
             }
         }
     }

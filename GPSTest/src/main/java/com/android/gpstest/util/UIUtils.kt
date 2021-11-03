@@ -784,7 +784,9 @@ internal object UIUtils {
         when (coordinateFormat) {
             "dd" -> {
                 // Decimal degrees
-                formattedLocation = IOUtils.createLocationShare(location, includeAltitude)
+                if (location != null) {
+                    formattedLocation = IOUtils.createLocationShare(location, includeAltitude)
+                }
                 if (chipDecimalDegrees != null) {
                     chipDecimalDegrees.isChecked = true
                 }
@@ -795,9 +797,7 @@ internal object UIUtils {
                     formattedLocation = IOUtils.createLocationShare(
                         getDMSFromLocation(app, location.latitude, CoordinateType.LATITUDE),
                         getDMSFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
-                        if (location.hasAltitude() && includeAltitude) java.lang.Double.toString(
-                            location.altitude
-                        ) else null
+                        if (location.hasAltitude() && includeAltitude) location.altitude.toString() else null
                     )
                 }
                 if (chipDMS != null) {
@@ -810,9 +810,7 @@ internal object UIUtils {
                     formattedLocation = IOUtils.createLocationShare(
                         getDDMFromLocation(app, location.latitude, CoordinateType.LATITUDE),
                         getDDMFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
-                        if (location.hasAltitude() && includeAltitude) java.lang.Double.toString(
-                            location.altitude
-                        ) else null
+                        if (location.hasAltitude() && includeAltitude) location.altitude.toString() else null
                     )
                 }
                 if (chipDegreesDecimalMin != null) {
