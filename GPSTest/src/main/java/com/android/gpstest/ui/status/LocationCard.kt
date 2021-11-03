@@ -1,8 +1,11 @@
 package com.android.gpstest.ui.status
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Location
+import android.text.TextUtils
 import android.text.format.DateFormat
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -17,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -34,12 +38,11 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.util.DateTimeUtils
-import com.android.gpstest.util.FormatUtils
+import com.android.gpstest.util.*
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
-import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import com.android.gpstest.util.SatelliteUtils
+import com.android.gpstest.util.SharedPreferenceUtil.coordinateFormat
+import com.android.gpstest.util.SharedPreferenceUtil.shareIncludeAltitude
 import java.text.SimpleDateFormat
 
 @Preview
@@ -88,10 +91,14 @@ fun LocationCard(
     satelliteMetadata: SatelliteMetadata,
     fixState: FixState,
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
+            .padding(5.dp)
+            .clickable {
+                copyToClipboard(context, location)
+            },
         elevation = 2.dp
     ) {
         Box {
@@ -480,5 +487,18 @@ fun LockIcon(fixState: FixState) {
             tint = MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(6.dp)
         )
+    }
+}
+
+private fun copyToClipboard(context: Context, location: Location) {
+    if (location.latitude == 0.0 && location.longitude == 0.0) return
+    val formattedLocation = UIUtils.formatLocationForDisplay(
+        location, null, shareIncludeAltitude(),
+        null, null, null, coordinateFormat()
+    )
+    if (!TextUtils.isEmpty(formattedLocation)) {
+        IOUtils.copyToClipboard(formattedLocation)
+        Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_LONG)
+            .show()
     }
 }

@@ -281,6 +281,12 @@ internal object SharedPreferenceUtil {
         return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_dark_theme), false)
     }
 
+    fun shareIncludeAltitude(): Boolean {
+        return prefs.getBoolean(
+            app.getString(R.string.pref_key_share_include_altitude), false
+        )
+    }
+
     /**
      * Returns true if preferences related to raw measurements should be enabled,
      * false if they should be disabled
