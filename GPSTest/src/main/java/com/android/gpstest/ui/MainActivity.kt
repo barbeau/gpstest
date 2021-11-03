@@ -107,11 +107,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
     private var benchmarkController: BenchmarkController? = null
+
     private var initialLanguage: String? = null
+    private var initialMinTimeMillis: Long? = null
+    private var initialMinDistance: Float? = null
+
     private var shareDialogOpen = false
     private var progressBar: ProgressBar? = null
     private var isServiceBound = false
     private var service: ForegroundOnlyLocationService? = null
+
     private var foregroundOnlyServiceConnection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
             val binder = iBinder as LocalBinder
@@ -158,6 +163,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
         initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
+        initialMinTimeMillis = minTimeMillis()
+        initialMinDistance = minDistance()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -222,14 +229,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             // loop if user selects "Don't ask again") in system permission prompt
             UIUtils.showLocationPermissionDialog(this)
         }
-        // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate Activity
-        if (Application.prefs.contains(getString(R.string.pref_key_language))) {
-            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
-            if (currentLanguage != initialLanguage) {
-                initialLanguage = currentLanguage
-                recreateApp(null)
-            }
-        }
+        maybeRecreateApp()
         benchmarkController!!.onResume()
     }
 
@@ -265,6 +265,23 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                     ).show()
                 }
             }
+        }
+    }
+
+    private fun maybeRecreateApp() {
+        // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate App
+        if (Application.prefs.contains(getString(R.string.pref_key_language))) {
+            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
+            if (currentLanguage != initialLanguage) {
+                initialLanguage = currentLanguage
+                recreateApp(null)
+            }
+        }
+        // If the user changed the location update settings, recreate the App
+        if (minTimeMillis() != initialMinTimeMillis || minDistance() != initialMinDistance) {
+            initialMinTimeMillis = minTimeMillis()
+            initialMinDistance = minDistance()
+            recreateApp(null)
         }
     }
 

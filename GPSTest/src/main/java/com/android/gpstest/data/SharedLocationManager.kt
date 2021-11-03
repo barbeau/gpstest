@@ -65,7 +65,6 @@ class SharedLocationManager constructor(
         _receivingLocationUpdates.value = true
 
         try {
-            // TODO - handle case where service is still running and user changes preferences for minTime and minDistance
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 minTimeMillis(),
