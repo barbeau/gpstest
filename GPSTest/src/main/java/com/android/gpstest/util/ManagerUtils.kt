@@ -24,7 +24,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
-import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
@@ -52,7 +51,7 @@ fun android.location.Location?.toNotificationTitle(): String {
 // FIXME - Collapse this into other formatting functions in StatusScreen
 fun android.location.Location?.toNotificationSummary(): String {
     return if (this != null) {
-        val resources = Application.app.resources
+        val resources = app.resources
         val lat: String
         val lon: String
         val alt: String
@@ -75,13 +74,13 @@ fun android.location.Location?.toNotificationSummary(): String {
                 // Degrees minutes seconds
                lat =
                     UIUtils.getDMSFromLocation(
-                        Application.app,
+                        app,
                         this.latitude,
                         CoordinateType.LATITUDE
                     )
                 lon =
                     UIUtils.getDMSFromLocation(
-                        Application.app,
+                        app,
                         this.longitude,
                         CoordinateType.LONGITUDE
                     )
@@ -90,13 +89,13 @@ fun android.location.Location?.toNotificationSummary(): String {
                 // Degrees decimal minutes
                 lat =
                     UIUtils.getDDMFromLocation(
-                        Application.app,
+                        app,
                         this.latitude,
                         CoordinateType.LATITUDE
                     )
                 lon =
                     UIUtils.getDDMFromLocation(
-                        Application.app,
+                        app,
                         this.longitude,
                         CoordinateType.LONGITUDE
                     )
@@ -164,19 +163,19 @@ internal object SharedPreferenceUtil {
     const val SECONDS_TO_MILLISECONDS = 1000
 
     val METERS =
-        Application.app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
+        app.resources.getStringArray(R.array.preferred_distance_units_values)[0]
     val METERS_PER_SECOND =
-        Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
+        app.resources.getStringArray(R.array.preferred_speed_units_values)[0]
     val KILOMETERS_PER_HOUR =
-        Application.app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
+        app.resources.getStringArray(R.array.preferred_speed_units_values)[1]
 
     /**
      * Returns the minTime between location updates used for the LocationListener in milliseconds
      */
     fun minTimeMillis(): Long {
         val minTimeDouble: Double =
-            Application.prefs
-                .getString(Application.app.getString(R.string.pref_key_gps_min_time), "1")
+            prefs
+                .getString(app.getString(R.string.pref_key_gps_min_time), "1")
                 ?.toDouble() ?: 1.0
         return (minTimeDouble * SECONDS_TO_MILLISECONDS).toLong()
     }
@@ -185,62 +184,50 @@ internal object SharedPreferenceUtil {
      * Returns the minDistance between location updates used for the LocationLitsener in meters
      */
     fun minDistance(): Float {
-        return Application.prefs
-            .getString(Application.app.getString(R.string.pref_key_gps_min_distance), "0")
-            ?.toFloat() ?: 0.0f
+        return prefs.getString(app.getString(R.string.pref_key_gps_min_distance), "0") ?.toFloat() ?: 0.0f
     }
 
     /**
      * Returns true if the user has selected to write locations to file output, false if they have not
      */
     fun writeLocationToFile(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_location_output), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_file_location_output), false)
     }
 
     fun writeMeasurementToLogcat(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_as_measurement_output), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_as_measurement_output), false)
     }
 
     fun writeMeasurementsToFile(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_measurement_output), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_file_measurement_output), false)
     }
 
     fun writeNmeaToAndroidMonitor(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_output), true)
+        return prefs.getBoolean(app.getString(R.string.pref_key_as_nmea_output), true)
     }
 
     fun writeNmeaTimestampToLogcat(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_as_nmea_timestamp_output), true)
+        return prefs.getBoolean(app.getString(R.string.pref_key_as_nmea_timestamp_output), true)
     }
 
     fun writeNmeaToFile(): Boolean {
-      return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_nmea_output), false)
+      return prefs.getBoolean(app.getString(R.string.pref_key_file_nmea_output), false)
     }
 
     fun writeAntennaInfoToFileJson(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_json), false);
+        return prefs.getBoolean(app.getString(R.string.pref_key_file_antenna_output_json), false);
     }
 
     fun writeAntennaInfoToFileCsv(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_antenna_output_csv), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_file_antenna_output_csv), false)
     }
 
     fun writeNavMessageToLogcat(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_as_navigation_message_output), false);
+        return prefs.getBoolean(app.getString(R.string.pref_key_as_navigation_message_output), false);
     }
 
     fun writeNavMessageToFile(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_file_navigation_message_output), false);
+        return prefs.getBoolean(app.getString(R.string.pref_key_file_navigation_message_output), false);
     }
 
     fun isFileLoggingEnabled(): Boolean {
@@ -256,29 +243,26 @@ internal object SharedPreferenceUtil {
     }
 
     fun distanceUnits(): String {
-        return Application.prefs
-            .getString(Application.app.getString(R.string.pref_key_preferred_distance_units_v2), METERS) ?: METERS
+        return prefs.getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS) ?: METERS
     }
 
     fun speedUnits(): String {
-        return Application.prefs
-            .getString(Application.app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND) ?: METERS_PER_SECOND
+        return prefs.getString(app.getString(R.string.pref_key_preferred_speed_units_v2), METERS_PER_SECOND) ?: METERS_PER_SECOND
     }
 
     fun coordinateFormat(): String {
-        return Application.prefs.getString(
-            Application.app.getString(R.string.pref_key_coordinate_format),
-            Application.app.getString(R.string.preferences_coordinate_format_dd_key)
-        ) ?: Application.app.getString(R.string.preferences_coordinate_format_dd_key)
+        return prefs.getString(
+            app.getString(R.string.pref_key_coordinate_format),
+            app.getString(R.string.preferences_coordinate_format_dd_key)
+        ) ?: app.getString(R.string.preferences_coordinate_format_dd_key)
     }
 
     fun runInBackground(): Boolean {
-        return Application.prefs
-            .getBoolean(Application.app.getString(R.string.pref_key_gnss_background), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_gnss_background), false)
     }
 
     fun darkTheme(): Boolean {
-        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_dark_theme), false)
+        return prefs.getBoolean(app.getString(R.string.pref_key_dark_theme), false)
     }
 
     fun shareIncludeAltitude(): Boolean {
@@ -341,12 +325,12 @@ internal object SharedPreferenceUtil {
             }
         }
         PreferenceUtils.saveInt(
-            Application.app
+            app
                 .getString(R.string.capability_key_measurement_automatic_gain_control),
             agcSupport
         )
         PreferenceUtils.saveInt(
-            Application.app
+            app
                 .getString(R.string.capability_key_measurement_delta_range),
             carrierPhaseSupport
         )
@@ -379,49 +363,49 @@ internal object SharedPreferenceUtil {
      */
     fun newFileLoggingListener(initLogging: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
         return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == Application.app.getString(R.string.pref_key_file_location_output) ||
-                key == Application.app.getString(R.string.pref_key_file_measurement_output) ||
-                key == Application.app.getString(R.string.pref_key_file_nmea_output) ||
-                key == Application.app.getString(R.string.pref_key_file_navigation_message_output) ||
-                key == Application.app.getString(R.string.pref_key_file_antenna_output_csv) ||
-                key == Application.app.getString(R.string.pref_key_file_antenna_output_json)) {
+            if (key == app.getString(R.string.pref_key_file_location_output) ||
+                key == app.getString(R.string.pref_key_file_measurement_output) ||
+                key == app.getString(R.string.pref_key_file_nmea_output) ||
+                key == app.getString(R.string.pref_key_file_navigation_message_output) ||
+                key == app.getString(R.string.pref_key_file_antenna_output_csv) ||
+                key == app.getString(R.string.pref_key_file_antenna_output_json)) {
 
                 // Count number of file logging preferences that are enabled
                 val loggingEnabled = arrayOf(writeLocationToFile(), writeMeasurementsToFile(), writeNmeaToFile(), writeNavMessageToFile(), writeAntennaInfoToFileCsv(), writeAntennaInfoToFileJson())
                 val enabledCount = loggingEnabled.count { it }
 
                 if (enabledCount == 1) {
-                    if (key == Application.app.getString(R.string.pref_key_file_location_output) &&
+                    if (key == app.getString(R.string.pref_key_file_location_output) &&
                         writeLocationToFile()
                     ) {
                         // Location file logging was just enabled
                         initLogging()
                     }
-                    if (key == Application.app.getString(R.string.pref_key_file_measurement_output) &&
+                    if (key == app.getString(R.string.pref_key_file_measurement_output) &&
                         writeMeasurementsToFile()
                     ) {
                         // Measurement file logging was just enabled
                         initLogging()
                     }
-                    if (key == Application.app.getString(R.string.pref_key_file_nmea_output) &&
+                    if (key == app.getString(R.string.pref_key_file_nmea_output) &&
                         writeNmeaToFile()
                     ) {
                         // NMEA file logging was just enabled
                         initLogging()
                     }
-                    if (key == Application.app.getString(R.string.pref_key_file_navigation_message_output) &&
+                    if (key == app.getString(R.string.pref_key_file_navigation_message_output) &&
                         writeNavMessageToFile()
                     ) {
                         // Nav message file logging was just enabled
                         initLogging()
                     }
-                    if (key == Application.app.getString(R.string.pref_key_file_antenna_output_csv) &&
+                    if (key == app.getString(R.string.pref_key_file_antenna_output_csv) &&
                         writeAntennaInfoToFileCsv()
                     ) {
                         // Antenna CSV file logging was just enabled
                         initLogging()
                     }
-                    if (key == Application.app.getString(R.string.pref_key_file_antenna_output_json) &&
+                    if (key == app.getString(R.string.pref_key_file_antenna_output_json) &&
                         writeAntennaInfoToFileJson()
                     ) {
                         // Antenna JSON file logging was just enabled
@@ -443,12 +427,12 @@ internal object FormatUtils {
         when (coordinateFormat()) {
             "dd" -> {
                 // Decimal degrees
-                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+                return app.getString(R.string.lat_or_lon, latOrLong)
             }
             "dms" -> {
                 // Degrees minutes seconds
                 return UIUtils.getDMSFromLocation(
-                    Application.app,
+                    app,
                     latOrLong,
                     coordinateType
                 )
@@ -456,14 +440,14 @@ internal object FormatUtils {
             "ddm" -> {
                 // Degrees decimal minutes
                 return UIUtils.getDDMFromLocation(
-                    Application.app,
+                    app,
                     latOrLong,
                     coordinateType
                 )
             }
             else -> {
                 // Decimal degrees
-                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+                return app.getString(R.string.lat_or_lon, latOrLong)
             }
         }
     }
@@ -472,11 +456,11 @@ internal object FormatUtils {
         if (location.hasAltitude()) {
             val text = when {
                 distanceUnits().equals(METERS, ignoreCase = true) -> {
-                    Application.app.getString(R.string.gps_altitude_value_meters, location.altitude)
+                    app.getString(R.string.gps_altitude_value_meters, location.altitude)
                 }
                 else -> {
                     // Feet
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_altitude_value_feet,
                         UIUtils.toFeet(location.altitude)
                     )
@@ -493,18 +477,18 @@ internal object FormatUtils {
             val text = when {
                 speedUnits()
                     .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
-                    Application.app.getString(R.string.gps_speed_value_meters_sec, location.speed)
+                    app.getString(R.string.gps_speed_value_meters_sec, location.speed)
                 }
                 speedUnits()
                     .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_speed_value_kilometers_hour,
                         UIUtils.toKilometersPerHour(location.speed)
                     )
                 }
                 else -> {
                     // Miles per hour
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_speed_value_miles_hour,
                         UIUtils.toMilesPerHour(location.speed)
                     )
@@ -533,14 +517,14 @@ internal object FormatUtils {
     fun formatAccuracy(location: Location): String {
         if (SatelliteUtils.isVerticalAccuracySupported(location)) {
             if (distanceUnits().equals(METERS, ignoreCase = true)) {
-                return Application.app.getString(
+                return app.getString(
                         R.string.gps_hor_and_vert_accuracy_value_meters,
                         location.accuracy,
                         location.verticalAccuracyMeters
                     )
             } else {
                 // Feet
-                return Application.app.getString(
+                return app.getString(
                         R.string.gps_hor_and_vert_accuracy_value_feet,
                         UIUtils.toFeet(location.accuracy.toDouble()),
                         UIUtils.toFeet(
@@ -551,12 +535,12 @@ internal object FormatUtils {
         } else {
             if (location.hasAccuracy()) {
                 return if (distanceUnits().equals(METERS, ignoreCase = true)) {
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_accuracy_value_meters, location.accuracy
                     )
                 } else {
                     // Feet
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_accuracy_value_feet,
                         UIUtils.toFeet(location.accuracy.toDouble())
                     )
@@ -570,11 +554,11 @@ internal object FormatUtils {
         if (altitudeMsl.isNaN()) return ""
 
         return if (distanceUnits().equals(METERS, ignoreCase = true)) {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_altitude_msl_value_meters,
                 altitudeMsl)
         } else {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_altitude_msl_value_feet,
                 UIUtils.toFeet(altitudeMsl)
             )
@@ -586,21 +570,21 @@ internal object FormatUtils {
             when {
                 speedUnits()
                     .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_meters_sec,
                         location.speedAccuracyMetersPerSecond
                     )
                 }
                 speedUnits()
                     .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_km_hour,
                         UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
                     )
                 }
                 else -> {
                     // Miles per hour
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_miles_hour,
                         UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
                     )
@@ -612,7 +596,7 @@ internal object FormatUtils {
 
     fun formatBearingAccuracy(location: Location): String {
         return if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasBearingAccuracy()) {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_bearing_acc_value,
                 location.bearingAccuracyDegrees
             )

@@ -61,8 +61,6 @@ public class IOUtils {
 
     private static final String NM_OUTPUT_TAG = "GpsOutputNav";
 
-    private static StringBuilder mNmeaOutput = new StringBuilder();
-
     private static final int MAX_FILES_STORED = 100;
 
     /**
@@ -343,21 +341,14 @@ public class IOUtils {
      * Outputs the provided nmea message and timestamp to log
      *
      * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp
-     *                  to
-     *                  log
+     *                  to Logcat
      */
     public static void writeNmeaToAndroidStudio(String nmea, long timestamp) {
-        mNmeaOutput.setLength(0);
         if (timestamp != Long.MIN_VALUE) {
-            mNmeaOutput.append(timestamp);
-            mNmeaOutput.append(",");
+            Log.d(NMEA_OUTPUT_TAG, timestamp + "," + nmea);
+        } else {
+            Log.d(NMEA_OUTPUT_TAG, nmea);
         }
-        mNmeaOutput.append(nmea);
-        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString()); // FIXME?     java.lang.StringIndexOutOfBoundsException: length=122; regionStart=0; regionLength=144
-//        at java.lang.StringFactory.newStringFromChars(StringFactory.java:110)
-//        at java.lang.StringBuilder.toString(StringBuilder.java:413)
-//        at com.android.gpstest.util.IOUtils.writeNmeaToAndroidStudio(IOUtils.java:356)
-//        at com.android.gpstest.ForegroundOnlyLocationService$observeNmeaFlow$1$1.invokeSuspend(ForegroundOnlyLocationService.kt:303)
     }
 
     /**
