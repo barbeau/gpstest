@@ -21,7 +21,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/large_screen_layout">
-    <fragment class="com.android.gpstest.ui.status.StatusFragment2"
+    <fragment class="com.android.gpstest.ui.status.StatusFragment"
               android:id="@+id/gps_status_fragment"
               android:layout_width="fill_parent"
               android:layout_height="match_parent"

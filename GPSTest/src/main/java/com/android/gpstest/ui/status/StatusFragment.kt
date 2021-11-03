@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-class StatusFragment2 : Fragment() {
+class StatusFragment : Fragment() {
 
     @ExperimentalFoundationApi
     @ExperimentalCoroutinesApi

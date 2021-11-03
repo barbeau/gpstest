@@ -57,7 +57,7 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
-import com.android.gpstest.ui.status.StatusFragment2
+import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.*
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     //
     // Fragments controlled by the nav drawer
     //
-    private var statusFragment: StatusFragment2? = null
+    private var statusFragment: StatusFragment? = null
     private var mapFragment: MapFragment? = null
     private var skyFragment: SkyFragment? = null
     private var accuracyFragment: MapFragment? = null
@@ -459,11 +459,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Show fragment (we use show instead of replace to keep the map state)
         if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment2?
+            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
             if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsStatusFragment")
-                statusFragment = StatusFragment2()
+                Log.d(TAG, "Creating new StatusFragment")
+                statusFragment = StatusFragment()
                 fm.beginTransaction()
                     .add(R.id.fragment_container, statusFragment!!, TAG)
                     .commit()
@@ -475,7 +475,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment2?
+        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
         if (statusFragment != null && !statusFragment!!.isHidden) {
             fm.beginTransaction().hide(statusFragment!!).commit()
         }
@@ -497,7 +497,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             mapFragment = fm.findFragmentByTag(MapConstants.MODE_MAP) as MapFragment?
             if (mapFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsMapFragment")
+                Log.d(TAG, "Creating new MapFragment")
                 val bundle = Bundle()
                 bundle.putString(MapConstants.MODE, MapConstants.MODE_MAP)
                 mapFragment = MapFragment()
@@ -534,7 +534,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             skyFragment = fm.findFragmentByTag(SkyFragment.TAG) as SkyFragment?
             if (skyFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsStatusFragment")
+                Log.d(TAG, "Creating new SkyFragment")
                 skyFragment = SkyFragment()
                 fm.beginTransaction()
                     .add(R.id.fragment_container, skyFragment!!, SkyFragment.TAG)
@@ -565,7 +565,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             accuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as MapFragment?
             if (accuracyFragment == null) {
                 // No existing fragment was found, so create a new one
-                Log.d(TAG, "Creating new GpsMapFragment for Accuracy")
+                Log.d(TAG, "Creating new AccuracyFragment for Accuracy")
                 val bundle = Bundle()
                 bundle.putString(MapConstants.MODE, MapConstants.MODE_ACCURACY)
                 accuracyFragment = MapFragment()
