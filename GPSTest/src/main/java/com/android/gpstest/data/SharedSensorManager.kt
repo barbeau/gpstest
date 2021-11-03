@@ -33,10 +33,12 @@ import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.launch
 
 
 private const val TAG = "SharedSensorManager"
@@ -59,10 +61,18 @@ class SharedSensorManager constructor(
     private var truncateVector = false
     private lateinit var geomagneticField: GeomagneticField
 
+    init {
+        externalScope.launch {
+            while (!::geomagneticField.isInitialized) {
+                initMagField()
+                if (!::geomagneticField.isInitialized) delay(3000)
+            }
+        }
+    }
+
     @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
     private val _sensorUpdates = callbackFlow {
-        initMagField()
         val callback: SensorEventListener =
             object : SensorEventListener {
                 override fun onSensorChanged(event: SensorEvent) {
@@ -88,10 +98,6 @@ class SharedSensorManager constructor(
                     }
 
                     // Correct for true north, if preference is set
-                    // TODO - move this to a retrying coroutine on class init for efficiency
-                    if (!::geomagneticField.isInitialized) {
-                        initMagField()
-                    }
                     if (::geomagneticField.isInitialized && Application.prefs.getBoolean(
                             Application.app.getString(R.string.pref_key_true_north),
                             true
@@ -150,6 +156,9 @@ class SharedSensorManager constructor(
 
     @SuppressLint("MissingPermission")
     private fun initMagField() {
+        Log.d(TAG, "Initializing Mag Field...")
+        if (::geomagneticField.isInitialized) return
+
         if (!context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||
             !context.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
         ) return
@@ -162,6 +171,7 @@ class SharedSensorManager constructor(
                 lastLocation.longitude.toFloat(), lastLocation.altitude.toFloat(),
                 lastLocation.time
             )
+            Log.d(TAG, "Mag Field initialized")
         }
     }
 
