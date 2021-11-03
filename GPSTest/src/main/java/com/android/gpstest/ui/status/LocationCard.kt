@@ -108,7 +108,7 @@ fun LocationCard(
             ) {
                 LabelColumn1()
                 ValueColumn1(location, altitudeMsl, dop)
-                LabelColumn2()
+                LabelColumn2(location)
                 ValueColumn2(location, ttff, dop, satelliteMetadata)
             }
             LockIcon(fixState)
@@ -336,7 +336,7 @@ fun LabelColumn1() {
 }
 
 @Composable
-fun LabelColumn2() {
+fun LabelColumn2(location: Location) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -347,7 +347,7 @@ fun LabelColumn2() {
     ) {
         LocationLabel(R.string.fix_time_label)
         LocationLabel(R.string.ttff_label)
-        LocationLabel(R.string.hor_and_vert_accuracy_label) // FIXME - change to just H if only H is supported
+        LocationLabel(if (SatelliteUtils.isVerticalAccuracySupported(location)) R.string.hor_and_vert_accuracy_label else R.string.accuracy_label)
         LocationLabel(R.string.num_sats_label)
         LocationLabel(R.string.bearing_label)
         LocationLabel(R.string.bearing_acc_label)
