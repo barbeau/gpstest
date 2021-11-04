@@ -3,6 +3,7 @@ package com.android.gpstest.ui.status
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
+import android.os.Build
 import android.text.TextUtils
 import android.text.format.DateFormat
 import android.widget.Toast
@@ -498,7 +499,10 @@ private fun copyToClipboard(context: Context, location: Location) {
     )
     if (!TextUtils.isEmpty(formattedLocation)) {
         IOUtils.copyToClipboard(formattedLocation)
-        Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_LONG)
-            .show()
+        // Android 12 and higher generates a Toast automatically
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_LONG)
+                .show()
+        }
     }
 }
