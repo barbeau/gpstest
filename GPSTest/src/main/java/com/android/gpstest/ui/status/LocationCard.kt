@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2021 Sean J. Barbeau
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.android.gpstest.ui.status
 
 import android.annotation.SuppressLint
@@ -39,6 +54,7 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.util.*
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.PreferenceUtil.coordinateFormat
@@ -426,27 +442,22 @@ fun ErrorTime(timeText: String, timeMs: Long) {
         )
     }
 
-    val message by remember {
-        mutableStateOf(
-            Application.app.getString(
-                R.string.error_time_message, format.format(timeMs),
-                DateTimeUtils.NUM_DAYS_TIME_VALID
-            )
-        )
-    }
-
     if (openDialog.value) {
         AlertDialog(
             onDismissRequest = {
                 openDialog.value = false
             },
             title = {
-                // TODO - hyperlink URL in text
                 Text(stringResource(R.string.error_time_title))
             },
             text = {
                 Column() {
-                    Text(message)
+                    LinkifyText(
+                        text = Application.app.getString(
+                            R.string.error_time_message, format.format(timeMs),
+                            DateTimeUtils.NUM_DAYS_TIME_VALID
+                        )
+                    )
                 }
             },
             confirmButton = {
