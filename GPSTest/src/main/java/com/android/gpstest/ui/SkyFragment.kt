@@ -202,7 +202,7 @@ class SkyFragment : Fragment() {
     }
 
     private fun updateGnssStatus(status: GnssStatus) {
-        // TODO - use viewmodel instead so we can implement the filter here
+        // TODO - use viewmodel instead so we can implement the filter here - See #563
         binding.skyView.setGnssStatus(status)
         updateCn0AvgMeterText()
         updateCn0Avgs()
