@@ -46,7 +46,7 @@ class StatusFragment : Fragment() {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 AppTheme(
-                    // TODO - add "system dark setting" as an option in preferences
+                    // TODO - add "system dark setting" as an option in preferences - Issue #277
                     darkTheme = darkTheme()
                 ) {
                     StatusScreen(viewModel = viewModel)
