@@ -26,7 +26,7 @@ import androidx.fragment.app.activityViewModels
 import com.android.gpstest.R
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.AppTheme
-import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
+import com.android.gpstest.util.PreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi

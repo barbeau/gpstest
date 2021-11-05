@@ -34,9 +34,9 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.util.PermissionUtils
+import com.android.gpstest.util.PreferenceUtil.enableMeasurementsPref
+import com.android.gpstest.util.PreferenceUtil.enableNavMessagesPref
 import com.android.gpstest.util.SatelliteUtils
-import com.android.gpstest.util.SharedPreferenceUtil.enableMeasurementsPref
-import com.android.gpstest.util.SharedPreferenceUtil.enableNavMessagesPref
 import com.android.gpstest.util.UIUtils.resetActivityTitle
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {

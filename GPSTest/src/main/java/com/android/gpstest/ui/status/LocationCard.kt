@@ -41,9 +41,9 @@ import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.util.*
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
+import com.android.gpstest.util.PreferenceUtil.coordinateFormat
+import com.android.gpstest.util.PreferenceUtil.shareIncludeAltitude
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import com.android.gpstest.util.SharedPreferenceUtil.coordinateFormat
-import com.android.gpstest.util.SharedPreferenceUtil.shareIncludeAltitude
 import java.text.SimpleDateFormat
 
 @Preview

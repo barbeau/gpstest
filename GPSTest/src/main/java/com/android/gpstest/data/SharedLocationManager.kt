@@ -22,8 +22,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.util.Log
-import com.android.gpstest.util.SharedPreferenceUtil.minDistance
-import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
+import com.android.gpstest.util.PreferenceUtil.minDistance
+import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi

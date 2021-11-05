@@ -45,20 +45,25 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.ui.MainActivity
-import com.android.gpstest.util.*
 import com.android.gpstest.util.IOUtils.*
-import com.android.gpstest.util.SharedPreferenceUtil.isCsvLoggingEnabled
-import com.android.gpstest.util.SharedPreferenceUtil.isJsonLoggingEnabled
-import com.android.gpstest.util.SharedPreferenceUtil.writeAntennaInfoToFileCsv
-import com.android.gpstest.util.SharedPreferenceUtil.writeAntennaInfoToFileJson
-import com.android.gpstest.util.SharedPreferenceUtil.writeLocationToFile
-import com.android.gpstest.util.SharedPreferenceUtil.writeMeasurementToLogcat
-import com.android.gpstest.util.SharedPreferenceUtil.writeMeasurementsToFile
-import com.android.gpstest.util.SharedPreferenceUtil.writeNavMessageToFile
-import com.android.gpstest.util.SharedPreferenceUtil.writeNavMessageToLogcat
-import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaTimestampToLogcat
-import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaToAndroidMonitor
-import com.android.gpstest.util.SharedPreferenceUtil.writeNmeaToFile
+import com.android.gpstest.util.PreferenceUtil
+import com.android.gpstest.util.PreferenceUtil.isCsvLoggingEnabled
+import com.android.gpstest.util.PreferenceUtil.isJsonLoggingEnabled
+import com.android.gpstest.util.PreferenceUtil.writeAntennaInfoToFileCsv
+import com.android.gpstest.util.PreferenceUtil.writeAntennaInfoToFileJson
+import com.android.gpstest.util.PreferenceUtil.writeLocationToFile
+import com.android.gpstest.util.PreferenceUtil.writeMeasurementToLogcat
+import com.android.gpstest.util.PreferenceUtil.writeMeasurementsToFile
+import com.android.gpstest.util.PreferenceUtil.writeNavMessageToFile
+import com.android.gpstest.util.PreferenceUtil.writeNavMessageToLogcat
+import com.android.gpstest.util.PreferenceUtil.writeNmeaTimestampToLogcat
+import com.android.gpstest.util.PreferenceUtil.writeNmeaToAndroidMonitor
+import com.android.gpstest.util.PreferenceUtil.writeNmeaToFile
+import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SatelliteUtils
+import com.android.gpstest.util.UIUtils.toNotificationSummary
+import com.android.gpstest.util.UIUtils.toNotificationTitle
+import com.android.gpstest.util.hasPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
@@ -67,10 +72,10 @@ import java.io.File
 import java.util.*
 import javax.inject.Inject
 
-
 /**
- * Service tracks location when requested and updates Activity via binding.
+ * Service tracks location, logs to files, and shows a notification to the user.
  *
+ * Flows are kept active by this Service while it is bound and started.
  */
 @AndroidEntryPoint
 class ForegroundOnlyLocationService : LifecycleService() {
@@ -108,7 +113,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
     // Preference listener that will init the loggers if the user changes Settings while Service is running
     private val loggingSettingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newFileLoggingListener { initLogging() }
+        PreferenceUtil.newFileLoggingListener { initLogging() }
     private var deletedFiles = false
 
     override fun onCreate() {

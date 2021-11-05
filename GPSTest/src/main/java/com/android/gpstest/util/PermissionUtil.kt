@@ -18,39 +18,11 @@ package com.android.gpstest.util
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
+
 import androidx.core.app.ActivityCompat
-import com.android.gpstest.model.CoordinateType
 
 /**
- * Returns the `location` object as a human readable string for use in a notification title
- */
-fun Location?.toNotificationTitle(): String {
-    return if (this != null) {
-        FormatUtils.formatLatOrLon(latitude, CoordinateType.LATITUDE) +
-                "," +
-                FormatUtils.formatLatOrLon(longitude, CoordinateType.LONGITUDE)
-    } else {
-        "Unknown location"
-    }
-}
-
-/**
- * Returns the `location` object as a human readable string for use in a notification summary
- */
-fun Location?.toNotificationSummary(): String {
-    return if (this != null) {
-        val lat = FormatUtils.formatLatOrLon(latitude, CoordinateType.LATITUDE)
-        val lon = FormatUtils.formatLatOrLon(longitude, CoordinateType.LONGITUDE)
-        val alt = FormatUtils.formatAltitude(this)
-        "$lat $lon $alt"
-    } else {
-        "Unknown location"
-    }
-}
-
-/**
- * Helper functions to simplify permission checks/requests.
+ * Helper function to simplify permission checks/requests.
  */
 fun Context.hasPermission(permission: String): Boolean {
 

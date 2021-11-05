@@ -29,8 +29,8 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.util.PreferenceUtil
 import com.android.gpstest.util.SatelliteUtils
-import com.android.gpstest.util.SharedPreferenceUtil
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -136,7 +136,7 @@ class SharedGnssStatusManager constructor(
 
 private fun checkHaveFix(location: Location): FixState {
     return if (SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos >
-        TimeUnit.MILLISECONDS.toNanos(SharedPreferenceUtil.minTimeMillis() * 2)
+        TimeUnit.MILLISECONDS.toNanos(PreferenceUtil.minTimeMillis() * 2)
     ) {
         // We lost the GNSS fix for two requested update intervals - notify
         FixState.NotAcquired

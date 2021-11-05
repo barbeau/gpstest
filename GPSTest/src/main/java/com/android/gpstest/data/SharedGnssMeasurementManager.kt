@@ -29,9 +29,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.util.PreferenceUtil.saveMeasurementCapabilities
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
-import com.android.gpstest.util.SharedPreferenceUtil.saveMeasurementCapabilities
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi

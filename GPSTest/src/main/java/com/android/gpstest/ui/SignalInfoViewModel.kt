@@ -105,7 +105,7 @@ class SignalInfoViewModel @Inject constructor(
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newStopTrackingListener { setStarted(false) }
+        PreferenceUtil.newStopTrackingListener { setStarted(false) }
 
     init {
         viewModelScope.launch {

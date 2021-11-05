@@ -59,12 +59,12 @@ import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.*
+import com.android.gpstest.util.PreferenceUtil.darkTheme
+import com.android.gpstest.util.PreferenceUtil.isFileLoggingEnabled
+import com.android.gpstest.util.PreferenceUtil.minDistance
+import com.android.gpstest.util.PreferenceUtil.minTimeMillis
+import com.android.gpstest.util.PreferenceUtil.runInBackground
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
-import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
-import com.android.gpstest.util.SharedPreferenceUtil.isFileLoggingEnabled
-import com.android.gpstest.util.SharedPreferenceUtil.minDistance
-import com.android.gpstest.util.SharedPreferenceUtil.minTimeMillis
-import com.android.gpstest.util.SharedPreferenceUtil.runInBackground
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via service notification
     private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newStopTrackingListener { gpsStop() }
+        PreferenceUtil.newStopTrackingListener { gpsStop() }
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {

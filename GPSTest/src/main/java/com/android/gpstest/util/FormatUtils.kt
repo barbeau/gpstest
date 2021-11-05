@@ -13,7 +13,7 @@ internal object FormatUtils {
     fun formatLatOrLon(latOrLong: Double, coordinateType: CoordinateType): String {
         if (latOrLong == 0.0) return "             "
 
-        when (SharedPreferenceUtil.coordinateFormat()) {
+        when (PreferenceUtil.coordinateFormat()) {
             "dd" -> {
                 // Decimal degrees
                 return Application.app.getString(R.string.lat_or_lon, latOrLong)
@@ -44,7 +44,7 @@ internal object FormatUtils {
     fun formatAltitude(location: Location): String {
         if (location.hasAltitude()) {
             val text = when {
-                SharedPreferenceUtil.distanceUnits().equals(SharedPreferenceUtil.METERS, ignoreCase = true) -> {
+                PreferenceUtil.distanceUnits().equals(PreferenceUtil.METERS, ignoreCase = true) -> {
                     Application.app.getString(R.string.gps_altitude_value_meters, location.altitude)
                 }
                 else -> {
@@ -64,12 +64,12 @@ internal object FormatUtils {
     fun formatSpeed(location: Location): String {
         if (location.hasSpeed()) {
             val text = when {
-                SharedPreferenceUtil.speedUnits()
-                    .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
+                PreferenceUtil.speedUnits()
+                    .equals(PreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
                     Application.app.getString(R.string.gps_speed_value_meters_sec, location.speed)
                 }
-                SharedPreferenceUtil.speedUnits()
-                    .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                PreferenceUtil.speedUnits()
+                    .equals(PreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
                     Application.app.getString(
                         R.string.gps_speed_value_kilometers_hour,
                         UIUtils.toKilometersPerHour(location.speed)
@@ -105,7 +105,7 @@ internal object FormatUtils {
 
     fun formatAccuracy(location: Location): String {
         if (SatelliteUtils.isVerticalAccuracySupported(location)) {
-            if (SharedPreferenceUtil.distanceUnits().equals(SharedPreferenceUtil.METERS, ignoreCase = true)) {
+            if (PreferenceUtil.distanceUnits().equals(PreferenceUtil.METERS, ignoreCase = true)) {
                 return Application.app.getString(
                     R.string.gps_hor_and_vert_accuracy_value_meters,
                         location.accuracy,
@@ -123,8 +123,8 @@ internal object FormatUtils {
             }
         } else {
             if (location.hasAccuracy()) {
-                return if (SharedPreferenceUtil.distanceUnits()
-                        .equals(SharedPreferenceUtil.METERS, ignoreCase = true)) {
+                return if (PreferenceUtil.distanceUnits()
+                        .equals(PreferenceUtil.METERS, ignoreCase = true)) {
                     Application.app.getString(
                         R.string.gps_accuracy_value_meters, location.accuracy
                     )
@@ -143,8 +143,8 @@ internal object FormatUtils {
     fun formatAltitudeMsl(altitudeMsl: Double): String {
         if (altitudeMsl.isNaN()) return ""
 
-        return if (SharedPreferenceUtil.distanceUnits()
-                .equals(SharedPreferenceUtil.METERS, ignoreCase = true)) {
+        return if (PreferenceUtil.distanceUnits()
+                .equals(PreferenceUtil.METERS, ignoreCase = true)) {
             Application.app.getString(
                 R.string.gps_altitude_msl_value_meters,
                 altitudeMsl)
@@ -159,15 +159,15 @@ internal object FormatUtils {
     fun formatSpeedAccuracy(location: Location): String {
         if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasSpeedAccuracy()) {
             when {
-                SharedPreferenceUtil.speedUnits()
-                    .equals(SharedPreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
+                PreferenceUtil.speedUnits()
+                    .equals(PreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
                     return Application.app.getString(
                         R.string.gps_speed_acc_value_meters_sec,
                         location.speedAccuracyMetersPerSecond
                     )
                 }
-                SharedPreferenceUtil.speedUnits()
-                    .equals(SharedPreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
+                PreferenceUtil.speedUnits()
+                    .equals(PreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
                     return Application.app.getString(
                         R.string.gps_speed_acc_value_km_hour,
                         UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)

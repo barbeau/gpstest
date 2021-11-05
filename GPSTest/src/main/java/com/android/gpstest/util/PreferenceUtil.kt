@@ -11,7 +11,7 @@ import com.android.gpstest.R
 /**
  * Provides access to SharedPreferences to Activities and Services.
  */
-internal object SharedPreferenceUtil {
+internal object PreferenceUtil {
     const val SECONDS_TO_MILLISECONDS = 1000
 
     val METERS =

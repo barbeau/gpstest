@@ -40,7 +40,7 @@ import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.SharedPreferenceUtil
+import com.android.gpstest.util.PreferenceUtil
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -57,7 +57,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -95,7 +94,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newStopTrackingListener { onGnssStopped() }
+        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

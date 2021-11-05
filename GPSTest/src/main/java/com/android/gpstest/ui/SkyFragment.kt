@@ -45,9 +45,9 @@ import com.android.gpstest.databinding.GpsSkyBinding
 import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.PreferenceUtil
+import com.android.gpstest.util.PreferenceUtil.darkTheme
 import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.SharedPreferenceUtil
-import com.android.gpstest.util.SharedPreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -87,7 +87,7 @@ class SkyFragment : Fragment() {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newStopTrackingListener { onGnssStopped() }
+        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
