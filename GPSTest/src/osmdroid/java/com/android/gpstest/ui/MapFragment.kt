@@ -39,7 +39,7 @@ import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.SharedPreferenceUtil
+import com.android.gpstest.util.PreferenceUtil.newStopTrackingListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -58,7 +58,6 @@ import org.osmdroid.views.overlay.Polygon
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import java.io.UnsupportedEncodingException
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -88,7 +87,7 @@ class MapFragment : Fragment(), MapInterface {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferenceUtil.newStopTrackingListener { onGnssStopped() }
+        newStopTrackingListener { onGnssStopped() }
 
     @ExperimentalCoroutinesApi
     override fun onCreateView(
