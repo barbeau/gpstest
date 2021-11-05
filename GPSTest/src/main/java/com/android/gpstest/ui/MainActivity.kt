@@ -740,7 +740,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @ExperimentalCoroutinesApi
     private fun observeLocationFlow() {
-        // TODO - convert this to viewModel LiveData observer too?
+        // This should be a Flow and not LiveData to ensure that the Flow is active before the Service is bound
         if (locationFlow?.isActive == true) {
             // If we're already observing updates, don't register again
             return
