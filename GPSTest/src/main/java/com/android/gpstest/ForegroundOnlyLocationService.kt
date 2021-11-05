@@ -324,7 +324,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service NMEA: $it")
-                // TODO - test logging
                 GlobalScope.launch(Dispatchers.IO) {
                     if (writeNmeaToAndroidMonitor()) {
                         writeNmeaToAndroidStudio(
