@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 // * https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=3f50b5&primary.text.color=ffffff
 // * https://material.io/blog/android-material-theme-color
 // * https://material.io/blog/android-dark-theme-tutorial
+// Issue #277
 
 private val Purple500 = Color(0xFF3F51B5)
 private val Purple700 = Color(0xFF303F9F)
