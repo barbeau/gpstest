@@ -62,7 +62,6 @@ import com.android.gpstest.util.PreferenceUtil.writeNmeaToFile
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.UIUtils.toNotificationSummary
-import com.android.gpstest.util.UIUtils.toNotificationTitle
 import com.android.gpstest.util.hasPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -470,8 +469,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
      */
     private fun buildNotification(location: Location?): Notification {
        // TODO - format notification text and decide on content
-        val titleText = location?.toNotificationTitle() ?: getString(R.string.no_location_text)
-        val summaryText = location?.toNotificationSummary() ?: ""
+        val titleText = "4/5 sats | 2/7 signals (L1/L5/E1/E5a)" //, avg. 24.5/22.2 dB-Hz
+        val summaryText = location?.toNotificationSummary() ?: getString(R.string.no_location_text)
 
         // 2. Build the BIG_TEXT_STYLE.
         val bigTextStyle = NotificationCompat.BigTextStyle()

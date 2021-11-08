@@ -29,9 +29,12 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.data.toSatelliteStatus
 import com.android.gpstest.model.*
-import com.android.gpstest.util.*
-import com.android.gpstest.util.CarrierFreqUtils.getCarrierFrequencyLabel
+import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.FormatUtils.formatTtff
+import com.android.gpstest.util.NmeaUtils
+import com.android.gpstest.util.PreferenceUtil
+import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SatelliteUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -480,7 +483,7 @@ class SignalInfoViewModel @Inject constructor(
      * Sets if the view model has observed a first GNSS fix during this execution
      * @param value true if the model has observed a first GNSS fix during this execution, false if it has not
      */
-    fun setGotFirstFix(value: Boolean) {
+    private fun setGotFirstFix(value: Boolean) {
         gotFirstFix = value
     }
 
@@ -552,6 +555,7 @@ class SignalInfoViewModel @Inject constructor(
             val key = SatelliteUtils.createGnssSatelliteKey(s)
             if (s.gnssType != GnssType.UNKNOWN) {
                 if (s.gnssType != GnssType.SBAS) {
+                    // TODO - make copies of all of these member variables local in SatelliteMetadata so this function can be static, but also add them to the member variables so we can accumulate supported GNSS, etc. over multiple fixes
                     supportedGnss.add(s.gnssType)
                 } else {
                     if (s.sbasType != SbasType.UNKNOWN) {
@@ -561,11 +565,11 @@ class SignalInfoViewModel @Inject constructor(
             }
 
             // Get carrier label
-            val carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s)
-            if (carrierLabel == CarrierFreqUtils.CF_UNKNOWN) {
+            val carrierLabel = getCarrierFrequencyLabel(s)
+            if (carrierLabel == CF_UNKNOWN) {
                 mUnknownCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
             }
-            if (carrierLabel != CarrierFreqUtils.CF_UNKNOWN && carrierLabel != CarrierFreqUtils.CF_UNSUPPORTED) {
+            if (carrierLabel != CF_UNKNOWN && carrierLabel != CF_UNSUPPORTED) {
                 // Save the supported GNSS or SBAS CF
                 if (s.gnssType != GnssType.UNKNOWN) {
                     if (s.gnssType != GnssType.SBAS) {
@@ -577,7 +581,7 @@ class SignalInfoViewModel @Inject constructor(
                     }
                 }
                 // Check if this is a non-primary carrier frequency
-                if (!CarrierFreqUtils.isPrimaryCarrier(carrierLabel)) {
+                if (!isPrimaryCarrier(carrierLabel)) {
                     isNonPrimaryCarrierFreqInView = true
                     if (s.usedInFix) {
                         isNonPrimaryCarrierFreqInUse = true

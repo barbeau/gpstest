@@ -1125,7 +1125,7 @@ internal object UIUtils {
             val lat = FormatUtils.formatLatOrLon(latitude, CoordinateType.LATITUDE)
             val lon = FormatUtils.formatLatOrLon(longitude, CoordinateType.LONGITUDE)
             val alt = FormatUtils.formatAltitude(this)
-            "$lat $lon $alt"
+            "$lat $lon $alt | 3 m/s | 5°"
         } else {
             "Unknown location"
         }

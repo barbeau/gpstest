@@ -48,6 +48,7 @@ fun AppTheme(
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
+        // isSystemInDarkTheme()
         colors = if (darkTheme) darkColors else lightColors,
     ) {
         content()

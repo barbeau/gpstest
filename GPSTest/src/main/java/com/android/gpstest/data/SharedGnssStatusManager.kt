@@ -76,7 +76,6 @@ class SharedGnssStatusManager constructor(
             }
 
             override fun onFirstFix(ttffMillis: Int) {
-                // TODO - Figure out if we should call through to both fix states here - can lead to double-triggering actions downstream
                 _firstFixState.value = FirstFixState.Acquired(ttffMillis)
                 _fixState.value = FixState.Acquired
             }
@@ -128,6 +127,11 @@ class SharedGnssStatusManager constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
+    /**
+     * Returns a flow of GnssStatus backed by the Android system GnssStatus API.
+     *
+     * Note that for other flows in this class to return up-to-date data this flow must be active.
+     */
     @ExperimentalCoroutinesApi
     fun statusFlow(): Flow<GnssStatus> {
         return _gnssStatusUpdates
