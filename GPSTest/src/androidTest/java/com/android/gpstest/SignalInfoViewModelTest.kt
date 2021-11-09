@@ -54,11 +54,11 @@ class SignalInfoViewModelTest {
     @Test
     fun testDeviceInfoViewModel() {
         val modelEmpty = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelEmpty.setStatuses(emptyList(), emptyList())
+        modelEmpty.updateStatus(emptyList())
 
         // Test GPS L1 - should be 1 satellite, no L5 or dual-frequency
         val modelGpsL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1.setStatuses(listOf(gpsL1(1, true)), emptyList())
+        modelGpsL1.updateStatus(listOf(gpsL1(1, true)))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
@@ -84,7 +84,7 @@ class SignalInfoViewModelTest {
         modelGpsL1.reset();
 
         // Test GPS L1 no signal - should be 1 satellite, no L5 or dual-frequency
-        modelGpsL1.setStatuses(listOf(gpsL1NoSignal(1)), emptyList())
+        modelGpsL1.updateStatus(listOf(gpsL1NoSignal(1)))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
@@ -110,7 +110,7 @@ class SignalInfoViewModelTest {
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
         val modelGpsL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1L5.setStatuses(listOf(gpsL1(1, false), gpsL5(1, true)), emptyList())
+        modelGpsL1L5.updateStatus(listOf(gpsL1(1, false), gpsL5(1, true)))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -143,7 +143,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and use
-        modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(1, true)), emptyList())
+        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(1, true)))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -176,7 +176,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and but not used (only 1 sv in use)
-        modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(1, false)), emptyList())
+        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(1, false)))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -209,7 +209,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 but different satellites - should be 2 satellites, non-primary frequency in view and in use, but not dual-frequency in view or use
-        modelGpsL1L5.setStatuses(listOf(gpsL1(1, true), gpsL5(2, true)), emptyList())
+        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(2, true)))
         assertEquals(2, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -246,7 +246,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv, but no L1 signal - should be 1 satellite, dual-frequency not in view or in use
-        modelGpsL1L5.setStatuses(listOf(gpsL1NoSignal(1), gpsL5(1, true)), emptyList())
+        modelGpsL1L5.updateStatus(listOf(gpsL1NoSignal(1), gpsL5(1, true)))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -280,7 +280,7 @@ class SignalInfoViewModelTest {
 
         // Test GPS L5 not in use - should be 1 satellites, non-primary frequency in view, but not dual-frequency in view or use
         val modelGpsL5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL5.setStatuses(listOf(gpsL5(1, false)), emptyList())
+        modelGpsL5.updateStatus(listOf(gpsL5(1, false)))
         assertEquals(1, modelGpsL5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL5.getSupportedGnss().size)
         assertEquals(0, modelGpsL5.getSupportedSbas().size)
@@ -315,7 +315,7 @@ class SignalInfoViewModelTest {
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
         val modelGpsL1GlonassL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1GlonassL1.setStatuses(listOf(gpsL1(1, true), glonassL1variant1()), emptyList())
+        modelGpsL1GlonassL1.updateStatus(listOf(gpsL1(1, true), glonassL1variant1()))
         assertEquals(2, modelGpsL1GlonassL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInUse)
@@ -341,7 +341,7 @@ class SignalInfoViewModelTest {
 
         // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
         val modelGalileoE1E5a = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(2, true)), emptyList())
+        modelGalileoE1E5a.updateStatus(listOf(galileoE1(1, true), galileoE5a(2, true)))
         assertEquals(2, modelGalileoE1E5a.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
         assertEquals(0, modelGalileoE1E5a.getSupportedSbas().size)
@@ -378,7 +378,7 @@ class SignalInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test Galileo E1 + E5a - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
-        modelGalileoE1E5a.setStatuses(listOf(galileoE1(1, true), galileoE5a(1, true)), emptyList())
+        modelGalileoE1E5a.updateStatus(listOf(galileoE1(1, true), galileoE5a(1, true)))
         assertEquals(1, modelGalileoE1E5a.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
         assertEquals(0, modelGalileoE1E5a.getSupportedSbas().size)
@@ -411,7 +411,7 @@ class SignalInfoViewModelTest {
 
         // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
         val modelWaasL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelWaasL1L5.setStatuses(emptyList(), listOf(galaxy15_135L1(true)))
+        modelWaasL1L5.updateStatus(listOf(galaxy15_135L1(true)))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
@@ -437,7 +437,7 @@ class SignalInfoViewModelTest {
         modelWaasL1L5.reset()
 
         // Test WAAS SBAS - L1 + L5 - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
-        modelWaasL1L5.setStatuses(emptyList(), listOf(galaxy15_135L1(true), galaxy15_135L5(true)))
+        modelWaasL1L5.updateStatus(listOf(galaxy15_135L1(true), galaxy15_135L5(true)))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertEquals(0, modelWaasL1L5.getSupportedGnss().size)
         assertEquals(0, modelWaasL1L5.getSupportedGnssCfs().size)
