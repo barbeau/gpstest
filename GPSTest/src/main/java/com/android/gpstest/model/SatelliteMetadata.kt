@@ -32,12 +32,12 @@ package com.android.gpstest.model
  * has been detected as having duplicate carrier frequency data with another signal.
  */
 data class SatelliteMetadata(
-        val numSignalsInView: Int,
-        val numSignalsUsed: Int,
-        val numSignalsTotal: Int,
-        val numSatsInView: Int,
-        val numSatsUsed: Int,
-        val numSatsTotal: Int,
+        val numSignalsInView: Int = 0,
+        val numSignalsUsed: Int = 0,
+        val numSignalsTotal: Int = 0,
+        val numSatsInView: Int = 0,
+        val numSatsUsed: Int = 0,
+        val numSatsTotal: Int = 0,
         val supportedGnss: Set<GnssType> = HashSet(),
         val supportedGnssCfs: Set<String> = HashSet(),
         val supportedSbas: Set<SbasType> = HashSet(),

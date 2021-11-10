@@ -215,8 +215,8 @@ internal object FormatUtils {
             meta.numSignalsUsed,
             meta.numSignalsInView
         ) +
-            if (meta.supportedGnssCfs.isNotEmpty()) " (" + IOUtils.trimEnds(
-                meta.supportedGnssCfs.sorted().toString()
-            ) + ")" else ""
+            if (meta.supportedGnssCfs.isNotEmpty())
+                " (" + IOUtils.trimEnds(meta.supportedGnssCfs.sorted().toString()) + ")"
+            else ""
     }
 }

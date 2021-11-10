@@ -73,7 +73,7 @@ fun LocationCardPreview(
         "5 sec",
         1.4,
         DilutionOfPrecision(1.0, 2.0, 3.0),
-        SatelliteMetadata(0, 0, 0, 0, 0, 0),
+        SatelliteMetadata(),
         FixState.Acquired
     )
 }

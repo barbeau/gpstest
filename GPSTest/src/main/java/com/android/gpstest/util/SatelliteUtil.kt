@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.util
 
+import android.location.GnssStatus
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
@@ -22,10 +23,39 @@ import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
 internal object SatelliteUtil {
 
     /**
+     * Tranforms the Android [GnssStatus] object to a list of our [SatelliteStatus] model objects
+     */
+    fun GnssStatus.toSatelliteStatus() : List<SatelliteStatus> {
+        val satStatuses: MutableList<SatelliteStatus> = ArrayList()
+
+        for (i in 0 until this.satelliteCount) {
+            val satStatus = SatelliteStatus(
+                this.getSvid(i),
+                SatelliteUtils.getGnssConstellationType(this.getConstellationType(i)),
+                this.getCn0DbHz(i),
+                this.hasAlmanacData(i),
+                this.hasEphemerisData(i),
+                this.usedInFix(i),
+                this.getElevationDegrees(i),
+                this.getAzimuthDegrees(i)
+            )
+            if (SatelliteUtils.isCfSupported() && this.hasCarrierFrequencyHz(i)) {
+                satStatus.hasCarrierFrequency = true
+                satStatus.carrierFrequencyHz = this.getCarrierFrequencyHz(i)
+            }
+            if (satStatus.gnssType == GnssType.SBAS) {
+                satStatus.sbasType = SatelliteUtils.getSbasConstellationType(satStatus.svid)
+            }
+            satStatuses.add(satStatus)
+        }
+        return satStatuses
+    }
+
+    /**
      * Returns a map with the provided status list grouped into satellites
-     * @return a SatelliteGroup with the provided status list grouped into satellites in a Map. The key
+     * @return a [SatelliteGroup] with the provided status list grouped into satellites in a Map. The key
      * to the map is the combination of constellation and ID created using
-     * SatelliteUtils.createGnssSatelliteKey(). Various other metadata is also included.
+     * [SatelliteUtils.createGnssSatelliteKey()]. Various other metadata is also included.
      * TODO: Should this be moved to it's own Flow in SharedGnssStatusManager?
      */
     fun List<SatelliteStatus>.toSatelliteGroup(): SatelliteGroup {
@@ -46,7 +76,7 @@ internal object SatelliteUtil {
         var isNonPrimaryCarrierFreqInUse = false
 
         if (this.isEmpty()) {
-            return SatelliteGroup(satellites, SatelliteMetadata(0, 0, 0, 0, 0, 0))
+            return SatelliteGroup(satellites, SatelliteMetadata())
         }
         for (s in this) {
             if (s.usedInFix) {

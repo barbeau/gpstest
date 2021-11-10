@@ -27,7 +27,6 @@ import androidx.lifecycle.viewModelScope
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
-import com.android.gpstest.data.toSatelliteStatus
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.getCarrierFrequencyLabel
 import com.android.gpstest.util.FormatUtils.formatTtff
@@ -35,6 +34,7 @@ import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtil.toSatelliteGroup
+import com.android.gpstest.util.SatelliteUtil.toSatelliteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -519,9 +519,9 @@ class SignalInfoViewModel @Inject constructor(
         _ttff.value = ""
         _altitudeMsl.value = Double.NaN
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
-        _filteredSatelliteMetadata.value = SatelliteMetadata(0,0,0,0,0,0)
+        _filteredSatelliteMetadata.value = SatelliteMetadata()
         _fixState.value = FixState.NotAcquired
-        _allSatellitesGroup.value = SatelliteGroup(emptyMap(),SatelliteMetadata(0,0,0,0,0,0))
+        _allSatellitesGroup.value = SatelliteGroup(emptyMap(),SatelliteMetadata())
         gotFirstFix = false
     }
 

@@ -62,7 +62,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
-    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata(0,0,0,0,0,0))
+    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata())
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     val gnssStatuses: List<SatelliteStatus> by viewModel.filteredGnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.filteredSbasStatuses.observeAsState(emptyList())
