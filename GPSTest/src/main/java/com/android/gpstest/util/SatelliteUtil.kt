@@ -56,7 +56,6 @@ internal object SatelliteUtil {
      * @return a [SatelliteGroup] with the provided status list grouped into satellites in a Map. The key
      * to the map is the combination of constellation and ID created using
      * [SatelliteUtils.createGnssSatelliteKey()]. Various other metadata is also included.
-     * TODO: Should this be moved to it's own Flow in SharedGnssStatusManager?
      */
     fun List<SatelliteStatus>.toSatelliteGroup(): SatelliteGroup {
         val satellites: MutableMap<String, Satellite> = HashMap()
