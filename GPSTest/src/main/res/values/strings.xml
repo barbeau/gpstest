@@ -133,6 +133,7 @@
     <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+    <string name="notification_title">%1$d/%2$d sats | %3$d/%4$d signals</string>
 
     <string name="gps_content_description">GPS</string>
     <string name="glonass_content_description">GLONASS</string>

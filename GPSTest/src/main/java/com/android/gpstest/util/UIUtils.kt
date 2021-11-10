@@ -1105,19 +1105,6 @@ internal object UIUtils {
     }
 
     /**
-     * Returns the `location` object as a human readable string for use in a notification title
-     */
-    fun Location?.toNotificationTitle(): String {
-        return if (this != null) {
-            FormatUtils.formatLatOrLon(latitude, CoordinateType.LATITUDE) +
-                    "," +
-                    FormatUtils.formatLatOrLon(longitude, CoordinateType.LONGITUDE)
-        } else {
-            "Unknown location"
-        }
-    }
-
-    /**
      * Returns the `location` object as a human readable string for use in a notification summary
      */
     fun Location?.toNotificationSummary(): String {
@@ -1125,7 +1112,9 @@ internal object UIUtils {
             val lat = FormatUtils.formatLatOrLon(latitude, CoordinateType.LATITUDE)
             val lon = FormatUtils.formatLatOrLon(longitude, CoordinateType.LONGITUDE)
             val alt = FormatUtils.formatAltitude(this)
-            "$lat $lon $alt | 3 m/s | 5°"
+            val speed = FormatUtils.formatSpeed(this)
+            val bearing = FormatUtils.formatBearing(this)
+            "$lat $lon $alt | $speed | $bearing"
         } else {
             "Unknown location"
         }

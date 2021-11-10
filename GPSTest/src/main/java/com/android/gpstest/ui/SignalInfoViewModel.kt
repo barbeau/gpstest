@@ -34,7 +34,7 @@ import com.android.gpstest.util.FormatUtils.formatTtff
 import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil
 import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.SatelliteUtil.getSatellitesFromStatuses
+import com.android.gpstest.util.SatelliteUtil.toSatelliteGroup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -201,9 +201,9 @@ class SignalInfoViewModel @Inject constructor(
     @VisibleForTesting
     fun updateStatus(status: List<SatelliteStatus>) {
         _allStatuses.value = status
-        _allSatellitesGroup.value = getSatellitesFromStatuses(status)
+        _allSatellitesGroup.value = status.toSatelliteGroup()
 
-        // Count number of sats shown to user
+        // Get filter set by user in UI
         val filter = PreferenceUtils.gnssFilter()
 
         // Split list into GNSS and SBAS statuses, apply "shown" filter, and update view model
@@ -326,9 +326,9 @@ class SignalInfoViewModel @Inject constructor(
         this._filteredGnssStatuses.value = gnssStatuses
         this._filteredSbasStatuses.value = sbasStatuses
 
-        val gnssSatellites = getSatellitesFromStatuses(gnssStatuses)
+        val gnssSatellites = gnssStatuses.toSatelliteGroup()
         this._filteredGnssSatellites.value = gnssSatellites.satellites
-        val sbasSatellites = getSatellitesFromStatuses(sbasStatuses)
+        val sbasSatellites = sbasStatuses.toSatelliteGroup()
         this._filteredSbasSatellites.value = sbasSatellites.satellites
 
         _filteredSatelliteMetadata.value = SatelliteMetadata(

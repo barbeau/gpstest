@@ -16,17 +16,18 @@
 package com.android.gpstest.util
 
 import com.android.gpstest.model.*
+import com.android.gpstest.util.CarrierFreqUtils.*
+import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
 
 internal object SatelliteUtil {
 
     /**
-     * Returns a map with the provided status grouped into satellites
-     * @param allStatuses all statuses for either all GNSS or SBAS constellations
-     * @return a SatelliteGroup with the provided status grouped into satellites in a Map. The key
+     * Returns a map with the provided status list grouped into satellites
+     * @return a SatelliteGroup with the provided status list grouped into satellites in a Map. The key
      * to the map is the combination of constellation and ID created using
      * SatelliteUtils.createGnssSatelliteKey(). Various other metadata is also included.
      */
-    fun getSatellitesFromStatuses(allStatuses: List<SatelliteStatus>): SatelliteGroup {
+    fun List<SatelliteStatus>.toSatelliteGroup(): SatelliteGroup {
         val satellites: MutableMap<String, Satellite> = HashMap()
         var numSignalsUsed = 0
         var numSignalsInView = 0
@@ -38,15 +39,15 @@ internal object SatelliteUtil {
         val supportedSbasCfs: MutableSet<String> = HashSet()
         val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
         val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
-        var isDualFrequencyPerSatInView: Boolean = false
-        var isDualFrequencyPerSatInUse: Boolean = false
-        var isNonPrimaryCarrierFreqInView: Boolean = false
-        var isNonPrimaryCarrierFreqInUse: Boolean = false
+        var isDualFrequencyPerSatInView = false
+        var isDualFrequencyPerSatInUse = false
+        var isNonPrimaryCarrierFreqInView = false
+        var isNonPrimaryCarrierFreqInUse = false
 
-        if (allStatuses.isEmpty()) {
+        if (this.isEmpty()) {
             return SatelliteGroup(satellites, SatelliteMetadata(0, 0, 0, 0, 0, 0))
         }
-        for (s in allStatuses) {
+        for (s in this) {
             if (s.usedInFix) {
                 numSignalsUsed++
             }
@@ -55,7 +56,7 @@ internal object SatelliteUtil {
             }
 
             // Save the supported GNSS or SBAS type
-            val key = SatelliteUtils.createGnssSatelliteKey(s)
+            val key = createGnssSatelliteKey(s)
             if (s.gnssType != GnssType.UNKNOWN) {
                 if (s.gnssType != GnssType.SBAS) {
                     supportedGnss.add(s.gnssType)
@@ -67,11 +68,11 @@ internal object SatelliteUtil {
             }
 
             // Get carrier label
-            val carrierLabel = CarrierFreqUtils.getCarrierFrequencyLabel(s)
-            if (carrierLabel == CarrierFreqUtils.CF_UNKNOWN) {
+            val carrierLabel = getCarrierFrequencyLabel(s)
+            if (carrierLabel == CF_UNKNOWN) {
                 unknownCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
             }
-            if (carrierLabel != CarrierFreqUtils.CF_UNKNOWN && carrierLabel != CarrierFreqUtils.CF_UNSUPPORTED) {
+            if (carrierLabel != CF_UNKNOWN && carrierLabel != CF_UNSUPPORTED) {
                 // Save the supported GNSS or SBAS CF
                 if (s.gnssType != GnssType.UNKNOWN) {
                     if (s.gnssType != GnssType.SBAS) {
@@ -83,7 +84,7 @@ internal object SatelliteUtil {
                     }
                 }
                 // Check if this is a non-primary carrier frequency
-                if (!CarrierFreqUtils.isPrimaryCarrier(carrierLabel)) {
+                if (!isPrimaryCarrier(carrierLabel)) {
                     isNonPrimaryCarrierFreqInView = true
                     if (s.usedInFix) {
                         isNonPrimaryCarrierFreqInUse = true
@@ -145,7 +146,7 @@ internal object SatelliteUtil {
             SatelliteMetadata(
                 numSignalsInView,
                 numSignalsUsed,
-                allStatuses.size,
+                this.size,
                 numSatsInView,
                 numSatsUsed,
                 satellites.size,

@@ -56,6 +56,7 @@ import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.util.*
+import com.android.gpstest.util.FormatUtils.formatBearing
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.PreferenceUtil.coordinateFormat
 import com.android.gpstest.util.PreferenceUtil.shareIncludeAltitude
@@ -307,7 +308,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun Bearing(location: Location) {
     if (location.hasBearing()) {
-        LocationValue(stringResource(R.string.gps_bearing_value, location.bearing))
+        LocationValue(formatBearing(location))
     } else {
         LocationValue("")
     }

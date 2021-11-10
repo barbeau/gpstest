@@ -2,8 +2,10 @@ package com.android.gpstest.util
 
 import android.location.Location
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
+import com.android.gpstest.model.SatelliteGroup
 import java.util.concurrent.TimeUnit
 
 /**
@@ -185,14 +187,36 @@ internal object FormatUtils {
         return ""
     }
 
+    fun formatBearing(location: Location): String {
+        return app.getString(R.string.gps_bearing_value, location.bearing)
+    }
+
     fun formatBearingAccuracy(location: Location): String {
         return if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasBearingAccuracy()) {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_bearing_acc_value,
                 location.bearingAccuracyDegrees
             )
         } else {
             ""
         }
+    }
+
+    /**
+     * Returns metadata about the satellite group formatted for a notification title, like
+     * "1/3 sats | 2/4 signals (E1, E5a, L1)"
+     */
+    fun SatelliteGroup.toNotificationTitle(): String {
+        val meta = this.satelliteMetadata
+        return app.getString(
+            R.string.notification_title,
+            meta.numSatsUsed,
+            meta.numSatsInView,
+            meta.numSignalsUsed,
+            meta.numSignalsInView
+        ) +
+            if (meta.supportedGnssCfs.isNotEmpty()) " (" + IOUtils.trimEnds(
+                meta.supportedGnssCfs.sorted().toString()
+            ) + ")" else ""
     }
 }
