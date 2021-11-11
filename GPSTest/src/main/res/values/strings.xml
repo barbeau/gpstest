@@ -68,7 +68,6 @@
     <string name="device">Device</string>
     <string name="upload_details">Uploads your device capabilities (e.g., device make and model, supported GNSS, supported SBAS, dual-frequency support) to the public GPSTest Device Database (https://bit.ly/gpstest-device-database).\n\nNo private information from your device is shared.</string>
     <string name="upload_no_location">Please switch to the Status screen, wait for a GNSS fix, and then return to this screen to upload device capabilities.</string>
-    <string name="upload_gps_status_api">Please enable \"Use GNSS APIs\" in Settings and then return to this screen to upload device capabilities.</string>
     <string name="upload_success">Successfully uploaded device capabilities!</string>
     <string name="upload_failure">Upload of device capabilities failed. Please try again.</string>
     <string name="upload_nothing_changed">Nothing changed since last upload. Please try again later.</string>
@@ -78,32 +77,31 @@
     <string name="mode_map">Map</string>
     <string name="mode_satellite">Satellite</string>
 
-    <string name="gps_latitude_label">Lat:</string>
-    <string name="gps_longitude_label">Long:</string>
-    <string name="gps_fix_time_label">Time:</string>
-    <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">Alt:</string>
-    <string name="gps_altitude_msl_label">Alt (MSL):</string>
-    <string name="gps_accuracy_label">E H Acc:</string>
-    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
-    <string name="gps_speed_label">Speed:</string>
-    <string name="gps_speed_acc_label">S. Acc:</string>
-    <string name="gps_bearing_label">Bearing:</string>
-    <string name="gps_bearing_acc_label">B. Acc:</string>
-    <string name="gps_num_sats_label"># Sats:</string>
+    <string name="latitude_label">Lat:</string>
+    <string name="longitude_label">Long:</string>
+    <string name="fix_time_label">Time:</string>
+    <string name="ttff_label">TTFF:</string>
+    <string name="altitude_label">Alt:</string>
+    <string name="altitude_msl_label">Alt (MSL):</string>
+    <string name="accuracy_label">E H Acc:</string>
+    <string name="hor_and_vert_accuracy_label">E H/V Acc:</string>
+    <string name="speed_label">Speed:</string>
+    <string name="speed_acc_label">S. Acc:</string>
+    <string name="bearing_label">Bearing:</string>
+    <string name="bearing_acc_label">B. Acc:</string>
+    <string name="num_sats_label"># Sats:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
 
-    <string name="gps_prn_column_label">ID</string>
+    <string name="id_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gps_carrier_column_label">CF</string>
-    <string name="gps_snr_column_label">SNR</string>
+    <string name="cf_column_label">CF</string>
     <string name="gps_cn0_column_label">C/N0</string>
-    <string name="gps_avg_cn0_label">Avg</string>
-    <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_flags_column_label">Flags</string>
+    <string name="avg_cn0_label">Avg</string>
+    <string name="elevation_column_label">Elev</string>
+    <string name="azimuth_column_label">Azim</string>
+    <string name="flags_aeu_column_label">Flags</string>
     <string name="gps_not_supported">Please check system settings - device doesn\'t seem to support GNSS/GPS.</string>
     <string name="install">Install</string>
     <string name="no_thanks">No thanks</string>
@@ -111,8 +109,7 @@
     <string name="enable_gps_message">GPS/GNSS is disabled. Enable it now?</string>
     <string name="enable_gps_positive_button">Enable GPS/GNSS</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">Started GNSS with interval = %1$ss, min. dist. = %2$sm
-    </string>
+    <string name="gnss_running">GNSS running with interval = %1$ss, min. dist. = %2$sm</string>
     <string name="clear_assist_warning_title">Delete assist data?</string>
     <string name="clear_assist_warning">Some devices may take 24 hours to auto-refresh assist data.  If your device doesn\'t support manual injection, GNSS may not work for any app until the auto-refresh completes. Are you sure?</string>
     <string name="never_ask_again">Never ask again</string>
@@ -130,12 +127,13 @@
     <string name="menu_option_filter">Filter</string>
     <string name="menu_option_filter_content_description">Filter signals</string>
     <string name="filter_dialog_title">Show only these GNSS</string>
-    <string name="filter_text">Showing %1$d of %2$d satellites</string>
+    <string name="filter_signal_text">Showing %1$d of %2$d signals</string>
     <string name="filter_showall">(show all)</string>
     <string name="error_time_title">Your GNSS time is wrong</string>
     <string name="error_time_message">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock. This can be caused by the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="unknown">Unknown</string>
     <string name="cancel">Cancel</string>
+    <string name="notification_title">%1$d/%2$d sats | %3$d/%4$d signals</string>
 
     <string name="gps_content_description">GPS</string>
     <string name="glonass_content_description">GLONASS</string>
@@ -290,15 +288,13 @@
     <string name="pref_auto_start_gps_title">Auto-Start GNSS</string>
     <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
 
+    <string name="pref_gnss_background_title">Run GNSS in background</string>
+    <string name="pref_gnss_background_summary">If checked, when you leave the app a notification will keep GNSS running in the background until you stop it from that notification.</string>
+
     <string name="pref_gps_min_time_title">Interval</string>
     <string name="pref_gps_min_time_summary">Time between GNSS fixes, in seconds</string>
     <string name="pref_gps_min_time_dialog_title">Enter an interval, in seconds</string>
     <string name="pref_gps_min_time_invalid_entry">Interval must be a number</string>
-
-    <string name="pref_use_gnss_apis_title">Use GNSS APIs</string>
-    <string name="pref_use_gnss_apis_summary">Available on Android 7.0 and higher. If unchecked,
-        will use the legacy GPSStatus.Listener.
-    </string>
 
     <string name="pref_gps_min_distance_title">Min. Distance</string>
     <string name="pref_gps_min_distance_summary">Minimum distance between GNSS fixes, in meters
@@ -379,6 +375,11 @@
     <string name="pref_language_title">Language</string>
     <string name="pref_language_summary">Manually sets the language shown in the app</string>
     <string name="pref_language_dialog_title">Choose language</string>
+
+    <!-- Service -->
+    <string name="stop">Stop</string>
+    <string name="open">Open</string>
+    <string name="no_location_text">No current location</string>
 
     <!-- Help -->
     <string name="title_help">Help</string>

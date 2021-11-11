@@ -19,9 +19,11 @@ package com.android.gpstest.io;
 import android.content.Context;
 import android.location.GnssAntennaInfo;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
@@ -66,10 +68,18 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
                     jsonGenerator.writeStartArray();
                 }
             } catch (IOException e) {
-                logException(Application.get().getString(R.string.unable_to_open_json_generator), e);
+                logException(Application.Companion.getApp().getString(R.string.unable_to_open_json_generator), e);
                 return false;
             }
         }
+        ContextCompat.getMainExecutor(context).execute(() -> Toast.makeText(
+                Application.Companion.getApp().getApplicationContext(),
+                Application.Companion.getApp().getString(
+                        R.string.logging_to_new_file,
+                        file.getAbsolutePath()
+                ),
+                Toast.LENGTH_LONG
+        ).show());
         return true;
     }
 
@@ -82,7 +92,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
      * @return true if a new file was created, false if an existing file was used
      */
     @Override
-    public boolean startLog(File existingFile, Date date) {
+    public synchronized boolean startLog(File existingFile, Date date) {
         if (mapper == null) {
             mapper = new ObjectMapper();
             // We manage closing the underlying file streams in super.close()
@@ -92,7 +102,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         if (fileWriter != null) {
             try {
                 if (jsonGenerator != null) {
@@ -110,7 +120,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
+    public synchronized void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
         try {
             if (mapper != null && jsonGenerator != null) {
                 for (GnssAntennaInfo info : list) {

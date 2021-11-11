@@ -61,8 +61,6 @@ public class IOUtils {
 
     private static final String NM_OUTPUT_TAG = "GpsOutputNav";
 
-    private static StringBuilder mNmeaOutput = new StringBuilder();
-
     private static final int MAX_FILES_STORED = 100;
 
     /**
@@ -79,16 +77,16 @@ public class IOUtils {
         Location groundTruth = null;
         if (isShowRadarIntent(intent)) {
             double lat = Double.NaN, lon = Double.NaN;
-            float latFloat = intent.getFloatExtra(Application.get().getString(R.string.radar_lat_key), Float.NaN);
-            float lonFloat = intent.getFloatExtra(Application.get().getString(R.string.radar_lon_key), Float.NaN);
+            float latFloat = intent.getFloatExtra(Application.Companion.getApp().getString(R.string.radar_lat_key), Float.NaN);
+            float lonFloat = intent.getFloatExtra(Application.Companion.getApp().getString(R.string.radar_lon_key), Float.NaN);
             if (isValidLatitude(latFloat) && isValidLongitude(lonFloat)) {
                 // Use the float values
                 lat = (double) latFloat;
                 lon = (double) lonFloat;
             } else {
                 // Try parsing doubles
-                double latDouble = intent.getDoubleExtra(Application.get().getString(R.string.radar_lat_key), Double.NaN);
-                double lonDouble = intent.getDoubleExtra(Application.get().getString(R.string.radar_lon_key), Double.NaN);
+                double latDouble = intent.getDoubleExtra(Application.Companion.getApp().getString(R.string.radar_lat_key), Double.NaN);
+                double lonDouble = intent.getDoubleExtra(Application.Companion.getApp().getString(R.string.radar_lon_key), Double.NaN);
                 if (isValidLatitude(latDouble) && isValidLongitude(lonDouble)) {
                     lat = latDouble;
                     lon = lonDouble;
@@ -99,13 +97,13 @@ public class IOUtils {
                 groundTruth = new Location("ground_truth");
                 groundTruth.setLatitude(lat);
                 groundTruth.setLongitude(lon);
-                if (intent.hasExtra(Application.get().getString(R.string.radar_alt_key))) {
-                    float altitude = intent.getFloatExtra(Application.get().getString(R.string.radar_alt_key), Float.NaN);
+                if (intent.hasExtra(Application.Companion.getApp().getString(R.string.radar_alt_key))) {
+                    float altitude = intent.getFloatExtra(Application.Companion.getApp().getString(R.string.radar_alt_key), Float.NaN);
                     if (!Float.isNaN(altitude)) {
                         groundTruth.setAltitude(altitude);
                     } else {
                         // Try the double version
-                        double altitudeDouble = intent.getDoubleExtra(Application.get().getString(R.string.radar_alt_key), Double.NaN);
+                        double altitudeDouble = intent.getDoubleExtra(Application.Companion.getApp().getString(R.string.radar_alt_key), Double.NaN);
                         if (!Double.isNaN(altitudeDouble)) {
                             groundTruth.setAltitude(altitudeDouble);
                         }
@@ -127,7 +125,7 @@ public class IOUtils {
     public static boolean isShowRadarIntent(Intent intent) {
         return intent != null &&
                 intent.getAction() != null &&
-                intent.getAction().equals(Application.get().getString(R.string.show_radar_intent));
+                intent.getAction().equals(Application.Companion.getApp().getString(R.string.show_radar_intent));
     }
 
     /**
@@ -141,7 +139,7 @@ public class IOUtils {
                 intent.getAction() != null &&
                 intent.getAction().equals(ACTION_VIEW) &&
                 intent.getData() != null &&
-                intent.getData().toString().startsWith(Application.get().getString(R.string.geo_uri_prefix));
+                intent.getData().toString().startsWith(Application.Companion.getApp().getString(R.string.geo_uri_prefix));
     }
 
     /**
@@ -163,11 +161,11 @@ public class IOUtils {
      * @return a SHOW_RADAR intent with the provided latitude, longitude, and, if provided, altitude, all in WGS-84
      */
     public static Intent createShowRadarIntent(double lat, double lon, Double alt) {
-        Intent intent = new Intent(Application.get().getString(R.string.show_radar_intent));
-        intent.putExtra(Application.get().getString(R.string.radar_lat_key), lat);
-        intent.putExtra(Application.get().getString(R.string.radar_lon_key), lon);
+        Intent intent = new Intent(Application.Companion.getApp().getString(R.string.show_radar_intent));
+        intent.putExtra(Application.Companion.getApp().getString(R.string.radar_lat_key), lat);
+        intent.putExtra(Application.Companion.getApp().getString(R.string.radar_lon_key), lon);
         if (alt != null && !Double.isNaN(alt)) {
-            intent.putExtra(Application.get().getString(R.string.radar_alt_key), alt);
+            intent.putExtra(Application.Companion.getApp().getString(R.string.radar_alt_key), alt);
         }
         return intent;
     }
@@ -185,7 +183,7 @@ public class IOUtils {
      * @return a location from the provided Geo URI (RFC 5870) or null if one can't be parsed
      */
     public static Location getLocationFromGeoUri(String geoUri) {
-        if (TextUtils.isEmpty(geoUri) || !geoUri.startsWith(Application.get().getString(R.string.geo_uri_prefix))) {
+        if (TextUtils.isEmpty(geoUri) || !geoUri.startsWith(Application.Companion.getApp().getString(R.string.geo_uri_prefix))) {
             return null;
         }
         Location l = null;
@@ -217,7 +215,7 @@ public class IOUtils {
         if (location == null) {
             return null;
         }
-        String geoUri = Application.get().getString(R.string.geo_uri_prefix);
+        String geoUri = Application.Companion.getApp().getString(R.string.geo_uri_prefix);
         geoUri += location.getLatitude() + ",";
         geoUri += location.getLongitude();
         if (location.hasAltitude() && includeAltitude) {
@@ -232,8 +230,8 @@ public class IOUtils {
      * @param location the location string to copy to the clipboard
      */
     public static void copyToClipboard(String location) {
-        ClipboardManager clipboard = (ClipboardManager) Application.get().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(Application.get().getString(R.string.pref_file_location_output_title), location);
+        ClipboardManager clipboard = (ClipboardManager) Application.Companion.getApp().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText(Application.Companion.getApp().getString(R.string.pref_file_location_output_title), location);
         clipboard.setPrimaryClip(clip);
     }
 
@@ -301,7 +299,7 @@ public class IOUtils {
         emailIntent.putExtra(Intent.EXTRA_TEXT, "");
         Log.d(TAG, "Sending " + fileUris);
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris);
-        activity.startActivity(Intent.createChooser(emailIntent, Application.get().getString(R.string.send_log)));
+        activity.startActivity(Intent.createChooser(emailIntent, Application.Companion.getApp().getString(R.string.send_log)));
     }
 
     /**
@@ -343,17 +341,14 @@ public class IOUtils {
      * Outputs the provided nmea message and timestamp to log
      *
      * @param timestamp timestamp to write to the log, or Long.MIN_VALUE to not write a timestamp
-     *                  to
-     *                  log
+     *                  to Logcat
      */
     public static void writeNmeaToAndroidStudio(String nmea, long timestamp) {
-        mNmeaOutput.setLength(0);
         if (timestamp != Long.MIN_VALUE) {
-            mNmeaOutput.append(timestamp);
-            mNmeaOutput.append(",");
+            Log.d(NMEA_OUTPUT_TAG, timestamp + "," + nmea);
+        } else {
+            Log.d(NMEA_OUTPUT_TAG, nmea);
         }
-        mNmeaOutput.append(nmea);
-        Log.d(NMEA_OUTPUT_TAG, mNmeaOutput.toString());
     }
 
     /**
@@ -368,7 +363,7 @@ public class IOUtils {
      * Outputs the provided GNSS measurement to log
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static void writeGnssMeasurementToAndroidStudio(GnssMeasurement measurement) {
+    public static void writeMeasurementToLogcat(GnssMeasurement measurement) {
         Log.d(MEASURE_OUTPUT_TAG, measurement.toString());
     }
 
@@ -379,7 +374,7 @@ public class IOUtils {
      */
     public static String getGnssHardwareYear() {
         String year = "";
-        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) Application.Companion.getApp().getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             year = String.valueOf(locationManager.getGnssYearOfHardware());
@@ -411,7 +406,7 @@ public class IOUtils {
      */
     public static String getGnssHardwareModelName() {
         String modelName = "";
-        LocationManager locationManager = (LocationManager) Application.get().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) Application.Companion.getApp().getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (locationManager.getGnssHardwareModelName() != null) {
@@ -430,7 +425,7 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.force_time_injection_command), null);
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.force_time_injection_command), null);
     }
 
     /**
@@ -444,9 +439,9 @@ public class IOUtils {
         }
         String command;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            command = Application.get().getString(R.string.force_psds_injection_command);
+            command = Application.Companion.getApp().getString(R.string.force_psds_injection_command);
         } else {
-            command = Application.get().getString(R.string.force_xtra_injection_command);
+            command = Application.Companion.getApp().getString(R.string.force_xtra_injection_command);
         }
         return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
     }
@@ -460,7 +455,7 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.get().getString(R.string.delete_aiding_data_command), null);
+        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.delete_aiding_data_command), null);
     }
 
     /**

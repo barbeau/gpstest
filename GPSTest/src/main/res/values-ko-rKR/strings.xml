@@ -64,32 +64,32 @@
     <string name="mode_map">지도</string>
     <string name="mode_satellite">위성</string>
 
-    <string name="gps_latitude_label">위도:</string>
-    <string name="gps_longitude_label">경도:</string>
-    <string name="gps_fix_time_label">시간:</string>
-    <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">고도:</string>
-    <string name="gps_altitude_msl_label">고도 (MSL):</string>
-    <string name="gps_accuracy_label">E H Acc:</string>
-    <string name="gps_hor_and_vert_accuracy_label">E H/V Acc:</string>
-    <string name="gps_speed_label">속도:</string>
-    <string name="gps_speed_acc_label">S. Acc:</string>
-    <string name="gps_bearing_label">Bearing:</string>
-    <string name="gps_bearing_acc_label">B. Acc:</string>
-    <string name="gps_num_sats_label"># 위성:</string>
+    <string name="latitude_label">위도:</string>
+    <string name="longitude_label">경도:</string>
+    <string name="fix_time_label">시간:</string>
+    <string name="ttff_label">TTFF:</string>
+    <string name="altitude_label">고도:</string>
+    <string name="altitude_msl_label">고도 (MSL):</string>
+    <string name="accuracy_label">E H Acc:</string>
+    <string name="hor_and_vert_accuracy_label">E H/V Acc:</string>
+    <string name="speed_label">속도:</string>
+    <string name="speed_acc_label">S. Acc:</string>
+    <string name="bearing_label">Bearing:</string>
+    <string name="bearing_acc_label">B. Acc:</string>
+    <string name="num_sats_label"># 위성:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
 
-    <string name="gps_prn_column_label">ID</string>
+    <string name="id_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gps_carrier_column_label">CF</string>
+    <string name="cf_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
-    <string name="gps_avg_cn0_label">평균</string>
-    <string name="gps_elevation_column_label">앙각</string>
-    <string name="gps_azimuth_column_label">방위각</string>
-    <string name="gps_flags_column_label">플래그</string>
+    <string name="avg_cn0_label">평균</string>
+    <string name="elevation_column_label">앙각</string>
+    <string name="azimuth_column_label">방위각</string>
+    <string name="flags_aeu_column_label">플래그</string>
     <string name="gps_not_supported">시스템 설정을 확인해주세요 - 기기가 GNSS/GPS를 지원하지 않는 것 같습니다.</string>
     <string name="install">설치</string>
     <string name="no_thanks">아니오</string>
@@ -97,7 +97,7 @@
     <string name="enable_gps_message">GPS/GNSS가 비활성화됨. 지금 활성화 하시겠습니까?</string>
     <string name="enable_gps_positive_button">GPS/GNSS 활성화</string>
     <string name="enable_gps_negative_button">아니오</string>
-    <string name="gps_set_location_listener">인터벌을 적용해 GNSS 시작됨, 시간 = %1$ss, 최소 거리 = %2$sm
+    <string name="gnss_running">인터벌을 적용해 GNSS 시작됨, 시간 = %1$ss, 최소 거리 = %2$sm
 </string>
     <string name="clear_assist_warning_title">보조 데이터를 삭제합니까?</string>
     <string name="clear_assist_warning">일부 기기는 자동으로 보조 데이터가 업데이트 하는데 24시간이 걸립니다. 만약 기기가 수동 주입을 지원하지 않는다면, 자동 업데이트가 완료될 때까지 GNSS가 모든 앱에서 작동하지 않을 수도 있습니다. 정말로 진행하시겠습니까?</string>

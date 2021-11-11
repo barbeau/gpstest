@@ -7,42 +7,28 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
-import android.location.GpsSatellite;
-import android.location.GpsStatus;
-import android.location.Location;
-import android.os.Build;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.GpsTestListener;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
-import com.android.gpstest.util.MathUtils;
 import com.android.gpstest.util.SatelliteUtils;
 import com.android.gpstest.util.UIUtils;
-
-import java.util.Iterator;
 
 /**
 * View that shows satellite positions on a circle representing the sky
 */
 
-public class GpsSkyView extends View implements GpsTestListener {
+public class GpsSkyView extends View {
 
     public static final float MIN_VALUE_CN0 = 10.0f;
     public static final float MAX_VALUE_CN0 = 45.0f;
-    public static final float MIN_VALUE_SNR = 0.0f;
-    public static final float MAX_VALUE_SNR = 30.0f;
 
     // View dimensions, to draw the compass with the correct width and height
     private static int mHeight;
@@ -52,10 +38,6 @@ public class GpsSkyView extends View implements GpsTestListener {
     private static final float PRN_TEXT_SCALE = 0.7f;
 
     private static int SAT_RADIUS;
-
-    private float[] mSnrThresholds;
-
-    private int[] mSnrColors;
 
     private float[] mCn0Thresholds;
 
@@ -73,13 +55,13 @@ public class GpsSkyView extends View implements GpsTestListener {
 
     private boolean mStarted;
 
-    private float[] mSnrCn0s;  // Holds either SNR or C/N0 - see #65
-    private float[] mElevs;
-    private float[] mAzims;
+    private float[] cn0s;
+    private float[] elevs;
+    private float[] azims;
 
-    private float mSnrCn0UsedAvg = 0.0f;
+    private float mCn0UsedAvg = 0.0f;
 
-    private float mSnrCn0InViewAvg = 0.0f;
+    private float mCn0InViewAvg = 0.0f;
 
     private boolean[] mHasEphemeris;
     private boolean[] mHasAlmanac;
@@ -89,10 +71,6 @@ public class GpsSkyView extends View implements GpsTestListener {
     private int[] mConstellationType;
 
     private int mSvCount;
-
-    private boolean mUseLegacyGnssApi = false;
-
-    private boolean mIsSnrBad = false;
 
     public GpsSkyView(Context context) {
         super(context);
@@ -112,7 +90,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         int textColor;
         int backgroundColor;
         int satStrokeColorUsed;
-        if (Application.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
             // Dark theme
             textColor = getResources().getColor(android.R.color.secondary_text_dark);
             backgroundColor = ContextCompat.getColor(context, R.color.navdrawer_background_dark);
@@ -162,12 +140,6 @@ public class GpsSkyView extends View implements GpsTestListener {
         mSatelliteUsedStrokePaint.setStrokeWidth(8.0f);
         mSatelliteUsedStrokePaint.setAntiAlias(true);
 
-        mSnrThresholds = new float[]{MIN_VALUE_SNR, 10.0f, 20.0f, MAX_VALUE_SNR};
-        mSnrColors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
-                ContextCompat.getColor(mContext, R.color.red),
-                ContextCompat.getColor(mContext, R.color.yellow),
-                ContextCompat.getColor(mContext, R.color.green)};
-
         mCn0Thresholds = new float[]{MIN_VALUE_CN0, 21.67f, 33.3f, MAX_VALUE_CN0};
         mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
                 ContextCompat.getColor(mContext, R.color.red),
@@ -203,13 +175,10 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         // Get the proper height and width of view before drawing
         getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        mHeight = getHeight();
-                        mWidth = getWidth();
-                        return true;
-                    }
+                () -> {
+                    mHeight = getHeight();
+                    mWidth = getWidth();
+                    return true;
                 }
         );
     }
@@ -225,21 +194,18 @@ public class GpsSkyView extends View implements GpsTestListener {
         invalidate();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized void setGnssStatus(GnssStatus status) {
-        mUseLegacyGnssApi = false;
-        mIsSnrBad = false;
         if (mPrns == null) {
-            /**
-             * We need to allocate arrays big enough so we don't overflow them.  Per
-             * https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
-             * 255 should be enough to contain all known satellites world-wide.
+            /*
+              We need to allocate arrays big enough so we don't overflow them.  Per
+              https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
+              255 should be enough to contain all known satellites world-wide.
              */
             final int MAX_LENGTH = 255;
             mPrns = new int[MAX_LENGTH];
-            mSnrCn0s = new float[MAX_LENGTH];
-            mElevs = new float[MAX_LENGTH];
-            mAzims = new float[MAX_LENGTH];
+            cn0s = new float[MAX_LENGTH];
+            elevs = new float[MAX_LENGTH];
+            azims = new float[MAX_LENGTH];
             mConstellationType = new int[MAX_LENGTH];
             mHasEphemeris = new boolean[MAX_LENGTH];
             mHasAlmanac = new boolean[MAX_LENGTH];
@@ -252,12 +218,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         int svUsedCount = 0;
         float cn0InViewSum = 0.0f;
         float cn0UsedSum = 0.0f;
-        mSnrCn0InViewAvg = 0.0f;
-        mSnrCn0UsedAvg = 0.0f;
+        mCn0InViewAvg = 0.0f;
+        mCn0UsedAvg = 0.0f;
         while (mSvCount < length) {
-            mSnrCn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
-            mElevs[mSvCount] = status.getElevationDegrees(mSvCount);
-            mAzims[mSvCount] = status.getAzimuthDegrees(mSvCount);
+            cn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
+            elevs[mSvCount] = status.getElevationDegrees(mSvCount);
+            azims[mSvCount] = status.getAzimuthDegrees(mSvCount);
             mPrns[mSvCount] = status.getSvid(mSvCount);
             mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
             mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
@@ -276,91 +242,14 @@ public class GpsSkyView extends View implements GpsTestListener {
         }
 
         if (svInViewCount > 0) {
-            mSnrCn0InViewAvg = cn0InViewSum / svInViewCount;
+            mCn0InViewAvg = cn0InViewSum / svInViewCount;
         }
         if (svUsedCount > 0) {
-            mSnrCn0UsedAvg = cn0UsedSum / svUsedCount;
+            mCn0UsedAvg = cn0UsedSum / svUsedCount;
         }
 
         mStarted = true;
         invalidate();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setGnssMeasurementEvent(GnssMeasurementsEvent event) {
-        // No-op
-    }
-
-    @Deprecated
-    public void setSats(GpsStatus status) {
-        mUseLegacyGnssApi = true;
-        Iterator<GpsSatellite> satellites = status.getSatellites().iterator();
-
-        if (mSnrCn0s == null) {
-            int length = status.getMaxSatellites();
-            mSnrCn0s = new float[length];
-            mElevs = new float[length];
-            mAzims = new float[length];
-            mPrns = new int[length];
-            mHasEphemeris = new boolean[length];
-            mHasAlmanac = new boolean[length];
-            mUsedInFix = new boolean[length];
-            // Constellation type isn't used, but instantiate it to avoid NPE in legacy devices
-            mConstellationType = new int[length];
-        }
-
-        mSvCount = 0;
-        int svInViewCount = 0;
-        int svUsedCount = 0;
-        float snrInViewSum = 0.0f;
-        float snrUsedSum = 0.0f;
-        mSnrCn0InViewAvg = 0.0f;
-        mSnrCn0UsedAvg = 0.0f;
-        while (satellites.hasNext()) {
-            GpsSatellite satellite = satellites.next();
-            mSnrCn0s[mSvCount] = satellite.getSnr(); // Store SNR values (see #65)
-            mElevs[mSvCount] = satellite.getElevation();
-            mAzims[mSvCount] = satellite.getAzimuth();
-            mPrns[mSvCount] = satellite.getPrn();
-            mHasEphemeris[mSvCount] = satellite.hasEphemeris();
-            mHasAlmanac[mSvCount] = satellite.hasAlmanac();
-            mUsedInFix[mSvCount] = satellite.usedInFix();
-            // If satellite is in view, add signal to calculate avg
-            if (satellite.getSnr() != 0.0f) {
-                svInViewCount++;
-                snrInViewSum = snrInViewSum + satellite.getSnr();
-            }
-            if (satellite.usedInFix()) {
-                svUsedCount++;
-                snrUsedSum = snrUsedSum + satellite.getSnr();
-            }
-            mSvCount++;
-        }
-
-        if (svInViewCount > 0) {
-            mSnrCn0InViewAvg = snrInViewSum / svInViewCount;
-        }
-        if (svUsedCount > 0) {
-            mSnrCn0UsedAvg = snrUsedSum / svUsedCount;
-        }
-
-        checkBadSnr();
-
-        mStarted = true;
-        invalidate();
-    }
-
-    /**
-     * Check if the SNR values are bad (see #153)
-     */
-    private void checkBadSnr() {
-        if (mUseLegacyGnssApi) {
-            // If either of the avg SNR values are greater than the max SNR value, mark the data as suspect
-            if ((MathUtils.isValidFloat(mSnrCn0InViewAvg) && mSnrCn0InViewAvg > GpsSkyView.MAX_VALUE_SNR) ||
-                    (MathUtils.isValidFloat(mSnrCn0UsedAvg) && mSnrCn0UsedAvg > GpsSkyView.MAX_VALUE_SNR)) {
-                mIsSnrBad = true;
-            }
-        }
     }
 
     private void drawLine(Canvas c, float x1, float y1, float x2, float y2) {
@@ -432,7 +321,7 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawPath(path, mNorthFillPaint);
     }
 
-    private void drawSatellite(Canvas c, int s, float elev, float azim, float snrCn0, int prn,
+    private void drawSatellite(Canvas c, int s, float elev, float azim, float cn0, int prn,
             int constellationType, boolean usedInFix) {
         double radius, angle;
         float x, y;
@@ -441,12 +330,12 @@ public class GpsSkyView extends View implements GpsTestListener {
         final double PRN_Y_SCALE = 3.8;
 
         Paint fillPaint;
-        if (snrCn0 == 0.0f) {
+        if (cn0 == 0.0f) {
             // Satellite can't be seen
             fillPaint = mNotInViewPaint;
         } else {
             // Calculate fill color based on signal strength
-            fillPaint = getSatellitePaint(mSatelliteFillPaint, snrCn0);
+            fillPaint = getSatellitePaint(mSatelliteFillPaint, cn0);
         }
 
         Paint strokePaint;
@@ -463,14 +352,10 @@ public class GpsSkyView extends View implements GpsTestListener {
         x = (float) ((s / 2) + (radius * Math.sin(angle)));
         y = (float) ((s / 2) - (radius * Math.cos(angle)));
 
-        // Change shape based on satellite operator
-        GnssType operator;
-        if (SatelliteUtils.isGnssStatusListenerSupported() && !mUseLegacyGnssApi) {
-            operator = SatelliteUtils.getGnssConstellationType(constellationType);
-        } else {
-            operator = SatelliteUtils.getGnssType(prn);
-        }
-        switch (operator) {
+        // Change shape based on satellite gnssType
+        GnssType gnssType = SatelliteUtils.getGnssConstellationType(constellationType);
+
+        switch (gnssType) {
             case NAVSTAR:
                 c.drawCircle(x, y, SAT_RADIUS, fillPaint);
                 c.drawCircle(x, y, SAT_RADIUS, strokePaint);
@@ -584,49 +469,39 @@ public class GpsSkyView extends View implements GpsTestListener {
         c.drawOval(rect, strokePaint);
     }
 
-    private Paint getSatellitePaint(Paint base, float snrCn0) {
-        Paint newPaint;
-        newPaint = new Paint(base);
-        newPaint.setColor(getSatelliteColor(snrCn0));
+    private Paint getSatellitePaint(Paint base, float cn0) {
+        Paint newPaint = new Paint(base);
+        newPaint.setColor(getSatelliteColor(cn0));
         return newPaint;
     }
 
     /**
-     * Gets the paint color for a satellite based on provided SNR or C/N0 and the thresholds defined in this class
+     * Gets the paint color for a satellite based on provided C/N0 and the thresholds defined in this class
      *
-     * @param snrCn0 the SNR to use (if using legacy GpsStatus) or the C/N0 to use (if using is
-     *               GnssStatus) to generate the satellite color based on signal quality
-     * @return the paint color for a satellite based on provided SNR or C/N0
+     * @param cn0 the C/N0 to use to generate the satellite color based on signal quality
+     * @return the paint color for a satellite based on provided C/N0
      */
-    public synchronized int getSatelliteColor(float snrCn0) {
+    public synchronized int getSatelliteColor(float cn0) {
         int numSteps;
         final float[] thresholds;
         final int[] colors;
 
-        if (!mUseLegacyGnssApi || mIsSnrBad) {
-            // Use C/N0 ranges/colors for both C/N0 and SNR on Android 7.0 and higher (see #76)
-            numSteps = mCn0Thresholds.length;
-            thresholds = mCn0Thresholds;
-            colors = mCn0Colors;
-        } else {
-            // Use legacy SNR ranges/colors for Android versions less than Android 7.0 or if user selects legacy API (see #76)
-            numSteps = mSnrThresholds.length;
-            thresholds = mSnrThresholds;
-            colors = mSnrColors;
-        }
+        numSteps = mCn0Thresholds.length;
+        thresholds = mCn0Thresholds;
+        colors = mCn0Colors;
 
-        if (snrCn0 <= thresholds[0]) {
+        if (cn0 <= thresholds[0]) {
             return colors[0];
         }
 
-        if (snrCn0 >= thresholds[numSteps - 1]) {
+        if (cn0 >= thresholds[numSteps - 1]) {
             return colors[numSteps - 1];
         }
 
         for (int i = 0; i < numSteps - 1; i++) {
             float threshold = thresholds[i];
             float nextThreshold = thresholds[i + 1];
-            if (snrCn0 >= threshold && snrCn0 <= nextThreshold) {
+            if (cn0 >= threshold && cn0 <= nextThreshold) {
                 int c1, r1, g1, b1, c2, r2, g2, b2, c3, r3, g3, b3;
                 float f;
 
@@ -640,7 +515,7 @@ public class GpsSkyView extends View implements GpsTestListener {
                 g2 = Color.green(c2);
                 b2 = Color.blue(c2);
 
-                f = (snrCn0 - threshold) / (nextThreshold - threshold);
+                f = (cn0 - threshold) / (nextThreshold - threshold);
 
                 r3 = (int) (r2 * f + r1 * (1.0f - f));
                 g3 = (int) (g2 * f + g1 * (1.0f - f));
@@ -663,12 +538,12 @@ public class GpsSkyView extends View implements GpsTestListener {
 
         drawNorthIndicator(canvas, minScreenDimen);
 
-        if (mElevs != null) {
+        if (elevs != null) {
             int numSats = mSvCount;
 
             for (int i = 0; i < numSats; i++) {
-                if (mElevs[i] != 0.0f || mAzims[i] != 0.0f) {
-                    drawSatellite(canvas, minScreenDimen, mElevs[i], mAzims[i], mSnrCn0s[i],
+                if (elevs[i] != 0.0f || azims[i] != 0.0f) {
+                    drawSatellite(canvas, minScreenDimen, elevs[i], azims[i], cn0s[i],
                             mPrns[i], mConstellationType[i], mUsedInFix[i]);
                 }
             }
@@ -683,108 +558,24 @@ public class GpsSkyView extends View implements GpsTestListener {
         setMeasuredDimension(specSize, specSize);
     }
 
-    @Override
     public void onOrientationChanged(double orientation, double tilt) {
         mOrientation = orientation;
         invalidate();
     }
 
-    @Override
-    public void gpsStart() {
-    }
-
-    @Override
-    public void gpsStop() {
-    }
-
-    @Override
-    public void onGnssFirstFix(int ttffMillis) {
-
-    }
-
-    @Override
-    public void onGnssFixAcquired() {
-
-    }
-
-    @Override
-    public void onGnssFixLost() {
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onSatelliteStatusChanged(GnssStatus status) {
-    }
-
-    @Override
-    public void onGnssStarted() {
-    }
-
-    @Override
-    public void onGnssStopped() {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
-
-    }
-
-    @Override
-    public void onNmeaMessage(String message, long timestamp) {
-    }
-
-    @Deprecated
-    @Override
-    public void onGpsStatusChanged(int event, GpsStatus status) {
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
+    /**
+     * Returns the average signal strength (C/N0) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     */
+    public synchronized float getCn0InViewAvg() {
+        return mCn0InViewAvg;
     }
 
     /**
-     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
-     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are in view of the device (i.e., value is not 0), or 0 if the average can't be calculated
+     * Returns the average signal strength (C/N0) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
+     * @return the average signal strength (C/N0) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
      */
-    public synchronized float getSnrCn0InViewAvg() {
-        return mSnrCn0InViewAvg;
-    }
-
-    /**
-     * Returns the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
-     * @return the average signal strength (C/N0 if isUsingLegacyGpsApi is false, SNR if isUsingLegacyGpsApi is true) for satellites that are being used to calculate a location fix, or 0 if the average can't be calculated
-     */
-    public synchronized float getSnrCn0UsedAvg() {
-        return mSnrCn0UsedAvg;
-    }
-
-    /**
-     * Returns true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
-     * @return true if the app is monitoring the legacy GpsStatus.Listener, or false if the app is monitoring the GnssStatus.Callback
-     */
-    public synchronized boolean isUsingLegacyGpsApi() {
-        return mUseLegacyGnssApi;
-    }
-
-    /**
-     * Returns true if bad SNR data has been detected (avgs exceeded max SNR threshold), or false if no SNR is observed (i.e., C/N0 data is observed) or SNR data seems ok
-     * @return true if bad SNR data has been detected (avgs exceeded max SNR threshold), or false if no SNR is observed (i.e., C/N0 data is observed) or SNR data seems ok
-     */
-    public synchronized boolean isSnrBad() {
-        return mIsSnrBad;
+    public synchronized float getCn0UsedAvg() {
+        return mCn0UsedAvg;
     }
 }

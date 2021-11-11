@@ -21,6 +21,7 @@ import androidx.annotation.VisibleForTesting
 import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 /**
  * Utilities for comparing two locations to measure error
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit
 class DateTimeUtils {
 
     companion object {
-        val NUM_DAYS_TIME_VALID = 5
+        const val NUM_DAYS_TIME_VALID = 5
         /**
          * Returns true if the provided UTC time of the fix, in milliseconds since January 1, 1970,
          * is valid, and false if it is not
@@ -44,7 +45,7 @@ class DateTimeUtils {
 
         @VisibleForTesting
         internal fun isTimeValidLegacy(time: Long): Boolean {
-            return TimeUnit.MILLISECONDS.toDays(Math.abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID
+            return TimeUnit.MILLISECONDS.toDays(abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID
         }
     }
 }

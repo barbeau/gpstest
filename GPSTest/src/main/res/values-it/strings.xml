@@ -74,32 +74,32 @@ Link: https://bit.ly/gpstest-device-database</string>
     <string name="mode_map">Mappa</string>
     <string name="mode_satellite">Satellite</string>
 
-    <string name="gps_latitude_label">Lat.:</string>
-    <string name="gps_longitude_label">Long.:</string>
-    <string name="gps_fix_time_label">Ora:</string>
-    <string name="gps_ttff_label">TTPL:</string>
-    <string name="gps_altitude_label">Alt.:</string>
-    <string name="gps_altitude_msl_label">Alt. (s.l.m.):</string>
-    <string name="gps_accuracy_label">Prec. orizz.:</string>
-    <string name="gps_hor_and_vert_accuracy_label">Prec. o/v:</string>
-    <string name="gps_speed_label">Velocità:</string>
-    <string name="gps_speed_acc_label">Prec. vel.:</string>
-    <string name="gps_bearing_label">Direzione:</string>
-    <string name="gps_bearing_acc_label">Prec. dir.:</string>
-    <string name="gps_num_sats_label">n° Sat.:</string>
+    <string name="latitude_label">Lat.:</string>
+    <string name="longitude_label">Long.:</string>
+    <string name="fix_time_label">Ora:</string>
+    <string name="ttff_label">TTPL:</string>
+    <string name="altitude_label">Alt.:</string>
+    <string name="altitude_msl_label">Alt. (s.l.m.):</string>
+    <string name="accuracy_label">Prec. orizz.:</string>
+    <string name="hor_and_vert_accuracy_label">Prec. o/v:</string>
+    <string name="speed_label">Velocità:</string>
+    <string name="speed_acc_label">Prec. vel.:</string>
+    <string name="bearing_label">Direzione:</string>
+    <string name="bearing_acc_label">Prec. dir.:</string>
+    <string name="num_sats_label">n° Sat.:</string>
     <string name="pdop_label">DOP:</string>
     <string name="hvdop_label">DOP o/v:</string>
 
-    <string name="gps_prn_column_label">ID</string>
+    <string name="id_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gps_carrier_column_label">CF</string>
+    <string name="cf_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
-    <string name="gps_avg_cn0_label">Media</string>
-    <string name="gps_elevation_column_label">Elev.</string>
-    <string name="gps_azimuth_column_label">Azim.</string>
-    <string name="gps_flags_column_label">Dati</string>
+    <string name="avg_cn0_label">Media</string>
+    <string name="elevation_column_label">Elev.</string>
+    <string name="azimuth_column_label">Azim.</string>
+    <string name="flags_aeu_column_label">Dati</string>
     <string name="gps_not_supported">Controlla le impostazioni di sistema - il dispositivo non sembra supportare la geolocalizzazione satellitare</string>
     <string name="install">Installa</string>
     <string name="no_thanks">No, grazie</string>
@@ -107,7 +107,7 @@ Link: https://bit.ly/gpstest-device-database</string>
     <string name="enable_gps_message">Geolocalizzazione disattivata. Attivarla?</string>
     <string name="enable_gps_positive_button">Attiva geolocalizzazione</string>
     <string name="enable_gps_negative_button">No</string>
-    <string name="gps_set_location_listener">Geolocalizzazione attivata. Intervallo = %1$ss, distanza minima = %2$sm</string>
+    <string name="gnss_running">Geolocalizzazione attivata. Intervallo = %1$ss, distanza minima = %2$sm</string>
     <string name="clear_assist_warning_title">Cancellare dati di assistenza?</string>
     <string name="clear_assist_warning">Alcuni dispositivi possono impiegare 24 ore per aggiornare in automatico i dati di assistenza. Se il tuo dispositivo non supporta l\'inserimento manuale, il sistema di geolocalizzazione tramite sistema satellitare di geolocalizzazione potrebbe non funzionare in nessuna applicazione finché l\'aggiornamento automatico non sarà completato. Vuoi procedere?</string>
     <string name="never_ask_again">Non chiedere più</string>

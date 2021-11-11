@@ -22,9 +22,8 @@
     <string name="app_name">GPSTest</string>
 
     <!-- Values and units display - Status -->
-    <string name="gps_latitude_value">%1$.7f\u00B0</string>
+    <string name="lat_or_lon">%1$.7f\u00B0</string>
     <string name="gps_lat_lon_dms_value">%1$d\u00B0 %2$d\' %3$d\"</string>
-    <string name="gps_longitude_value">%1$.7f\u00B0</string>
     <string name="gps_lat_dms_value">%1$s\t\u2007%2$02d\u00B0 %3$2d\' %4$05.2f\"</string>
     <string name="gps_lon_dms_value">%1$s\t%2$03d\u00B0 %3$2d\' %4$05.2f\"</string>
     <string name="gps_lat_ddm_value">%1$s\t\u2007%2$02d\u00B0 %3$06.3f</string>
@@ -61,12 +60,6 @@
     <string name="sky_legend_cn0_middle_high">36</string>
     <string name="sky_legend_cn0_high">45</string>
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
-    <string name="sky_legend_snr_low">0</string>
-    <string name="sky_legend_snr_low_middle">7</string>
-    <string name="sky_legend_snr_middle">15</string>
-    <string name="sky_legend_snr_middle_high">22</string>
-    <string name="sky_legend_snr_high">30</string>
-    <string name="sky_legend_snr_units">(dB)</string>
 
     <!-- Values and units display - Accuracy View -->
     <string name="benchmark_lat_long">%1$.7f</string>
@@ -96,7 +89,9 @@
     <string name="pref_key_auto_start_gps">auto_start_gps</string>
     <string name="pref_key_gps_min_time">gps_min_time</string>
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
-    <string name="pref_key_use_gnss_apis">use_gnss_apis</string>
+    <string name="pref_key_gnss_background">gnss_background</string>
+
+    pref_key_run_gnss_in_background
 
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>

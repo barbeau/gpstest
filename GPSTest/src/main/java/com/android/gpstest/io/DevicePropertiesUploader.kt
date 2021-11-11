@@ -63,7 +63,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
     }
 
     private fun buildUri(): Uri {
-        return Uri.parse(Application.get().resources.getString(R.string.device_properties_upload_url)).buildUpon()
+        return Uri.parse(Application.app.resources.getString(R.string.device_properties_upload_url)).buildUpon()
                 .appendQueryParameter(MANUFACTURER, inputData.getString(MANUFACTURER))
                 .appendQueryParameter(MODEL, inputData.getString(MODEL))
                 .appendQueryParameter(DEVICE, inputData.getString(DEVICE))
@@ -105,7 +105,7 @@ class DevicePropertiesUploader(private val inputData: Bundle) {
         if (result != null) {
             Log.e(TAG, result)
         }
-        Log.e(TAG, Application.get().getString(R.string.upload_failure))
+        Log.e(TAG, Application.app.getString(R.string.upload_failure))
     }
 
     companion object {

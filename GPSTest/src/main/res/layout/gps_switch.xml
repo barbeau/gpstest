@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
-** Copyright 2013, Sean J. Barbeau
+** Copyright 2013-2021, Sean J. Barbeau
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -25,5 +25,5 @@
         android:id="@+id/gps_switch"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 </LinearLayout>

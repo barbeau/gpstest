@@ -73,32 +73,32 @@
     <string name="mode_map">Mapa</string>
     <string name="mode_satellite">Satelit</string>
 
-    <string name="gps_latitude_label">Z. šířka:</string>
-    <string name="gps_longitude_label">Z. délka:</string>
-    <string name="gps_fix_time_label">Čas:</string>
-    <string name="gps_ttff_label">TTFF:</string>
-    <string name="gps_altitude_label">Výška (G):</string>
-    <string name="gps_altitude_msl_label">Výška (M):</string>
-    <string name="gps_accuracy_label">Přesn. (H):</string>
-    <string name="gps_hor_and_vert_accuracy_label">Přesn. (H/V):</string>
-    <string name="gps_speed_label">Rychlost:</string>
-    <string name="gps_speed_acc_label">Přesn. (R):</string>
-    <string name="gps_bearing_label">Poloha (S):</string>
-    <string name="gps_bearing_acc_label">Přesn. (S):</string>
-    <string name="gps_num_sats_label">Satelity:</string>
+    <string name="latitude_label">Z. šířka:</string>
+    <string name="longitude_label">Z. délka:</string>
+    <string name="fix_time_label">Čas:</string>
+    <string name="ttff_label">TTFF:</string>
+    <string name="altitude_label">Výška (G):</string>
+    <string name="altitude_msl_label">Výška (M):</string>
+    <string name="accuracy_label">Přesn. (H):</string>
+    <string name="hor_and_vert_accuracy_label">Přesn. (H/V):</string>
+    <string name="speed_label">Rychlost:</string>
+    <string name="speed_acc_label">Přesn. (R):</string>
+    <string name="bearing_label">Poloha (S):</string>
+    <string name="bearing_acc_label">Přesn. (S):</string>
+    <string name="num_sats_label">Satelity:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V DOP:</string>
 
-    <string name="gps_prn_column_label">ID</string>
+    <string name="id_column_label">ID</string>
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
-    <string name="gps_carrier_column_label">CF</string>
+    <string name="cf_column_label">CF</string>
     <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
-    <string name="gps_avg_cn0_label">Průměr</string>
-    <string name="gps_elevation_column_label">Elev</string>
-    <string name="gps_azimuth_column_label">Azim</string>
-    <string name="gps_flags_column_label">Stav</string>
+    <string name="avg_cn0_label">Průměr</string>
+    <string name="elevation_column_label">Elev</string>
+    <string name="azimuth_column_label">Azim</string>
+    <string name="flags_aeu_column_label">Stav</string>
     <string name="gps_not_supported">Zařízení pravděpodobně nepodporuje GNNS/GPS. Zkontrolujte nastavení systému.</string>
     <string name="install">Instalovat</string>
     <string name="no_thanks">NE, děkuji</string>
@@ -106,7 +106,7 @@
     <string name="enable_gps_message">GPS/GNSS je zakázáno. Povolit nyní?</string>
     <string name="enable_gps_positive_button">Povolit GPS/GNSS</string>
     <string name="enable_gps_negative_button">Ne</string>
-    <string name="gps_set_location_listener">Spustit GNSS s intervalem = %1$ss, min. vzdálenost = %2$sm</string>
+    <string name="gnss_running">Spustit GNSS s intervalem = %1$ss, min. vzdálenost = %2$sm</string>
     <string name="clear_assist_warning_title">Vymazat pomocné údaje?</string>
     <string name="clear_assist_warning">Některým zařízením může automatické obnovení asistenčních dat trvat až 24 hodin. Pokud Vaše zařízení nepodporuje ruční vložení, nemusí GNSS fungovat pro žádnou aplikaci, dokud nedokončí automatické obnovení. Jste si jistý?</string>
     <string name="never_ask_again">Znovu se nedotazovat</string>

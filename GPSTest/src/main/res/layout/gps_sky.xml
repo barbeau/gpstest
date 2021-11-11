@@ -57,8 +57,8 @@
             android:layout_marginEnd="@dimen/sky_margin"
             android:layout_below="@id/sky_view"/>
 
-        <include layout="@layout/gps_sky_shape_legend_card"
-            android:id="@+id/sky_legend_shape"
+        <include layout="@layout/gps_sky_legend_card"
+            android:id="@+id/sky_legend_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sky_cn0_indicator_card"

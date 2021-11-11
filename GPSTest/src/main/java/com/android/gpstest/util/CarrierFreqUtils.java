@@ -44,7 +44,7 @@ public class CarrierFreqUtils {
      * frequency in MHz, "unsupported" if CF aren't supported on this device, or "unknown" if no carrier frequency label is found
      */
     public static String getCarrierFrequencyLabel(SatelliteStatus status) {
-        if (!SatelliteUtils.isGnssCarrierFrequenciesSupported() || !status.getHasCarrierFrequency()) {
+        if (!SatelliteUtils.isCfSupported() || !status.getHasCarrierFrequency()) {
             return CF_UNSUPPORTED;
         }
         float cfMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
@@ -236,7 +236,7 @@ public class CarrierFreqUtils {
 
     /**
      * Returns the carrier frequency label (e.g. "L1") for the provided GNSS antenna's
-     * carrier frequency
+     * carrier frequency. TODO - combine this with getCarrierFrequencyLabel(SatelliteStatus status)?
      * @param gnssAntennaInfo
      * @return the carrier frequency label (e.g. "L1") for the provided GNSS antenna's
      * carrier frequency

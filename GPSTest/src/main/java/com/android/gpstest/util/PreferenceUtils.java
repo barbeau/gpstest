@@ -36,6 +36,8 @@ public class PreferenceUtils {
     public static final int CAPABILITY_SUPPORTED = 1;
     public static final int CAPABILITY_LOCATION_DISABLED = 2;
 
+    public static final String KEY_SERVICE_TRACKING_ENABLED = "tracking_foreground_location";
+
     /**
      * Gets the string description of a CAPABILITY_* constant
      * @param capability CAPABILITY_* constant defined in this class
@@ -44,15 +46,15 @@ public class PreferenceUtils {
     public static String getCapabilityDescription(int capability) {
         switch (capability) {
             case CAPABILITY_UNKNOWN:
-                return Application.get().getString(R.string.capability_value_unknown);
+                return Application.Companion.getApp().getString(R.string.capability_value_unknown);
             case CAPABILITY_NOT_SUPPORTED:
-                return Application.get().getString(R.string.capability_value_not_supported);
+                return Application.Companion.getApp().getString(R.string.capability_value_not_supported);
             case CAPABILITY_SUPPORTED:
-                return Application.get().getString(R.string.capability_value_supported);
+                return Application.Companion.getApp().getString(R.string.capability_value_supported);
             case CAPABILITY_LOCATION_DISABLED:
-                return Application.get().getString(R.string.capability_value_location_disabled);
+                return Application.Companion.getApp().getString(R.string.capability_value_location_disabled);
             default:
-                return Application.get().getString(R.string.capability_value_unknown);
+                return Application.Companion.getApp().getString(R.string.capability_value_unknown);
         }
     }
 
@@ -63,9 +65,9 @@ public class PreferenceUtils {
      */
     public static String getCapabilityDescription(boolean supported) {
         if (supported) {
-            return Application.get().getString(R.string.capability_value_supported);
+            return Application.Companion.getApp().getString(R.string.capability_value_supported);
         } else {
-            return Application.get().getString(R.string.capability_value_not_supported);
+            return Application.Companion.getApp().getString(R.string.capability_value_not_supported);
         }
     }
 
@@ -77,7 +79,7 @@ public class PreferenceUtils {
     }
 
     public static void saveString(String key, String value) {
-        saveString(Application.getPrefs(), key, value);
+        saveString(Application.Companion.getPrefs(), key, value);
     }
 
     @TargetApi(9)
@@ -88,11 +90,11 @@ public class PreferenceUtils {
     }
 
     public static void saveInt(String key, int value) {
-        saveInt(Application.getPrefs(), key, value);
+        saveInt(Application.Companion.getPrefs(), key, value);
     }
 
     public static int getInt(String key, int defaultValue) {
-        return Application.getPrefs().getInt(key, defaultValue);
+        return Application.Companion.getPrefs().getInt(key, defaultValue);
     }
 
     @TargetApi(9)
@@ -103,7 +105,7 @@ public class PreferenceUtils {
     }
 
     public static void saveLong(String key, long value) {
-        saveLong(Application.getPrefs(), key, value);
+        saveLong(Application.Companion.getPrefs(), key, value);
     }
 
     @TargetApi(9)
@@ -114,7 +116,7 @@ public class PreferenceUtils {
     }
 
     public static void saveBoolean(String key, boolean value) {
-        saveBoolean(Application.getPrefs(), key, value);
+        saveBoolean(Application.Companion.getPrefs(), key, value);
     }
 
     @TargetApi(9)
@@ -125,7 +127,7 @@ public class PreferenceUtils {
     }
 
     public static void saveFloat(String key, float value) {
-        saveFloat(Application.getPrefs(), key, value);
+        saveFloat(Application.Companion.getPrefs(), key, value);
     }
 
     @TargetApi(9)
@@ -137,7 +139,7 @@ public class PreferenceUtils {
 
     @TargetApi(9)
     public static void saveDouble(String key, double value) {
-        saveDouble(Application.getPrefs(), key, value);
+        saveDouble(Application.Companion.getPrefs(), key, value);
     }
 
     /**
@@ -149,22 +151,22 @@ public class PreferenceUtils {
      * @return a double from preferences, or the default value if it doesn't exist
      */
     public static Double getDouble(String key, double defaultValue) {
-        if (!Application.getPrefs().contains(key)) {
+        if (!Application.Companion.getPrefs().contains(key)) {
             return defaultValue;
         }
-        return Double.longBitsToDouble(Application.getPrefs().getLong(key, 0));
+        return Double.longBitsToDouble(Application.Companion.getPrefs().getLong(key, 0));
     }
 
     public static String getString(String key) {
-        return Application.getPrefs().getString(key, null);
+        return Application.Companion.getPrefs().getString(key, null);
     }
 
     public static long getLong(String key, long defaultValue) {
-        return Application.getPrefs().getLong(key, defaultValue);
+        return Application.Companion.getPrefs().getLong(key, defaultValue);
     }
 
     public static float getFloat(String key, float defaultValue) {
-        return Application.getPrefs().getFloat(key, defaultValue);
+        return Application.Companion.getPrefs().getFloat(key, defaultValue);
     }
 
     /**
@@ -173,8 +175,8 @@ public class PreferenceUtils {
      * @return the currently selected satellite sort order as the index in R.array.sort_sats
      */
     public static int getSatSortOrderFromPreferences() {
-        Resources r = Application.get().getResources();
-        SharedPreferences settings = Application.getPrefs();
+        Resources r = Application.Companion.getApp().getResources();
+        SharedPreferences settings = Application.Companion.getPrefs();
         String[] sortOptions = r.getStringArray(R.array.sort_sats);
         String sortPref = settings.getString(r.getString(
                 R.string.pref_key_default_sat_sort), sortOptions[0]);
@@ -190,9 +192,9 @@ public class PreferenceUtils {
      * Gets a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
      * @return a set of GnssTypes that should have their satellites displayed that has been saved to preferences. (All are shown if empty or null)
      */
-    public static Set<GnssType> getGnssFilter() {
+    public static Set<GnssType> gnssFilter() {
         Set<GnssType> filter = new LinkedHashSet<>();
-        Resources r = Application.get().getResources();
+        Resources r = Application.Companion.getApp().getResources();
         String filterString = getString(r.getString(R.string.pref_key_default_sat_filter));
         if (filterString == null) {
             return filter;
@@ -213,7 +215,7 @@ public class PreferenceUtils {
      * @param filter a set of GnssTypes that should have their satellites displayed. (All are shown if empty or null)
      */
     public static void saveGnssFilter(Set<GnssType> filter) {
-        Resources r = Application.get().getResources();
+        Resources r = Application.Companion.getApp().getResources();
         StringBuilder filterString = new StringBuilder();
         for (GnssType gnssType : filter) {
             filterString.append(gnssType.toString() + ",");
@@ -230,7 +232,23 @@ public class PreferenceUtils {
      * @param key
      */
     public static void remove(String key) {
-        SharedPreferences.Editor edit = Application.getPrefs().edit();
+        SharedPreferences.Editor edit = Application.Companion.getPrefs().edit();
         edit.remove(key).apply();
+    }
+
+    /**
+     * Returns true if service location tracking is active, and false if it is not
+     * @return true if service location tracking is active, and false if it is not
+     */
+    public static boolean isTrackingStarted() {
+        return Application.Companion.getPrefs().getBoolean(KEY_SERVICE_TRACKING_ENABLED, false);
+    }
+
+    /**
+     * Saves the provided value as the current service location tracking state
+     * @param value true if service location tracking is active, and false if it is not
+     */
+    public static void saveTrackingStarted(boolean value) {
+        saveBoolean(KEY_SERVICE_TRACKING_ENABLED, value);
     }
 }

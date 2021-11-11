@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/gps_avg_cn0_label"
+        android:text="@string/avg_cn0_label"
         android:textAlignment="center" />
     <TextView
         android:id="@+id/sky_legend_cn0_title"

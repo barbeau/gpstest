@@ -39,47 +39,23 @@
             android:title="@string/preferences_preferred_distance_units_title"
             android:entries="@array/preferred_distance_units_entries"
             android:entryValues="@array/preferred_distance_units_values"
-            android:defaultValue="1"></ListPreference>
+            android:defaultValue="1" />
         <ListPreference
             android:key="@string/pref_key_preferred_speed_units_v2"
             android:title="@string/preferences_preferred_speed_units_title"
             android:entries="@array/preferred_speed_units_entries"
             android:entryValues="@array/preferred_speed_units_values"
-            android:defaultValue="1"></ListPreference>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/pref_map_category_title"
-        android:key="@string/pref_key_map_category">
-        <ListPreference
-            android:key="@string/pref_key_map_type"
-            android:title="@string/pref_map_type_title"
-            android:summary="@string/pref_map_type_summary"
-            android:dialogTitle="@string/pref_map_type_dialog_title"
-            android:entries="@array/map_type_entries"
-            android:entryValues="@array/map_type_values"
             android:defaultValue="1" />
-        <CheckBoxPreference
-            android:key="@string/pref_key_rotate_map_with_compass"
-            android:title="@string/pref_rotate_map_with_compass_title"
-            android:summary="@string/pref_rotate_map_with_compass_summary"
-            android:defaultValue="true" />
-        <CheckBoxPreference
-            android:key="@string/pref_key_tilt_map_with_sensors"
-            android:title="@string/pref_tilt_map_with_sensors_title"
-            android:summary="@string/pref_tilt_map_with_sensors_summary"
-            android:dependency="@string/pref_key_rotate_map_with_compass"
-            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_gps_category_title"
         android:key="@string/pref_key_gps_category">
         <CheckBoxPreference
-            android:key="@string/pref_key_auto_start_gps"
-            android:title="@string/pref_auto_start_gps_title"
-            android:summary="@string/pref_auto_start_gps_summary"
-            android:defaultValue="true" />
+            android:key="@string/pref_key_gnss_background"
+            android:title="@string/pref_gnss_background_title"
+            android:summary="@string/pref_gnss_background_summary"
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="@string/pref_key_force_full_gnss_measurements"
             android:title="@string/pref_force_full_gnss_measurements_title"
@@ -98,13 +74,14 @@
             android:dialogTitle="@string/pref_gps_min_distance_dialog_title"
             android:defaultValue="@string/pref_gps_min_distance_default_meters" />
         <CheckBoxPreference
-            android:key="@string/pref_key_use_gnss_apis"
-            android:title="@string/pref_use_gnss_apis_title"
-            android:summary="@string/pref_use_gnss_apis_summary"
+            android:key="@string/pref_key_auto_start_gps"
+            android:title="@string/pref_auto_start_gps_title"
+            android:summary="@string/pref_auto_start_gps_summary"
             android:defaultValue="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_output_category_title">
+    <PreferenceCategory
+        android:title="@string/pref_output_category_title">
         <PreferenceScreen
             android:title="@string/pref_output_category_title"
             android:summary="@string/pref_output_category_summary">
@@ -169,5 +146,29 @@
                     android:defaultValue="false" />
             </PreferenceCategory>
         </PreferenceScreen>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_map_category_title"
+        android:key="@string/pref_key_map_category">
+        <ListPreference
+            android:key="@string/pref_key_map_type"
+            android:title="@string/pref_map_type_title"
+            android:summary="@string/pref_map_type_summary"
+            android:dialogTitle="@string/pref_map_type_dialog_title"
+            android:entries="@array/map_type_entries"
+            android:entryValues="@array/map_type_values"
+            android:defaultValue="1" />
+        <CheckBoxPreference
+            android:key="@string/pref_key_rotate_map_with_compass"
+            android:title="@string/pref_rotate_map_with_compass_title"
+            android:summary="@string/pref_rotate_map_with_compass_summary"
+            android:defaultValue="true" />
+        <CheckBoxPreference
+            android:key="@string/pref_key_tilt_map_with_sensors"
+            android:title="@string/pref_tilt_map_with_sensors_title"
+            android:summary="@string/pref_tilt_map_with_sensors_summary"
+            android:dependency="@string/pref_key_rotate_map_with_compass"
+            android:defaultValue="true" />
     </PreferenceCategory>
 </PreferenceScreen>
