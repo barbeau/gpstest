@@ -82,7 +82,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 satelliteMetadata,
                 fixState)
             if (gnssFilter().isNotEmpty()) {
-                Filter(allStatuses, satelliteMetadata)
+                Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter() }
             }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
@@ -91,7 +91,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
 }
 
 @Composable
-fun Filter(allStatuses: List<SatelliteStatus>, satelliteMetadata: SatelliteMetadata) {
+fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: () -> Unit) {
     Row (
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
@@ -104,7 +104,7 @@ fun Filter(allStatuses: List<SatelliteStatus>, satelliteMetadata: SatelliteMetad
             text = stringResource(
                 id = R.string.filter_signal_text,
                 satelliteMetadata.numSignalsTotal,
-                allStatuses.size
+                totalNumSignals
             ),
             fontSize = 13.sp,
             fontStyle = FontStyle.Italic,
@@ -126,8 +126,7 @@ fun Filter(allStatuses: List<SatelliteStatus>, satelliteMetadata: SatelliteMetad
             modifier = Modifier
                 .padding(start = 2.dp)
                 .clickable {
-                    // Save an empty set to preferences to show all satellites
-                    PreferenceUtils.saveGnssFilter(emptySet())
+                    onClick()
                 }
         )
     }

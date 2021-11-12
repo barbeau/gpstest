@@ -68,6 +68,10 @@ class SignalInfoViewModel @Inject constructor(
     private val _allStatuses = MutableLiveData<List<SatelliteStatus>>()
     val allStatuses: LiveData<List<SatelliteStatus>> = _allStatuses
 
+    // Statuses AFTER filtering
+    private val _filteredStatuses = MutableLiveData<List<SatelliteStatus>>()
+    val filteredStatuses: LiveData<List<SatelliteStatus>> = _filteredStatuses
+
     // GNSS Statuses AFTER applying filter
     private val _filteredGnssStatuses = MutableLiveData<List<SatelliteStatus>>()
     val filteredGnssStatuses: LiveData<List<SatelliteStatus>> = _filteredGnssStatuses
@@ -215,6 +219,7 @@ class SignalInfoViewModel @Inject constructor(
                 it.gnssType != GnssType.SBAS
             }
 
+        _filteredStatuses.value = gnssStatus + sbasStatus
         setFilteredAndSortedStatuses(sort(gnssStatus, true), sort(sbasStatus, false))
     }
 

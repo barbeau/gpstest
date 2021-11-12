@@ -31,7 +31,7 @@
               android:layout_width="fill_parent"
               android:layout_height="match_parent"
               android:layout_weight="1"/>
-    <fragment class="com.android.gpstest.ui.SkyFragment"
+    <fragment class="com.android.gpstest.ui.sky.SkyFragment"
               android:id="@+id/gps_sky_fragment"
               android:layout_width="fill_parent"
               android:layout_height="match_parent"

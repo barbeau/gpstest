@@ -1,5 +1,8 @@
 package com.android.gpstest.view;
 
+import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static java.util.Collections.emptyList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,7 +10,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.location.GnssStatus;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,8 +20,10 @@ import androidx.core.content.ContextCompat;
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
 import com.android.gpstest.model.GnssType;
-import com.android.gpstest.util.SatelliteUtils;
+import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.UIUtils;
+
+import java.util.List;
 
 /**
 * View that shows satellite positions on a circle representing the sky
@@ -55,22 +59,11 @@ public class GpsSkyView extends View {
 
     private boolean mStarted;
 
-    private float[] cn0s;
-    private float[] elevs;
-    private float[] azims;
-
     private float mCn0UsedAvg = 0.0f;
 
     private float mCn0InViewAvg = 0.0f;
 
-    private boolean[] mHasEphemeris;
-    private boolean[] mHasAlmanac;
-    private boolean[] mUsedInFix;
-
-    private int[] mPrns;
-    private int[] mConstellationType;
-
-    private int mSvCount;
+    private List<SatelliteStatus> statuses = emptyList();
 
     public GpsSkyView(Context context) {
         super(context);
@@ -190,55 +183,28 @@ public class GpsSkyView extends View {
 
     public void setStopped() {
         mStarted = false;
-        mSvCount = 0;
         invalidate();
     }
 
-    public synchronized void setGnssStatus(GnssStatus status) {
-        if (mPrns == null) {
-            /*
-              We need to allocate arrays big enough so we don't overflow them.  Per
-              https://developer.android.com/reference/android/location/GnssStatus.html#getSvid(int)
-              255 should be enough to contain all known satellites world-wide.
-             */
-            final int MAX_LENGTH = 255;
-            mPrns = new int[MAX_LENGTH];
-            cn0s = new float[MAX_LENGTH];
-            elevs = new float[MAX_LENGTH];
-            azims = new float[MAX_LENGTH];
-            mConstellationType = new int[MAX_LENGTH];
-            mHasEphemeris = new boolean[MAX_LENGTH];
-            mHasAlmanac = new boolean[MAX_LENGTH];
-            mUsedInFix = new boolean[MAX_LENGTH];
-        }
+    public synchronized void setStatus(List<SatelliteStatus> statuses) {
+        this.statuses = statuses;
 
-        int length = status.getSatelliteCount();
-        mSvCount = 0;
         int svInViewCount = 0;
         int svUsedCount = 0;
         float cn0InViewSum = 0.0f;
         float cn0UsedSum = 0.0f;
         mCn0InViewAvg = 0.0f;
         mCn0UsedAvg = 0.0f;
-        while (mSvCount < length) {
-            cn0s[mSvCount] = status.getCn0DbHz(mSvCount);  // Store C/N0 values (see #65)
-            elevs[mSvCount] = status.getElevationDegrees(mSvCount);
-            azims[mSvCount] = status.getAzimuthDegrees(mSvCount);
-            mPrns[mSvCount] = status.getSvid(mSvCount);
-            mConstellationType[mSvCount] = status.getConstellationType(mSvCount);
-            mHasEphemeris[mSvCount] = status.hasEphemerisData(mSvCount);
-            mHasAlmanac[mSvCount] = status.hasAlmanacData(mSvCount);
-            mUsedInFix[mSvCount] = status.usedInFix(mSvCount);
+        for (SatelliteStatus s : statuses) {
             // If satellite is in view, add signal to calculate avg
-            if (status.getCn0DbHz(mSvCount) != 0.0f) {
+            if (s.getCn0DbHz() != 0.0f) {
                 svInViewCount++;
-                cn0InViewSum = cn0InViewSum + status.getCn0DbHz(mSvCount);
+                cn0InViewSum = cn0InViewSum + s.getCn0DbHz();
             }
-            if (status.usedInFix(mSvCount)) {
+            if (s.getUsedInFix()) {
                 svUsedCount++;
-                cn0UsedSum = cn0UsedSum + status.getCn0DbHz(mSvCount);
+                cn0UsedSum = cn0UsedSum + s.getCn0DbHz();
             }
-            mSvCount++;
         }
 
         if (svInViewCount > 0) {
@@ -322,7 +288,7 @@ public class GpsSkyView extends View {
     }
 
     private void drawSatellite(Canvas c, int s, float elev, float azim, float cn0, int prn,
-            int constellationType, boolean usedInFix) {
+            GnssType gnssType, boolean usedInFix) {
         double radius, angle;
         float x, y;
         // Place PRN text slightly below drawn satellite
@@ -353,8 +319,6 @@ public class GpsSkyView extends View {
         y = (float) ((s / 2) - (radius * Math.cos(angle)));
 
         // Change shape based on satellite gnssType
-        GnssType gnssType = SatelliteUtils.getGnssConstellationType(constellationType);
-
         switch (gnssType) {
             case NAVSTAR:
                 c.drawCircle(x, y, SAT_RADIUS, fillPaint);
@@ -532,20 +496,21 @@ public class GpsSkyView extends View {
     protected void onDraw(Canvas canvas) {
         int minScreenDimen;
 
-        minScreenDimen = (mWidth < mHeight) ? mWidth : mHeight;
+        minScreenDimen = Math.min(mWidth, mHeight);
 
         drawHorizon(canvas, minScreenDimen);
 
         drawNorthIndicator(canvas, minScreenDimen);
 
-        if (elevs != null) {
-            int numSats = mSvCount;
-
-            for (int i = 0; i < numSats; i++) {
-                if (elevs[i] != 0.0f || azims[i] != 0.0f) {
-                    drawSatellite(canvas, minScreenDimen, elevs[i], azims[i], cn0s[i],
-                            mPrns[i], mConstellationType[i], mUsedInFix[i]);
-                }
+        for (SatelliteStatus s : statuses) {
+            if (s.getElevationDegrees() != NO_DATA && s.getAzimuthDegrees() != NO_DATA) {
+                drawSatellite(canvas, minScreenDimen,
+                        s.getElevationDegrees(),
+                        s.getAzimuthDegrees(),
+                        s.getCn0DbHz(),
+                        s.getSvid(),
+                        s.getGnssType(),
+                        s.getUsedInFix());
             }
         }
     }

@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:clipChildren="false">
@@ -40,11 +40,21 @@
             tools:visibility="visible"
             android:contentDescription="@string/lock"/>
 
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/filter_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="5dp"/>
+
         <com.android.gpstest.view.GpsSkyView
             android:id="@+id/sky_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:layout_below="@id/filter_view"/>
 
         <include layout="@layout/gps_sky_cn0_indicator_card"
             android:id="@+id/sky_cn0_indicator_card"

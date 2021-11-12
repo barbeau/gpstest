@@ -15,6 +15,8 @@
  */
 package com.android.gpstest.util;
 
+import static java.util.Collections.emptySet;
+
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -225,6 +227,13 @@ public class PreferenceUtils {
             filterString.deleteCharAt(filterString.length() - 1);
         }
         saveString(r.getString(R.string.pref_key_default_sat_filter), filterString.toString());
+    }
+
+    /**
+     * Clears any active GNSS filter so all satellites are displayed
+     */
+    public static void clearGnssFilter() {
+        saveGnssFilter(emptySet());
     }
 
     /**
