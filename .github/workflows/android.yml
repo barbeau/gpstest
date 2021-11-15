@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         api-level: [24, 29]
+        java: [11, 11.0.3]
         target: [default, google_apis]
     steps:
     - name: checkout
@@ -25,8 +26,8 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v2
       with:
-        java-version: 11
-        distribution: 'adopt'
+        java-version: ${{ matrix.java }}
+        distribution: 'zulu'
 
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
