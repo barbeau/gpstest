@@ -27,7 +27,7 @@ import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.core.content.ContextCompat
-import com.android.gpstest.util.PreferenceUtil
+import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.hasPermission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -136,13 +136,19 @@ class SharedGnssStatusManager constructor(
 }
 
 private fun checkHaveFix(location: Location): FixState {
-    return if (SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos >
-        TimeUnit.MILLISECONDS.toNanos(PreferenceUtil.minTimeMillis() * 2)
-    ) {
-        // We lost the GNSS fix for two requested update intervals - notify
+    val threshold = if (minTimeMillis() >= 1000L) {
+        // Use two requested update intervals (it missed two updates)
+        TimeUnit.MILLISECONDS.toNanos(minTimeMillis() * 2)
+    } else {
+        // Most Android devices can't refresh faster than 1Hz, so use 1.5 seconds - see #544
+        TimeUnit.MILLISECONDS.toNanos(1500)
+    }
+    val nanosSinceFix = SystemClock.elapsedRealtimeNanos() - location.elapsedRealtimeNanos
+    return if (nanosSinceFix > threshold) {
+        // We lost the GNSS fix
         FixState.NotAcquired
     } else {
-        // We have a GNSS fix - notify
+        // We have a GNSS fix
         FixState.Acquired
     }
 }
