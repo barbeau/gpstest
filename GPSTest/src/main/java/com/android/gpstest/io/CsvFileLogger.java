@@ -37,12 +37,12 @@ import androidx.core.content.ContextCompat;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.util.FormatUtils;
 import com.android.gpstest.util.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A GNSS logger to store information to a CSV file. Originally from https://github.com/google/gps-measurement-tools/tree/master/GNSSLogger,
@@ -84,6 +84,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
      */
     @Override
     void writeFileHeader(BufferedWriter writer, String filePath) {
+        // TODO - update header to new field formats
         try {
             writer.write(COMMENT_START);
             writer.newLine();
@@ -134,15 +135,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.newLine();
             writer.write(COMMENT_START);
             writer.write(
-                    "  Raw,ElapsedRealtimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,"
-                            + "BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,"
-                            + "HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,"
-                            + "ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,"
-                            + "PseudorangeRateUncertaintyMetersPerSecond,"
-                            + "AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,"
-                            + "AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,"
-                            + "CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,"
-                            + "ConstellationType,AgcDb,CarrierFrequencyHz");
+                    "  Raw,utcTimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos");
             writer.newLine();
             writer.write(COMMENT_START);
             writer.newLine();
@@ -151,7 +144,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.newLine();
             writer.write(COMMENT_START);
             writer.write(
-                    "  Fix,Provider,Latitude,Longitude,Altitude,Speed,Accuracy,(UTC)TimeInMs");
+                    "  Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters");
             writer.newLine();
             writer.write(COMMENT_START);
             writer.newLine();
@@ -188,17 +181,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             if (fileWriter == null) {
                 return;
             }
-            String locationStream =
-                    String.format(
-                            Locale.US,
-                            "Fix,%s,%f,%f,%f,%f,%f,%d",
-                            location.getProvider(),
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            location.getAltitude(),
-                            location.getSpeed(),
-                            location.getAccuracy(),
-                            location.getTime());
+            String locationStream = FormatUtils.toLog(location);
             try {
                 fileWriter.write(locationStream);
                 fileWriter.newLine();
@@ -208,7 +191,6 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
         if (fileWriter == null) {
             return;
@@ -223,7 +205,6 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized void onGnssNavigationMessageReceived(GnssNavigationMessage navigationMessage) {
         if (fileWriter == null) {
             return;
@@ -267,55 +248,15 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void writeGnssMeasurementToFile(GnssClock clock, GnssMeasurement measurement)
             throws IOException {
-        String clockStream =
-                String.format(
-                        "Raw,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
+        fileWriter.write(
+                FormatUtils.toLog(
                         SystemClock.elapsedRealtime(),
-                        clock.getTimeNanos(),
-                        clock.hasLeapSecond() ? clock.getLeapSecond() : "",
-                        clock.hasTimeUncertaintyNanos() ? clock.getTimeUncertaintyNanos() : "",
-                        clock.getFullBiasNanos(),
-                        clock.hasBiasNanos() ? clock.getBiasNanos() : "",
-                        clock.hasBiasUncertaintyNanos() ? clock.getBiasUncertaintyNanos() : "",
-                        clock.hasDriftNanosPerSecond() ? clock.getDriftNanosPerSecond() : "",
-                        clock.hasDriftUncertaintyNanosPerSecond()
-                                ? clock.getDriftUncertaintyNanosPerSecond()
-                                : "",
-                        clock.getHardwareClockDiscontinuityCount() + ",");
-        fileWriter.write(clockStream);
-
-        String measurementStream =
-                String.format(
-                        "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                        measurement.getSvid(),
-                        measurement.getTimeOffsetNanos(),
-                        measurement.getState(),
-                        measurement.getReceivedSvTimeNanos(),
-                        measurement.getReceivedSvTimeUncertaintyNanos(),
-                        measurement.getCn0DbHz(),
-                        measurement.getPseudorangeRateMetersPerSecond(),
-                        measurement.getPseudorangeRateUncertaintyMetersPerSecond(),
-                        measurement.getAccumulatedDeltaRangeState(),
-                        measurement.getAccumulatedDeltaRangeMeters(),
-                        measurement.getAccumulatedDeltaRangeUncertaintyMeters(),
-                        measurement.hasCarrierFrequencyHz() ? measurement.getCarrierFrequencyHz() : "",
-                        measurement.hasCarrierCycles() ? measurement.getCarrierCycles() : "",
-                        measurement.hasCarrierPhase() ? measurement.getCarrierPhase() : "",
-                        measurement.hasCarrierPhaseUncertainty()
-                                ? measurement.getCarrierPhaseUncertainty()
-                                : "",
-                        measurement.getMultipathIndicator(),
-                        measurement.hasSnrInDb() ? measurement.getSnrInDb() : "",
-                        measurement.getConstellationType(),
-                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                                && measurement.hasAutomaticGainControlLevelDb()
-                                ? measurement.getAutomaticGainControlLevelDb()
-                                : "",
-                        measurement.hasCarrierFrequencyHz() ? measurement.getCarrierFrequencyHz() : "");
-        fileWriter.write(measurementStream);
+                        SystemClock.elapsedRealtimeNanos(),
+                        clock,
+                        measurement)
+        );
         fileWriter.newLine();
     }
 

@@ -1,11 +1,16 @@
 package com.android.gpstest.util
 
+import android.location.GnssClock
+import android.location.GnssMeasurement
 import android.location.Location
-import com.android.gpstest.Application
+import android.os.Build
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.SatelliteGroup
+import com.android.gpstest.util.SatelliteUtil.isBearingAccuracySupported
+import com.android.gpstest.util.SatelliteUtil.isSpeedAccuracySupported
+import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
 import java.util.concurrent.TimeUnit
 
 /**
@@ -18,12 +23,12 @@ internal object FormatUtils {
         when (PreferenceUtil.coordinateFormat()) {
             "dd" -> {
                 // Decimal degrees
-                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+                return app.getString(R.string.lat_or_lon, latOrLong)
             }
             "dms" -> {
                 // Degrees minutes seconds
                 return UIUtils.getDMSFromLocation(
-                    Application.app,
+                    app,
                     latOrLong,
                     coordinateType
                 )
@@ -31,14 +36,14 @@ internal object FormatUtils {
             "ddm" -> {
                 // Degrees decimal minutes
                 return UIUtils.getDDMFromLocation(
-                    Application.app,
+                    app,
                     latOrLong,
                     coordinateType
                 )
             }
             else -> {
                 // Decimal degrees
-                return Application.app.getString(R.string.lat_or_lon, latOrLong)
+                return app.getString(R.string.lat_or_lon, latOrLong)
             }
         }
     }
@@ -47,11 +52,11 @@ internal object FormatUtils {
         if (location.hasAltitude()) {
             val text = when {
                 PreferenceUtil.distanceUnits().equals(PreferenceUtil.METERS, ignoreCase = true) -> {
-                    Application.app.getString(R.string.gps_altitude_value_meters, location.altitude)
+                    app.getString(R.string.gps_altitude_value_meters, location.altitude)
                 }
                 else -> {
                     // Feet
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_altitude_value_feet,
                         UIUtils.toFeet(location.altitude)
                     )
@@ -68,18 +73,18 @@ internal object FormatUtils {
             val text = when {
                 PreferenceUtil.speedUnits()
                     .equals(PreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
-                    Application.app.getString(R.string.gps_speed_value_meters_sec, location.speed)
+                    app.getString(R.string.gps_speed_value_meters_sec, location.speed)
                 }
                 PreferenceUtil.speedUnits()
                     .equals(PreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_speed_value_kilometers_hour,
                         UIUtils.toKilometersPerHour(location.speed)
                     )
                 }
                 else -> {
                     // Miles per hour
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_speed_value_miles_hour,
                         UIUtils.toMilesPerHour(location.speed)
                     )
@@ -106,16 +111,16 @@ internal object FormatUtils {
     }
 
     fun formatAccuracy(location: Location): String {
-        if (SatelliteUtils.isVerticalAccuracySupported(location)) {
+        if (location.isVerticalAccuracySupported()) {
             if (PreferenceUtil.distanceUnits().equals(PreferenceUtil.METERS, ignoreCase = true)) {
-                return Application.app.getString(
+                return app.getString(
                     R.string.gps_hor_and_vert_accuracy_value_meters,
                         location.accuracy,
                         location.verticalAccuracyMeters
                     )
             } else {
                 // Feet
-                return Application.app.getString(
+                return app.getString(
                     R.string.gps_hor_and_vert_accuracy_value_feet,
                     UIUtils.toFeet(location.accuracy.toDouble()),
                     UIUtils.toFeet(
@@ -127,12 +132,12 @@ internal object FormatUtils {
             if (location.hasAccuracy()) {
                 return if (PreferenceUtil.distanceUnits()
                         .equals(PreferenceUtil.METERS, ignoreCase = true)) {
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_accuracy_value_meters, location.accuracy
                     )
                 } else {
                     // Feet
-                    Application.app.getString(
+                    app.getString(
                         R.string.gps_accuracy_value_feet,
                         UIUtils.toFeet(location.accuracy.toDouble())
                     )
@@ -147,11 +152,11 @@ internal object FormatUtils {
 
         return if (PreferenceUtil.distanceUnits()
                 .equals(PreferenceUtil.METERS, ignoreCase = true)) {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_altitude_msl_value_meters,
                 altitudeMsl)
         } else {
-            Application.app.getString(
+            app.getString(
                 R.string.gps_altitude_msl_value_feet,
                 UIUtils.toFeet(altitudeMsl)
             )
@@ -159,25 +164,25 @@ internal object FormatUtils {
     }
 
     fun formatSpeedAccuracy(location: Location): String {
-        if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasSpeedAccuracy()) {
+        if (location.isSpeedAccuracySupported()) {
             when {
                 PreferenceUtil.speedUnits()
                     .equals(PreferenceUtil.METERS_PER_SECOND, ignoreCase = true) -> {
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_meters_sec,
                         location.speedAccuracyMetersPerSecond
                     )
                 }
                 PreferenceUtil.speedUnits()
                     .equals(PreferenceUtil.KILOMETERS_PER_HOUR, ignoreCase = true) -> {
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_km_hour,
                         UIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
                     )
                 }
                 else -> {
                     // Miles per hour
-                    return Application.app.getString(
+                    return app.getString(
                         R.string.gps_speed_acc_value_miles_hour,
                         UIUtils.toMilesPerHour(location.speedAccuracyMetersPerSecond)
                     )
@@ -192,7 +197,7 @@ internal object FormatUtils {
     }
 
     fun formatBearingAccuracy(location: Location): String {
-        return if (SatelliteUtils.isSpeedAndBearingAccuracySupported() && location.hasBearingAccuracy()) {
+        return if (location.isBearingAccuracySupported()) {
             app.getString(
                 R.string.gps_bearing_acc_value,
                 location.bearingAccuracyDegrees
@@ -218,5 +223,76 @@ internal object FormatUtils {
             if (meta.supportedGnssCfs.isNotEmpty())
                 " (" + IOUtils.trimEnds(meta.supportedGnssCfs.sorted().toString()) + ")"
             else ""
+    }
+
+    /**
+     * Returns location data formatted to CSV for logging in the following format:
+     * Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+     */
+    @JvmStatic
+    fun Location.toLog(): String {
+        return "Fix,$provider,$latitude,$longitude,$altitude,$speed,$accuracy,$bearing,$time," +
+                "${if (isSpeedAccuracySupported()) speedAccuracyMetersPerSecond else ""}," +
+                "${if (isBearingAccuracySupported()) bearingAccuracyDegrees else ""}," +
+                "$elapsedRealtimeNanos," +
+                "${if (isVerticalAccuracySupported()) verticalAccuracyMeters else ""}"
+    }
+
+    /**
+     * Converts the provided SystemClock.elapsedRealtime() as [elapsedRealtime] and
+     * [elapsedRealtimeNanos] from SystemClock.elapsedRealtimeNanos(), [clock] and
+     * [measurement] to a CSV format:
+     * Raw,utcTimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
+     */
+    @JvmStatic
+    fun toLog(elapsedRealtime: Long, elapsedRealtimeNanos: Long, clock: GnssClock, measurement: GnssMeasurement): String {
+        return clock.toLog(elapsedRealtime) + "," + measurement.toLog(elapsedRealtimeNanos)
+    }
+
+    /**
+     * Returns the following format:
+     * Raw,utcTimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,HardwareClockDiscontinuityCount
+     */
+    @JvmStatic
+    private fun GnssClock.toLog(elapsedRealtime: Long): String {
+        return "Raw,$elapsedRealtime,$timeNanos," +
+                "${if (hasLeapSecond()) leapSecond else ""}," +
+                "${if (hasTimeUncertaintyNanos()) timeUncertaintyNanos else ""}," +
+                "$fullBiasNanos" +
+                "${if (hasBiasNanos()) biasNanos else ""}," +
+                "${if (hasBiasUncertaintyNanos()) biasUncertaintyNanos else ""}," +
+                "${if (hasDriftNanosPerSecond()) driftNanosPerSecond else ""}," +
+                "${ if (hasDriftUncertaintyNanosPerSecond()) driftUncertaintyNanosPerSecond else ""}," +
+                "$hardwareClockDiscontinuityCount"
+    }
+
+    /**
+     * Returns the following format:
+     * Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
+     */
+    @JvmStatic
+    private fun GnssMeasurement.toLog(elapsedRealtimeNanos: Long): String {
+        // Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,
+        return "$svid,$timeOffsetNanos,$state,$receivedSvTimeNanos,$receivedSvTimeUncertaintyNanos," +
+                "$cn0DbHz,$pseudorangeRateMetersPerSecond,$pseudorangeRateUncertaintyMetersPerSecond," +
+                "$accumulatedDeltaRangeState,$accumulatedDeltaRangeMeters," +
+                "$accumulatedDeltaRangeUncertaintyMeters," +
+                // CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,
+                "${if (hasCarrierFrequencyHz()) carrierFrequencyHz else ""}," +
+                "${if (hasCarrierCycles()) carrierCycles else ""}," +
+                "${if (hasCarrierPhase()) carrierPhase else ""}," +
+                "${if (hasCarrierPhaseUncertainty()) carrierPhaseUncertainty else ""}," +
+                "$multipathIndicator," +
+                "${if (hasSnrInDb()) snrInDb else ""}," +
+                "$constellationType," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasAutomaticGainControlLevelDb()) automaticGainControlLevelDb else ""}," +
+                // BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasBasebandCn0DbHz()) basebandCn0DbHz else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasNanos()) fullInterSignalBiasNanos else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasUncertaintyNanos()) fullInterSignalBiasUncertaintyNanos else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasNanos()) satelliteInterSignalBiasNanos else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasUncertaintyNanos()) satelliteInterSignalBiasUncertaintyNanos else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && hasCodeType()) codeType else ""}," +
+                "$elapsedRealtimeNanos"
     }
 }

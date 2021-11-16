@@ -16,6 +16,8 @@
 package com.android.gpstest.util
 
 import android.location.GnssStatus
+import android.location.Location
+import android.os.Build
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
@@ -192,5 +194,34 @@ internal object SatelliteUtil {
                 isNonPrimaryCarrierFreqInUse
             )
         )
+    }
+
+    /**
+     * Returns true if the speed accuracy is supported for this location, false if it does not
+     *
+     * @return true if the speed accuracy is supported for this location, false if it does not
+     */
+    fun Location.isSpeedAccuracySupported(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasSpeedAccuracy()
+    }
+
+    /**
+     * Returns true if the bearing accuracy is supported for this location, false if it does not
+     *
+     * @return true if the bearing accuracy is supported for this location, false if it does not
+     */
+    fun Location.isBearingAccuracySupported(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasBearingAccuracy()
+    }
+
+    /**
+     * Returns true if the platform supports providing vertical accuracy values and this location
+     * has vertical accuracy information, false if it does not
+     *
+     * @return true if the platform supports providing vertical accuracy values and this location
+     * has vertical accuracy information, false if it does not
+     */
+    fun Location.isVerticalAccuracySupported(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasVerticalAccuracy()
     }
 }

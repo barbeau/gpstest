@@ -61,6 +61,7 @@ import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.util.PreferenceUtil.coordinateFormat
 import com.android.gpstest.util.PreferenceUtil.shareIncludeAltitude
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
+import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
 import java.text.SimpleDateFormat
 
 @Preview
@@ -91,9 +92,10 @@ fun previewLocation(): Location {
         altitude = 13.5
         speed = 21.5f
         bearing = 240f
-        if (SatelliteUtils.isSpeedAndBearingAccuracySupported()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             bearingAccuracyDegrees = 5.6f
             speedAccuracyMetersPerSecond = 6.1f
+            verticalAccuracyMeters = 92.5f
         }
     }
     return l
@@ -365,7 +367,7 @@ fun LabelColumn2(location: Location) {
     ) {
         LocationLabel(R.string.fix_time_label)
         LocationLabel(R.string.ttff_label)
-        LocationLabel(if (SatelliteUtils.isVerticalAccuracySupported(location)) R.string.hor_and_vert_accuracy_label else R.string.accuracy_label)
+        LocationLabel(if (location.isVerticalAccuracySupported()) R.string.hor_and_vert_accuracy_label else R.string.accuracy_label)
         LocationLabel(R.string.num_sats_label)
         LocationLabel(R.string.bearing_label)
         LocationLabel(R.string.bearing_acc_label)

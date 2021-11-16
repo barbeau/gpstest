@@ -30,7 +30,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.GnssMeasurement;
 import android.location.GnssStatus;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 
@@ -174,26 +173,6 @@ public class SatelliteUtils {
      * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
      */
     public static boolean isCfSupported() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
-    }
-
-    /**
-     * Returns true if the platform supports providing vertical accuracy values and this location
-     * has vertical accuracy information, false if it does not
-     *
-     * @return true if the platform supports providing vertical accuracy values and this location
-     *  has vertical accuracy information, false if it does not
-     */
-    public static boolean isVerticalAccuracySupported(Location location) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && location.hasVerticalAccuracy();
-    }
-
-    /**
-     * Returns true if the platform supports providing speed and bearing accuracy values, false if it does not
-     *
-     * @return true if the platform supports providing speed and bearing accuracy values, false if it does not
-     */
-    public static boolean isSpeedAndBearingAccuracySupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 
