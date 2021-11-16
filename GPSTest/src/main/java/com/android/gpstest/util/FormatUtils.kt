@@ -1,9 +1,11 @@
 package com.android.gpstest.util
 
+import android.location.GnssAntennaInfo
 import android.location.GnssClock
 import android.location.GnssMeasurement
 import android.location.Location
 import android.os.Build
+import androidx.annotation.RequiresApi
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
@@ -294,5 +296,28 @@ internal object FormatUtils {
                 "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasUncertaintyNanos()) satelliteInterSignalBiasUncertaintyNanos else ""}," +
                 "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && hasCodeType()) codeType else ""}," +
                 "$elapsedRealtimeNanos"
+    }
+
+    /**
+     * Returns a CSV representation of the data as:
+     * GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @JvmStatic
+    fun GnssAntennaInfo.toLog(): String {
+        return "GnssAntennaInfo,$carrierFrequencyMHz,${phaseCenterOffset.xOffsetMm}," +
+                "${phaseCenterOffset.xOffsetUncertaintyMm},${phaseCenterOffset.yOffsetMm}," +
+                "${phaseCenterOffset.yOffsetUncertaintyMm},${phaseCenterOffset.zOffsetMm}," +
+                "${phaseCenterOffset.zOffsetUncertaintyMm},${
+            IOUtils.serialize(
+                phaseCenterVariationCorrections!!.correctionsArray
+            )
+        },${IOUtils.serialize(phaseCenterVariationCorrections!!.correctionUncertaintiesArray)}," +
+                "${phaseCenterVariationCorrections!!.deltaPhi},${phaseCenterVariationCorrections!!.deltaTheta},${
+            IOUtils.serialize(
+                signalGainCorrections!!.correctionsArray
+            )
+        },${IOUtils.serialize(signalGainCorrections!!.correctionUncertaintiesArray)}," +
+                "${signalGainCorrections!!.deltaPhi},${signalGainCorrections!!.deltaTheta}"
     }
 }

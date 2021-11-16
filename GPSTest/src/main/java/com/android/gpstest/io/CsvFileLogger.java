@@ -264,7 +264,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
     public synchronized void onGnssAntennaInfoReceived(@NonNull List<GnssAntennaInfo> list) {
         try {
             for (GnssAntennaInfo info : list) {
-                fileWriter.write(IOUtils.serialize(info));
+                fileWriter.write(FormatUtils.toLog(info));
                 fileWriter.newLine();
             }
             fileWriter.newLine();
