@@ -297,8 +297,8 @@ class MapFragment : Fragment(), MapInterface {
         sensorFlow = repository.getSensorUpdates()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                //Log.d(TAG, "Map sensor: orientation ${it.orientation}, tilt ${it.tilt}")
-                onOrientationChanged(it.orientation, it.tilt)
+                //Log.d(TAG, "Map sensor: orientation ${it.values[0]}, tilt ${it.values[1]}")
+                onOrientationChanged(it.values[0], it.values[1])
             }
             .launchIn(lifecycleScope)
     }

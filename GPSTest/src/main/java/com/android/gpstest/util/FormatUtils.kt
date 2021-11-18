@@ -9,10 +9,13 @@ import androidx.annotation.RequiresApi
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.model.CoordinateType
+import com.android.gpstest.model.Orientation
 import com.android.gpstest.model.SatelliteGroup
+import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.util.SatelliteUtil.isBearingAccuracySupported
 import com.android.gpstest.util.SatelliteUtil.isSpeedAccuracySupported
 import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
+import com.android.gpstest.util.SatelliteUtil.toGnssStatusConstellationType
 import java.util.concurrent.TimeUnit
 
 /**
@@ -241,6 +244,26 @@ internal object FormatUtils {
     }
 
     /**
+     * Returns status data formatted to CSV for logging in the following format
+     * ([unixTimeMillis] comes from the last location fix from GPS provider, or 0 if location hasn't been obtained yet):
+     * Status,UnixTimeMillis,SignalCount,SignalIndex,ConstellationType,Svid,CarrierFrequencyHz,Cn0DbHz,AzimuthDegrees,ElevationDegrees,UsedInFix,HasAlmanacData,HasEphemerisData,BasebandCn0DbHz
+     *
+     * Sample data:
+     * Status,0,25,0,1,10,1575420032,35.0,136.0,57.0,1,1,1,30.0
+     */
+    @JvmStatic
+    fun SatelliteStatus.toLog(unixTimeMillis: Long, signalCount: Int, signalIndex: Int): String {
+        return "Status," +
+                "$unixTimeMillis," +
+                "$signalCount,$signalIndex,${gnssType.toGnssStatusConstellationType()},$svid," +
+                "${carrierFrequencyHz.toBigDecimal().toPlainString()},$cn0DbHz,$azimuthDegrees,$elevationDegrees," +
+                "${if (usedInFix) "1" else "0"}," +
+                "${if (hasAlmanac) "1" else "0"}," +
+                "${if (hasEphemeris) "1" else "0"}," +
+                "${if (hasBasebandCn0DbHz) basebandCn0DbHz else ""}"
+    }
+
+    /**
      * Converts the provided SystemClock.elapsedRealtime() as [elapsedRealtime] and
      * [elapsedRealtimeNanos] from SystemClock.elapsedRealtimeNanos(), [clock] and
      * [measurement] to a CSV format:
@@ -264,7 +287,7 @@ internal object FormatUtils {
                 "${if (hasBiasNanos()) biasNanos else ""}," +
                 "${if (hasBiasUncertaintyNanos()) biasUncertaintyNanos else ""}," +
                 "${if (hasDriftNanosPerSecond()) driftNanosPerSecond else ""}," +
-                "${ if (hasDriftUncertaintyNanosPerSecond()) driftUncertaintyNanosPerSecond else ""}," +
+                "${if (hasDriftUncertaintyNanosPerSecond()) driftUncertaintyNanosPerSecond else ""}," +
                 "$hardwareClockDiscontinuityCount"
     }
 
@@ -280,7 +303,7 @@ internal object FormatUtils {
                 "$accumulatedDeltaRangeState,$accumulatedDeltaRangeMeters," +
                 "$accumulatedDeltaRangeUncertaintyMeters," +
                 // CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,
-                "${if (hasCarrierFrequencyHz()) carrierFrequencyHz else ""}," +
+                "${if (hasCarrierFrequencyHz()) carrierFrequencyHz.toBigDecimal().toPlainString() else ""}," +
                 "${if (hasCarrierCycles()) carrierCycles else ""}," +
                 "${if (hasCarrierPhase()) carrierPhase else ""}," +
                 "${if (hasCarrierPhaseUncertainty()) carrierPhaseUncertainty else ""}," +
@@ -319,5 +342,26 @@ internal object FormatUtils {
             )
         },${IOUtils.serialize(signalGainCorrections!!.correctionUncertaintiesArray)}," +
                 "${signalGainCorrections!!.deltaPhi},${signalGainCorrections!!.deltaTheta}"
+    }
+
+    /**
+     * Formats orientations as follows:
+     * OrientationDeg,1637087900313,1131752852726298,200,0,0
+     *
+     * given [currentTimeMs] as System.currentTimeMillis(), and [millisSinceBootMs] as SystemClock.elapsedRealtime()
+     *
+     * where:
+     * utcTimeMillis - The sum of elapsedRealtimeNanos below and the estimated device boot time at UTC, after a recent NTP (Network Time Protocol) sync.
+     * elapsedRealtimeNanos - The time in nanoseconds at which the event happened.
+     * yawDeg - If the screen is in portrait mode, this value equals the Azimuth degree (modulus to 0°~360°). If the screen is in landscape mode, it equals the sum (modulus to 0°~360°) of the screen rotation angle (either 90° or 270°) and the Azimuth degree. Azimuth, refers to the angle of rotation about the -z axis. This value represents the angle between the device's y axis and the magnetic north pole.
+     * rollDeg - Roll, angle of rotation about the y axis. This value represents the angle between a plane perpendicular to the device's screen and a plane perpendicular to the ground.
+     * pitchDeg - Pitch, angle of rotation about the x axis. This value represents the angle between a plane parallel to the device's screen and a plane parallel to the ground.
+     */
+    @JvmStatic
+    fun Orientation.toLog(currentTimeMs: Long, millisSinceBootMs: Long): String {
+        val timeAtBootMs = currentTimeMs - millisSinceBootMs
+        return "OrientationDeg,${TimeUnit.NANOSECONDS.toMillis(elapsedRealtimeNanos) + timeAtBootMs}," +
+                "$elapsedRealtimeNanos," +
+                "${values[0]},${values[1]},${values[2]}"
     }
 }

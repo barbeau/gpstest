@@ -38,7 +38,7 @@ public class MathUtils {
      * @param b the divisor
      * @return {@code a mod b}
      */
-    public static float mod(float a, float b) {
+    public static double mod(double a, double b) {
         return (a % b + b) % b;
     }
 
@@ -47,8 +47,8 @@ public class MathUtils {
      * @param hertz value to be converted
      * @return value converted to MHz
      */
-    public static float toMhz(float hertz) {
-        return hertz / 1000000.00f;
+    public static double toMhz(double hertz) {
+        return hertz / 1000000.00;
     }
 
     /**

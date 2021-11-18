@@ -69,6 +69,7 @@ import kotlin.math.abs
 
 @AndroidEntryPoint
 class SkyFragment : Fragment() {
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val viewModel: SignalInfoViewModel by activityViewModels()
 
     // Binding variables
@@ -197,8 +198,8 @@ class SkyFragment : Fragment() {
         sensorFlow = repository.getSensorUpdates()
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                //Log.d(TAG, "Sky sensor: orientation ${it.orientation}, tilt ${it.tilt}")
-                onOrientationChanged(it.orientation, it.tilt)
+                //Log.d(TAG, "Sky sensor: orientation ${it[0]}, tilt ${it[1]}")
+                onOrientationChanged(it.values[0], it.values[1])
             }
             .launchIn(lifecycleScope)
     }

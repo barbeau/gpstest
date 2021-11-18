@@ -87,6 +87,21 @@
             android:summary="@string/pref_output_category_summary">
 
             <PreferenceCategory
+                android:title="@string/pref_inject_assist_data_when_logging_category_title"
+                android:key="@string/pref_key_inject_assist_data_when_logging_category">
+                <CheckBoxPreference
+                    android:key="@string/pref_key_inject_time_when_logging"
+                    android:title="@string/pref_inject_time_when_logging_title"
+                    android:summary="@string/pref_inject_time_when_logging_summary"
+                    android:defaultValue="true" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_inject_psds_when_logging"
+                    android:title="@string/pref_inject_psds_when_logging_title"
+                    android:summary="@string/pref_inject_psds_when_logging_summary"
+                    android:defaultValue="true" />
+            </PreferenceCategory>
+
+            <PreferenceCategory
                 android:title="@string/pref_file_output_category_title"
                 android:key="@string/pref_key_file_output_category">
                 <CheckBoxPreference
@@ -95,19 +110,29 @@
                     android:summary="@string/pref_file_nmea_output_summary"
                     android:defaultValue="false" />
                 <CheckBoxPreference
-                    android:key="@string/pref_key_file_navigation_message_output"
-                    android:title="@string/pref_navigation_message_output_title"
-                    android:summary="@string/pref_file_navigation_message_output_summary"
-                    android:defaultValue="false" />
-                <CheckBoxPreference
                     android:key="@string/pref_key_file_measurement_output"
                     android:title="@string/pref_measurement_output_title"
                     android:summary="@string/pref_file_measurement_output_summary"
                     android:defaultValue="false" />
                 <CheckBoxPreference
+                    android:key="@string/pref_key_file_gnss_status_output"
+                    android:title="@string/pref_file_gnss_status_output_title"
+                    android:summary="@string/pref_file_gnss_status_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_orientation_output"
+                    android:title="@string/pref_file_orientation_output_title"
+                    android:summary="@string/pref_file_orientation_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
                     android:key="@string/pref_key_file_location_output"
                     android:title="@string/pref_file_location_output_title"
                     android:summary="@string/pref_file_location_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_navigation_message_output"
+                    android:title="@string/pref_navigation_message_output_title"
+                    android:summary="@string/pref_file_navigation_message_output_summary"
                     android:defaultValue="false" />
                 <CheckBoxPreference
                     android:key="@string/pref_key_file_antenna_output_csv"
@@ -135,14 +160,14 @@
                     android:summary="@string/pref_nmea_timestamp_output_summary"
                     android:defaultValue="true" />
                 <CheckBoxPreference
-                    android:key="@string/pref_key_as_navigation_message_output"
-                    android:title="@string/pref_navigation_message_output_title"
-                    android:summary="@string/pref_as_navigation_message_output_summary"
-                    android:defaultValue="false" />
-                <CheckBoxPreference
                     android:key="@string/pref_key_as_measurement_output"
                     android:title="@string/pref_measurement_output_title"
                     android:summary="@string/pref_as_measurement_output_summary"
+                    android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_as_navigation_message_output"
+                    android:title="@string/pref_navigation_message_output_title"
+                    android:summary="@string/pref_as_navigation_message_output_summary"
                     android:defaultValue="false" />
             </PreferenceCategory>
         </PreferenceScreen>

@@ -37,6 +37,8 @@ import androidx.core.content.ContextCompat;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
+import com.android.gpstest.model.Orientation;
+import com.android.gpstest.model.SatelliteStatus;
 import com.android.gpstest.util.FormatUtils;
 import com.android.gpstest.util.IOUtils;
 
@@ -191,6 +193,33 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         }
     }
 
+    /**
+     * Called to log GnssStatus information
+     * @param statuses GnssStatus information converted to a list of SatelliteStatus
+     * @param location the most recently calculated location, or null if one hasn't been calculated yet
+     */
+    public synchronized void onGnssStatusChanged(List<SatelliteStatus> statuses, Location location) {
+        if (fileWriter == null) {
+            return;
+        }
+        int i = 0;
+        for (SatelliteStatus s : statuses) {
+            try {
+                writeStatusToFile(s, location != null ? location.getTime() : 0, i, statuses.size());
+            } catch (IOException e) {
+                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+            }
+            i++;
+        }
+    }
+
+    private synchronized void writeStatusToFile(SatelliteStatus status, long unixTimeMillis, int signalCount, int signalIndex) throws IOException {
+        fileWriter.write(
+            FormatUtils.toLog(status, unixTimeMillis, signalCount, signalIndex)
+        );
+        fileWriter.newLine();
+    }
+
     public synchronized void onGnssMeasurementsReceived(GnssMeasurementsEvent event) {
         if (fileWriter == null) {
             return;
@@ -270,6 +299,18 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             fileWriter.newLine();
         } catch (IOException e) {
             logException("Unable to write antenna info to CSV", e);
+        }
+    }
+
+    public synchronized void onOrientationChanged(Orientation orientation, long currentTimeMs, long millisSinceBootMs) {
+        if (fileWriter == null) {
+            return;
+        }
+        try {
+            fileWriter.write(FormatUtils.toLog(orientation, currentTimeMs, millisSinceBootMs));
+            fileWriter.newLine();
+        } catch (IOException e) {
+            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
         }
     }
 }

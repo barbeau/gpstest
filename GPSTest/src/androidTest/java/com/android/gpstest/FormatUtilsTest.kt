@@ -20,6 +20,9 @@ import android.location.Location
 import android.os.Build
 import androidx.test.filters.SdkSuppress
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.android.gpstest.model.GnssType
+import com.android.gpstest.model.Orientation
+import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.util.FormatUtils.toLog
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.SatelliteUtil.isBearingAccuracySupported
@@ -135,5 +138,47 @@ class FormatUtilsTest {
         val array2: DoubleArray = doubleArrayOf(0.55, 0.66, 0.77, 0.88)
         val array3: DoubleArray = doubleArrayOf(0.91, 0.92, 0.93, 0.94)
         return arrayOf(array1, array2, array3)
+    }
+
+    @Test
+    fun testSatelliteToLog() {
+        val location = Location("test")
+        location.time = 0
+
+        val signalCount = 25
+        val signalIndex = 0
+
+        val gpsL1 = SatelliteStatus(
+            10,
+            GnssType.NAVSTAR,
+            35.00f,
+            hasAlmanac = true,
+            hasEphemeris = true,
+            usedInFix = true,
+            elevationDegrees = 57.00f,
+            azimuthDegrees = 136.00f
+        );
+        gpsL1.hasCarrierFrequency = true
+        gpsL1.carrierFrequencyHz = 1575420032.0
+        gpsL1.hasBasebandCn0DbHz = true
+        gpsL1.basebandCn0DbHz = 30.0f
+        assertEquals(
+            "Status,0,25,0,1,10,1575420032,35.0,136.0,57.0,1,1,1,30.0",
+            gpsL1.toLog(location.time, signalCount, signalIndex)
+        )
+    }
+
+    @Test
+    fun testOrientationToLog() {
+        val currentTime = 1234L
+        val timeAtBoot = 1000L
+
+        assertEquals(
+            "OrientationDeg,244,10000000,44444.44444,5555.5555,6666.66666",
+            Orientation(10000000, doubleArrayOf(44444.44444, 5555.5555, 6666.66666)).toLog(
+                currentTime,
+                timeAtBoot
+            )
+        )
     }
 }

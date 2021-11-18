@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.util
 
+import android.annotation.SuppressLint
 import android.location.GnssStatus
 import android.location.Location
 import android.os.Build
@@ -27,13 +28,14 @@ internal object SatelliteUtil {
     /**
      * Tranforms the Android [GnssStatus] object to a list of our [SatelliteStatus] model objects
      */
+    @JvmStatic
     fun GnssStatus.toSatelliteStatus() : List<SatelliteStatus> {
         val satStatuses: MutableList<SatelliteStatus> = ArrayList()
 
         for (i in 0 until this.satelliteCount) {
             val satStatus = SatelliteStatus(
                 this.getSvid(i),
-                SatelliteUtils.getGnssConstellationType(this.getConstellationType(i)),
+                this.getConstellationType(i).toGnssType(),
                 this.getCn0DbHz(i),
                 this.hasAlmanacData(i),
                 this.hasEphemerisData(i),
@@ -43,10 +45,14 @@ internal object SatelliteUtil {
             )
             if (SatelliteUtils.isCfSupported() && this.hasCarrierFrequencyHz(i)) {
                 satStatus.hasCarrierFrequency = true
-                satStatus.carrierFrequencyHz = this.getCarrierFrequencyHz(i)
+                satStatus.carrierFrequencyHz = this.getCarrierFrequencyHz(i).toDouble()
+            }
+            if (isBasebandCn0DbHzSupported(i)) {
+                satStatus.hasBasebandCn0DbHz = true
+                satStatus.basebandCn0DbHz = this.getBasebandCn0DbHz(i)
             }
             if (satStatus.gnssType == GnssType.SBAS) {
-                satStatus.sbasType = SatelliteUtils.getSbasConstellationType(satStatus.svid)
+                satStatus.sbasType = satStatus.svid.toSbasType()
             }
             satStatuses.add(satStatus)
         }
@@ -223,5 +229,80 @@ internal object SatelliteUtil {
      */
     fun Location.isVerticalAccuracySupported(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasVerticalAccuracy()
+    }
+
+    /**
+     * Returns true if the platform supports providing basebandCn0DbHz values and the status at the
+     * provided [index] has basebandCn0DbHz information, false if it does not
+     *
+     * @return true if the platform supports providing basebandCn0DbHz values and the status at the
+     * provided [index] has basebandCn0DbHz information, false if it does not
+     */
+    fun GnssStatus.isBasebandCn0DbHzSupported(index: Int): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasBasebandCn0DbHz(index)
+    }
+
+    /**
+     * Returns the Global Navigation Satellite System (GNSS) for a satellite given the GnssStatus
+     * constellation type.  Note that getSbasConstellationType() should be used to get the particular
+     * SBAS constellation type
+     *
+     * @return GnssType for the given GnssStatus constellation type
+     */
+    private fun Int.toGnssType(): GnssType {
+        return when (this) {
+            GnssStatus.CONSTELLATION_GPS -> GnssType.NAVSTAR
+            GnssStatus.CONSTELLATION_GLONASS -> GnssType.GLONASS
+            GnssStatus.CONSTELLATION_BEIDOU -> GnssType.BEIDOU
+            GnssStatus.CONSTELLATION_QZSS -> GnssType.QZSS
+            GnssStatus.CONSTELLATION_GALILEO -> GnssType.GALILEO
+            GnssStatus.CONSTELLATION_IRNSS -> GnssType.IRNSS
+            GnssStatus.CONSTELLATION_SBAS -> GnssType.SBAS
+            GnssStatus.CONSTELLATION_UNKNOWN -> GnssType.UNKNOWN
+            else -> GnssType.UNKNOWN
+        }
+    }
+
+    /**
+     * Returns the Android system GnssStatus.getConstellationType() for our GnssType enumeration
+     * @return GnssStatus.getConstellationType() for a given GnssType
+     */
+    @SuppressLint("InlinedApi")
+    fun GnssType.toGnssStatusConstellationType(): Int {
+        return when (this) {
+            GnssType.NAVSTAR -> GnssStatus.CONSTELLATION_GPS
+            GnssType.GLONASS -> GnssStatus.CONSTELLATION_GLONASS
+            GnssType.BEIDOU -> GnssStatus.CONSTELLATION_BEIDOU
+            GnssType.QZSS -> GnssStatus.CONSTELLATION_QZSS
+            GnssType.GALILEO -> GnssStatus.CONSTELLATION_GALILEO
+            GnssType.IRNSS -> GnssStatus.CONSTELLATION_IRNSS
+            GnssType.SBAS -> GnssStatus.CONSTELLATION_SBAS
+            GnssType.UNKNOWN -> GnssStatus.CONSTELLATION_UNKNOWN
+        }
+    }
+
+    /**
+     * Returns the SBAS constellation type for a GnssStatus.CONSTELLATION_SBAS satellite given the GnssStatus
+     * svid.  For Android 7.0 and higher.
+     *
+     * [this] is the identification number provided by the GnssStatus.getSvid() method
+     * @return SbasType for the given GnssStatus svid for GnssStatus.CONSTELLATION_SBAS satellites
+     */
+    fun Int.toSbasType(): SbasType {
+        if (this == 120 || this == 123 || this == 126 || this == 136) {
+            return SbasType.EGNOS
+        } else if (this == 125 || this == 140 || this == 141) {
+            return SbasType.SDCM
+        } else if (this == 130 || this == 143 || this == 144) {
+            // Also referred to as BDSBAS
+            return SbasType.SNAS
+        } else if (this == 131 || this == 133 || this == 135 || this == 138) {
+            return SbasType.WAAS
+        } else if (this == 127 || this == 128 || this == 139) {
+            return SbasType.GAGAN
+        } else if (this == 129 || this == 137) {
+            return SbasType.MSAS
+        }
+        return SbasType.UNKNOWN
     }
 }
