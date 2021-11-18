@@ -172,6 +172,20 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write(COMMENT_START);
             writer.write("  GnssAntennaInfo,CarrierFrequencyMHz,PhaseCenterOffsetXOffsetMm,PhaseCenterOffsetXOffsetUncertaintyMm,PhaseCenterOffsetYOffsetMm,PhaseCenterOffsetYOffsetUncertaintyMm,PhaseCenterOffsetZOffsetMm,PhaseCenterOffsetZOffsetUncertaintyMm,PhaseCenterVariationCorrectionsArray,PhaseCenterVariationCorrectionUncertaintiesArray,PhaseCenterVariationCorrectionsDeltaPhi,PhaseCenterVariationCorrectionsDeltaTheta,SignalGainCorrectionsArray,SignalGainCorrectionUncertaintiesArray,SignalGainCorrectionsDeltaPhi,SignalGainCorrectionsDeltaTheta");
             writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("GnssStatus format (https://developer.android.com/reference/android/location/GnssStatus):");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  Status,UnixTimeMillis,SignalCount,SignalIndex,ConstellationType,Svid,CarrierFrequencyHz,Cn0DbHz,AzimuthDegrees,ElevationDegrees,UsedInFix,HasAlmanacData,HasEphemerisData,BasebandCn0DbHz");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Orientation sensor format (https://developer.android.com/reference/android/hardware/SensorEvent#values):");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  OrientationDeg,utcTimeMillis,elapsedRealtimeNanos,yawDeg,rollDeg,pitchDeg");
+            writer.newLine();
         } catch (IOException e) {
             logException(Application.Companion.getApp().getString(R.string.could_not_initialize_file, filePath), e);
             return;
