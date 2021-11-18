@@ -33,7 +33,7 @@ public class CarrierFreqUtils {
      */
     public static String CF_UNSUPPORTED = "unsupported";
 
-    static final float CF_TOLERANCE_MHZ = 1f;
+    static final double CF_TOLERANCE_MHZ = 1d;
 
     /**
      * Returns the label that should be displayed for a given GNSS constellation, svid, and carrier
@@ -47,7 +47,7 @@ public class CarrierFreqUtils {
         if (!SatelliteUtils.isCfSupported() || !status.getHasCarrierFrequency()) {
             return CF_UNSUPPORTED;
         }
-        float cfMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
+        double cfMhz = MathUtils.toMhz(status.getCarrierFrequencyHz());
         int svid = status.getSvid();
 
         switch (status.getGnssType()) {
@@ -79,16 +79,16 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getNavstarCF(float carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+    public static String getNavstarCF(double carrierFrequencyMhz) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "L1";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6, CF_TOLERANCE_MHZ)) {
             return "L2";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1381.05f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1381.05, CF_TOLERANCE_MHZ)) {
             return "L3";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1379.913f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1379.913, CF_TOLERANCE_MHZ)) {
             return "L4";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "L5";
         } else {
             return CF_UNKNOWN;
@@ -100,19 +100,19 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getGlonassCf(float carrierFrequencyMhz) {
-        if (carrierFrequencyMhz >= 1598.0f && carrierFrequencyMhz <= 1606.0f) {
+    public static String getGlonassCf(double carrierFrequencyMhz) {
+        if (carrierFrequencyMhz >= 1598.0 && carrierFrequencyMhz <= 1606.0) {
             // Actual range is 1598.0625 MHz to 1605.375, but allow padding for float comparisons - #103
             return "L1";
-        } else if (carrierFrequencyMhz >= 1242.0f && carrierFrequencyMhz <= 1249.0f) {
+        } else if (carrierFrequencyMhz >= 1242.0 && carrierFrequencyMhz <= 1249.0) {
             // Actual range is 1242.9375 MHz to 1248.625, but allow padding for float comparisons - #103
             return "L2";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14, CF_TOLERANCE_MHZ)) {
             // Exact range is unclear - appears to be 1202.025 - 1207.14 - #103
             return "L3";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "L5";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "L1-C";
         } else {
             return CF_UNKNOWN;
@@ -124,18 +124,18 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getBeidoucCf(float carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1561.098f, CF_TOLERANCE_MHZ)) {
+    public static String getBeidoucCf(double carrierFrequencyMhz) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1561.098, CF_TOLERANCE_MHZ)) {
             return "B1";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1589.742f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1589.742, CF_TOLERANCE_MHZ)) {
             return "B1-2";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "B1C";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14, CF_TOLERANCE_MHZ)) {
             return "B2";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "B2a";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1268.52f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1268.52, CF_TOLERANCE_MHZ)) {
             return "B3";
         } else {
             return CF_UNKNOWN;
@@ -147,14 +147,14 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getQzssCf(float carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+    public static String getQzssCf(double carrierFrequencyMhz) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "L1";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1227.6, CF_TOLERANCE_MHZ)) {
             return "L2";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "L5";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1278.75f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1278.75, CF_TOLERANCE_MHZ)) {
             return "L6";
         } else {
             return CF_UNKNOWN;
@@ -166,16 +166,16 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getGalileoCf(float carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+    public static String getGalileoCf(double carrierFrequencyMhz) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "E1";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1191.795f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1191.795, CF_TOLERANCE_MHZ)) {
             return "E5";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "E5a";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14, CF_TOLERANCE_MHZ)) {
             return "E5b";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1278.75f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1278.75, CF_TOLERANCE_MHZ)) {
             return "E6";
         } else {
             return CF_UNKNOWN;
@@ -187,10 +187,10 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getIrnssCf(float carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+    public static String getIrnssCf(double carrierFrequencyMhz) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "L5";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 2492.028f, CF_TOLERANCE_MHZ)) {
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 2492.028, CF_TOLERANCE_MHZ)) {
             return "S";
         } else {
             return CF_UNKNOWN;
@@ -203,31 +203,31 @@ public class CarrierFreqUtils {
      * @param carrierFrequencyMhz carrier frequency in MHz
      * @return carrier frequency label
      */
-    public static String getSbasCf(int svid, float carrierFrequencyMhz) {
+    public static String getSbasCf(int svid, double carrierFrequencyMhz) {
         if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
             // EGNOS - https://gssc.esa.int/navipedia/index.php/EGNOS_Space_Segment
-            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
-            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
         } else if (svid == 129 || svid == 137) {
             // MSAS (Japan) - https://gssc.esa.int/navipedia/index.php/MSAS_Space_Segment
-            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
-            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
         } else if (svid == 127 || svid == 128 || svid == 139) {
             // GAGAN (India)
-            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
             }
         } else if (svid == 131 || svid == 133 || svid == 135 || svid == 138) {
             // WAAS (US)
-            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42f, CF_TOLERANCE_MHZ)) {
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
-            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45f, CF_TOLERANCE_MHZ)) {
+            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
         }
@@ -244,7 +244,7 @@ public class CarrierFreqUtils {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public static String getCarrierFrequencyLabel(GnssAntennaInfo gnssAntennaInfo) {
         String label;
-        float cfMHz = (float) gnssAntennaInfo.getCarrierFrequencyMHz();
+        double cfMHz = gnssAntennaInfo.getCarrierFrequencyMHz();
         // Try each GNSS until we find a valid label
         label = getNavstarCF(cfMHz);
         if (label.equals(CF_UNKNOWN)) {

@@ -47,7 +47,7 @@ class SatelliteUtilsTest {
                 72f,
                 25f);
         gpsL1.hasCarrierFrequency = true
-        gpsL1.carrierFrequencyHz = 1575420000.0f
+        gpsL1.carrierFrequencyHz = 1575420000.0
 
         val gpsL1key = SatelliteUtils.createGnssSatelliteKey(gpsL1)
         assertEquals("1 NAVSTAR", gpsL1key)
@@ -75,7 +75,7 @@ class SatelliteUtilsTest {
                 72f,
                 25f);
         sbasWaasL1.hasCarrierFrequency = true
-        sbasWaasL1.carrierFrequencyHz = 1575420000.0f
+        sbasWaasL1.carrierFrequencyHz = 1575420000.0
         sbasWaasL1.sbasType = SbasType.WAAS
 
         val sbasWaasL1key = SatelliteUtils.createGnssSatelliteKey(sbasWaasL1)
@@ -119,7 +119,7 @@ class SatelliteUtilsTest {
                 72f,
                 25f);
         sbasSdcm125L1WithCf.hasCarrierFrequency = true
-        sbasSdcm125L1WithCf.carrierFrequencyHz = 1575420000.0f
+        sbasSdcm125L1WithCf.carrierFrequencyHz = 1575420000.0
         sbasSdcm125L1WithCf.sbasType = SbasType.SDCM
 
         val sbasSdcm125L1WithCfkey = SatelliteUtils.createGnssSatelliteKey(sbasSdcm125L1WithCf)
@@ -141,7 +141,7 @@ class SatelliteUtilsTest {
                 72f,
                 25f);
         gpsL1.hasCarrierFrequency = true
-        gpsL1.carrierFrequencyHz = 1575420000.0f
+        gpsL1.carrierFrequencyHz = 1575420000.0
 
         val gpsL1key = SatelliteUtils.createGnssStatusKey(gpsL1)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -173,7 +173,7 @@ class SatelliteUtilsTest {
                 72f,
                 25f);
         gpsBadCf.hasCarrierFrequency = true
-        gpsBadCf.carrierFrequencyHz = 9999999.0f
+        gpsBadCf.carrierFrequencyHz = 9999999.0
 
         val gpsBadCfKey = SatelliteUtils.createGnssStatusKey(gpsBadCf)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

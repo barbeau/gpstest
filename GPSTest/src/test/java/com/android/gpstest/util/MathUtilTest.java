@@ -15,11 +15,11 @@
  */
 package com.android.gpstest.util;
 
-import org.junit.Test;
-
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class MathUtilTest {
 
@@ -28,8 +28,8 @@ public class MathUtilTest {
      */
     @Test
     public void testToMhz() {
-        float mhz = MathUtils.toMhz(1000000.0f);
-        assertEquals(1.0f, mhz);
+        double mhz = MathUtils.toMhz(1000000.0);
+        assertEquals(1.0, mhz);
     }
 
     /**

@@ -33,7 +33,7 @@ fun gpsL1(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     gpsL1.hasCarrierFrequency = true
-    gpsL1.carrierFrequencyHz = 1575420000.0f
+    gpsL1.carrierFrequencyHz = 1575420000.0
     return gpsL1
 }
 
@@ -50,7 +50,7 @@ fun gpsL1NoSignal(id: Int): SatelliteStatus {
             NO_DATA,
             NO_DATA);
     gpsL1.hasCarrierFrequency = true
-    gpsL1.carrierFrequencyHz = 1575420000.0f
+    gpsL1.carrierFrequencyHz = 1575420000.0
     return gpsL1
 }
 
@@ -67,7 +67,7 @@ fun gpsL2(): SatelliteStatus {
             72f,
             25f);
     gpsL2.hasCarrierFrequency = true
-    gpsL2.carrierFrequencyHz = 1227600000.0f
+    gpsL2.carrierFrequencyHz = 1227600000.0
     return gpsL2
 }
 
@@ -84,7 +84,7 @@ fun gpsL3(): SatelliteStatus {
             72f,
             25f);
     gpsL3.hasCarrierFrequency = true
-    gpsL3.carrierFrequencyHz = 1381050000.0f
+    gpsL3.carrierFrequencyHz = 1381050000.0
     return gpsL3
 }
 
@@ -101,7 +101,7 @@ fun gpsL4(): SatelliteStatus {
             72f,
             25f);
     gpsL4.hasCarrierFrequency = true
-    gpsL4.carrierFrequencyHz = 1379913000.0f
+    gpsL4.carrierFrequencyHz = 1379913000.0
     return gpsL4
 }
 
@@ -118,7 +118,7 @@ fun gpsL5(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     gpsL5.hasCarrierFrequency = true
-    gpsL5.carrierFrequencyHz = 1176450000.0f
+    gpsL5.carrierFrequencyHz = 1176450000.0
     return gpsL5
 }
 
@@ -135,7 +135,7 @@ fun glonassL1variant1(): SatelliteStatus {
             72f,
             25f);
     glonassL1variant1.hasCarrierFrequency = true
-    glonassL1variant1.carrierFrequencyHz = 1598062500.0f
+    glonassL1variant1.carrierFrequencyHz = 1598062500.0
     return glonassL1variant1
 }
 
@@ -152,7 +152,7 @@ fun glonassL1variant2(): SatelliteStatus {
             72f,
             25f);
     glonassL1variant2.hasCarrierFrequency = true
-    glonassL1variant2.carrierFrequencyHz = 1605375000.0f
+    glonassL1variant2.carrierFrequencyHz = 1605375000.0
     return glonassL1variant2
 }
 
@@ -169,7 +169,7 @@ fun glonassL2variant1(): SatelliteStatus {
             72f,
             25f);
     glonassL2.hasCarrierFrequency = true
-    glonassL2.carrierFrequencyHz = 1242937500.0f
+    glonassL2.carrierFrequencyHz = 1242937500.0
     return glonassL2
 }
 
@@ -186,7 +186,7 @@ fun glonassL2variant2(): SatelliteStatus {
             72f,
             25f);
     glonassL2variant2.hasCarrierFrequency = true
-    glonassL2variant2.carrierFrequencyHz = 1248625000.0f
+    glonassL2variant2.carrierFrequencyHz = 1248625000.0
     return glonassL2variant2
 }
 
@@ -203,7 +203,7 @@ fun glonassL3(): SatelliteStatus {
             72f,
             25f);
     glonassL3.hasCarrierFrequency = true
-    glonassL3.carrierFrequencyHz = 1207140000.0f
+    glonassL3.carrierFrequencyHz = 1207140000.0
     return glonassL3
 }
 
@@ -220,7 +220,7 @@ fun glonassL5(): SatelliteStatus {
             72f,
             25f);
     glonassL5.hasCarrierFrequency = true
-    glonassL5.carrierFrequencyHz = 1176450000.0f
+    glonassL5.carrierFrequencyHz = 1176450000.0
     return glonassL5
 }
 
@@ -237,7 +237,7 @@ fun glonassL1Cdma(): SatelliteStatus {
             72f,
             25f);
     glonassL1Cdma.hasCarrierFrequency = true
-    glonassL1Cdma.carrierFrequencyHz = 1575420000.0f
+    glonassL1Cdma.carrierFrequencyHz = 1575420000.0
     return glonassL1Cdma
 }
 
@@ -254,7 +254,7 @@ fun galileoE1(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galileoE1.hasCarrierFrequency = true
-    galileoE1.carrierFrequencyHz = 1575420000.0f
+    galileoE1.carrierFrequencyHz = 1575420000.0
     return galileoE1
 }
 
@@ -271,7 +271,7 @@ fun galileoE5(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galileoE5.hasCarrierFrequency = true
-    galileoE5.carrierFrequencyHz = 1191795000.0f
+    galileoE5.carrierFrequencyHz = 1191795000.0
     return galileoE5
 }
 
@@ -288,7 +288,7 @@ fun galileoE5a(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galileoE5a.hasCarrierFrequency = true
-    galileoE5a.carrierFrequencyHz = 1176450000.0f
+    galileoE5a.carrierFrequencyHz = 1176450000.0
     return galileoE5a
 }
 
@@ -305,7 +305,7 @@ fun galileoE5b(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galileoE5b.hasCarrierFrequency = true
-    galileoE5b.carrierFrequencyHz = 1207140000.0f
+    galileoE5b.carrierFrequencyHz = 1207140000.0
     return galileoE5b
 }
 
@@ -322,7 +322,7 @@ fun galileoE6(id: Int, usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galileoE6.hasCarrierFrequency = true
-    galileoE6.carrierFrequencyHz = 1278750000.0f
+    galileoE6.carrierFrequencyHz = 1278750000.0
     return galileoE6
 }
 
@@ -339,7 +339,7 @@ fun waas_131L1(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     waas_131L1.hasCarrierFrequency = true
-    waas_131L1.carrierFrequencyHz = 1575420000.0f
+    waas_131L1.carrierFrequencyHz = 1575420000.0
     waas_131L1.sbasType = SbasType.WAAS
     return waas_131L1
 }
@@ -357,7 +357,7 @@ fun waas_131L5(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     waas_131L5.hasCarrierFrequency = true
-    waas_131L5.carrierFrequencyHz = 1176450000.0f
+    waas_131L5.carrierFrequencyHz = 1176450000.0
     waas_131L5.sbasType = SbasType.WAAS
     return waas_131L5
 }
@@ -375,7 +375,7 @@ fun waas_133L1(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     waas_133L1.hasCarrierFrequency = true
-    waas_133L1.carrierFrequencyHz = 1575420000.0f
+    waas_133L1.carrierFrequencyHz = 1575420000.0
     waas_133L1.sbasType = SbasType.WAAS
     return waas_133L1
 }
@@ -393,7 +393,7 @@ fun waas_133L5(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     waas_133L5.hasCarrierFrequency = true
-    waas_133L5.carrierFrequencyHz = 1176450000.0f
+    waas_133L5.carrierFrequencyHz = 1176450000.0
     waas_133L5.sbasType = SbasType.WAAS
     return waas_133L5
 }
@@ -411,7 +411,7 @@ fun galaxy15_135L1(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galaxy15_135L1.hasCarrierFrequency = true
-    galaxy15_135L1.carrierFrequencyHz = 1575420000.0f
+    galaxy15_135L1.carrierFrequencyHz = 1575420000.0
     galaxy15_135L1.sbasType = SbasType.WAAS
     return galaxy15_135L1
 }
@@ -429,7 +429,7 @@ fun galaxy15_135L5(usedInFix: Boolean): SatelliteStatus {
             72f,
             25f);
     galaxy15_135L5.hasCarrierFrequency = true
-    galaxy15_135L5.carrierFrequencyHz = 1176450000.0f
+    galaxy15_135L5.carrierFrequencyHz = 1176450000.0
     galaxy15_135L5.sbasType = SbasType.WAAS
     return galaxy15_135L5
 }

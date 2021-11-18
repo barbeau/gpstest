@@ -329,6 +329,13 @@
     </string>
 
     <!-- File Output -->
+    <string name="pref_inject_assist_data_when_logging_category_title">Auto-inject assist data</string>
+    <string name="pref_inject_time_when_logging_title">Auto-inject time</string>
+    <string name="pref_inject_time_when_logging_summary">Automatically injects time data from a Network Time Protocol server when file logging starts</string>
+
+    <string name="pref_inject_psds_when_logging_title">Auto-inject PSDS</string>
+    <string name="pref_inject_psds_when_logging_summary">Automatically injects Predicted Satellite Data Service (e.g., XTRA) data when file logging starts</string>
+
     <string name="pref_file_output_category_title">File Output</string>
     <string name="pref_file_nmea_output_summary">Logs NMEA sentences to the CSV file</string>
     <string name="pref_file_measurement_output_summary">Logs GNSS measurements to the CSV file (Android
@@ -342,7 +349,10 @@
     <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. (Android 11 and up, and only available on some devices)</string>
     <string name="pref_file_antenna_output_json_title">Antenna Info (JSON)</string>
     <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. (Android 11 and up, and only available on some devices)</string>
-
+    <string name="pref_file_gnss_status_output_title">GnssStatus</string>
+    <string name="pref_file_gnss_status_output_summary">Logs GnssStatus data per signal to the CSV file</string>
+    <string name="pref_file_orientation_output_title">Orientation</string>
+    <string name="pref_file_orientation_output_summary">Logs orientation sensor data to the CSV file</string>
     <string name="logging_to_new_file">Logging to new file: %1$s</string>
     <string name="unable_to_close_all_file_streams">Unable to close all file streams.</string>
     <string name="could_not_initialize_file">Count not initialize file: %1$s</string>

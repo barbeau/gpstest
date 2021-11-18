@@ -24,7 +24,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.location.GnssAntennaInfo;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.Location;
@@ -478,32 +477,6 @@ public class IOUtils {
      */
     public static String replaceNavstar(String input) {
         return input.replace("NAVSTAR", "GPS");
-    }
-
-    /**
-     * Serializes GnssAntennaInfo to a CSV format
-     * @param info
-     * @return GnssAntennaInfo in a CSV format
-     */
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    public static String serialize(@NonNull GnssAntennaInfo info) {
-        return String.format(
-                "GnssAntennaInfo,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s",
-                info.getCarrierFrequencyMHz(),
-                info.getPhaseCenterOffset().getXOffsetMm(),
-                info.getPhaseCenterOffset().getXOffsetUncertaintyMm(),
-                info.getPhaseCenterOffset().getYOffsetMm(),
-                info.getPhaseCenterOffset().getYOffsetUncertaintyMm(),
-                info.getPhaseCenterOffset().getZOffsetMm(),
-                info.getPhaseCenterOffset().getZOffsetUncertaintyMm(),
-                serialize(info.getPhaseCenterVariationCorrections().getCorrectionsArray()),
-                serialize(info.getPhaseCenterVariationCorrections().getCorrectionUncertaintiesArray()),
-                info.getPhaseCenterVariationCorrections().getDeltaPhi(),
-                info.getPhaseCenterVariationCorrections().getDeltaTheta(),
-                serialize(info.getSignalGainCorrections().getCorrectionsArray()),
-                serialize(info.getSignalGainCorrections().getCorrectionUncertaintiesArray()),
-                info.getSignalGainCorrections().getDeltaPhi(),
-                info.getSignalGainCorrections().getDeltaTheta());
     }
 
     /**

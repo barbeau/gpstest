@@ -30,7 +30,9 @@ data class SatelliteStatus (
         var azimuthDegrees: Float) {
     var sbasType: SbasType = SbasType.UNKNOWN
     var hasCarrierFrequency: Boolean = false
-    var carrierFrequencyHz: Float = NO_DATA
+    var carrierFrequencyHz: Double = 0.0
+    var hasBasebandCn0DbHz: Boolean = false
+    var basebandCn0DbHz: Float = NO_DATA
 
     companion object {
         const val NO_DATA = 0.0f

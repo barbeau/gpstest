@@ -82,12 +82,28 @@ internal object PreferenceUtil {
         return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_file_navigation_message_output), false);
     }
 
+    fun writeStatusToFile(): Boolean {
+        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_file_gnss_status_output), false);
+    }
+
+    fun writeOrientationToFile(): Boolean {
+        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_file_orientation_output), false);
+    }
+
+    fun injectTimeWhenLogging(): Boolean {
+        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_inject_time_when_logging), true);
+    }
+
+    fun injectPsdsWhenLogging(): Boolean {
+        return Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_inject_psds_when_logging), true);
+    }
+
     fun isFileLoggingEnabled(): Boolean {
         return isCsvLoggingEnabled() || isJsonLoggingEnabled()
     }
 
     fun isCsvLoggingEnabled(): Boolean {
-        return writeNmeaToFile() || writeMeasurementsToFile() || writeNavMessageToFile() || writeLocationToFile() || writeAntennaInfoToFileCsv()
+        return writeNmeaToFile() || writeMeasurementsToFile() || writeNavMessageToFile() || writeLocationToFile() || writeAntennaInfoToFileCsv() || writeStatusToFile() || writeOrientationToFile()
     }
 
     fun isJsonLoggingEnabled(): Boolean {

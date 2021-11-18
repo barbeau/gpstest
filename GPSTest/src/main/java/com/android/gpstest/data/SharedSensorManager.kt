@@ -26,7 +26,7 @@ import android.view.Display
 import android.view.Surface
 import com.android.gpstest.Application
 import com.android.gpstest.R
-import com.android.gpstest.model.OrientationAndTilt
+import com.android.gpstest.model.Orientation
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.hasPermission
@@ -76,8 +76,9 @@ class SharedSensorManager constructor(
         val callback: SensorEventListener =
             object : SensorEventListener {
                 override fun onSensorChanged(event: SensorEvent) {
-                    var orientation: Double
-                    var tilt = Double.NaN
+                    var orientationX: Double
+                    var tiltY = Double.NaN
+                    var yawZ = Double.NaN
 
                     when (event.sensor.type) {
                         Sensor.TYPE_ROTATION_VECTOR -> {
@@ -86,12 +87,13 @@ class SharedSensorManager constructor(
 
                             val display = getDisplay()
                             if (display != null) handleRotation(display.rotation)
-                            orientation = Math.toDegrees(values[0].toDouble()) // azimuth
-                            tilt = Math.toDegrees(values[1].toDouble())
+                            orientationX = Math.toDegrees(values[0].toDouble()) // azimuth
+                            tiltY = Math.toDegrees(values[1].toDouble())
+                            yawZ = Math.toDegrees(values[2].toDouble())
                         }
                         Sensor.TYPE_ORIENTATION ->
                             // Legacy orientation sensors
-                            orientation = event.values[0].toDouble()
+                            orientationX = event.values[0].toDouble()
                         else ->
                             // A sensor we're not using, so return
                             return
@@ -103,14 +105,14 @@ class SharedSensorManager constructor(
                             true
                         )
                     ) {
-                        orientation += geomagneticField.declination.toDouble()
+                        orientationX += geomagneticField.declination.toDouble()
                         // Make sure value is between 0-360
-                        orientation = MathUtils.mod(orientation.toFloat(), 360.0f).toDouble()
+                        orientationX = MathUtils.mod(orientationX, 360.0)
                     }
 
-                    //Log.d(TAG, "New sensor: $orientation and $tilt")
+                    //Log.d(TAG, "New sensor: $orientationX and $tiltY")
                     // Send the new sensors to the Flow observers
-                    trySend(OrientationAndTilt(orientation, tilt))
+                    trySend(Orientation(event.timestamp, doubleArrayOf(orientationX, tiltY, yawZ)))
                 }
 
                 override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
@@ -262,8 +264,11 @@ class SharedSensorManager constructor(
         }
     }
 
+    /**
+     * A flow of sensor orientations
+     */
     @ExperimentalCoroutinesApi
-    fun sensorFlow(): Flow<OrientationAndTilt> {
+    fun sensorFlow(): Flow<Orientation> {
         return _sensorUpdates
     }
 }

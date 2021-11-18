@@ -91,8 +91,6 @@
     <string name="pref_key_gps_min_distance">gps_min_distance</string>
     <string name="pref_key_gnss_background">gnss_background</string>
 
-    pref_key_run_gnss_in_background
-
     <string name="pref_key_display_category">display_category</string>
     <string name="pref_key_keep_screen_on">keep_screen_on</string>
     <string name="pref_key_true_north">true_north</string>
@@ -104,12 +102,17 @@
     <string name="pref_key_as_navigation_message_output">navigation_message_output</string>
 
     <string name="pref_key_file_output_category">file_output_category</string>
+    <string name="pref_key_inject_assist_data_when_logging_category">inject_assist_data_when_logging_category</string>
     <string name="pref_key_file_nmea_output">file_nmea_output</string>
     <string name="pref_key_file_measurement_output">file_measurement_output</string>
     <string name="pref_key_file_navigation_message_output">file_navigation_message_output</string>
     <string name="pref_key_file_antenna_output_json">file_antenna_output_json</string>
     <string name="pref_key_file_antenna_output_csv">file_antenna_output_csv</string>
     <string name="pref_key_file_location_output">file_location_output</string>
+    <string name="pref_key_file_gnss_status_output">file_gnss_status_output</string>
+    <string name="pref_key_file_orientation_output">file_orientation_output</string>
+    <string name="pref_key_inject_time_when_logging">inject_time_when_logging</string>
+    <string name="pref_key_inject_psds_when_logging">inject_psds_when_logging</string>
 
     <string name="pref_key_about_category">about_category</string>
     <string name="pref_key_showed_v2_tutorial">showed_v2_tutorial</string>

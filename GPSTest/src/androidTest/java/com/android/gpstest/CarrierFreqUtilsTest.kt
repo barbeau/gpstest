@@ -86,7 +86,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         qzssL1.hasCarrierFrequency = true
-        qzssL1.carrierFrequencyHz = 1575420000.0f
+        qzssL1.carrierFrequencyHz = 1575420000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(qzssL1)
         assertEquals("L1", label)
@@ -101,7 +101,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         qzssL2.hasCarrierFrequency = true
-        qzssL2.carrierFrequencyHz = 1227600000.0f
+        qzssL2.carrierFrequencyHz = 1227600000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(qzssL2)
         assertEquals("L2", label)
@@ -116,7 +116,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         qzssL5.hasCarrierFrequency = true
-        qzssL5.carrierFrequencyHz = 1176450000.0f
+        qzssL5.carrierFrequencyHz = 1176450000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(qzssL5)
         assertEquals("L5", label)
@@ -131,7 +131,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         qzssL6.hasCarrierFrequency = true
-        qzssL6.carrierFrequencyHz = 1278750000.0f
+        qzssL6.carrierFrequencyHz = 1278750000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(qzssL6)
         assertEquals("L6", label)
@@ -160,7 +160,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB1.hasCarrierFrequency = true
-        beidouB1.carrierFrequencyHz = 1561098000.0f
+        beidouB1.carrierFrequencyHz = 1561098000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1)
         assertEquals("B1", label)
@@ -175,7 +175,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB1_2.hasCarrierFrequency = true
-        beidouB1_2.carrierFrequencyHz = 1589742000.0f
+        beidouB1_2.carrierFrequencyHz = 1589742000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1_2)
         assertEquals("B1-2", label)
@@ -190,7 +190,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB1c.hasCarrierFrequency = true
-        beidouB1c.carrierFrequencyHz = 1575420000.0f
+        beidouB1c.carrierFrequencyHz = 1575420000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1c)
         assertEquals("B1C", label)
@@ -205,7 +205,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB1c202.hasCarrierFrequency = true
-        beidouB1c202.carrierFrequencyHz = 1575450000.0f
+        beidouB1c202.carrierFrequencyHz = 1575450000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1c202)
         assertEquals("B1C", label)
@@ -220,7 +220,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB2.hasCarrierFrequency = true
-        beidouB2.carrierFrequencyHz = 1207140000.0f
+        beidouB2.carrierFrequencyHz = 1207140000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2)
         assertEquals("B2", label)
@@ -235,7 +235,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB2a.hasCarrierFrequency = true
-        beidouB2a.carrierFrequencyHz = 1176450000.0f
+        beidouB2a.carrierFrequencyHz = 1176450000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2a)
         assertEquals("B2a", label)
@@ -250,7 +250,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         beidouB3.hasCarrierFrequency = true
-        beidouB3.carrierFrequencyHz = 1268520000.0f
+        beidouB3.carrierFrequencyHz = 1268520000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB3)
         assertEquals("B3", label)
@@ -267,7 +267,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         irnssL5.hasCarrierFrequency = true
-        irnssL5.carrierFrequencyHz = 1176450000.0f
+        irnssL5.carrierFrequencyHz = 1176450000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(irnssL5)
         assertEquals("L5", label)
@@ -282,7 +282,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         irnssS.hasCarrierFrequency = true
-        irnssS.carrierFrequencyHz = 2492028000.0f
+        irnssS.carrierFrequencyHz = 2492028000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(irnssS)
         assertEquals("S", label)
@@ -297,7 +297,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         gagan.hasCarrierFrequency = true
-        gagan.carrierFrequencyHz = 1575420000.0f
+        gagan.carrierFrequencyHz = 1575420000.0
         gagan.sbasType = SbasType.GAGAN
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gagan)
@@ -313,7 +313,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos120.hasCarrierFrequency = true
-        egnos120.carrierFrequencyHz = 1575420000.0f
+        egnos120.carrierFrequencyHz = 1575420000.0
         egnos120.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos120)
@@ -329,7 +329,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos123.hasCarrierFrequency = true
-        egnos123.carrierFrequencyHz = 1575420000.0f
+        egnos123.carrierFrequencyHz = 1575420000.0
         egnos123.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos123)
@@ -345,7 +345,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos126.hasCarrierFrequency = true
-        egnos126.carrierFrequencyHz = 1575420000.0f
+        egnos126.carrierFrequencyHz = 1575420000.0
         egnos126.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos126)
@@ -361,7 +361,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos136.hasCarrierFrequency = true
-        egnos136.carrierFrequencyHz = 1575420000.0f
+        egnos136.carrierFrequencyHz = 1575420000.0
         egnos136.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos136)
@@ -377,7 +377,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos120L5.hasCarrierFrequency = true
-        egnos120L5.carrierFrequencyHz = 1176450000.0f
+        egnos120L5.carrierFrequencyHz = 1176450000.0
         egnos120L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos120L5)
@@ -393,7 +393,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos123L5.hasCarrierFrequency = true
-        egnos123L5.carrierFrequencyHz = 1176450000.0f
+        egnos123L5.carrierFrequencyHz = 1176450000.0
         egnos123L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos123L5)
@@ -409,7 +409,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos126L5.hasCarrierFrequency = true
-        egnos126L5.carrierFrequencyHz = 1176450000.0f
+        egnos126L5.carrierFrequencyHz = 1176450000.0
         egnos126L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos126L5)
@@ -425,7 +425,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos136L5.hasCarrierFrequency = true
-        egnos136L5.carrierFrequencyHz = 1176450000.0f
+        egnos136L5.carrierFrequencyHz = 1176450000.0
         egnos136L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos136L5)
@@ -443,7 +443,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos133L1.hasCarrierFrequency = true
-        egnos133L1.carrierFrequencyHz = 1575420000.0f
+        egnos133L1.carrierFrequencyHz = 1575420000.0
         egnos133L1.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos133L1)
@@ -459,7 +459,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         egnos133L5.hasCarrierFrequency = true
-        egnos133L5.carrierFrequencyHz = 1176450000.0f
+        egnos133L5.carrierFrequencyHz = 1176450000.0
         egnos133L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos133L5)
@@ -493,7 +493,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         anik15_138L1.hasCarrierFrequency = true
-        anik15_138L1.carrierFrequencyHz = 1575420000.0f
+        anik15_138L1.carrierFrequencyHz = 1575420000.0
         anik15_138L1.sbasType = SbasType.WAAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(anik15_138L1)
@@ -509,7 +509,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         anik15_138L5.hasCarrierFrequency = true
-        anik15_138L5.carrierFrequencyHz = 1176450000.0f
+        anik15_138L5.carrierFrequencyHz = 1176450000.0
         anik15_138L5.sbasType = SbasType.WAAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(anik15_138L5)
@@ -525,7 +525,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         ses5_136L1.hasCarrierFrequency = true
-        ses5_136L1.carrierFrequencyHz = 1575420000.0f
+        ses5_136L1.carrierFrequencyHz = 1575420000.0
         ses5_136L1.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(ses5_136L1)
@@ -541,7 +541,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         ses5_136L5.hasCarrierFrequency = true
-        ses5_136L5.carrierFrequencyHz = 1176450000.0f
+        ses5_136L5.carrierFrequencyHz = 1176450000.0
         ses5_136L5.sbasType = SbasType.EGNOS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(ses5_136L5)
@@ -559,7 +559,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         msas129L1.hasCarrierFrequency = true
-        msas129L1.carrierFrequencyHz = 1575420000.0f
+        msas129L1.carrierFrequencyHz = 1575420000.0
         msas129L1.sbasType = SbasType.MSAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(msas129L1)
@@ -575,7 +575,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         msas129L5.hasCarrierFrequency = true
-        msas129L5.carrierFrequencyHz = 1176450000.0f
+        msas129L5.carrierFrequencyHz = 1176450000.0
         msas129L5.sbasType = SbasType.MSAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(msas129L5)
@@ -591,7 +591,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         msas137L1.hasCarrierFrequency = true
-        msas137L1.carrierFrequencyHz = 1575420000.0f
+        msas137L1.carrierFrequencyHz = 1575420000.0
         msas137L1.sbasType = SbasType.MSAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(msas137L1)
@@ -607,7 +607,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         msas137L5.hasCarrierFrequency = true
-        msas137L5.carrierFrequencyHz = 1176450000.0f
+        msas137L5.carrierFrequencyHz = 1176450000.0
         msas137L5.sbasType = SbasType.MSAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(msas137L5)
@@ -623,7 +623,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         gpsL1variation.hasCarrierFrequency = true
-        gpsL1variation.carrierFrequencyHz = 1575420000.0000000f
+        gpsL1variation.carrierFrequencyHz = 1575420000.0000000
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1variation)
         assertEquals("L1", label)
@@ -651,7 +651,7 @@ class CarrierFreqUtilsTest {
                 72f,
                 25f);
         gpsL1badCf.hasCarrierFrequency = true
-        gpsL1badCf.carrierFrequencyHz = 12345.0f
+        gpsL1badCf.carrierFrequencyHz = 12345.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1badCf)
         assertEquals(CF_UNKNOWN, label)
