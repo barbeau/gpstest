@@ -145,6 +145,7 @@ class SignalInfoViewModel @Inject constructor(
             .onEach {
                 //Log.d(TAG, "SignalInfoViewModel location: ${it.toNotificationTitle()}")
                 _location.value = it
+                setGotFirstFix(true)
             }
             .launchIn(viewModelScope)
     }
