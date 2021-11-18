@@ -331,7 +331,7 @@
     <!-- File Output -->
     <string name="pref_inject_assist_data_when_logging_category_title">Auto-inject assist data</string>
     <string name="pref_inject_time_when_logging_title">Auto-inject time</string>
-    <string name="pref_inject_time_when_logging_summary">Automatically injects time data from an Network Time Protocol server when file logging starts</string>
+    <string name="pref_inject_time_when_logging_summary">Automatically injects time data from a Network Time Protocol server when file logging starts</string>
 
     <string name="pref_inject_psds_when_logging_title">Auto-inject PSDS</string>
     <string name="pref_inject_psds_when_logging_summary">Automatically injects Predicted Satellite Data Service (e.g., XTRA) data when file logging starts</string>

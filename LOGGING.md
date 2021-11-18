@@ -140,7 +140,7 @@ Here are a few more additional pieces of information on the following formats, w
 `OrientationDeg` - Each row represents an estimated device orientation, collected from Android API SensorManager#getOrientation:
 * utcTimeMillis - The sum of elapsedRealtimeNanos below and the estimated device boot time at UTC, after a recent NTP (Network Time Protocol) sync.
 * elapsedRealtimeNanos - The time in nanoseconds at which the event happened.
-* yawDeg - If the screen is in portrait mode, this value equals the Azimuth degree (modulus to 0°~360°). If the screen is in landscape mode, it equals the sum (modulus to 0°~360°) of the screen rotation angle (either 90° or 270°) and the Azimuth degree. Azimuth, refers to the angle of rotation about the -z axis. This value represents the angle between the device's y axis and the magnetic north pole.
+* yawDeg - If the screen is in portrait mode, this value equals the Azimuth degree (modulus to 0° and 360°). If the screen is in landscape mode, it equals the sum (modulus to 0° and 360°) of the screen rotation angle (either 90° or 270°) and the Azimuth degree. Azimuth, refers to the angle of rotation about the -z axis. This value represents the angle between the device's y axis and the magnetic north pole.
 * rollDeg - Roll, angle of rotation about the y axis. This value represents the angle between a plane perpendicular to the device's screen and a plane perpendicular to the ground.
 * pitchDeg - Pitch, angle of rotation about the x axis. This value represents the angle between a plane parallel to the device's screen and a plane parallel to the ground.
 

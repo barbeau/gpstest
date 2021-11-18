@@ -109,8 +109,8 @@
     <string name="pref_key_file_antenna_output_json">file_antenna_output_json</string>
     <string name="pref_key_file_antenna_output_csv">file_antenna_output_csv</string>
     <string name="pref_key_file_location_output">file_location_output</string>
-    <string name="pref_key_file_gnss_status_output">gnss_status_output</string>
-    <string name="pref_key_file_orientation_output">orientation_output</string>
+    <string name="pref_key_file_gnss_status_output">file_gnss_status_output</string>
+    <string name="pref_key_file_orientation_output">file_orientation_output</string>
     <string name="pref_key_inject_time_when_logging">inject_time_when_logging</string>
     <string name="pref_key_inject_psds_when_logging">inject_psds_when_logging</string>
 

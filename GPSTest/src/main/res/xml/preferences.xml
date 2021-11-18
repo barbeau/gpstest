@@ -87,21 +87,6 @@
             android:summary="@string/pref_output_category_summary">
 
             <PreferenceCategory
-                android:title="@string/pref_inject_assist_data_when_logging_category_title"
-                android:key="@string/pref_key_inject_assist_data_when_logging_category">
-                <CheckBoxPreference
-                    android:key="@string/pref_key_inject_time_when_logging"
-                    android:title="@string/pref_inject_time_when_logging_title"
-                    android:summary="@string/pref_inject_time_when_logging_summary"
-                    android:defaultValue="true" />
-                <CheckBoxPreference
-                    android:key="@string/pref_key_inject_psds_when_logging"
-                    android:title="@string/pref_inject_psds_when_logging_title"
-                    android:summary="@string/pref_inject_psds_when_logging_summary"
-                    android:defaultValue="true" />
-            </PreferenceCategory>
-
-            <PreferenceCategory
                 android:title="@string/pref_file_output_category_title"
                 android:key="@string/pref_key_file_output_category">
                 <CheckBoxPreference
@@ -144,6 +129,21 @@
                     android:title="@string/pref_file_antenna_output_json_title"
                     android:summary="@string/pref_file_antenna_output_json_summary"
                     android:defaultValue="false" />
+            </PreferenceCategory>
+
+            <PreferenceCategory
+                android:title="@string/pref_inject_assist_data_when_logging_category_title"
+                android:key="@string/pref_key_inject_assist_data_when_logging_category">
+                <CheckBoxPreference
+                    android:key="@string/pref_key_inject_time_when_logging"
+                    android:title="@string/pref_inject_time_when_logging_title"
+                    android:summary="@string/pref_inject_time_when_logging_summary"
+                    android:defaultValue="true" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_inject_psds_when_logging"
+                    android:title="@string/pref_inject_psds_when_logging_title"
+                    android:summary="@string/pref_inject_psds_when_logging_summary"
+                    android:defaultValue="true" />
             </PreferenceCategory>
 
             <PreferenceCategory
