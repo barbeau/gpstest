@@ -16,13 +16,13 @@
 
 <resources>
     <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-    <style name="AppTheme.Dark" parent="Theme.MaterialComponents">
+    <style name="AppTheme.Dark" parent="Theme.Material3.Dark">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -36,11 +36,11 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light"/>
-    <style name="AppTheme.PopupOverlay.Dark" parent="ThemeOverlay.MaterialComponents.Light"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.Material3.Light"/>
+    <style name="AppTheme.PopupOverlay.Dark" parent="ThemeOverlay.Material3.Light"/>
 
-    <style name="AppTheme.Preferences" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme.Preferences" parent="Theme.Material3.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -114,7 +114,7 @@
     </style>
 
     <!-- We need our own style for a material button that's just an image without text - see https://github.com/material-components/material-components-android/issues/272 -->
-    <style name="Widget.AppTheme.Button.IconButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Widget.AppTheme.Button.IconButton" parent="Widget.Material3.Button.TextButton">
         <item name="android:minWidth">0dp</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetTop">0dp</item>

@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -424,7 +425,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             .wrapContentHeight()
             .wrapContentWidth()
             .clip(RoundedCornerShape(4.dp))
-            .background(MaterialTheme.colors.error)
+            .background(MaterialTheme.colorScheme.error)
             .clickable {
                 openDialog.value = true
             }
@@ -433,7 +434,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             text = timeText,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
             fontSize = 13.sp,
-            color = MaterialTheme.colors.onError
+            color = MaterialTheme.colorScheme.onError
         )
     }
 
@@ -499,7 +500,7 @@ fun LockIcon(fixState: FixState) {
         Icon(
             painter = painterResource(id = R.drawable.ic_baseline_lock_24),
             contentDescription = stringResource(id = R.string.lock),
-            tint = MaterialTheme.colors.onBackground,
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(6.dp)
         )
     }

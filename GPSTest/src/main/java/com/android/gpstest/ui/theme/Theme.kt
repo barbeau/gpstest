@@ -15,9 +15,9 @@
  */
 package com.android.gpstest.ui.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -32,14 +32,12 @@ import androidx.compose.ui.graphics.Color
 private val Purple500 = Color(0xFF3F51B5)
 private val Purple700 = Color(0xFF303F9F)
 
-private val lightColors = lightColors(
+private val lightColors = lightColorScheme(
     primary = Purple500,
-    primaryVariant = Purple700
 )
 
-private val darkColors = darkColors(
+private val darkColors = darkColorScheme(
     primary = Purple500,
-    primaryVariant = Purple700
 )
 
 @Composable
@@ -49,7 +47,7 @@ fun AppTheme(
 ) {
     MaterialTheme(
         // isSystemInDarkTheme()
-        colors = if (darkTheme) darkColors else lightColors,
+        colorScheme = if (darkTheme) darkColors else lightColors,
     ) {
         content()
     }
