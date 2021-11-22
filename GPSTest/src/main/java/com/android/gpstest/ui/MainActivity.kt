@@ -57,6 +57,7 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.ui.dashboard.DashboardFragment
 import com.android.gpstest.ui.sky.SkyFragment
 import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.*
@@ -98,6 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var mapFragment: MapFragment? = null
     private var skyFragment: SkyFragment? = null
     private var accuracyFragment: MapFragment? = null
+    private var dashboardFragment: DashboardFragment? = null
 
     // Main signal view model
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -425,6 +427,10 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 showAccuracyFragment()
                 currentNavDrawerPosition = item
             }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_DASHBOARD -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_DASHBOARD) {
+                showDashboardFragment()
+                currentNavDrawerPosition = item
+            }
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA -> forceTimeInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA -> {
@@ -470,6 +476,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideMapFragment()
         hideSkyFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -477,13 +484,13 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Show fragment (we use show instead of replace to keep the map state)
         if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+            statusFragment = fm.findFragmentByTag(StatusFragment.TAG) as StatusFragment?
             if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new StatusFragment")
                 statusFragment = StatusFragment()
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, statusFragment!!, TAG)
+                    .add(R.id.fragment_container, statusFragment!!, StatusFragment.TAG)
                     .commit()
             }
         }
@@ -493,7 +500,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+        statusFragment = fm.findFragmentByTag(StatusFragment.TAG) as StatusFragment?
         if (statusFragment != null && !statusFragment!!.isHidden) {
             fm.beginTransaction().hide(statusFragment!!).commit()
         }
@@ -505,6 +512,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideSkyFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -543,6 +551,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideMapFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -577,6 +586,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideMapFragment()
         hideSkyFragment()
+        hideDashboardFragment()
         // Show fragment (we use show instead of replace to keep the map state)
         if (accuracyFragment == null) {
             // First check to see if an instance of fragment already exists
@@ -605,6 +615,42 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         accuracyFragment = fm.findFragmentByTag(MapConstants.MODE_ACCURACY) as MapFragment?
         if (accuracyFragment != null && !accuracyFragment!!.isHidden) {
             fm.beginTransaction().hide(accuracyFragment!!).commit()
+        }
+    }
+
+    private fun showDashboardFragment() {
+        val fm = supportFragmentManager
+        // Hide everything that shouldn't be shown
+        hideStatusFragment()
+        hideMapFragment()
+        hideSkyFragment()
+        hideAccuracyFragment()
+        if (benchmarkController != null) {
+            benchmarkController!!.hide()
+        }
+
+        // Show fragment (we use show instead of replace to keep the map state)
+        if (dashboardFragment == null) {
+            // First check to see if an instance of fragment already exists
+            dashboardFragment = fm.findFragmentByTag(DashboardFragment.TAG) as DashboardFragment?
+            if (dashboardFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new DashboardFragment")
+                dashboardFragment = DashboardFragment()
+                fm.beginTransaction()
+                    .add(R.id.fragment_container, dashboardFragment!!, DashboardFragment.TAG)
+                    .commit()
+            }
+        }
+        supportFragmentManager.beginTransaction().show(dashboardFragment!!).commit()
+        title = resources.getString(R.string.dashboard_title)
+    }
+
+    private fun hideDashboardFragment() {
+        val fm = supportFragmentManager
+        dashboardFragment = fm.findFragmentByTag(DashboardFragment.TAG) as DashboardFragment?
+        if (dashboardFragment != null && !dashboardFragment!!.isHidden) {
+            fm.beginTransaction().hide(dashboardFragment!!).commit()
         }
     }
 

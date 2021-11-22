@@ -66,17 +66,17 @@ internal object SatelliteUtil {
      * [SatelliteUtils.createGnssSatelliteKey()]. Various other metadata is also included.
      */
     fun List<SatelliteStatus>.toSatelliteGroup(): SatelliteGroup {
-        val satellites: MutableMap<String, Satellite> = HashMap()
+        val satellites: MutableMap<String, Satellite> = LinkedHashMap()
         var numSignalsUsed = 0
         var numSignalsInView = 0
         var numSatsUsed = 0
         var numSatsInView = 0
-        val supportedGnss: MutableSet<GnssType> = HashSet()
-        val supportedGnssCfs: MutableSet<String> = HashSet()
-        val supportedSbas: MutableSet<SbasType> = HashSet()
-        val supportedSbasCfs: MutableSet<String> = HashSet()
-        val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
-        val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
+        val supportedGnss: MutableSet<GnssType> = LinkedHashSet()
+        val supportedGnssCfs: MutableSet<String> = LinkedHashSet()
+        val supportedSbas: MutableSet<SbasType> = LinkedHashSet()
+        val supportedSbasCfs: MutableSet<String> = LinkedHashSet()
+        val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
@@ -132,7 +132,7 @@ internal object SatelliteUtil {
             var satStatuses: MutableMap<String, SatelliteStatus>
             if (!satellites.containsKey(key)) {
                 // Create new satellite and add signal
-                satStatuses = HashMap()
+                satStatuses = LinkedHashMap()
                 satStatuses[carrierLabel] = s
                 val sat = Satellite(key, satStatuses)
                 satellites[key] = sat

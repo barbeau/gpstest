@@ -14,25 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest.ui.status
+package com.android.gpstest.ui.dashboard
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.android.gpstest.R
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.util.PreferenceUtil.darkTheme
-import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-class StatusFragment : Fragment() {
+class DashboardFragment : Fragment() {
 
     @ExperimentalFoundationApi
     @ExperimentalCoroutinesApi
@@ -49,30 +49,13 @@ class StatusFragment : Fragment() {
                     // TODO - add "system dark setting" as an option in preferences - Issue #277
                     darkTheme = darkTheme()
                 ) {
-                    StatusScreen(viewModel = viewModel)
+                    DashboardScreen(viewModel = viewModel)
                 }
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.status_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.sort_sats) {
-            showSortByDialog(requireActivity())
-        }
-        return false
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     companion object {
-        const val TAG = "StatusFragment"
+        const val TAG = "DashboardFragment"
     }
 }

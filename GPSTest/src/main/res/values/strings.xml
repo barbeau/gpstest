@@ -23,6 +23,7 @@
     <string name="gps_map_title">Map</string>
     <string name="gps_sky_title">Sky</string>
     <string name="gps_accuracy_title">Accuracy</string>
+    <string name="dashboard_title">Dashboard</string>
 
     <!-- Navigation Drawer -->
     <string name="navdrawer_separator_assist_data">Modify assist data</string>

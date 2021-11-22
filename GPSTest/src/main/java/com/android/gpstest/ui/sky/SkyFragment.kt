@@ -577,6 +577,6 @@ class SkyFragment : Fragment() {
     }
 
     companion object {
-        const val TAG = "GpsSkyFragment"
+        const val TAG = "SkyFragment"
     }
 }
