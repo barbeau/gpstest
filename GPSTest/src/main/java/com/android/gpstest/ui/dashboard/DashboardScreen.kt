@@ -61,6 +61,16 @@ fun GnssList(satelliteMetadata: SatelliteMetadata) {
                     Text(it.name)
                 }
             }
+            satelliteMetadata.supportedGnssCfs.forEach {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                    elevation = 2.dp
+                ) {
+                    Text(it)
+                }
+            }
 //            Card(
 //                modifier = Modifier
 //                    .fillMaxWidth()
