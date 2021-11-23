@@ -200,6 +200,13 @@
     <string name="sky_legend_shape_in_view">In view</string>
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_supported_gnss">Supported GNSS</string>
+    <string name="dashboard_navstar">NAVSTAR GPS</string>
+    <string name="dashboard_usa">USA</string>
+    <string name="dashboard_galileo">Galileo</string>
+    <string name="dashboard_eu">European Union</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>
