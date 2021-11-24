@@ -370,9 +370,9 @@ class SignalInfoViewModel @Inject constructor(
 
     private fun onGnssFixAcquired() {
         _fixState.value = FixState.Acquired
-        // Scan for another 5 seconds to see if we get more signals (L5, etc)
         scanningJob = viewModelScope.launch {
             delay(TimeUnit.SECONDS.toMillis(5))
+            // If we still have a fix after 5 seconds, consider the scan complete
             if (_fixState.value == FixState.Acquired) {
                 _finishedScanningCfs.value = true
             }
