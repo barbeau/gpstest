@@ -81,6 +81,8 @@ internal object SatelliteUtil {
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
         var isNonPrimaryCarrierFreqInUse = false
+        val gnssToCf: MutableMap<GnssType, MutableSet<String>> = LinkedHashMap()
+        val sbasToCf: MutableMap<SbasType, MutableSet<String>> = LinkedHashMap()
 
         if (this.isEmpty()) {
             return SatelliteGroup(satellites, SatelliteMetadata())
@@ -115,9 +117,11 @@ internal object SatelliteUtil {
                 if (s.gnssType != GnssType.UNKNOWN) {
                     if (s.gnssType != GnssType.SBAS) {
                         supportedGnssCfs.add(carrierLabel)
+                        addToMap(gnssToCf, s.gnssType, carrierLabel)
                     } else {
                         if (s.sbasType != SbasType.UNKNOWN) {
                             supportedSbasCfs.add(carrierLabel)
+                            addToMap(sbasToCf, s.sbasType, carrierLabel)
                         }
                     }
                 }
@@ -197,9 +201,17 @@ internal object SatelliteUtil {
                 isDualFrequencyPerSatInView,
                 isDualFrequencyPerSatInUse,
                 isNonPrimaryCarrierFreqInView,
-                isNonPrimaryCarrierFreqInUse
+                isNonPrimaryCarrierFreqInUse,
+                gnssToCf,
+                sbasToCf
             )
         )
+    }
+
+    private fun <T> addToMap(map: MutableMap<T, MutableSet<String>>, key: T, cf: String) {
+        val cfs: MutableSet<String> = map.getOrDefault(key, mutableSetOf(cf))
+        cfs.add(cf)
+        map[key] = cfs
     }
 
     /**

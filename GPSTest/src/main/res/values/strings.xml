@@ -202,10 +202,18 @@
 
     <!-- Dashboard -->
     <string name="dashboard_supported_gnss">Supported GNSS</string>
-    <string name="dashboard_navstar">NAVSTAR GPS</string>
+    <string name="dashboard_gps">GPS</string>
     <string name="dashboard_usa">USA</string>
     <string name="dashboard_galileo">Galileo</string>
     <string name="dashboard_eu">European Union</string>
+    <string name="dashboard_glonass">GLONASS</string>
+    <string name="dashboard_russia">Russia</string>
+    <string name="dashboard_qzss">QZSS</string>
+    <string name="dashboard_japan">Japan</string>
+    <string name="dashboard_beidou">Beidou</string>
+    <string name="dashboard_china">China</string>
+    <string name="dashboard_irnss">NavIC</string>
+    <string name="dashboard_india">India</string>
 
     <!-- Content descriptions -->
     <string name="lock">lock</string>

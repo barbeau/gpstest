@@ -48,4 +48,6 @@ data class SatelliteMetadata(
         val isDualFrequencyPerSatInUse: Boolean = false,
         val isNonPrimaryCarrierFreqInView: Boolean = false,
         val isNonPrimaryCarrierFreqInUse: Boolean = false,
+        val gnssToCf: MutableMap<GnssType, MutableSet<String>> = LinkedHashMap(),
+        val sbasToCf: MutableMap<SbasType, MutableSet<String>> = LinkedHashMap()
 )
