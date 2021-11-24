@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.Bottom
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
@@ -74,11 +73,7 @@ fun GnssList(satelliteMetadata: SatelliteMetadata) {
                 style = MaterialTheme.typography.h6
             )
             if (satelliteMetadata.gnssToCf.entries.isEmpty()) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .padding(5.dp)
-                        .align(CenterHorizontally)
-                )
+                ProgressCard()
             } else {
                 satelliteMetadata.gnssToCf.entries.forEach {
                     GnssCard(gnssType = it.key, cfs = it.value)
@@ -227,6 +222,23 @@ fun Chip(text: String) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
         )
+    }
+}
+
+@Composable
+fun ProgressCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp),
+        elevation = 2.dp
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator(modifier = Modifier
+                .padding(15.dp))
+        }
     }
 }
 
