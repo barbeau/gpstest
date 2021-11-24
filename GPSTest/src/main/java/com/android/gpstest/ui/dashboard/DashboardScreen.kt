@@ -154,51 +154,49 @@ fun GnssCard(
             .padding(5.dp),
         elevation = 2.dp
     ) {
-        val imageModifier =
-
-            Row {
-                Column {
-                    Image(
-                        painterResource(
-                            id = flagId
-                        ),
-                        contentDescription = stringResource(id = contentDescriptionId),
-                        modifier = Modifier
-                            .size(75.dp)
-                            .padding(10.dp)
-                            .shadow(
-                                elevation = 3.dp,
-                                shape = CircleShape,
-                                clip = true
-                            )
-                    )
-                }
-                Column(modifier = Modifier.align(CenterVertically)) {
-                    Text(
-                        modifier = Modifier.padding(start = 5.dp),
-                        text = stringResource(id = nameId),
-                        style = MaterialTheme.typography.h6
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 5.dp),
-                        text = stringResource(id = countryId),
-                        style = MaterialTheme.typography.body2
-                    )
-                }
-                Column(
+        Row {
+            Column {
+                Image(
+                    painterResource(
+                        id = flagId
+                    ),
+                    contentDescription = stringResource(id = contentDescriptionId),
                     modifier = Modifier
-                        .align(Bottom)
-                        .fillMaxSize()
-                        .padding(bottom = 5.dp, end = 5.dp),
-                    horizontalAlignment = End
-                ) {
-                    Row {
-                        cfs.forEach {
-                            Chip(it)
-                        }
+                        .size(75.dp)
+                        .padding(10.dp)
+                        .shadow(
+                            elevation = 3.dp,
+                            shape = CircleShape,
+                            clip = true
+                        )
+                )
+            }
+            Column(modifier = Modifier.align(CenterVertically)) {
+                Text(
+                    modifier = Modifier.padding(start = 5.dp),
+                    text = stringResource(id = nameId),
+                    style = MaterialTheme.typography.h6
+                )
+                Text(
+                    modifier = Modifier.padding(start = 5.dp),
+                    text = stringResource(id = countryId),
+                    style = MaterialTheme.typography.body2
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .align(Bottom)
+                    .fillMaxSize()
+                    .padding(bottom = 5.dp, end = 5.dp),
+                horizontalAlignment = End
+            ) {
+                Row {
+                    cfs.forEach {
+                        Chip(it)
                     }
                 }
             }
+        }
     }
 }
 
