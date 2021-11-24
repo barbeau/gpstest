@@ -23,14 +23,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
@@ -65,14 +63,26 @@ fun GnssList(satelliteMetadata: SatelliteMetadata) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Column(modifier = Modifier.padding(5.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(5.dp)
+                .fillMaxSize()
+        ) {
             Text(
                 modifier = Modifier.padding(5.dp),
                 text = stringResource(id = R.string.dashboard_supported_gnss),
                 style = MaterialTheme.typography.h6
             )
-            satelliteMetadata.gnssToCf.entries.forEach {
-                GnssCard(gnssType = it.key, cfs = it.value)
+            if (satelliteMetadata.gnssToCf.entries.isEmpty()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .align(CenterHorizontally)
+                )
+            } else {
+                satelliteMetadata.gnssToCf.entries.forEach {
+                    GnssCard(gnssType = it.key, cfs = it.value)
+                }
             }
         }
     }
