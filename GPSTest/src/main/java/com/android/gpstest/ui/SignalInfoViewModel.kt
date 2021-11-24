@@ -38,10 +38,12 @@ import com.android.gpstest.util.SatelliteUtil.toSatelliteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -110,6 +112,10 @@ class SignalInfoViewModel @Inject constructor(
 
     private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
     val fixState: LiveData<FixState> = _fixState
+
+    private val _finishedScanningCfs = MutableLiveData(false)
+    val finishedScanningCfs: LiveData<Boolean> = _finishedScanningCfs
+    private var scanningJob: Job? = null
 
     private var started = false
 
@@ -364,10 +370,22 @@ class SignalInfoViewModel @Inject constructor(
 
     private fun onGnssFixAcquired() {
         _fixState.value = FixState.Acquired
+        // Scan for another 5 seconds to see if we get more signals (L5, etc)
+        scanningJob = viewModelScope.launch {
+            delay(TimeUnit.SECONDS.toMillis(5))
+            if (_fixState.value == FixState.Acquired) {
+                _finishedScanningCfs.value = true
+            }
+        }
     }
 
     private fun onGnssFixLost() {
         _fixState.value = FixState.NotAcquired
+        _finishedScanningCfs.value = false
+        if (scanningJob?.isActive == true) {
+            // Cancel any existing scan
+            scanningJob?.cancel()
+        }
     }
 
     private fun onNmeaMessage(message: String, timestamp: Long) {
@@ -529,6 +547,7 @@ class SignalInfoViewModel @Inject constructor(
         _fixState.value = FixState.NotAcquired
         _allSatellitesGroup.value = SatelliteGroup(emptyMap(),SatelliteMetadata())
         gotFirstFix = false
+        _finishedScanningCfs.value = false
     }
 
     /**

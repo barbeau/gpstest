@@ -36,12 +36,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
-import com.android.gpstest.model.*
+import com.android.gpstest.model.GnssType
+import com.android.gpstest.model.SatelliteGroup
+import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.SignalInfoViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -52,11 +51,13 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val allSatellites: SatelliteGroup by viewModel.allSatellitesGroup.observeAsState(
         SatelliteGroup(emptyMap(), satelliteMetadata = SatelliteMetadata())
     )
-    GnssList(satelliteMetadata = allSatellites.satelliteMetadata)
+    val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
+
+    GnssList(satelliteMetadata = allSatellites.satelliteMetadata, finishedScanningCfs)
 }
 
 @Composable
-fun GnssList(satelliteMetadata: SatelliteMetadata) {
+fun GnssList(satelliteMetadata: SatelliteMetadata, finishedScanningCfs: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +77,11 @@ fun GnssList(satelliteMetadata: SatelliteMetadata) {
                 ProgressCard()
             } else {
                 satelliteMetadata.gnssToCf.entries.forEach {
-                    GnssCard(gnssType = it.key, cfs = it.value)
+                    GnssCard(
+                        gnssType = it.key,
+                        cfs = it.value,
+                        finishedScanningCfs = finishedScanningCfs
+                    )
                 }
             }
         }
@@ -84,7 +89,7 @@ fun GnssList(satelliteMetadata: SatelliteMetadata) {
 }
 
 @Composable
-fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
+fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean) {
     when (gnssType) {
         GnssType.NAVSTAR -> {
             GnssCard(
@@ -92,7 +97,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_gps,
                 R.string.dashboard_usa,
                 R.string.usa_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.GALILEO -> {
@@ -101,7 +107,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_galileo,
                 R.string.dashboard_eu,
                 R.string.eu_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.GLONASS -> {
@@ -110,7 +117,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_glonass,
                 R.string.dashboard_russia,
                 R.string.russia_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.QZSS -> {
@@ -119,7 +127,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_qzss,
                 R.string.dashboard_japan,
                 R.string.japan_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.BEIDOU -> {
@@ -128,7 +137,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_beidou,
                 R.string.dashboard_china,
                 R.string.china_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.IRNSS -> {
@@ -137,7 +147,8 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>) {
                 R.string.dashboard_irnss,
                 R.string.dashboard_india,
                 R.string.india_flag,
-                cfs
+                cfs,
+                finishedScanningCfs
             )
         }
         GnssType.SBAS -> return // No-op
@@ -151,7 +162,8 @@ fun GnssCard(
     @StringRes nameId: Int,
     @StringRes countryId: Int,
     @StringRes contentDescriptionId: Int,
-    cfs: Set<String>
+    cfs: Set<String>,
+    finishedScanningCfs: Boolean
 ) {
     Card(
         modifier = Modifier
@@ -196,6 +208,14 @@ fun GnssCard(
                 horizontalAlignment = End
             ) {
                 Row {
+                    if (!finishedScanningCfs) {
+                        CircularProgressIndicator(
+                            modifier = Modifier
+                                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
+                                .align(CenterVertically)
+                                .size(20.dp)
+                        )
+                    }
                     cfs.forEach {
                         Chip(it)
                     }
@@ -236,58 +256,60 @@ fun ProgressCard() {
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
-            CircularProgressIndicator(modifier = Modifier
-                .padding(15.dp))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(15.dp)
+            )
         }
     }
 }
 
-@Preview
-@Composable
-fun GnssListPreview(
-    @PreviewParameter(SatelliteMetadataPreviewParameterProvider::class) satelliteMetadata: SatelliteMetadata
-) {
-    GnssList(satelliteMetadata)
-}
-
-class SatelliteMetadataPreviewParameterProvider : PreviewParameterProvider<SatelliteMetadata> {
-    override val values = sequenceOf(previewMetadata())
-}
-
-fun previewMetadata(): SatelliteMetadata {
-    val numSignalsInView = 10
-    val numSignalsUsed = 10
-    val numSignalsTotal = 10
-    val numSatsInView = 7
-    val numSatsUsed = 7
-    val numSatsTotal = 7
-    val supportedGnss: Set<GnssType> = setOf(GnssType.NAVSTAR, GnssType.GALILEO)
-    val supportedGnssCfs: Set<String> = setOf("L1", "L5", "E1")
-    val supportedSbas: Set<SbasType> = emptySet()
-    val supportedSbasCfs: Set<String> = emptySet()
-    val unknownCarrierStatuses: Map<String, SatelliteStatus> = emptyMap()
-    val duplicateCarrierStatuses: Map<String, SatelliteStatus> = emptyMap()
-    val isDualFrequencyPerSatInView = true
-    val isDualFrequencyPerSatInUse = true
-    val isNonPrimaryCarrierFreqInView = true
-    val isNonPrimaryCarrierFreqInUse = true
-
-    return SatelliteMetadata(
-        numSignalsInView,
-        numSignalsUsed,
-        numSignalsTotal,
-        numSatsInView,
-        numSatsUsed,
-        numSatsTotal,
-        supportedGnss,
-        supportedGnssCfs,
-        supportedSbas,
-        supportedSbasCfs,
-        unknownCarrierStatuses,
-        duplicateCarrierStatuses,
-        isDualFrequencyPerSatInView,
-        isDualFrequencyPerSatInUse,
-        isNonPrimaryCarrierFreqInView,
-        isNonPrimaryCarrierFreqInUse
-    )
-}
+//@Preview
+//@Composable
+//fun GnssListPreview(
+//    @PreviewParameter(SatelliteMetadataPreviewParameterProvider::class) satelliteMetadata: SatelliteMetadata
+//) {
+//    GnssList(satelliteMetadata)
+//}
+//
+//class SatelliteMetadataPreviewParameterProvider : PreviewParameterProvider<SatelliteMetadata> {
+//    override val values = sequenceOf(previewMetadata())
+//}
+//
+//fun previewMetadata(): SatelliteMetadata {
+//    val numSignalsInView = 10
+//    val numSignalsUsed = 10
+//    val numSignalsTotal = 10
+//    val numSatsInView = 7
+//    val numSatsUsed = 7
+//    val numSatsTotal = 7
+//    val supportedGnss: Set<GnssType> = setOf(GnssType.NAVSTAR, GnssType.GALILEO)
+//    val supportedGnssCfs: Set<String> = setOf("L1", "L5", "E1")
+//    val supportedSbas: Set<SbasType> = emptySet()
+//    val supportedSbasCfs: Set<String> = emptySet()
+//    val unknownCarrierStatuses: Map<String, SatelliteStatus> = emptyMap()
+//    val duplicateCarrierStatuses: Map<String, SatelliteStatus> = emptyMap()
+//    val isDualFrequencyPerSatInView = true
+//    val isDualFrequencyPerSatInUse = true
+//    val isNonPrimaryCarrierFreqInView = true
+//    val isNonPrimaryCarrierFreqInUse = true
+//
+//    return SatelliteMetadata(
+//        numSignalsInView,
+//        numSignalsUsed,
+//        numSignalsTotal,
+//        numSatsInView,
+//        numSatsUsed,
+//        numSatsTotal,
+//        supportedGnss,
+//        supportedGnssCfs,
+//        supportedSbas,
+//        supportedSbasCfs,
+//        unknownCarrierStatuses,
+//        duplicateCarrierStatuses,
+//        isDualFrequencyPerSatInView,
+//        isDualFrequencyPerSatInUse,
+//        isNonPrimaryCarrierFreqInView,
+//        isNonPrimaryCarrierFreqInUse
+//    )
+//}
