@@ -17,6 +17,7 @@ package com.android.gpstest.ui.dashboard
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -24,8 +25,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -52,12 +52,23 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         SatelliteGroup(emptyMap(), satelliteMetadata = SatelliteMetadata())
     )
     val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
+    val timeUntilScanCompleteMs: Long by viewModel.timeUntilScanCompleteMs.observeAsState(viewModel.scanDurationMs)
 
-    GnssList(satelliteMetadata = allSatellites.satelliteMetadata, finishedScanningCfs)
+    GnssList(
+        satelliteMetadata = allSatellites.satelliteMetadata,
+        finishedScanningCfs = finishedScanningCfs,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = viewModel.scanDurationMs
+    )
 }
 
 @Composable
-fun GnssList(satelliteMetadata: SatelliteMetadata, finishedScanningCfs: Boolean) {
+fun GnssList(
+    satelliteMetadata: SatelliteMetadata,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -80,7 +91,9 @@ fun GnssList(satelliteMetadata: SatelliteMetadata, finishedScanningCfs: Boolean)
                     GnssCard(
                         gnssType = it.key,
                         cfs = it.value,
-                        finishedScanningCfs = finishedScanningCfs
+                        finishedScanningCfs = finishedScanningCfs,
+                        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                        scanDurationMs = scanDurationMs
                     )
                 }
             }
@@ -89,7 +102,7 @@ fun GnssList(satelliteMetadata: SatelliteMetadata, finishedScanningCfs: Boolean)
 }
 
 @Composable
-fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean) {
+fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
     when (gnssType) {
         GnssType.NAVSTAR -> {
             GnssCard(
@@ -98,7 +111,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_usa,
                 R.string.usa_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.GALILEO -> {
@@ -108,7 +123,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_eu,
                 R.string.eu_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.GLONASS -> {
@@ -118,7 +135,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_russia,
                 R.string.russia_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.QZSS -> {
@@ -128,7 +147,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_japan,
                 R.string.japan_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.BEIDOU -> {
@@ -138,7 +159,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_china,
                 R.string.china_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.IRNSS -> {
@@ -148,7 +171,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean)
                 R.string.dashboard_india,
                 R.string.india_flag,
                 cfs,
-                finishedScanningCfs
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
             )
         }
         GnssType.SBAS -> return // No-op
@@ -163,7 +188,9 @@ fun GnssCard(
     @StringRes countryId: Int,
     @StringRes contentDescriptionId: Int,
     cfs: Set<String>,
-    finishedScanningCfs: Boolean
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
 ) {
     Card(
         modifier = Modifier
@@ -208,12 +235,20 @@ fun GnssCard(
                 horizontalAlignment = End
             ) {
                 Row {
-                    if (!finishedScanningCfs) {
+                    var progress by remember { mutableStateOf(1.0f) }
+                    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0) {
+                        progress = timeUntilScanCompleteMs.toFloat() / scanDurationMs.toFloat()
+                        val animatedProgress = animateFloatAsState(
+                            targetValue = progress,
+                            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+                        ).value
+
                         CircularProgressIndicator(
                             modifier = Modifier
                                 .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
                                 .align(CenterVertically)
-                                .size(20.dp)
+                                .size(20.dp),
+                            progress = animatedProgress,
                         )
                     }
                     cfs.forEach {

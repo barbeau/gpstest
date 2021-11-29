@@ -113,9 +113,14 @@ class SignalInfoViewModel @Inject constructor(
     private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
     val fixState: LiveData<FixState> = _fixState
 
+    private var scanningJob: Job? = null
+    val scanDurationMs = TimeUnit.SECONDS.toMillis(15)
+
     private val _finishedScanningCfs = MutableLiveData(false)
     val finishedScanningCfs: LiveData<Boolean> = _finishedScanningCfs
-    private var scanningJob: Job? = null
+
+    private val _timeUntilScanCompleteMs = MutableLiveData(scanDurationMs)
+    val timeUntilScanCompleteMs: LiveData<Long> = _timeUntilScanCompleteMs
 
     private var started = false
 
@@ -371,8 +376,13 @@ class SignalInfoViewModel @Inject constructor(
     private fun onGnssFixAcquired() {
         _fixState.value = FixState.Acquired
         scanningJob = viewModelScope.launch {
-            delay(TimeUnit.SECONDS.toMillis(5))
-            // If we still have a fix after 5 seconds, consider the scan complete
+            val endTime = System.currentTimeMillis() + scanDurationMs
+            while (_timeUntilScanCompleteMs.value!! >= 0) {
+                _timeUntilScanCompleteMs.value = endTime - System.currentTimeMillis()
+                delay(10)
+            }
+
+            // If we still have a fix after scanDurationMs, consider the scan complete
             if (_fixState.value == FixState.Acquired) {
                 _finishedScanningCfs.value = true
             }
@@ -548,6 +558,7 @@ class SignalInfoViewModel @Inject constructor(
         _allSatellitesGroup.value = SatelliteGroup(emptyMap(),SatelliteMetadata())
         gotFirstFix = false
         _finishedScanningCfs.value = false
+        _timeUntilScanCompleteMs.value = scanDurationMs
     }
 
     /**
