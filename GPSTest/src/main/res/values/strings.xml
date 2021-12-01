@@ -218,9 +218,13 @@
     <string name="dashboard_feature_support">Supported features</string>
     <string name="dashboard_supported">Supported</string>
     <string name="dashboard_not_supported">Not supported</string>
+
     <string name="dashboard_feature_dual_frequency_title">Dual frequency</string>
     <string name="dashboard_feature_dual_frequency_description">L5, E5a, or B2a</string>
+
     <string name="dashboard_feature_raw_measurements_title">Raw measurements</string>
+    <string name="dashboard_feature_raw_measurements_description">To calculate positions</string>
+
     <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
 
     <!-- Content descriptions -->

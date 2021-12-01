@@ -27,9 +27,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.theme.Green500
+import com.android.gpstest.util.PreferenceUtils
 
 @Composable
 fun SupportedFeaturesList(
@@ -50,12 +52,20 @@ fun SupportedFeaturesList(
             .padding(5.dp),
         elevation = 2.dp
     ) {
-        DualFrequency(
-            satelliteMetadata,
-            finishedScanningCfs,
-            timeUntilScanCompleteMs,
-            scanDurationMs
-        )
+        Column {
+            DualFrequency(
+                satelliteMetadata,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+            RawMeasurements(
+                satelliteMetadata,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
     }
 }
 
@@ -73,6 +83,31 @@ fun DualFrequency(
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
         supported = satelliteMetadata.isNonPrimaryCarrierFreqInView,
+        finishedScanningCfs = finishedScanningCfs,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs
+    )
+}
+
+@Composable
+fun RawMeasurements(
+    satelliteMetadata: SatelliteMetadata,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    val capabilityMeasurementsInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_raw_measurements),
+        PreferenceUtils.CAPABILITY_UNKNOWN
+    )
+
+    FeatureSupport(
+        imageId = R.drawable.ic_raw_measurements,
+        contentDescriptionId = R.string.dashboard_feature_raw_measurements_title,
+        featureTitleId = R.string.dashboard_feature_raw_measurements_title,
+        featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs
