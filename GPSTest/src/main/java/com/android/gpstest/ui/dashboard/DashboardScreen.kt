@@ -37,11 +37,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteGroup
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.model.SbasType
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -54,7 +57,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
     val timeUntilScanCompleteMs: Long by viewModel.timeUntilScanCompleteMs.observeAsState(viewModel.scanDurationMs)
 
-    GnssList(
+    Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
@@ -63,7 +66,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
 }
 
 @Composable
-fun GnssList(
+fun Dashboard(
     satelliteMetadata: SatelliteMetadata,
     finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
@@ -79,35 +82,87 @@ fun GnssList(
                 .padding(5.dp)
                 .fillMaxSize()
         ) {
-            Text(
-                modifier = Modifier.padding(5.dp),
-                text = stringResource(id = R.string.dashboard_supported_gnss),
-                style = MaterialTheme.typography.h6
-            )
-            if (satelliteMetadata.gnssToCf.entries.isEmpty()) {
-                ProgressCard()
-            } else {
-                satelliteMetadata.gnssToCf.entries.forEach {
-                    GnssCard(
-                        gnssType = it.key,
-                        cfs = it.value,
-                        finishedScanningCfs = finishedScanningCfs,
-                        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                        scanDurationMs = scanDurationMs
-                    )
-                }
-            }
+            GnssList(satelliteMetadata.gnssToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs)
+            Spacer(modifier = Modifier.padding(5.dp))
+            SbasList(satelliteMetadata.sbasToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs, satelliteMetadata.numSignalsUsed)
         }
     }
 }
 
 @Composable
-fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
+fun GnssList(
+    gnssToCf: MutableMap<GnssType, MutableSet<String>>,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    Text(
+        modifier = Modifier.padding(5.dp),
+        text = stringResource(id = R.string.dashboard_supported_gnss),
+        style = MaterialTheme.typography.h6
+    )
+    if (gnssToCf.entries.isEmpty()) {
+        ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_fix))
+    } else {
+        gnssToCf.entries.forEach {
+            GnssOrSbasCard(
+                gnssType = it.key,
+                cfs = it.value,
+                finishedScanningCfs = finishedScanningCfs,
+                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                scanDurationMs = scanDurationMs
+            )
+        }
+    }
+}
+
+@Composable
+fun SbasList(
+    sbasToCf: MutableMap<SbasType, MutableSet<String>>,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long,
+    numSignalsUsed: Int
+) {
+    Text(
+        modifier = Modifier.padding(5.dp),
+        text = stringResource(id = R.string.dashboard_supported_sbas),
+        style = MaterialTheme.typography.h6
+    )
+    if (sbasToCf.entries.isEmpty()) {
+        if (numSignalsUsed == 0) {
+            // We don't have a fix yet, just show waiting card
+            ProgressCard(
+                true,
+                stringResource(R.string.dashboard_waiting_for_fix)
+            )
+        } else {
+            // Show "no SBAS" card
+            ProgressCard(
+                false,
+                stringResource(R.string.sbas_not_available)
+            )
+        }
+    } else {
+        sbasToCf.entries.forEach {
+            SbasCard(
+                sbasType = it.key,
+                cfs = it.value,
+                finishedScanningCfs = finishedScanningCfs,
+                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                scanDurationMs = scanDurationMs
+            )
+        }
+    }
+}
+
+@Composable
+fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
     when (gnssType) {
         GnssType.NAVSTAR -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_us_flag_round,
-                R.string.dashboard_gps,
+                R.string.gps_content_description,
                 R.string.dashboard_usa,
                 R.string.usa_flag,
                 cfs,
@@ -117,9 +172,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
             )
         }
         GnssType.GALILEO -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_eu_flag_round,
-                R.string.dashboard_galileo,
+                R.string.galileo_content_description,
                 R.string.dashboard_eu,
                 R.string.eu_flag,
                 cfs,
@@ -129,9 +184,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
             )
         }
         GnssType.GLONASS -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_russia_flag_round,
-                R.string.dashboard_glonass,
+                R.string.glonass_content_description,
                 R.string.dashboard_russia,
                 R.string.russia_flag,
                 cfs,
@@ -141,9 +196,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
             )
         }
         GnssType.QZSS -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_japan_flag_round,
-                R.string.dashboard_qzss,
+                R.string.qzss_content_description,
                 R.string.dashboard_japan,
                 R.string.japan_flag,
                 cfs,
@@ -153,9 +208,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
             )
         }
         GnssType.BEIDOU -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_china_flag_round,
-                R.string.dashboard_beidou,
+                R.string.beidou_content_description,
                 R.string.dashboard_china,
                 R.string.china_flag,
                 cfs,
@@ -165,9 +220,9 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
             )
         }
         GnssType.IRNSS -> {
-            GnssCard(
+            GnssOrSbasCard(
                 R.drawable.ic_india_flag_round,
-                R.string.dashboard_irnss,
+                R.string.irnss_content_description,
                 R.string.dashboard_india,
                 R.string.india_flag,
                 cfs,
@@ -182,7 +237,100 @@ fun GnssCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean,
 }
 
 @Composable
-fun GnssCard(
+fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
+    when (sbasType) {
+        SbasType.WAAS -> {
+            GnssOrSbasCard(
+                R.drawable.ic_us_flag_round,
+                R.string.waas_content_description,
+                R.string.dashboard_usa,
+                R.string.usa_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.EGNOS -> {
+            GnssOrSbasCard(
+                R.drawable.ic_eu_flag_round,
+                R.string.egnos_content_description,
+                R.string.dashboard_eu,
+                R.string.eu_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.SDCM -> {
+            GnssOrSbasCard(
+                R.drawable.ic_russia_flag_round,
+                R.string.sdcm_content_description,
+                R.string.dashboard_russia,
+                R.string.russia_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.MSAS -> {
+            GnssOrSbasCard(
+                R.drawable.ic_japan_flag_round,
+                R.string.msas_content_description,
+                R.string.dashboard_japan,
+                R.string.japan_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.SNAS -> {
+            GnssOrSbasCard(
+                R.drawable.ic_china_flag_round,
+                R.string.snas_content_description,
+                R.string.dashboard_china,
+                R.string.china_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.GAGAN -> {
+            GnssOrSbasCard(
+                R.drawable.ic_india_flag_round,
+                R.string.gagan_content_description,
+                R.string.dashboard_india,
+                R.string.india_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.SACCSA -> {
+            GnssOrSbasCard(
+                R.drawable.ic_flag_icao,
+                R.string.saccsa_content_description,
+                R.string.dashboard_icao,
+                R.string.japan_flag,
+                cfs,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+        }
+        SbasType.UNKNOWN -> {
+            // No-op
+        }
+    }
+}
+
+@Composable
+fun GnssOrSbasCard(
     @DrawableRes flagId: Int,
     @StringRes nameId: Int,
     @StringRes countryId: Int,
@@ -236,7 +384,9 @@ fun GnssCard(
             ) {
                 Row {
                     var progress by remember { mutableStateOf(1.0f) }
-                    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0) {
+                    // Only show the "scanning" mini progress circle if it's within the time threshold
+                    // following the first fix and less than two CFs have been detected for this GNSS/SBAS
+                    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0 && cfs.size < 2) {
                         progress = timeUntilScanCompleteMs.toFloat() / scanDurationMs.toFloat()
                         val animatedProgress = animateFloatAsState(
                             targetValue = progress,
@@ -281,7 +431,7 @@ fun Chip(text: String) {
 }
 
 @Composable
-fun ProgressCard() {
+fun ProgressCard(progressVisible: Boolean, message: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -291,9 +441,18 @@ fun ProgressCard() {
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .padding(15.dp)
+            if (progressVisible && isTrackingStarted()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(15.dp)
+                )
+            }
+            Text(
+                text = message,
+                modifier = Modifier.padding(10.dp)
+                    .align(CenterVertically),
+                fontSize = 13.sp,
+                textAlign = TextAlign.Center
             )
         }
     }

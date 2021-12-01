@@ -141,7 +141,7 @@
     <string name="galileo_content_description">Galileo</string>
     <string name="qzss_content_description">QZSS</string>
     <string name="beidou_content_description">BeiDou</string>
-    <string name="irnss_content_description">IRNSS</string>
+    <string name="irnss_content_description">NavIC</string>
 
     <string name="waas_content_description">WAAS</string>
     <string name="egnos_content_description">EGNOS</string>
@@ -201,19 +201,18 @@
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
     <!-- Dashboard -->
+    <string name="dashboard_waiting_for_fix">Waiting for a fix…</string>
+
     <string name="dashboard_supported_gnss">Supported GNSS</string>
-    <string name="dashboard_gps">GPS</string>
     <string name="dashboard_usa">USA</string>
-    <string name="dashboard_galileo">Galileo</string>
     <string name="dashboard_eu">European Union</string>
-    <string name="dashboard_glonass">GLONASS</string>
     <string name="dashboard_russia">Russia</string>
-    <string name="dashboard_qzss">QZSS</string>
     <string name="dashboard_japan">Japan</string>
-    <string name="dashboard_beidou">Beidou</string>
     <string name="dashboard_china">China</string>
-    <string name="dashboard_irnss">NavIC</string>
     <string name="dashboard_india">India</string>
+    <string name="dashboard_icao">ICAO</string>
+
+    <string name="dashboard_supported_sbas">Supported SBAS</string>
 
     <!-- Content descriptions -->
     <string name="lock">lock</string>
