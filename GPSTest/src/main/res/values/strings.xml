@@ -201,7 +201,7 @@
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
     <!-- Dashboard -->
-    <string name="dashboard_waiting_for_fix">Waiting for a fix…</string>
+    <string name="dashboard_waiting_for_fix">Waiting for signals…</string>
     <string name="dashboard_turn_on_gnss">Turn on tracking to detect device capabilities</string>
 
     <string name="dashboard_supported_gnss">Supported GNSS</string>
@@ -214,6 +214,14 @@
     <string name="dashboard_icao">ICAO</string>
 
     <string name="dashboard_supported_sbas">Supported SBAS</string>
+
+    <string name="dashboard_feature_support">Supported features</string>
+    <string name="dashboard_supported">Supported</string>
+    <string name="dashboard_not_supported">Not supported</string>
+    <string name="dashboard_feature_dual_frequency_title">Dual frequency</string>
+    <string name="dashboard_feature_dual_frequency_description">L5, E5a, or B2a</string>
+    <string name="dashboard_feature_raw_measurements_title">Raw measurements</string>
+    <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
 
     <!-- Content descriptions -->
     <string name="lock">lock</string>

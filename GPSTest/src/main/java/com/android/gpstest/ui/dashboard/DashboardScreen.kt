@@ -85,6 +85,8 @@ fun Dashboard(
             GnssList(satelliteMetadata.gnssToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs)
             Spacer(modifier = Modifier.padding(5.dp))
             SbasList(satelliteMetadata.sbasToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs, satelliteMetadata.numSignalsUsed)
+            Spacer(modifier = Modifier.padding(5.dp))
+            SupportedFeaturesList(satelliteMetadata, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs)
         }
     }
 }
@@ -385,22 +387,12 @@ fun GnssOrSbasCard(
                 horizontalAlignment = End
             ) {
                 Row {
-                    var progress by remember { mutableStateOf(1.0f) }
-                    // Only show the "scanning" mini progress circle if it's within the time threshold
-                    // following the first fix and less than two CFs have been detected for this GNSS/SBAS
-                    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0 && cfs.size < 2) {
-                        progress = timeUntilScanCompleteMs.toFloat() / scanDurationMs.toFloat()
-                        val animatedProgress = animateFloatAsState(
-                            targetValue = progress,
-                            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-                        ).value
-
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
-                                .align(CenterVertically)
-                                .size(20.dp),
-                            progress = animatedProgress,
+                    if (cfs.size < 2) {
+                        ChipProgress(
+                            Modifier.align(CenterVertically),
+                            finishedScanningCfs = finishedScanningCfs,
+                            timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                            scanDurationMs = scanDurationMs
                         )
                     }
                     cfs.forEach {
@@ -409,6 +401,32 @@ fun GnssOrSbasCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ChipProgress(
+    modifier: Modifier = Modifier,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    var progress by remember { mutableStateOf(1.0f) }
+    // Only show the "scanning" mini progress circle if it's within the time threshold
+    // following the first fix
+    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0) {
+        progress = timeUntilScanCompleteMs.toFloat() / scanDurationMs.toFloat()
+        val animatedProgress = animateFloatAsState(
+            targetValue = progress,
+            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+        ).value
+
+        CircularProgressIndicator(
+            modifier = modifier
+                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
+                .size(20.dp),
+            progress = animatedProgress,
+        )
     }
 }
 

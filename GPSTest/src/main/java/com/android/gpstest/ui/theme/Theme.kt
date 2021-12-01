@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 
 private val Purple500 = Color(0xFF3F51B5)
 private val Purple700 = Color(0xFF303F9F)
+val Green500 = Color(0xFF4caf50)
 
 private val lightColors = lightColors(
     primary = Purple500,
