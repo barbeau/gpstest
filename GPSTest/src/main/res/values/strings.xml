@@ -202,6 +202,7 @@
 
     <!-- Dashboard -->
     <string name="dashboard_waiting_for_fix">Waiting for a fix…</string>
+    <string name="dashboard_turn_on_gnss">Turn on tracking to detect device capabilities</string>
 
     <string name="dashboard_supported_gnss">Supported GNSS</string>
     <string name="dashboard_usa">USA</string>

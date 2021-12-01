@@ -405,10 +405,10 @@ public class NavigationDrawerFragment extends Fragment {
         mNavDrawerItems.clear();
 
         mNavDrawerItems.add(NAVDRAWER_ITEM_STATUS);
+        mNavDrawerItems.add(NAVDRAWER_ITEM_DASHBOARD);
         mNavDrawerItems.add(NAVDRAWER_ITEM_MAP);
         mNavDrawerItems.add(NAVDRAWER_ITEM_SKY);
         mNavDrawerItems.add(NAVDRAWER_ITEM_ACCURACY);
-        mNavDrawerItems.add(NAVDRAWER_ITEM_DASHBOARD);
 
         mNavDrawerItems.add(NAVDRAWER_ITEM_SEPARATOR_SPECIAL);
 

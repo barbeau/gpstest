@@ -99,7 +99,8 @@ fun GnssList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_gnss),
-        style = MaterialTheme.typography.h6
+        style = MaterialTheme.typography.h6,
+        color = MaterialTheme.colors.onBackground
     )
     if (gnssToCf.entries.isEmpty()) {
         ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_fix))
@@ -127,7 +128,8 @@ fun SbasList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_sbas),
-        style = MaterialTheme.typography.h6
+        style = MaterialTheme.typography.h6,
+        color = MaterialTheme.colors.onBackground
     )
     if (sbasToCf.entries.isEmpty()) {
         if (numSignalsUsed == 0) {
@@ -448,8 +450,9 @@ fun ProgressCard(progressVisible: Boolean, message: String) {
                 )
             }
             Text(
-                text = message,
-                modifier = Modifier.padding(10.dp)
+                text = if (isTrackingStarted()) message else stringResource(id = R.string.dashboard_turn_on_gnss),
+                modifier = Modifier
+                    .padding(10.dp)
                     .align(CenterVertically),
                 fontSize = 13.sp,
                 textAlign = TextAlign.Center
