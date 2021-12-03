@@ -389,7 +389,9 @@ fun GnssOrSbasCard(
                 Row {
                     if (cfs.size < 2) {
                         ChipProgress(
-                            Modifier.align(CenterVertically),
+                            Modifier
+                                .align(CenterVertically)
+                                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
                             finishedScanningCfs = finishedScanningCfs,
                             timeUntilScanCompleteMs = timeUntilScanCompleteMs,
                             scanDurationMs = scanDurationMs
@@ -423,7 +425,6 @@ fun ChipProgress(
 
         CircularProgressIndicator(
             modifier = modifier
-                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
                 .size(20.dp),
             progress = animatedProgress,
         )

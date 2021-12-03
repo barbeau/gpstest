@@ -215,7 +215,7 @@
 
     <string name="dashboard_supported_sbas">Supported SBAS</string>
 
-    <string name="dashboard_feature_support">Supported features</string>
+    <string name="dashboard_feature_support">Feature support</string>
     <string name="dashboard_supported">Supported</string>
     <string name="dashboard_not_supported">Not supported</string>
 
@@ -224,6 +224,9 @@
 
     <string name="dashboard_feature_raw_measurements_title">Raw measurements</string>
     <string name="dashboard_feature_raw_measurements_description">To calculate positions</string>
+
+    <string name="dashboard_feature_carrier_phase_title">Carrier phase</string>
+    <string name="dashboard_feature_carrier_phase_description">For better measurements</string>
 
     <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
 

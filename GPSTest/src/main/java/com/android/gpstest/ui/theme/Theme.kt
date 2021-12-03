@@ -30,17 +30,17 @@ import androidx.compose.ui.graphics.Color
 // Issue #277
 
 private val Purple500 = Color(0xFF3F51B5)
-private val Purple700 = Color(0xFF303F9F)
+private val primaryDark = Color(0xFF002984)
 val Green500 = Color(0xFF4caf50)
 
 private val lightColors = lightColors(
     primary = Purple500,
-    primaryVariant = Purple700
+    primaryVariant = primaryDark
 )
 
 private val darkColors = darkColors(
     primary = Purple500,
-    primaryVariant = Purple700
+    primaryVariant = primaryDark
 )
 
 @Composable

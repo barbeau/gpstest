@@ -17,12 +17,16 @@ package com.android.gpstest.ui.dashboard
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -30,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils
 
@@ -65,6 +70,12 @@ fun SupportedFeaturesList(
                 timeUntilScanCompleteMs,
                 scanDurationMs
             )
+            CarrierPhase(
+                satelliteMetadata,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
         }
     }
 }
@@ -87,6 +98,26 @@ fun DualFrequency(
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs
     )
+}
+
+@Composable
+fun DualFrequencyImage(modifier: Modifier = Modifier) {
+    Box (modifier = modifier
+        .clip(CircleShape)
+        .border(BorderStroke(4.dp, MaterialTheme.colors.primary), CircleShape)) {
+        Wave(
+            modifier = modifier,
+            frequencyMultiplier = .8f,
+            initialDeltaX = 0f,
+            animationDurationMs = 20000
+        )
+        Wave(
+            modifier = modifier,
+            frequencyMultiplier = .7f,
+            initialDeltaX = -20f,
+            animationDurationMs = 25000
+        )
+    }
 }
 
 @Composable
@@ -115,6 +146,31 @@ fun RawMeasurements(
 }
 
 @Composable
+fun CarrierPhase(
+    satelliteMetadata: SatelliteMetadata,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    val capabilityCarrierPhaseInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_measurement_delta_range),
+        PreferenceUtils.CAPABILITY_UNKNOWN
+    )
+
+    FeatureSupport(
+        imageId = R.drawable.ic_raw_measurements, // TODO - better ruler??
+        contentDescriptionId = R.string.dashboard_feature_carrier_phase_title,
+        featureTitleId = R.string.dashboard_feature_carrier_phase_title,
+        featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED,
+        finishedScanningCfs = finishedScanningCfs,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs
+    )
+}
+
+@Composable
 fun FeatureSupport(
     @DrawableRes imageId: Int,
     @StringRes contentDescriptionId: Int,
@@ -124,18 +180,30 @@ fun FeatureSupport(
     supported: Boolean,
     finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanDurationMs: Long,
+//    useComposableIcon: Boolean = false,
+//    content: @Composable () -> Unit = { }
 ) {
     Row {
         Column {
-            Icon(
-                imageVector = ImageVector.vectorResource(imageId),
-                contentDescription = stringResource(id = contentDescriptionId),
-                modifier = Modifier
-                    .size(75.dp)
-                    .padding(10.dp),
-                tint = MaterialTheme.colors.primary
-            )
+            val customIconModifier = Modifier
+                                        .size(75.dp)
+                                        .clip(CircleShape)
+                                        .padding(10.dp)
+            if (featureTitleId == R.string.dashboard_feature_dual_frequency_title) {
+                DualFrequencyImage(
+                    customIconModifier
+                )
+            } else {
+                Icon(
+                    imageVector = ImageVector.vectorResource(imageId),
+                    contentDescription = stringResource(id = contentDescriptionId),
+                    modifier = Modifier
+                        .size(75.dp)
+                        .padding(10.dp),
+                    tint = MaterialTheme.colors.primary
+                )
+            }
         }
         Column(
             modifier = Modifier.align(CenterVertically)
@@ -162,7 +230,11 @@ fun FeatureSupport(
             Row {
                 if (satelliteMetadata.gnssToCf.isEmpty()) {
                     // No signals yet
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(34.dp)
+                            .padding(end = 10.dp, top = 4.dp, bottom = 4.dp)
+                    )
                 } else {
                     if (finishedScanningCfs || supported) {
                         // We've decided if it's supported
@@ -173,7 +245,9 @@ fun FeatureSupport(
                     } else {
                         // Waiting for scan timeout to complete
                         ChipProgress(
-                            Modifier.align(CenterVertically),
+                            Modifier
+                                .align(CenterVertically)
+                                .padding(end = 10.dp, top = 4.dp, bottom = 4.dp),
                             finishedScanningCfs = finishedScanningCfs,
                             timeUntilScanCompleteMs = timeUntilScanCompleteMs,
                             scanDurationMs = scanDurationMs
