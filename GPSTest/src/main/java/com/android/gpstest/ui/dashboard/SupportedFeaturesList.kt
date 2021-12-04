@@ -18,6 +18,7 @@ package com.android.gpstest.ui.dashboard
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -104,16 +105,23 @@ fun DualFrequency(
 fun DualFrequencyImage(modifier: Modifier = Modifier) {
     Box (modifier = modifier
         .clip(CircleShape)
-        .border(BorderStroke(4.dp, MaterialTheme.colors.primary), CircleShape)) {
+        .background(MaterialTheme.colors.primary)
+        .border(
+            BorderStroke(1.dp, MaterialTheme.colors.primary),
+            CircleShape
+        )
+    ) {
         Wave(
             modifier = modifier,
+            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
             frequencyMultiplier = .8f,
             initialDeltaX = 0f,
-            animationDurationMs = 20000
+            animationDurationMs = 10000
         )
         Wave(
             modifier = modifier,
-            frequencyMultiplier = .7f,
+            color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
+            frequencyMultiplier = 1.2f,
             initialDeltaX = -20f,
             animationDurationMs = 25000
         )
