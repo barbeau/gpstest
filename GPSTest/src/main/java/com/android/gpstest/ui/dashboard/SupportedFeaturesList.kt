@@ -25,10 +25,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -167,7 +167,7 @@ fun CarrierPhase(
     )
 
     FeatureSupport(
-        imageId = R.drawable.ic_raw_measurements, // TODO - better ruler??
+        imageId = R.drawable.ic_carrier_phase,
         contentDescriptionId = R.string.dashboard_feature_carrier_phase_title,
         featureTitleId = R.string.dashboard_feature_carrier_phase_title,
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
@@ -176,6 +176,7 @@ fun CarrierPhase(
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
+        iconSizeDp = 50
     )
 }
 
@@ -190,9 +191,11 @@ fun FeatureSupport(
     finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
     scanDurationMs: Long,
-    imageSizeDp: Int = 75,
-    imagePaddingDp: Int = 10
+    iconSizeDp: Int = 70
 ) {
+    val imageSizeDp = 75
+    val imagePaddingDp = 10
+
     Row {
         Column {
             val customIconModifier = Modifier
@@ -214,10 +217,10 @@ fun FeatureSupport(
                         imageVector = ImageVector.vectorResource(imageId),
                         contentDescription = stringResource(id = contentDescriptionId),
                         modifier = Modifier
-                            .size(70.dp)
+                            .size(iconSizeDp.dp)
                             .padding(5.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colors.primary),
+                            .background(MaterialTheme.colors.primary)
+                            .align(Center),
                         tint = MaterialTheme.colors.onPrimary,
                     )
                 }
