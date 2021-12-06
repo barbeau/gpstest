@@ -231,6 +231,9 @@
     <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
     <string name="dashboard_feature_navigation_messages_description">Decoded from live signals</string>
 
+    <string name="dashboard_feature_antenna_info_title">GNSS antenna info</string>
+    <string name="dashboard_feature_antenna_info_description">Hardware properties</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>

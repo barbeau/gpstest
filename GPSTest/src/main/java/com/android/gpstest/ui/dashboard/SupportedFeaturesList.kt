@@ -15,6 +15,8 @@
  */
 package com.android.gpstest.ui.dashboard
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -40,6 +42,7 @@ import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SatelliteUtils
 
 @Composable
 fun SupportedFeaturesList(
@@ -85,6 +88,12 @@ fun SupportedFeaturesList(
                 timeUntilScanCompleteMs,
                 scanDurationMs
             )
+            AntennaInfo(
+                satelliteMetadata,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
         }
     }
 }
@@ -97,6 +106,7 @@ fun DualFrequency(
     scanDurationMs: Long
 ) {
     FeatureSupport(
+        // This drawable isn't used because we use the animated canvas, but provide it as a backup
         imageId = R.drawable.ic_dual_frequency,
         contentDescriptionId = R.string.dashboard_feature_dual_frequency_title,
         featureTitleId = R.string.dashboard_feature_dual_frequency_title,
@@ -211,6 +221,32 @@ fun NavigationMessages(
         finishedScanningCfs =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
+        iconSizeDp = 50
+    )
+}
+
+@Composable
+fun AntennaInfo(
+    satelliteMetadata: SatelliteMetadata,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    val locationManager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val supported = SatelliteUtils.isGnssAntennaInfoSupported(locationManager)
+
+    // We immediately know if support is available, so don't wait for scan
+    FeatureSupport(
+        imageId = R.drawable.ic_antenna_24,
+        contentDescriptionId = R.string.dashboard_feature_antenna_info_title,
+        featureTitleId = R.string.dashboard_feature_antenna_info_title,
+        featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = supported,
+        finishedScanningCfs =  true,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs,
+        iconSizeDp = 50
     )
 }
 
