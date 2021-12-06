@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -149,7 +150,7 @@ fun RawMeasurements(
         supported = capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs
+        scanDurationMs = scanDurationMs,
     )
 }
 
@@ -174,7 +175,7 @@ fun CarrierPhase(
         supported = capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs
+        scanDurationMs = scanDurationMs,
     )
 }
 
@@ -189,28 +190,37 @@ fun FeatureSupport(
     finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
     scanDurationMs: Long,
-//    useComposableIcon: Boolean = false,
-//    content: @Composable () -> Unit = { }
+    imageSizeDp: Int = 75,
+    imagePaddingDp: Int = 10
 ) {
     Row {
         Column {
             val customIconModifier = Modifier
-                                        .size(75.dp)
-                                        .clip(CircleShape)
-                                        .padding(10.dp)
+                .size(imageSizeDp.dp)
+                .clip(CircleShape)
+                .padding(imagePaddingDp.dp)
             if (featureTitleId == R.string.dashboard_feature_dual_frequency_title) {
                 DualFrequencyImage(
                     customIconModifier
                 )
             } else {
-                Icon(
-                    imageVector = ImageVector.vectorResource(imageId),
-                    contentDescription = stringResource(id = contentDescriptionId),
-                    modifier = Modifier
-                        .size(75.dp)
-                        .padding(10.dp),
-                    tint = MaterialTheme.colors.primary
-                )
+                Box(modifier = Modifier
+                    .size(imageSizeDp.dp)
+                    .padding(imagePaddingDp.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colors.primary)
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(imageId),
+                        contentDescription = stringResource(id = contentDescriptionId),
+                        modifier = Modifier
+                            .size(70.dp)
+                            .padding(5.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colors.primary),
+                        tint = MaterialTheme.colors.onPrimary,
+                    )
+                }
             }
         }
         Column(
