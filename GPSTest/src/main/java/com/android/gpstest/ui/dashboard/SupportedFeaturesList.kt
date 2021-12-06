@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.ui.dashboard
 
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -73,6 +74,12 @@ fun SupportedFeaturesList(
                 scanDurationMs
             )
             CarrierPhase(
+                satelliteMetadata,
+                finishedScanningCfs,
+                timeUntilScanCompleteMs,
+                scanDurationMs
+            )
+            NavigationMessages(
                 satelliteMetadata,
                 finishedScanningCfs,
                 timeUntilScanCompleteMs,
@@ -141,6 +148,7 @@ fun RawMeasurements(
         PreferenceUtils.CAPABILITY_UNKNOWN
     )
 
+    // On Android S and higher we immediately know if support is available, so don't wait for scan
     FeatureSupport(
         imageId = R.drawable.ic_raw_measurements,
         contentDescriptionId = R.string.dashboard_feature_raw_measurements_title,
@@ -148,7 +156,7 @@ fun RawMeasurements(
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
         supported = capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED,
-        finishedScanningCfs = finishedScanningCfs,
+        finishedScanningCfs =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
     )
@@ -177,6 +185,32 @@ fun CarrierPhase(
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
         iconSizeDp = 50
+    )
+}
+
+@Composable
+fun NavigationMessages(
+    satelliteMetadata: SatelliteMetadata,
+    finishedScanningCfs: Boolean,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    val capabilityNavMessagesInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_nav_messages),
+        PreferenceUtils.CAPABILITY_UNKNOWN
+    )
+
+    // On Android S and higher we immediately know if support is available, so don't wait for scan
+    FeatureSupport(
+        imageId = R.drawable.ic_navigation_message_24,
+        contentDescriptionId = R.string.dashboard_feature_navigation_messages_title,
+        featureTitleId = R.string.dashboard_feature_navigation_messages_title,
+        featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = capabilityNavMessagesInt == PreferenceUtils.CAPABILITY_SUPPORTED,
+        finishedScanningCfs =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs,
     )
 }
 
