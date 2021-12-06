@@ -234,6 +234,10 @@
     <string name="dashboard_feature_antenna_info_title">GNSS antenna info</string>
     <string name="dashboard_feature_antenna_info_description">Hardware properties</string>
 
+    <string name="dashboard_feature_inject_psds_description">From Predicted Satellite Data Service (e.g., XTRA) server</string>
+    <string name="dashboard_feature_inject_time_description">From Network Time Protocol server</string>
+    <string name="dashboard_feature_tap_to_try">Tap to try…</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>

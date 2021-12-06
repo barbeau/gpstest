@@ -7,6 +7,7 @@ import android.location.LocationManager
 import android.os.Build
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.ui.dashboard.Support
 
 /**
  * Provides access to SharedPreferences to Activities and Services.

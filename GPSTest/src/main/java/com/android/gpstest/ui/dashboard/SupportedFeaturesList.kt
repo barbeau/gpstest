@@ -23,6 +23,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -41,7 +43,9 @@ import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
+import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.PreferenceUtils.*
 import com.android.gpstest.util.SatelliteUtils
 
 @Composable
@@ -89,10 +93,19 @@ fun SupportedFeaturesList(
                 scanDurationMs
             )
             AntennaInfo(
-                satelliteMetadata,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                satelliteMetadata = satelliteMetadata,
+                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                scanDurationMs = scanDurationMs
+            )
+            InjectPsds(
+                satelliteMetadata = satelliteMetadata,
+                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                scanDurationMs = scanDurationMs
+            )
+            InjectTime(
+                satelliteMetadata = satelliteMetadata,
+                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+                scanDurationMs = scanDurationMs
             )
         }
     }
@@ -112,7 +125,7 @@ fun DualFrequency(
         featureTitleId = R.string.dashboard_feature_dual_frequency_title,
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
-        supported = satelliteMetadata.isNonPrimaryCarrierFreqInView,
+        supported = if (satelliteMetadata.isNonPrimaryCarrierFreqInView) Support.YES else Support.NO,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs
@@ -121,13 +134,14 @@ fun DualFrequency(
 
 @Composable
 fun DualFrequencyImage(modifier: Modifier = Modifier) {
-    Box (modifier = modifier
-        .clip(CircleShape)
-        .background(MaterialTheme.colors.primary)
-        .border(
-            BorderStroke(1.dp, MaterialTheme.colors.primary),
-            CircleShape
-        )
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(MaterialTheme.colors.primary)
+            .border(
+                BorderStroke(1.dp, MaterialTheme.colors.primary),
+                CircleShape
+            )
     ) {
         Wave(
             modifier = modifier,
@@ -155,7 +169,7 @@ fun RawMeasurements(
 ) {
     val capabilityMeasurementsInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_raw_measurements),
-        PreferenceUtils.CAPABILITY_UNKNOWN
+        CAPABILITY_UNKNOWN
     )
 
     // On Android S and higher we immediately know if support is available, so don't wait for scan
@@ -165,8 +179,8 @@ fun RawMeasurements(
         featureTitleId = R.string.dashboard_feature_raw_measurements_title,
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
-        supported = capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED,
-        finishedScanningCfs =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
+        supported = if (capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
     )
@@ -181,7 +195,7 @@ fun CarrierPhase(
 ) {
     val capabilityCarrierPhaseInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_measurement_delta_range),
-        PreferenceUtils.CAPABILITY_UNKNOWN
+        CAPABILITY_UNKNOWN
     )
 
     FeatureSupport(
@@ -190,7 +204,7 @@ fun CarrierPhase(
         featureTitleId = R.string.dashboard_feature_carrier_phase_title,
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
         satelliteMetadata = satelliteMetadata,
-        supported = capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED,
+        supported = if (capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
         finishedScanningCfs = finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
@@ -207,7 +221,7 @@ fun NavigationMessages(
 ) {
     val capabilityNavMessagesInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_nav_messages),
-        PreferenceUtils.CAPABILITY_UNKNOWN
+        CAPABILITY_UNKNOWN
     )
 
     // On Android S and higher we immediately know if support is available, so don't wait for scan
@@ -217,8 +231,8 @@ fun NavigationMessages(
         featureTitleId = R.string.dashboard_feature_navigation_messages_title,
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
         satelliteMetadata = satelliteMetadata,
-        supported = capabilityNavMessagesInt == PreferenceUtils.CAPABILITY_SUPPORTED,
-        finishedScanningCfs =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
+        supported = if (capabilityNavMessagesInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
         iconSizeDp = 50
@@ -228,11 +242,11 @@ fun NavigationMessages(
 @Composable
 fun AntennaInfo(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
     scanDurationMs: Long
 ) {
-    val locationManager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val locationManager =
+        Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val supported = SatelliteUtils.isGnssAntennaInfoSupported(locationManager)
 
     // We immediately know if support is available, so don't wait for scan
@@ -242,12 +256,79 @@ fun AntennaInfo(
         featureTitleId = R.string.dashboard_feature_antenna_info_title,
         featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
         satelliteMetadata = satelliteMetadata,
-        supported = supported,
-        finishedScanningCfs =  true,
+        supported = if (supported) Support.YES else Support.NO,
+        finishedScanningCfs = true,
         timeUntilScanCompleteMs = timeUntilScanCompleteMs,
         scanDurationMs = scanDurationMs,
         iconSizeDp = 50
     )
+}
+
+@Composable
+fun InjectPsds(
+    satelliteMetadata: SatelliteMetadata,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    val capabilityInjectPsdsInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_inject_psds),
+        CAPABILITY_UNKNOWN
+    )
+    val description = if (capabilityInjectPsdsInt == CAPABILITY_UNKNOWN) {
+        R.string.dashboard_feature_tap_to_try
+    } else {
+        R.string.dashboard_feature_inject_psds_description
+    }
+
+    // We immediately know if support is available, so don't wait for scan
+    FeatureSupport(
+        imageId = R.drawable.ic_inject_psds_24,
+        contentDescriptionId = R.string.force_psds_injection,
+        featureTitleId = R.string.force_psds_injection,
+        featureDescriptionId = description,
+        satelliteMetadata = satelliteMetadata,
+        supported = fromPref(capabilityInjectPsdsInt),
+        finishedScanningCfs = true,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs,
+        iconSizeDp = 45
+    ) {
+        // TODO - below call doesn't persist data - move saving preference into below method
+        IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager) }
+}
+
+@Composable
+fun InjectTime(
+    satelliteMetadata: SatelliteMetadata,
+    timeUntilScanCompleteMs: Long,
+    scanDurationMs: Long
+) {
+    // Inject time
+    val capabilityInjectTimeInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_inject_time),
+        CAPABILITY_UNKNOWN
+    )
+    val description = if (capabilityInjectTimeInt == CAPABILITY_UNKNOWN) {
+        R.string.dashboard_feature_tap_to_try
+    } else {
+        R.string.dashboard_feature_inject_time_description
+    }
+
+    // We immediately know if support is available, so don't wait for scan
+    FeatureSupport(
+        imageId = R.drawable.ic_inject_time_24,
+        contentDescriptionId = R.string.force_time_injection,
+        featureTitleId = R.string.force_time_injection,
+        featureDescriptionId = description,
+        satelliteMetadata = satelliteMetadata,
+        supported = fromPref(capabilityInjectTimeInt),
+        finishedScanningCfs = true,
+        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+        scanDurationMs = scanDurationMs,
+        iconSizeDp = 45
+    ) {
+        // TODO - below call doesn't persist data - move saving preference into below method
+        IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager) }
 }
 
 @Composable
@@ -257,16 +338,17 @@ fun FeatureSupport(
     @StringRes featureTitleId: Int,
     @StringRes featureDescriptionId: Int,
     satelliteMetadata: SatelliteMetadata,
-    supported: Boolean,
+    supported: Support,
     finishedScanningCfs: Boolean,
     timeUntilScanCompleteMs: Long,
     scanDurationMs: Long,
-    iconSizeDp: Int = 70
+    iconSizeDp: Int = 70,
+    onClick: () -> Boolean = { true }
 ) {
     val imageSizeDp = 75
     val imagePaddingDp = 10
 
-    Row {
+    Row(modifier = Modifier.clickable { onClick() }) {
         Column {
             val customIconModifier = Modifier
                 .size(imageSizeDp.dp)
@@ -277,11 +359,12 @@ fun FeatureSupport(
                     customIconModifier
                 )
             } else {
-                Box(modifier = Modifier
-                    .size(imageSizeDp.dp)
-                    .padding(imagePaddingDp.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colors.primary)
+                Box(
+                    modifier = Modifier
+                        .size(imageSizeDp.dp)
+                        .padding(imagePaddingDp.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colors.primary)
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(imageId),
@@ -304,6 +387,7 @@ fun FeatureSupport(
                 text = stringResource(id = featureTitleId),
                 style = MaterialTheme.typography.h6
             )
+            // TODO - Wrap the below text if it runs into Check
             Text(
                 modifier = Modifier.padding(start = 5.dp),
                 text = stringResource(id = featureDescriptionId),
@@ -327,7 +411,7 @@ fun FeatureSupport(
                             .padding(end = 10.dp, top = 4.dp, bottom = 4.dp)
                     )
                 } else {
-                    if (finishedScanningCfs || supported) {
+                    if (finishedScanningCfs || supported == Support.YES) {
                         // We've decided if it's supported
                         Check(
                             modifier = Modifier.align(CenterVertically),
@@ -353,19 +437,42 @@ fun FeatureSupport(
 @Composable
 fun Check(
     modifier: Modifier = Modifier,
-    supported: Boolean
+    supported: Support
 ) {
     Icon(
         modifier = modifier
             .size(34.dp)
             .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
         imageVector = ImageVector.vectorResource(
-            id = if (supported) R.drawable.ic_baseline_check_circle_24 else R.drawable.ic_baseline_cancel_24
+            id = when (supported) {
+                Support.YES -> R.drawable.ic_baseline_check_circle_24
+                Support.NO -> R.drawable.ic_baseline_cancel_24
+                Support.UNKNOWN -> R.drawable.ic_baseline_question_24
+            }
         ),
         contentDescription =
-        if (supported) stringResource(R.string.dashboard_supported) else stringResource(
-            R.string.dashboard_not_supported
-        ),
-        tint = if (supported) Green500 else MaterialTheme.colors.error
+        when (supported) {
+            Support.YES -> stringResource(R.string.dashboard_supported)
+            Support.NO -> stringResource(R.string.dashboard_not_supported)
+            Support.UNKNOWN -> stringResource(R.string.unknown)
+        },
+        tint = when (supported) {
+            Support.YES -> Green500
+            Support.NO -> MaterialTheme.colors.error
+            Support.UNKNOWN -> Color.DarkGray
+        }
     )
+}
+
+enum class Support {
+    YES, NO, UNKNOWN
+}
+
+fun fromPref(preference: Int): Support {
+    return when (preference) {
+        PreferenceUtils.CAPABILITY_UNKNOWN -> Support.UNKNOWN
+        PreferenceUtils.CAPABILITY_SUPPORTED -> Support.YES
+        PreferenceUtils.CAPABILITY_NOT_SUPPORTED -> Support.NO
+        else -> Support.UNKNOWN
+    }
 }
