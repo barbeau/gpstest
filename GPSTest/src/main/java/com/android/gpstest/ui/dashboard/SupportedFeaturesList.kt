@@ -27,7 +27,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -47,6 +47,7 @@ import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
 import com.android.gpstest.util.SatelliteUtils
+import kotlinx.coroutines.launch
 
 @Composable
 fun SupportedFeaturesList(
@@ -294,7 +295,12 @@ fun InjectPsds(
         iconSizeDp = 45
     ) {
         // TODO - below call doesn't persist data - move saving preference into below method
-        IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager) }
+        if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
+            Support.YES
+        } else {
+            Support.NO
+        }
+    }
 }
 
 @Composable
@@ -328,7 +334,12 @@ fun InjectTime(
         iconSizeDp = 45
     ) {
         // TODO - below call doesn't persist data - move saving preference into below method
-        IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager) }
+        if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
+            Support.YES
+        } else {
+            Support.NO
+        }
+    }
 }
 
 @Composable
@@ -343,12 +354,21 @@ fun FeatureSupport(
     timeUntilScanCompleteMs: Long,
     scanDurationMs: Long,
     iconSizeDp: Int = 70,
-    onClick: () -> Boolean = { true }
+    onClick: () -> Support = { Support.UNKNOWN }
 ) {
     val imageSizeDp = 75
     val imagePaddingDp = 10
 
-    Row(modifier = Modifier.clickable { onClick() }) {
+    val scope = rememberCoroutineScope()
+
+    // Allow user to manually tap row to check support, and use this value if populated
+    var manualSupported by remember { mutableStateOf(Support.UNKNOWN) }
+
+    Row(modifier = Modifier.clickable {
+        scope.launch {
+            manualSupported = onClick()
+        }
+    }) {
         Column {
             val customIconModifier = Modifier
                 .size(imageSizeDp.dp)
@@ -415,7 +435,7 @@ fun FeatureSupport(
                         // We've decided if it's supported
                         Check(
                             modifier = Modifier.align(CenterVertically),
-                            supported = supported
+                            supported = if (manualSupported != Support.UNKNOWN) manualSupported else supported
                         )
                     } else {
                         // Waiting for scan timeout to complete

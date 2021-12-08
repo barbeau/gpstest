@@ -424,7 +424,20 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.force_time_injection_command), null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.force_time_injection_command), null);
+
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_time),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_time),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**
@@ -442,7 +455,19 @@ public class IOUtils {
         } else {
             command = Application.Companion.getApp().getString(R.string.force_xtra_injection_command);
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_psds),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_psds),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**
@@ -454,7 +479,20 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.delete_aiding_data_command), null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.delete_aiding_data_command), null);
+
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_delete_assist),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_delete_assist),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**

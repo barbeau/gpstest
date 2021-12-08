@@ -662,19 +662,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.force_psds_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.force_psds_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
     }
 
@@ -686,19 +678,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.force_time_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.force_time_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
     }
 
@@ -716,19 +700,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.delete_aiding_data_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.delete_aiding_data_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
         // Restart the GPS, if it was previously started, with a slight delay,
         // to refresh the assistance data
