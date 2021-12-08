@@ -6,9 +6,9 @@
 
 The #1 open-source global navigation satellite system (GNSS) testing app.
 
+## Features
+
 It supports dual-frequency¹ GNSS for:
-<details>
-  <summary>Expand list</summary>
 
 * GPS (USA Navstar)
 * GLONASS (Russia)
