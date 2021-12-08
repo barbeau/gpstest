@@ -227,7 +227,7 @@ fun NavigationMessages(
 
     // On Android S and higher we immediately know if support is available, so don't wait for scan
     FeatureSupport(
-        imageId = R.drawable.ic_navigation_message_24,
+        imageId = R.drawable.ic_navigation_message,
         contentDescriptionId = R.string.dashboard_feature_navigation_messages_title,
         featureTitleId = R.string.dashboard_feature_navigation_messages_title,
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
