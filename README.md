@@ -6,6 +6,10 @@
 
 The #1 open-source global navigation satellite system (GNSS) testing app
 
+## Screenshots
+
+
+
 ## Install
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80">](https://play.google.com/store/apps/details?id=com.android.gpstest)
@@ -14,7 +18,7 @@ The #1 open-source global navigation satellite system (GNSS) testing app
 ## Features
 
 <details>
-  <summary>Expand list</summary>
+  <summary>Expand GNSS support list</summary>
 
 It supports dual-frequency¹ GNSS for:
 
@@ -39,15 +43,13 @@ Questions?  Check out the [FAQ](FAQ.md), the [Slack group](https://gpstest-andro
 
 </details>
 
-## Data Output and Logging
-
-Want to know how to output GNSS data to the system log for further analysis?  Check out the [Data Output and Logging](LOGGING.md) page.
-
 ## FAQ
 
 - Crowdsourcing GNSS data - Interested in better understanding the state of GNSS feature support on Android devices? See the article [*Crowdsourcing GNSS features of Android devices*](https://barbeau.medium.com/crowdsourcing-gnss-capabilities-of-android-devices-d4228645cf25).
 
 - Accuracy - Measuring your device GNSS accuracy? Check out the [Measuring Accuracy using GPSTest](ACCURACY.md) page, as well as the corresponding article [*Measuring GNSS accuracy on Android devices*](https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389).
+
+- Data Output and Logging - Want to know how to output GNSS data to the system log for further analysis?  Check out the [Data Output and Logging](LOGGING.md) page.
 
 ## Contributing
 
@@ -57,7 +59,7 @@ Want to know how to output GNSS data to the system log for further analysis?  Ch
 
 - Beta testing - Get early access to new GPSTest versions, and help us squash bugs! See the [Testing Guide](BETA_TESTING.md) for details.
 
-- Translating - Want to improve existing translations, or add a new translation?  See the [Translations](/TRANSLATIONS.md) documentation.
+- Translating - Want to improve existing translations, or add a new translation?  Translate on [Transifex](https://www.transifex.com/sean-barbeau/gpstest-android/dashboard/) or see the [Translations](/TRANSLATIONS.md) documentation.
 
 ## Donate
 
