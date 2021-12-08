@@ -400,14 +400,15 @@ fun FeatureSupport(
             }
         }
         Column(
-            modifier = Modifier.align(CenterVertically)
+            modifier = Modifier
+                .align(CenterVertically)
+                .weight(1f)
         ) {
             Text(
                 modifier = Modifier.padding(start = 5.dp),
                 text = stringResource(id = featureTitleId),
                 style = MaterialTheme.typography.h6
             )
-            // TODO - Wrap the below text if it runs into Check
             Text(
                 modifier = Modifier.padding(start = 5.dp),
                 text = stringResource(id = featureDescriptionId),
@@ -418,7 +419,6 @@ fun FeatureSupport(
         Column(
             modifier = Modifier
                 .align(CenterVertically)
-                .fillMaxSize()
                 .padding(end = 5.dp),
             horizontalAlignment = Alignment.End
         ) {
