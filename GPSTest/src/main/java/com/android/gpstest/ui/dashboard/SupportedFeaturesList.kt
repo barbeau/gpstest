@@ -423,7 +423,7 @@ fun FeatureSupport(
             horizontalAlignment = Alignment.End
         ) {
             Row {
-                if (satelliteMetadata.gnssToCf.isEmpty()) {
+                if (satelliteMetadata.gnssToCf.isEmpty() && !finishedScanningCfs) {
                     // No signals yet
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -431,7 +431,7 @@ fun FeatureSupport(
                             .padding(end = 10.dp, top = 4.dp, bottom = 4.dp)
                     )
                 } else {
-                    if (finishedScanningCfs || supported == Support.YES) {
+                    if (finishedScanningCfs || supported == Support.YES || manualSupported == Support.YES) {
                         // We've decided if it's supported
                         Check(
                             modifier = Modifier.align(CenterVertically),
