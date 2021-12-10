@@ -51,9 +51,9 @@ I welcome contributions to the project!  Please see the [Contributing Guide](.gi
 
 - Don't know where to start?  Take a look at the issues marked with the [your-first-pr](https://github.com/barbeau/gpstest/labels/your-first-pr) label and comment to let me know if you're interested in working on it.
 
-- Beta testing - Get early access to new GPSTest versions, and help us squash bugs! See the [Testing Guide](BETA_TESTING.md) for details.
+- Beta testing: Get early access to new GPSTest versions, and help us squash bugs! See the [Testing Guide](BETA_TESTING.md) for details.
 
-- Translating - Want to improve existing translations, or add a new translation?  Translate on [Transifex](https://www.transifex.com/sean-barbeau/gpstest-android/dashboard/) or see the [Translations](/TRANSLATIONS.md) documentation.
+- Translating: Want to improve existing translations, or add a new translation?  Translate on [Transifex](https://www.transifex.com/sean-barbeau/gpstest-android/dashboard/) or see the [Translations](/TRANSLATIONS.md) documentation.
 
 ## FAQ
 
