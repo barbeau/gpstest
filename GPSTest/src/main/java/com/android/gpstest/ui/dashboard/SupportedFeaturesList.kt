@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.model.ScanStatus
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.IOUtils
@@ -52,9 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SupportedFeaturesList(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -71,43 +70,23 @@ fun SupportedFeaturesList(
         Column {
             DualFrequency(
                 satelliteMetadata,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
             RawMeasurements(
                 satelliteMetadata,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
             CarrierPhase(
                 satelliteMetadata,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
             NavigationMessages(
                 satelliteMetadata,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
-            AntennaInfo(
-                satelliteMetadata = satelliteMetadata,
-                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                scanDurationMs = scanDurationMs
-            )
-            InjectPsds(
-                satelliteMetadata = satelliteMetadata,
-                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                scanDurationMs = scanDurationMs
-            )
-            InjectTime(
-                satelliteMetadata = satelliteMetadata,
-                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                scanDurationMs = scanDurationMs
-            )
+            AntennaInfo(satelliteMetadata)
+            InjectPsds(satelliteMetadata)
+            InjectTime(satelliteMetadata)
         }
     }
 }
@@ -115,9 +94,7 @@ fun SupportedFeaturesList(
 @Composable
 fun DualFrequency(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     FeatureSupport(
         // This drawable isn't used because we use the animated canvas, but provide it as a backup
@@ -127,9 +104,7 @@ fun DualFrequency(
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (satelliteMetadata.isNonPrimaryCarrierFreqInView) Support.YES else Support.NO,
-        finishedScanningCfs = finishedScanningCfs,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs
+        scanStatus = scanStatus
     )
 }
 
@@ -164,13 +139,18 @@ fun DualFrequencyImage(modifier: Modifier = Modifier) {
 @Composable
 fun RawMeasurements(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     val capabilityMeasurementsInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_raw_measurements),
         CAPABILITY_UNKNOWN
+    )
+
+    // On Android S and higher we immediately know if support is available, so don't wait for scan
+    val newScanStatus = ScanStatus(
+        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else scanStatus.finishedScanningCfs,
+        timeUntilScanCompleteMs = scanStatus.timeUntilScanCompleteMs,
+        scanDurationMs = scanStatus.scanDurationMs
     )
 
     // On Android S and higher we immediately know if support is available, so don't wait for scan
@@ -181,18 +161,14 @@ fun RawMeasurements(
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
     )
 }
 
 @Composable
 fun CarrierPhase(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     val capabilityCarrierPhaseInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_measurement_delta_range),
@@ -206,9 +182,7 @@ fun CarrierPhase(
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        finishedScanningCfs = finishedScanningCfs,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
+        scanStatus = scanStatus,
         iconSizeDp = 50
     )
 }
@@ -216,41 +190,36 @@ fun CarrierPhase(
 @Composable
 fun NavigationMessages(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus
 ) {
     val capabilityNavMessagesInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_nav_messages),
         CAPABILITY_UNKNOWN
     )
-
     // On Android S and higher we immediately know if support is available, so don't wait for scan
+    val newScanStatus = ScanStatus(
+        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else scanStatus.finishedScanningCfs,
+        timeUntilScanCompleteMs = scanStatus.timeUntilScanCompleteMs,
+        scanDurationMs = scanStatus.scanDurationMs
+    )
     FeatureSupport(
         imageId = R.drawable.ic_navigation_message,
         contentDescriptionId = R.string.dashboard_feature_navigation_messages_title,
         featureTitleId = R.string.dashboard_feature_navigation_messages_title,
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
         satelliteMetadata = satelliteMetadata,
-        supported = if (capabilityNavMessagesInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else finishedScanningCfs,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
+        supported = if (capabilityNavMessagesInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
         iconSizeDp = 50
     )
 }
 
 @Composable
-fun AntennaInfo(
-    satelliteMetadata: SatelliteMetadata,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
-) {
+fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
     val locationManager =
         Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     val supported = SatelliteUtils.isGnssAntennaInfoSupported(locationManager)
 
-    // We immediately know if support is available, so don't wait for scan
     FeatureSupport(
         imageId = R.drawable.ic_antenna_24,
         contentDescriptionId = R.string.dashboard_feature_antenna_info_title,
@@ -258,19 +227,12 @@ fun AntennaInfo(
         featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (supported) Support.YES else Support.NO,
-        finishedScanningCfs = true,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
         iconSizeDp = 50
     )
 }
 
 @Composable
-fun InjectPsds(
-    satelliteMetadata: SatelliteMetadata,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
-) {
+fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
     val capabilityInjectPsdsInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_inject_psds),
         CAPABILITY_UNKNOWN
@@ -289,9 +251,6 @@ fun InjectPsds(
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectPsdsInt),
-        finishedScanningCfs = true,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
         iconSizeDp = 45
     ) {
         if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
@@ -303,11 +262,7 @@ fun InjectPsds(
 }
 
 @Composable
-fun InjectTime(
-    satelliteMetadata: SatelliteMetadata,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
-) {
+fun InjectTime(satelliteMetadata: SatelliteMetadata) {
     // Inject time
     val capabilityInjectTimeInt = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_inject_time),
@@ -327,9 +282,6 @@ fun InjectTime(
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectTimeInt),
-        finishedScanningCfs = true,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = scanDurationMs,
         iconSizeDp = 45
     ) {
         if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
@@ -348,9 +300,7 @@ fun FeatureSupport(
     @StringRes featureDescriptionId: Int,
     satelliteMetadata: SatelliteMetadata,
     supported: Support,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long,
+    scanStatus: ScanStatus = ScanStatus(true, 0, 0),
     iconSizeDp: Int = 70,
     onClick: () -> Support = { Support.UNKNOWN }
 ) {
@@ -421,7 +371,7 @@ fun FeatureSupport(
             horizontalAlignment = Alignment.End
         ) {
             Row {
-                if (satelliteMetadata.gnssToCf.isEmpty() && !finishedScanningCfs) {
+                if (satelliteMetadata.gnssToCf.isEmpty() && !scanStatus.finishedScanningCfs) {
                     // No signals yet
                     CircularProgressIndicator(
                         modifier = Modifier
@@ -429,7 +379,7 @@ fun FeatureSupport(
                             .padding(end = 10.dp, top = 4.dp, bottom = 4.dp)
                     )
                 } else {
-                    if (finishedScanningCfs || supported == Support.YES || manualSupported == Support.YES) {
+                    if (scanStatus.finishedScanningCfs || supported == Support.YES || manualSupported == Support.YES) {
                         // We've decided if it's supported
                         Check(
                             modifier = Modifier.align(CenterVertically),
@@ -441,9 +391,7 @@ fun FeatureSupport(
                             Modifier
                                 .align(CenterVertically)
                                 .padding(end = 10.dp, top = 4.dp, bottom = 4.dp),
-                            finishedScanningCfs = finishedScanningCfs,
-                            timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                            scanDurationMs = scanDurationMs
+                            scanStatus
                         )
                     }
                 }

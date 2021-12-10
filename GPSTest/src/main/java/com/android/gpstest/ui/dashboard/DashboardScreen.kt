@@ -39,10 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SatelliteGroup
-import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.model.SbasType
+import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -59,18 +56,18 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
-        finishedScanningCfs = finishedScanningCfs,
-        timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-        scanDurationMs = viewModel.scanDurationMs
+        ScanStatus(
+            finishedScanningCfs = finishedScanningCfs,
+            timeUntilScanCompleteMs = timeUntilScanCompleteMs,
+            scanDurationMs = viewModel.scanDurationMs
+        )
     )
 }
 
 @Composable
 fun Dashboard(
     satelliteMetadata: SatelliteMetadata,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     Box(
         modifier = Modifier
@@ -82,11 +79,11 @@ fun Dashboard(
                 .padding(5.dp)
                 .fillMaxSize()
         ) {
-            GnssList(satelliteMetadata.gnssToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs)
+            GnssList(satelliteMetadata.gnssToCf, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
-            SbasList(satelliteMetadata.sbasToCf, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs, satelliteMetadata.numSignalsUsed)
+            SbasList(satelliteMetadata.sbasToCf, scanStatus, satelliteMetadata.numSignalsUsed)
             Spacer(modifier = Modifier.padding(5.dp))
-            SupportedFeaturesList(satelliteMetadata, finishedScanningCfs, timeUntilScanCompleteMs, scanDurationMs)
+            SupportedFeaturesList(satelliteMetadata, scanStatus)
         }
     }
 }
@@ -94,9 +91,7 @@ fun Dashboard(
 @Composable
 fun GnssList(
     gnssToCf: MutableMap<GnssType, MutableSet<String>>,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -111,9 +106,7 @@ fun GnssList(
             GnssOrSbasCard(
                 gnssType = it.key,
                 cfs = it.value,
-                finishedScanningCfs = finishedScanningCfs,
-                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                scanDurationMs = scanDurationMs
+                scanStatus = scanStatus
             )
         }
     }
@@ -122,9 +115,7 @@ fun GnssList(
 @Composable
 fun SbasList(
     sbasToCf: MutableMap<SbasType, MutableSet<String>>,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long,
+    scanStatus: ScanStatus,
     numSignalsUsed: Int
 ) {
     Text(
@@ -152,16 +143,18 @@ fun SbasList(
             SbasCard(
                 sbasType = it.key,
                 cfs = it.value,
-                finishedScanningCfs = finishedScanningCfs,
-                timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                scanDurationMs = scanDurationMs
+                scanStatus = scanStatus
             )
         }
     }
 }
 
 @Composable
-fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
+fun GnssOrSbasCard(
+    gnssType: GnssType,
+    cfs: Set<String>,
+    scanStatus: ScanStatus
+) {
     when (gnssType) {
         GnssType.NAVSTAR -> {
             GnssOrSbasCard(
@@ -170,9 +163,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_usa,
                 R.string.usa_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.GALILEO -> {
@@ -182,9 +173,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_eu,
                 R.string.eu_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.GLONASS -> {
@@ -194,9 +183,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_russia,
                 R.string.russia_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.QZSS -> {
@@ -206,9 +193,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_japan,
                 R.string.japan_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.BEIDOU -> {
@@ -218,9 +203,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_china,
                 R.string.china_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.IRNSS -> {
@@ -230,9 +213,7 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
                 R.string.dashboard_india,
                 R.string.india_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         GnssType.SBAS -> return // No-op
@@ -241,7 +222,11 @@ fun GnssOrSbasCard(gnssType: GnssType, cfs: Set<String>, finishedScanningCfs: Bo
 }
 
 @Composable
-fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean, timeUntilScanCompleteMs: Long, scanDurationMs: Long) {
+fun SbasCard(
+    sbasType: SbasType,
+    cfs: Set<String>,
+    scanStatus: ScanStatus,
+) {
     when (sbasType) {
         SbasType.WAAS -> {
             GnssOrSbasCard(
@@ -250,9 +235,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_usa,
                 R.string.usa_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.EGNOS -> {
@@ -262,9 +245,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_eu,
                 R.string.eu_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.SDCM -> {
@@ -274,9 +255,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_russia,
                 R.string.russia_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.MSAS -> {
@@ -286,9 +265,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_japan,
                 R.string.japan_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.SNAS -> {
@@ -298,9 +275,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_china,
                 R.string.china_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.GAGAN -> {
@@ -310,9 +285,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_india,
                 R.string.india_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.SACCSA -> {
@@ -322,9 +295,7 @@ fun SbasCard(sbasType: SbasType, cfs: Set<String>, finishedScanningCfs: Boolean,
                 R.string.dashboard_icao,
                 R.string.japan_flag,
                 cfs,
-                finishedScanningCfs,
-                timeUntilScanCompleteMs,
-                scanDurationMs
+                scanStatus
             )
         }
         SbasType.UNKNOWN -> {
@@ -340,9 +311,7 @@ fun GnssOrSbasCard(
     @StringRes countryId: Int,
     @StringRes contentDescriptionId: Int,
     cfs: Set<String>,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus
 ) {
     Card(
         modifier = Modifier
@@ -392,9 +361,7 @@ fun GnssOrSbasCard(
                             Modifier
                                 .align(CenterVertically)
                                 .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
-                            finishedScanningCfs = finishedScanningCfs,
-                            timeUntilScanCompleteMs = timeUntilScanCompleteMs,
-                            scanDurationMs = scanDurationMs
+                            scanStatus
                         )
                     }
                     cfs.forEach {
@@ -409,15 +376,13 @@ fun GnssOrSbasCard(
 @Composable
 fun ChipProgress(
     modifier: Modifier = Modifier,
-    finishedScanningCfs: Boolean,
-    timeUntilScanCompleteMs: Long,
-    scanDurationMs: Long
+    scanStatus: ScanStatus
 ) {
     var progress by remember { mutableStateOf(1.0f) }
     // Only show the "scanning" mini progress circle if it's within the time threshold
     // following the first fix
-    if (!finishedScanningCfs && timeUntilScanCompleteMs >= 0) {
-        progress = timeUntilScanCompleteMs.toFloat() / scanDurationMs.toFloat()
+    if (!scanStatus.finishedScanningCfs && scanStatus.timeUntilScanCompleteMs >= 0) {
+        progress = scanStatus.timeUntilScanCompleteMs.toFloat() / scanStatus.scanDurationMs.toFloat()
         val animatedProgress = animateFloatAsState(
             targetValue = progress,
             animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
