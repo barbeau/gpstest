@@ -3,7 +3,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/barbeau/gpstest?color=red)](https://github.com/barbeau/gpstest/issues)
 [![Donate](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow)](https://www.buymeacoffee.com/barbeau) 
 [![Twitter Follow](https://img.shields.io/twitter/follow/sjbarbeau.svg?style=social&label=Follow)](https://twitter.com/sjbarbeau)
-[![GitHub](https://img.shields.io/github/license/barbeau/gpstest)](/master/LICENSE)
+[![GitHub](https://img.shields.io/github/license/barbeau/gpstest)](/LICENSE)
 
 The #1 open-source global navigation satellite system (GNSS) testing app.
 
