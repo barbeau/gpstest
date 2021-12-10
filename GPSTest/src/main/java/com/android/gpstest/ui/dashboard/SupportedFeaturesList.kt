@@ -294,7 +294,6 @@ fun InjectPsds(
         scanDurationMs = scanDurationMs,
         iconSizeDp = 45
     ) {
-        // TODO - below call doesn't persist data - move saving preference into below method
         if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
             Support.YES
         } else {
@@ -333,7 +332,6 @@ fun InjectTime(
         scanDurationMs = scanDurationMs,
         iconSizeDp = 45
     ) {
-        // TODO - below call doesn't persist data - move saving preference into below method
         if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
             Support.YES
         } else {
