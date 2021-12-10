@@ -42,8 +42,10 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
+import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
+import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
@@ -87,6 +89,7 @@ fun SupportedFeaturesList(
             AntennaInfo(satelliteMetadata)
             InjectPsds(satelliteMetadata)
             InjectTime(satelliteMetadata)
+            DeleteAssist(satelliteMetadata)
         }
     }
 }
@@ -290,6 +293,30 @@ fun InjectTime(satelliteMetadata: SatelliteMetadata) {
             Support.NO
         }
     }
+}
+
+@Composable
+fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
+    // Delete assist data
+    val capabilityDeleteAssistInt = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_delete_assist),
+        CAPABILITY_UNKNOWN
+    )
+    val description = if (capabilityDeleteAssistInt == CAPABILITY_UNKNOWN) {
+        R.string.dashboard_feature_empty_string
+    } else {
+        R.string.dashboard_feature_delete_assist_description
+    }
+
+    FeatureSupport(
+        imageId = R.drawable.ic_delete_black_24dp,
+        contentDescriptionId = R.string.delete_aiding_data,
+        featureTitleId = R.string.delete_aiding_data,
+        featureDescriptionId = description,
+        satelliteMetadata = satelliteMetadata,
+        supported = fromPref(capabilityDeleteAssistInt),
+        iconSizeDp = 45
+    )
 }
 
 @Composable
