@@ -42,10 +42,8 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
-import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
-import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
@@ -241,7 +239,7 @@ fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
         CAPABILITY_UNKNOWN
     )
     val description = if (capabilityInjectPsdsInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_tap_to_try
+        R.string.dashboard_feature_tap_to_check
     } else {
         R.string.dashboard_feature_inject_psds_description
     }
@@ -272,7 +270,7 @@ fun InjectTime(satelliteMetadata: SatelliteMetadata) {
         CAPABILITY_UNKNOWN
     )
     val description = if (capabilityInjectTimeInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_tap_to_try
+        R.string.dashboard_feature_tap_to_check
     } else {
         R.string.dashboard_feature_inject_time_description
     }
@@ -303,10 +301,12 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
         CAPABILITY_UNKNOWN
     )
     val description = if (capabilityDeleteAssistInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_empty_string
+        R.string.dashboard_feature_tap_to_check
     } else {
         R.string.dashboard_feature_delete_assist_description
     }
+
+    var openDialog by remember { mutableStateOf(false) }
 
     FeatureSupport(
         imageId = R.drawable.ic_delete_black_24dp,
@@ -316,7 +316,72 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityDeleteAssistInt),
         iconSizeDp = 45
-    )
+    ) {
+        openDialog = true
+        Support.UNKNOWN
+    }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog = false
+            },
+            title = {
+                Text(stringResource(R.string.delete_aiding_data))
+            },
+            text = {
+                Column {
+                    Text(
+                        text = Application.app.getString(
+                            R.string.dashboard_feature_tap_nav_drawer
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        )
+    }
+    //DeleteAssistDialog(openDialog)
+}
+
+@Composable
+fun DeleteAssistDialog(open: Boolean) {
+    var openDialog by remember { mutableStateOf(open) }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog = false
+            },
+            title = {
+                Text(stringResource(R.string.delete_aiding_data))
+            },
+            text = {
+                Column {
+                    Text(
+                        text = Application.app.getString(
+                            R.string.dashboard_feature_tap_nav_drawer
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        )
+    }
 }
 
 @Composable

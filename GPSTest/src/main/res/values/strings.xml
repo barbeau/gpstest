@@ -236,9 +236,9 @@
 
     <string name="dashboard_feature_inject_psds_description">From Predicted Satellite Data Service (e.g., XTRA) server</string>
     <string name="dashboard_feature_inject_time_description">From Network Time Protocol server</string>
-    <string name="dashboard_feature_delete_assist_description">Deletes assist info</string>
-    <string name="dashboard_feature_tap_to_try">Tap to check</string>
-    <string name="dashboard_feature_empty_string" />
+    <string name="dashboard_feature_delete_assist_description">Deletes GNSS assist info</string>
+    <string name="dashboard_feature_tap_to_check">Tap to check</string>
+    <string name="dashboard_feature_tap_nav_drawer">Tap the option in the navigation drawer to try clearing the assist data.</string>
 
     <!-- Content descriptions -->
     <string name="lock">lock</string>
