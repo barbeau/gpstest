@@ -80,7 +80,11 @@ fun SupportedFeaturesList(
                 satelliteMetadata,
                 scanStatus
             )
+            AutoGainControl(
+                satelliteMetadata,
+                scanStatus)
             AntennaInfo(satelliteMetadata)
+            Nmea(satelliteMetadata)
             NavigationMessages(
                 satelliteMetadata,
                 scanStatus
@@ -162,8 +166,9 @@ fun RawMeasurements(
         featureTitleId = R.string.dashboard_feature_raw_measurements_title,
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
-        supported = if (capabilityMeasurementsInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
+        supported = if (capabilityMeasurementsInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
+        iconSizeDp = 45
     )
 }
 
@@ -172,7 +177,7 @@ fun CarrierPhase(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
 ) {
-    val capabilityCarrierPhaseInt = Application.prefs.getInt(
+    val capability = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_measurement_delta_range),
         CAPABILITY_UNKNOWN
     )
@@ -183,9 +188,9 @@ fun CarrierPhase(
         featureTitleId = R.string.dashboard_feature_carrier_phase_title,
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
         satelliteMetadata = satelliteMetadata,
-        supported = if (capabilityCarrierPhaseInt == PreferenceUtils.CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        supported = fromPref(capability),
         scanStatus = scanStatus,
-        iconSizeDp = 50
+        iconSizeDp = 45
     )
 }
 
@@ -239,6 +244,41 @@ fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
         featureDescription = antennaCfs,
         satelliteMetadata = satelliteMetadata,
         supported = supported,
+        iconSizeDp = 45
+    )
+}
+
+@Composable
+fun AutoGainControl(
+    satelliteMetadata: SatelliteMetadata,
+    scanStatus: ScanStatus,
+) {
+    val autoGainControl = Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), CAPABILITY_UNKNOWN)
+
+    FeatureSupport(
+        imageId = R.drawable.ic_auto_gain_control_24,
+        contentDescriptionId = R.string.dashboard_feature_auto_gain_control_title,
+        featureTitleId = R.string.dashboard_feature_auto_gain_control_title,
+        featureDescriptionId = R.string.dashboard_feature_auto_gain_control_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = fromPref(autoGainControl),
+        scanStatus = scanStatus,
+        iconSizeDp = 45
+    )
+}
+
+@Composable
+fun Nmea(satelliteMetadata: SatelliteMetadata) {
+    val nmeaCapability = Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), CAPABILITY_UNKNOWN)
+
+    // We immediately know if support is available, so don't wait for scan
+    FeatureSupport(
+        imageId = R.drawable.ic_nmea_24,
+        contentDescriptionId = R.string.pref_nmea_output_title,
+        featureTitleId = R.string.pref_nmea_output_title,
+        featureDescriptionId = R.string.dashboard_feature_nmea_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = fromPref(nmeaCapability),
         iconSizeDp = 45
     )
 }

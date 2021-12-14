@@ -240,6 +240,11 @@
     <string name="dashboard_feature_tap_to_check">Tap to check</string>
     <string name="dashboard_feature_tap_nav_drawer">Tap the option in the navigation drawer to try clearing the assist data.</string>
 
+    <string name="dashboard_feature_nmea_description">Detailed stream of GNSS events</string>
+
+    <string name="dashboard_feature_auto_gain_control_title">Automatic gain control</string>
+    <string name="dashboard_feature_auto_gain_control_description">For detecting interference</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>
