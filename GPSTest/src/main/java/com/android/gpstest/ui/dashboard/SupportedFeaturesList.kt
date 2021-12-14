@@ -82,7 +82,8 @@ fun SupportedFeaturesList(
             )
             AutoGainControl(
                 satelliteMetadata,
-                scanStatus)
+                scanStatus
+            )
             AntennaInfo(satelliteMetadata)
             Nmea(satelliteMetadata)
             NavigationMessages(
@@ -225,7 +226,8 @@ fun NavigationMessages(
 fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
     val locationManager =
         Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    val gnssAntennaInfo = getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
+    val gnssAntennaInfo =
+        getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
     val antennaCfs: String
     val supported: Support
     if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
@@ -253,7 +255,10 @@ fun AutoGainControl(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
 ) {
-    val autoGainControl = Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), CAPABILITY_UNKNOWN)
+    val autoGainControl = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_measurement_automatic_gain_control),
+        CAPABILITY_UNKNOWN
+    )
 
     FeatureSupport(
         imageId = R.drawable.ic_auto_gain_control_24,
@@ -269,7 +274,10 @@ fun AutoGainControl(
 
 @Composable
 fun Nmea(satelliteMetadata: SatelliteMetadata) {
-    val nmeaCapability = Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), CAPABILITY_UNKNOWN)
+    val nmeaCapability = Application.prefs.getInt(
+        Application.app.getString(R.string.capability_key_nmea),
+        CAPABILITY_UNKNOWN
+    )
 
     // We immediately know if support is available, so don't wait for scan
     FeatureSupport(
