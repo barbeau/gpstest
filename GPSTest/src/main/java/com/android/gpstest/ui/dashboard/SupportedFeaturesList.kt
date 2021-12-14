@@ -85,6 +85,7 @@ fun SupportedFeaturesList(
                 satelliteMetadata,
                 scanStatus
             )
+            Divider(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp))
             InjectPsds(satelliteMetadata)
             InjectTime(satelliteMetadata)
             DeleteAssist(satelliteMetadata)
