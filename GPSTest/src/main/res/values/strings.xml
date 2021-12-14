@@ -226,13 +226,13 @@
     <string name="dashboard_feature_raw_measurements_description">To calculate positions</string>
 
     <string name="dashboard_feature_carrier_phase_title">Carrier phase</string>
-    <string name="dashboard_feature_carrier_phase_description">For better measurements</string>
+    <string name="dashboard_feature_carrier_phase_description">For more precise measurements</string>
 
     <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
     <string name="dashboard_feature_navigation_messages_description">Decoded from live signals</string>
 
     <string name="dashboard_feature_antenna_info_title">GNSS antenna info</string>
-    <string name="dashboard_feature_antenna_info_description">Hardware properties</string>
+    <string name="dashboard_feature_antenna_info_description">For phase and gain corrections</string>
 
     <string name="dashboard_feature_inject_psds_description">From Predicted Satellite Data Service (e.g., XTRA) server</string>
     <string name="dashboard_feature_inject_time_description">From Network Time Protocol server</string>

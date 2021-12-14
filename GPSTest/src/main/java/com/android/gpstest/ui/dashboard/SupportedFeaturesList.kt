@@ -80,11 +80,11 @@ fun SupportedFeaturesList(
                 satelliteMetadata,
                 scanStatus
             )
+            AntennaInfo(satelliteMetadata)
             NavigationMessages(
                 satelliteMetadata,
                 scanStatus
             )
-            AntennaInfo(satelliteMetadata)
             InjectPsds(satelliteMetadata)
             InjectTime(satelliteMetadata)
             DeleteAssist(satelliteMetadata)
@@ -219,16 +219,26 @@ fun NavigationMessages(
 fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
     val locationManager =
         Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-    val supported = SatelliteUtils.isGnssAntennaInfoSupported(locationManager)
+    val gnssAntennaInfo = getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
+    val antennaCfs: String
+    val supported: Support
+    if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
+        antennaCfs = getString(Application.app.getString(R.string.capability_key_antenna_cf))
+        supported = Support.YES
+    } else {
+        antennaCfs = ""
+        supported = Support.NO
+    }
 
     FeatureSupport(
         imageId = R.drawable.ic_antenna_24,
         contentDescriptionId = R.string.dashboard_feature_antenna_info_title,
         featureTitleId = R.string.dashboard_feature_antenna_info_title,
         featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
+        featureDescription = antennaCfs,
         satelliteMetadata = satelliteMetadata,
-        supported = if (supported) Support.YES else Support.NO,
-        iconSizeDp = 50
+        supported = supported,
+        iconSizeDp = 45
     )
 }
 
@@ -348,7 +358,6 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
             }
         )
     }
-    //DeleteAssistDialog(openDialog)
 }
 
 @Composable
@@ -390,6 +399,7 @@ fun FeatureSupport(
     @StringRes contentDescriptionId: Int,
     @StringRes featureTitleId: Int,
     @StringRes featureDescriptionId: Int,
+    featureDescription: String = "",
     satelliteMetadata: SatelliteMetadata,
     supported: Support,
     scanStatus: ScanStatus = ScanStatus(true, 0, 0),
@@ -451,7 +461,7 @@ fun FeatureSupport(
             )
             Text(
                 modifier = Modifier.padding(start = 5.dp),
-                text = stringResource(id = featureDescriptionId),
+                text = if (featureDescription.isEmpty()) stringResource(id = featureDescriptionId) else featureDescription,
                 style = MaterialTheme.typography.body2
             )
         }
