@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.ui.dashboard
 
+import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
@@ -53,14 +54,16 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     )
     val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
     val timeUntilScanCompleteMs: Long by viewModel.timeUntilScanCompleteMs.observeAsState(viewModel.scanDurationMs)
+    val location: Location by viewModel.location.observeAsState(Location("default"))
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
-        ScanStatus(
+        scanStatus = ScanStatus(
             finishedScanningCfs = finishedScanningCfs,
             timeUntilScanCompleteMs = timeUntilScanCompleteMs,
             scanDurationMs = viewModel.scanDurationMs
-        )
+        ),
+        location = location
     )
 }
 
@@ -68,6 +71,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
 fun Dashboard(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
+    location: Location,
 ) {
     Box(
         modifier = Modifier
@@ -83,7 +87,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             SbasList(satelliteMetadata.sbasToCf, scanStatus, satelliteMetadata.numSignalsUsed)
             Spacer(modifier = Modifier.padding(5.dp))
-            SupportedFeaturesList(satelliteMetadata, scanStatus)
+            SupportedFeaturesList(satelliteMetadata, scanStatus, location)
         }
     }
 }

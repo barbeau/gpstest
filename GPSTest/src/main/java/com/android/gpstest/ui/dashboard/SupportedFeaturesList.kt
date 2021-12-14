@@ -16,6 +16,7 @@
 package com.android.gpstest.ui.dashboard
 
 import android.content.Context
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.DrawableRes
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -42,11 +44,13 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
+import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
+import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
 import com.android.gpstest.util.SatelliteUtils
 import kotlinx.coroutines.launch
 
@@ -54,6 +58,7 @@ import kotlinx.coroutines.launch
 fun SupportedFeaturesList(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
+    location: Location,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -86,6 +91,10 @@ fun SupportedFeaturesList(
             )
             AntennaInfo(satelliteMetadata)
             Nmea(satelliteMetadata)
+            VerticalAccuracy(
+                satelliteMetadata,
+                scanStatus,
+                location)
             NavigationMessages(
                 satelliteMetadata,
                 scanStatus
@@ -192,6 +201,24 @@ fun CarrierPhase(
         supported = fromPref(capability),
         scanStatus = scanStatus,
         iconSizeDp = 45
+    )
+}
+
+@Composable
+fun VerticalAccuracy(
+    satelliteMetadata: SatelliteMetadata,
+    scanStatus: ScanStatus,
+    location: Location,
+) {
+    FeatureSupport(
+        imageId = R.drawable.ic_vertical_accuracy_24dp,
+        contentDescriptionId = R.string.dashboard_feature_vert_accuracy_title,
+        featureTitleId = R.string.dashboard_feature_vert_accuracy_title,
+        featureDescriptionId = R.string.dashboard_feature_vert_accuracy_description,
+        satelliteMetadata = satelliteMetadata,
+        supported = if (location.isVerticalAccuracySupported()) Support.YES else Support.NO,
+        scanStatus = scanStatus,
+        iconSizeDp = 50
     )
 }
 

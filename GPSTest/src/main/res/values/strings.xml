@@ -245,6 +245,9 @@
     <string name="dashboard_feature_auto_gain_control_title">Automatic gain control</string>
     <string name="dashboard_feature_auto_gain_control_description">For detecting interference</string>
 
+    <string name="dashboard_feature_vert_accuracy_title">Vertical accuracy</string>
+    <string name="dashboard_feature_vert_accuracy_description">Estimated by hardware</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>
