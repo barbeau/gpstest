@@ -1114,7 +1114,7 @@ internal object UIUtils {
             val alt = FormatUtils.formatAltitude(this)
             val speed = FormatUtils.formatSpeed(this)
             val bearing = FormatUtils.formatBearing(this)
-            "$lat $lon $alt | $speed | $bearing"
+            "$lat $lon $alt \u2022 $speed \u2022 $bearing"
         } else {
             "Unknown location"
         }

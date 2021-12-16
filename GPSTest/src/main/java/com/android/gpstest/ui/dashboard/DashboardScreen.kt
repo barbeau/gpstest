@@ -87,7 +87,11 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             SbasList(satelliteMetadata.sbasToCf, scanStatus, satelliteMetadata.numSignalsUsed)
             Spacer(modifier = Modifier.padding(5.dp))
-            SupportedFeaturesList(satelliteMetadata, scanStatus, location)
+            FeaturesAccuracyList(satelliteMetadata, scanStatus)
+            Spacer(modifier = Modifier.padding(5.dp))
+            FeaturesInfoList(satelliteMetadata, scanStatus, location)
+            Spacer(modifier = Modifier.padding(5.dp))
+            FeaturesAssistDataList(satelliteMetadata)
         }
     }
 }

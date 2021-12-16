@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -44,25 +43,21 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
-import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.theme.Green500
-import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
-import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
 import com.android.gpstest.util.SatelliteUtils
 import kotlinx.coroutines.launch
 
 @Composable
-fun SupportedFeaturesList(
+fun FeaturesAccuracyList(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
-    location: Location,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_feature_support),
+        text = stringResource(id = R.string.dashboard_feature_accuracy),
         style = MaterialTheme.typography.h6,
         color = MaterialTheme.colors.onBackground
     )
@@ -90,19 +85,6 @@ fun SupportedFeaturesList(
                 scanStatus
             )
             AntennaInfo(satelliteMetadata)
-            Nmea(satelliteMetadata)
-            VerticalAccuracy(
-                satelliteMetadata,
-                scanStatus,
-                location)
-            NavigationMessages(
-                satelliteMetadata,
-                scanStatus
-            )
-            Divider(modifier = Modifier.padding(top = 5.dp, bottom = 5.dp))
-            InjectPsds(satelliteMetadata)
-            InjectTime(satelliteMetadata)
-            DeleteAssist(satelliteMetadata)
         }
     }
 }
@@ -205,51 +187,6 @@ fun CarrierPhase(
 }
 
 @Composable
-fun VerticalAccuracy(
-    satelliteMetadata: SatelliteMetadata,
-    scanStatus: ScanStatus,
-    location: Location,
-) {
-    FeatureSupport(
-        imageId = R.drawable.ic_vertical_accuracy_24dp,
-        contentDescriptionId = R.string.dashboard_feature_vert_accuracy_title,
-        featureTitleId = R.string.dashboard_feature_vert_accuracy_title,
-        featureDescriptionId = R.string.dashboard_feature_vert_accuracy_description,
-        satelliteMetadata = satelliteMetadata,
-        supported = if (location.isVerticalAccuracySupported()) Support.YES else Support.NO,
-        scanStatus = scanStatus,
-        iconSizeDp = 50
-    )
-}
-
-@Composable
-fun NavigationMessages(
-    satelliteMetadata: SatelliteMetadata,
-    scanStatus: ScanStatus
-) {
-    val capabilityNavMessagesInt = Application.prefs.getInt(
-        Application.app.getString(R.string.capability_key_nav_messages),
-        CAPABILITY_UNKNOWN
-    )
-    // On Android S and higher we immediately know if support is available, so don't wait for scan
-    val newScanStatus = ScanStatus(
-        finishedScanningCfs = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) true else scanStatus.finishedScanningCfs,
-        timeUntilScanCompleteMs = scanStatus.timeUntilScanCompleteMs,
-        scanDurationMs = scanStatus.scanDurationMs
-    )
-    FeatureSupport(
-        imageId = R.drawable.ic_navigation_message,
-        contentDescriptionId = R.string.dashboard_feature_navigation_messages_title,
-        featureTitleId = R.string.dashboard_feature_navigation_messages_title,
-        featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
-        satelliteMetadata = satelliteMetadata,
-        supported = if (capabilityNavMessagesInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
-        iconSizeDp = 50
-    )
-}
-
-@Composable
 fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
     val locationManager =
         Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -297,176 +234,6 @@ fun AutoGainControl(
         scanStatus = scanStatus,
         iconSizeDp = 45
     )
-}
-
-@Composable
-fun Nmea(satelliteMetadata: SatelliteMetadata) {
-    val nmeaCapability = Application.prefs.getInt(
-        Application.app.getString(R.string.capability_key_nmea),
-        CAPABILITY_UNKNOWN
-    )
-
-    // We immediately know if support is available, so don't wait for scan
-    FeatureSupport(
-        imageId = R.drawable.ic_nmea_24,
-        contentDescriptionId = R.string.pref_nmea_output_title,
-        featureTitleId = R.string.pref_nmea_output_title,
-        featureDescriptionId = R.string.dashboard_feature_nmea_description,
-        satelliteMetadata = satelliteMetadata,
-        supported = fromPref(nmeaCapability),
-        iconSizeDp = 45
-    )
-}
-
-@Composable
-fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
-    val capabilityInjectPsdsInt = Application.prefs.getInt(
-        Application.app.getString(R.string.capability_key_inject_psds),
-        CAPABILITY_UNKNOWN
-    )
-    val description = if (capabilityInjectPsdsInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_tap_to_check
-    } else {
-        R.string.dashboard_feature_inject_psds_description
-    }
-
-    // We immediately know if support is available, so don't wait for scan
-    FeatureSupport(
-        imageId = R.drawable.ic_inject_psds_24,
-        contentDescriptionId = R.string.force_psds_injection,
-        featureTitleId = R.string.force_psds_injection,
-        featureDescriptionId = description,
-        satelliteMetadata = satelliteMetadata,
-        supported = fromPref(capabilityInjectPsdsInt),
-        iconSizeDp = 45
-    ) {
-        if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
-            Support.YES
-        } else {
-            Support.NO
-        }
-    }
-}
-
-@Composable
-fun InjectTime(satelliteMetadata: SatelliteMetadata) {
-    // Inject time
-    val capabilityInjectTimeInt = Application.prefs.getInt(
-        Application.app.getString(R.string.capability_key_inject_time),
-        CAPABILITY_UNKNOWN
-    )
-    val description = if (capabilityInjectTimeInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_tap_to_check
-    } else {
-        R.string.dashboard_feature_inject_time_description
-    }
-
-    // We immediately know if support is available, so don't wait for scan
-    FeatureSupport(
-        imageId = R.drawable.ic_inject_time_24,
-        contentDescriptionId = R.string.force_time_injection,
-        featureTitleId = R.string.force_time_injection,
-        featureDescriptionId = description,
-        satelliteMetadata = satelliteMetadata,
-        supported = fromPref(capabilityInjectTimeInt),
-        iconSizeDp = 45
-    ) {
-        if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
-            Support.YES
-        } else {
-            Support.NO
-        }
-    }
-}
-
-@Composable
-fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
-    // Delete assist data
-    val capabilityDeleteAssistInt = Application.prefs.getInt(
-        Application.app.getString(R.string.capability_key_delete_assist),
-        CAPABILITY_UNKNOWN
-    )
-    val description = if (capabilityDeleteAssistInt == CAPABILITY_UNKNOWN) {
-        R.string.dashboard_feature_tap_to_check
-    } else {
-        R.string.dashboard_feature_delete_assist_description
-    }
-
-    var openDialog by remember { mutableStateOf(false) }
-
-    FeatureSupport(
-        imageId = R.drawable.ic_delete_black_24dp,
-        contentDescriptionId = R.string.delete_aiding_data,
-        featureTitleId = R.string.delete_aiding_data,
-        featureDescriptionId = description,
-        satelliteMetadata = satelliteMetadata,
-        supported = fromPref(capabilityDeleteAssistInt),
-        iconSizeDp = 45
-    ) {
-        openDialog = true
-        Support.UNKNOWN
-    }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(R.string.delete_aiding_data))
-            },
-            text = {
-                Column {
-                    Text(
-                        text = Application.app.getString(
-                            R.string.dashboard_feature_tap_nav_drawer
-                        )
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
-}
-
-@Composable
-fun DeleteAssistDialog(open: Boolean) {
-    var openDialog by remember { mutableStateOf(open) }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(R.string.delete_aiding_data))
-            },
-            text = {
-                Column {
-                    Text(
-                        text = Application.app.getString(
-                            R.string.dashboard_feature_tap_nav_drawer
-                        )
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
 }
 
 @Composable
