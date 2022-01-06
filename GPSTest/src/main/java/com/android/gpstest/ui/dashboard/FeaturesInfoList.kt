@@ -39,7 +39,7 @@ fun FeaturesInfoList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_feature_info),
-        style = MaterialTheme.typography.h6,
+        style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
     Card(
@@ -75,8 +75,7 @@ fun VerticalAccuracy(
         featureDescriptionId = R.string.dashboard_feature_vert_accuracy_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (location.isVerticalAccuracySupported()) Support.YES else Support.NO,
-        scanStatus = scanStatus,
-        iconSizeDp = 50
+        scanStatus = scanStatus
     )
 }
 
@@ -102,8 +101,7 @@ fun NavigationMessages(
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityNavMessagesInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
-        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
-        iconSizeDp = 50
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
     )
 }
 
@@ -116,12 +114,11 @@ fun Nmea(satelliteMetadata: SatelliteMetadata) {
     )
 
     FeatureSupport(
-        imageId = R.drawable.ic_nmea,
+        imageId = R.drawable.ic_nmea, // Not used, but provide as backup
         contentDescriptionId = R.string.pref_nmea_output_title,
         featureTitleId = R.string.pref_nmea_output_title,
         featureDescriptionId = R.string.dashboard_feature_nmea_description,
         satelliteMetadata = satelliteMetadata,
-        supported = fromPref(nmeaCapability),
-        iconSizeDp = 50
+        supported = fromPref(nmeaCapability)
     )
 }

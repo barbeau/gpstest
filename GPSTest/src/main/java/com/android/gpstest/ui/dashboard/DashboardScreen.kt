@@ -33,15 +33,19 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -104,7 +108,7 @@ fun GnssList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_gnss),
-        style = MaterialTheme.typography.h6,
+        style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
     if (gnssToCf.entries.isEmpty()) {
@@ -129,7 +133,7 @@ fun SbasList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_sbas),
-        style = MaterialTheme.typography.h6,
+        style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
     if (sbasToCf.entries.isEmpty()) {
@@ -328,14 +332,14 @@ fun GnssOrSbasCard(
         elevation = 2.dp
     ) {
         Row {
-            Column {
+            Column(modifier = Modifier.align(CenterVertically)) {
                 Image(
                     painterResource(
                         id = flagId
                     ),
                     contentDescription = stringResource(id = contentDescriptionId),
                     modifier = Modifier
-                        .size(75.dp)
+                        .size(iconSize)
                         .padding(10.dp)
                         .shadow(
                             elevation = 3.dp,
@@ -346,14 +350,14 @@ fun GnssOrSbasCard(
             }
             Column(modifier = Modifier.align(CenterVertically)) {
                 Text(
-                    modifier = Modifier.padding(start = 5.dp),
+                    modifier = Modifier.padding(start = 5.dp, top = 10.dp),
                     text = stringResource(id = nameId),
-                    style = MaterialTheme.typography.h6
+                    style = titleStyle
                 )
                 Text(
-                    modifier = Modifier.padding(start = 5.dp),
+                    modifier = Modifier.padding(start = 5.dp, bottom = 10.dp),
                     text = stringResource(id = countryId),
-                    style = MaterialTheme.typography.body2
+                    style = subtitleStyle
                 )
             }
             Column(
@@ -405,23 +409,43 @@ fun ChipProgress(
 }
 
 @Composable
-fun Chip(text: String) {
+fun Chip(
+    text: String,
+    textColor: Color = MaterialTheme.colors.onPrimary,
+    backgroundColor: Color = colorResource(id = R.color.colorPrimary),
+) {
     Surface(
         modifier = Modifier
             .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
-            .width(58.dp),
+            .width(54.dp),
         shape = MaterialTheme.shapes.small,
-        color = colorResource(id = R.color.colorPrimary),
+        color = backgroundColor,
         elevation = 2.dp
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onPrimary,
+            style = chipStyle,
+            color = textColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
         )
     }
+}
+
+@Composable
+fun PassChip() {
+    Chip(
+        stringResource(R.string.dashboard_pass),
+        backgroundColor = Green500
+    )
+}
+
+@Composable
+fun FailChip() {
+    Chip(
+        stringResource(R.string.dashboard_fail),
+        backgroundColor = MaterialTheme.colors.error
+    )
 }
 
 @Composable
@@ -452,6 +476,32 @@ fun ProgressCard(progressVisible: Boolean, message: String) {
         }
     }
 }
+
+val headingStyle = TextStyle(
+    fontWeight = FontWeight.SemiBold,
+    fontSize = 20.sp,
+    letterSpacing = 0.15.sp
+)
+
+val titleStyle = TextStyle(
+    fontWeight = FontWeight.Medium,
+    fontSize = 18.sp,
+    letterSpacing = 0.15.sp
+)
+
+val subtitleStyle = TextStyle(
+    fontWeight = FontWeight.Normal,
+    fontSize = 14.sp,
+    letterSpacing = 0.5.sp
+)
+
+val chipStyle = TextStyle(
+    fontWeight = FontWeight.Normal,
+    fontSize = 14.sp,
+    letterSpacing = 0.5.sp
+)
+
+val iconSize = 70.dp
 
 //@Preview
 //@Composable

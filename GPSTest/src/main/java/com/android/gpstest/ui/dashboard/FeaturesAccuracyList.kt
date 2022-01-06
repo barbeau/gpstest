@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -38,7 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
@@ -58,7 +63,7 @@ fun FeaturesAccuracyList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_feature_accuracy),
-        style = MaterialTheme.typography.h6,
+        style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
     Card(
@@ -246,10 +251,9 @@ fun FeatureSupport(
     satelliteMetadata: SatelliteMetadata,
     supported: Support,
     scanStatus: ScanStatus = ScanStatus(true, 0, 0),
-    iconSizeDp: Int = 70,
+    iconSizeDp: Int = 50,
     onClick: () -> Support = { Support.UNKNOWN }
 ) {
-    val imageSizeDp = 75
     val imagePaddingDp = 10
 
     val scope = rememberCoroutineScope()
@@ -257,16 +261,21 @@ fun FeatureSupport(
     // Allow user to manually tap row to check support, and use this value if populated
     var manualSupported by remember { mutableStateOf(Support.UNKNOWN) }
 
-    Row(modifier = Modifier.clickable {
-        scope.launch {
-            manualSupported = onClick()
-        }
-    }) {
-        Column {
+    Row(modifier = Modifier
+        .clickable {
+            scope.launch {
+                manualSupported = onClick()
+            }
+        }) {
+        Column(
+            modifier = Modifier
+                .align(CenterVertically)
+        ) {
             val customIconModifier = Modifier
-                .size(imageSizeDp.dp)
+                .size(iconSize)
                 .clip(CircleShape)
                 .padding(imagePaddingDp.dp)
+            // TODO - refactor below IF statement to passing in Composables to FeatureSupport()
             if (featureTitleId == R.string.dashboard_feature_dual_frequency_title) {
                 DualFrequencyImage(
                     customIconModifier
@@ -274,21 +283,37 @@ fun FeatureSupport(
             } else {
                 Box(
                     modifier = Modifier
-                        .size(imageSizeDp.dp)
+                        .size(iconSize)
                         .padding(imagePaddingDp.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colors.primary)
+                        .background(MaterialTheme.colors.primary),
+                    //contentAlignment = Center
                 ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(imageId),
-                        contentDescription = stringResource(id = contentDescriptionId),
-                        modifier = Modifier
-                            .size(iconSizeDp.dp)
-                            .padding(5.dp)
-                            .background(MaterialTheme.colors.primary)
-                            .align(Center),
-                        tint = MaterialTheme.colors.onPrimary,
-                    )
+                    if (featureTitleId == R.string.pref_nmea_output_title) {
+                        Text(
+                            text = stringResource(R.string.nmea_prefix),
+                            modifier = Modifier
+                                .background(MaterialTheme.colors.primary)
+                                .align(Center),
+                            style = TextStyle(
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 16.sp
+                            ),
+                            color = MaterialTheme.colors.onPrimary,
+                            textAlign = TextAlign.Center
+                        )
+                    } else {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(imageId),
+                            contentDescription = stringResource(id = contentDescriptionId),
+                            modifier = Modifier
+                                .size(iconSizeDp.dp)
+                                .padding(5.dp)
+                                .background(MaterialTheme.colors.primary)
+                                .align(Center),
+                            tint = MaterialTheme.colors.onPrimary,
+                        )
+                    }
                 }
             }
         }
@@ -298,14 +323,14 @@ fun FeatureSupport(
                 .weight(1f)
         ) {
             Text(
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(start = 5.dp, top = 10.dp),
                 text = stringResource(id = featureTitleId),
-                style = MaterialTheme.typography.h6
+                style = titleStyle
             )
             Text(
-                modifier = Modifier.padding(start = 5.dp),
+                modifier = Modifier.padding(start = 5.dp, bottom = 10.dp),
                 text = if (featureDescription.isEmpty()) stringResource(id = featureDescriptionId) else featureDescription,
-                style = MaterialTheme.typography.body2
+                style = subtitleStyle
             )
         }
 

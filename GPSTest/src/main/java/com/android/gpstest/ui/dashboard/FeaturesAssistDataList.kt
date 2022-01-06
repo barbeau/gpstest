@@ -38,7 +38,7 @@ fun FeaturesAssistDataList(
     Text(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_feature_assist_data),
-        style = MaterialTheme.typography.h6,
+        style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
     Card(
@@ -75,7 +75,7 @@ fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectPsdsInt),
-        iconSizeDp = 45
+        iconSizeDp = 40
     ) {
         if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
             Support.YES
@@ -106,7 +106,7 @@ fun InjectTime(satelliteMetadata: SatelliteMetadata) {
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectTimeInt),
-        iconSizeDp = 45
+        iconSizeDp = 40
     ) {
         if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
             Support.YES
@@ -138,7 +138,7 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityDeleteAssistInt),
-        iconSizeDp = 45
+        iconSizeDp = 40
     ) {
         openDialog = true
         Support.UNKNOWN

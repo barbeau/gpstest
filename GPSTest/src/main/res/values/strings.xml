@@ -250,6 +250,8 @@
 
     <string name="dashboard_feature_vert_accuracy_title">Vertical accuracy</string>
     <string name="dashboard_feature_vert_accuracy_description">Estimated by hardware</string>
+    <string name="dashboard_pass">PASS</string>
+    <string name="dashboard_fail">FAIL</string>
 
     <!-- Content descriptions -->
     <string name="lock">lock</string>

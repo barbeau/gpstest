@@ -157,6 +157,9 @@
     <!-- Send feedback -->
     <string name="app_feedback_email">barbeaudev@gmail.com</string>
 
+    <!-- Dashboard -->
+    <string name="nmea_prefix">$GN</string>
+
     <!-- Device capabilities -->
     <string name="capability_key_inject_psds">capability_key_inject_psds</string>
     <string name="capability_key_inject_time">capability_key_inject_time</string>
