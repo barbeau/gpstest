@@ -114,9 +114,9 @@ fun Error(
         val bottomPadding = if (index == badSatelliteStatus.size - 1) 10.dp else 0.dp
         Row(modifier = Modifier.padding(start = 20.dp, bottom = bottomPadding)) {
             val carrierMhz = MathUtils.toMhz(status.carrierFrequencyHz)
-            val cf = String.format("CF %.3f MHz", carrierMhz)
+            val cf = String.format("%.3f MHz", carrierMhz)
             Text(
-                text = "ID: ${status.svid}, ${status.constellationName()}, $cf",
+                text = "ID ${status.svid}, ${status.constellationName()}, $cf",
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start
