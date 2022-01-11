@@ -19,6 +19,8 @@ import android.annotation.SuppressLint
 import android.location.GnssStatus
 import android.location.Location
 import android.os.Build
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.R
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
@@ -316,5 +318,63 @@ internal object SatelliteUtil {
             return SbasType.MSAS
         }
         return SbasType.UNKNOWN
+    }
+
+    fun SatelliteStatus.constellationName(): String {
+        return when (this.gnssType) {
+            GnssType.NAVSTAR -> {
+                app.getString(R.string.gps_content_description)
+            }
+            GnssType.GALILEO -> {
+                app.getString(R.string.galileo_content_description)
+            }
+            GnssType.GLONASS -> {
+                app.getString(R.string.glonass_content_description)
+            }
+            GnssType.QZSS -> {
+                app.getString(R.string.qzss_content_description)
+            }
+            GnssType.BEIDOU -> {
+                app.getString(R.string.beidou_content_description)
+            }
+            GnssType.IRNSS -> {
+                app.getString(R.string.irnss_content_description)
+            }
+            GnssType.SBAS -> {
+                this.sbasName()
+            }
+            GnssType.UNKNOWN -> {
+                app.getString(R.string.unknown)
+            }
+        }
+    }
+
+    fun SatelliteStatus.sbasName(): String {
+        return when (sbasType) {
+            SbasType.WAAS -> {
+                app.getString(R.string.waas_content_description)
+            }
+            SbasType.EGNOS -> {
+                app.getString(R.string.egnos_content_description)
+            }
+            SbasType.SDCM -> {
+                app.getString(R.string.sdcm_content_description)
+            }
+            SbasType.MSAS -> {
+                app.getString(R.string.msas_content_description)
+            }
+            SbasType.SNAS -> {
+                app.getString(R.string.snas_content_description)
+            }
+            SbasType.GAGAN -> {
+                app.getString(R.string.gagan_content_description)
+            }
+            SbasType.SACCSA -> {
+                app.getString(R.string.saccsa_content_description)
+            }
+            SbasType.UNKNOWN -> {
+                app.getString(R.string.unknown)
+            }
+        }
     }
 }

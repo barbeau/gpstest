@@ -200,7 +200,7 @@
     <string name="sky_legend_shape_in_view">In view</string>
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
-    <!-- Dashboard -->
+    <!-- Dashboard GNSS and SBAS -->
     <string name="dashboard_waiting_for_fix">Waiting for signals…</string>
     <string name="dashboard_turn_on_gnss">Turn on tracking to detect device capabilities</string>
 
@@ -215,9 +215,11 @@
 
     <string name="dashboard_supported_sbas">Supported SBAS</string>
 
+    <!-- Dashboard features -->
     <string name="dashboard_feature_accuracy">Features that improve accuracy</string>
     <string name="dashboard_feature_info">Features for GNSS debug</string>
     <string name="dashboard_feature_assist_data">Features that modify assist data</string>
+    <string name="dashboard_error_check">Error check</string>
 
     <string name="dashboard_supported">Supported</string>
     <string name="dashboard_not_supported">Not supported</string>
@@ -250,6 +252,12 @@
 
     <string name="dashboard_feature_vert_accuracy_title">Vertical accuracy</string>
     <string name="dashboard_feature_vert_accuracy_description">Estimated by hardware</string>
+
+    <!-- Dashboard errors -->
+    <string name="dashboard_valid_cfs_title">Valid carrier frequencies</string>
+    <string name="dashboard_valid_cfs_description_pass">All bands are valid</string>
+    <string name="dashboard_valid_cfs_description_fail">These bands don\'t exist in real life:</string>
+
     <string name="dashboard_pass">PASS</string>
     <string name="dashboard_fail">FAIL</string>
 
