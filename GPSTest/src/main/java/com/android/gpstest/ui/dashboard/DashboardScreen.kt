@@ -97,7 +97,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheck(satelliteMetadata)
+            ErrorCheckList(satelliteMetadata)
         }
     }
 }

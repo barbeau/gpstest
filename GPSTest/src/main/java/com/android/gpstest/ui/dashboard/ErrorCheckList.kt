@@ -38,7 +38,7 @@ import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
 
 @Composable
-fun ErrorCheck(
+fun ErrorCheckList(
     satelliteMetadata: SatelliteMetadata,
 ) {
     Text(
@@ -62,7 +62,7 @@ fun ErrorCheck(
 @Composable
 fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
     val pass = satelliteMetadata.unknownCarrierStatuses.isEmpty()
-    Error(
+    ErrorCheck(
         featureTitleId = R.string.dashboard_valid_cfs_title,
         featureDescriptionId = if (pass) R.string.dashboard_valid_cfs_description_pass else R.string.dashboard_valid_cfs_description_fail,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
@@ -71,7 +71,7 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
 }
 
 @Composable
-fun Error(
+fun ErrorCheck(
     @StringRes featureTitleId: Int,
     @StringRes featureDescriptionId: Int,
     badSatelliteStatus: List<SatelliteStatus>,
@@ -116,7 +116,7 @@ fun Error(
             val carrierMhz = MathUtils.toMhz(status.carrierFrequencyHz)
             val cf = String.format("%.3f MHz", carrierMhz)
             Text(
-                text = "ID ${status.svid}, ${status.constellationName()}, $cf",
+                text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf",
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start

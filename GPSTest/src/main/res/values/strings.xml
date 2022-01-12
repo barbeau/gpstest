@@ -256,7 +256,7 @@
     <!-- Dashboard errors -->
     <string name="dashboard_valid_cfs_title">Valid carrier frequencies</string>
     <string name="dashboard_valid_cfs_description_pass">All bands are valid</string>
-    <string name="dashboard_valid_cfs_description_fail">These bands don\'t exist in real life:</string>
+    <string name="dashboard_valid_cfs_description_fail">Bad frequencies reported by device:</string>
 
     <string name="dashboard_pass">PASS</string>
     <string name="dashboard_fail">FAIL</string>
