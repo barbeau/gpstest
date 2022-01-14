@@ -58,7 +58,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     )
     val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
     val timeUntilScanCompleteMs: Long by viewModel.timeUntilScanCompleteMs.observeAsState(viewModel.scanDurationMs)
-    val location: Location by viewModel.location.observeAsState(Location("default"))
+    val location: Location by viewModel.location.observeAsState(Location(defaultProvider))
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -97,7 +97,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheckList(satelliteMetadata)
+            ErrorCheckList(satelliteMetadata, location)
         }
     }
 }
@@ -113,6 +113,7 @@ fun GnssList(
         style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
+    // FIXME - For APIs 24 and 25 (and possibly others, dependong in API support) no CF will be available. Need to list supportedGnss instead.
     if (gnssToCf.entries.isEmpty()) {
         ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_fix))
     } else {
@@ -504,6 +505,8 @@ val chipStyle = TextStyle(
 )
 
 val iconSize = 70.dp
+
+const val defaultProvider = "default"
 
 //@Preview
 //@Composable

@@ -16,7 +16,6 @@
 package com.android.gpstest.ui.dashboard
 
 import android.content.Context
-import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.DrawableRes
@@ -30,7 +29,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -287,7 +285,6 @@ fun FeatureSupport(
                         .padding(imagePaddingDp.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colors.primary),
-                    //contentAlignment = Center
                 ) {
                     if (featureTitleId == R.string.pref_nmea_output_title) {
                         Text(

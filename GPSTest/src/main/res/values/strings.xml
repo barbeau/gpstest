@@ -219,7 +219,7 @@
     <string name="dashboard_feature_accuracy">Features that improve accuracy</string>
     <string name="dashboard_feature_info">Features for GNSS debug</string>
     <string name="dashboard_feature_assist_data">Features that modify assist data</string>
-    <string name="dashboard_error_check">Error check</string>
+    <string name="dashboard_error_check">Error checks</string>
 
     <string name="dashboard_supported">Supported</string>
     <string name="dashboard_not_supported">Not supported</string>
@@ -257,6 +257,12 @@
     <string name="dashboard_valid_cfs_title">Valid carrier frequencies</string>
     <string name="dashboard_valid_cfs_description_pass">All bands are valid</string>
     <string name="dashboard_valid_cfs_description_fail">Bad frequencies reported by device:</string>
+
+    <string name="dashboard_gps_week_rollover_title">GNSS week rollover</string>
+    <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
+    <string name="dashboard_gps_week_rollover_fail">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock.</string>
+    <string name="dashboard_gps_week_rollover_unknown">Waiting on fix…</string>
+    <string name="dashboard_clock_image">Image of clock</string>
 
     <string name="dashboard_pass">PASS</string>
     <string name="dashboard_fail">FAIL</string>
