@@ -62,6 +62,7 @@ fun ErrorCheckList(
     ) {
         Column {
             ValidCfs(satelliteMetadata)
+            DuplicateCfs(satelliteMetadata)
             GpsWeekRollover(location)
         }
     }
@@ -74,6 +75,24 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
         featureTitleId = R.string.dashboard_valid_cfs_title,
         featureDescriptionId = if (pass) R.string.dashboard_valid_cfs_description_pass else R.string.dashboard_valid_cfs_description_fail,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
+        pass = if (pass) Pass.YES else Pass.NO
+    ) {
+        SingleFrequencyImage(
+            Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp)
+        )
+    }
+}
+
+@Composable
+fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
+    val pass = satelliteMetadata.duplicateCarrierStatuses.isEmpty()
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_duplicate_cfs_title,
+        featureDescriptionId = if (pass) R.string.dashboard_duplicate_cfs_description_pass else R.string.dashboard_duplicate_cfs_description_fail,
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
         pass = if (pass) Pass.YES else Pass.NO
     ) {
         SingleFrequencyImage(

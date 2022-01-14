@@ -254,9 +254,13 @@
     <string name="dashboard_feature_vert_accuracy_description">Estimated by hardware</string>
 
     <!-- Dashboard errors -->
-    <string name="dashboard_valid_cfs_title">Valid carrier frequencies</string>
+    <string name="dashboard_valid_cfs_title">Invalid carrier frequencies</string>
     <string name="dashboard_valid_cfs_description_pass">All bands are valid</string>
     <string name="dashboard_valid_cfs_description_fail">Bad frequencies reported by device:</string>
+
+    <string name="dashboard_duplicate_cfs_title">Duplicate carrier frequencies</string>
+    <string name="dashboard_duplicate_cfs_description_pass">No duplicates from same satellite found</string>
+    <string name="dashboard_duplicate_cfs_description_fail">Duplicates from same satellite found:</string>
 
     <string name="dashboard_gps_week_rollover_title">GNSS week rollover</string>
     <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
