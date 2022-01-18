@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
+import com.android.gpstest.data.FixState
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.ui.components.Wave
@@ -47,6 +48,7 @@ import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
 fun ErrorCheckList(
     satelliteMetadata: SatelliteMetadata,
     location: Location,
+    fixState: FixState,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -63,7 +65,8 @@ fun ErrorCheckList(
         Column {
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
-            GpsWeekRollover(location)
+            MismatchAzimuthElevationSameSatellite(satelliteMetadata)
+            GpsWeekRollover(location, fixState)
         }
     }
 }
@@ -104,17 +107,33 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
     }
 }
 
+@Composable
+fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) {
+    val pass = satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.isEmpty()
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
+        featureDescriptionId = if (pass) R.string.dashboard_mismatch_azimuth_elevation_pass else R.string.dashboard_mismatch_azimuth_elevation_fail,
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
+        pass = if (pass) Pass.YES else Pass.NO
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_navigation_message,
+            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        )
+    }
+}
+
 
 @Composable
-fun GpsWeekRollover(location: Location) {
+fun GpsWeekRollover(location: Location, fixState: FixState) {
     val isValid = DateTimeUtils.isTimeValid(location.time)
 
-    val pass = if (location.provider == defaultProvider) {
+    val pass = if (fixState == FixState.NotAcquired) {
         Pass.UNKNOWN
     } else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (location.provider == defaultProvider) {
+    val descriptionId = if (fixState == FixState.NotAcquired) {
         R.string.dashboard_gps_week_rollover_unknown
     } else {
         if (isValid) R.string.dashboard_gps_week_rollover_pass else R.string.dashboard_gps_week_rollover_fail

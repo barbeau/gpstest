@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
+import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.Green500
@@ -58,7 +59,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     )
     val finishedScanningCfs: Boolean by viewModel.finishedScanningCfs.observeAsState(false)
     val timeUntilScanCompleteMs: Long by viewModel.timeUntilScanCompleteMs.observeAsState(viewModel.scanDurationMs)
-    val location: Location by viewModel.location.observeAsState(Location(defaultProvider))
+    val location: Location by viewModel.location.observeAsState(Location(dummyProvider))
+    val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -67,7 +69,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
             timeUntilScanCompleteMs = timeUntilScanCompleteMs,
             scanDurationMs = viewModel.scanDurationMs
         ),
-        location = location
+        location = location,
+        fixState = fixState
     )
 }
 
@@ -76,6 +79,7 @@ fun Dashboard(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
     location: Location,
+    fixState: FixState,
 ) {
     Box(
         modifier = Modifier
@@ -97,7 +101,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheckList(satelliteMetadata, location)
+            ErrorCheckList(satelliteMetadata, location, fixState)
         }
     }
 }
@@ -506,7 +510,7 @@ val chipStyle = TextStyle(
 
 val iconSize = 70.dp
 
-const val defaultProvider = "default"
+const val dummyProvider = "dummy"
 
 //@Preview
 //@Composable

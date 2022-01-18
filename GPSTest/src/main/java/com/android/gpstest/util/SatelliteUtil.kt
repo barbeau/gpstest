@@ -79,6 +79,7 @@ internal object SatelliteUtil {
         val supportedSbasCfs: MutableSet<String> = LinkedHashSet()
         val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val mismatchAzimuthElevationSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
@@ -157,12 +158,20 @@ internal object SatelliteUtil {
                     satStatuses[carrierLabel] = s
                     var frequenciesInUse = 0
                     var frequenciesInView = 0
-                    for ((_, _, cn0DbHz, _, _, usedInFix) in satStatuses.values) {
-                        if (usedInFix) {
+                    satStatuses.values.forEach { status ->
+                        if (status.usedInFix) {
                             frequenciesInUse++
                         }
-                        if (cn0DbHz != SatelliteStatus.NO_DATA) {
+                        if (status.cn0DbHz != SatelliteStatus.NO_DATA) {
                             frequenciesInView++
+                        }
+                        if (s.azimuthDegrees != status.azimuthDegrees ||
+                                s.elevationDegrees != status.elevationDegrees) {
+                            // Found disagreement on azimuth and ephemeris on signals from same satellite
+                            mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
+                                s
+                            mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
+                                status
                         }
                     }
                     if (frequenciesInUse > 1) {
@@ -179,6 +188,7 @@ internal object SatelliteUtil {
                         // The new frequency we just added was the first in view for this satellite
                         numSatsInView++
                     }
+
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
                     duplicateCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
@@ -205,7 +215,8 @@ internal object SatelliteUtil {
                 isNonPrimaryCarrierFreqInView,
                 isNonPrimaryCarrierFreqInUse,
                 gnssToCf,
-                sbasToCf
+                sbasToCf,
+                mismatchAzimuthElevationSameSatStatuses
             )
         )
     }

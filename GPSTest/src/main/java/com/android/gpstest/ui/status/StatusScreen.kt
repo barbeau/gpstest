@@ -45,7 +45,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
-import com.android.gpstest.ui.dashboard.defaultProvider
+import com.android.gpstest.ui.dashboard.dummyProvider
 import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
@@ -61,7 +61,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     //
     // Observe LiveData from ViewModel
     //
-    val location: Location by viewModel.location.observeAsState(Location(defaultProvider))
+    val location: Location by viewModel.location.observeAsState(Location(dummyProvider))
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
