@@ -256,7 +256,7 @@ private fun formatTime(time: Long) {
     }
 
     if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValid(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
-        val dateAndTime = timeAndDateFormat.format(time).trimZeros()
+        val dateAndTime = timeAndDateFormat.format(time).trimTimeZeros()
         // Time and date
         if (DateTimeUtils.isTimeValid(time)) {
             LocationValue(dateAndTime)
@@ -265,11 +265,11 @@ private fun formatTime(time: Long) {
         }
     } else {
         // Time
-        LocationValue(timeFormat.format(time).trimZeros())
+        LocationValue(timeFormat.format(time).trimTimeZeros())
     }
 }
 
-private fun String.trimZeros(): String {
+private fun String.trimTimeZeros(): String {
     return this.replace(".000", "")
         .replace(",000", "")
 }

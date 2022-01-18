@@ -43,6 +43,7 @@ import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
+import com.android.gpstest.util.UIUtils.trimZeros
 
 @Composable
 fun ErrorCheckList(
@@ -114,6 +115,7 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
         featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
         featureDescriptionId = if (pass) R.string.dashboard_mismatch_azimuth_elevation_pass else R.string.dashboard_mismatch_azimuth_elevation_fail,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
+        includeAzimuthAndElevation = true,
         pass = if (pass) Pass.YES else Pass.NO
     ) {
         ErrorIcon(
@@ -160,6 +162,7 @@ fun ErrorCheck(
     @StringRes featureDescriptionId: Int,
     badSatelliteStatus: List<SatelliteStatus> = emptyList(),
     pass: Pass,
+    includeAzimuthAndElevation: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Row {
@@ -208,8 +211,11 @@ fun ErrorCheck(
         Row(modifier = Modifier.padding(start = 75.dp, bottom = bottomPadding)) {
             val carrierMhz = MathUtils.toMhz(status.carrierFrequencyHz)
             val cf = String.format("%.3f MHz", carrierMhz)
+            val elevation = stringResource(R.string.elevation_column_label) + " " + String.format(stringResource(R.string.gps_elevation_column_value), status.elevationDegrees).trimZeros()
+            val azimuth = stringResource(R.string.azimuth_column_label) + " " + String.format(stringResource(R.string.gps_azimuth_column_value), status.azimuthDegrees).trimZeros()
+
             Text(
-                text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf",
+                text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf" + if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "",
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start

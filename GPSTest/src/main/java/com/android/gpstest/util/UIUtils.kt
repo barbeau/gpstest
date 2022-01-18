@@ -1119,4 +1119,13 @@ internal object UIUtils {
             "Unknown location"
         }
     }
+
+    /**
+     * Trims a single trailing zero after a decimal point (.0) off a String.
+     * Used for elevation and azimuth.
+     */
+    fun String.trimZeros(): String {
+        return this.replace(".0", "")
+            .replace(",0", "")
+    }
 }

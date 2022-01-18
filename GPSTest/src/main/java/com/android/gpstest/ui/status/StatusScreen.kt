@@ -50,6 +50,7 @@ import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
+import com.android.gpstest.util.UIUtils.trimZeros
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -344,11 +345,6 @@ fun Elevation(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     } else {
         StatusValue("", modifier)
     }
-}
-
-private fun String.trimZeros(): String {
-    return this.replace(".0", "")
-        .replace(",0", "")
 }
 
 @Composable
