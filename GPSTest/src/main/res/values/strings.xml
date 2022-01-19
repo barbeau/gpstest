@@ -266,6 +266,14 @@
     <string name="dashboard_mismatch_azimuth_elevation_pass">All signals from same satellite match</string>
     <string name="dashboard_mismatch_azimuth_elevation_fail">Signals from same satellite differ:</string>
 
+    <string name="dashboard_mismatch_almanac_ephemeris_title">Mismatch almanac and ephemeris</string>
+    <string name="dashboard_mismatch_almanac_ephemeris_pass">All signals from same satellite match</string>
+    <string name="dashboard_mismatch_almanac_ephemeris_fail">Signals from same satellite differ:</string>
+    <string name="dashboard_almanac_yes">Almanac</string>
+    <string name="dashboard_almanac_no">No almanac</string>
+    <string name="dashboard_ephemeris_yes">Ephemeris</string>
+    <string name="dashboard_ephemeris_no">No ephemeris</string>
+
     <string name="dashboard_gps_week_rollover_title">GNSS week rollover</string>
     <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
     <string name="dashboard_gps_week_rollover_fail">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock.</string>

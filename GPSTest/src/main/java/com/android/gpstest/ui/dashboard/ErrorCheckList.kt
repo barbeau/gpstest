@@ -67,6 +67,7 @@ fun ErrorCheckList(
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
+            MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
             GpsWeekRollover(location, fixState)
         }
     }
@@ -125,6 +126,22 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
     }
 }
 
+@Composable
+fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) {
+    val pass = satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.isEmpty()
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_mismatch_almanac_ephemeris_title,
+        featureDescriptionId = if (pass) R.string.dashboard_mismatch_almanac_ephemeris_pass else R.string.dashboard_mismatch_almanac_ephemeris_fail,
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
+        includeAlmanacAndEphemeris = true,
+        pass = if (pass) Pass.YES else Pass.NO
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_navigation_message,
+            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        )
+    }
+}
 
 @Composable
 fun GpsWeekRollover(location: Location, fixState: FixState) {
@@ -163,6 +180,7 @@ fun ErrorCheck(
     badSatelliteStatus: List<SatelliteStatus> = emptyList(),
     pass: Pass,
     includeAzimuthAndElevation: Boolean = false,
+    includeAlmanacAndEphemeris: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Row {
@@ -213,9 +231,13 @@ fun ErrorCheck(
             val cf = String.format("%.3f MHz", carrierMhz)
             val elevation = stringResource(R.string.elevation_column_label) + " " + String.format(stringResource(R.string.gps_elevation_column_value), status.elevationDegrees).trimZeros()
             val azimuth = stringResource(R.string.azimuth_column_label) + " " + String.format(stringResource(R.string.gps_azimuth_column_value), status.azimuthDegrees).trimZeros()
+            val almanac = if (status.hasAlmanac) stringResource(R.string.dashboard_almanac_yes) else stringResource(R.string.dashboard_almanac_no)
+            val ephemeris = if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(R.string.dashboard_ephemeris_no)
 
             Text(
-                text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf" + if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "",
+                text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
+                        + if (includeAzimuthAndElevation) ", $elevation, $azimuth" else ""
+                        + if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else "",
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start

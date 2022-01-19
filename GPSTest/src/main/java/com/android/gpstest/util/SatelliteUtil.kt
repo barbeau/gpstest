@@ -80,6 +80,7 @@ internal object SatelliteUtil {
         val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val mismatchAzimuthElevationSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val mismatchAlmanacEphemerisSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
@@ -167,10 +168,18 @@ internal object SatelliteUtil {
                         }
                         if (s.azimuthDegrees != status.azimuthDegrees ||
                                 s.elevationDegrees != status.elevationDegrees) {
-                            // Found disagreement on azimuth and ephemeris on signals from same satellite
+                            // Found disagreement on azimuth and elevation on signals from same satellite
                             mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
                                 s
                             mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
+                                status
+                        }
+                        if (s.hasAlmanac != status.hasAlmanac ||
+                                s.hasEphemeris != status.hasEphemeris) {
+                            // Found disagreement on almanac and ephemeris on signals from same satellite
+                            mismatchAlmanacEphemerisSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
+                                s
+                            mismatchAlmanacEphemerisSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
                                 status
                         }
                     }
@@ -216,7 +225,8 @@ internal object SatelliteUtil {
                 isNonPrimaryCarrierFreqInUse,
                 gnssToCf,
                 sbasToCf,
-                mismatchAzimuthElevationSameSatStatuses
+                mismatchAzimuthElevationSameSatStatuses,
+                mismatchAlmanacEphemerisSameSatStatuses
             )
         )
     }
