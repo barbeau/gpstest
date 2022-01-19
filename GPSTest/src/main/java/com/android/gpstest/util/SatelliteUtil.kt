@@ -154,7 +154,7 @@ internal object SatelliteUtil {
                 if (s.usedInFix) {
                     numSatsUsed++
                 }
-                if (s.cn0DbHz != SatelliteStatus.NO_DATA) {
+                if (s.cn0DbHz != NO_DATA) {
                     numSatsInView++
                 }
             } else {
@@ -170,7 +170,7 @@ internal object SatelliteUtil {
                         if (status.usedInFix) {
                             frequenciesInUse++
                         }
-                        if (status.cn0DbHz != SatelliteStatus.NO_DATA) {
+                        if (status.cn0DbHz != NO_DATA) {
                             frequenciesInView++
                         }
                         if (s.azimuthDegrees != status.azimuthDegrees ||
@@ -200,7 +200,7 @@ internal object SatelliteUtil {
                     if (frequenciesInView > 1) {
                         isDualFrequencyPerSatInView = true
                     }
-                    if (frequenciesInView == 1 && s.cn0DbHz != SatelliteStatus.NO_DATA) {
+                    if (frequenciesInView == 1 && s.cn0DbHz != NO_DATA) {
                         // The new frequency we just added was the first in view for this satellite
                         numSatsInView++
                     }
