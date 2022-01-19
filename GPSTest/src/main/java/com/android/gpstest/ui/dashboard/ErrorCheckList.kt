@@ -66,6 +66,7 @@ fun ErrorCheckList(
         Column {
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
+            MissingAlmanacEphemeris(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
             GpsWeekRollover(location, fixState)
@@ -135,6 +136,33 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
         includeAlmanacAndEphemeris = true,
         pass = if (pass) Pass.YES else Pass.NO
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_navigation_message,
+            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        )
+    }
+}
+
+@Composable
+fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
+    val isValid = satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val descriptionId = if (unknown) {
+        R.string.dashboard_missing_almanac_ephemeris_unknown
+    } else {
+        if (isValid) R.string.dashboard_missing_almanac_ephemeris_pass else R.string.dashboard_missing_almanac_ephemeris_fail
+    }
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_missing_almanac_ephemeris_title,
+        featureDescriptionId = descriptionId,
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
+        includeAlmanacAndEphemeris = true,
+        includeAzimuthAndElevation = true,
+        pass = pass
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -236,8 +264,8 @@ fun ErrorCheck(
 
             Text(
                 text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
-                        + if (includeAzimuthAndElevation) ", $elevation, $azimuth" else ""
-                        + if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else "",
+                        + (if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "")
+                        + (if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else ""),
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start

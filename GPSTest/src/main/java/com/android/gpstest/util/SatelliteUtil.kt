@@ -22,6 +22,7 @@ import android.os.Build
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.model.*
+import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
 
@@ -81,6 +82,7 @@ internal object SatelliteUtil {
         val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val mismatchAzimuthElevationSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val mismatchAlmanacEphemerisSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val missingAlmanacEphemerisButHaveAzimuthElevation: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
@@ -95,8 +97,13 @@ internal object SatelliteUtil {
             if (s.usedInFix) {
                 numSignalsUsed++
             }
-            if (s.cn0DbHz != SatelliteStatus.NO_DATA) {
+            if (s.cn0DbHz != NO_DATA) {
                 numSignalsInView++
+            }
+            if (s.elevationDegrees != NO_DATA || s.azimuthDegrees != NO_DATA &&
+                (!s.hasAlmanac && !s.hasEphemeris)) {
+                // Signal has elevation or azimuth data but no almanac or ephemeris (which it needs for elevation or azimuth)
+                missingAlmanacEphemerisButHaveAzimuthElevation[SatelliteUtils.createGnssStatusKey(s)] = s
             }
 
             // Save the supported GNSS or SBAS type
@@ -226,7 +233,8 @@ internal object SatelliteUtil {
                 gnssToCf,
                 sbasToCf,
                 mismatchAzimuthElevationSameSatStatuses,
-                mismatchAlmanacEphemerisSameSatStatuses
+                mismatchAlmanacEphemerisSameSatStatuses,
+                missingAlmanacEphemerisButHaveAzimuthElevation
             )
         )
     }
