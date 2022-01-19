@@ -152,7 +152,7 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
         if (isValid) Pass.YES else Pass.NO
     }
     val descriptionId = if (unknown) {
-        R.string.dashboard_missing_almanac_ephemeris_unknown
+        R.string.dashboard_waiting_for_signals
     } else {
         if (isValid) R.string.dashboard_missing_almanac_ephemeris_pass else R.string.dashboard_missing_almanac_ephemeris_fail
     }
@@ -181,7 +181,7 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
         if (isValid) Pass.YES else Pass.NO
     }
     val descriptionId = if (fixState == FixState.NotAcquired) {
-        R.string.dashboard_gps_week_rollover_unknown
+        R.string.dashboard_waiting_on_fix
     } else {
         if (isValid) R.string.dashboard_gps_week_rollover_pass else R.string.dashboard_gps_week_rollover_fail
     }
