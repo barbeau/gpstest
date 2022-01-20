@@ -47,7 +47,6 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.Green500
-import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -91,9 +90,10 @@ fun Dashboard(
                 .padding(5.dp)
                 .fillMaxSize()
         ) {
-            GnssList(satelliteMetadata.gnssToCf, scanStatus)
+            // FIXME - handle case where GNSS switch is turned off - show message to turn on tracking
+            GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
-            SbasList(satelliteMetadata.sbasToCf, scanStatus, satelliteMetadata.numSignalsUsed)
+            SbasList(satelliteMetadata.supportedGnss, satelliteMetadata.supportedSbas, satelliteMetadata.sbasToCf, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAccuracyList(satelliteMetadata, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
@@ -102,12 +102,14 @@ fun Dashboard(
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
             ErrorCheckList(satelliteMetadata, location, fixState)
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }
 
 @Composable
 fun GnssList(
+    supportedGnss: Set<GnssType>,
     gnssToCf: MutableMap<GnssType, MutableSet<String>>,
     scanStatus: ScanStatus,
 ) {
@@ -117,25 +119,36 @@ fun GnssList(
         style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
-    // FIXME - For APIs 24 and 25 (and possibly others, dependong in API support) no CF will be available. Need to list supportedGnss instead.
-    if (gnssToCf.entries.isEmpty()) {
-        ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_fix))
+    if (supportedGnss.isEmpty()) {
+        ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_signals))
     } else {
-        gnssToCf.entries.forEach {
-            GnssOrSbasCard(
-                gnssType = it.key,
-                cfs = it.value,
-                scanStatus = scanStatus
-            )
+        if (gnssToCf.isNotEmpty()) {
+            gnssToCf.entries.forEach {
+                GnssOrSbasCard(
+                    gnssType = it.key,
+                    cfs = it.value,
+                    scanStatus = scanStatus
+                )
+            }
+        } else {
+            // Some devices don't support CF values, so loop through supported GNSS instead
+            supportedGnss.forEach {
+                GnssOrSbasCard(
+                    gnssType = it,
+                    cfs = emptySet(),
+                    scanStatus = scanStatus
+                )
+            }
         }
     }
 }
 
 @Composable
 fun SbasList(
+    supportedGnss: Set<GnssType>,
+    supportedSbas: Set<SbasType>,
     sbasToCf: MutableMap<SbasType, MutableSet<String>>,
     scanStatus: ScanStatus,
-    numSignalsUsed: Int
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -143,26 +156,34 @@ fun SbasList(
         style = headingStyle,
         color = MaterialTheme.colors.onBackground
     )
-    if (sbasToCf.entries.isEmpty()) {
-        if (numSignalsUsed == 0) {
-            // We don't have a fix yet, just show waiting card
-            ProgressCard(
-                true,
-                stringResource(R.string.dashboard_waiting_for_fix)
-            )
+    if (supportedGnss.isEmpty()) {
+        ProgressCard(
+            true,
+            stringResource(R.string.dashboard_waiting_for_signals)
+        )
+    } else {
+        if (sbasToCf.isNotEmpty()) {
+            sbasToCf.entries.forEach {
+                SbasCard(
+                    sbasType = it.key,
+                    cfs = it.value,
+                    scanStatus = scanStatus
+                )
+            }
+        } else if (supportedSbas.isNotEmpty()) {
+            // Some devices don't support CF values, so loop through supported SBAS instead
+            supportedSbas.forEach {
+                SbasCard(
+                    sbasType = it,
+                    cfs = emptySet(),
+                    scanStatus = scanStatus
+                )
+            }
         } else {
             // Show "no SBAS" card
             ProgressCard(
                 false,
                 stringResource(R.string.sbas_not_available)
-            )
-        }
-    } else {
-        sbasToCf.entries.forEach {
-            SbasCard(
-                sbasType = it.key,
-                cfs = it.value,
-                scanStatus = scanStatus
             )
         }
     }
@@ -466,14 +487,14 @@ fun ProgressCard(progressVisible: Boolean, message: String) {
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
-            if (progressVisible && isTrackingStarted()) {
+            if (progressVisible) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .padding(15.dp)
                 )
             }
             Text(
-                text = if (isTrackingStarted()) message else stringResource(id = R.string.dashboard_turn_on_gnss),
+                text = message,
                 modifier = Modifier
                     .padding(10.dp)
                     .align(CenterVertically),

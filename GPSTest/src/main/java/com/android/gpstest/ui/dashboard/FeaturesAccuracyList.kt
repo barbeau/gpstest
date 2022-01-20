@@ -338,7 +338,7 @@ fun FeatureSupport(
             horizontalAlignment = Alignment.End
         ) {
             Row {
-                if (satelliteMetadata.gnssToCf.isEmpty() && !scanStatus.finishedScanningCfs) {
+                if (satelliteMetadata.supportedGnss.isEmpty() && !scanStatus.finishedScanningCfs) {
                     // No signals yet
                     CircularProgressIndicator(
                         modifier = Modifier

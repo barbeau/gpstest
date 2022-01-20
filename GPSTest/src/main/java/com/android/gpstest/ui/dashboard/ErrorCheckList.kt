@@ -76,12 +76,21 @@ fun ErrorCheckList(
 
 @Composable
 fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
-    val pass = satelliteMetadata.unknownCarrierStatuses.isEmpty()
+    val isValid = satelliteMetadata.unknownCarrierStatuses.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val descriptionId = if (unknown) {
+        R.string.dashboard_waiting_for_signals
+    } else {
+        if (isValid) R.string.dashboard_valid_cfs_description_pass else R.string.dashboard_valid_cfs_description_fail
+    }
     ErrorCheck(
         featureTitleId = R.string.dashboard_valid_cfs_title,
-        featureDescriptionId = if (pass) R.string.dashboard_valid_cfs_description_pass else R.string.dashboard_valid_cfs_description_fail,
+        featureDescriptionId = descriptionId,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
-        pass = if (pass) Pass.YES else Pass.NO
+        pass = pass
     ) {
         SingleFrequencyImage(
             Modifier
@@ -94,12 +103,21 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
 
 @Composable
 fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
-    val pass = satelliteMetadata.duplicateCarrierStatuses.isEmpty()
+    val isValid = satelliteMetadata.duplicateCarrierStatuses.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val descriptionId = if (unknown) {
+        R.string.dashboard_waiting_for_signals
+    } else {
+        if (isValid) R.string.dashboard_duplicate_cfs_description_pass else R.string.dashboard_duplicate_cfs_description_fail
+    }
     ErrorCheck(
         featureTitleId = R.string.dashboard_duplicate_cfs_title,
-        featureDescriptionId = if (pass) R.string.dashboard_duplicate_cfs_description_pass else R.string.dashboard_duplicate_cfs_description_fail,
+        featureDescriptionId = descriptionId,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
-        pass = if (pass) Pass.YES else Pass.NO
+        pass = pass
     ) {
         SingleFrequencyImage(
             Modifier
@@ -112,13 +130,22 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
 
 @Composable
 fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) {
-    val pass = satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.isEmpty()
+    val isValid = satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val descriptionId = if (unknown) {
+        R.string.dashboard_waiting_for_signals
+    } else {
+        if (isValid) R.string.dashboard_mismatch_azimuth_elevation_pass else R.string.dashboard_mismatch_azimuth_elevation_fail
+    }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
-        featureDescriptionId = if (pass) R.string.dashboard_mismatch_azimuth_elevation_pass else R.string.dashboard_mismatch_azimuth_elevation_fail,
+        featureDescriptionId = descriptionId,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
         includeAzimuthAndElevation = true,
-        pass = if (pass) Pass.YES else Pass.NO
+        pass = pass
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -129,13 +156,22 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
 
 @Composable
 fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) {
-    val pass = satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.isEmpty()
+    val isValid = satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val descriptionId = if (unknown) {
+        R.string.dashboard_waiting_for_signals
+    } else {
+        if (isValid) R.string.dashboard_mismatch_almanac_ephemeris_pass else R.string.dashboard_mismatch_almanac_ephemeris_fail
+    }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_almanac_ephemeris_title,
-        featureDescriptionId = if (pass) R.string.dashboard_mismatch_almanac_ephemeris_pass else R.string.dashboard_mismatch_almanac_ephemeris_fail,
+        featureDescriptionId = descriptionId,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
         includeAlmanacAndEphemeris = true,
-        pass = if (pass) Pass.YES else Pass.NO
+        pass = pass
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -174,13 +210,11 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun GpsWeekRollover(location: Location, fixState: FixState) {
     val isValid = DateTimeUtils.isTimeValid(location.time)
-
-    val pass = if (fixState == FixState.NotAcquired) {
-        Pass.UNKNOWN
-    } else {
+    val unknown = fixState == FixState.NotAcquired
+    val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (fixState == FixState.NotAcquired) {
+    val descriptionId = if (unknown) {
         R.string.dashboard_waiting_on_fix
     } else {
         if (isValid) R.string.dashboard_gps_week_rollover_pass else R.string.dashboard_gps_week_rollover_fail
