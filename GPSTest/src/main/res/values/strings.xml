@@ -261,11 +261,11 @@
     <string name="dashboard_duplicate_cfs_description_pass">No duplicates from same satellite found</string>
     <string name="dashboard_duplicate_cfs_description_fail">Duplicates from same satellite found:</string>
 
-    <string name="dashboard_mismatch_azimuth_elevation_title">Mismatch elevation and azimuth</string>
+    <string name="dashboard_mismatch_azimuth_elevation_title">Conflicting elevation and azimuth</string>
     <string name="dashboard_mismatch_azimuth_elevation_pass">All signals from same satellite match</string>
     <string name="dashboard_mismatch_azimuth_elevation_fail">Signals from same satellite differ:</string>
 
-    <string name="dashboard_mismatch_almanac_ephemeris_title">Mismatch almanac and ephemeris</string>
+    <string name="dashboard_mismatch_almanac_ephemeris_title">Conflicting almanac and ephemeris</string>
     <string name="dashboard_mismatch_almanac_ephemeris_pass">All signals from same satellite match</string>
     <string name="dashboard_mismatch_almanac_ephemeris_fail">Signals from same satellite differ:</string>
     <string name="dashboard_almanac_yes">Almanac</string>
