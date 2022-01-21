@@ -110,6 +110,9 @@ class SignalInfoViewModel @Inject constructor(
     private val _dop = MutableLiveData<DilutionOfPrecision>()
     val dop: LiveData<DilutionOfPrecision> = _dop
 
+    private val _datum = MutableLiveData<Datum>()
+    val datum: LiveData<Datum> = _datum
+
     private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
     val fixState: LiveData<FixState> = _fixState
 
@@ -411,6 +414,13 @@ class SignalInfoViewModel @Inject constructor(
                 _dop.value = dop
             }
         }
+        if (message.startsWith("\$GNDTM")) {
+            val datum = NmeaUtils.getDatum(timestamp, message)
+            if (datum != null && started) {
+                _datum.value = datum
+            }
+        }
+
     }
 
     @ExperimentalCoroutinesApi

@@ -18,6 +18,7 @@ package com.android.gpstest.util;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
+import com.android.gpstest.model.Datum;
 import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GeoidAltitude;
 
@@ -129,5 +130,40 @@ public class NmeaUtilsTest {
         assertEquals(2.5d, dop.getPositionDop());
         assertEquals(1.3d, dop.getHorizontalDop());
         assertEquals(2.1d, dop.getVerticalDop());
+    }
+
+    /**
+     * Test getting Datum from NMEA sentences
+     */
+    @Test
+    public void testGetDatumFromNmea() {
+        Datum datum;
+
+        // Samsung Galaxy S8+
+        final String s1 = "$GNDTM,P90,,0.000021,S,0.000002,E,0.989,W84*57,,,,,,,,,,,,,";
+        datum = NmeaUtils.getDatum(0, s1);
+        assertEquals(0, datum.getTimestamp());
+        assertEquals("P90", datum.getLocalDatumCode());
+        assertEquals("W84", datum.getDatum());
+
+        final String s2 = "$GNDTM,P90,,0.000021,S,0.000002,E,0.989,W84,,,,,,,,,,,,,";
+        datum = NmeaUtils.getDatum(0, s2);
+        assertEquals(0, datum.getTimestamp());
+        assertEquals("P90", datum.getLocalDatumCode());
+        assertEquals("W84", datum.getDatum());
+
+        // Samsung Galaxy S21+
+        final String s3 = "$GNDTM,P90,,0000.000021,S,00000.000002,E,0.989,W84*57";
+        datum = NmeaUtils.getDatum(0, s3);
+        assertEquals(0, datum.getTimestamp());
+        assertEquals("P90", datum.getLocalDatumCode());
+        assertEquals("W84", datum.getDatum());
+
+        // Bad NMEA
+        final String badNmea1 = "$GNM,P90,,0000.000021,S,00000.000002,E,0.989,W84*57";
+        assertNull(NmeaUtils.getDatum(0, badNmea1));
+        final String badNmea2 = "$GNDTM,P90,,0000.000021,S,00000.000002,E,0.989";
+        assertNull(NmeaUtils.getDatum(0, badNmea2));
+
     }
 }

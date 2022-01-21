@@ -36,12 +36,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
+import com.android.gpstest.model.Datum
 import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
@@ -54,6 +56,7 @@ fun ErrorCheckList(
     location: Location,
     fixState: FixState,
     geoidAltitude: GeoidAltitude,
+    datum: Datum,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -75,6 +78,7 @@ fun ErrorCheckList(
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
             GpsWeekRollover(location, fixState)
             GeoidAltitude(location, fixState, geoidAltitude)
+            Datum(datum)
         }
     }
 }
@@ -280,6 +284,38 @@ fun GeoidAltitude(
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_geoid_title,
+        featureDescription = description,
+        pass = pass
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_baseline_planet,
+            contentDescriptionId = R.string.dashboard_planet_image,
+            iconSizeDp = 40
+        )
+    }
+}
+
+@Composable
+fun Datum(
+    datum: Datum,
+) {
+    val unknown = datum.timestamp == 0L
+    val isValid = NmeaUtils.isValidDatum(datum.localDatumCode) && NmeaUtils.isValidDatum(datum.datum)
+
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
+    } else {
+        if (isValid) stringResource(
+            R.string.dashboard_datum_pass,
+            datum.localDatumCode,
+            datum.datum
+        ) else stringResource(R.string.dashboard_datum_fail, datum.localDatumCode, datum.datum)
+    }
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_datum_title,
         featureDescription = description,
         pass = pass
     ) {

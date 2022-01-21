@@ -61,6 +61,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val location: Location by viewModel.location.observeAsState(Location(dummyProvider))
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
+    val datum: Datum by viewModel.datum.observeAsState(Datum())
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -71,7 +72,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         ),
         location = location,
         fixState = fixState,
-        geoidAltitude = geoidAltitude
+        geoidAltitude = geoidAltitude,
+        datum = datum
     )
 }
 
@@ -82,6 +84,7 @@ fun Dashboard(
     location: Location,
     fixState: FixState,
     geoidAltitude: GeoidAltitude,
+    datum: Datum,
 ) {
     Box(
         modifier = Modifier
@@ -104,7 +107,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheckList(satelliteMetadata, location, fixState, geoidAltitude)
+            ErrorCheckList(satelliteMetadata, location, fixState, geoidAltitude, datum)
             Spacer(modifier = Modifier.padding(5.dp))
         }
     }

@@ -18,6 +18,7 @@ package com.android.gpstest.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.gpstest.model.Datum;
 import com.android.gpstest.model.DilutionOfPrecision;
 import com.android.gpstest.model.GeoidAltitude;
 
@@ -153,5 +154,66 @@ public class NmeaUtils {
             Log.w(TAG, "Input must be a $GNGSA NMEA: " + nmeaSentence);
             return null;
         }
+    }
+
+    /**
+     * Given a $GNDTM NMEA sentence, return NMEA DTM Local datum code and NMEA DTM datum, or null if
+     * the data can't be parsed.
+     *
+     * Example inputs are:
+     * $GNDTM,P90,,0.000021,S,0.000002,E,0.989,W84*57,,,,,,,,,,,,,
+     *
+     * Example outputs would be:
+     * P90 (NMEA DTM Local datum code) and W84 (DTM datum)
+     *
+     * @param timestamp date and time of the location fix, as reported by the GNSS chipset. The
+     *                  value is specified in milliseconds since 0:00 UTC 1 January 1970.
+     * @param nmeaSentence a $GNDTM NMEA sentence
+     * @return the datum information, or null if these values can't be parsed
+     */
+    public static Datum getDatum(long timestamp, String nmeaSentence) {
+        final int LOCAL_DATUM_CODE = 1;
+        final int DATUM = 8;
+        String[] tokens = nmeaSentence.split(",");
+
+        if (nmeaSentence.startsWith("$GNDTM")) {
+            String localDatumCode;
+            String datum;
+            try {
+                localDatumCode = tokens[LOCAL_DATUM_CODE];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for local datum code - " + nmeaSentence + " :" + e);
+                return null;
+            }
+            try {
+                datum = tokens[DATUM];
+                if (datum.contains("*")) {
+                    datum = datum.split("\\*")[0];
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for datum - " + nmeaSentence + " :" + e);
+                return null;
+            }
+            if (!TextUtils.isEmpty(localDatumCode) && !TextUtils.isEmpty(datum)) {
+                return new Datum(timestamp, localDatumCode, datum);
+            } else {
+                Log.w(TAG, "Couldn't parse local datum code and datum from NMEA: " + nmeaSentence);
+                return null;
+            }
+        } else {
+            Log.w(TAG, "Input must be $GNDTM NMEA: " + nmeaSentence);
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if this datum is valid for use of GNSS in phones (WGS84), and false if it is not.
+     *
+     * See https://issuetracker.google.com/issues/191674805
+     *
+     * @param datum
+     */
+    public static boolean isValidDatum(String datum) {
+        return datum.equalsIgnoreCase("W84");
     }
 }

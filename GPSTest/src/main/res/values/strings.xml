@@ -284,6 +284,10 @@
     <string name="dashboard_waiting_on_fix">Waiting on fix…</string>
     <string name="dashboard_clock_image">Image of clock</string>
 
+    <string name="dashboard_datum_title">Suspicious datum</string>
+    <string name="dashboard_datum_pass">Local datum code &amp; datum = W84</string>
+    <string name="dashboard_datum_fail">Local datum code: %1$s, datum: %2$s</string>
+
     <string name="dashboard_geoid_title">Geoid height integrity</string>
     <string name="dashboard_planet_image">Image of planet</string>
 
