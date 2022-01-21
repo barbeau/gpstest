@@ -24,6 +24,7 @@ import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.model.SbasType
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
+import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
 import com.android.gpstest.util.SatelliteUtils
 import org.junit.Assert.*
 import org.junit.Test
@@ -258,5 +259,28 @@ class SatelliteUtilsTest {
 
         location.altitude = -5.99999
         assertFalse(location.altitudeComparedTo(geoidAltitude))
+    }
+
+    /**
+     * Tests if a location time is approximately equal to geoidAltitude time
+     */
+    @Test
+    fun testLocationIsTimeEqualTo() {
+        val geoidAltitude = GeoidAltitude(1000, altitudeMsl = 18.1, heightOfGeoid = -24.0)
+        val location = Location("test")
+        location.time = 1000
+        assertTrue(location.isTimeEqualTo(geoidAltitude))
+
+        location.time = 1099
+        assertTrue(location.isTimeEqualTo(geoidAltitude))
+
+        location.time = 901
+        assertTrue(location.isTimeEqualTo(geoidAltitude))
+
+        location.time = 1100
+        assertFalse(location.isTimeEqualTo(geoidAltitude))
+
+        location.time = 900
+        assertFalse(location.isTimeEqualTo(geoidAltitude))
     }
 }

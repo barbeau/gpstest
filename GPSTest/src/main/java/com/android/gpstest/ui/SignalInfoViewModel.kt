@@ -400,7 +400,7 @@ class SignalInfoViewModel @Inject constructor(
 
     private fun onNmeaMessage(message: String, timestamp: Long) {
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
-            val geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(message)
+            val geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(timestamp, message)
             if (geoidAltitude != null && started) {
                 _geoidAltitude.value = geoidAltitude
             }

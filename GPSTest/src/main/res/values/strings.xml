@@ -285,9 +285,6 @@
     <string name="dashboard_clock_image">Image of clock</string>
 
     <string name="dashboard_geoid_title">Geoid height integrity</string>
-    <string name="dashboard_geoid_pass">%1$.1f (N) = %2$.1f (h) - %3$.1f (H)</string>
-    <string name="dashboard_geoid_fail">%1$.1f (N) != %2$.1f (h) - %3$.1f (H)</string>
-    <string name="dashboard_waiting_on_valid_data">Waiting on valid data…</string>
     <string name="dashboard_planet_image">Image of planet</string>
 
     <string name="dashboard_pass">PASS</string>

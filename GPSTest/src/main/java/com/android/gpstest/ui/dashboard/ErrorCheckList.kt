@@ -24,7 +24,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +44,7 @@ import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
+import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
 import com.android.gpstest.util.UIUtils.trimZeros
 
@@ -243,14 +244,26 @@ fun GeoidAltitude(
     fixState: FixState,
     geoidAltitude: GeoidAltitude,
 ) {
+    var lastLocation by remember { mutableStateOf(location) }
+    var lastGeoidAltitude by remember { mutableStateOf(geoidAltitude) }
+
     val unknown = fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
-    val isValid = location.altitudeComparedTo(geoidAltitude)
+    val isValid: Boolean
+    // Make sure we're comparing the values from the same location calculation by checking timestamps
+    if (location.isTimeEqualTo(geoidAltitude)) {
+        isValid = location.altitudeComparedTo(geoidAltitude)
+        lastLocation = location
+        lastGeoidAltitude = geoidAltitude
+    } else {
+        // Use previous location and geoid pairing
+        isValid = lastLocation.altitudeComparedTo(lastGeoidAltitude)
+    }
 
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
     val description = if (unknown) {
-        stringResource(R.string.dashboard_waiting_on_valid_data)
+        stringResource(R.string.dashboard_waiting_on_fix)
     } else {
         if (isValid) stringResource(
             R.string.dashboard_geoid_pass,

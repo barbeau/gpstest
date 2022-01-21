@@ -25,7 +25,6 @@ import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
-import java.math.BigDecimal
 import java.math.RoundingMode
 
 internal object SatelliteUtil {
@@ -431,7 +430,16 @@ internal object SatelliteUtil {
         if (geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !hasAltitude()) {
             return false
         }
-        // Location.altitude has far greater precision than the others (which are 1 decimal), so round it to 1 decimal
-        return geoidAltitude.heightOfGeoid == BigDecimal(altitude).setScale(1, RoundingMode.HALF_EVEN).toDouble() - geoidAltitude.altitudeMsl
+        // Location.altitude has far greater precision than the others (which are 1 decimal), so round it
+        val roundedAltitude = altitude.toBigDecimal().setScale(1, RoundingMode.HALF_UP).toDouble()
+        return geoidAltitude.heightOfGeoid == roundedAltitude - geoidAltitude.altitudeMsl
+    }
+
+    /**
+     * Returns true if the timestamp of [this] is approximately the same as the timestamp of [geoidAltitude]
+     */
+    fun Location.isTimeEqualTo(geoidAltitude: GeoidAltitude): Boolean {
+        val thresholdMs = 100
+        return kotlin.math.abs(this.time - geoidAltitude.timestamp) < thresholdMs
     }
 }

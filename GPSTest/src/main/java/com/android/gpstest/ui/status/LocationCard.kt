@@ -73,7 +73,7 @@ fun LocationCardPreview(
     LocationCard(
         location,
         "5 sec",
-        GeoidAltitude(1.4, -24.0),
+        GeoidAltitude(0,  1.4, -24.0),
         DilutionOfPrecision(1.0, 2.0, 3.0),
         SatelliteMetadata(),
         FixState.Acquired

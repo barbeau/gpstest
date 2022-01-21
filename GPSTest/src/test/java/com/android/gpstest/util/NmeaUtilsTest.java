@@ -38,27 +38,27 @@ public class NmeaUtilsTest {
         final String gnGga2 = "$GNGGA,172814.00,2803.208136,N,08225.981423,W,1,08,1.1,-19.7,M,-24.8,M,,*5F";
         final String gngns2 = "$GNGNS,165422,2804.28021,N,8225.598206,W,AAANNN,20,0.6,18.1,-24,,,V*24,,,,,,,";
 
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(gpsSentence);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, gpsSentence);
         assert geoidAltitude != null;
         assertEquals(19.2d, geoidAltitude.getAltitudeMsl());
         assertEquals(-24.0d, geoidAltitude.getHeightOfGeoid());
 
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(gnssSentence);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, gnssSentence);
         assert geoidAltitude != null;
         assertEquals(78.9d, geoidAltitude.getAltitudeMsl());
         assertEquals(-24.0d, geoidAltitude.getHeightOfGeoid());
 
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(gnGga1);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, gnGga1);
         assert geoidAltitude != null;
         assertEquals(19.9d, geoidAltitude.getAltitudeMsl());
         assertEquals(2.2d, geoidAltitude.getHeightOfGeoid());
 
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(gnGga2);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, gnGga2);
         assert geoidAltitude != null;
         assertEquals(-19.7d, geoidAltitude.getAltitudeMsl());
         assertEquals(-24.8d, geoidAltitude.getHeightOfGeoid());
 
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(gngns2);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, gngns2);
         assert geoidAltitude != null;
         assertEquals(18.1d, geoidAltitude.getAltitudeMsl());
         assertEquals(-24.0d, geoidAltitude.getHeightOfGeoid());
@@ -67,9 +67,9 @@ public class NmeaUtilsTest {
                 = "$GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,BAD,-24.0,,*23";
         final String badGnssSentence2
                 = "$GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,-24.0,BAD,,*23";
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(badGnssSentence1);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, badGnssSentence1);
         assertNull(geoidAltitude);
-        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(badGnssSentence2);
+        geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(0, badGnssSentence2);
         assertNull(geoidAltitude);
     }
 

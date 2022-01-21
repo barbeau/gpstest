@@ -42,11 +42,13 @@ public class NmeaUtils {
      * -19.7 (altitude MSL) and -24.8 (height of geoid above WGS84 ellipsoid)
      * 18.1 (altitude MSL) and -24 (height of geoid above WGS84 ellipsoid)
      *
+     * @param timestamp date and time of the location fix, as reported by the GNSS chipset. The
+     *                  value is specified in milliseconds since 0:00 UTC 1 January 1970.
      * @param nmeaSentence a $GPGGA, $GNGNS, or $GNGGA NMEA sentence
      * @return the altitude above mean sea level (geoid altitude) and height of the geoid above
      * the WGS84 ellipsoid in a {@link GeoidAltitude}, or null if these values can't be parsed
      */
-    public static GeoidAltitude getAltitudeMeanSeaLevel(String nmeaSentence) {
+    public static GeoidAltitude getAltitudeMeanSeaLevel(long timestamp, String nmeaSentence) {
         final int ALTITUDE_INDEX = 9;
         final int GEOID_HEIGHT_INDEX = 10;
         String[] tokens = nmeaSentence.split(",");
@@ -86,7 +88,7 @@ public class NmeaUtils {
                     Log.e(TAG, "Bad geoid height value of '" + geoidHeightParsed + "' in NMEA sentence " + nmeaSentence + " :" + e);
                     return null;
                 }
-                return new GeoidAltitude(altitudeParsed, geoidHeightParsed);
+                return new GeoidAltitude(timestamp, altitudeParsed, geoidHeightParsed);
             } else {
                 Log.w(TAG, "Couldn't parse geoid altitude and height above WGS84 ellipsoid from NMEA: " + nmeaSentence);
                 return null;
