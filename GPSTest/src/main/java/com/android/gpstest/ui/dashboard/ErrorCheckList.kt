@@ -93,7 +93,9 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) stringResource(R.string.dashboard_valid_cfs_description_pass) else stringResource(R.string.dashboard_valid_cfs_description_fail)
+        if (isValid) stringResource(R.string.dashboard_valid_cfs_description_pass) else stringResource(
+            R.string.dashboard_valid_cfs_description_fail
+        )
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_valid_cfs_title,
@@ -120,7 +122,9 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) stringResource(R.string.dashboard_duplicate_cfs_description_pass) else stringResource(R.string.dashboard_duplicate_cfs_description_fail)
+        if (isValid) stringResource(R.string.dashboard_duplicate_cfs_description_pass) else stringResource(
+            R.string.dashboard_duplicate_cfs_description_fail
+        )
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_duplicate_cfs_title,
@@ -147,7 +151,9 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) stringResource(R.string.dashboard_mismatch_azimuth_elevation_pass) else stringResource(R.string.dashboard_mismatch_azimuth_elevation_fail)
+        if (isValid) stringResource(R.string.dashboard_mismatch_azimuth_elevation_pass) else stringResource(
+            R.string.dashboard_mismatch_azimuth_elevation_fail
+        )
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
@@ -173,7 +179,9 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) stringResource(R.string.dashboard_mismatch_almanac_ephemeris_pass) else stringResource(R.string.dashboard_mismatch_almanac_ephemeris_fail)
+        if (isValid) stringResource(R.string.dashboard_mismatch_almanac_ephemeris_pass) else stringResource(
+            R.string.dashboard_mismatch_almanac_ephemeris_fail
+        )
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_almanac_ephemeris_title,
@@ -199,7 +207,9 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) stringResource(R.string.dashboard_missing_almanac_ephemeris_pass) else stringResource(R.string.dashboard_missing_almanac_ephemeris_fail)
+        if (isValid) stringResource(R.string.dashboard_missing_almanac_ephemeris_pass) else stringResource(
+            R.string.dashboard_missing_almanac_ephemeris_fail
+        )
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_missing_almanac_ephemeris_title,
@@ -251,7 +261,8 @@ fun GeoidAltitude(
     var lastLocation by remember { mutableStateOf(location) }
     var lastGeoidAltitude by remember { mutableStateOf(geoidAltitude) }
 
-    val unknown = fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
+    val unknown =
+        fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
     val isValid: Boolean
     // Make sure we're comparing the values from the same location calculation by checking timestamps
     if (location.isTimeEqualTo(geoidAltitude)) {
@@ -300,7 +311,8 @@ fun Datum(
     datum: Datum,
 ) {
     val unknown = datum.timestamp == 0L
-    val isValid = NmeaUtils.isValidDatum(datum.localDatumCode) && NmeaUtils.isValidDatum(datum.datum)
+    val isValid =
+        NmeaUtils.isValidDatum(datum.localDatumCode) && NmeaUtils.isValidDatum(datum.datum)
 
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
@@ -357,7 +369,10 @@ fun ErrorCheck(
                 style = titleStyle
             )
             Text(
-                modifier = Modifier.padding(start = 5.dp, bottom = if (pass == Pass.NO) 5.dp else 10.dp),
+                modifier = Modifier.padding(
+                    start = 5.dp,
+                    bottom = if (pass == Pass.NO) 5.dp else 10.dp
+                ),
                 text = featureDescription,
                 style = subtitleStyle
             )
@@ -386,10 +401,21 @@ fun ErrorCheck(
         Row(modifier = Modifier.padding(start = 75.dp, bottom = bottomPadding)) {
             val carrierMhz = MathUtils.toMhz(status.carrierFrequencyHz)
             val cf = String.format("%.3f MHz", carrierMhz)
-            val elevation = stringResource(R.string.elevation_column_label) + " " + String.format(stringResource(R.string.gps_elevation_column_value), status.elevationDegrees).trimZeros()
-            val azimuth = stringResource(R.string.azimuth_column_label) + " " + String.format(stringResource(R.string.gps_azimuth_column_value), status.azimuthDegrees).trimZeros()
-            val almanac = if (status.hasAlmanac) stringResource(R.string.dashboard_almanac_yes) else stringResource(R.string.dashboard_almanac_no)
-            val ephemeris = if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(R.string.dashboard_ephemeris_no)
+            val elevation = stringResource(R.string.elevation_column_label) + " " + String.format(
+                stringResource(R.string.gps_elevation_column_value), status.elevationDegrees
+            ).trimZeros()
+            val azimuth = stringResource(R.string.azimuth_column_label) + " " + String.format(
+                stringResource(R.string.gps_azimuth_column_value),
+                status.azimuthDegrees
+            ).trimZeros()
+            val almanac =
+                if (status.hasAlmanac) stringResource(R.string.dashboard_almanac_yes) else stringResource(
+                    R.string.dashboard_almanac_no
+                )
+            val ephemeris =
+                if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(
+                    R.string.dashboard_ephemeris_no
+                )
 
             Text(
                 text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
