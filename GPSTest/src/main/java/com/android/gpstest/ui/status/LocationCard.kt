@@ -53,6 +53,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
+import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.util.*
@@ -72,7 +73,7 @@ fun LocationCardPreview(
     LocationCard(
         location,
         "5 sec",
-        1.4,
+        GeoidAltitude(1.4, -24.0),
         DilutionOfPrecision(1.0, 2.0, 3.0),
         SatelliteMetadata(),
         FixState.Acquired
@@ -106,7 +107,7 @@ fun previewLocation(): Location {
 fun LocationCard(
     location: Location,
     ttff: String,
-    altitudeMsl: Double,
+    geoidAltitude: GeoidAltitude,
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
     fixState: FixState,
@@ -127,7 +128,7 @@ fun LocationCard(
                     .horizontalScroll(rememberScrollState())
             ) {
                 LabelColumn1()
-                ValueColumn1(location, altitudeMsl, dop)
+                ValueColumn1(location, geoidAltitude, dop)
                 LabelColumn2(location)
                 ValueColumn2(location, ttff, dop, satelliteMetadata)
             }
@@ -139,7 +140,7 @@ fun LocationCard(
 @Composable
 fun ValueColumn1(
     location: Location,
-    altitudeMsl: Double,
+    geoidAltitude: GeoidAltitude,
     dop: DilutionOfPrecision,
 ) {
     Column(
@@ -153,7 +154,7 @@ fun ValueColumn1(
         Latitude(location)
         Longitude(location)
         Altitude(location)
-        AltitudeMsl(altitudeMsl)
+        AltitudeMsl(geoidAltitude.altitudeMsl)
         Speed(location)
         SpeedAccuracy(location)
         Pdop(dop)

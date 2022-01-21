@@ -16,11 +16,14 @@
 package com.android.gpstest
 
 import android.location.GnssMeasurement.*
+import android.location.Location
 import android.os.Build
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.model.SbasType
+import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtils
 import org.junit.Assert.*
 import org.junit.Test
@@ -225,5 +228,35 @@ class SatelliteUtilsTest {
 
         adrState = ADR_STATE_CYCLE_SLIP or ADR_STATE_HALF_CYCLE_REPORTED or ADR_STATE_RESET
         assertFalse(SatelliteUtils.isAccumulatedDeltaRangeStateValid(adrState))
+    }
+
+    /**
+     * Test for comparing WGS84 altitude, height of the geoid above the WGS84 ellipsoid,
+     * and altitude above mean sea level.
+     *
+     * H = -N + h
+     *
+     * or
+     * N = h - H
+     *
+     * ..where:
+     * * H = geoidAltitude.altitudeMsl, or geoid altitude
+     * * N = geoidAltitude.heightOfGeoid above the WGS84 ellipsoid
+     * * h = Location.altitude], or the location WGS84 altitude (height above the WGS84 ellipsoid)
+     *
+     * See https://issuetracker.google.com/issues/191674805 for details.
+     */
+    @Test
+    fun testLocationAltitudeComparedToGeoidAltitude() {
+        val geoidAltitude = GeoidAltitude(altitudeMsl = 18.1, heightOfGeoid = -24.0)
+        val location = Location("test")
+        location.altitude = -5.9
+        assertTrue(location.altitudeComparedTo(geoidAltitude))
+
+        location.altitude = -5.91111
+        assertTrue(location.altitudeComparedTo(geoidAltitude))
+
+        location.altitude = -5.99999
+        assertFalse(location.altitudeComparedTo(geoidAltitude))
     }
 }

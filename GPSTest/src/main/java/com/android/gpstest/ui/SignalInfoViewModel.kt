@@ -104,8 +104,8 @@ class SignalInfoViewModel @Inject constructor(
     private val _ttff = MutableLiveData("")
     val ttff: LiveData<String> = _ttff
 
-    private val _altitudeMsl = MutableLiveData<Double>()
-    val altitudeMsl: LiveData<Double> = _altitudeMsl
+    private val _geoidAltitude = MutableLiveData<GeoidAltitude>()
+    val geoidAltitude: LiveData<GeoidAltitude> = _geoidAltitude
 
     private val _dop = MutableLiveData<DilutionOfPrecision>()
     val dop: LiveData<DilutionOfPrecision> = _dop
@@ -400,9 +400,9 @@ class SignalInfoViewModel @Inject constructor(
 
     private fun onNmeaMessage(message: String, timestamp: Long) {
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
-            val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
-            if (altitudeMsl != null && started) {
-                _altitudeMsl.value = altitudeMsl
+            val geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(message)
+            if (geoidAltitude != null && started) {
+                _geoidAltitude.value = geoidAltitude
             }
         }
         if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
@@ -551,7 +551,7 @@ class SignalInfoViewModel @Inject constructor(
         _filteredSbasSatellites.value = emptyMap()
         _location.value = Location("reset")
         _ttff.value = ""
-        _altitudeMsl.value = Double.NaN
+        _geoidAltitude.value = GeoidAltitude()
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
         _filteredSatelliteMetadata.value = SatelliteMetadata()
         _fixState.value = FixState.NotAcquired

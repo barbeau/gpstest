@@ -25,6 +25,8 @@ import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 internal object SatelliteUtil {
 
@@ -405,5 +407,31 @@ internal object SatelliteUtil {
                 app.getString(R.string.unknown)
             }
         }
+    }
+
+    /**
+     * Returns true if the altitude of [this] location is valid when compared to the provided
+     * [geoidAltitude], using the formula:
+     *
+     * H = -N + h
+     *
+     * or
+     * N = h - H
+     *
+     * ..where:
+     * * H = [geoidAltitude.altitudeMsl], or geoid altitude
+     * * N = [geoidAltitude.heightOfGeoid] above the WGS84 ellipsoid
+     * * h = [this.altitude], or the location WGS84 altitude (height above the WGS84 ellipsoid)
+     *
+     * See https://issuetracker.google.com/issues/191674805 for details.
+     *
+     * @return true if H = -N + h, and false if it does not
+     */
+    fun Location.altitudeComparedTo(geoidAltitude: GeoidAltitude): Boolean {
+        if (geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !hasAltitude()) {
+            return false
+        }
+        // Location.altitude has far greater precision than the others (which are 1 decimal), so round it to 1 decimal
+        return geoidAltitude.heightOfGeoid == BigDecimal(altitude).setScale(1, RoundingMode.HALF_EVEN).toDouble() - geoidAltitude.altitudeMsl
     }
 }

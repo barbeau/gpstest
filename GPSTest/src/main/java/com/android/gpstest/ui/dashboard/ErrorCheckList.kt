@@ -36,11 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
+import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.util.DateTimeUtils
 import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
 import com.android.gpstest.util.UIUtils.trimZeros
@@ -50,6 +52,7 @@ fun ErrorCheckList(
     satelliteMetadata: SatelliteMetadata,
     location: Location,
     fixState: FixState,
+    geoidAltitude: GeoidAltitude,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -70,6 +73,7 @@ fun ErrorCheckList(
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
             GpsWeekRollover(location, fixState)
+            GeoidAltitude(location, fixState, geoidAltitude)
         }
     }
 }
@@ -81,14 +85,14 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_for_signals
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) R.string.dashboard_valid_cfs_description_pass else R.string.dashboard_valid_cfs_description_fail
+        if (isValid) stringResource(R.string.dashboard_valid_cfs_description_pass) else stringResource(R.string.dashboard_valid_cfs_description_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_valid_cfs_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
         pass = pass
     ) {
@@ -108,14 +112,14 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_for_signals
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) R.string.dashboard_duplicate_cfs_description_pass else R.string.dashboard_duplicate_cfs_description_fail
+        if (isValid) stringResource(R.string.dashboard_duplicate_cfs_description_pass) else stringResource(R.string.dashboard_duplicate_cfs_description_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_duplicate_cfs_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
         pass = pass
     ) {
@@ -135,14 +139,14 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_for_signals
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) R.string.dashboard_mismatch_azimuth_elevation_pass else R.string.dashboard_mismatch_azimuth_elevation_fail
+        if (isValid) stringResource(R.string.dashboard_mismatch_azimuth_elevation_pass) else stringResource(R.string.dashboard_mismatch_azimuth_elevation_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
         includeAzimuthAndElevation = true,
         pass = pass
@@ -161,14 +165,14 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_for_signals
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) R.string.dashboard_mismatch_almanac_ephemeris_pass else R.string.dashboard_mismatch_almanac_ephemeris_fail
+        if (isValid) stringResource(R.string.dashboard_mismatch_almanac_ephemeris_pass) else stringResource(R.string.dashboard_mismatch_almanac_ephemeris_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_mismatch_almanac_ephemeris_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
         includeAlmanacAndEphemeris = true,
         pass = pass
@@ -187,14 +191,14 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_for_signals
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
     } else {
-        if (isValid) R.string.dashboard_missing_almanac_ephemeris_pass else R.string.dashboard_missing_almanac_ephemeris_fail
+        if (isValid) stringResource(R.string.dashboard_missing_almanac_ephemeris_pass) else stringResource(R.string.dashboard_missing_almanac_ephemeris_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_missing_almanac_ephemeris_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
         includeAlmanacAndEphemeris = true,
         includeAzimuthAndElevation = true,
@@ -214,19 +218,61 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
-    val descriptionId = if (unknown) {
-        R.string.dashboard_waiting_on_fix
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_on_fix)
     } else {
-        if (isValid) R.string.dashboard_gps_week_rollover_pass else R.string.dashboard_gps_week_rollover_fail
+        // FIXME - fail string should include time
+        if (isValid) stringResource(R.string.dashboard_gps_week_rollover_pass) else stringResource(R.string.dashboard_gps_week_rollover_fail)
     }
     ErrorCheck(
         featureTitleId = R.string.dashboard_gps_week_rollover_title,
-        featureDescriptionId = descriptionId,
+        featureDescription = description,
         pass = pass
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_access_time_24,
             contentDescriptionId = R.string.dashboard_gps_week_rollover_title,
+            iconSizeDp = 40
+        )
+    }
+}
+
+@Composable
+fun GeoidAltitude(
+    location: Location,
+    fixState: FixState,
+    geoidAltitude: GeoidAltitude,
+) {
+    val unknown = fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
+    val isValid = location.altitudeComparedTo(geoidAltitude)
+
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_on_valid_data)
+    } else {
+        if (isValid) stringResource(
+            R.string.dashboard_geoid_pass,
+            geoidAltitude.heightOfGeoid,
+            location.altitude,
+            geoidAltitude.altitudeMsl
+        )
+        else stringResource(
+            R.string.dashboard_geoid_fail,
+            geoidAltitude.heightOfGeoid,
+            location.altitude,
+            geoidAltitude.altitudeMsl
+        )
+    }
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_geoid_title,
+        featureDescription = description,
+        pass = pass
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_baseline_planet,
+            contentDescriptionId = R.string.dashboard_planet_image,
             iconSizeDp = 40
         )
     }
@@ -238,7 +284,7 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
 @Composable
 fun ErrorCheck(
     @StringRes featureTitleId: Int,
-    @StringRes featureDescriptionId: Int,
+    featureDescription: String,
     badSatelliteStatus: List<SatelliteStatus> = emptyList(),
     pass: Pass,
     includeAzimuthAndElevation: Boolean = false,
@@ -263,7 +309,7 @@ fun ErrorCheck(
             )
             Text(
                 modifier = Modifier.padding(start = 5.dp, bottom = if (pass == Pass.NO) 5.dp else 10.dp),
-                text = stringResource(id = featureDescriptionId),
+                text = featureDescription,
                 style = subtitleStyle
             )
         }
