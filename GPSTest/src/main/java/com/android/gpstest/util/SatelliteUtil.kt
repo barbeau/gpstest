@@ -174,16 +174,16 @@ internal object SatelliteUtil {
                         if (status.cn0DbHz != NO_DATA) {
                             frequenciesInView++
                         }
-                        if (s.azimuthDegrees != status.azimuthDegrees ||
-                                s.elevationDegrees != status.elevationDegrees) {
+                        if ((s.azimuthDegrees != status.azimuthDegrees) ||
+                            (s.elevationDegrees != status.elevationDegrees)) {
                             // Found disagreement on azimuth and elevation on signals from same satellite
                             mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
                                 s
                             mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
                                 status
                         }
-                        if (s.hasAlmanac != status.hasAlmanac ||
-                                s.hasEphemeris != status.hasEphemeris) {
+                        if ((s.hasAlmanac != status.hasAlmanac) ||
+                            (s.hasEphemeris != status.hasEphemeris)) {
                             // Found disagreement on almanac and ephemeris on signals from same satellite
                             mismatchAlmanacEphemerisSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
                                 s

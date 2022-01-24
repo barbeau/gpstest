@@ -38,6 +38,23 @@ fun gpsL1(id: Int, usedInFix: Boolean): SatelliteStatus {
 }
 
 /**
+ * Returns a status for a GPS NAVSTAR L1 signal
+ */
+fun gpsL5DifferentElevationAzimuthAlmanacEphemeris(id: Int, usedInFix: Boolean): SatelliteStatus {
+    val gpsL5 = SatelliteStatus(id,
+        GnssType.NAVSTAR,
+        30f,
+        false,
+        false,
+        usedInFix,
+        71f,
+        24f);
+    gpsL5.hasCarrierFrequency = true
+    gpsL5.carrierFrequencyHz = 1176450000.0
+    return gpsL5
+}
+
+/**
  * Returns a status for a GPS NAVSTAR L1 signal, but with no C/N0 data
  */
 fun gpsL1NoSignal(id: Int): SatelliteStatus {

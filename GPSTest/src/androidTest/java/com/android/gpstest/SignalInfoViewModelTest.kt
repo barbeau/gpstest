@@ -467,4 +467,91 @@ class SignalInfoViewModelTest {
             assertEquals(0, modelWaasL1L5.getSupportedSbasCfs().size)
         }
     }
+
+    /**
+     * Test error checks in view model - duplicate carriers from same satellite
+     */
+    @Test
+    fun testErrorCheckViewModelDuplicateCarrier() {
+        // Test two GPS L1s from same satellite
+        val model = SignalInfoViewModel(
+            InstrumentationRegistry.getTargetContext().applicationContext as Application,
+            repository
+        )
+        model.updateStatus(listOf(gpsL1(1, true), gpsL1(1, true)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isNotEmpty()) }
+        } else {
+            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
+        }
+        model.reset()
+
+        // Test two GPS L1s from different satellites
+        model.updateStatus(listOf(gpsL1(1, true), gpsL1(2, true)))
+        assertEquals(2, model.filteredGnssSatellites.value?.size)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
+        } else {
+            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
+        }
+    }
+
+    /**
+     * Test error checks in view model - conflicting ephemeris and almanac from same satellite
+     */
+    @Test
+    fun testErrorCheckViewModelConflictingAlmanacEphemeris() {
+        // Test two GPS signals from same satellite
+        val model = SignalInfoViewModel(
+            InstrumentationRegistry.getTargetContext().applicationContext as Application,
+            repository
+        )
+        model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        model.filteredSatelliteMetadata.value?.mismatchAlmanacEphemerisSameSatStatuses?.let { assertTrue(it.isNotEmpty()) }
+        model.reset()
+
+        // Test two GPS signals from different satellites
+        model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(2, true)))
+        assertEquals(2, model.filteredGnssSatellites.value?.size)
+        model.filteredSatelliteMetadata.value?.mismatchAlmanacEphemerisSameSatStatuses?.let { assertTrue(it.isEmpty()) }
+    }
+
+    /**
+     * Test error checks in view model - conflicting ephemeris and almanac from same satellite
+     */
+    @Test
+    fun testErrorCheckViewModelConflictingAzimuthElevation() {
+        // Test two GPS signals from same satellite
+        val model = SignalInfoViewModel(
+            InstrumentationRegistry.getTargetContext().applicationContext as Application,
+            repository
+        )
+        model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        model.filteredSatelliteMetadata.value?.mismatchAzimuthElevationSameSatStatuses?.let { assertTrue(it.isNotEmpty()) }
+        model.reset()
+
+        // Test two GPS signals from different satellites
+        model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(2, true)))
+        assertEquals(2, model.filteredGnssSatellites.value?.size)
+        model.filteredSatelliteMetadata.value?.mismatchAzimuthElevationSameSatStatuses?.let { assertTrue(it.isEmpty()) }
+    }
+
+    /**
+     * Test error checks in view model - missing Almanac Ephemeris But Have Azimuth Elevation
+     */
+    @Test
+    fun testErrorCheckViewModelMissingAlmanacEphemerisButHaveAzimuthElevation() {
+        // Test two GPS signals from same satellite
+        val model = SignalInfoViewModel(
+            InstrumentationRegistry.getTargetContext().applicationContext as Application,
+            repository
+        )
+        model.updateStatus(listOf(gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        model.filteredSatelliteMetadata.value?.missingAlmanacEphemerisButHaveAzimuthElevation?.let { assertTrue(it.isNotEmpty()) }
+        model.reset()
+   }
 }

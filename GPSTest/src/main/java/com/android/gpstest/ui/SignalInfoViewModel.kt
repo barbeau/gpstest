@@ -352,22 +352,25 @@ class SignalInfoViewModel @Inject constructor(
         this._filteredSbasSatellites.value = sbasSatellites.satellites
 
         _filteredSatelliteMetadata.value = SatelliteMetadata(
-            gnssSatellites.satelliteMetadata.numSignalsInView + sbasSatellites.satelliteMetadata.numSignalsInView,
-            gnssSatellites.satelliteMetadata.numSignalsUsed + sbasSatellites.satelliteMetadata.numSignalsUsed,
-            gnssSatellites.satelliteMetadata.numSignalsTotal + sbasSatellites.satelliteMetadata.numSignalsTotal,
-            gnssSatellites.satelliteMetadata.numSatsInView + sbasSatellites.satelliteMetadata.numSatsInView,
-            gnssSatellites.satelliteMetadata.numSatsUsed + sbasSatellites.satelliteMetadata.numSatsUsed,
-            gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal,
-            gnssSatellites.satelliteMetadata.supportedGnss,
-            gnssSatellites.satelliteMetadata.supportedGnssCfs,
-            sbasSatellites.satelliteMetadata.supportedSbas,
-            sbasSatellites.satelliteMetadata.supportedSbasCfs,
-            gnssSatellites.satelliteMetadata.unknownCarrierStatuses + sbasSatellites.satelliteMetadata.unknownCarrierStatuses,
-            gnssSatellites.satelliteMetadata.duplicateCarrierStatuses + sbasSatellites.satelliteMetadata.duplicateCarrierStatuses,
-            gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInView or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInView,
-            gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInUse or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInUse,
-            gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView,
-            gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse
+            numSignalsInView = gnssSatellites.satelliteMetadata.numSignalsInView + sbasSatellites.satelliteMetadata.numSignalsInView,
+            numSignalsUsed = gnssSatellites.satelliteMetadata.numSignalsUsed + sbasSatellites.satelliteMetadata.numSignalsUsed,
+            numSignalsTotal = gnssSatellites.satelliteMetadata.numSignalsTotal + sbasSatellites.satelliteMetadata.numSignalsTotal,
+            numSatsInView = gnssSatellites.satelliteMetadata.numSatsInView + sbasSatellites.satelliteMetadata.numSatsInView,
+            numSatsUsed = gnssSatellites.satelliteMetadata.numSatsUsed + sbasSatellites.satelliteMetadata.numSatsUsed,
+            numSatsTotal = gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal,
+            supportedGnss = gnssSatellites.satelliteMetadata.supportedGnss,
+            supportedGnssCfs = gnssSatellites.satelliteMetadata.supportedGnssCfs,
+            supportedSbas = sbasSatellites.satelliteMetadata.supportedSbas,
+            supportedSbasCfs = sbasSatellites.satelliteMetadata.supportedSbasCfs,
+            unknownCarrierStatuses = gnssSatellites.satelliteMetadata.unknownCarrierStatuses + sbasSatellites.satelliteMetadata.unknownCarrierStatuses,
+            duplicateCarrierStatuses = gnssSatellites.satelliteMetadata.duplicateCarrierStatuses + sbasSatellites.satelliteMetadata.duplicateCarrierStatuses,
+            isDualFrequencyPerSatInView = gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInView or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInView,
+            isDualFrequencyPerSatInUse = gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInUse or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInUse,
+            isNonPrimaryCarrierFreqInView = gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView,
+            isNonPrimaryCarrierFreqInUse = gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse,
+            mismatchAlmanacEphemerisSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses,
+            mismatchAzimuthElevationSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses,
+            missingAlmanacEphemerisButHaveAzimuthElevation = gnssSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation + sbasSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation
         )
     }
 
