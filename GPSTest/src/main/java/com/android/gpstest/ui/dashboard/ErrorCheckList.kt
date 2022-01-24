@@ -15,7 +15,9 @@
  */
 package com.android.gpstest.ui.dashboard
 
+import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
@@ -34,6 +36,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.Datum
@@ -41,9 +44,7 @@ import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
 import com.android.gpstest.ui.components.Wave
-import com.android.gpstest.util.DateTimeUtils
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.NmeaUtils
+import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
@@ -71,6 +72,9 @@ fun ErrorCheckList(
         elevation = 2.dp
     ) {
         Column {
+            val locationManager =
+                Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
             MissingAlmanacEphemeris(satelliteMetadata)
@@ -79,6 +83,9 @@ fun ErrorCheckList(
             GpsWeekRollover(location, fixState)
             GeoidAltitude(location, fixState, geoidAltitude)
             Datum(datum)
+            if (SatelliteUtils.isGnssAntennaInfoSupported(locationManager)) {
+                AntennaInfo()
+            }
         }
     }
 }
@@ -334,6 +341,46 @@ fun Datum(
         ErrorIcon(
             imageId = R.drawable.ic_baseline_planet,
             contentDescriptionId = R.string.dashboard_planet_image,
+            iconSizeDp = 40
+        )
+    }
+}
+
+@Composable
+fun AntennaInfo() {
+    val locationManager =
+        Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    val gnssAntennaInfo =
+        PreferenceUtils.getCapabilityDescription(
+            SatelliteUtils.isGnssAntennaInfoSupported(
+                locationManager
+            )
+        )
+    val antennaCfs =
+        if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
+            PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf))
+        } else {
+            ""
+        }
+
+    // See https://issuetracker.google.com/issues/190197760
+    val pass = if (antennaCfs == "L1, L2") Pass.NO else Pass.YES
+    val description = if (pass == Pass.YES) {
+        stringResource(
+            R.string.dashboard_bad_antenna_info_pass,
+            antennaCfs
+        )
+    } else {
+        stringResource(R.string.dashboard_bad_antenna_info_fail, antennaCfs)
+    }
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_bad_antenna_info_title,
+        featureDescription = description,
+        pass = pass
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_antenna_24,
+            contentDescriptionId = R.string.dashboard_feature_antenna_info_title,
             iconSizeDp = 40
         )
     }
