@@ -370,7 +370,8 @@ class SignalInfoViewModel @Inject constructor(
             isNonPrimaryCarrierFreqInUse = gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse,
             mismatchAlmanacEphemerisSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses,
             mismatchAzimuthElevationSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses,
-            missingAlmanacEphemerisButHaveAzimuthElevation = gnssSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation + sbasSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation
+            missingAlmanacEphemerisButHaveAzimuthElevation = gnssSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation + sbasSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation,
+            signalsWithoutData = gnssSatellites.satelliteMetadata.signalsWithoutData + sbasSatellites.satelliteMetadata.signalsWithoutData
         )
     }
 

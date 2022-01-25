@@ -480,21 +480,13 @@ class SignalInfoViewModelTest {
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL1(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isNotEmpty()) }
-        } else {
-            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
-        }
+        model.allSatellitesGroup.value?.satelliteMetadata?.duplicateCarrierStatuses?.let { assertTrue(it.isNotEmpty()) }
         model.reset()
 
         // Test two GPS L1s from different satellites
         model.updateStatus(listOf(gpsL1(1, true), gpsL1(2, true)))
         assertEquals(2, model.filteredGnssSatellites.value?.size)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
-        } else {
-            model.filteredSatelliteMetadata.value?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
-        }
+        model.allSatellitesGroup.value?.satelliteMetadata?.duplicateCarrierStatuses?.let { assertTrue(it.isEmpty()) }
     }
 
     /**
@@ -509,13 +501,25 @@ class SignalInfoViewModelTest {
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
-        model.filteredSatelliteMetadata.value?.mismatchAlmanacEphemerisSameSatStatuses?.let { assertTrue(it.isNotEmpty()) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAlmanacEphemerisSameSatStatuses?.let {
+                assertTrue(
+                    it.isNotEmpty()
+                )
+            }
+        } else {
+            model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAlmanacEphemerisSameSatStatuses?.let {
+                assertTrue(
+                    it.isEmpty()
+                )
+            }
+        }
         model.reset()
 
         // Test two GPS signals from different satellites
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(2, true)))
         assertEquals(2, model.filteredGnssSatellites.value?.size)
-        model.filteredSatelliteMetadata.value?.mismatchAlmanacEphemerisSameSatStatuses?.let { assertTrue(it.isEmpty()) }
+        model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAlmanacEphemerisSameSatStatuses?.let { assertTrue(it.isEmpty()) }
     }
 
     /**
@@ -530,13 +534,25 @@ class SignalInfoViewModelTest {
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
-        model.filteredSatelliteMetadata.value?.mismatchAzimuthElevationSameSatStatuses?.let { assertTrue(it.isNotEmpty()) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAzimuthElevationSameSatStatuses?.let {
+                assertTrue(
+                    it.isNotEmpty()
+                )
+            }
+        } else {
+            model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAzimuthElevationSameSatStatuses?.let {
+                assertTrue(
+                    it.isEmpty()
+                )
+            }
+        }
         model.reset()
 
         // Test two GPS signals from different satellites
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(2, true)))
         assertEquals(2, model.filteredGnssSatellites.value?.size)
-        model.filteredSatelliteMetadata.value?.mismatchAzimuthElevationSameSatStatuses?.let { assertTrue(it.isEmpty()) }
+        model.allSatellitesGroup.value?.satelliteMetadata?.mismatchAzimuthElevationSameSatStatuses?.let { assertTrue(it.isEmpty()) }
     }
 
     /**
@@ -551,7 +567,28 @@ class SignalInfoViewModelTest {
         )
         model.updateStatus(listOf(gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
-        model.filteredSatelliteMetadata.value?.missingAlmanacEphemerisButHaveAzimuthElevation?.let { assertTrue(it.isNotEmpty()) }
+        model.allSatellitesGroup.value?.satelliteMetadata?.missingAlmanacEphemerisButHaveAzimuthElevation?.let { assertTrue(it.isNotEmpty()) }
         model.reset()
    }
+
+    /**
+     * Test error checks in view model - signals without data
+     */
+    @Test
+    fun testErrorCheckViewModelSignalsWithoutData() {
+        // Test two GPS signals from same satellite
+        val model = SignalInfoViewModel(
+            InstrumentationRegistry.getTargetContext().applicationContext as Application,
+            repository
+        )
+        model.updateStatus(listOf(gpsL1NoSignal(1)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        model.allSatellitesGroup.value?.satelliteMetadata?.signalsWithoutData?.let { assertTrue(it.isNotEmpty()) }
+        model.reset()
+
+        model.updateStatus(listOf(gpsL1(1, false)))
+        assertEquals(1, model.filteredGnssSatellites.value?.size)
+        model.allSatellitesGroup.value?.satelliteMetadata?.signalsWithoutData?.let { assertTrue(it.isEmpty()) }
+        model.reset()
+    }
 }

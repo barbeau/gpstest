@@ -84,6 +84,7 @@ internal object SatelliteUtil {
         val mismatchAzimuthElevationSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val mismatchAlmanacEphemerisSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         val missingAlmanacEphemerisButHaveAzimuthElevation: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val signalsWithoutData: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
@@ -101,6 +102,12 @@ internal object SatelliteUtil {
             if (s.cn0DbHz != NO_DATA) {
                 numSignalsInView++
             }
+            if (s.elevationDegrees == NO_DATA && s.azimuthDegrees == NO_DATA &&
+                !s.hasAlmanac && !s.hasEphemeris) {
+                // Signal doesn't have minimum amount of data to be valid
+                signalsWithoutData[SatelliteUtils.createGnssStatusKey(s)] = s
+            }
+
             if ((s.elevationDegrees != NO_DATA || s.azimuthDegrees != NO_DATA) &&
                 (!s.hasAlmanac && !s.hasEphemeris)) {
                 // Signal has elevation or azimuth data but no almanac or ephemeris (which it needs for elevation or azimuth)
@@ -235,7 +242,8 @@ internal object SatelliteUtil {
                 sbasToCf,
                 mismatchAzimuthElevationSameSatStatuses,
                 mismatchAlmanacEphemerisSameSatStatuses,
-                missingAlmanacEphemerisButHaveAzimuthElevation
+                missingAlmanacEphemerisButHaveAzimuthElevation,
+                signalsWithoutData
             )
         )
     }

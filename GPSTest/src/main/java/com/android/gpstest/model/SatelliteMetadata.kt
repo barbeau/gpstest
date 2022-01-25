@@ -54,5 +54,6 @@ data class SatelliteMetadata(
         val sbasToCf: MutableMap<SbasType, MutableSet<String>> = LinkedHashMap(),
         val mismatchAzimuthElevationSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
         val mismatchAlmanacEphemerisSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
-        val missingAlmanacEphemerisButHaveAzimuthElevation: Map<String, SatelliteStatus> = LinkedHashMap()
+        val missingAlmanacEphemerisButHaveAzimuthElevation: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val signalsWithoutData: Map<String, SatelliteStatus> = LinkedHashMap()
 )

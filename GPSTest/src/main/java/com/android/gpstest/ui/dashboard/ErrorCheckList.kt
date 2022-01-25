@@ -83,6 +83,7 @@ fun ErrorCheckList(
             GpsWeekRollover(location, fixState)
             GeoidAltitude(location, fixState, geoidAltitude)
             Datum(datum)
+            SignalsWithoutData(satelliteMetadata)
             if (SatelliteUtils.isGnssAntennaInfoSupported(locationManager)) {
                 AntennaInfo()
             }
@@ -347,6 +348,36 @@ fun Datum(
 }
 
 @Composable
+fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
+    val isValid = satelliteMetadata.signalsWithoutData.isEmpty()
+    val unknown = satelliteMetadata.numSignalsTotal == 0
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_for_signals)
+    } else {
+        if (isValid) stringResource(R.string.dashboard_signals_without_data_pass) else stringResource(
+            R.string.dashboard_signals_without_data_fail
+        )
+    }
+    ErrorCheck(
+        featureTitleId = R.string.dashboard_signals_without_data_title,
+        featureDescription = description,
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.signalsWithoutData.values.toList()),
+        includeAzimuthAndElevation = true,
+        includeAlmanacAndEphemeris = true,
+        includeCn0 = true,
+        pass = pass
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_navigation_message,
+            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        )
+    }
+}
+
+@Composable
 fun AntennaInfo() {
     val locationManager =
         Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -397,6 +428,7 @@ fun ErrorCheck(
     pass: Pass,
     includeAzimuthAndElevation: Boolean = false,
     includeAlmanacAndEphemeris: Boolean = false,
+    includeCn0: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Row {
@@ -463,11 +495,13 @@ fun ErrorCheck(
                 if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(
                     R.string.dashboard_ephemeris_no
                 )
+            val cn0 = String.format("%.1f", status.cn0DbHz)
 
             Text(
                 text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
                         + (if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "")
-                        + (if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else ""),
+                        + (if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else "")
+                        + (if (includeCn0) cn0 else ""),
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start

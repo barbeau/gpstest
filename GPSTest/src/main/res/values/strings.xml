@@ -288,6 +288,10 @@
     <string name="dashboard_datum_pass">Local datum code &amp; datum = W84</string>
     <string name="dashboard_datum_fail">Local datum code: %1$s, datum: %2$s</string>
 
+    <string name="dashboard_signals_without_data_title">Signals missing data</string>
+    <string name="dashboard_signals_without_data_pass">All signals have sufficient data</string>
+    <string name="dashboard_signals_without_data_fail">These signals are missing data:</string>
+
     <string name="dashboard_bad_antenna_info_title">Bad GNSS antenna info</string>
     <string name="dashboard_bad_antenna_info_pass">%1$s appears valid</string>
     <string name="dashboard_bad_antenna_info_fail">Antenna info (%1$s) is bad. See https://issuetracker.google.com/issues/190197760 for details.</string>
