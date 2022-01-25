@@ -161,6 +161,7 @@
     <string name="nmea_prefix">$GN</string>
     <string name="dashboard_geoid_pass">%1$.1f (N) \u2245 %2$.2f (h) - %3$.1f (H)</string>
     <string name="dashboard_geoid_fail">%1$.1f (N) \u2260 %2$.2f (h) - %3$.1f (H)</string>
+    <string name="dashboard_cn0">%.1f dB-Hz</string>
 
     <!-- Device capabilities -->
     <string name="capability_key_inject_psds">capability_key_inject_psds</string>

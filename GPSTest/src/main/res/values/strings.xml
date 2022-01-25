@@ -272,6 +272,8 @@
     <string name="dashboard_almanac_no">No almanac</string>
     <string name="dashboard_ephemeris_yes">Ephemeris</string>
     <string name="dashboard_ephemeris_no">No ephemeris</string>
+    <string name="dashboard_azimuth_no">No azimuth</string>
+    <string name="dashboard_elevation_no">No elevation</string>
 
     <string name="dashboard_missing_almanac_ephemeris_title">Missing almanac and ephemeris</string>
     <string name="dashboard_missing_almanac_ephemeris_pass">Signals with elev/azim have almanac/ephemeris</string>

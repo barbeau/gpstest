@@ -43,6 +43,7 @@ import com.android.gpstest.model.Datum
 import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
@@ -480,13 +481,21 @@ fun ErrorCheck(
         Row(modifier = Modifier.padding(start = 75.dp, bottom = bottomPadding)) {
             val carrierMhz = MathUtils.toMhz(status.carrierFrequencyHz)
             val cf = String.format("%.3f MHz", carrierMhz)
-            val elevation = stringResource(R.string.elevation_column_label) + " " + String.format(
-                stringResource(R.string.gps_elevation_column_value), status.elevationDegrees
-            ).trimZeros()
-            val azimuth = stringResource(R.string.azimuth_column_label) + " " + String.format(
-                stringResource(R.string.gps_azimuth_column_value),
-                status.azimuthDegrees
-            ).trimZeros()
+            val elevation = if (status.elevationDegrees != NO_DATA) {
+                stringResource(R.string.elevation_column_label) + " " + String.format(
+                    stringResource(R.string.gps_elevation_column_value), status.elevationDegrees
+                ).trimZeros()
+            } else {
+                stringResource(R.string.dashboard_elevation_no)
+            }
+            val azimuth = if (status.azimuthDegrees != NO_DATA) {
+                stringResource(R.string.azimuth_column_label) + " " + String.format(
+                    stringResource(R.string.gps_azimuth_column_value),
+                    status.azimuthDegrees
+                ).trimZeros()
+            } else {
+                stringResource(R.string.dashboard_azimuth_no)
+            }
             val almanac =
                 if (status.hasAlmanac) stringResource(R.string.dashboard_almanac_yes) else stringResource(
                     R.string.dashboard_almanac_no
@@ -495,13 +504,13 @@ fun ErrorCheck(
                 if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(
                     R.string.dashboard_ephemeris_no
                 )
-            val cn0 = String.format("%.1f", status.cn0DbHz)
+            val cn0 = stringResource(R.string.dashboard_cn0, status.cn0DbHz)
 
             Text(
                 text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
                         + (if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "")
                         + (if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else "")
-                        + (if (includeCn0) cn0 else ""),
+                        + (if (includeCn0) ", $cn0" else ""),
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
                 textAlign = TextAlign.Start
