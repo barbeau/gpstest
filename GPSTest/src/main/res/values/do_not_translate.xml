@@ -159,8 +159,8 @@
 
     <!-- Dashboard -->
     <string name="nmea_prefix">$GN</string>
-    <string name="dashboard_geoid_pass">%1$.1f (N) \u2245 %2$.2f (h) - %3$.1f (H)</string>
-    <string name="dashboard_geoid_fail">%1$.1f (N) \u2260 %2$.2f (h) - %3$.1f (H)</string>
+    <string name="dashboard_geoid_pass">%1$.1f (N) \u2245 %2$.3f (h) - %3$.1f (H)</string>
+    <string name="dashboard_geoid_fail">%1$.1f (N) \u2260 %2$.3f (h) - %3$.1f (H),\nError = %4$.3f m</string>
     <string name="dashboard_cn0">%.1f dB-Hz</string>
 
     <!-- Device capabilities -->

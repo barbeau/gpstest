@@ -102,9 +102,8 @@ internal object SatelliteUtil {
             if (s.cn0DbHz != NO_DATA) {
                 numSignalsInView++
             }
-            if (s.elevationDegrees == NO_DATA && s.azimuthDegrees == NO_DATA &&
-                !s.hasAlmanac && !s.hasEphemeris) {
-                // Signal doesn't have minimum amount of data to be valid
+            if (s.isMissingData()) {
+                // Signal doesn't have enough data to be valid
                 signalsWithoutData[SatelliteUtils.createGnssStatusKey(s)] = s
             }
 
@@ -432,15 +431,25 @@ internal object SatelliteUtil {
      *
      * See https://issuetracker.google.com/issues/191674805 for details.
      *
-     * @return true if H = -N + h, and false if it does not
+     * @return the difference value and true if H ~= -N + h, and false if it does not, within
+     * hMinusH container. If not enough data exists to calculate the difference, hMinusH.difference
+     * will bet set to Double.NaN.
      */
-    fun Location.altitudeComparedTo(geoidAltitude: GeoidAltitude): Boolean {
+    fun Location.altitudeComparedTo(geoidAltitude: GeoidAltitude): hMinusH {
         if (geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !hasAltitude()) {
-            return false
+            return hMinusH()
         }
-        // Location.altitude has far greater precision than the others (which are 1 decimal), so round it
-        val roundedAltitude = altitude.toBigDecimal().setScale(1, RoundingMode.HALF_UP).toDouble()
-        return geoidAltitude.heightOfGeoid == roundedAltitude - geoidAltitude.altitudeMsl
+        val difference = altitude - geoidAltitude.altitudeMsl
+        // Log.d("MSL", "${geoidAltitude.heightOfGeoid} = $altitude - ${geoidAltitude.altitudeMsl}")
+        // Location.altitude has far greater precision than the others (which are 1 decimal), so
+        // round the difference for comparison
+        val roundedDifference =
+            (altitude - geoidAltitude.altitudeMsl).toBigDecimal().setScale(1, RoundingMode.HALF_UP)
+                .toDouble()
+        return hMinusH(
+            hMinusH = geoidAltitude.heightOfGeoid - difference,
+            isSame = geoidAltitude.heightOfGeoid == roundedDifference
+        )
     }
 
     /**
@@ -449,5 +458,26 @@ internal object SatelliteUtil {
     fun Location.isTimeEqualTo(geoidAltitude: GeoidAltitude): Boolean {
         val thresholdMs = 100
         return kotlin.math.abs(this.time - geoidAltitude.timestamp) < thresholdMs
+    }
+
+    /**
+     * Returns true if the signal has a minimum amount of information to be considered valid, false
+     * if it does not
+     */
+    fun SatelliteStatus.isMissingData(): Boolean {
+        if (this.elevationDegrees == NO_DATA && this.azimuthDegrees == NO_DATA &&
+            !this.hasAlmanac && !this.hasEphemeris
+        ) {
+            // Signal is missing all basic information needed to decode it
+            return true
+        } else if (this.usedInFix && (
+                    this.cn0DbHz == NO_DATA || !this.hasAlmanac || !this.hasEphemeris ||
+                            this.azimuthDegrees == NO_DATA || this.elevationDegrees == NO_DATA
+                    )
+        ) {
+            // Signal was used in fix but missing information required to use it in a fix
+            return true
+        }
+        return false
     }
 }

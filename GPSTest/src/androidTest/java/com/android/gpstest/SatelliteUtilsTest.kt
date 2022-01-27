@@ -22,8 +22,10 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.GnssType
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.model.SbasType
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
+import com.android.gpstest.util.SatelliteUtil.isMissingData
 import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
 import com.android.gpstest.util.SatelliteUtils
 import org.junit.Assert.*
@@ -252,13 +254,135 @@ class SatelliteUtilsTest {
         val geoidAltitude = GeoidAltitude(altitudeMsl = 18.1, heightOfGeoid = -24.0)
         val location = Location("test")
         location.altitude = -5.9
-        assertTrue(location.altitudeComparedTo(geoidAltitude))
+        assertTrue(location.altitudeComparedTo(geoidAltitude).isSame)
 
         location.altitude = -5.91111
-        assertTrue(location.altitudeComparedTo(geoidAltitude))
+        assertTrue(location.altitudeComparedTo(geoidAltitude).isSame)
 
         location.altitude = -5.99999
-        assertFalse(location.altitudeComparedTo(geoidAltitude))
+        assertFalse(location.altitudeComparedTo(geoidAltitude).isSame)
+
+        // Based on data from Samsung Galaxy S21+
+        val `geoidAltitude16-1` = GeoidAltitude(altitudeMsl = 16.1, heightOfGeoid = -24.0)
+        location.altitude = -7.88262939453125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude16-1`).isSame)
+
+        val `geoidAltitude16-0` = GeoidAltitude(altitudeMsl = 16.0, heightOfGeoid = -24.0)
+        location.altitude = -7.979248046875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude16-0`).isSame)
+
+        location.altitude = -7.99603271484375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude16-0`).isSame)
+
+        location.altitude = -7.9793701171875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude16-0`).isSame)
+
+        val `geoidAltitude15-7` = GeoidAltitude(altitudeMsl = 15.7, heightOfGeoid = -24.0)
+        location.altitude = -8.302093505859375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.3095703125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.311126708984375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.3275146484375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.252044677734375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.2552490234375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.277252197265625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.28192138671875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.284088134765625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.286651611328125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.30511474609375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.306427001953125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        location.altitude = -8.346435546875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-7`).isSame)
+
+        val `geoidAltitude15-8` = GeoidAltitude(altitudeMsl = 15.8, heightOfGeoid = -24.0)
+        location.altitude = -8.194122314453125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.181121826171875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.1817626953125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.185455322265625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.18609619140625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.2017822265625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.21240234375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.2166748046875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.237640380859375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.2392578125
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.243896484375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        location.altitude = -8.245269775390625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-8`).isSame)
+
+        val `geoidAltitude15-6` = GeoidAltitude(altitudeMsl = 15.6, heightOfGeoid = -24.0)
+        location.altitude = -8.353424072265625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-6`).isSame)
+
+        location.altitude = -8.37744140625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-6`).isSame)
+
+        location.altitude = -8.37994384765625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-6`).isSame)
+
+        location.altitude = -8.38427734375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-6`).isSame)
+
+        val `geoidAltitude15-5` = GeoidAltitude(altitudeMsl = 15.5, heightOfGeoid = -24.0)
+        location.altitude = -8.51861572265625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-5`).isSame)
+
+        location.altitude = -8.523681640625
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-5`).isSame)
+
+        location.altitude = -8.529998779296875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-5`).isSame)
+
+        location.altitude = -8.53466796875
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-5`).isSame)
+
+        val `geoidAltitude15-4` = GeoidAltitude(altitudeMsl = 15.4, heightOfGeoid = -24.0)
+        location.altitude = -8.589202880859375
+        assertTrue(location.altitudeComparedTo(`geoidAltitude15-4`).isSame)
     }
 
     /**
@@ -282,5 +406,32 @@ class SatelliteUtilsTest {
 
         location.time = 900
         assertFalse(location.isTimeEqualTo(geoidAltitude))
+    }
+
+    @Test
+    fun testStatusMissingData() {
+        // GPS with missing data
+        val statusMissingDataNotUsed = SatelliteStatus(1,
+            GnssType.NAVSTAR,
+            30f,
+            false,
+            false,
+            false,
+            NO_DATA,
+            NO_DATA);
+        assertTrue(statusMissingDataNotUsed.isMissingData())
+
+        val statusMissingDataUsed = SatelliteStatus(1,
+            GnssType.NAVSTAR,
+            30f,
+            false,
+            true,
+            true,
+            NO_DATA,
+            NO_DATA);
+        assertTrue(statusMissingDataUsed.isMissingData())
+
+        // Good signal
+        assertFalse(gpsL1(1, true).isMissingData())
     }
 }

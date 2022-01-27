@@ -39,10 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
-import com.android.gpstest.model.Datum
-import com.android.gpstest.model.GeoidAltitude
-import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.util.*
@@ -272,16 +269,17 @@ fun GeoidAltitude(
 
     val unknown =
         fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
-    val isValid: Boolean
+    val hMinusH: hMinusH
     // Make sure we're comparing the values from the same location calculation by checking timestamps
     if (location.isTimeEqualTo(geoidAltitude)) {
-        isValid = location.altitudeComparedTo(geoidAltitude)
+        hMinusH = location.altitudeComparedTo(geoidAltitude)
         lastLocation = location
         lastGeoidAltitude = geoidAltitude
     } else {
         // Use previous location and geoid pairing
-        isValid = lastLocation.altitudeComparedTo(lastGeoidAltitude)
+        hMinusH = lastLocation.altitudeComparedTo(lastGeoidAltitude)
     }
+    val isValid = !hMinusH.hMinusH.isNaN() && hMinusH.isSame
 
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
@@ -299,7 +297,8 @@ fun GeoidAltitude(
             R.string.dashboard_geoid_fail,
             geoidAltitude.heightOfGeoid,
             location.altitude,
-            geoidAltitude.altitudeMsl
+            geoidAltitude.altitudeMsl,
+            hMinusH.hMinusH
         )
     }
     ErrorCheck(
@@ -368,6 +367,7 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.signalsWithoutData.values.toList()),
         includeAzimuthAndElevation = true,
         includeAlmanacAndEphemeris = true,
+        includeUsedInFix = true,
         includeCn0 = true,
         pass = pass
     ) {
@@ -430,6 +430,7 @@ fun ErrorCheck(
     includeAzimuthAndElevation: Boolean = false,
     includeAlmanacAndEphemeris: Boolean = false,
     includeCn0: Boolean = false,
+    includeUsedInFix: Boolean = false,
     content: @Composable () -> Unit
 ) {
     Row {
@@ -504,12 +505,17 @@ fun ErrorCheck(
                 if (status.hasEphemeris) stringResource(R.string.dashboard_ephemeris_yes) else stringResource(
                     R.string.dashboard_ephemeris_no
                 )
+            val usedInFix =
+                if (status.usedInFix) stringResource(R.string.dashboard_used_in_fix_yes) else stringResource(
+                    R.string.dashboard_used_in_fix_no
+                )
             val cn0 = stringResource(R.string.dashboard_cn0, status.cn0DbHz)
 
             Text(
                 text = "\u2022 ${status.constellationName()}, ID ${status.svid}, $cf"
                         + (if (includeAzimuthAndElevation) ", $elevation, $azimuth" else "")
                         + (if (includeAlmanacAndEphemeris) ", $almanac, $ephemeris" else "")
+                        + (if (includeUsedInFix) ", $usedInFix" else "")
                         + (if (includeCn0) ", $cn0" else ""),
                 modifier = Modifier.padding(start = 3.dp, end = 2.dp),
                 fontSize = 10.sp,
