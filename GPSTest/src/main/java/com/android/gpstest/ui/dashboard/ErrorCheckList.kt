@@ -268,7 +268,7 @@ fun GeoidAltitude(
     var lastGeoidAltitude by remember { mutableStateOf(geoidAltitude) }
 
     val unknown =
-        fixState == FixState.NotAcquired || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
+        (fixState == FixState.NotAcquired) || geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !location.hasAltitude()
     val hMinusH: hMinusH
     // Make sure we're comparing the values from the same location calculation by checking timestamps
     if (location.isTimeEqualTo(geoidAltitude)) {
