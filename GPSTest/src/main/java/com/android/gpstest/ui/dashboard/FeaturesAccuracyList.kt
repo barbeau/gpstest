@@ -20,10 +20,7 @@ import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -33,7 +30,11 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -113,6 +114,7 @@ fun DualFrequency(
 fun FrequencyImage(
     modifier: Modifier = Modifier,
     showSecondFrequency: Boolean = false,
+    showStrikeThrough: Boolean = false,
     initialDeltaX: Float = -20f,
     animationDurationMs: Int = 25000,
     frequencyMultiplier: Float = 1.2f
@@ -142,6 +144,55 @@ fun FrequencyImage(
             initialDeltaX = initialDeltaX,
             animationDurationMs = animationDurationMs
         )
+        if (showStrikeThrough) {
+            val color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f)
+            val shadowColor = MaterialTheme.colors.primary.copy(alpha = 1.0f)
+            // Strike-through line with shadows (top and bottom)
+            Canvas(
+                Modifier
+                    .fillMaxSize()
+            ) {
+                val angleDegrees = 45f
+                val lineSize = Size(width = size.width, height = size.height / 16)
+                val yOffset = (this.size.height - lineSize.height) / 2
+                val line = Rect(
+                    offset = Offset(x = 0.0f, y = yOffset),
+                    size = lineSize,
+                )
+                val shadowTop = Rect(
+                    offset = Offset(x = 12.0f, y = yOffset),
+                    size = lineSize,
+                )
+                val shadowBottom = Rect(
+                    offset = Offset(x = -12.0f, y = yOffset),
+                    size = lineSize,
+                )
+                // Shadow of line - top
+                rotate(angleDegrees, pivot = shadowTop.center) {
+                    drawRect(
+                        shadowColor,
+                        topLeft = shadowTop.topLeft,
+                        size = shadowTop.size,
+                    )
+                }
+                // Shadow of line - bottom
+                rotate(angleDegrees, pivot = shadowBottom.center) {
+                    drawRect(
+                        shadowColor,
+                        topLeft = shadowBottom.topLeft,
+                        size = shadowBottom.size,
+                    )
+                }
+                // Line
+                rotate(angleDegrees, pivot = line.center) {
+                    drawRect(
+                        color,
+                        topLeft = line.topLeft,
+                        size = line.size,
+                    )
+                }
+            }
+        }
     }
 }
 

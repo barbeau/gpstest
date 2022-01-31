@@ -112,7 +112,8 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
             Modifier
                 .size(iconSize)
                 .clip(CircleShape)
-                .padding(10.dp)
+                .padding(10.dp),
+            showStrikeThrough = true
         )
     }
 }
