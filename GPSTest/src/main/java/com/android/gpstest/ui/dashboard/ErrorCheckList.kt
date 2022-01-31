@@ -20,9 +20,7 @@ import android.location.Location
 import android.location.LocationManager
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -41,7 +39,6 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
-import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
@@ -111,7 +108,7 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
         pass = pass
     ) {
-        SingleFrequencyImage(
+        FrequencyImage(
             Modifier
                 .size(iconSize)
                 .clip(CircleShape)
@@ -140,11 +137,15 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
         pass = pass
     ) {
-        SingleFrequencyImage(
+        FrequencyImage(
             Modifier
                 .size(iconSize)
                 .clip(CircleShape)
-                .padding(10.dp)
+                .padding(10.dp),
+            showSecondFrequency = true,
+            frequencyMultiplier = .8f,
+            initialDeltaX = -10f,
+            animationDurationMs = 10000
         )
     }
 }
@@ -538,27 +539,6 @@ fun ErrorCheck(
                 textAlign = TextAlign.Start
             )
         }
-    }
-}
-
-@Composable
-fun SingleFrequencyImage(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(CircleShape)
-            .background(MaterialTheme.colors.primary)
-            .border(
-                BorderStroke(1.dp, MaterialTheme.colors.primary),
-                CircleShape
-            )
-    ) {
-        Wave(
-            modifier = modifier,
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
-            frequencyMultiplier = 1.2f,
-            initialDeltaX = -20f,
-            animationDurationMs = 25000
-        )
     }
 }
 

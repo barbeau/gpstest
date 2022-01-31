@@ -110,7 +110,13 @@ fun DualFrequency(
 }
 
 @Composable
-fun DualFrequencyImage(modifier: Modifier = Modifier) {
+fun FrequencyImage(
+    modifier: Modifier = Modifier,
+    showSecondFrequency: Boolean = false,
+    initialDeltaX: Float = -20f,
+    animationDurationMs: Int = 25000,
+    frequencyMultiplier: Float = 1.2f
+) {
     Box(
         modifier = modifier
             .clip(CircleShape)
@@ -120,19 +126,21 @@ fun DualFrequencyImage(modifier: Modifier = Modifier) {
                 CircleShape
             )
     ) {
-        Wave(
-            modifier = modifier,
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
-            frequencyMultiplier = .8f,
-            initialDeltaX = 0f,
-            animationDurationMs = 10000
-        )
+        if (showSecondFrequency) {
+            Wave(
+                modifier = modifier,
+                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                frequencyMultiplier = .8f,
+                initialDeltaX = 0f,
+                animationDurationMs = 10000
+            )
+        }
         Wave(
             modifier = modifier,
             color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
-            frequencyMultiplier = 1.2f,
-            initialDeltaX = -20f,
-            animationDurationMs = 25000
+            frequencyMultiplier = frequencyMultiplier,
+            initialDeltaX = initialDeltaX,
+            animationDurationMs = animationDurationMs
         )
     }
 }
@@ -275,8 +283,9 @@ fun FeatureSupport(
                 .padding(imagePaddingDp.dp)
             // TODO - refactor below IF statement to passing in Composables to FeatureSupport()
             if (featureTitleId == R.string.dashboard_feature_dual_frequency_title) {
-                DualFrequencyImage(
-                    customIconModifier
+                FrequencyImage(
+                    customIconModifier,
+                    showSecondFrequency = true
                 )
             } else {
                 Box(
