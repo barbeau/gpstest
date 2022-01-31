@@ -48,8 +48,8 @@ import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
 import com.android.gpstest.ui.components.Wave
+import com.android.gpstest.ui.dashboard.Support.*
 import com.android.gpstest.ui.theme.Green500
-import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.*
 import com.android.gpstest.util.SatelliteUtils
 import kotlinx.coroutines.launch
@@ -105,7 +105,7 @@ fun DualFrequency(
         featureTitleId = R.string.dashboard_feature_dual_frequency_title,
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
-        supported = if (satelliteMetadata.isNonPrimaryCarrierFreqInView) Support.YES else Support.NO,
+        supported = if (satelliteMetadata.isNonPrimaryCarrierFreqInView) YES else NO,
         scanStatus = scanStatus
     )
 }
@@ -220,7 +220,7 @@ fun RawMeasurements(
         featureTitleId = R.string.dashboard_feature_raw_measurements_title,
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
-        supported = if (capabilityMeasurementsInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
+        supported = if (capabilityMeasurementsInt == CAPABILITY_SUPPORTED) YES else NO,
         scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
         iconSizeDp = 45
     )
@@ -258,10 +258,10 @@ fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
     val supported: Support
     if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
         antennaCfs = getString(Application.app.getString(R.string.capability_key_antenna_cf))
-        supported = Support.YES
+        supported = YES
     } else {
         antennaCfs = ""
-        supported = Support.NO
+        supported = NO
     }
 
     FeatureSupport(
@@ -309,14 +309,14 @@ fun FeatureSupport(
     supported: Support,
     scanStatus: ScanStatus = ScanStatus(true, 0, 0),
     iconSizeDp: Int = 50,
-    onClick: () -> Support = { Support.UNKNOWN }
+    onClick: () -> Support = { UNKNOWN }
 ) {
     val imagePaddingDp = 10
 
     val scope = rememberCoroutineScope()
 
     // Allow user to manually tap row to check support, and use this value if populated
-    var manualSupported by remember { mutableStateOf(Support.UNKNOWN) }
+    var manualSupported by remember { mutableStateOf(UNKNOWN) }
 
     Row(modifier = Modifier
         .clickable {
@@ -406,11 +406,11 @@ fun FeatureSupport(
                             .padding(end = 10.dp, top = 4.dp, bottom = 4.dp)
                     )
                 } else {
-                    if (scanStatus.finishedScanningCfs || supported == Support.YES || manualSupported == Support.YES) {
+                    if (scanStatus.finishedScanningCfs || supported == YES || manualSupported == YES) {
                         // We've decided if it's supported
                         Check(
                             modifier = Modifier.align(CenterVertically),
-                            supported = if (manualSupported != Support.UNKNOWN) manualSupported else supported
+                            supported = if (manualSupported != UNKNOWN) manualSupported else supported
                         )
                     } else {
                         // Waiting for scan timeout to complete
@@ -438,21 +438,21 @@ fun Check(
             .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
         imageVector = ImageVector.vectorResource(
             id = when (supported) {
-                Support.YES -> R.drawable.ic_baseline_check_circle_24
-                Support.NO -> R.drawable.ic_baseline_cancel_24
-                Support.UNKNOWN -> R.drawable.ic_baseline_question_24
+                YES -> R.drawable.ic_baseline_check_circle_24
+                NO -> R.drawable.ic_baseline_cancel_24
+                UNKNOWN -> R.drawable.ic_baseline_question_24
             }
         ),
         contentDescription =
         when (supported) {
-            Support.YES -> stringResource(R.string.dashboard_supported)
-            Support.NO -> stringResource(R.string.dashboard_not_supported)
-            Support.UNKNOWN -> stringResource(R.string.unknown)
+            YES -> stringResource(R.string.dashboard_supported)
+            NO -> stringResource(R.string.dashboard_not_supported)
+            UNKNOWN -> stringResource(R.string.unknown)
         },
         tint = when (supported) {
-            Support.YES -> Green500
-            Support.NO -> MaterialTheme.colors.error
-            Support.UNKNOWN -> Color.DarkGray
+            YES -> Green500
+            NO -> MaterialTheme.colors.error
+            UNKNOWN -> Color.DarkGray
         }
     )
 }
@@ -463,9 +463,9 @@ enum class Support {
 
 fun fromPref(preference: Int): Support {
     return when (preference) {
-        PreferenceUtils.CAPABILITY_UNKNOWN -> Support.UNKNOWN
-        PreferenceUtils.CAPABILITY_SUPPORTED -> Support.YES
-        PreferenceUtils.CAPABILITY_NOT_SUPPORTED -> Support.NO
-        else -> Support.UNKNOWN
+        CAPABILITY_UNKNOWN -> UNKNOWN
+        CAPABILITY_SUPPORTED -> YES
+        CAPABILITY_NOT_SUPPORTED -> NO
+        else -> UNKNOWN
     }
 }
