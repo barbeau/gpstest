@@ -286,6 +286,7 @@
     <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
     <string name="dashboard_gps_week_rollover_fail">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock.</string>
     <string name="dashboard_waiting_on_fix">Waiting on fix…</string>
+    <string name="dashboard_waiting_on_nmea_dtm">Waiting on sync\'d NMEA, current time diff = %1$s ms…</string>
     <string name="dashboard_clock_image">Image of clock</string>
 
     <string name="dashboard_datum_title">Suspicious datum</string>

@@ -26,7 +26,7 @@ import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.model.SbasType
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.isMissingData
-import com.android.gpstest.util.SatelliteUtil.isTimeEqualTo
+import com.android.gpstest.util.SatelliteUtil.isTimeApproxEqualTo
 import com.android.gpstest.util.SatelliteUtils
 import org.junit.Assert.*
 import org.junit.Test
@@ -389,23 +389,23 @@ class SatelliteUtilsTest {
      * Tests if a location time is approximately equal to geoidAltitude time
      */
     @Test
-    fun testLocationIsTimeEqualTo() {
+    fun testLocationIsTimeApproxEqualTo() {
         val geoidAltitude = GeoidAltitude(1000, altitudeMsl = 18.1, heightOfGeoid = -24.0)
         val location = Location("test")
         location.time = 1000
-        assertTrue(location.isTimeEqualTo(geoidAltitude))
+        assertTrue(location.isTimeApproxEqualTo(geoidAltitude))
 
-        location.time = 1099
-        assertTrue(location.isTimeEqualTo(geoidAltitude))
+        location.time = 1899
+        assertTrue(location.isTimeApproxEqualTo(geoidAltitude))
 
-        location.time = 901
-        assertTrue(location.isTimeEqualTo(geoidAltitude))
+        location.time = 101
+        assertTrue(location.isTimeApproxEqualTo(geoidAltitude))
 
-        location.time = 1100
-        assertFalse(location.isTimeEqualTo(geoidAltitude))
+        location.time = 1900
+        assertFalse(location.isTimeApproxEqualTo(geoidAltitude))
 
-        location.time = 900
-        assertFalse(location.isTimeEqualTo(geoidAltitude))
+        location.time = 100
+        assertFalse(location.isTimeApproxEqualTo(geoidAltitude))
     }
 
     @Test
@@ -421,15 +421,17 @@ class SatelliteUtilsTest {
             NO_DATA);
         assertTrue(statusMissingDataNotUsed.isMissingData())
 
-        val statusMissingDataUsed = SatelliteStatus(1,
-            GnssType.NAVSTAR,
-            30f,
-            false,
-            true,
-            true,
-            NO_DATA,
-            NO_DATA);
-        assertTrue(statusMissingDataUsed.isMissingData())
+        // FIXME - this is way too noisy for missing ephemeris data, so skip this check
+        // until we figure out how to handle this (separate check?)
+//        val statusMissingDataUsed = SatelliteStatus(1,
+//            GnssType.NAVSTAR,
+//            30f,
+//            false,
+//            true,
+//            true,
+//            NO_DATA,
+//            NO_DATA);
+//        assertTrue(statusMissingDataUsed.isMissingData())
 
         // Good signal
         assertFalse(gpsL1(1, true).isMissingData())

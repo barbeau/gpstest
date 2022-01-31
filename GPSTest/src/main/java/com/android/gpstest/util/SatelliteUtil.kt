@@ -416,8 +416,8 @@ internal object SatelliteUtil {
     }
 
     /**
-     * Returns true if the altitude of [this] location is valid when compared to the provided
-     * [geoidAltitude], using the formula:
+     * Returns the difference between the altitude of [this] location and true if it's approx.
+     * equal to the provided [geoidAltitude], within hMinusH container, using the formula:
      *
      * H = -N + h
      *
@@ -455,9 +455,17 @@ internal object SatelliteUtil {
     /**
      * Returns true if the timestamp of [this] is approximately the same as the timestamp of [geoidAltitude]
      */
-    fun Location.isTimeEqualTo(geoidAltitude: GeoidAltitude): Boolean {
-        val thresholdMs = 100
-        return kotlin.math.abs(this.time - geoidAltitude.timestamp) < thresholdMs
+    fun Location.isTimeApproxEqualTo(geoidAltitude: GeoidAltitude): Boolean {
+        val thresholdMs = 900
+        return kotlin.math.abs(timeDiffMs(geoidAltitude)) < thresholdMs
+    }
+
+    /**
+     * Returns the number of milliseconds difference between the location time and [geoidAltitude]
+     * time, signed
+     */
+    fun Location.timeDiffMs(geoidAltitude: GeoidAltitude): Long {
+        return this.time - geoidAltitude.timestamp
     }
 
     /**
@@ -476,7 +484,9 @@ internal object SatelliteUtil {
                     )
         ) {
             // Signal was used in fix but missing information required to use it in a fix
-            return true
+                // FIXME - this is way too noisy for missing ephemeris data, so return false
+                // until we figure out how to handle this (separate check?)
+            return false
         }
         return false
     }
