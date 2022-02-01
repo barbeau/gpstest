@@ -39,6 +39,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
+import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
@@ -172,9 +173,11 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
         includeAzimuthAndElevation = true,
         pass = pass
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_navigation_message,
-            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        Orbit(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp)
         )
     }
 }
