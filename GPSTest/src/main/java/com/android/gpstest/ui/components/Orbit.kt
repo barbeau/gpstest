@@ -18,7 +18,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
@@ -28,8 +28,9 @@ import androidx.compose.ui.unit.dp
 fun Orbit(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
-    animationDurationMs: Int = 30000,
+    animationDurationMs: Int = 40000,
 ) {
+    // Transitions used to rotate the ovals around the center of image
     val rotateX1 = rememberInfiniteTransition()
     val dx1 by rotateX1.animateFloat(
         initialValue = 45f,
@@ -42,15 +43,38 @@ fun Orbit(
     val rotateX2 = rememberInfiniteTransition()
     val dx2 by rotateX2.animateFloat(
         initialValue = -45f,
-        targetValue = 360f - 45f,
+        targetValue = -360f - 45f,
         animationSpec = infiniteRepeatable(
             animation = tween(animationDurationMs, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         )
     )
+
     val padding = 8.dp
     val height = 14.dp
     val stroke = 3.dp
+
+    // Transitions used to flatten oval height to give impression of Z rotation
+    val height1 = rememberInfiniteTransition()
+    val hx1 by height1.animateValue(
+        initialValue = 0.dp,
+        targetValue = height,
+        typeConverter = Dp.VectorConverter,
+        animationSpec = infiniteRepeatable(
+            animation = tween(animationDurationMs / 9, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val height2 = rememberInfiniteTransition()
+    val hx2 by height2.animateValue(
+        initialValue = 0.dp,
+        targetValue = height,
+        typeConverter = Dp.VectorConverter,
+        animationSpec = infiniteRepeatable(
+            animation = tween(animationDurationMs / 11, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
 
     Box(
         modifier = modifier
@@ -75,20 +99,11 @@ fun Orbit(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .graphicsLayer {
-                    rotationX = dx1
-                }
         ) {
             val canvasWidth = size.width
             val canvasHeight = size.height
             val middle = Offset(x = canvasWidth / 2, y = canvasHeight / 2)
 
-            // FIXME - try below instead of rotate() but with transform(Matrix) - https://developer.android.com/reference/kotlin/androidx/compose/ui/graphics/drawscope/DrawTransform#transform(androidx.compose.ui.graphics.Matrix). See https://developer.android.com/jetpack/compose/graphics
-            // Or just animate height instead for Y "translation"
-//            withTransform({
-//                translate(left = canvasWidth / 5F)
-//                rotate(degrees = 45F)
-//            }) {
             rotate(
                 degrees = dx1,
                 pivot = middle
@@ -98,10 +113,10 @@ fun Orbit(
                     style = Stroke(
                         width = stroke.toPx()
                     ),
-                    topLeft = Offset(x = padding.toPx(), y = (canvasHeight / 2) - (height.toPx() / 2)),
+                    topLeft = Offset(x = padding.toPx(), y = (canvasHeight / 2) - (hx1.toPx() / 2)),
                     size = Size(
                         width = canvasWidth - (padding.toPx() * 2),
-                        height = height.toPx()
+                        height = hx1.toPx()
                     )
                 )
             }
@@ -114,10 +129,10 @@ fun Orbit(
                     style = Stroke(
                         width = stroke.toPx()
                     ),
-                    topLeft = Offset(x = padding.toPx(), y = (canvasHeight / 2) - (height.toPx() / 2)),
+                    topLeft = Offset(x = padding.toPx(), y = (canvasHeight / 2) - (hx2.toPx() / 2)),
                     size = Size(
                         width = canvasWidth - (padding.toPx() * 2),
-                        height = height.toPx()
+                        height = hx2.toPx()
                     )
                 )
             }
