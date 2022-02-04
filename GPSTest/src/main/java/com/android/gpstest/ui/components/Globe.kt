@@ -32,7 +32,7 @@ fun Globe(
 ) {
     val padding = 8.dp
     val height = 12.dp
-    val stroke = 3.dp
+    val stroke = 2.5.dp
 
     // Transitions used to flatten oval height to give impression of Z rotation
     val height1 = rememberInfiniteTransition()
@@ -86,6 +86,7 @@ fun Globe(
                 )
             )
         }
+        // Rotating middle oval
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
