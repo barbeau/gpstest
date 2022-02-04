@@ -253,19 +253,24 @@
     <string name="dashboard_feature_vert_accuracy_description">Estimated by hardware</string>
 
     <!-- Dashboard errors -->
+    <string name="dashboard_errors_help">This section shows various checks that GPSTest performs on the real-time data coming from your device to detect potential problems.\n\nTap on each error to learn more.</string>
     <string name="dashboard_valid_cfs_title">Invalid carrier frequencies</string>
+    <string name="dashboard_valid_cfs_help">This checks if there are any carrier frequencies (CFs) in the data from your phone that don\'t exist in the real world.\n\nSometimes device manufacturers make mistakes when labeling the signal CFs in MHz in the data, which means that this signal then can\'t be matched to a commonly known band by GPSTest. For example, the CF for L1 is 1575.42 MHz. An example of a bad CF is 1100.00 MHz, which doesn\'t correspond to any known GNSS band.  \n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_valid_cfs_description_pass">All bands are valid</string>
     <string name="dashboard_valid_cfs_description_fail">Bad frequencies reported by device:</string>
 
     <string name="dashboard_duplicate_cfs_title">Duplicate carrier frequencies</string>
+    <string name="dashboard_duplicate_cfs_help">This checks if the same carrier frequency is detected more than once from the same satellite.\n\nFor example, if the same satellite has two records for L1 (1575.42 MHz), this would be an error.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_duplicate_cfs_description_pass">No duplicates from same satellite found</string>
     <string name="dashboard_duplicate_cfs_description_fail">Duplicates from same satellite found:</string>
 
     <string name="dashboard_mismatch_azimuth_elevation_title">Conflicting elevation and azimuth</string>
+    <string name="dashboard_mismatch_azimuth_elevation_help">This checks if multiple signals from the same satellite (e.g., L1 (1575.42 MHz) and L5 (1176.45 MHz)) have the same elevation and azimuth values.\n\n If they do not, this an error, because it would indicate that the same satellite is in two different places in the sky.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_mismatch_azimuth_elevation_pass">All signals from same satellite match</string>
     <string name="dashboard_mismatch_azimuth_elevation_fail">Signals from same satellite differ:</string>
 
     <string name="dashboard_mismatch_almanac_ephemeris_title">Conflicting almanac and ephemeris</string>
+    <string name="dashboard_mismatch_almanac_ephemeris_help">This checks if multiple signals from the same satellite (e.g., L1 (1575.42 MHz) and L5 (1176.45 MHz)) have the same status for almanac and ephemeris.\n\nIf they do not, this an error, because it would indicate that the device was both in possession of and lacking information about the location of the satellite in the sky.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_mismatch_almanac_ephemeris_pass">All signals from same satellite match</string>
     <string name="dashboard_mismatch_almanac_ephemeris_fail">Signals from same satellite differ:</string>
     <string name="dashboard_almanac_yes">Almanac</string>
@@ -278,11 +283,13 @@
     <string name="dashboard_elevation_no">No elevation</string>
 
     <string name="dashboard_missing_almanac_ephemeris_title">Missing almanac and ephemeris</string>
+    <string name="dashboard_missing_almanac_ephemeris_help">This checks if the device is showing signal information from a satellite for which almanac and ephemeris data is required, and yet indicates that it does not have almanac or ephemeris for that same satellite.\n\nFor example, if the device says it has elevation and azimuth data for a satellite, but indicates that it does NOT have almanac or ephemeris, that\'s an error because almanac and ephemeris data contains the elevation and azimuth information.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_missing_almanac_ephemeris_pass">Signals with elev/azim have almanac/ephemeris</string>
     <string name="dashboard_missing_almanac_ephemeris_fail">Signals with elev/azim missing almanac/ephemeris:</string>
     <string name="dashboard_waiting_for_signals">Waiting for signals…</string>
 
-    <string name="dashboard_gps_week_rollover_title">GNSS week rollover</string>
+    <string name="dashboard_gps_week_rollover_title">System/GNSS time sync</string>
+    <string name="dashboard_gps_week_rollover_help">This checks to see if the time derived from GNSS data is significantly different than your device system clock time.\n\nIf this error is detected, it can be a symptom of the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
     <string name="dashboard_gps_week_rollover_fail">The device GNSS time of:\n\n%1$s\n\n…is more than %2$d days different from your system clock.</string>
     <string name="dashboard_waiting_on_fix">Waiting on fix…</string>
@@ -290,18 +297,22 @@
     <string name="dashboard_clock_image">Image of clock</string>
 
     <string name="dashboard_datum_title">Suspicious datum</string>
+    <string name="dashboard_datum_help">This checks if the datum, or the frame of reference used to identify exactly where a latitude and logitude is located in 3D space, deviates from the norm.\n\nFor example, some devices have erroneously reported they were using PZ-90 (P90) instead of the standard WGS84 datum (see https://issuetracker.google.com/issues/191674805).\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_datum_pass">Local datum code &amp; datum = W84</string>
     <string name="dashboard_datum_fail">Local datum code: %1$s, datum: %2$s</string>
 
     <string name="dashboard_signals_without_data_title">Signals missing data</string>
+    <string name="dashboard_signals_without_data_help">This checks if the signal is missing all data necessary to decode it.\n\nFor example, if the signal has Cn0 values but is missing almanac, ephemeris, elevation, and azimuth, that\'s an error.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_signals_without_data_pass">All signals have sufficient data</string>
     <string name="dashboard_signals_without_data_fail">These signals are missing data:</string>
 
     <string name="dashboard_bad_antenna_info_title">Bad GNSS antenna info</string>
+    <string name="dashboard_bad_antenna_info_help">This checks to see if the GNSS antenna info provided by your device is incorrect. For example, a large number of devices have erroneously reported an L2 antenna on the device when the device did not contain such an antenna (see https://issuetracker.google.com/issues/190197760).\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_bad_antenna_info_pass">%1$s appears valid</string>
     <string name="dashboard_bad_antenna_info_fail">Antenna info (%1$s) is bad. See https://issuetracker.google.com/issues/190197760 for details.</string>
 
     <string name="dashboard_geoid_title">Geoid height integrity</string>
+    <string name="dashboard_geoid_help">Altitude is commonly represented two different ways: meters above mean sea level (MSL), and meters above the WGS84 ellipsoid.\n\nThis check compares the difference between the WGS84 altitude (height of the device above the WGS84 ellipsoid, or h) and the MSL altitude (orthometric height, or H), which should equal the geoid height, or N, based on the formula N = h - H.\n\nYou may see small fluctuations in pass or fail values because a) the APIs that provide data for N, h, and H aren\'t always in sync with each other for each location when it\'s calculated, and b) N and H are typically only given with a single decimal digit of precision, where as h typically has precision greater than 7 decimal places, resulting in rounding issues.\n\nSee https://issuetracker.google.com/issues/191674805 for details.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_planet_image">Image of planet</string>
 
     <string name="dashboard_pass">PASS</string>

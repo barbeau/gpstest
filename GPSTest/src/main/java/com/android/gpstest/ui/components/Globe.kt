@@ -30,7 +30,6 @@ fun Globe(
     color: Color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
     animationDurationMs: Int = 40000,
 ) {
-    val padding = 8.dp
     val height = 12.dp
     val stroke = 2.5.dp
 

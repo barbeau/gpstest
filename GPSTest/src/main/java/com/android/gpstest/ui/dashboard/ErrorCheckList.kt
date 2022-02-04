@@ -21,11 +21,13 @@ import android.location.LocationManager
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,6 +42,7 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Globe
+import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
@@ -58,12 +61,57 @@ fun ErrorCheckList(
     geoidAltitude: GeoidAltitude,
     datum: Datum,
 ) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_error_check),
-        style = headingStyle,
-        color = MaterialTheme.colors.onBackground
-    )
+    var openDialog by remember { mutableStateOf(false) }
+    Row {
+        Text(
+            modifier = Modifier.padding(5.dp),
+            text = stringResource(id = R.string.dashboard_error_check),
+            style = headingStyle,
+            color = MaterialTheme.colors.onBackground
+        )
+        Icon(
+            imageVector = ImageVector.vectorResource(
+                R.drawable.ic_baseline_question_24
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .size(25.dp)
+                .padding(start = 2.dp, end = 5.dp)
+                .align(CenterVertically)
+                .clickable {
+                    openDialog = true
+                },
+            tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+        )
+    }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog = false
+            },
+            title = {
+                Text(stringResource(R.string.dashboard_error_check))
+            },
+            text = {
+                Column {
+                    Text(
+                        text = Application.app.getString(
+                            R.string.dashboard_errors_help
+                        )
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        )
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,7 +156,8 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
         featureTitleId = R.string.dashboard_valid_cfs_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_valid_cfs_help
     ) {
         FrequencyImage(
             Modifier
@@ -138,7 +187,8 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
         featureTitleId = R.string.dashboard_duplicate_cfs_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_duplicate_cfs_help
     ) {
         FrequencyImage(
             Modifier
@@ -172,7 +222,8 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
         includeAzimuthAndElevation = true,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_mismatch_azimuth_elevation_help
     ) {
         Orbit(
             modifier = Modifier
@@ -202,7 +253,8 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
         includeAlmanacAndEphemeris = true,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_mismatch_almanac_ephemeris_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -231,7 +283,8 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
         includeAlmanacAndEphemeris = true,
         includeAzimuthAndElevation = true,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_missing_almanac_ephemeris_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -264,7 +317,8 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
     ErrorCheck(
         featureTitleId = R.string.dashboard_gps_week_rollover_title,
         featureDescription = description,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_gps_week_rollover_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_access_time_24,
@@ -325,7 +379,8 @@ fun GeoidAltitude(
     ErrorCheck(
         featureTitleId = R.string.dashboard_geoid_title,
         featureDescription = description,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_geoid_help
     ) {
         Globe(
             modifier = Modifier
@@ -359,7 +414,8 @@ fun Datum(
     ErrorCheck(
         featureTitleId = R.string.dashboard_datum_title,
         featureDescription = description,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_datum_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_planet,
@@ -390,7 +446,8 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         includeAzimuthAndElevation = true,
         includeAlmanacAndEphemeris = true,
         includeCn0 = true,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_signals_without_data_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -429,7 +486,8 @@ fun AntennaInfo() {
     ErrorCheck(
         featureTitleId = R.string.dashboard_bad_antenna_info_title,
         featureDescription = description,
-        pass = pass
+        pass = pass,
+        helpId = R.string.dashboard_bad_antenna_info_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_antenna_24,
@@ -452,9 +510,13 @@ fun ErrorCheck(
     includeAlmanacAndEphemeris: Boolean = false,
     includeCn0: Boolean = false,
     includeUsedInFix: Boolean = false,
+    @StringRes helpId: Int,
     content: @Composable () -> Unit
 ) {
-    Row {
+    var openDialog by remember { mutableStateOf(false) }
+    Row(modifier = Modifier.clickable {
+        openDialog = true
+    }) {
         Column(modifier = Modifier.align(Alignment.CenterVertically)) {
             // Icon
             content()
@@ -545,6 +607,32 @@ fun ErrorCheck(
                 textAlign = TextAlign.Start
             )
         }
+    }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog = false
+            },
+            title = {
+                Text(stringResource(featureTitleId))
+            },
+            text = {
+                Column {
+                    LinkifyText(
+                        text = stringResource(helpId)
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        )
     }
 }
 
