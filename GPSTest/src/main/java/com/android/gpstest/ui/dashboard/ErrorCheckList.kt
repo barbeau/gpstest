@@ -39,6 +39,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
+import com.android.gpstest.ui.components.Globe
 import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
@@ -326,10 +327,11 @@ fun GeoidAltitude(
         featureDescription = description,
         pass = pass
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_baseline_planet,
-            contentDescriptionId = R.string.dashboard_planet_image,
-            iconSizeDp = 40
+        Globe(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp)
         )
     }
 }
