@@ -51,7 +51,7 @@ fun Orbit(
     )
 
     val padding = 8.dp
-    val height = 14.dp
+    val height = 16.dp
     val stroke = 3.dp
 
     // Transitions used to flatten oval height to give impression of Z rotation
