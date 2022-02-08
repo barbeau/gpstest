@@ -30,7 +30,7 @@ fun Globe(
     color: Color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
     animationDurationMs: Int = 40000,
 ) {
-    val height = 12.dp
+    val height = 21.dp
     val stroke = 2.5.dp
 
     // Transitions used to flatten oval height to give impression of Z rotation
@@ -40,7 +40,7 @@ fun Globe(
         targetValue = height,
         typeConverter = Dp.VectorConverter,
         animationSpec = infiniteRepeatable(
-            animation = tween(animationDurationMs / 9, easing = FastOutSlowInEasing),
+            animation = tween(animationDurationMs / 9, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
@@ -59,6 +59,8 @@ fun Globe(
                 .fillMaxSize()
         ) {
             val middle = Offset(x = size.width / 2, y = size.height / 2)
+            val quarterWidth = size.width / 4
+            val topLineHeight = size.height / 2.4f
             drawCircle(
                 color = color,
                 style = Stroke(
@@ -71,21 +73,18 @@ fun Globe(
             drawLine(
                 color = color,
                 strokeWidth = stroke.toPx(),
-                start = Offset(x = size.width / 4, size.height / 2.4f),
-                end = Offset(x = size.width - (size.width / 4), y = size.height / 2.4f)
+                start = Offset(x = size.width / 4, y = topLineHeight),
+                end = Offset(x = size.width - quarterWidth, y = topLineHeight)
             )
             // Bottom line
             drawLine(
                 color = color,
                 strokeWidth = stroke.toPx(),
-                start = Offset(x = size.width / 4, size.height - (size.height / 2.4f)),
-                end = Offset(
-                    x = size.width - (size.width / 4),
-                    y = size.height - (size.height / 2.4f)
-                )
+                start = Offset(x = quarterWidth, y = size.height - topLineHeight),
+                end = Offset(x = size.width - quarterWidth, y = size.height - topLineHeight)
             )
         }
-        // Rotating middle oval
+        // Rotating middle ovals
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -98,17 +97,20 @@ fun Globe(
                 degrees = 90.0f,
                 pivot = middle
             ) {
+                val halfMin = size.minDimension / 2
+                val quarterMin = size.minDimension / 4
+                val halfHeight = canvasHeight / 2
                 drawOval(
                     color = color,
                     style = Stroke(
                         width = stroke.toPx()
                     ),
                     topLeft = Offset(
-                        x = (size.minDimension / 2) - (size.minDimension / 4),
-                        y = (canvasHeight / 2) - (hx1.toPx() / 2)
+                        x = halfMin - quarterMin,
+                        y = halfHeight - (hx1.toPx() / 2)
                     ),
                     size = Size(
-                        width = canvasWidth - ((size.minDimension / 4) * 2),
+                        width = canvasWidth - quarterMin * 2,
                         height = hx1.toPx()
                     )
                 )
