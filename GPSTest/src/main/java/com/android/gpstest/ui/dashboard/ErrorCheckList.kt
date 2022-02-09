@@ -23,7 +23,9 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -157,7 +159,7 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
         pass = pass,
-        helpId = R.string.dashboard_valid_cfs_help
+        helpTextId = R.string.dashboard_valid_cfs_help
     ) {
         FrequencyImage(
             Modifier
@@ -188,7 +190,7 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
         pass = pass,
-        helpId = R.string.dashboard_duplicate_cfs_help
+        helpTextId = R.string.dashboard_duplicate_cfs_help
     ) {
         FrequencyImage(
             Modifier
@@ -223,7 +225,7 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
         includeAzimuthAndElevation = true,
         pass = pass,
-        helpId = R.string.dashboard_mismatch_azimuth_elevation_help
+        helpTextId = R.string.dashboard_mismatch_azimuth_elevation_help
     ) {
         Orbit(
             modifier = Modifier
@@ -254,7 +256,7 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
         includeAlmanacAndEphemeris = true,
         pass = pass,
-        helpId = R.string.dashboard_mismatch_almanac_ephemeris_help
+        helpTextId = R.string.dashboard_mismatch_almanac_ephemeris_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -284,7 +286,7 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
         includeAlmanacAndEphemeris = true,
         includeAzimuthAndElevation = true,
         pass = pass,
-        helpId = R.string.dashboard_missing_almanac_ephemeris_help
+        helpTextId = R.string.dashboard_missing_almanac_ephemeris_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -318,7 +320,7 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
         featureTitleId = R.string.dashboard_gps_week_rollover_title,
         featureDescription = description,
         pass = pass,
-        helpId = R.string.dashboard_gps_week_rollover_help
+        helpTextId = R.string.dashboard_gps_week_rollover_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_access_time_24,
@@ -380,7 +382,7 @@ fun GeoidAltitude(
         featureTitleId = R.string.dashboard_geoid_title,
         featureDescription = description,
         pass = pass,
-        helpId = R.string.dashboard_geoid_help
+        helpTextId = R.string.dashboard_geoid_help
     ) {
         Globe(
             modifier = Modifier
@@ -415,7 +417,7 @@ fun Datum(
         featureTitleId = R.string.dashboard_datum_title,
         featureDescription = description,
         pass = pass,
-        helpId = R.string.dashboard_datum_help
+        helpTextId = R.string.dashboard_datum_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_planet,
@@ -447,7 +449,7 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         includeAlmanacAndEphemeris = true,
         includeCn0 = true,
         pass = pass,
-        helpId = R.string.dashboard_signals_without_data_help
+        helpTextId = R.string.dashboard_signals_without_data_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_navigation_message,
@@ -487,7 +489,7 @@ fun AntennaInfo() {
         featureTitleId = R.string.dashboard_bad_antenna_info_title,
         featureDescription = description,
         pass = pass,
-        helpId = R.string.dashboard_bad_antenna_info_help
+        helpTextId = R.string.dashboard_bad_antenna_info_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_antenna_24,
@@ -510,7 +512,7 @@ fun ErrorCheck(
     includeAlmanacAndEphemeris: Boolean = false,
     includeCn0: Boolean = false,
     includeUsedInFix: Boolean = false,
-    @StringRes helpId: Int,
+    @StringRes helpTextId: Int,
     content: @Composable () -> Unit
 ) {
     var openDialog by remember { mutableStateOf(false) }
@@ -617,9 +619,9 @@ fun ErrorCheck(
                 Text(stringResource(featureTitleId))
             },
             text = {
-                Column {
+                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                     LinkifyText(
-                        text = stringResource(helpId)
+                        text = stringResource(helpTextId)
                     )
                 }
             },
