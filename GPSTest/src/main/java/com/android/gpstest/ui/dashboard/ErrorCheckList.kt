@@ -258,9 +258,12 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
         pass = pass,
         helpTextId = R.string.dashboard_mismatch_almanac_ephemeris_help
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_navigation_message,
-            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        Orbit(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp),
+            animationDurationMs = 50000
         )
     }
 }
@@ -288,9 +291,12 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
         pass = pass,
         helpTextId = R.string.dashboard_missing_almanac_ephemeris_help
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_navigation_message,
-            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        Orbit(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp),
+            animationDurationMs = 55000
         )
     }
 }
@@ -419,10 +425,12 @@ fun Datum(
         pass = pass,
         helpTextId = R.string.dashboard_datum_help
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_baseline_planet,
-            contentDescriptionId = R.string.dashboard_planet_image,
-            iconSizeDp = 40
+        Globe(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp),
+            animationDurationMs = 50000
         )
     }
 }
@@ -451,9 +459,12 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         pass = pass,
         helpTextId = R.string.dashboard_signals_without_data_help
     ) {
-        ErrorIcon(
-            imageId = R.drawable.ic_navigation_message,
-            contentDescriptionId = R.string.dashboard_feature_navigation_messages_title
+        Orbit(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp),
+            animationDurationMs = 60000
         )
     }
 }
