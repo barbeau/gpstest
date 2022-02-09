@@ -530,13 +530,13 @@ fun ErrorCheck(
     Row(modifier = Modifier.clickable {
         openDialog = true
     }) {
-        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+        Column(modifier = Modifier.align(CenterVertically)) {
             // Icon
             content()
         }
         Column(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
+                .align(CenterVertically)
                 .weight(1f)
                 .padding(end = 10.dp)
         ) {
@@ -558,7 +558,7 @@ fun ErrorCheck(
         }
         Column(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
+                .align(CenterVertically)
                 .padding(end = 5.dp),
             horizontalAlignment = Alignment.End
         ) {

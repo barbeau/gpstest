@@ -16,9 +16,10 @@
 package com.android.gpstest.ui.dashboard
 
 import android.content.Context
-import android.location.Location
 import android.location.LocationManager
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -27,9 +28,8 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.model.ScanStatus
 import com.android.gpstest.util.IOUtils
-import com.android.gpstest.util.PreferenceUtils.*
+import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
 
 @Composable
 fun FeaturesAssistDataList(
@@ -69,19 +69,23 @@ fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
 
     // We immediately know if support is available, so don't wait for scan
     FeatureSupport(
-        imageId = R.drawable.ic_inject_psds_24,
-        contentDescriptionId = R.string.force_psds_injection,
         featureTitleId = R.string.force_psds_injection,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectPsdsInt),
-        iconSizeDp = 40
-    ) {
-        if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
-            Support.YES
-        } else {
-            Support.NO
+        onClick = {
+            if (IOUtils.forcePsdsInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
+                Support.YES
+            } else {
+                Support.NO
+            }
         }
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_inject_psds_24,
+            contentDescriptionId = R.string.force_psds_injection,
+            iconSizeDp = 40
+        )
     }
 }
 
@@ -100,19 +104,23 @@ fun InjectTime(satelliteMetadata: SatelliteMetadata) {
 
     // We immediately know if support is available, so don't wait for scan
     FeatureSupport(
-        imageId = R.drawable.ic_inject_time_24,
-        contentDescriptionId = R.string.force_time_injection,
         featureTitleId = R.string.force_time_injection,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityInjectTimeInt),
-        iconSizeDp = 40
-    ) {
-        if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
-            Support.YES
-        } else {
-            Support.NO
+        onClick = {
+            if (IOUtils.forceTimeInjection(Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
+                Support.YES
+            } else {
+                Support.NO
+            }
         }
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_inject_time_24,
+            contentDescriptionId = R.string.force_time_injection,
+            iconSizeDp = 40
+        )
     }
 }
 
@@ -132,16 +140,20 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
     var openDialog by remember { mutableStateOf(false) }
 
     FeatureSupport(
-        imageId = R.drawable.ic_delete_black_24dp,
-        contentDescriptionId = R.string.delete_aiding_data,
         featureTitleId = R.string.delete_aiding_data,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capabilityDeleteAssistInt),
-        iconSizeDp = 40
+        onClick = {
+            openDialog = true
+            Support.UNKNOWN
+        }
     ) {
-        openDialog = true
-        Support.UNKNOWN
+        FeatureIcon(
+            imageId = R.drawable.ic_delete_black_24dp,
+            contentDescriptionId = R.string.delete_aiding_data,
+            iconSizeDp = 40
+        )
     }
     if (openDialog) {
         AlertDialog(

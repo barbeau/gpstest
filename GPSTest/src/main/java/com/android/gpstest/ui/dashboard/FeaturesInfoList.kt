@@ -17,17 +17,26 @@ package com.android.gpstest.ui.dashboard
 
 import android.location.Location
 import android.os.Build
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
-import com.android.gpstest.util.PreferenceUtils.*
+import com.android.gpstest.ui.components.Orbit
+import com.android.gpstest.util.PreferenceUtils.CAPABILITY_SUPPORTED
+import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
 import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
 
 @Composable
@@ -69,14 +78,17 @@ fun VerticalAccuracy(
     location: Location,
 ) {
     FeatureSupport(
-        imageId = R.drawable.ic_vertical_accuracy_24dp,
-        contentDescriptionId = R.string.dashboard_feature_vert_accuracy_title,
         featureTitleId = R.string.dashboard_feature_vert_accuracy_title,
         featureDescriptionId = R.string.dashboard_feature_vert_accuracy_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (location.isVerticalAccuracySupported()) Support.YES else Support.NO,
         scanStatus = scanStatus
-    )
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_vertical_accuracy_24dp,
+            contentDescriptionId = R.string.dashboard_feature_vert_accuracy_title
+        )
+    }
 }
 
 @Composable
@@ -95,14 +107,20 @@ fun NavigationMessages(
         scanDurationMs = scanStatus.scanDurationMs
     )
     FeatureSupport(
-        imageId = R.drawable.ic_navigation_message,
-        contentDescriptionId = R.string.dashboard_feature_navigation_messages_title,
         featureTitleId = R.string.dashboard_feature_navigation_messages_title,
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityNavMessagesInt == CAPABILITY_SUPPORTED) Support.YES else Support.NO,
         scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
-    )
+    ) {
+        Orbit(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(10.dp),
+            animationDurationMs = 60000
+        )
+    }
 }
 
 
@@ -114,11 +132,11 @@ fun Nmea(satelliteMetadata: SatelliteMetadata) {
     )
 
     FeatureSupport(
-        imageId = R.drawable.ic_nmea, // Not used, but provide as backup
-        contentDescriptionId = R.string.pref_nmea_output_title,
         featureTitleId = R.string.pref_nmea_output_title,
         featureDescriptionId = R.string.dashboard_feature_nmea_description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(nmeaCapability)
-    )
+    ) {
+        FeatureTextIcon(textId = R.string.nmea_prefix)
+    }
 }

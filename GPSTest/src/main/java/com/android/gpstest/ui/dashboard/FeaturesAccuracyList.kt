@@ -54,6 +54,8 @@ import com.android.gpstest.util.PreferenceUtils.*
 import com.android.gpstest.util.SatelliteUtils
 import kotlinx.coroutines.launch
 
+val imagePaddingDp = 10.dp
+
 @Composable
 fun FeaturesAccuracyList(
     satelliteMetadata: SatelliteMetadata,
@@ -99,15 +101,20 @@ fun DualFrequency(
     scanStatus: ScanStatus,
 ) {
     FeatureSupport(
-        // This drawable isn't used because we use the animated canvas, but provide it as a backup
-        imageId = R.drawable.ic_dual_frequency,
-        contentDescriptionId = R.string.dashboard_feature_dual_frequency_title,
         featureTitleId = R.string.dashboard_feature_dual_frequency_title,
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (satelliteMetadata.isNonPrimaryCarrierFreqInView) YES else NO,
         scanStatus = scanStatus
-    )
+    ) {
+        FrequencyImage(
+            modifier = Modifier
+                .size(iconSize)
+                .clip(CircleShape)
+                .padding(imagePaddingDp),
+            showSecondFrequency = true
+        )
+    }
 }
 
 @Composable
@@ -169,15 +176,17 @@ fun RawMeasurements(
 
     // On Android S and higher we immediately know if support is available, so don't wait for scan
     FeatureSupport(
-        imageId = R.drawable.ic_raw_measurements,
-        contentDescriptionId = R.string.dashboard_feature_raw_measurements_title,
         featureTitleId = R.string.dashboard_feature_raw_measurements_title,
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityMeasurementsInt == CAPABILITY_SUPPORTED) YES else NO,
-        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
-        iconSizeDp = 45
-    )
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_raw_measurements,
+            contentDescriptionId = R.string.dashboard_feature_raw_measurements_title
+        )
+    }
 }
 
 @Composable
@@ -189,17 +198,18 @@ fun CarrierPhase(
         Application.app.getString(R.string.capability_key_measurement_delta_range),
         CAPABILITY_UNKNOWN
     )
-
     FeatureSupport(
-        imageId = R.drawable.ic_carrier_phase,
-        contentDescriptionId = R.string.dashboard_feature_carrier_phase_title,
         featureTitleId = R.string.dashboard_feature_carrier_phase_title,
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capability),
-        scanStatus = scanStatus,
-        iconSizeDp = 45
-    )
+        scanStatus = scanStatus
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_carrier_phase,
+            contentDescriptionId = R.string.dashboard_feature_carrier_phase_title
+        )
+    }
 }
 
 @Composable
@@ -210,6 +220,7 @@ fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
         getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
     val antennaCfs: String
     val supported: Support
+
     if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
         antennaCfs = getString(Application.app.getString(R.string.capability_key_antenna_cf))
         supported = YES
@@ -217,17 +228,18 @@ fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
         antennaCfs = ""
         supported = NO
     }
-
     FeatureSupport(
-        imageId = R.drawable.ic_antenna_24,
-        contentDescriptionId = R.string.dashboard_feature_antenna_info_title,
         featureTitleId = R.string.dashboard_feature_antenna_info_title,
         featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
         featureDescription = antennaCfs,
         satelliteMetadata = satelliteMetadata,
         supported = supported,
-        iconSizeDp = 45
-    )
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_antenna_24,
+            contentDescriptionId = R.string.dashboard_feature_antenna_info_title
+        )
+    }
 }
 
 @Composable
@@ -241,32 +253,33 @@ fun AutoGainControl(
     )
 
     FeatureSupport(
-        imageId = R.drawable.ic_auto_gain_control_24,
-        contentDescriptionId = R.string.dashboard_feature_auto_gain_control_title,
         featureTitleId = R.string.dashboard_feature_auto_gain_control_title,
         featureDescriptionId = R.string.dashboard_feature_auto_gain_control_description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(autoGainControl),
         scanStatus = scanStatus,
-        iconSizeDp = 45
-    )
+    ) {
+        FeatureIcon(
+            imageId = R.drawable.ic_auto_gain_control_24,
+            contentDescriptionId = R.string.dashboard_feature_auto_gain_control_title
+        )
+    }
 }
 
+/**
+ * A row showing if the device supports a certain feature, with the provided [content] as the icon
+ */
 @Composable
 fun FeatureSupport(
-    @DrawableRes imageId: Int,
-    @StringRes contentDescriptionId: Int,
     @StringRes featureTitleId: Int,
     @StringRes featureDescriptionId: Int,
     featureDescription: String = "",
     satelliteMetadata: SatelliteMetadata,
     supported: Support,
     scanStatus: ScanStatus = ScanStatus(true, 0, 0),
-    iconSizeDp: Int = 50,
-    onClick: () -> Support = { UNKNOWN }
+    onClick: () -> Support = { UNKNOWN },
+    content: @Composable () -> Unit
 ) {
-    val imagePaddingDp = 10
-
     val scope = rememberCoroutineScope()
 
     // Allow user to manually tap row to check support, and use this value if populated
@@ -282,51 +295,8 @@ fun FeatureSupport(
             modifier = Modifier
                 .align(CenterVertically)
         ) {
-            val customIconModifier = Modifier
-                .size(iconSize)
-                .clip(CircleShape)
-                .padding(imagePaddingDp.dp)
-            // TODO - refactor below IF statement to passing in Composables to FeatureSupport()
-            if (featureTitleId == R.string.dashboard_feature_dual_frequency_title) {
-                FrequencyImage(
-                    customIconModifier,
-                    showSecondFrequency = true
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .size(iconSize)
-                        .padding(imagePaddingDp.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colors.primary),
-                ) {
-                    if (featureTitleId == R.string.pref_nmea_output_title) {
-                        Text(
-                            text = stringResource(R.string.nmea_prefix),
-                            modifier = Modifier
-                                .background(MaterialTheme.colors.primary)
-                                .align(Center),
-                            style = TextStyle(
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 16.sp
-                            ),
-                            color = MaterialTheme.colors.onPrimary,
-                            textAlign = TextAlign.Center
-                        )
-                    } else {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(imageId),
-                            contentDescription = stringResource(id = contentDescriptionId),
-                            modifier = Modifier
-                                .size(iconSizeDp.dp)
-                                .padding(5.dp)
-                                .background(MaterialTheme.colors.primary)
-                                .align(Center),
-                            tint = MaterialTheme.colors.onPrimary,
-                        )
-                    }
-                }
-            }
+            // Icon
+            content()
         }
         Column(
             modifier = Modifier
@@ -409,6 +379,58 @@ fun Check(
             UNKNOWN -> Color.DarkGray
         }
     )
+}
+
+@Composable
+fun FeatureIcon(
+    @DrawableRes imageId: Int,
+    @StringRes contentDescriptionId: Int,
+    iconSizeDp: Int = 45,
+) {
+    Box(
+        modifier = Modifier
+            .size(iconSize)
+            .padding(imagePaddingDp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colors.primary),
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(imageId),
+            contentDescription = stringResource(id = contentDescriptionId),
+            modifier = Modifier
+                .size(iconSizeDp.dp)
+                .padding(5.dp)
+                .background(MaterialTheme.colors.primary)
+                .align(Center),
+            tint = MaterialTheme.colors.onPrimary,
+        )
+    }
+}
+
+@Composable
+fun FeatureTextIcon(
+    @StringRes textId: Int,
+) {
+    Box(
+        modifier = Modifier
+            .size(iconSize)
+            .padding(imagePaddingDp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colors.primary),
+    ) {
+        Text(
+            text = stringResource(textId),
+            modifier = Modifier
+                .background(MaterialTheme.colors.primary)
+                .align(Center),
+            style = TextStyle(
+                fontWeight = FontWeight.Medium,
+                fontSize = 16.sp
+            ),
+            color = MaterialTheme.colors.onPrimary,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 enum class Support {
