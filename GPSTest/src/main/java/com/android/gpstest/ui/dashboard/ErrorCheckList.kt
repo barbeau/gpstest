@@ -459,12 +459,9 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         pass = pass,
         helpTextId = R.string.dashboard_signals_without_data_help
     ) {
-        Orbit(
-            modifier = Modifier
-                .size(iconSize)
-                .clip(CircleShape)
-                .padding(10.dp),
-            animationDurationMs = 60000
+        ErrorIcon(
+            imageId = R.drawable.ic_signal,
+            contentDescriptionId = R.string.dashboard_signals_without_data_title
         )
     }
 }
