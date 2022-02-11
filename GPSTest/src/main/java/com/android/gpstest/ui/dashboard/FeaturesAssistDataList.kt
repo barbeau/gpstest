@@ -20,7 +20,9 @@ import android.location.LocationManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
 
@@ -155,65 +158,10 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
             iconSizeDp = 40
         )
     }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(R.string.delete_aiding_data))
-            },
-            text = {
-                Column {
-                    Text(
-                        text = Application.app.getString(
-                            R.string.dashboard_feature_tap_nav_drawer
-                        )
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
-}
-
-@Composable
-fun DeleteAssistDialog(open: Boolean) {
-    var openDialog by remember { mutableStateOf(open) }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(R.string.delete_aiding_data))
-            },
-            text = {
-                Column {
-                    Text(
-                        text = Application.app.getString(
-                            R.string.dashboard_feature_tap_nav_drawer
-                        )
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
+    OkDialog(
+        open = openDialog,
+        onDismiss = { openDialog = false },
+        title = stringResource(R.string.delete_aiding_data),
+        text = stringResource(R.string.dashboard_feature_tap_nav_drawer_assist)
+    )
 }

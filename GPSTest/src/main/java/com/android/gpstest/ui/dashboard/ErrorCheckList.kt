@@ -23,9 +23,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,7 +42,7 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Globe
-import com.android.gpstest.ui.components.LinkifyText
+import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.*
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
@@ -618,32 +616,12 @@ fun ErrorCheck(
             )
         }
     }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(featureTitleId))
-            },
-            text = {
-                Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                    LinkifyText(
-                        text = stringResource(helpTextId)
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
+    OkDialog(
+        open = openDialog,
+        onDismiss = { openDialog = false },
+        title = stringResource(featureTitleId),
+        text = stringResource(helpTextId)
+    )
 }
 
 @Composable
