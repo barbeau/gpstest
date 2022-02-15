@@ -69,49 +69,17 @@ fun ErrorCheckList(
             style = headingStyle,
             color = MaterialTheme.colors.onBackground
         )
-        Icon(
-            imageVector = ImageVector.vectorResource(
-                R.drawable.ic_baseline_question_24
-            ),
-            contentDescription = null,
-            modifier = Modifier
-                .size(25.dp)
-                .padding(start = 2.dp, end = 5.dp)
-                .align(CenterVertically)
-                .clickable {
-                    openDialog = true
-                },
-            tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+        HelpIcon(
+            modifier = Modifier.align(CenterVertically),
+            onClick = { openDialog = true }
         )
     }
-    if (openDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                openDialog = false
-            },
-            title = {
-                Text(stringResource(R.string.dashboard_error_check))
-            },
-            text = {
-                Column {
-                    Text(
-                        text = Application.app.getString(
-                            R.string.dashboard_errors_help
-                        )
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        openDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
+    OkDialog(
+        open = openDialog,
+        onDismiss = { openDialog = false },
+        title = stringResource(R.string.dashboard_error_check),
+        text = stringResource(R.string.dashboard_errors_help)
+    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,6 +107,25 @@ fun ErrorCheckList(
 }
 
 @Composable
+fun HelpIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(
+            R.drawable.ic_baseline_question_24
+        ),
+        contentDescription = stringResource(R.string.help),
+        modifier.size(helpIconSize)
+            .padding(start = helpIconStartPadding)
+            .clickable {
+                onClick()
+            },
+        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+    )
+}
+
+@Composable
 fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
     val isValid = satelliteMetadata.unknownCarrierStatuses.isEmpty()
     val unknown = satelliteMetadata.numSignalsTotal == 0
@@ -152,7 +139,7 @@ fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
             R.string.dashboard_valid_cfs_description_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_valid_cfs_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.unknownCarrierStatuses.values.toList()),
@@ -183,7 +170,7 @@ fun DuplicateCfs(satelliteMetadata: SatelliteMetadata) {
             R.string.dashboard_duplicate_cfs_description_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_duplicate_cfs_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.duplicateCarrierStatuses.values.toList()),
@@ -217,7 +204,7 @@ fun MismatchAzimuthElevationSameSatellite(satelliteMetadata: SatelliteMetadata) 
             R.string.dashboard_mismatch_azimuth_elevation_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_mismatch_azimuth_elevation_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAzimuthElevationSameSatStatuses.values.toList()),
@@ -248,7 +235,7 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
             R.string.dashboard_mismatch_almanac_ephemeris_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_mismatch_almanac_ephemeris_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses.values.toList()),
@@ -280,7 +267,7 @@ fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
             R.string.dashboard_missing_almanac_ephemeris_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_missing_almanac_ephemeris_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
@@ -320,7 +307,7 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
             DateTimeUtils.NUM_DAYS_TIME_VALID
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_gps_week_rollover_title,
         featureDescription = description,
         pass = pass,
@@ -382,7 +369,7 @@ fun GeoidAltitude(
             hMinusH.hMinusH
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_geoid_title,
         featureDescription = description,
         pass = pass,
@@ -417,7 +404,7 @@ fun Datum(
             datum.datum
         ) else stringResource(R.string.dashboard_datum_fail, datum.localDatumCode, datum.datum)
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_datum_title,
         featureDescription = description,
         pass = pass,
@@ -447,7 +434,7 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
             R.string.dashboard_signals_without_data_fail
         )
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_signals_without_data_title,
         featureDescription = description,
         badSatelliteStatus = sortByGnssThenId(satelliteMetadata.signalsWithoutData.values.toList()),
@@ -491,7 +478,7 @@ fun AntennaInfo() {
     } else {
         stringResource(R.string.dashboard_bad_antenna_info_fail, antennaCfs)
     }
-    ErrorCheck(
+    ErrorRow(
         featureTitleId = R.string.dashboard_bad_antenna_info_title,
         featureDescription = description,
         pass = pass,
@@ -509,7 +496,7 @@ fun AntennaInfo() {
  * A row that describes an error, with [content] being the @Composable shown as the icon.
  */
 @Composable
-fun ErrorCheck(
+fun ErrorRow(
     @StringRes featureTitleId: Int,
     featureDescription: String = "",
     badSatelliteStatus: List<SatelliteStatus> = emptyList(),

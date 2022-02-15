@@ -62,6 +62,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
     val datum: Datum by viewModel.datum.observeAsState(Datum())
+    val adrStates: Set<String> by viewModel.adrStates.observeAsState(emptySet())
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -73,7 +74,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         location = location,
         fixState = fixState,
         geoidAltitude = geoidAltitude,
-        datum = datum
+        datum = datum,
+        adrStates = adrStates
     )
 }
 
@@ -85,6 +87,7 @@ fun Dashboard(
     fixState: FixState,
     geoidAltitude: GeoidAltitude,
     datum: Datum,
+    adrStates: Set<String>,
 ) {
     Box(
         modifier = Modifier
@@ -101,7 +104,7 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             SbasList(satelliteMetadata.supportedGnss, satelliteMetadata.supportedSbas, satelliteMetadata.sbasToCf, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
-            FeaturesAccuracyList(satelliteMetadata, scanStatus)
+            FeaturesAccuracyList(satelliteMetadata, scanStatus, adrStates)
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesInfoList(satelliteMetadata, scanStatus, location)
             Spacer(modifier = Modifier.padding(5.dp))
@@ -536,6 +539,9 @@ val chipStyle = TextStyle(
 )
 
 val iconSize = 70.dp
+const val helpIconAlpha = 0.6f
+val helpIconSize = 25.dp
+val helpIconStartPadding = 2.dp
 
 const val dummyProvider = "dummy"
 

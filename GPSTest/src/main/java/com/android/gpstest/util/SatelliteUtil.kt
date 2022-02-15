@@ -16,6 +16,8 @@
 package com.android.gpstest.util
 
 import android.annotation.SuppressLint
+import android.location.GnssMeasurement
+import android.location.GnssMeasurement.*
 import android.location.GnssStatus
 import android.location.Location
 import android.os.Build
@@ -489,5 +491,50 @@ internal object SatelliteUtil {
             return false
         }
         return false
+    }
+
+    /**
+     * Provide a comma-delimited string of ADR states for [this] GnssMeasurement from {@link GnssMeasurement#getAccumulatedDeltaRangeState()}.
+     * Note that {@link GnssMeasurement#getAccumulatedDeltaRangeState()} is a bitwise Int, so this
+     * function extracts the multiple ADR states from this Int and turns them into a comma-delimited
+     * String, unless the state is ADR_STATE_UNKNOWN, it which case it just returns UNKNOWN.
+     * Implementation is from AOSP private method {@link GnssMeasurement#getAccumulatedDeltaRangeStateString()}
+     */
+    fun GnssMeasurement.accumulatedDeltaRangeStateString(): String {
+        if (accumulatedDeltaRangeState == ADR_STATE_UNKNOWN) {
+            return "Unknown"
+        }
+        val ADR_STATE_ALL =
+            ADR_STATE_VALID or ADR_STATE_RESET or ADR_STATE_CYCLE_SLIP or
+                    ADR_STATE_HALF_CYCLE_RESOLVED or ADR_STATE_HALF_CYCLE_REPORTED
+        val builder = StringBuilder()
+        if (accumulatedDeltaRangeState and ADR_STATE_VALID == ADR_STATE_VALID) {
+            builder.append("Valid|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_RESET == ADR_STATE_RESET) {
+            builder.append("Reset|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_CYCLE_SLIP == ADR_STATE_CYCLE_SLIP) {
+            builder.append("CycleSlip|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_HALF_CYCLE_RESOLVED ==
+            ADR_STATE_HALF_CYCLE_RESOLVED
+        ) {
+            builder.append("HalfCycleResolved|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_HALF_CYCLE_REPORTED
+            == ADR_STATE_HALF_CYCLE_REPORTED
+        ) {
+            builder.append("HalfCycleReported|")
+        }
+        val remainingStates: Int =
+            accumulatedDeltaRangeState and ADR_STATE_ALL.inv()
+        if (remainingStates > 0) {
+            builder.append("Other(")
+            builder.append(Integer.toBinaryString(remainingStates))
+            builder.append(")|")
+        }
+        builder.deleteCharAt(builder.length - 1)
+        return builder.toString()
     }
 }

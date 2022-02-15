@@ -71,7 +71,7 @@ fun InjectPsds(satelliteMetadata: SatelliteMetadata) {
     }
 
     // We immediately know if support is available, so don't wait for scan
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.force_psds_injection,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
@@ -106,7 +106,7 @@ fun InjectTime(satelliteMetadata: SatelliteMetadata) {
     }
 
     // We immediately know if support is available, so don't wait for scan
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.force_time_injection,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,
@@ -142,7 +142,7 @@ fun DeleteAssist(satelliteMetadata: SatelliteMetadata) {
 
     var openDialog by remember { mutableStateOf(false) }
 
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.delete_aiding_data,
         featureDescriptionId = description,
         satelliteMetadata = satelliteMetadata,

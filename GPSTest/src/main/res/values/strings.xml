@@ -201,6 +201,7 @@
     <string name="sky_legend_shape_used_in_fix">Used in fix</string>
 
     <!-- Dashboard GNSS and SBAS -->
+    <string name="help">Help</string>
     <string name="dashboard_turn_on_gnss">Turn on tracking to detect device capabilities</string>
 
     <string name="dashboard_supported_gnss">Supported GNSS</string>
@@ -228,9 +229,11 @@
 
     <string name="dashboard_feature_raw_measurements_title">Raw measurements</string>
     <string name="dashboard_feature_raw_measurements_description">To calculate positions</string>
+    <string name="dashboard_feature_raw_measurements_help">Apps can use this \"pseudorange\" data to calculate a location using innovative techniques that might be more accurate than the one your device OEM has implemented.\n\nFor more details see https://developer.android.com/guide/topics/sensors/gnss</string>
 
     <string name="dashboard_feature_carrier_phase_title">Carrier phase</string>
     <string name="dashboard_feature_carrier_phase_description">For more precise measurements</string>
+    <string name="dashboard_feature_carrier_phase_help">Carrier phase measurements are a more accurate way of determining your location from satellite signals than pseudorange alone by leveraging information from the radio waves that carry GNSS data. Your device supports carrier phase if at least one signal has getAccumulatedDeltaRangeState() of \"Valid\" and if getAccumulatedDeltaRangeMeters() returns a non-zero value. See https://developer.android.com/reference/android/location/GnssMeasurement for details.\n\nYour device reports the following ADR states:\n%1$s</string>
 
     <string name="dashboard_feature_navigation_messages_title">Navigation messages</string>
     <string name="dashboard_feature_navigation_messages_description">Decoded from live signals</string>

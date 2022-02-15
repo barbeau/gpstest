@@ -77,7 +77,7 @@ fun VerticalAccuracy(
     scanStatus: ScanStatus,
     location: Location,
 ) {
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_vert_accuracy_title,
         featureDescriptionId = R.string.dashboard_feature_vert_accuracy_description,
         satelliteMetadata = satelliteMetadata,
@@ -106,7 +106,7 @@ fun NavigationMessages(
         timeUntilScanCompleteMs = scanStatus.timeUntilScanCompleteMs,
         scanDurationMs = scanStatus.scanDurationMs
     )
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_navigation_messages_title,
         featureDescriptionId = R.string.dashboard_feature_navigation_messages_description,
         satelliteMetadata = satelliteMetadata,
@@ -131,7 +131,7 @@ fun Nmea(satelliteMetadata: SatelliteMetadata) {
         CAPABILITY_UNKNOWN
     )
 
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.pref_nmea_output_title,
         featureDescriptionId = R.string.dashboard_feature_nmea_description,
         satelliteMetadata = satelliteMetadata,

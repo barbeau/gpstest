@@ -46,6 +46,7 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
+import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.StrikeThrough
 import com.android.gpstest.ui.components.Wave
 import com.android.gpstest.ui.dashboard.Support.*
@@ -60,6 +61,7 @@ val imagePaddingDp = 10.dp
 fun FeaturesAccuracyList(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
+    adrStates: Set<String>,
 ) {
     Text(
         modifier = Modifier.padding(5.dp),
@@ -84,7 +86,8 @@ fun FeaturesAccuracyList(
             )
             CarrierPhase(
                 satelliteMetadata,
-                scanStatus
+                scanStatus,
+                adrStates
             )
             AutoGainControl(
                 satelliteMetadata,
@@ -100,7 +103,7 @@ fun DualFrequency(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
 ) {
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_dual_frequency_title,
         featureDescriptionId = R.string.dashboard_feature_dual_frequency_description,
         satelliteMetadata = satelliteMetadata,
@@ -174,42 +177,71 @@ fun RawMeasurements(
         scanDurationMs = scanStatus.scanDurationMs
     )
 
+    var openDialog by remember { mutableStateOf(false) }
+
     // On Android S and higher we immediately know if support is available, so don't wait for scan
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_raw_measurements_title,
         featureDescriptionId = R.string.dashboard_feature_raw_measurements_description,
         satelliteMetadata = satelliteMetadata,
         supported = if (capabilityMeasurementsInt == CAPABILITY_SUPPORTED) YES else NO,
-        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus
+        scanStatus = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) newScanStatus else scanStatus,
+        onClick = {
+            openDialog = true
+            UNKNOWN
+        }
     ) {
         FeatureIcon(
             imageId = R.drawable.ic_raw_measurements,
             contentDescriptionId = R.string.dashboard_feature_raw_measurements_title
         )
     }
+    OkDialog(
+        open = openDialog,
+        onDismiss = { openDialog = false },
+        title = stringResource(R.string.dashboard_feature_raw_measurements_title),
+        text = stringResource(R.string.dashboard_feature_raw_measurements_help)
+    )
 }
 
 @Composable
 fun CarrierPhase(
     satelliteMetadata: SatelliteMetadata,
     scanStatus: ScanStatus,
+    adrStates: Set<String>,
 ) {
     val capability = Application.prefs.getInt(
         Application.app.getString(R.string.capability_key_measurement_delta_range),
         CAPABILITY_UNKNOWN
     )
-    FeatureSupport(
+
+    var openDialog by remember { mutableStateOf(false) }
+
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_carrier_phase_title,
         featureDescriptionId = R.string.dashboard_feature_carrier_phase_description,
         satelliteMetadata = satelliteMetadata,
         supported = fromPref(capability),
-        scanStatus = scanStatus
+        scanStatus = scanStatus,
+        onClick = {
+            openDialog = true
+            UNKNOWN
+        }
     ) {
         FeatureIcon(
             imageId = R.drawable.ic_carrier_phase,
             contentDescriptionId = R.string.dashboard_feature_carrier_phase_title
         )
     }
+    OkDialog(
+        open = openDialog,
+        onDismiss = { openDialog = false },
+        title = stringResource(R.string.dashboard_feature_carrier_phase_title),
+        text = stringResource(
+            R.string.dashboard_feature_carrier_phase_help,
+            adrStates.sorted().joinToString(prefix = "\u2022 ", separator = "\n")
+        )
+    )
 }
 
 @Composable
@@ -228,7 +260,7 @@ fun AntennaInfo(satelliteMetadata: SatelliteMetadata) {
         antennaCfs = ""
         supported = NO
     }
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_antenna_info_title,
         featureDescriptionId = R.string.dashboard_feature_antenna_info_description,
         featureDescription = antennaCfs,
@@ -252,7 +284,7 @@ fun AutoGainControl(
         CAPABILITY_UNKNOWN
     )
 
-    FeatureSupport(
+    FeatureRow(
         featureTitleId = R.string.dashboard_feature_auto_gain_control_title,
         featureDescriptionId = R.string.dashboard_feature_auto_gain_control_description,
         satelliteMetadata = satelliteMetadata,
@@ -270,7 +302,7 @@ fun AutoGainControl(
  * A row showing if the device supports a certain feature, with the provided [content] as the icon
  */
 @Composable
-fun FeatureSupport(
+fun FeatureRow(
     @StringRes featureTitleId: Int,
     @StringRes featureDescriptionId: Int,
     featureDescription: String = "",
