@@ -334,7 +334,7 @@
     <string name="android_version_and_api_level_help">The Android operating system version and Application Programming Interface (API) level.</string>
     <string name="app_version_and_code">GPSTest version</string>
     <string name="app_version_and_code_help">The GPSTest version name and code, as well as build flavor (Google or F-Droid).</string>
-    <string name="device_make_model">Device make and model</string>
+    <string name="device_make_model">Make and model</string>
     <string name="device_make_model_help">The manufacturer, model, and industrial design of the device. See https://developer.android.com/reference/android/os/Build.</string>
 
     <!-- Content descriptions -->
