@@ -112,6 +112,8 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             ErrorCheckList(satelliteMetadata, location, fixState, geoidAltitude, datum)
             Spacer(modifier = Modifier.padding(5.dp))
+            DevicePropertiesList()
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }
@@ -535,6 +537,17 @@ val subtitleStyle = TextStyle(
 val chipStyle = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 14.sp,
+    letterSpacing = 0.5.sp
+)
+
+val smallTitleStyle = TextStyle(
+    fontWeight = FontWeight.Medium,
+    fontSize = 16.sp,
+    letterSpacing = 0.5.sp
+)
+val smallSubtitleStyle = TextStyle(
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
     letterSpacing = 0.5.sp
 )
 

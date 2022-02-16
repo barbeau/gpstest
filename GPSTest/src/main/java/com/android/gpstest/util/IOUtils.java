@@ -24,6 +24,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.Location;
@@ -398,6 +400,7 @@ public class IOUtils {
         return year;
     }
 
+
     /**
      * Returns the GNSS hardware model name for the device, or empty String if the year couldn't be determined
      *
@@ -409,10 +412,37 @@ public class IOUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (locationManager.getGnssHardwareModelName() != null) {
-                modelName = String.valueOf(locationManager.getGnssHardwareModelName());
+                modelName = locationManager.getGnssHardwareModelName();
             }
         }
         return modelName;
+    }
+
+    /**
+     * Returns a full version description of the app, including version name, version code, and
+     * build flavor
+     * @return a full version description of the app, including version name, version code, and
+     * build flavor
+     */
+    public static String getAppVersionDescription() {
+        String versionString = "";
+        int versionCode = 0;
+        try {
+            PackageInfo info = Application.Companion.getApp().getPackageManager().getPackageInfo(Application.Companion.getApp().getPackageName(), 0);
+            versionString = info.versionName;
+            versionCode = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        StringBuilder version = new StringBuilder();
+        // Version info
+        version.append("v")
+                .append(versionString)
+                .append(" (")
+                .append(versionCode)
+                .append("-" + BuildConfig.FLAVOR + ")");
+        return version.toString();
     }
 
     /**

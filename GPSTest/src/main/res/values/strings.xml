@@ -321,6 +321,22 @@
     <string name="dashboard_pass">PASS</string>
     <string name="dashboard_fail">FAIL</string>
 
+    <!-- Device properties -->
+    <string name="dashboard_device_properties">Device properties</string>
+    <string name="dashboard_device_properties_help">This section shows various hardware and software properties of your device. Tap on each property to learn more.</string>
+    <string name="gnss_hardware_name">GNSS hardware model name</string>
+    <string name="gnss_hardware_name_help">The vendor and hardware/software version of the GNSS hardware driver.</string>
+    <string name="gnss_hardware_year">GNSS hardware year</string>
+    <string name="gnss_hardware_year_help">The model year of the GNSS hardware and software build.</string>
+    <string name="android_software_incremental_build_and_codename">Android build version and codename</string>
+    <string name="android_software_incremental_build_help">The internal value used by the OEM\'s underlying source control to represent this Android build, followed by the current development codename for this Android build, or the string "REL" if this is a release build..  E.g., a perforce changelist number or a git hash. See https://developer.android.com/reference/android/os/Build.VERSION#INCREMENTAL and https://developer.android.com/reference/android/os/Build.VERSION#CODENAME.</string>
+    <string name="android_version_and_api_level">Android OS version and API level</string>
+    <string name="android_version_and_api_level_help">The Android operating system version and Application Programming Interface (API) level.</string>
+    <string name="app_version_and_code">GPSTest version</string>
+    <string name="app_version_and_code_help">The GPSTest version name and code, as well as build flavor (Google or F-Droid).</string>
+    <string name="device_make_model">Device make and model</string>
+    <string name="device_make_model_help">The manufacturer, model, and industrial design of the device. See https://developer.android.com/reference/android/os/Build.</string>
+
     <!-- Content descriptions -->
     <string name="lock">lock</string>
     <string name="usa_flag">USA flag</string>
