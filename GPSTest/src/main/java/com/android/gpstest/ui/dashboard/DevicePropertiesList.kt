@@ -107,7 +107,7 @@ fun GnssHardwareYear() {
 fun AndroidBuildVersionAndCodename() {
     PropertiesRow(
         titleId = R.string.android_software_incremental_build_and_codename,
-        description = Build.VERSION.INCREMENTAL + ", " + Build.VERSION.CODENAME,
+        description = Build.VERSION.INCREMENTAL + " (" + Build.VERSION.CODENAME + ")",
         helpTextId = R.string.android_software_incremental_build_help
     )
 }
