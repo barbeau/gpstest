@@ -44,14 +44,18 @@ import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Globe
 import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.Orbit
-import com.android.gpstest.util.*
+import com.android.gpstest.util.MathUtils
+import com.android.gpstest.util.NmeaUtils
+import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SatelliteUtil.isTimeApproxEqualTo
 import com.android.gpstest.util.SatelliteUtil.timeDiffMs
+import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
 import com.android.gpstest.util.UIUtils.trimZeros
 import java.text.SimpleDateFormat
+import kotlin.math.abs
 
 @Composable
 fun ErrorCheckList(
@@ -94,7 +98,7 @@ fun ErrorCheckList(
             DuplicateCfs(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
-            GpsWeekRollover(location, fixState)
+            SystemGnssTimeSync(location, fixState)
             GeoidAltitude(location, fixState, geoidAltitude)
             Datum(datum)
             SignalsWithoutData(satelliteMetadata)
@@ -254,8 +258,10 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
 }
 
 @Composable
-fun GpsWeekRollover(location: Location, fixState: FixState) {
-    val isValid = DateTimeUtils.isTimeValid(location.time)
+fun SystemGnssTimeSync(location: Location, fixState: FixState) {
+    val THRESHOLD_MILLIS = 5000
+    val timeDiffMillis = abs(System.currentTimeMillis() - location.time)
+    val isValid = timeDiffMillis < THRESHOLD_MILLIS
     val unknown = fixState == FixState.NotAcquired
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
@@ -269,20 +275,27 @@ fun GpsWeekRollover(location: Location, fixState: FixState) {
     val description = if (unknown) {
         stringResource(R.string.dashboard_waiting_on_fix)
     } else {
-        if (isValid) "" else stringResource(
-            R.string.dashboard_gps_week_rollover_fail, format.format(location.time),
-            DateTimeUtils.NUM_DAYS_TIME_VALID
-        )
+        if (isValid) stringResource(
+            R.string.dashboard_gnss_time_sync_pass,
+            (timeDiffMillis / 1000f).toDouble()
+        ) else
+            stringResource(
+                R.string.dashboard_gnss_time_sync_fail,
+                format.format(
+                    location.time
+                ),
+                (timeDiffMillis / 1000f).toDouble()
+            )
     }
     ErrorRow(
-        featureTitleId = R.string.dashboard_gps_week_rollover_title,
+        featureTitleId = R.string.dashboard_gnss_time_sync_title,
         featureDescription = description,
         pass = pass,
-        helpTextId = R.string.dashboard_gps_week_rollover_help
+        helpTextId = R.string.dashboard_gnss_time_sync_help
     ) {
         ErrorIcon(
             imageId = R.drawable.ic_baseline_access_time_24,
-            contentDescriptionId = R.string.dashboard_gps_week_rollover_title,
+            contentDescriptionId = R.string.dashboard_gnss_time_sync_title,
             iconSizeDp = 40
         )
     }

@@ -256,10 +256,10 @@ private fun formatTime(time: Long) {
         )
     }
 
-    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValid(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValidWeekRollover(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
         val dateAndTime = timeAndDateFormat.format(time).trimTimeZeros()
         // Time and date
-        if (DateTimeUtils.isTimeValid(time)) {
+        if (DateTimeUtils.isTimeValidWeekRollover(time)) {
             LocationValue(dateAndTime)
         } else {
             ErrorTime(dateAndTime, time)
@@ -459,7 +459,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
                     LinkifyText(
                         text = Application.app.getString(
                             R.string.error_time_message, format.format(timeMs),
-                            DateTimeUtils.NUM_DAYS_TIME_VALID
+                            DateTimeUtils.NUM_DAYS_TIME_VALID_WEEK_ROLLOVER
                         )
                     )
                 }
