@@ -92,7 +92,6 @@ fun ErrorCheckList(
 
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
-            MissingAlmanacEphemeris(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
             GpsWeekRollover(location, fixState)
@@ -116,7 +115,8 @@ fun HelpIcon(
             R.drawable.ic_baseline_question_24
         ),
         contentDescription = stringResource(R.string.help),
-        modifier.size(helpIconSize)
+        modifier
+            .size(helpIconSize)
             .padding(start = helpIconStartPadding)
             .clickable {
                 onClick()
@@ -249,39 +249,6 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
                 .clip(CircleShape)
                 .padding(10.dp),
             animationDurationMs = 50000
-        )
-    }
-}
-
-@Composable
-fun MissingAlmanacEphemeris(satelliteMetadata: SatelliteMetadata) {
-    val isValid = satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.isEmpty()
-    val unknown = satelliteMetadata.numSignalsTotal == 0
-    val pass = if (unknown) Pass.UNKNOWN else {
-        if (isValid) Pass.YES else Pass.NO
-    }
-    val description = if (unknown) {
-        stringResource(R.string.dashboard_waiting_for_signals)
-    } else {
-        if (isValid) "" else stringResource(
-            R.string.dashboard_missing_almanac_ephemeris_fail
-        )
-    }
-    ErrorRow(
-        featureTitleId = R.string.dashboard_missing_almanac_ephemeris_title,
-        featureDescription = description,
-        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
-        includeAlmanacAndEphemeris = true,
-        includeAzimuthAndElevation = true,
-        pass = pass,
-        helpTextId = R.string.dashboard_missing_almanac_ephemeris_help
-    ) {
-        Orbit(
-            modifier = Modifier
-                .size(iconSize)
-                .clip(CircleShape)
-                .padding(10.dp),
-            animationDurationMs = 55000
         )
     }
 }
@@ -422,7 +389,7 @@ fun Datum(
 
 @Composable
 fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
-    val isValid = satelliteMetadata.signalsWithoutData.isEmpty()
+    val isValid = satelliteMetadata.signalsWithoutData.isEmpty() and satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.isEmpty()
     val unknown = satelliteMetadata.numSignalsTotal == 0
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
@@ -437,7 +404,8 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
     ErrorRow(
         featureTitleId = R.string.dashboard_signals_without_data_title,
         featureDescription = description,
-        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.signalsWithoutData.values.toList()),
+        badSatelliteStatus = sortByGnssThenId(satelliteMetadata.signalsWithoutData.values.toList() +
+                satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation.values.toList()),
         includeAzimuthAndElevation = true,
         includeAlmanacAndEphemeris = true,
         includeCn0 = true,

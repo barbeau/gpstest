@@ -285,10 +285,6 @@
     <string name="dashboard_azimuth_no">No azimuth</string>
     <string name="dashboard_elevation_no">No elevation</string>
 
-    <string name="dashboard_missing_almanac_ephemeris_title">Missing almanac and ephemeris</string>
-    <string name="dashboard_missing_almanac_ephemeris_help">This checks if the device is showing signal information from a satellite for which almanac and ephemeris data is required, and yet indicates that it does not have almanac or ephemeris for that same satellite.\n\nFor example, if the device says it has elevation and azimuth data for a satellite, but indicates that it does NOT have almanac or ephemeris, that\'s an error because almanac and ephemeris data contains the elevation and azimuth information.\n\nIf this error is detected, please report it to your device manufacturer.</string>
-    <string name="dashboard_missing_almanac_ephemeris_pass">Signals with elev/azim have almanac/ephemeris</string>
-    <string name="dashboard_missing_almanac_ephemeris_fail">Signals with elev/azim missing almanac/ephemeris:</string>
     <string name="dashboard_waiting_for_signals">Waiting for signals…</string>
 
     <string name="dashboard_gps_week_rollover_title">System/GNSS time sync</string>
@@ -305,7 +301,7 @@
     <string name="dashboard_datum_fail">Local datum code: %1$s, datum: %2$s</string>
 
     <string name="dashboard_signals_without_data_title">Signals missing data</string>
-    <string name="dashboard_signals_without_data_help">This checks if the signal is missing all data necessary to decode it.\n\nFor example, if the signal has Cn0 values but is missing almanac, ephemeris, elevation, and azimuth, that\'s an error.\n\nIf this error is detected, please report it to your device manufacturer.</string>
+    <string name="dashboard_signals_without_data_help">This checks if the signal is missing data.\n\nFor example, if the signal has Cn0 values but is missing almanac, ephemeris, elevation, and azimuth, that\'s an error as the device couldn\'t track the Cn0 values without it. Also, if the device says it has elevation and azimuth data for a satellite, but indicates that it does NOT have almanac or ephemeris, that\'s an error because almanac and ephemeris data contains the elevation and azimuth information.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_signals_without_data_pass">All signals have sufficient data</string>
     <string name="dashboard_signals_without_data_fail">These signals are missing data:</string>
 
