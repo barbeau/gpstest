@@ -46,6 +46,7 @@ import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.NmeaUtils
+import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
 import com.android.gpstest.util.SatelliteUtil.constellationName
@@ -64,6 +65,8 @@ fun ErrorCheckList(
     fixState: FixState,
     geoidAltitude: GeoidAltitude,
     datum: Datum,
+    timeBetweenLocationUpdatesSeconds: Double,
+    timeBetweenGnssSystemTimeSeconds: Double,
 ) {
     var openDialog by remember { mutableStateOf(false) }
     Row {
@@ -98,10 +101,11 @@ fun ErrorCheckList(
             DuplicateCfs(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
             MismatchAlmanacEphemerisSameSatellite(satelliteMetadata)
-            SystemGnssTimeSync(location, fixState)
+            SignalsWithoutData(satelliteMetadata)
+            SystemGnssTimeSync(location, timeBetweenGnssSystemTimeSeconds, fixState)
+            TimeBetweenUpdates(timeBetweenLocationUpdatesSeconds, fixState)
             GeoidAltitude(location, fixState, geoidAltitude)
             Datum(datum)
-            SignalsWithoutData(satelliteMetadata)
             if (SatelliteUtils.isGnssAntennaInfoSupported(locationManager)) {
                 AntennaInfo()
             }
@@ -258,11 +262,11 @@ fun MismatchAlmanacEphemerisSameSatellite(satelliteMetadata: SatelliteMetadata) 
 }
 
 @Composable
-fun SystemGnssTimeSync(location: Location, fixState: FixState) {
-    val THRESHOLD_MILLIS = 5000
-    val timeDiffMillis = abs(System.currentTimeMillis() - location.time)
-    val isValid = timeDiffMillis < THRESHOLD_MILLIS
-    val unknown = fixState == FixState.NotAcquired
+fun SystemGnssTimeSync(location: Location, timeBetweenGnssSystemTimeSeconds: Double, fixState: FixState) {
+    val unknown = fixState == FixState.NotAcquired || timeBetweenGnssSystemTimeSeconds.isNaN()
+    val thresholdSeconds = 5
+
+    val isValid = abs(timeBetweenGnssSystemTimeSeconds) < thresholdSeconds
     val pass = if (unknown) Pass.UNKNOWN else {
         if (isValid) Pass.YES else Pass.NO
     }
@@ -277,14 +281,14 @@ fun SystemGnssTimeSync(location: Location, fixState: FixState) {
     } else {
         if (isValid) stringResource(
             R.string.dashboard_gnss_time_sync_pass,
-            (timeDiffMillis / 1000f).toDouble()
+            timeBetweenGnssSystemTimeSeconds
         ) else
             stringResource(
                 R.string.dashboard_gnss_time_sync_fail,
                 format.format(
                     location.time
                 ),
-                (timeDiffMillis / 1000f).toDouble()
+                timeBetweenGnssSystemTimeSeconds
             )
     }
     ErrorRow(
@@ -428,6 +432,47 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         ErrorIcon(
             imageId = R.drawable.ic_signal,
             contentDescriptionId = R.string.dashboard_signals_without_data_title
+        )
+    }
+}
+
+@Composable
+fun TimeBetweenUpdates(
+    timeBetweenLocationUpdatesSeconds: Double,
+    fixState: FixState
+) {
+    val requestedUpdateIntervalSeconds = (minTimeMillis().toDouble() / 1000)
+    val thresholdDiffSeconds = 0.5
+
+    val unknown = fixState == FixState.NotAcquired || timeBetweenLocationUpdatesSeconds.isNaN()
+    val isValid = abs(requestedUpdateIntervalSeconds - timeBetweenLocationUpdatesSeconds) < thresholdDiffSeconds
+
+    val pass = if (unknown) Pass.UNKNOWN else {
+        if (isValid) Pass.YES else Pass.NO
+    }
+    val description = if (unknown) {
+        stringResource(R.string.dashboard_waiting_on_fix)
+    } else {
+        if (isValid) stringResource(
+            R.string.dashboard_time_between_updates_pass,
+            requestedUpdateIntervalSeconds,
+            timeBetweenLocationUpdatesSeconds
+        ) else stringResource(
+            R.string.dashboard_time_between_updates_fail,
+            requestedUpdateIntervalSeconds,
+            timeBetweenLocationUpdatesSeconds
+        )
+    }
+    ErrorRow(
+        featureTitleId = R.string.dashboard_time_between_updates_title,
+        featureDescription = description,
+        pass = pass,
+        helpTextId = R.string.dashboard_time_between_updates_help
+    ) {
+        ErrorIcon(
+            imageId = R.drawable.ic_baseline_refresh_24,
+            contentDescriptionId = R.string.dashboard_time_between_updates_title,
+            iconSizeDp = 40
         )
     }
 }

@@ -288,7 +288,7 @@
     <string name="dashboard_waiting_for_signals">Waiting for signals…</string>
 
     <string name="dashboard_gnss_time_sync_title">System/GNSS time sync</string>
-    <string name="dashboard_gnss_time_sync_help">This checks to see if the time derived from GNSS data is more than 5 seconds different than your device system clock time.\n\nIf this error is detected, it can be a symptom of the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
+    <string name="dashboard_gnss_time_sync_help">This checks to see if the time derived from GNSS data is more than 5 seconds different than your device system clock time (time difference shown is system time - GNSS time).\n\nIf this error is detected, it can be a symptom of the GPS week rollover issue - ask your device manufacturer for details. See https://bit.ly/gps-week-rollover for more info.</string>
     <string name="dashboard_gps_week_rollover_pass">GNSS time matches system time</string>
     <string name="dashboard_gnss_time_sync_pass">%1$.1f seconds different</string>
     <string name="dashboard_gnss_time_sync_fail">The device GNSS time of:\n\n%1$s\n\n…is %2$.1f seconds different from your system clock.</string>
@@ -317,6 +317,11 @@
 
     <string name="dashboard_pass">PASS</string>
     <string name="dashboard_fail">FAIL</string>
+
+    <string name="dashboard_time_between_updates_title">Location update interval</string>
+    <string name="dashboard_time_between_updates_help">This checks if the location update interval of the hardware is within 0.5 seconds of the location update rate requested by the app.\n\nIf this error is detected, please report it to your device manufacturer.</string>
+    <string name="dashboard_time_between_updates_pass">Expected: %1$.1fs, Actual: %2$.1fs</string>
+    <string name="dashboard_time_between_updates_fail">Expected: %1$.1fs, Actual: %2$.1fs</string>
 
     <!-- Device properties -->
     <string name="dashboard_device_properties">Device properties</string>

@@ -63,6 +63,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
     val datum: Datum by viewModel.datum.observeAsState(Datum())
     val adrStates: Set<String> by viewModel.adrStates.observeAsState(emptySet())
+    val timeBetweenLocationUpdatesSeconds: Double by viewModel.timeBetweenLocationUpdatesSeconds.observeAsState(Double.NaN)
+    val timeBetweenGnssSystemTimeSeconds: Double by viewModel.timeBetweenGnssSystemTimeSeconds.observeAsState(Double.NaN)
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -75,7 +77,9 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         fixState = fixState,
         geoidAltitude = geoidAltitude,
         datum = datum,
-        adrStates = adrStates
+        adrStates = adrStates,
+        timeBetweenLocationUpdatesSeconds = timeBetweenLocationUpdatesSeconds,
+        timeBetweenGnssSystemTimeSeconds = timeBetweenGnssSystemTimeSeconds
     )
 }
 
@@ -88,6 +92,8 @@ fun Dashboard(
     geoidAltitude: GeoidAltitude,
     datum: Datum,
     adrStates: Set<String>,
+    timeBetweenLocationUpdatesSeconds: Double,
+    timeBetweenGnssSystemTimeSeconds: Double,
 ) {
     Box(
         modifier = Modifier
@@ -102,7 +108,12 @@ fun Dashboard(
             // FIXME - handle case where GNSS switch is turned off - show message to turn on tracking
             GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
             Spacer(modifier = Modifier.padding(5.dp))
-            SbasList(satelliteMetadata.supportedGnss, satelliteMetadata.supportedSbas, satelliteMetadata.sbasToCf, scanStatus)
+            SbasList(
+                satelliteMetadata.supportedGnss,
+                satelliteMetadata.supportedSbas,
+                satelliteMetadata.sbasToCf,
+                scanStatus
+            )
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAccuracyList(satelliteMetadata, scanStatus, adrStates)
             Spacer(modifier = Modifier.padding(5.dp))
@@ -110,7 +121,15 @@ fun Dashboard(
             Spacer(modifier = Modifier.padding(5.dp))
             FeaturesAssistDataList(satelliteMetadata)
             Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheckList(satelliteMetadata, location, fixState, geoidAltitude, datum)
+            ErrorCheckList(
+                satelliteMetadata,
+                location,
+                fixState,
+                geoidAltitude,
+                datum,
+                timeBetweenLocationUpdatesSeconds,
+                timeBetweenGnssSystemTimeSeconds
+            )
             Spacer(modifier = Modifier.padding(5.dp))
             DevicePropertiesList()
             Spacer(modifier = Modifier.padding(5.dp))
