@@ -229,7 +229,7 @@
 
     <string name="dashboard_feature_raw_measurements_title">Raw measurements</string>
     <string name="dashboard_feature_raw_measurements_description">To calculate positions</string>
-    <string name="dashboard_feature_raw_measurements_help">Apps can use this \"pseudorange\" data to calculate a location using innovative techniques that might be more accurate than the one your device OEM has implemented.\n\nFor more details see https://developer.android.com/guide/topics/sensors/gnss</string>
+    <string name="dashboard_feature_raw_measurements_help">Apps can use this \"pseudorange\" data to calculate a location using innovative techniques that might be more accurate than the one your device OEM has implemented.\n\nSee https://developer.android.com/guide/topics/sensors/gnss for details.</string>
 
     <string name="dashboard_feature_carrier_phase_title">Carrier phase</string>
     <string name="dashboard_feature_carrier_phase_description">For more precise measurements</string>
