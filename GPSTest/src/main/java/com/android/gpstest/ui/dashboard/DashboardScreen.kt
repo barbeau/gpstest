@@ -153,7 +153,12 @@ fun GnssList(
         color = MaterialTheme.colors.onBackground
     )
     if (supportedGnss.isEmpty()) {
-        ProgressCard(true, stringResource(id = R.string.dashboard_waiting_for_signals))
+        // Make the ProgressCard about the height of 3 GNSS cards to avoid UI quickly expanding
+        ProgressCard(
+            modifier = Modifier.height(240.dp),
+            progressVisible = true,
+            message = stringResource(id = R.string.dashboard_waiting_for_signals)
+        )
     } else {
         if (gnssToCf.isNotEmpty()) {
             gnssToCf.entries.forEach {
@@ -191,8 +196,8 @@ fun SbasList(
     )
     if (supportedGnss.isEmpty()) {
         ProgressCard(
-            true,
-            stringResource(R.string.dashboard_waiting_for_signals)
+            progressVisible = true,
+            message = stringResource(R.string.dashboard_waiting_for_signals)
         )
     } else {
         if (sbasToCf.isNotEmpty()) {
@@ -215,8 +220,8 @@ fun SbasList(
         } else {
             // Show "no SBAS" card
             ProgressCard(
-                false,
-                stringResource(R.string.sbas_not_available)
+                progressVisible = false,
+                message = stringResource(R.string.sbas_not_available)
             )
         }
     }
@@ -510,9 +515,12 @@ fun FailChip() {
 }
 
 @Composable
-fun ProgressCard(progressVisible: Boolean, message: String) {
+fun ProgressCard(
+    modifier: Modifier = Modifier,
+    progressVisible: Boolean,
+    message: String) {
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(5.dp),
         elevation = 2.dp
@@ -524,6 +532,7 @@ fun ProgressCard(progressVisible: Boolean, message: String) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .padding(15.dp)
+                        .align(CenterVertically)
                 )
             }
             Text(
