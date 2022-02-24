@@ -47,6 +47,7 @@ import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.Green500
+import com.android.gpstest.util.PreferenceUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -108,34 +109,41 @@ fun Dashboard(
                 .padding(5.dp)
                 .fillMaxSize()
         ) {
-            // FIXME - handle case where GNSS switch is turned off - show message to turn on tracking
-            GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
-            Spacer(modifier = Modifier.padding(5.dp))
-            SbasList(
-                satelliteMetadata.supportedGnss,
-                satelliteMetadata.supportedSbas,
-                satelliteMetadata.sbasToCf,
-                scanStatus
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            FeaturesAccuracyList(satelliteMetadata, scanStatus, adrStates)
-            Spacer(modifier = Modifier.padding(5.dp))
-            FeaturesInfoList(satelliteMetadata, scanStatus, location)
-            Spacer(modifier = Modifier.padding(5.dp))
-            FeaturesAssistDataList(satelliteMetadata)
-            Spacer(modifier = Modifier.padding(5.dp))
-            ErrorCheckList(
-                satelliteMetadata,
-                location,
-                fixState,
-                geoidAltitude,
-                datum,
-                timeBetweenLocationUpdatesSeconds,
-                timeBetweenGnssSystemTimeSeconds
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            DevicePropertiesList(userCountry)
-            Spacer(modifier = Modifier.padding(5.dp))
+            if (PreferenceUtils.isTrackingStarted()) {
+                GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
+                Spacer(modifier = Modifier.padding(5.dp))
+                SbasList(
+                    satelliteMetadata.supportedGnss,
+                    satelliteMetadata.supportedSbas,
+                    satelliteMetadata.sbasToCf,
+                    scanStatus
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                FeaturesAccuracyList(satelliteMetadata, scanStatus, adrStates)
+                Spacer(modifier = Modifier.padding(5.dp))
+                FeaturesInfoList(satelliteMetadata, scanStatus, location)
+                Spacer(modifier = Modifier.padding(5.dp))
+                FeaturesAssistDataList(satelliteMetadata)
+                Spacer(modifier = Modifier.padding(5.dp))
+                ErrorCheckList(
+                    satelliteMetadata,
+                    location,
+                    fixState,
+                    geoidAltitude,
+                    datum,
+                    timeBetweenLocationUpdatesSeconds,
+                    timeBetweenGnssSystemTimeSeconds
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                DevicePropertiesList(userCountry)
+                Spacer(modifier = Modifier.padding(5.dp))
+            } else {
+                // Show message to turn on GNSS
+                ProgressCard(
+                    progressVisible = false,
+                    message = stringResource(id = R.string.dashboard_turn_on_gnss)
+                )
+            }
         }
     }
 }
