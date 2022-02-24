@@ -3,13 +3,10 @@ package com.android.gpstest.ui.share
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +22,13 @@ import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.util.GeocodeUtils.geocode
 import com.android.gpstest.util.IOUtils.*
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 class UploadDeviceInfoFragment : Fragment() {
     companion object {
@@ -65,20 +62,7 @@ class UploadDeviceInfoFragment : Fragment() {
             upload.visibility = View.VISIBLE
             uploadNoLocationTextView.visibility = View.GONE
 
-            if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(context)
-                var addresses: List<Address>? = emptyList()
-                try {
-                    addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                } catch (ioe: IOException) {
-                    Log.e(TAG, "Error getting address from location via geocoder: " + ioe)
-                } catch (iae: IllegalArgumentException) {
-                    Log.e(TAG, "Invalid lat/lon when getting address from location via geocoder: " + iae)
-                }
-                if (!addresses.isNullOrEmpty()) {
-                    userCountry = addresses.get(0).countryCode
-                }
-            }
+            userCountry = geocode(location).countryCode
         }
 
         upload.setOnClickListener { _: View? ->

@@ -65,6 +65,7 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val adrStates: Set<String> by viewModel.adrStates.observeAsState(emptySet())
     val timeBetweenLocationUpdatesSeconds: Double by viewModel.timeBetweenLocationUpdatesSeconds.observeAsState(Double.NaN)
     val timeBetweenGnssSystemTimeSeconds: Double by viewModel.timeBetweenGnssSystemTimeSeconds.observeAsState(Double.NaN)
+    val userCountry: UserCountry by viewModel.userCountry.observeAsState(UserCountry())
 
     Dashboard(
         satelliteMetadata = allSatellites.satelliteMetadata,
@@ -79,7 +80,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         datum = datum,
         adrStates = adrStates,
         timeBetweenLocationUpdatesSeconds = timeBetweenLocationUpdatesSeconds,
-        timeBetweenGnssSystemTimeSeconds = timeBetweenGnssSystemTimeSeconds
+        timeBetweenGnssSystemTimeSeconds = timeBetweenGnssSystemTimeSeconds,
+        userCountry = userCountry
     )
 }
 
@@ -94,6 +96,7 @@ fun Dashboard(
     adrStates: Set<String>,
     timeBetweenLocationUpdatesSeconds: Double,
     timeBetweenGnssSystemTimeSeconds: Double,
+    userCountry: UserCountry,
 ) {
     Box(
         modifier = Modifier
@@ -131,7 +134,7 @@ fun Dashboard(
                 timeBetweenGnssSystemTimeSeconds
             )
             Spacer(modifier = Modifier.padding(5.dp))
-            DevicePropertiesList()
+            DevicePropertiesList(userCountry)
             Spacer(modifier = Modifier.padding(5.dp))
         }
     }

@@ -31,6 +31,7 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.getCarrierFrequencyLabel
 import com.android.gpstest.util.FormatUtils.formatTtff
+import com.android.gpstest.util.GeocodeUtils.geocode
 import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil
 import com.android.gpstest.util.PreferenceUtils
@@ -138,6 +139,9 @@ class SignalInfoViewModel @Inject constructor(
     private val _adrStates = MutableLiveData<Set<String>>(emptySet())
     val adrStates: LiveData<Set<String>> = _adrStates
 
+    private val _userCountry = MutableLiveData(UserCountry())
+    val userCountry: LiveData<UserCountry> = _userCountry
+
     private var started = false
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
@@ -180,6 +184,8 @@ class SignalInfoViewModel @Inject constructor(
                 // Store the latest location and time diff
                 _location.value = location
                 _timeBetweenGnssSystemTimeSeconds.value = ((System.currentTimeMillis() - location.time).toDouble() / 1000f)
+                // Try to get user country
+                _userCountry.value = geocode(location)
                 setGotFirstFix(true)
             }
             .launchIn(viewModelScope)

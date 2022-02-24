@@ -319,7 +319,7 @@
     <string name="dashboard_fail">FAIL</string>
 
     <string name="dashboard_time_between_updates_title">Location update interval</string>
-    <string name="dashboard_time_between_updates_help">This checks if the location update interval of the hardware is within 0.5 seconds of the location update rate requested by the app.\n\nIf this error is detected, please report it to your device manufacturer.</string>
+    <string name="dashboard_time_between_updates_help">This checks if the location update interval of the hardware is within 0.5 seconds of the location update interval requested by the app.\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_time_between_updates_pass">Expected: %1$.1fs, Actual: %2$.1fs</string>
     <string name="dashboard_time_between_updates_fail">Expected: %1$.1fs, Actual: %2$.1fs</string>
 
@@ -330,6 +330,8 @@
     <string name="gnss_hardware_name_help">The vendor and hardware/software version of the GNSS hardware driver.</string>
     <string name="gnss_hardware_year">GNSS hardware year</string>
     <string name="gnss_hardware_year_help">The model year of the GNSS hardware and software build.</string>
+    <string name="user_country">User country</string>
+    <string name="user_country_help">The current country determined by the current location.</string>
     <string name="android_software_incremental_build_and_codename">Android build version and codename</string>
     <string name="android_software_incremental_build_help">The internal value used by the OEM\'s underlying source control to represent this Android build (e.g., a perforce changelist number or a git hash), followed by the current development codename for this Android build, or the string "REL" if this is a release build. See https://developer.android.com/reference/android/os/Build.VERSION#INCREMENTAL and https://developer.android.com/reference/android/os/Build.VERSION#CODENAME.</string>
     <string name="android_version_and_api_level">Android OS version and API level</string>

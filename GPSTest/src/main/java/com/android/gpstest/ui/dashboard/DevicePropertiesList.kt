@@ -31,12 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
+import com.android.gpstest.model.UserCountry
 import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.IOUtils.getAppVersionDescription
 
 @Composable
-fun DevicePropertiesList() {
+fun DevicePropertiesList(userCountry: UserCountry) {
     var openDialog by remember { mutableStateOf(false) }
     Row {
         Text(
@@ -69,6 +70,11 @@ fun DevicePropertiesList() {
             AndroidBuildVersionAndCodename()
             AndroidVersionAndApiLevel()
             AppVersion()
+            if (!userCountry.countryCode.isNullOrBlank() ||
+                !userCountry.countryName.isNullOrBlank()
+            ) {
+                UserCountry(userCountry)
+            }
         }
     }
 }
@@ -131,6 +137,16 @@ fun AppVersion() {
         helpTextId = R.string.app_version_and_code_help
     )
 }
+
+@Composable
+fun UserCountry(userCountry: UserCountry) {
+    PropertiesRow(
+        titleId = R.string.user_country,
+        description = userCountry.countryName + " (" + userCountry.countryCode + ")",
+        helpTextId = R.string.user_country_help
+    )
+}
+
 
 /**
  * A row that describes a property of the device
