@@ -70,8 +70,8 @@ fun DevicePropertiesList(userCountry: UserCountry) {
             AndroidBuildVersionAndCodename()
             AndroidVersionAndApiLevel()
             AppVersion()
-            if (!userCountry.countryCode.isNullOrBlank() ||
-                !userCountry.countryName.isNullOrBlank()
+            if (userCountry.countryCode.isNotBlank() ||
+                userCountry.countryName.isNotBlank()
             ) {
                 UserCountry(userCountry)
             }
