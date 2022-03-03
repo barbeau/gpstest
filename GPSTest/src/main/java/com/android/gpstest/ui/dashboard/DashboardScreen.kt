@@ -19,12 +19,9 @@ import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -34,9 +31,11 @@ import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -110,6 +109,8 @@ fun Dashboard(
                 .fillMaxSize()
         ) {
             if (PreferenceUtils.isTrackingStarted()) {
+                SignalSummaryCard(satelliteMetadata)
+                Spacer(modifier = Modifier.padding(5.dp))
                 GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
                 Spacer(modifier = Modifier.padding(5.dp))
                 SbasList(
@@ -555,6 +556,26 @@ fun ProgressCard(
     }
 }
 
+@Composable
+fun HelpIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(
+            R.drawable.ic_baseline_question_24
+        ),
+        contentDescription = stringResource(R.string.help),
+        modifier
+            .size(helpIconSize)
+            .padding(start = helpIconStartPadding)
+            .clickable {
+                onClick()
+            },
+        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+    )
+}
+
 val headingStyle = TextStyle(
     fontWeight = FontWeight.SemiBold,
     fontSize = 20.sp,
@@ -591,8 +612,8 @@ val smallSubtitleStyle = TextStyle(
 )
 
 val iconSize = 70.dp
-const val helpIconAlpha = 0.6f
-val helpIconSize = 25.dp
+const val helpIconAlpha = 0.4f
+val helpIconSize = 23.dp
 val helpIconStartPadding = 2.dp
 
 const val dummyProvider = "dummy"

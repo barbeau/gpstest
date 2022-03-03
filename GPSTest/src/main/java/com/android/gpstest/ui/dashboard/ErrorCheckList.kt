@@ -114,26 +114,6 @@ fun ErrorCheckList(
 }
 
 @Composable
-fun HelpIcon(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    Icon(
-        imageVector = ImageVector.vectorResource(
-            R.drawable.ic_baseline_question_24
-        ),
-        contentDescription = stringResource(R.string.help),
-        modifier
-            .size(helpIconSize)
-            .padding(start = helpIconStartPadding)
-            .clickable {
-                onClick()
-            },
-        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
-    )
-}
-
-@Composable
 fun ValidCfs(satelliteMetadata: SatelliteMetadata) {
     val isValid = satelliteMetadata.unknownCarrierStatuses.isEmpty()
     val unknown = satelliteMetadata.numSignalsTotal == 0

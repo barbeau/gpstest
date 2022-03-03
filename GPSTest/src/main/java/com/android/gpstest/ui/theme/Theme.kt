@@ -29,17 +29,22 @@ import androidx.compose.ui.graphics.Color
 // * https://material.io/blog/material-theme-builder
 // Issue #277
 
-private val Purple500 = Color(0xFF3F51B5)
+private val Indigo500 = Color(0xFF3F51B5)
 private val primaryDark = Color(0xFF002984)
+//val Purple200 = Color(0xFFBB86FC)
+val Indigo400 = Color(0xFF5c6bc0)
+val Indigo300 = Color(0xFF7986cb)
+val Indigo200 = Color(0xFF9fa8da)
+val IndigoLight = Color(0xFF757DE8)
 val Green500 = Color(0xFF4caf50)
 
 private val lightColors = lightColors(
-    primary = Purple500,
+    primary = Indigo500,
     primaryVariant = primaryDark
 )
 
 private val darkColors = darkColors(
-    primary = Purple500,
+    primary = Indigo500,
     primaryVariant = primaryDark
 )
 
