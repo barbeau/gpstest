@@ -16,10 +16,12 @@
 package com.android.gpstest.ui.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ProgressIndicatorDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -44,9 +46,8 @@ import com.android.gpstest.ui.dashboard.titleStyle
 
 /**
  * A circular graph showing a percentage full (e.g., # of sats used / in view, # of signals used / in view),
- * with a text value ([number]/[maxNumber]) and an icon based on the [iconId].
- *
- * drawArc() calls based on code from https://github.com/philipplackner/ComposeTimer.
+ * with a text value ([number]/[maxNumber]), an icon based on the [iconId], and [descriptionText]
+ * below.
  */
 @Composable
 fun CircleGraph(
@@ -73,7 +74,14 @@ fun CircleGraph(
         var size by remember {
             mutableStateOf(IntSize.Zero)
         }
-        val value = number.toFloat() / maxNumber.toFloat()
+        var value by remember { mutableStateOf(0.0f) }
+        value = number.toFloat() / maxNumber.toFloat()
+
+        val animatedValue = animateFloatAsState(
+            targetValue = value,
+            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+        ).value
+
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -100,7 +108,7 @@ fun CircleGraph(
                 drawArc(
                     brush = activeBarBrush,
                     startAngle = -215f,
-                    sweepAngle = 250f * value,
+                    sweepAngle = 250f * animatedValue,
                     useCenter = false,
                     size = Size(width.toFloat(), height.toFloat()),
                     style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
