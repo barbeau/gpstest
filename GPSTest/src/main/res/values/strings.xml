@@ -302,7 +302,7 @@
     <string name="dashboard_clock_image">Image of clock</string>
 
     <string name="dashboard_datum_title">Suspicious datum</string>
-    <string name="dashboard_datum_help">This checks if the datum, or the frame of reference used to identify exactly where a latitude and logitude is located in 3D space, deviates from the norm.\n\nFor example, some devices have erroneously reported they were using PZ-90 (P90) instead of the standard WGS84 datum (see https://issuetracker.google.com/issues/191674805).\n\nIf this error is detected, please report it to your device manufacturer.</string>
+    <string name="dashboard_datum_help">This checks if the datum, or the frame of reference used to identify exactly where a latitude and longitude is located in 3D space, deviates from the norm.\n\nFor example, some devices have erroneously reported they were using PZ-90 (P90) instead of the standard WGS84 datum (see https://issuetracker.google.com/issues/191674805).\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_datum_pass">Local datum code &amp; datum = W84</string>
     <string name="dashboard_datum_fail">Local datum code: %1$s, datum: %2$s</string>
 
@@ -312,7 +312,7 @@
     <string name="dashboard_signals_without_data_fail">These signals are missing data:</string>
 
     <string name="dashboard_bad_antenna_info_title">Bad GNSS antenna info</string>
-    <string name="dashboard_bad_antenna_info_help">This checks to see if the GNSS antenna info provided by your device is incorrect. For example, a large number of devices have erroneously reported an L2 antenna on the device when the device did not contain such an antenna (see https://issuetracker.google.com/issues/190197760).\n\nIf this error is detected, please report it to your device manufacturer.</string>
+    <string name="dashboard_bad_antenna_info_help">This checks to see if the GNSS antenna info provided by your device is incorrect. For example, a large number of devices have erroneously reported an L2 antenna on the device when the device did not contain such an antenna (see https://issuetracker.google.com/issues/190197760 for details).\n\nIf this error is detected, please report it to your device manufacturer.</string>
     <string name="dashboard_bad_antenna_info_pass">%1$s appears valid</string>
     <string name="dashboard_bad_antenna_info_fail">Antenna info (%1$s) is bad. See https://issuetracker.google.com/issues/190197760 for details.</string>
 

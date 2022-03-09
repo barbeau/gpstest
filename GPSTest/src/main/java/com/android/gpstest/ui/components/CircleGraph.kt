@@ -32,12 +32,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
 import com.android.gpstest.ui.dashboard.helpIconAlpha
@@ -51,6 +49,7 @@ import com.android.gpstest.ui.dashboard.titleStyle
  */
 @Composable
 fun CircleGraph(
+    size: Dp = 130.dp,
     number: Int,
     maxNumber: Int,
     inactiveBarColor: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
@@ -69,11 +68,8 @@ fun CircleGraph(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(5.dp)
-            .size(130.dp)
+            .size(size)
     ) {
-        var size by remember {
-            mutableStateOf(IntSize.Zero)
-        }
         var value by remember { mutableStateOf(0.0f) }
         value = number.toFloat() / maxNumber.toFloat()
 
@@ -86,17 +82,14 @@ fun CircleGraph(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .padding(5.dp)
-                .size(100.dp)
-                .onSizeChanged {
-                    size = it
-                }
+                .size(size * 0.75f)
         ) {
             Canvas(
                 Modifier
                     .fillMaxSize()
             ) {
-                val width = size.width
-                val height = size.height
+                val width = this.size.width
+                val height = this.size.height
                 drawArc(
                     color = inactiveBarColor,
                     startAngle = -215f,

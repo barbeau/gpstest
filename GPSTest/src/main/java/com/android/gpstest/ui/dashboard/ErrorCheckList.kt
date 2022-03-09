@@ -49,12 +49,10 @@ import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
-import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SatelliteUtil.isTimeApproxEqualTo
 import com.android.gpstest.util.SatelliteUtil.timeDiffMs
 import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
-import com.android.gpstest.util.UIUtils.trimZeros
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
@@ -410,8 +408,9 @@ fun SignalsWithoutData(satelliteMetadata: SatelliteMetadata) {
         helpTextId = R.string.dashboard_signals_without_data_help
     ) {
         ErrorIcon(
-            imageId = R.drawable.ic_signal,
-            contentDescriptionId = R.string.dashboard_signals_without_data_title
+            imageId = R.drawable.ic_wireless_vertical,
+            contentDescriptionId = R.string.dashboard_signals_without_data_title,
+            iconSizeDp = 40
         )
     }
 }
