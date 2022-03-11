@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -44,14 +45,14 @@ import com.android.gpstest.ui.dashboard.titleStyle
 
 /**
  * A circular graph showing a percentage full (e.g., # of sats used / in view, # of signals used / in view),
- * with a text value ([number]/[maxNumber]), an icon based on the [iconId], and [descriptionText]
+ * with a text value ([currentValue]/[maxValue]), an icon based on the [iconId], and [descriptionText]
  * below.
  */
 @Composable
 fun CircleGraph(
     size: Dp = 130.dp,
-    number: Int,
-    maxNumber: Int,
+    currentValue: Int,
+    maxValue: Int,
     inactiveBarColor: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
     activeBarBrush: Brush = Brush.verticalGradient(
         colors = listOf(
@@ -63,6 +64,10 @@ fun CircleGraph(
     @DrawableRes iconId: Int,
     iconSize: Dp = 40.dp,
     descriptionText: String,
+    largeTextStyle: TextStyle = titleStyle.copy(fontWeight = FontWeight.Bold),
+    smallTextStyle: TextStyle = subtitleStyle,
+    topIconPadding: Dp = 30.dp,
+    bottomIconPadding: Dp = 7.dp,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -71,7 +76,7 @@ fun CircleGraph(
             .size(size)
     ) {
         var value by remember { mutableStateOf(0.0f) }
-        value = number.toFloat() / maxNumber.toFloat()
+        value = currentValue.toFloat() / maxValue.toFloat()
 
         val animatedValue = animateFloatAsState(
             targetValue = value,
@@ -95,7 +100,7 @@ fun CircleGraph(
                     startAngle = -215f,
                     sweepAngle = 250f,
                     useCenter = false,
-                    size = Size(width.toFloat(), height.toFloat()),
+                    size = Size(width, height),
                     style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
                 )
                 drawArc(
@@ -103,7 +108,7 @@ fun CircleGraph(
                     startAngle = -215f,
                     sweepAngle = 250f * animatedValue,
                     useCenter = false,
-                    size = Size(width.toFloat(), height.toFloat()),
+                    size = Size(width, height),
                     style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
                 )
             }
@@ -111,7 +116,7 @@ fun CircleGraph(
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom,
-            modifier = Modifier.padding(top = 30.dp)
+            modifier = Modifier.padding(top = topIconPadding)
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(
@@ -119,17 +124,17 @@ fun CircleGraph(
                 ),
                 contentDescription = stringResource(R.string.mode_satellite),
                 modifier = Modifier
-                    .padding(bottom = 7.dp)
+                    .padding(bottom = bottomIconPadding)
                     .size(iconSize),
                 tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
             )
             Text(
-                text = "$number/$maxNumber",
-                style = titleStyle.copy(fontWeight = FontWeight.Bold)
+                text = "$currentValue/$maxValue",
+                style = largeTextStyle
             )
             Text(
                 text = descriptionText,
-                style = subtitleStyle
+                style = smallTextStyle
             )
         }
     }

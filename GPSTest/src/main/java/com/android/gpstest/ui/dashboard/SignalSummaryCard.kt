@@ -52,28 +52,35 @@ fun SignalSummaryCard(
         title = stringResource(R.string.dashboard_signal_summary),
         text = stringResource(R.string.dashboard_signal_summary_help)
     )
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(5.dp),
-        elevation = 2.dp,
-    ) {
-        Row (
-            horizontalArrangement = Arrangement.SpaceEvenly
+    if (satelliteMetadata.numSignalsTotal == 0) {
+        // Make the ProgressCard about the height of the CircleGraph to avoid UI quickly expanding
+        ProgressCard(
+            modifier = Modifier.height(150.dp),
+            progressVisible = true,
+            message = stringResource(id = R.string.dashboard_waiting_for_signals)
+        )
+    } else {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(5.dp),
+            elevation = 2.dp,
         ) {
-            // TODO - handle cases when no signals are available
-            if (satelliteMetadata.numSignalsTotal > 0) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+
                 CircleGraph(
-                    number = satelliteMetadata.numSatsUsed,
-                    maxNumber = satelliteMetadata.numSatsInView,
+                    currentValue = satelliteMetadata.numSatsUsed,
+                    maxValue = satelliteMetadata.numSatsInView,
                     iconId = R.drawable.ic_satellite_alt_black_24dp,
                     iconSize = 35.dp,
                     descriptionText = stringResource(R.string.satellites_in_use)
                 )
                 CircleGraph(
-                    number = satelliteMetadata.numSignalsUsed,
-                    maxNumber = satelliteMetadata.numSignalsInView,
+                    currentValue = satelliteMetadata.numSignalsUsed,
+                    maxValue = satelliteMetadata.numSignalsInView,
                     iconId = R.drawable.ic_wireless_vertical,
                     descriptionText = stringResource(R.string.signals_in_use)
                 )
