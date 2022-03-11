@@ -49,10 +49,12 @@ import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.SatelliteUtil.altitudeComparedTo
+import com.android.gpstest.util.SatelliteUtil.constellationName
 import com.android.gpstest.util.SatelliteUtil.isTimeApproxEqualTo
 import com.android.gpstest.util.SatelliteUtil.timeDiffMs
 import com.android.gpstest.util.SatelliteUtils
 import com.android.gpstest.util.SortUtil.Companion.sortByGnssThenId
+import com.android.gpstest.util.UIUtils.trimZeros
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
