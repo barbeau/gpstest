@@ -491,7 +491,7 @@ fun Chip(
 ) {
     Surface(
         modifier = Modifier
-            .padding(end = 5.dp, top = 4.dp, bottom = 4.dp)
+            .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
             .width(54.dp),
         shape = MaterialTheme.shapes.small,
         color = backgroundColor,

@@ -45,8 +45,8 @@ import com.android.gpstest.ui.dashboard.titleStyle
 
 /**
  * A circular graph showing a percentage full (e.g., # of sats used / in view, # of signals used / in view),
- * with a text value ([currentValue]/[maxValue]), an icon based on the [iconId], and [descriptionText]
- * below.
+ * with a text value ([currentValue]/[maxValue]), and [descriptionText] below. [content] is a
+ * composable used as the icon in the middle of the graph.
  */
 @Composable
 fun CircleGraph(
@@ -61,13 +61,11 @@ fun CircleGraph(
         )
     ),
     strokeWidth: Dp = 12.dp,
-    @DrawableRes iconId: Int,
-    iconSize: Dp = 40.dp,
     descriptionText: String,
     largeTextStyle: TextStyle = titleStyle.copy(fontWeight = FontWeight.Bold),
     smallTextStyle: TextStyle = subtitleStyle,
     topIconPadding: Dp = 30.dp,
-    bottomIconPadding: Dp = 7.dp,
+    content: @Composable () -> Unit,
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -118,16 +116,8 @@ fun CircleGraph(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier.padding(top = topIconPadding)
         ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(
-                    iconId
-                ),
-                contentDescription = stringResource(R.string.mode_satellite),
-                modifier = Modifier
-                    .padding(bottom = bottomIconPadding)
-                    .size(iconSize),
-                tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
-            )
+            // Icon
+            content()
             Text(
                 text = "$currentValue/$maxValue",
                 style = largeTextStyle
@@ -138,4 +128,22 @@ fun CircleGraph(
             )
         }
     }
+}
+
+@Composable
+fun CircleIcon(
+    @DrawableRes iconId: Int,
+    iconSize: Dp = 40.dp,
+    bottomIconPadding: Dp = 7.dp,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(
+            iconId
+        ),
+        contentDescription = stringResource(R.string.mode_satellite),
+        modifier = Modifier
+            .padding(bottom = bottomIconPadding)
+            .size(iconSize),
+        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+    )
 }

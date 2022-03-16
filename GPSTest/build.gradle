@@ -206,8 +206,10 @@ dependencies {
     implementation 'androidx.compose.ui:ui-tooling:1.0.5'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
-    //Integration with LiveData
+    // Integration with LiveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-beta02'
+    // For FlowRow
+    implementation 'com.google.accompanist:accompanist-flowlayout:0.23.1'
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
 

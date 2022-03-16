@@ -15,20 +15,31 @@
  */
 package com.android.gpstest.ui.dashboard
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.CircleGraph
+import com.android.gpstest.ui.components.CircleIcon
 import com.android.gpstest.ui.components.OkDialog
+import com.android.gpstest.util.PreferenceUtil.expandSignalSummary
+import com.android.gpstest.util.PreferenceUtils
+import com.google.accompanist.flowlayout.FlowRow
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignalSummaryCard(
     satelliteMetadata: SatelliteMetadata,
@@ -52,6 +63,7 @@ fun SignalSummaryCard(
         title = stringResource(R.string.dashboard_signal_summary),
         text = stringResource(R.string.dashboard_signal_summary_help)
     )
+    var expandedState by rememberSaveable { mutableStateOf(expandSignalSummary()) }
     if (satelliteMetadata.numSignalsTotal == 0) {
         // Make the ProgressCard about the height of the CircleGraph to avoid UI quickly expanding
         ProgressCard(
@@ -63,27 +75,56 @@ fun SignalSummaryCard(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(5.dp),
+                .animateContentSize()
+                .padding(5.dp)
+                .clickable {
+                    expandedState = !expandedState
+                    PreferenceUtils.saveBoolean(
+                        Application.app.getString(R.string.pref_key_expand_signal_summary),
+                        expandedState
+                    )
+                },
             elevation = 2.dp,
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-
-                CircleGraph(
-                    currentValue = satelliteMetadata.numSatsUsed,
-                    maxValue = satelliteMetadata.numSatsInView,
-                    iconId = R.drawable.ic_satellite_alt_black_24dp,
-                    iconSize = 35.dp,
-                    descriptionText = stringResource(R.string.satellites_in_use)
-                )
-                CircleGraph(
-                    currentValue = satelliteMetadata.numSignalsUsed,
-                    maxValue = satelliteMetadata.numSignalsInView,
-                    iconId = R.drawable.ic_wireless_vertical,
-                    descriptionText = stringResource(R.string.signals_in_use)
-                )
+            // TODO - add spinning chevron for collapse/expand in bottom right corner
+            Column (horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    CircleGraph(
+                        currentValue = satelliteMetadata.numSatsUsed,
+                        maxValue = satelliteMetadata.numSatsInView,
+                        descriptionText = stringResource(R.string.satellites_in_use)
+                    ) {
+                        CircleIcon(
+                            iconId = R.drawable.ic_satellite_alt_black_24dp,
+                            iconSize = 35.dp
+                        )
+                    }
+                    CircleGraph(
+                        currentValue = satelliteMetadata.numSignalsUsed,
+                        maxValue = satelliteMetadata.numSignalsInView,
+                        descriptionText = stringResource(R.string.signals_in_use)
+                    ) {
+                        CircleIcon(
+                            iconId = R.drawable.ic_wireless_vertical
+                        )
+                    }
+                }
+                if (expandedState) {
+                    FlowRow {
+                        for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries) {
+                            // TODO - shrink the size of this CircleGraph to indicate it's a subset of the main 2 graphs
+                            CircleGraph(
+                                currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key] ?: 0,
+                                maxValue = numSignalsInViewByCf.value,
+                                descriptionText = stringResource(R.string.signals_in_use)
+                            ) {
+                                Chip(numSignalsInViewByCf.key)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

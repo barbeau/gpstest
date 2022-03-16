@@ -120,6 +120,7 @@
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
     <string name="pref_key_coordinate_format">coordinate_format</string>
     <string name="pref_key_share_include_altitude">share_include_altitude</string>
+    <string name="pref_key_expand_signal_summary">expand_signal_summary</string>
 
     <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
     <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>

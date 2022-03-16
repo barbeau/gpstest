@@ -619,6 +619,8 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     fun reset() {
+        _allStatuses.value = emptyList()
+        _filteredStatuses.value = emptyList()
         _filteredGnssStatuses.value = emptyList()
         _filteredSbasStatuses.value = emptyList()
         _filteredGnssSatellites.value = emptyMap()

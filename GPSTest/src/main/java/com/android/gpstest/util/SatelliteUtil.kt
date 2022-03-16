@@ -75,6 +75,8 @@ internal object SatelliteUtil {
         val satellites: MutableMap<String, Satellite> = LinkedHashMap()
         var numSignalsUsed = 0
         var numSignalsInView = 0
+        val numSignalsUsedByCf: MutableMap<String, Int> = LinkedHashMap()
+        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap()
         var numSatsUsed = 0
         var numSatsInView = 0
         val supportedGnss: MutableSet<GnssType> = LinkedHashSet()
@@ -129,6 +131,13 @@ internal object SatelliteUtil {
 
             // Get carrier label
             val carrierLabel = getCarrierFrequencyLabel(s)
+
+            // Increment count of in view / used by CF
+            numSignalsInViewByCf.addOrIncrement(carrierLabel)
+            if (s.usedInFix) {
+                numSignalsUsedByCf.addOrIncrement(carrierLabel)
+            }
+
             if (carrierLabel == CF_UNKNOWN) {
                 unknownCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
             }
@@ -223,28 +232,30 @@ internal object SatelliteUtil {
         return SatelliteGroup(
             satellites,
             SatelliteMetadata(
-                numSignalsInView,
-                numSignalsUsed,
-                this.size,
-                numSatsInView,
-                numSatsUsed,
-                satellites.size,
-                supportedGnss,
-                supportedGnssCfs,
-                supportedSbas,
-                supportedSbasCfs,
-                unknownCarrierStatuses,
-                duplicateCarrierStatuses,
-                isDualFrequencyPerSatInView,
-                isDualFrequencyPerSatInUse,
-                isNonPrimaryCarrierFreqInView,
-                isNonPrimaryCarrierFreqInUse,
-                gnssToCf,
-                sbasToCf,
-                mismatchAzimuthElevationSameSatStatuses,
-                mismatchAlmanacEphemerisSameSatStatuses,
-                missingAlmanacEphemerisButHaveAzimuthElevation,
-                signalsWithoutData
+                numSignalsInView = numSignalsInView,
+                numSignalsUsed = numSignalsUsed,
+                numSignalsTotal = this.size,
+                numSatsInView = numSatsInView,
+                numSatsUsed = numSatsUsed,
+                numSatsTotal = satellites.size,
+                supportedGnss = supportedGnss,
+                supportedGnssCfs = supportedGnssCfs,
+                supportedSbas = supportedSbas,
+                supportedSbasCfs = supportedSbasCfs,
+                unknownCarrierStatuses = unknownCarrierStatuses,
+                duplicateCarrierStatuses = duplicateCarrierStatuses,
+                isDualFrequencyPerSatInView = isDualFrequencyPerSatInView,
+                isDualFrequencyPerSatInUse = isDualFrequencyPerSatInUse,
+                isNonPrimaryCarrierFreqInView = isNonPrimaryCarrierFreqInView,
+                isNonPrimaryCarrierFreqInUse = isNonPrimaryCarrierFreqInUse,
+                gnssToCf = gnssToCf,
+                sbasToCf = sbasToCf,
+                mismatchAzimuthElevationSameSatStatuses = mismatchAzimuthElevationSameSatStatuses,
+                mismatchAlmanacEphemerisSameSatStatuses = mismatchAlmanacEphemerisSameSatStatuses,
+                missingAlmanacEphemerisButHaveAzimuthElevation = missingAlmanacEphemerisButHaveAzimuthElevation,
+                signalsWithoutData = signalsWithoutData,
+                numSignalsInViewByCf = numSignalsInViewByCf,
+                numSignalsUsedByCf = numSignalsUsedByCf
             )
         )
     }
@@ -253,6 +264,16 @@ internal object SatelliteUtil {
         val cfs: MutableSet<String> = map.getOrDefault(key, mutableSetOf(cf))
         cfs.add(cf)
         map[key] = cfs
+    }
+
+    /**
+     * Increments the value for the given key by 1, or adds the key with an initial value of 1 if
+     * it doesn't yet exist in the Map
+     */
+    private fun MutableMap<String, Int>.addOrIncrement(key: String) {
+        var count = getOrDefault(key, 0)
+        count++
+        this[key] = count
     }
 
     /**

@@ -32,6 +32,8 @@ package com.android.gpstest.model
  * has been detected as having duplicate carrier frequency data with another signal.
  * [mismatchAzimuthElevationSameSatStatuses] is a Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to
  * the status that has been detected as having different azimuth or elevation from another signal from the same satellite
+ * [numSignalsInViewByCf] is a Map of carrier frequency strings to a count of the number of that CF in view of the device.
+ * [numSignalsUsedByCf] is a Map of carrier frequency strings to a count of the number of that CF used by the device.
  */
 data class SatelliteMetadata(
         val numSignalsInView: Int = 0,
@@ -55,5 +57,7 @@ data class SatelliteMetadata(
         val mismatchAzimuthElevationSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
         val mismatchAlmanacEphemerisSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
         val missingAlmanacEphemerisButHaveAzimuthElevation: Map<String, SatelliteStatus> = LinkedHashMap(),
-        val signalsWithoutData: Map<String, SatelliteStatus> = LinkedHashMap()
+        val signalsWithoutData: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val numSignalsUsedByCf: MutableMap<String, Int> = LinkedHashMap(),
+        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap()
 )

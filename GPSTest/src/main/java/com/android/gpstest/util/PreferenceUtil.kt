@@ -7,7 +7,6 @@ import android.location.LocationManager
 import android.os.Build
 import com.android.gpstest.Application
 import com.android.gpstest.R
-import com.android.gpstest.ui.dashboard.Support
 
 /**
  * Provides access to SharedPreferences to Activities and Services.
@@ -137,6 +136,12 @@ internal object PreferenceUtil {
     fun shareIncludeAltitude(): Boolean {
         return Application.prefs.getBoolean(
             Application.app.getString(R.string.pref_key_share_include_altitude), false
+        )
+    }
+
+    fun expandSignalSummary(): Boolean {
+        return Application.prefs.getBoolean(
+            Application.app.getString(R.string.pref_key_expand_signal_summary), false
         )
     }
 
