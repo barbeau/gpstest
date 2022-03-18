@@ -122,7 +122,10 @@ fun SignalSummaryCard(
                             largeTextStyle = titleStyle.copy(fontSize = 14.sp),
                             smallTextStyle = subtitleStyle.copy(fontSize = 12.sp),
                         ) {
-                            Chip(numSignalsInViewByCf.key)
+                            Chip(
+                                text = numSignalsInViewByCf.key,
+                                width = 44.dp
+                            )
                         }
                     }
                 }

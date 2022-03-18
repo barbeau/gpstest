@@ -39,6 +39,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
@@ -488,11 +489,12 @@ fun Chip(
     text: String,
     textColor: Color = MaterialTheme.colors.onPrimary,
     backgroundColor: Color = colorResource(id = R.color.colorPrimary),
+    width: Dp = 54.dp,
 ) {
     Surface(
         modifier = Modifier
             .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
-            .width(54.dp),
+            .width(width),
         shape = MaterialTheme.shapes.small,
         color = backgroundColor,
         elevation = 2.dp
