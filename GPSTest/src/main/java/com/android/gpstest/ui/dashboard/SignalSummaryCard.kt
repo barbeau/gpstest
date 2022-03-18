@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
@@ -112,12 +113,14 @@ fun SignalSummaryCard(
             },
             expandedContent = {
                 FlowRow {
-                    for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries) {
-                        // TODO - shrink the size of this CircleGraph to indicate it's a subset of the main 2 graphs
+                    for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList().sortedBy { it.key }) {
                         CircleGraph(
                             currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key] ?: 0,
                             maxValue = numSignalsInViewByCf.value,
-                            descriptionText = stringResource(R.string.signals_in_use)
+                            descriptionText = stringResource(R.string.signals_in_use),
+                            size = 100.dp,
+                            largeTextStyle = titleStyle.copy(fontSize = 14.sp),
+                            smallTextStyle = subtitleStyle.copy(fontSize = 12.sp),
                         ) {
                             Chip(numSignalsInViewByCf.key)
                         }
