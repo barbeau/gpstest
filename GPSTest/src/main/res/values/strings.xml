@@ -221,6 +221,7 @@
     <string name="satellites_in_use">satellites in use</string>
     <string name="signals_in_use">signals in use</string>
     <string name="tap_to_expand_card">Tap to expand card</string>
+    <string name="last_updated">Last updated: %1$s</string>
 
     <string name="dashboard_feature_accuracy">Features that improve accuracy</string>
     <string name="dashboard_feature_info">Features for GNSS debug</string>

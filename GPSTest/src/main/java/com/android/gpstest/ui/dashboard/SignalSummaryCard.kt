@@ -16,15 +16,13 @@
 package com.android.gpstest.ui.dashboard
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -39,6 +37,7 @@ import com.android.gpstest.ui.components.CircleGraph
 import com.android.gpstest.ui.components.CircleIcon
 import com.android.gpstest.ui.components.CollapsibleCard
 import com.android.gpstest.ui.components.OkDialog
+import com.android.gpstest.ui.status.formatTime
 import com.android.gpstest.util.PreferenceUtil.expandSignalSummary
 import com.android.gpstest.util.PreferenceUtils
 import com.google.accompanist.flowlayout.FlowRow
@@ -112,22 +111,37 @@ fun SignalSummaryCard(
                 }
             },
             expandedContent = {
-                FlowRow {
-                    for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList().sortedBy { it.key }) {
-                        CircleGraph(
-                            currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key] ?: 0,
-                            maxValue = numSignalsInViewByCf.value,
-                            descriptionText = stringResource(R.string.signals_in_use),
-                            size = 100.dp,
-                            largeTextStyle = titleStyle.copy(fontSize = 14.sp),
-                            smallTextStyle = subtitleStyle.copy(fontSize = 12.sp),
-                        ) {
-                            Chip(
-                                text = numSignalsInViewByCf.key,
-                                width = 44.dp
-                            )
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    FlowRow {
+                        for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList()
+                            .sortedBy { it.key }) {
+                            CircleGraph(
+                                currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key]
+                                    ?: 0,
+                                maxValue = numSignalsInViewByCf.value,
+                                descriptionText = stringResource(R.string.signals_in_use),
+                                size = 100.dp,
+                                largeTextStyle = titleStyle.copy(fontSize = 14.sp),
+                                smallTextStyle = subtitleStyle.copy(fontSize = 12.sp),
+                            ) {
+                                Chip(
+                                    text = numSignalsInViewByCf.key,
+                                    width = 44.dp
+                                )
+                            }
                         }
                     }
+                    Text(
+                        text = stringResource(
+                            R.string.last_updated,
+                            formatTime(satelliteMetadata.systemCurrentTimeMillis)
+                        ),
+                        style = subtitleStyle.copy(fontSize = 12.sp),
+                        modifier = Modifier.padding(10.dp)
+                    )
                 }
             }
         )

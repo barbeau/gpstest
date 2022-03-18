@@ -59,5 +59,6 @@ data class SatelliteMetadata(
         val missingAlmanacEphemerisButHaveAzimuthElevation: Map<String, SatelliteStatus> = LinkedHashMap(),
         val signalsWithoutData: Map<String, SatelliteStatus> = LinkedHashMap(),
         val numSignalsUsedByCf: MutableMap<String, Int> = LinkedHashMap(),
-        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap()
+        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap(),
+        val systemCurrentTimeMillis: Long = System.currentTimeMillis()
 )

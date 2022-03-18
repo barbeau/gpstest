@@ -230,12 +230,28 @@ fun Time(location: Location) {
     if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
         LocationValue("")
     } else {
-        formatTime(location.time)
+        formattedTime(location.time)
     }
 }
 
 @Composable
-private fun formatTime(time: Long) {
+fun formattedTime(time: Long) {
+    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValidWeekRollover(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+        val dateAndTime = formatTime(time, includeDate = true)
+        // Time and date
+        if (DateTimeUtils.isTimeValidWeekRollover(time)) {
+            LocationValue(dateAndTime)
+        } else {
+            ErrorTime(dateAndTime, time)
+        }
+    } else {
+        // Time
+        LocationValue(formatTime(time))
+    }
+}
+
+@Composable
+fun formatTime(time: Long, includeDate: Boolean = false): String {
     // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
     val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
     val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
@@ -256,17 +272,11 @@ private fun formatTime(time: Long) {
         )
     }
 
-    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValidWeekRollover(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
-        val dateAndTime = timeAndDateFormat.format(time).trimTimeZeros()
-        // Time and date
-        if (DateTimeUtils.isTimeValidWeekRollover(time)) {
-            LocationValue(dateAndTime)
-        } else {
-            ErrorTime(dateAndTime, time)
-        }
+    return if (includeDate) {
+        timeAndDateFormat.format(time).trimTimeZeros()
     } else {
         // Time
-        LocationValue(timeFormat.format(time).trimTimeZeros())
+        timeFormat.format(time).trimTimeZeros()
     }
 }
 
