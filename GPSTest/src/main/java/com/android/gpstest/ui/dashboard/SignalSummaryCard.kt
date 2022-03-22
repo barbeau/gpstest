@@ -20,10 +20,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
@@ -44,26 +42,11 @@ import com.google.accompanist.flowlayout.FlowRow
 fun SignalSummaryCard(
     satelliteMetadata: SatelliteMetadata,
 ) {
-    var openDialog by remember { mutableStateOf(false) }
-    Row {
-        Text(
-            modifier = Modifier.padding(5.dp),
-            text = stringResource(id = R.string.dashboard_signal_summary),
-            style = headingStyle,
-            color = MaterialTheme.colors.onBackground
-        )
-        HelpIcon(
-            modifier = Modifier.align(CenterVertically),
-            onClick = { openDialog = true }
-        )
-    }
-    OkDialog(
-        open = openDialog,
-        onDismiss = { openDialog = false },
-        title = stringResource(R.string.dashboard_signal_summary),
-        text = stringResource(R.string.dashboard_signal_summary_help)
+    TitleWithHelp(
+        titleTextId = R.string.dashboard_signal_summary,
+        helpTitleId = R.string.dashboard_signal_summary,
+        helpTextId = R.string.dashboard_signal_summary_help
     )
-
 
     if (satelliteMetadata.numSignalsTotal == 0) {
         // Make the ProgressCard about the height of the CircleGraph to avoid UI quickly expanding

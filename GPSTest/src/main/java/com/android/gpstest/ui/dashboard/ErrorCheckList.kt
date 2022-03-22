@@ -44,6 +44,7 @@ import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.ui.components.Globe
 import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.Orbit
+import com.android.gpstest.ui.components.TitleWithHelp
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis
@@ -68,24 +69,10 @@ fun ErrorCheckList(
     timeBetweenLocationUpdatesSeconds: Double,
     timeBetweenGnssSystemTimeSeconds: Double,
 ) {
-    var openDialog by remember { mutableStateOf(false) }
-    Row {
-        Text(
-            modifier = Modifier.padding(5.dp),
-            text = stringResource(id = R.string.dashboard_error_check),
-            style = headingStyle,
-            color = MaterialTheme.colors.onBackground
-        )
-        HelpIcon(
-            modifier = Modifier.align(CenterVertically),
-            onClick = { openDialog = true }
-        )
-    }
-    OkDialog(
-        open = openDialog,
-        onDismiss = { openDialog = false },
-        title = stringResource(R.string.dashboard_error_check),
-        text = stringResource(R.string.dashboard_errors_help)
+    TitleWithHelp(
+        titleTextId = R.string.dashboard_error_check,
+        helpTitleId = R.string.dashboard_error_check,
+        helpTextId = R.string.dashboard_errors_help
     )
     Card(
         modifier = Modifier

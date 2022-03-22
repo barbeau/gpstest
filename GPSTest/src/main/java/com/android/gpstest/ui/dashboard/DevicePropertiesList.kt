@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -33,29 +32,16 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
 import com.android.gpstest.model.UserCountry
 import com.android.gpstest.ui.components.OkDialog
+import com.android.gpstest.ui.components.TitleWithHelp
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.IOUtils.getAppVersionDescription
 
 @Composable
 fun DevicePropertiesList(userCountry: UserCountry) {
-    var openDialog by remember { mutableStateOf(false) }
-    Row {
-        Text(
-            modifier = Modifier.padding(5.dp),
-            text = stringResource(id = R.string.dashboard_device_properties),
-            style = headingStyle,
-            color = MaterialTheme.colors.onBackground
-        )
-        HelpIcon(
-            modifier = Modifier.align(CenterVertically),
-            onClick = { openDialog = true }
-        )
-    }
-    OkDialog(
-        open = openDialog,
-        onDismiss = { openDialog = false },
-        title = stringResource(R.string.dashboard_device_properties),
-        text = stringResource(R.string.dashboard_device_properties_help)
+    TitleWithHelp(
+        titleTextId = R.string.dashboard_device_properties,
+        helpTitleId = R.string.dashboard_device_properties,
+        helpTextId = R.string.dashboard_device_properties_help
     )
     Card(
         modifier = Modifier
