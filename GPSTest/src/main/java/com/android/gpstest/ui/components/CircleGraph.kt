@@ -70,7 +70,7 @@ fun CircleGraph(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .padding(5.dp)
+            .padding(2.dp)
             .size(size)
     ) {
         var value by remember { mutableStateOf(0.0f) }
@@ -122,10 +122,12 @@ fun CircleGraph(
                 text = "$currentValue/$maxValue",
                 style = largeTextStyle
             )
-            Text(
-                text = descriptionText,
-                style = smallTextStyle
-            )
+            if (descriptionText.isNotBlank()) {
+                Text(
+                    text = descriptionText,
+                    style = smallTextStyle
+                )
+            }
         }
     }
 }

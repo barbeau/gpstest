@@ -488,6 +488,7 @@ fun ChipProgress(
 fun Chip(
     text: String,
     textColor: Color = MaterialTheme.colors.onPrimary,
+    textStyle: TextStyle = chipStyle,
     backgroundColor: Color = colorResource(id = R.color.colorPrimary),
     width: Dp = 54.dp,
 ) {
@@ -501,7 +502,7 @@ fun Chip(
     ) {
         Text(
             text = text,
-            style = chipStyle,
+            style = textStyle,
             color = textColor,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)

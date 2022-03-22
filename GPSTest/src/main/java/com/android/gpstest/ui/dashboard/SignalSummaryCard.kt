@@ -87,7 +87,8 @@ fun SignalSummaryCard(
             },
             topContent = {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.padding(bottom = 5.dp)
                 ) {
                     CircleGraph(
                         currentValue = satelliteMetadata.numSatsUsed,
@@ -112,7 +113,9 @@ fun SignalSummaryCard(
             },
             expandedContent = {
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     FlowRow {
@@ -123,13 +126,15 @@ fun SignalSummaryCard(
                                     ?: 0,
                                 maxValue = numSignalsInViewByCf.value,
                                 descriptionText = stringResource(R.string.signals_in_use),
-                                size = 100.dp,
-                                largeTextStyle = titleStyle.copy(fontSize = 14.sp),
-                                smallTextStyle = subtitleStyle.copy(fontSize = 12.sp),
+                                size = 88.dp,
+                                largeTextStyle = titleStyle.copy(fontSize = 12.sp),
+                                smallTextStyle = subtitleStyle.copy(fontSize = 10.sp),
+                                topIconPadding = 24.dp
                             ) {
                                 Chip(
                                     text = numSignalsInViewByCf.key,
-                                    width = 44.dp
+                                    textStyle = chipStyle.copy(fontSize = 12.sp),
+                                    width = 30.dp
                                 )
                             }
                         }
