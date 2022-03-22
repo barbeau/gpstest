@@ -33,11 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.ui.components.CircleGraph
-import com.android.gpstest.ui.components.CircleIcon
-import com.android.gpstest.ui.components.CollapsibleCard
-import com.android.gpstest.ui.components.OkDialog
-import com.android.gpstest.ui.status.formatTime
+import com.android.gpstest.ui.components.*
 import com.android.gpstest.util.PreferenceUtil.expandSignalSummary
 import com.android.gpstest.util.PreferenceUtils
 import com.google.accompanist.flowlayout.FlowRow
@@ -139,14 +135,7 @@ fun SignalSummaryCard(
                             }
                         }
                     }
-                    Text(
-                        text = stringResource(
-                            R.string.last_updated,
-                            formatTime(satelliteMetadata.systemCurrentTimeMillis)
-                        ),
-                        style = subtitleStyle.copy(fontSize = 12.sp),
-                        modifier = Modifier.padding(10.dp)
-                    )
+                    LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
                 }
             }
         )

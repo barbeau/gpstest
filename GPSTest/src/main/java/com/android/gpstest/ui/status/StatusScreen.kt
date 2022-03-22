@@ -45,6 +45,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.ui.components.LastUpdatedText
 import com.android.gpstest.ui.dashboard.dummyProvider
 import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.MathUtils
@@ -77,7 +78,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Column {
+        Column (horizontalAlignment = Alignment.CenterHorizontally) {
             LocationCard(
                 location,
                 ttff,
@@ -90,6 +91,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
+            LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
         }
     }
 }
