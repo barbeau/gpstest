@@ -18,13 +18,9 @@ package com.android.gpstest.ui.dashboard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -123,17 +119,4 @@ fun SignalSummaryCard(
             }
         )
     }
-}
-
-@Composable
-fun Arrow(
-    rotation: Float,
-    modifier: Modifier = Modifier
-) {
-    Icon(
-        painter = painterResource(id = R.drawable.ic_baseline_expand_more_24),
-        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
-        contentDescription = stringResource(R.string.tap_to_expand_card),
-        modifier = modifier.rotate(rotation),
-    )
 }

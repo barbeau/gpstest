@@ -24,12 +24,18 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.android.gpstest.ui.dashboard.Arrow
+import com.android.gpstest.R
+import com.android.gpstest.ui.dashboard.helpIconAlpha
 
 /**
  * A collapsible card that expands and collapses when tapped. [topContent] is always shown,
@@ -54,7 +60,7 @@ fun CollapsibleCard(
         }
     }
     val transition = updateTransition(transitionState, label = "rotate-expand")
-    val arrowRotationDegree by transition.animateFloat({
+    val iconRotationDegree by transition.animateFloat({
         tween()
     }, label = "rotate-expand") {
         if (expandedState) 180f else 0f
@@ -82,13 +88,26 @@ fun CollapsibleCard(
                     expandedContent()
                 }
             }
-            Arrow(
-                rotation = arrowRotationDegree,
+            ExpandIcon(
+                rotation = iconRotationDegree,
                 modifier = Modifier
                     .padding(5.dp)
                     .align(Alignment.BottomEnd)
             )
         }
     }
+}
+
+@Composable
+fun ExpandIcon(
+    rotation: Float,
+    modifier: Modifier = Modifier
+) {
+    Icon(
+        painter = painterResource(id = R.drawable.ic_baseline_expand_more_24),
+        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+        contentDescription = stringResource(R.string.tap_to_expand_card),
+        modifier = modifier.rotate(rotation),
+    )
 }
 
