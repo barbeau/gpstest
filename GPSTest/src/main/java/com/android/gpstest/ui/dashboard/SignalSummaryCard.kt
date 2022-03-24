@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.data.FixState
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.*
 import com.android.gpstest.util.PreferenceUtil.expandSignalSummary
@@ -37,6 +38,7 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun SignalSummaryCard(
     satelliteMetadata: SatelliteMetadata,
+    fixState: FixState,
 ) {
     TitleWithHelp(
         titleTextId = R.string.dashboard_signal_summary,
@@ -61,7 +63,10 @@ fun SignalSummaryCard(
                 )
             },
             topContent = {
-                TopContent(satelliteMetadata = satelliteMetadata)
+                TopContent(
+                    satelliteMetadata = satelliteMetadata,
+                    fixState = fixState
+                )
             },
             expandedContent = {
                 ExpandedContent(satelliteMetadata = satelliteMetadata)
@@ -71,29 +76,43 @@ fun SignalSummaryCard(
 }
 
 @Composable
-fun TopContent(satelliteMetadata: SatelliteMetadata) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier.padding(bottom = 5.dp)
+fun TopContent(
+    satelliteMetadata: SatelliteMetadata,
+    fixState: FixState,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 5.dp)
     ) {
-        CircleGraph(
-            currentValue = satelliteMetadata.numSatsUsed,
-            maxValue = satelliteMetadata.numSatsInView,
-            descriptionText = stringResource(R.string.satellites_in_use)
+        LockIcon(
+            modifier = Modifier.align(Alignment.TopStart),
+            fixState = fixState
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            CircleIcon(
-                iconId = R.drawable.ic_satellite_alt_black_24dp,
-                iconSize = 35.dp
-            )
-        }
-        CircleGraph(
-            currentValue = satelliteMetadata.numSignalsUsed,
-            maxValue = satelliteMetadata.numSignalsInView,
-            descriptionText = stringResource(R.string.signals_in_use)
-        ) {
-            CircleIcon(
-                iconId = R.drawable.ic_wireless_vertical
-            )
+            CircleGraph(
+                currentValue = satelliteMetadata.numSatsUsed,
+                maxValue = satelliteMetadata.numSatsInView,
+                descriptionText = stringResource(R.string.satellites_in_use)
+            ) {
+                CircleIcon(
+                    iconId = R.drawable.ic_satellite_alt_black_24dp,
+                    iconSize = 35.dp
+                )
+            }
+            CircleGraph(
+                currentValue = satelliteMetadata.numSignalsUsed,
+                maxValue = satelliteMetadata.numSignalsInView,
+                descriptionText = stringResource(R.string.signals_in_use)
+            ) {
+                CircleIcon(
+                    iconId = R.drawable.ic_wireless_vertical
+                )
+            }
         }
     }
 }

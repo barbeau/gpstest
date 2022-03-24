@@ -110,7 +110,7 @@ fun Dashboard(
                 .fillMaxSize()
         ) {
             if (PreferenceUtils.isTrackingStarted()) {
-                SignalSummaryCard(satelliteMetadata)
+                SignalSummaryCard(satelliteMetadata, fixState)
                 Spacer(modifier = Modifier.padding(5.dp))
                 GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
                 Spacer(modifier = Modifier.padding(5.dp))

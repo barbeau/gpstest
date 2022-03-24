@@ -23,7 +23,7 @@ import android.text.TextUtils
 import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -31,13 +31,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -56,6 +57,7 @@ import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.LinkifyText
+import com.android.gpstest.ui.components.LockIcon
 import com.android.gpstest.util.*
 import com.android.gpstest.util.FormatUtils.formatBearing
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
@@ -132,7 +134,7 @@ fun LocationCard(
                 LabelColumn2(location)
                 ValueColumn2(location, ttff, dop, satelliteMetadata)
             }
-            LockIcon(fixState)
+            LockIcon(fixState = fixState)
         }
     }
 }
@@ -495,25 +497,6 @@ private fun reduceSpacing(): Boolean {
 private fun letterSpacing(): TextUnit {
     // Reduce text spacing on narrow displays to make both columns fit
     return (-0.01).em
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun LockIcon(fixState: FixState) {
-    var visible by remember { mutableStateOf(false) }
-    visible = fixState == FixState.Acquired
-    AnimatedVisibility(
-        visible = visible,
-        enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
-        exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_lock_24),
-            contentDescription = stringResource(id = R.string.lock),
-            tint = MaterialTheme.colors.onBackground,
-            modifier = Modifier.padding(6.dp)
-        )
-    }
 }
 
 private fun copyToClipboard(context: Context, location: Location) {
