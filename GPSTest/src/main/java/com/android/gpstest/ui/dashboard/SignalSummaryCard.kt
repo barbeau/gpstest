@@ -61,62 +61,72 @@ fun SignalSummaryCard(
                 )
             },
             topContent = {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.padding(bottom = 5.dp)
-                ) {
-                    CircleGraph(
-                        currentValue = satelliteMetadata.numSatsUsed,
-                        maxValue = satelliteMetadata.numSatsInView,
-                        descriptionText = stringResource(R.string.satellites_in_use)
-                    ) {
-                        CircleIcon(
-                            iconId = R.drawable.ic_satellite_alt_black_24dp,
-                            iconSize = 35.dp
-                        )
-                    }
-                    CircleGraph(
-                        currentValue = satelliteMetadata.numSignalsUsed,
-                        maxValue = satelliteMetadata.numSignalsInView,
-                        descriptionText = stringResource(R.string.signals_in_use)
-                    ) {
-                        CircleIcon(
-                            iconId = R.drawable.ic_wireless_vertical
-                        )
-                    }
-                }
+                TopContent(satelliteMetadata = satelliteMetadata)
             },
             expandedContent = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    FlowRow {
-                        for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList()
-                            .sortedBy { it.key }) {
-                            CircleGraph(
-                                currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key]
-                                    ?: 0,
-                                maxValue = numSignalsInViewByCf.value,
-                                descriptionText = stringResource(R.string.signals_in_use),
-                                size = 88.dp,
-                                largeTextStyle = titleStyle.copy(fontSize = 12.sp),
-                                smallTextStyle = subtitleStyle.copy(fontSize = 10.sp),
-                                topIconPadding = 24.dp
-                            ) {
-                                Chip(
-                                    text = numSignalsInViewByCf.key,
-                                    textStyle = chipStyle.copy(fontSize = 12.sp),
-                                    width = 30.dp
-                                )
-                            }
-                        }
-                    }
-                    LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
-                }
+                ExpandedContent(satelliteMetadata = satelliteMetadata)
             }
         )
+    }
+}
+
+@Composable
+fun TopContent(satelliteMetadata: SatelliteMetadata) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier.padding(bottom = 5.dp)
+    ) {
+        CircleGraph(
+            currentValue = satelliteMetadata.numSatsUsed,
+            maxValue = satelliteMetadata.numSatsInView,
+            descriptionText = stringResource(R.string.satellites_in_use)
+        ) {
+            CircleIcon(
+                iconId = R.drawable.ic_satellite_alt_black_24dp,
+                iconSize = 35.dp
+            )
+        }
+        CircleGraph(
+            currentValue = satelliteMetadata.numSignalsUsed,
+            maxValue = satelliteMetadata.numSignalsInView,
+            descriptionText = stringResource(R.string.signals_in_use)
+        ) {
+            CircleIcon(
+                iconId = R.drawable.ic_wireless_vertical
+            )
+        }
+    }
+}
+
+@Composable
+fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FlowRow {
+            for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList()
+                .sortedBy { it.key }) {
+                CircleGraph(
+                    currentValue = satelliteMetadata.numSignalsUsedByCf[numSignalsInViewByCf.key]
+                        ?: 0,
+                    maxValue = numSignalsInViewByCf.value,
+                    descriptionText = stringResource(R.string.signals_in_use),
+                    size = 88.dp,
+                    largeTextStyle = titleStyle.copy(fontSize = 12.sp),
+                    smallTextStyle = subtitleStyle.copy(fontSize = 10.sp),
+                    topIconPadding = 24.dp
+                ) {
+                    Chip(
+                        text = numSignalsInViewByCf.key,
+                        textStyle = chipStyle.copy(fontSize = 12.sp),
+                        width = 30.dp
+                    )
+                }
+            }
+        }
+        LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
     }
 }
