@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
@@ -134,7 +135,7 @@ fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
                     maxValue = numSignalsInViewByCf.value,
                     descriptionText = stringResource(R.string.signals_in_use),
                     size = 88.dp,
-                    largeTextStyle = titleStyle.copy(fontSize = 12.sp),
+                    largeTextStyle = titleStyle.copy(fontSize = 12.sp, fontWeight = FontWeight.Bold),
                     smallTextStyle = subtitleStyle.copy(fontSize = 10.sp),
                     topIconPadding = 24.dp
                 ) {
