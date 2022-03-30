@@ -82,6 +82,9 @@ fun CollapsibleCard(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            BoxWithWaveBackground(
+                modifier = Modifier.fillMaxWidth()
+            )
             Column (
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally

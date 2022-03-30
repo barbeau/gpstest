@@ -44,6 +44,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Path
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -71,6 +73,7 @@ import java.io.File
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
+import kotlin.math.abs
 
 /**
  * Utilities for processing user inteface elements
@@ -1127,5 +1130,14 @@ internal object UIUtils {
     fun String.trimZeros(): String {
         return this.replace(".0", "")
             .replace(",0", "")
+    }
+
+    fun Path.standardQuadFromTo(from: Offset, to: Offset) {
+        quadraticBezierTo(
+            from.x,
+            from.y,
+            abs(from.x + to.x) / 2f,
+            abs(from.y + to.y) / 2f
+        )
     }
 }
