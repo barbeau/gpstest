@@ -616,7 +616,7 @@ val smallSubtitleStyle = TextStyle(
 
 val iconSize = 70.dp
 const val helpIconAlpha = 0.4f
-val helpIconSize = 23.dp
+val helpIconSize = 20.dp
 val helpIconStartPadding = 2.dp
 const val circleGraphAlpha = 0.9f
 

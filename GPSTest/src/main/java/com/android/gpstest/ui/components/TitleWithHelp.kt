@@ -16,7 +16,9 @@
 package com.android.gpstest.ui.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -40,15 +42,23 @@ fun TitleWithHelp(
     @StringRes helpTextId: Int,
 ) {
     var openDialog by remember { mutableStateOf(false) }
-    Row {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    )
+    {
         Text(
-            modifier = Modifier.padding(5.dp),
+            modifier = Modifier
+                .padding(5.dp)
+                .align(Alignment.CenterVertically),
             text = stringResource(id = titleTextId),
             style = headingStyle,
             color = MaterialTheme.colors.onBackground
         )
         HelpIcon(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .padding(5.dp)
+                .align(Alignment.CenterVertically),
             onClick = { openDialog = true }
         )
     }
