@@ -218,6 +218,7 @@
     <!-- Dashboard features -->
     <string name="dashboard_signal_summary">Signal summary</string>
     <string name="dashboard_signal_summary_help">This section shows a summary of GNSS and SBAS signals that your device detects.</string>
+    <string name="frequency_bands">Frequency bands</string>
     <string name="satellites_in_use">satellites in use</string>
     <string name="signals_in_use">signals in use</string>
     <string name="tap_to_expand_card">Tap to expand card</string>

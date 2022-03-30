@@ -18,11 +18,14 @@ package com.android.gpstest.ui.dashboard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
@@ -57,6 +60,7 @@ fun SignalSummaryCard(
     } else {
         CollapsibleCard(
             initialExpandedState = expandSignalSummary(),
+            backgroundColor = MaterialTheme.colors.primary,
             onClick = {
                 PreferenceUtils.saveBoolean(
                     Application.app.getString(R.string.pref_key_expand_signal_summary),
@@ -88,7 +92,8 @@ fun TopContent(
     ) {
         LockIcon(
             modifier = Modifier.align(Alignment.TopStart),
-            fixState = fixState
+            fixState = fixState,
+            tint = MaterialTheme.colors.onPrimary
         )
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -102,7 +107,8 @@ fun TopContent(
             ) {
                 CircleIcon(
                     iconId = R.drawable.ic_satellite_alt_black_24dp,
-                    iconSize = 35.dp
+                    iconSize = 35.dp,
+                    tint = MaterialTheme.colors.onPrimary
                 )
             }
             CircleGraph(
@@ -111,7 +117,8 @@ fun TopContent(
                 descriptionText = stringResource(R.string.signals_in_use)
             ) {
                 CircleIcon(
-                    iconId = R.drawable.ic_wireless_vertical
+                    iconId = R.drawable.ic_wireless_vertical,
+                    tint = MaterialTheme.colors.onPrimary
                 )
             }
         }
@@ -126,6 +133,11 @@ fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
             .wrapContentHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = stringResource(R.string.frequency_bands),
+            style = titleStyle.copy(fontWeight = Bold),
+            modifier = Modifier.padding(bottom = 5.dp)
+        )
         FlowRow {
             for (numSignalsInViewByCf in satelliteMetadata.numSignalsInViewByCf.entries.toList()
                 .sortedBy { it.key }) {
@@ -142,7 +154,9 @@ fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
                     Chip(
                         text = numSignalsInViewByCf.key,
                         textStyle = chipStyle.copy(fontSize = 12.sp),
-                        width = 30.dp
+                        width = 30.dp,
+                        textColor = MaterialTheme.colors.primary,
+                        backgroundColor = MaterialTheme.colors.onPrimary,
                     )
                 }
             }

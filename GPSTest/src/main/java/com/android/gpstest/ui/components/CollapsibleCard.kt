@@ -31,6 +31,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -51,6 +52,7 @@ fun CollapsibleCard(
     topContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit,
     initialExpandedState: Boolean = false,
+    backgroundColor: Color = MaterialTheme.colors.background,
     onClick: (newExpandedState: Boolean) -> Unit,
 ) {
     var expandedState by rememberSaveable { mutableStateOf(initialExpandedState) }
@@ -75,6 +77,7 @@ fun CollapsibleCard(
                 onClick(expandedState)
             },
         elevation = 2.dp,
+        backgroundColor = backgroundColor
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -105,7 +108,7 @@ fun ExpandIcon(
 ) {
     Icon(
         painter = painterResource(id = R.drawable.ic_baseline_expand_more_24),
-        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+        tint = MaterialTheme.colors.onPrimary.copy(alpha = helpIconAlpha),
         contentDescription = stringResource(R.string.tap_to_expand_card),
         modifier = modifier.rotate(rotation),
     )

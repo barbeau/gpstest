@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
+import com.android.gpstest.ui.dashboard.circleGraphAlpha
 import com.android.gpstest.ui.dashboard.helpIconAlpha
 import com.android.gpstest.ui.dashboard.subtitleStyle
 import com.android.gpstest.ui.dashboard.titleStyle
@@ -56,8 +57,8 @@ fun CircleGraph(
     inactiveBarColor: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
     activeBarBrush: Brush = Brush.verticalGradient(
         colors = listOf(
-            MaterialTheme.colors.primary,
-            MaterialTheme.colors.primaryVariant
+            MaterialTheme.colors.onPrimary,
+            MaterialTheme.colors.onPrimary.copy(alpha = circleGraphAlpha)
         )
     ),
     strokeWidth: Dp = 12.dp,
@@ -137,6 +138,7 @@ fun CircleIcon(
     @DrawableRes iconId: Int,
     iconSize: Dp = 40.dp,
     bottomIconPadding: Dp = 7.dp,
+    tint: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
 ) {
     Icon(
         imageVector = ImageVector.vectorResource(
@@ -146,6 +148,6 @@ fun CircleIcon(
         modifier = Modifier
             .padding(bottom = bottomIconPadding)
             .size(iconSize),
-        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+        tint = tint,
     )
 }
