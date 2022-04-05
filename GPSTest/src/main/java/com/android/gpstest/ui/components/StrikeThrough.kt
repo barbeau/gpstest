@@ -2,7 +2,7 @@ package com.android.gpstest.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.drawscope.rotate
 
 @Composable
 fun StrikeThrough(
-    color: Color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
-    shadowColor: Color = MaterialTheme.colors.primary.copy(alpha = 1.0f)
+    color: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1.0f),
+    shadowColor: Color = MaterialTheme.colorScheme.primary.copy(alpha = 1.0f)
 ) {
     // Strike-through line with shadows (top and bottom)
     Canvas(

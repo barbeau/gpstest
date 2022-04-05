@@ -22,7 +22,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.Bottom
@@ -160,7 +161,7 @@ fun GnssList(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_gnss),
         style = headingStyle,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colorScheme.onBackground
     )
     if (supportedGnss.isEmpty()) {
         // Make the ProgressCard about the height of 3 GNSS cards to avoid UI quickly expanding
@@ -202,7 +203,7 @@ fun SbasList(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_supported_sbas),
         style = headingStyle,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colorScheme.onBackground
     )
     if (supportedGnss.isEmpty()) {
         ProgressCard(
@@ -392,6 +393,7 @@ fun SbasCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GnssOrSbasCard(
     @DrawableRes flagId: Int,
@@ -404,8 +406,7 @@ fun GnssOrSbasCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
-        elevation = 2.dp
+            .padding(5.dp)
     ) {
         Row {
             Column(modifier = Modifier.align(CenterVertically)) {
@@ -487,7 +488,7 @@ fun ChipProgress(
 @Composable
 fun Chip(
     text: String,
-    textColor: Color = MaterialTheme.colors.onPrimary,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
     textStyle: TextStyle = chipStyle,
     backgroundColor: Color = colorResource(id = R.color.colorPrimary),
     width: Dp = 54.dp,
@@ -496,9 +497,8 @@ fun Chip(
         modifier = Modifier
             .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
             .width(width),
-        shape = MaterialTheme.shapes.small,
-        color = backgroundColor,
-        elevation = 2.dp
+        shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp),
+        color = backgroundColor
     ) {
         Text(
             text = text,
@@ -522,10 +522,11 @@ fun PassChip() {
 fun FailChip() {
     Chip(
         stringResource(R.string.dashboard_fail),
-        backgroundColor = MaterialTheme.colors.error
+        backgroundColor = MaterialTheme.colorScheme.error
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProgressCard(
     modifier: Modifier = Modifier,
@@ -534,8 +535,7 @@ fun ProgressCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(5.dp),
-        elevation = 2.dp
+            .padding(5.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.Center
@@ -575,7 +575,7 @@ fun HelpIcon(
             .clickable {
                 onClick()
             },
-        tint = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
     )
 }
 

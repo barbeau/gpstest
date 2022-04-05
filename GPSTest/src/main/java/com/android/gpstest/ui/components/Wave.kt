@@ -3,7 +3,7 @@ package com.android.gpstest.ui.components
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,7 +21,7 @@ import kotlin.math.sin
 @Composable
 fun Wave(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.primary,
+    color: Color = MaterialTheme.colorScheme.primary,
     frequencyMultiplier: Float = 1f,
     animationDurationMs: Int = 30000,
     initialDeltaX: Float = 0f

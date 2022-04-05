@@ -26,7 +26,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -57,6 +57,7 @@ import kotlinx.coroutines.launch
 
 val imagePaddingDp = 10.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeaturesAccuracyList(
     satelliteMetadata: SatelliteMetadata,
@@ -67,13 +68,12 @@ fun FeaturesAccuracyList(
         modifier = Modifier.padding(5.dp),
         text = stringResource(id = R.string.dashboard_feature_accuracy),
         style = headingStyle,
-        color = MaterialTheme.colors.onBackground
+        color = MaterialTheme.colorScheme.onBackground
     )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
-        elevation = 2.dp
+            .padding(5.dp)
     ) {
         Column {
             DualFrequency(
@@ -132,16 +132,16 @@ fun FrequencyImage(
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary)
+            .background(MaterialTheme.colorScheme.primary)
             .border(
-                BorderStroke(1.dp, MaterialTheme.colors.primary),
+                BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 CircleShape
             )
     ) {
         if (showSecondFrequency) {
             Wave(
                 modifier = modifier,
-                color = MaterialTheme.colors.onPrimary.copy(alpha = 0.5f),
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
                 frequencyMultiplier = .8f,
                 initialDeltaX = 0f,
                 animationDurationMs = 10000
@@ -149,7 +149,7 @@ fun FrequencyImage(
         }
         Wave(
             modifier = modifier,
-            color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1.0f),
             frequencyMultiplier = frequencyMultiplier,
             initialDeltaX = initialDeltaX,
             animationDurationMs = animationDurationMs
@@ -407,7 +407,7 @@ fun Check(
         },
         tint = when (supported) {
             YES -> Green500
-            NO -> MaterialTheme.colors.error
+            NO -> MaterialTheme.colorScheme.error
             UNKNOWN -> Color.DarkGray
         }
     )
@@ -424,7 +424,7 @@ fun FeatureIcon(
             .size(iconSize)
             .padding(imagePaddingDp)
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary),
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(imageId),
@@ -432,9 +432,9 @@ fun FeatureIcon(
             modifier = Modifier
                 .size(iconSizeDp.dp)
                 .padding(5.dp)
-                .background(MaterialTheme.colors.primary)
+                .background(MaterialTheme.colorScheme.primary)
                 .align(Center),
-            tint = MaterialTheme.colors.onPrimary,
+            tint = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }
@@ -448,18 +448,18 @@ fun FeatureTextIcon(
             .size(iconSize)
             .padding(imagePaddingDp)
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary),
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         Text(
             text = stringResource(textId),
             modifier = Modifier
-                .background(MaterialTheme.colors.primary)
+                .background(MaterialTheme.colorScheme.primary)
                 .align(Center),
             style = TextStyle(
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
             ),
-            color = MaterialTheme.colors.onPrimary,
+            color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center
         )
     }

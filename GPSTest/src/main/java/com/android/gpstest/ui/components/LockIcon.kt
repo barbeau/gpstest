@@ -17,8 +17,8 @@ package com.android.gpstest.ui.components
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +38,7 @@ import com.android.gpstest.data.FixState
 fun LockIcon(
     modifier: Modifier = Modifier,
     fixState: FixState,
-    tint: Color = MaterialTheme.colors.onBackground
+    tint: Color = MaterialTheme.colorScheme.onBackground
 ) {
     var visible by rememberSaveable { mutableStateOf(false) }
     visible = fixState == FixState.Acquired

@@ -15,9 +15,9 @@
  */
 package com.android.gpstest.ui.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -38,14 +38,14 @@ val Indigo200 = Color(0xFF9fa8da)
 val IndigoLight = Color(0xFF757DE8)
 val Green500 = Color(0xFF4caf50)
 
-private val lightColors = lightColors(
+private val lightColors = lightColorScheme(
     primary = Indigo500,
-    primaryVariant = primaryDark
+    //secondary = primaryDark
 )
 
-private val darkColors = darkColors(
+private val darkColors = darkColorScheme(
     primary = Indigo500,
-    primaryVariant = primaryDark
+    //secondary = primaryDark
 )
 
 @Composable
@@ -55,7 +55,7 @@ fun AppTheme(
 ) {
     MaterialTheme(
         // isSystemInDarkTheme()
-        colors = if (darkTheme) darkColors else lightColors,
+        colorScheme = if (darkTheme) darkColors else lightColors,
     ) {
         content()
     }

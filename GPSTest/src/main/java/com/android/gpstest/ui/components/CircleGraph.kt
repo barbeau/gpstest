@@ -19,10 +19,10 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ProgressIndicatorDefaults
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,11 +54,11 @@ fun CircleGraph(
     size: Dp = 130.dp,
     currentValue: Int,
     maxValue: Int,
-    inactiveBarColor: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+    inactiveBarColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
     activeBarBrush: Brush = Brush.verticalGradient(
         colors = listOf(
-            MaterialTheme.colors.onPrimary,
-            MaterialTheme.colors.onPrimary.copy(alpha = circleGraphAlpha)
+            MaterialTheme.colorScheme.onPrimary,
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = circleGraphAlpha)
         )
     ),
     strokeWidth: Dp = 12.dp,
@@ -138,7 +138,7 @@ fun CircleIcon(
     @DrawableRes iconId: Int,
     iconSize: Dp = 40.dp,
     bottomIconPadding: Dp = 7.dp,
-    tint: Color = MaterialTheme.colors.onBackground.copy(alpha = helpIconAlpha),
+    tint: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
 ) {
     Icon(
         imageVector = ImageVector.vectorResource(

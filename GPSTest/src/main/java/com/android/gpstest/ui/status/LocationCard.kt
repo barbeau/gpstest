@@ -30,7 +30,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -104,7 +104,7 @@ fun previewLocation(): Location {
     return l
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun LocationCard(
     location: Location,
@@ -121,8 +121,7 @@ fun LocationCard(
             .padding(5.dp)
             .clickable {
                 copyToClipboard(context, location)
-            },
-        elevation = 2.dp
+            }
     ) {
         Box {
             Row(
@@ -437,7 +436,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             .wrapContentHeight()
             .wrapContentWidth()
             .clip(RoundedCornerShape(4.dp))
-            .background(MaterialTheme.colors.error)
+            .background(MaterialTheme.colorScheme.error)
             .clickable {
                 openDialog.value = true
             }
@@ -446,7 +445,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             text = timeText,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
             fontSize = 13.sp,
-            color = MaterialTheme.colors.onError
+            color = MaterialTheme.colorScheme.onError
         )
     }
 

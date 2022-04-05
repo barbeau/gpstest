@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/location_value"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/no_location"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -55,21 +55,21 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_decimal_degrees"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/Widget.Material3.Chip.Input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Decimal degrees" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_dms"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/Widget.Material3.Chip.Input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DMS" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_degrees_decimal_minutes"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
+                style="@style/Widget.Material3.Chip.Input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Degrees Decimal Minutes" />

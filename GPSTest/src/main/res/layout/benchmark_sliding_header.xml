@@ -74,7 +74,7 @@
 
     <TextView
         android:id="@+id/error_label"
-        style="@style/TextAppearance.MaterialComponents.Overline"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -169,7 +169,7 @@
 
     <TextView
         android:id="@+id/avg_error_label"
-        style="@style/TextAppearance.MaterialComponents.Overline"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

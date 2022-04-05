@@ -17,9 +17,8 @@ package com.android.gpstest.ui.dashboard
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +37,6 @@ import com.android.gpstest.util.PreferenceUtils
 import com.google.accompanist.flowlayout.FlowRow
 
 @SuppressLint("UnusedTransitionTargetStateParameter")
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SignalSummaryCard(
     satelliteMetadata: SatelliteMetadata,
@@ -60,7 +58,7 @@ fun SignalSummaryCard(
     } else {
         CollapsibleCard(
             initialExpandedState = expandSignalSummary(),
-            backgroundColor = MaterialTheme.colors.primary,
+            backgroundColor = MaterialTheme.colorScheme.primary,
             onClick = {
                 PreferenceUtils.saveBoolean(
                     Application.app.getString(R.string.pref_key_expand_signal_summary),
@@ -93,7 +91,7 @@ fun TopContent(
         LockIcon(
             modifier = Modifier.align(Alignment.TopStart),
             fixState = fixState,
-            tint = MaterialTheme.colors.onPrimary
+            tint = MaterialTheme.colorScheme.onPrimary
         )
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -108,7 +106,7 @@ fun TopContent(
                 CircleIcon(
                     iconId = R.drawable.ic_satellite_alt_black_24dp,
                     iconSize = 35.dp,
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
             CircleGraph(
@@ -118,7 +116,7 @@ fun TopContent(
             ) {
                 CircleIcon(
                     iconId = R.drawable.ic_wireless_vertical,
-                    tint = MaterialTheme.colors.onPrimary
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -155,8 +153,8 @@ fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
                         text = numSignalsInViewByCf.key,
                         textStyle = chipStyle.copy(fontSize = 12.sp),
                         width = 30.dp,
-                        textColor = MaterialTheme.colors.primary,
-                        backgroundColor = MaterialTheme.colors.onPrimary,
+                        textColor = MaterialTheme.colorScheme.primary,
+                        backgroundColor = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }

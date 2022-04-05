@@ -8,7 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Orbit(
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.onPrimary.copy(alpha = 1.0f),
+    color: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1.0f),
     animationDurationMs: Int = 40000,
 ) {
     // Transitions used to rotate the ovals around the center of image
@@ -79,9 +79,9 @@ fun Orbit(
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary)
+            .background(MaterialTheme.colorScheme.primary)
             .border(
-                BorderStroke(1.dp, MaterialTheme.colors.primary),
+                BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 CircleShape
             )
     ) {

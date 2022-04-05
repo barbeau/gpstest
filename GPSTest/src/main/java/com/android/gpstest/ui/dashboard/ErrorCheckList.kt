@@ -24,7 +24,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -59,6 +59,7 @@ import com.android.gpstest.util.UIUtils.trimZeros
 import java.text.SimpleDateFormat
 import kotlin.math.abs
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ErrorCheckList(
     satelliteMetadata: SatelliteMetadata,
@@ -77,8 +78,7 @@ fun ErrorCheckList(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
-        elevation = 2.dp
+            .padding(5.dp)
     ) {
         Column {
             val locationManager =
@@ -617,7 +617,7 @@ fun ErrorIcon(
             .size(iconSize)
             .padding(imagePaddingDp.dp)
             .clip(CircleShape)
-            .background(MaterialTheme.colors.primary),
+            .background(MaterialTheme.colorScheme.primary),
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(imageId),
@@ -625,9 +625,9 @@ fun ErrorIcon(
             modifier = Modifier
                 .size(iconSizeDp.dp)
                 .padding(5.dp)
-                .background(MaterialTheme.colors.primary)
+                .background(MaterialTheme.colorScheme.primary)
                 .align(Alignment.Center),
-            tint = MaterialTheme.colors.onPrimary,
+            tint = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }

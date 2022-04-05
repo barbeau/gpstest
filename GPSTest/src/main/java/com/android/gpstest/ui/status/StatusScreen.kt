@@ -20,9 +20,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -114,13 +115,13 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
             ),
             fontSize = 13.sp,
             fontStyle = FontStyle.Italic,
-            color = MaterialTheme.colors.onBackground
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
@@ -148,6 +149,7 @@ fun SbasStatusCard(satStatuses: List<SatelliteStatus>) {
     StatusCard(satStatuses, false)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatusCard(
     satStatuses: List<SatelliteStatus>,
@@ -163,8 +165,7 @@ fun StatusCard(
     }
 
     Card(
-        modifier = modifier,
-        elevation = 2.dp
+        modifier = modifier
     ) {
         if (showList(isGnss, satStatuses)) {
             Column {

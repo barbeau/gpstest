@@ -23,9 +23,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -46,13 +47,14 @@ import com.android.gpstest.ui.dashboard.helpIconAlpha
  * [initialExpandedState] can be used to set the initial expanded state of the card (e.g., from
  * a user preference or an expanded state from the last app execution).
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 fun CollapsibleCard(
     topContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit,
     initialExpandedState: Boolean = false,
-    backgroundColor: Color = MaterialTheme.colors.background,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     onClick: (newExpandedState: Boolean) -> Unit,
 ) {
     var expandedState by rememberSaveable { mutableStateOf(initialExpandedState) }
@@ -76,8 +78,7 @@ fun CollapsibleCard(
                 expandedState = !expandedState
                 onClick(expandedState)
             },
-        elevation = 2.dp,
-        backgroundColor = backgroundColor
+        containerColor = backgroundColor
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -108,7 +109,7 @@ fun ExpandIcon(
 ) {
     Icon(
         painter = painterResource(id = R.drawable.ic_baseline_expand_more_24),
-        tint = MaterialTheme.colors.onPrimary.copy(alpha = helpIconAlpha),
+        tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = helpIconAlpha),
         contentDescription = stringResource(R.string.tap_to_expand_card),
         modifier = modifier.rotate(rotation),
     )

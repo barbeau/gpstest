@@ -22,8 +22,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import com.android.gpstest.ui.components.TitleWithHelp
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.IOUtils.getAppVersionDescription
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DevicePropertiesList(userCountry: UserCountry) {
     TitleWithHelp(
@@ -46,8 +48,7 @@ fun DevicePropertiesList(userCountry: UserCountry) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp),
-        elevation = 2.dp
+            .padding(5.dp)
     ) {
         Column {
             DeviceMakeModel()
