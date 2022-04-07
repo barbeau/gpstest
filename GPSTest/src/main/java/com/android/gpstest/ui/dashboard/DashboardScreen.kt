@@ -151,6 +151,7 @@ fun Dashboard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GnssList(
     supportedGnss: Set<GnssType>,
@@ -164,7 +165,7 @@ fun GnssList(
         color = MaterialTheme.colorScheme.onBackground
     )
     if (supportedGnss.isEmpty()) {
-        // Make the ProgressCard about the height of 3 GNSS cards to avoid UI quickly expanding
+        // Make the ProgressCard about the height of GNSS card to avoid UI quickly expanding
         ProgressCard(
             modifier = Modifier.height(240.dp),
             progressVisible = true,
@@ -172,26 +173,55 @@ fun GnssList(
         )
     } else {
         if (gnssToCf.isNotEmpty()) {
-            gnssToCf.entries.forEach {
-                GnssOrSbasCard(
-                    gnssType = it.key,
-                    cfs = it.value,
-                    scanStatus = scanStatus
-                )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                gnssToCf.entries.forEachIndexed { index, entry ->
+                    GnssOrSbasRecord(
+                        gnssType = entry.key,
+                        cfs = entry.value,
+                        scanStatus = scanStatus
+                    )
+                    maybeDivider(index, gnssToCf.entries.size)
+                }
             }
         } else {
             // Some devices don't support CF values, so loop through supported GNSS instead
-            supportedGnss.forEach {
-                GnssOrSbasCard(
-                    gnssType = it,
-                    cfs = emptySet(),
-                    scanStatus = scanStatus
-                )
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                supportedGnss.forEachIndexed { index, entry ->
+                    GnssOrSbasRecord(
+                        gnssType = entry,
+                        cfs = emptySet(),
+                        scanStatus = scanStatus
+                    )
+                    maybeDivider(index, supportedGnss.size)
+                }
             }
         }
     }
 }
 
+/**
+ * Shows a divider if the [index] element is not the last in the collection ([index] != [size] - 1)
+ */
+@Composable
+fun maybeDivider(index: Int, size: Int) {
+    if (index != size - 1) {
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = Dp.Hairline,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha)
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SbasList(
     supportedGnss: Set<GnssType>,
@@ -205,48 +235,67 @@ fun SbasList(
         style = headingStyle,
         color = MaterialTheme.colorScheme.onBackground
     )
+    // SBAS usually show up after GNSS, so wait for GNSS to show up before potentially saying "No SBAS"
     if (supportedGnss.isEmpty()) {
         ProgressCard(
             progressVisible = true,
             message = stringResource(R.string.dashboard_waiting_for_signals)
         )
     } else {
-        if (sbasToCf.isNotEmpty()) {
-            sbasToCf.entries.forEach {
-                SbasCard(
-                    sbasType = it.key,
-                    cfs = it.value,
-                    scanStatus = scanStatus
+        when {
+            sbasToCf.isNotEmpty() -> {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                ) {
+                    sbasToCf.entries.forEachIndexed { index, entry ->
+                        SbasCard(
+                            sbasType = entry.key,
+                            cfs = entry.value,
+                            scanStatus = scanStatus
+                        )
+                        maybeDivider(index = index, size = sbasToCf.entries.size)
+                    }
+                }
+            }
+            supportedSbas.isNotEmpty() -> {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp)
+                ) {
+                    // Some devices don't support CF values, so loop through supported SBAS instead
+                    supportedSbas.forEachIndexed { index, entry ->
+                        SbasCard(
+                            sbasType = entry,
+                            cfs = emptySet(),
+                            scanStatus = scanStatus
+                        )
+                        maybeDivider(index = index, size = supportedSbas.size)
+                    }
+                }
+            }
+            else -> {
+                // Show "no SBAS" card
+                ProgressCard(
+                    progressVisible = false,
+                    message = stringResource(R.string.sbas_not_available)
                 )
             }
-        } else if (supportedSbas.isNotEmpty()) {
-            // Some devices don't support CF values, so loop through supported SBAS instead
-            supportedSbas.forEach {
-                SbasCard(
-                    sbasType = it,
-                    cfs = emptySet(),
-                    scanStatus = scanStatus
-                )
-            }
-        } else {
-            // Show "no SBAS" card
-            ProgressCard(
-                progressVisible = false,
-                message = stringResource(R.string.sbas_not_available)
-            )
         }
     }
 }
 
 @Composable
-fun GnssOrSbasCard(
+fun GnssOrSbasRecord(
     gnssType: GnssType,
     cfs: Set<String>,
     scanStatus: ScanStatus
 ) {
     when (gnssType) {
         GnssType.NAVSTAR -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_us_flag_round,
                 R.string.gps_content_description,
                 R.string.dashboard_usa,
@@ -256,7 +305,7 @@ fun GnssOrSbasCard(
             )
         }
         GnssType.GALILEO -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_eu_flag_round,
                 R.string.galileo_content_description,
                 R.string.dashboard_eu,
@@ -266,7 +315,7 @@ fun GnssOrSbasCard(
             )
         }
         GnssType.GLONASS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_russia_flag_round,
                 R.string.glonass_content_description,
                 R.string.dashboard_russia,
@@ -276,7 +325,7 @@ fun GnssOrSbasCard(
             )
         }
         GnssType.QZSS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_japan_flag_round,
                 R.string.qzss_content_description,
                 R.string.dashboard_japan,
@@ -286,7 +335,7 @@ fun GnssOrSbasCard(
             )
         }
         GnssType.BEIDOU -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_china_flag_round,
                 R.string.beidou_content_description,
                 R.string.dashboard_china,
@@ -296,7 +345,7 @@ fun GnssOrSbasCard(
             )
         }
         GnssType.IRNSS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_india_flag_round,
                 R.string.irnss_content_description,
                 R.string.dashboard_india,
@@ -318,7 +367,7 @@ fun SbasCard(
 ) {
     when (sbasType) {
         SbasType.WAAS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_us_flag_round,
                 R.string.waas_content_description,
                 R.string.dashboard_usa,
@@ -328,7 +377,7 @@ fun SbasCard(
             )
         }
         SbasType.EGNOS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_eu_flag_round,
                 R.string.egnos_content_description,
                 R.string.dashboard_eu,
@@ -338,7 +387,7 @@ fun SbasCard(
             )
         }
         SbasType.SDCM -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_russia_flag_round,
                 R.string.sdcm_content_description,
                 R.string.dashboard_russia,
@@ -348,7 +397,7 @@ fun SbasCard(
             )
         }
         SbasType.MSAS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_japan_flag_round,
                 R.string.msas_content_description,
                 R.string.dashboard_japan,
@@ -358,7 +407,7 @@ fun SbasCard(
             )
         }
         SbasType.SNAS -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_china_flag_round,
                 R.string.snas_content_description,
                 R.string.dashboard_china,
@@ -368,7 +417,7 @@ fun SbasCard(
             )
         }
         SbasType.GAGAN -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_india_flag_round,
                 R.string.gagan_content_description,
                 R.string.dashboard_india,
@@ -378,7 +427,7 @@ fun SbasCard(
             )
         }
         SbasType.SACCSA -> {
-            GnssOrSbasCard(
+            GnssOrSbasRecord(
                 R.drawable.ic_flag_icao,
                 R.string.saccsa_content_description,
                 R.string.dashboard_icao,
@@ -395,7 +444,7 @@ fun SbasCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GnssOrSbasCard(
+fun GnssOrSbasRecord(
     @DrawableRes flagId: Int,
     @StringRes nameId: Int,
     @StringRes countryId: Int,
@@ -403,10 +452,9 @@ fun GnssOrSbasCard(
     cfs: Set<String>,
     scanStatus: ScanStatus
 ) {
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
         Row {
             Column(modifier = Modifier.align(CenterVertically)) {
