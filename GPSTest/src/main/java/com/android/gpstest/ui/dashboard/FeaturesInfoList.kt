@@ -17,15 +17,10 @@ package com.android.gpstest.ui.dashboard
 
 import android.location.Location
 import android.os.Build
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +30,7 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
+import com.android.gpstest.ui.components.ListHeader
 import com.android.gpstest.ui.components.Orbit
 import com.android.gpstest.util.PreferenceUtils.CAPABILITY_SUPPORTED
 import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
@@ -47,18 +43,16 @@ fun FeaturesInfoList(
     scanStatus: ScanStatus,
     location: Location,
 ) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_feature_info),
-        style = headingStyle,
-        color = MaterialTheme.colorScheme.onBackground
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(leftColumnMargin)
+        ) {
+            ListHeader(
+                text = stringResource(id = R.string.dashboard_feature_info)
+            )
             Nmea(satelliteMetadata)
             VerticalAccuracy(
                 satelliteMetadata,
@@ -68,6 +62,7 @@ fun FeaturesInfoList(
                 satelliteMetadata,
                 scanStatus
             )
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

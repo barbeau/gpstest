@@ -18,12 +18,11 @@ package com.android.gpstest.ui.dashboard
 import android.content.Context
 import android.location.LocationManager
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.ui.components.ListHeader
 import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.util.IOUtils
 import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
@@ -40,21 +40,20 @@ import com.android.gpstest.util.PreferenceUtils.CAPABILITY_UNKNOWN
 fun FeaturesAssistDataList(
     satelliteMetadata: SatelliteMetadata,
 ) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_feature_assist_data),
-        style = headingStyle,
-        color = MaterialTheme.colorScheme.onBackground
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(leftColumnMargin)
+        ) {
+            ListHeader(
+                text = stringResource(id = R.string.dashboard_feature_assist_data),
+            )
             InjectPsds(satelliteMetadata)
             InjectTime(satelliteMetadata)
             DeleteAssist(satelliteMetadata)
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

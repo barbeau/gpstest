@@ -46,6 +46,7 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
+import com.android.gpstest.ui.components.ListHeader
 import com.android.gpstest.ui.components.OkDialog
 import com.android.gpstest.ui.components.StrikeThrough
 import com.android.gpstest.ui.components.Wave
@@ -64,18 +65,16 @@ fun FeaturesAccuracyList(
     scanStatus: ScanStatus,
     adrStates: Set<String>,
 ) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_feature_accuracy),
-        style = headingStyle,
-        color = MaterialTheme.colorScheme.onBackground
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(leftColumnMargin)
+        ) {
+            ListHeader(
+                text = stringResource(id = R.string.dashboard_feature_accuracy)
+            )
             DualFrequency(
                 satelliteMetadata,
                 scanStatus
@@ -94,6 +93,7 @@ fun FeaturesAccuracyList(
                 scanStatus
             )
             AntennaInfo(satelliteMetadata)
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

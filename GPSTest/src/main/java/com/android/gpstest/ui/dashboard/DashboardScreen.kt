@@ -47,6 +47,8 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.ui.components.ListHeader
+import com.android.gpstest.ui.components.ProgressCard
 import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -65,8 +67,12 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
     val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
     val datum: Datum by viewModel.datum.observeAsState(Datum())
     val adrStates: Set<String> by viewModel.adrStates.observeAsState(emptySet())
-    val timeBetweenLocationUpdatesSeconds: Double by viewModel.timeBetweenLocationUpdatesSeconds.observeAsState(Double.NaN)
-    val timeBetweenGnssSystemTimeSeconds: Double by viewModel.timeBetweenGnssSystemTimeSeconds.observeAsState(Double.NaN)
+    val timeBetweenLocationUpdatesSeconds: Double by viewModel.timeBetweenLocationUpdatesSeconds.observeAsState(
+        Double.NaN
+    )
+    val timeBetweenGnssSystemTimeSeconds: Double by viewModel.timeBetweenGnssSystemTimeSeconds.observeAsState(
+        Double.NaN
+    )
     val userCountry: UserCountry by viewModel.userCountry.observeAsState(UserCountry())
 
     Dashboard(
@@ -107,10 +113,10 @@ fun Dashboard(
     ) {
         Column(
             modifier = Modifier
-                .padding(5.dp)
                 .fillMaxSize()
         ) {
             if (PreferenceUtils.isTrackingStarted()) {
+                Spacer(modifier = Modifier.padding(5.dp))
                 SignalSummaryCard(satelliteMetadata, fixState)
                 Spacer(modifier = Modifier.padding(5.dp))
                 GnssList(satelliteMetadata.supportedGnss, satelliteMetadata.gnssToCf, scanStatus)
@@ -151,6 +157,13 @@ fun Dashboard(
     }
 }
 
+@Composable
+fun GnssListHeader() {
+    ListHeader(
+        text = stringResource(id = R.string.dashboard_supported_gnss),
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GnssList(
@@ -158,12 +171,6 @@ fun GnssList(
     gnssToCf: MutableMap<GnssType, MutableSet<String>>,
     scanStatus: ScanStatus,
 ) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_supported_gnss),
-        style = headingStyle,
-        color = MaterialTheme.colorScheme.onBackground
-    )
     if (supportedGnss.isEmpty()) {
         // Make the ProgressCard about the height of GNSS card to avoid UI quickly expanding
         ProgressCard(
@@ -172,503 +179,478 @@ fun GnssList(
             message = stringResource(id = R.string.dashboard_waiting_for_signals)
         )
     } else {
-        if (gnssToCf.isNotEmpty()) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            ) {
-                gnssToCf.entries.forEachIndexed { index, entry ->
-                    GnssOrSbasRecord(
-                        gnssType = entry.key,
-                        cfs = entry.value,
-                        scanStatus = scanStatus
-                    )
-                    maybeDivider(index, gnssToCf.entries.size)
-                }
-            }
-        } else {
-            // Some devices don't support CF values, so loop through supported GNSS instead
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp)
-            ) {
-                supportedGnss.forEachIndexed { index, entry ->
-                    GnssOrSbasRecord(
-                        gnssType = entry,
-                        cfs = emptySet(),
-                        scanStatus = scanStatus
-                    )
-                    maybeDivider(index, supportedGnss.size)
-                }
-            }
-        }
-    }
-}
-
-/**
- * Shows a divider if the [index] element is not the last in the collection ([index] != [size] - 1)
- */
-@Composable
-fun maybeDivider(index: Int, size: Int) {
-    if (index != size - 1) {
-        Divider(
-            modifier = Modifier.fillMaxWidth(),
-            thickness = Dp.Hairline,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha)
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SbasList(
-    supportedGnss: Set<GnssType>,
-    supportedSbas: Set<SbasType>,
-    sbasToCf: MutableMap<SbasType, MutableSet<String>>,
-    scanStatus: ScanStatus,
-) {
-    Text(
-        modifier = Modifier.padding(5.dp),
-        text = stringResource(id = R.string.dashboard_supported_sbas),
-        style = headingStyle,
-        color = MaterialTheme.colorScheme.onBackground
-    )
-    // SBAS usually show up after GNSS, so wait for GNSS to show up before potentially saying "No SBAS"
-    if (supportedGnss.isEmpty()) {
-        ProgressCard(
-            progressVisible = true,
-            message = stringResource(R.string.dashboard_waiting_for_signals)
-        )
-    } else {
-        when {
-            sbasToCf.isNotEmpty() -> {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                ) {
-                    sbasToCf.entries.forEachIndexed { index, entry ->
-                        SbasCard(
-                            sbasType = entry.key,
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(leftColumnMargin)) {
+                GnssListHeader()
+                if (gnssToCf.isNotEmpty()) {
+                    gnssToCf.entries.forEachIndexed { index, entry ->
+                        GnssOrSbasRecord(
+                            gnssType = entry.key,
                             cfs = entry.value,
                             scanStatus = scanStatus
                         )
-                        maybeDivider(index = index, size = sbasToCf.entries.size)
+                        maybeDivider(index, gnssToCf.entries.size)
                     }
-                }
-            }
-            supportedSbas.isNotEmpty() -> {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(5.dp)
-                ) {
-                    // Some devices don't support CF values, so loop through supported SBAS instead
-                    supportedSbas.forEachIndexed { index, entry ->
-                        SbasCard(
-                            sbasType = entry,
+                } else {
+                    // Some devices don't support CF values, so loop through supported GNSS instead
+                    supportedGnss.forEachIndexed { index, entry ->
+                        GnssOrSbasRecord(
+                            gnssType = entry,
                             cfs = emptySet(),
                             scanStatus = scanStatus
                         )
-                        maybeDivider(index = index, size = supportedSbas.size)
+                        maybeDivider(index, supportedGnss.size)
                     }
                 }
-            }
-            else -> {
-                // Show "no SBAS" card
-                ProgressCard(
-                    progressVisible = false,
-                    message = stringResource(R.string.sbas_not_available)
-                )
+                Spacer(modifier = Modifier.padding(5.dp))
             }
         }
     }
 }
 
-@Composable
-fun GnssOrSbasRecord(
-    gnssType: GnssType,
-    cfs: Set<String>,
-    scanStatus: ScanStatus
-) {
-    when (gnssType) {
-        GnssType.NAVSTAR -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_us_flag_round,
-                R.string.gps_content_description,
-                R.string.dashboard_usa,
-                R.string.usa_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.GALILEO -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_eu_flag_round,
-                R.string.galileo_content_description,
-                R.string.dashboard_eu,
-                R.string.eu_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.GLONASS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_russia_flag_round,
-                R.string.glonass_content_description,
-                R.string.dashboard_russia,
-                R.string.russia_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.QZSS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_japan_flag_round,
-                R.string.qzss_content_description,
-                R.string.dashboard_japan,
-                R.string.japan_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.BEIDOU -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_china_flag_round,
-                R.string.beidou_content_description,
-                R.string.dashboard_china,
-                R.string.china_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.IRNSS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_india_flag_round,
-                R.string.irnss_content_description,
-                R.string.dashboard_india,
-                R.string.india_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        GnssType.SBAS -> return // No-op
-        GnssType.UNKNOWN -> return // No-op
-    }
-}
-
-@Composable
-fun SbasCard(
-    sbasType: SbasType,
-    cfs: Set<String>,
-    scanStatus: ScanStatus,
-) {
-    when (sbasType) {
-        SbasType.WAAS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_us_flag_round,
-                R.string.waas_content_description,
-                R.string.dashboard_usa,
-                R.string.usa_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.EGNOS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_eu_flag_round,
-                R.string.egnos_content_description,
-                R.string.dashboard_eu,
-                R.string.eu_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.SDCM -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_russia_flag_round,
-                R.string.sdcm_content_description,
-                R.string.dashboard_russia,
-                R.string.russia_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.MSAS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_japan_flag_round,
-                R.string.msas_content_description,
-                R.string.dashboard_japan,
-                R.string.japan_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.SNAS -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_china_flag_round,
-                R.string.snas_content_description,
-                R.string.dashboard_china,
-                R.string.china_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.GAGAN -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_india_flag_round,
-                R.string.gagan_content_description,
-                R.string.dashboard_india,
-                R.string.india_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.SACCSA -> {
-            GnssOrSbasRecord(
-                R.drawable.ic_flag_icao,
-                R.string.saccsa_content_description,
-                R.string.dashboard_icao,
-                R.string.japan_flag,
-                cfs,
-                scanStatus
-            )
-        }
-        SbasType.UNKNOWN -> {
-            // No-op
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun GnssOrSbasRecord(
-    @DrawableRes flagId: Int,
-    @StringRes nameId: Int,
-    @StringRes countryId: Int,
-    @StringRes contentDescriptionId: Int,
-    cfs: Set<String>,
-    scanStatus: ScanStatus
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row {
-            Column(modifier = Modifier.align(CenterVertically)) {
-                Image(
-                    painterResource(
-                        id = flagId
-                    ),
-                    contentDescription = stringResource(id = contentDescriptionId),
-                    modifier = Modifier
-                        .size(iconSize)
-                        .padding(10.dp)
-                        .shadow(
-                            elevation = 3.dp,
-                            shape = CircleShape,
-                            clip = true
-                        )
-                )
-            }
-            Column(modifier = Modifier.align(CenterVertically)) {
-                Text(
-                    modifier = Modifier.padding(start = 5.dp, top = 10.dp),
-                    text = stringResource(id = nameId),
-                    style = titleStyle
-                )
-                Text(
-                    modifier = Modifier.padding(start = 5.dp, bottom = 10.dp),
-                    text = stringResource(id = countryId),
-                    style = subtitleStyle
-                )
-            }
-            Column(
+    /**
+     * Shows a divider if the [index] element is not the last in the collection ([index] != [size] - 1)
+     */
+    @Composable
+    fun maybeDivider(index: Int, size: Int) {
+        if (index != size - 1) {
+            Divider(
                 modifier = Modifier
-                    .align(Bottom)
-                    .fillMaxSize()
-                    .padding(bottom = 5.dp, end = 5.dp),
-                horizontalAlignment = End
-            ) {
-                Row {
-                    if (cfs.size < 2) {
-                        ChipProgress(
-                            Modifier
-                                .align(CenterVertically)
-                                .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
-                            scanStatus
-                        )
+                    .padding(start = leftColumnMargin, end = leftColumnMargin)
+                    .fillMaxWidth(),
+                thickness = Dp.Hairline,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha)
+            )
+        }
+    }
+
+    @Composable
+    fun SbasListHeader() {
+        ListHeader(
+            text = stringResource(id = R.string.dashboard_supported_sbas),
+        )
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun SbasList(
+        supportedGnss: Set<GnssType>,
+        supportedSbas: Set<SbasType>,
+        sbasToCf: MutableMap<SbasType, MutableSet<String>>,
+        scanStatus: ScanStatus,
+    ) {
+        // SBAS usually show up after GNSS, so wait for GNSS to show up before potentially saying "No SBAS"
+        if (supportedGnss.isEmpty()) {
+            ProgressCard(
+                progressVisible = true,
+                message = stringResource(R.string.dashboard_waiting_for_signals)
+            )
+        } else {
+            when {
+                sbasToCf.isNotEmpty() -> {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(leftColumnMargin)) {
+                            SbasListHeader()
+                            sbasToCf.entries.forEachIndexed { index, entry ->
+                                SbasCard(
+                                    sbasType = entry.key,
+                                    cfs = entry.value,
+                                    scanStatus = scanStatus
+                                )
+                                maybeDivider(index = index, size = sbasToCf.entries.size)
+                            }
+                            Spacer(modifier = Modifier.padding(5.dp))
+                        }
                     }
-                    cfs.forEach {
-                        Chip(it)
+                }
+                supportedSbas.isNotEmpty() -> {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.padding(leftColumnMargin)) {
+                            SbasListHeader()
+                            // Some devices don't support CF values, so loop through supported SBAS instead
+                            supportedSbas.forEachIndexed { index, entry ->
+                                SbasCard(
+                                    sbasType = entry,
+                                    cfs = emptySet(),
+                                    scanStatus = scanStatus
+                                )
+                                maybeDivider(index = index, size = supportedSbas.size)
+                            }
+                            Spacer(modifier = Modifier.padding(5.dp))
+                        }
                     }
+                }
+                else -> {
+                    // Show "no SBAS" card
+                    ProgressCard(
+                        progressVisible = false,
+                        message = stringResource(R.string.sbas_not_available)
+                    )
                 }
             }
         }
     }
-}
 
-@Composable
-fun ChipProgress(
-    modifier: Modifier = Modifier,
-    scanStatus: ScanStatus
-) {
-    var progress by remember { mutableStateOf(1.0f) }
-    // Only show the "scanning" mini progress circle if it's within the time threshold
-    // following the first fix
-    if (!scanStatus.finishedScanningCfs && scanStatus.timeUntilScanCompleteMs >= 0) {
-        progress = scanStatus.timeUntilScanCompleteMs.toFloat() / scanStatus.scanDurationMs.toFloat()
-        val animatedProgress = animateFloatAsState(
-            targetValue = progress,
-            animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-        ).value
-
-        CircularProgressIndicator(
-            modifier = modifier
-                .size(20.dp),
-            progress = animatedProgress,
-        )
-    }
-}
-
-@Composable
-fun Chip(
-    text: String,
-    textColor: Color = MaterialTheme.colorScheme.onPrimary,
-    textStyle: TextStyle = chipStyle,
-    backgroundColor: Color = colorResource(id = R.color.colorPrimary),
-    width: Dp = 54.dp,
-) {
-    Surface(
-        modifier = Modifier
-            .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
-            .width(width),
-        shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp),
-        color = backgroundColor
+    @Composable
+    fun GnssOrSbasRecord(
+        gnssType: GnssType,
+        cfs: Set<String>,
+        scanStatus: ScanStatus
     ) {
-        Text(
-            text = text,
-            style = textStyle,
-            color = textColor,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
-        )
+        when (gnssType) {
+            GnssType.NAVSTAR -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_us_flag_round,
+                    R.string.gps_content_description,
+                    R.string.dashboard_usa,
+                    R.string.usa_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.GALILEO -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_eu_flag_round,
+                    R.string.galileo_content_description,
+                    R.string.dashboard_eu,
+                    R.string.eu_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.GLONASS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_russia_flag_round,
+                    R.string.glonass_content_description,
+                    R.string.dashboard_russia,
+                    R.string.russia_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.QZSS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_japan_flag_round,
+                    R.string.qzss_content_description,
+                    R.string.dashboard_japan,
+                    R.string.japan_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.BEIDOU -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_china_flag_round,
+                    R.string.beidou_content_description,
+                    R.string.dashboard_china,
+                    R.string.china_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.IRNSS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_india_flag_round,
+                    R.string.irnss_content_description,
+                    R.string.dashboard_india,
+                    R.string.india_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            GnssType.SBAS -> return // No-op
+            GnssType.UNKNOWN -> return // No-op
+        }
     }
-}
 
-@Composable
-fun PassChip() {
-    Chip(
-        stringResource(R.string.dashboard_pass),
-        backgroundColor = Green500
-    )
-}
-
-@Composable
-fun FailChip() {
-    Chip(
-        stringResource(R.string.dashboard_fail),
-        backgroundColor = MaterialTheme.colorScheme.error
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProgressCard(
-    modifier: Modifier = Modifier,
-    progressVisible: Boolean,
-    message: String) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(5.dp)
+    @Composable
+    fun SbasCard(
+        sbasType: SbasType,
+        cfs: Set<String>,
+        scanStatus: ScanStatus,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center
+        when (sbasType) {
+            SbasType.WAAS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_us_flag_round,
+                    R.string.waas_content_description,
+                    R.string.dashboard_usa,
+                    R.string.usa_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.EGNOS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_eu_flag_round,
+                    R.string.egnos_content_description,
+                    R.string.dashboard_eu,
+                    R.string.eu_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.SDCM -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_russia_flag_round,
+                    R.string.sdcm_content_description,
+                    R.string.dashboard_russia,
+                    R.string.russia_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.MSAS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_japan_flag_round,
+                    R.string.msas_content_description,
+                    R.string.dashboard_japan,
+                    R.string.japan_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.SNAS -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_china_flag_round,
+                    R.string.snas_content_description,
+                    R.string.dashboard_china,
+                    R.string.china_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.GAGAN -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_india_flag_round,
+                    R.string.gagan_content_description,
+                    R.string.dashboard_india,
+                    R.string.india_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.SACCSA -> {
+                GnssOrSbasRecord(
+                    R.drawable.ic_flag_icao,
+                    R.string.saccsa_content_description,
+                    R.string.dashboard_icao,
+                    R.string.japan_flag,
+                    cfs,
+                    scanStatus
+                )
+            }
+            SbasType.UNKNOWN -> {
+                // No-op
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun GnssOrSbasRecord(
+        @DrawableRes flagId: Int,
+        @StringRes nameId: Int,
+        @StringRes countryId: Int,
+        @StringRes contentDescriptionId: Int,
+        cfs: Set<String>,
+        scanStatus: ScanStatus
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            if (progressVisible) {
-                CircularProgressIndicator(
+            Row {
+                Column(modifier = Modifier.align(CenterVertically)) {
+                    Image(
+                        painterResource(
+                            id = flagId
+                        ),
+                        contentDescription = stringResource(id = contentDescriptionId),
+                        modifier = Modifier
+                            .size(iconSize)
+                            .padding(10.dp)
+                            .shadow(
+                                elevation = 3.dp,
+                                shape = CircleShape,
+                                clip = true
+                            )
+                    )
+                }
+                Column(modifier = Modifier.align(CenterVertically)) {
+                    Text(
+                        modifier = Modifier.padding(start = 5.dp, top = 10.dp),
+                        text = stringResource(id = nameId),
+                        style = titleStyle
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 5.dp, bottom = 10.dp),
+                        text = stringResource(id = countryId),
+                        style = subtitleStyle
+                    )
+                }
+                Column(
                     modifier = Modifier
-                        .padding(15.dp)
-                        .align(CenterVertically)
-                )
+                        .align(Bottom)
+                        .fillMaxSize()
+                        .padding(bottom = 5.dp, end = 5.dp),
+                    horizontalAlignment = End
+                ) {
+                    Row {
+                        if (cfs.size < 2) {
+                            ChipProgress(
+                                Modifier
+                                    .align(CenterVertically)
+                                    .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
+                                scanStatus
+                            )
+                        }
+                        cfs.forEach {
+                            Chip(it)
+                        }
+                    }
+                }
             }
-            Text(
-                text = message,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .align(CenterVertically),
-                fontSize = 13.sp,
-                textAlign = TextAlign.Center
+        }
+    }
+
+    @Composable
+    fun ChipProgress(
+        modifier: Modifier = Modifier,
+        scanStatus: ScanStatus
+    ) {
+        var progress by remember { mutableStateOf(1.0f) }
+        // Only show the "scanning" mini progress circle if it's within the time threshold
+        // following the first fix
+        if (!scanStatus.finishedScanningCfs && scanStatus.timeUntilScanCompleteMs >= 0) {
+            progress =
+                scanStatus.timeUntilScanCompleteMs.toFloat() / scanStatus.scanDurationMs.toFloat()
+            val animatedProgress = animateFloatAsState(
+                targetValue = progress,
+                animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+            ).value
+
+            CircularProgressIndicator(
+                modifier = modifier
+                    .size(20.dp),
+                progress = animatedProgress,
             )
         }
     }
-}
 
-@Composable
-fun HelpIcon(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-    Icon(
-        imageVector = ImageVector.vectorResource(
-            R.drawable.ic_baseline_question_24
-        ),
-        contentDescription = stringResource(R.string.help),
-        modifier
-            .size(helpIconSize)
-            .padding(start = helpIconStartPadding)
-            .clickable {
-                onClick()
-            },
-        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
+    @Composable
+    fun Chip(
+        text: String,
+        textColor: Color = MaterialTheme.colorScheme.onPrimary,
+        textStyle: TextStyle = chipStyle,
+        backgroundColor: Color = colorResource(id = R.color.colorPrimary),
+        width: Dp = 54.dp,
+    ) {
+        Surface(
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
+                .width(width),
+            shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp),
+            color = backgroundColor
+        ) {
+            Text(
+                text = text,
+                style = textStyle,
+                color = textColor,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
+            )
+        }
+    }
+
+    @Composable
+    fun PassChip() {
+        Chip(
+            stringResource(R.string.dashboard_pass),
+            backgroundColor = Green500
+        )
+    }
+
+    @Composable
+    fun FailChip() {
+        Chip(
+            stringResource(R.string.dashboard_fail),
+            backgroundColor = MaterialTheme.colorScheme.error
+        )
+    }
+
+    @Composable
+    fun HelpIcon(
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit,
+    ) {
+        Icon(
+            imageVector = ImageVector.vectorResource(
+                R.drawable.ic_baseline_question_24
+            ),
+            contentDescription = stringResource(R.string.help),
+            modifier
+                .size(helpIconSize)
+                .padding(start = helpIconStartPadding)
+                .clickable {
+                    onClick()
+                },
+            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
+        )
+    }
+
+    val headingStyle = TextStyle(
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp,
+        letterSpacing = 0.15.sp
     )
-}
 
-val headingStyle = TextStyle(
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 20.sp,
-    letterSpacing = 0.15.sp
-)
+    val titleStyle = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        letterSpacing = 0.15.sp
+    )
 
-val titleStyle = TextStyle(
-    fontWeight = FontWeight.Medium,
-    fontSize = 18.sp,
-    letterSpacing = 0.15.sp
-)
+    val subtitleStyle = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 0.5.sp
+    )
 
-val subtitleStyle = TextStyle(
-    fontWeight = FontWeight.Normal,
-    fontSize = 14.sp,
-    letterSpacing = 0.5.sp
-)
+    val chipStyle = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        letterSpacing = 0.5.sp
+    )
 
-val chipStyle = TextStyle(
-    fontWeight = FontWeight.Normal,
-    fontSize = 14.sp,
-    letterSpacing = 0.5.sp
-)
+    val smallTitleStyle = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 16.sp,
+        letterSpacing = 0.5.sp
+    )
+    val smallSubtitleStyle = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        letterSpacing = 0.5.sp
+    )
 
-val smallTitleStyle = TextStyle(
-    fontWeight = FontWeight.Medium,
-    fontSize = 16.sp,
-    letterSpacing = 0.5.sp
-)
-val smallSubtitleStyle = TextStyle(
-    fontWeight = FontWeight.Normal,
-    fontSize = 12.sp,
-    letterSpacing = 0.5.sp
-)
+    val iconSize = 70.dp
+    const val helpIconAlpha = 0.4f
+    val helpIconSize = 20.dp
+    val helpIconStartPadding = 2.dp
+    const val circleGraphAlpha = 0.9f
+    val leftColumnMargin = 10.dp
 
-val iconSize = 70.dp
-const val helpIconAlpha = 0.4f
-val helpIconSize = 20.dp
-val helpIconStartPadding = 2.dp
-const val circleGraphAlpha = 0.9f
-
-const val dummyProvider = "dummy"
+    const val dummyProvider = "dummy"
 
 //@Preview
 //@Composable

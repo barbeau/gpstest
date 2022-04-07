@@ -20,15 +20,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.ui.dashboard.HelpIcon
 import com.android.gpstest.ui.dashboard.headingStyle
+import com.android.gpstest.ui.dashboard.leftColumnMargin
 
 /**
  * A title and help icon that's used as a header for each section in Dashboard. A dialog is shown
@@ -47,13 +48,16 @@ fun TitleWithHelp(
         horizontalArrangement = Arrangement.SpaceBetween
     )
     {
-        Text(
+        ListHeader(
             modifier = Modifier
-                .padding(5.dp)
-                .align(Alignment.CenterVertically),
-            text = stringResource(id = titleTextId),
-            style = headingStyle,
-            color = MaterialTheme.colorScheme.onBackground
+                .align(Alignment.CenterVertically)
+                .padding(
+                    start = leftColumnMargin,
+                    end = leftColumnMargin,
+                    top = 15.dp,
+                    bottom = leftColumnMargin
+                ),
+            text = stringResource(id = titleTextId)
         )
         HelpIcon(
             modifier = Modifier
@@ -67,6 +71,24 @@ fun TitleWithHelp(
         onDismiss = { openDialog = false },
         title = stringResource(helpTitleId),
         text = stringResource(helpTextId)
+    )
+}
+
+@Composable
+fun ListHeader(
+    modifier: Modifier = Modifier.padding(
+        start = leftColumnMargin,
+        end = leftColumnMargin,
+        top = 15.dp,
+        bottom = leftColumnMargin
+    ),
+    style: TextStyle = headingStyle,
+    text: String,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        style = style,
     )
 }
 

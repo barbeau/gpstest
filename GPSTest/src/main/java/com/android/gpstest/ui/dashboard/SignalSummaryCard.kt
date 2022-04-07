@@ -42,12 +42,6 @@ fun SignalSummaryCard(
     satelliteMetadata: SatelliteMetadata,
     fixState: FixState,
 ) {
-    TitleWithHelp(
-        titleTextId = R.string.dashboard_signal_summary,
-        helpTitleId = R.string.dashboard_signal_summary,
-        helpTextId = R.string.dashboard_signal_summary_help
-    )
-
     if (satelliteMetadata.numSignalsTotal == 0) {
         // Make the ProgressCard about the height of the CircleGraph to avoid UI quickly expanding
         ProgressCard(
@@ -86,10 +80,12 @@ fun TopContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 5.dp)
+            .padding(start = leftColumnMargin, bottom = 5.dp, end = leftColumnMargin)
     ) {
         LockIcon(
-            modifier = Modifier.align(Alignment.TopStart),
+            modifier = Modifier
+                .padding(top = 5.dp)
+                .align(Alignment.TopStart),
             fixState = fixState,
             tint = MaterialTheme.colorScheme.onPrimary
         )

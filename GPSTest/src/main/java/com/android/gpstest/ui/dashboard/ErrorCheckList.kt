@@ -70,20 +70,21 @@ fun ErrorCheckList(
     timeBetweenLocationUpdatesSeconds: Double,
     timeBetweenGnssSystemTimeSeconds: Double,
 ) {
-    TitleWithHelp(
-        titleTextId = R.string.dashboard_error_check,
-        helpTitleId = R.string.dashboard_error_check,
-        helpTextId = R.string.dashboard_errors_help
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(leftColumnMargin)
+        ) {
             val locationManager =
                 Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+            TitleWithHelp(
+                titleTextId = R.string.dashboard_error_check,
+                helpTitleId = R.string.dashboard_error_check,
+                helpTextId = R.string.dashboard_errors_help
+            )
             ValidCfs(satelliteMetadata)
             DuplicateCfs(satelliteMetadata)
             MismatchAzimuthElevationSameSatellite(satelliteMetadata)
@@ -96,6 +97,7 @@ fun ErrorCheckList(
             if (SatelliteUtils.isGnssAntennaInfoSupported(locationManager)) {
                 AntennaInfo()
             }
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

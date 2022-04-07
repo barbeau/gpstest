@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.android.gpstest.R
 import com.android.gpstest.ui.dashboard.helpIconAlpha
+import com.android.gpstest.ui.dashboard.leftColumnMargin
 
 /**
  * A collapsible card that expands and collapses when tapped. [topContent] is always shown,
@@ -73,7 +74,6 @@ fun CollapsibleCard(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize()
-            .padding(5.dp)
             .clickable {
                 expandedState = !expandedState
                 onClick(expandedState)
@@ -95,8 +95,8 @@ fun CollapsibleCard(
             ExpandIcon(
                 rotation = iconRotationDegree,
                 modifier = Modifier
-                    .padding(5.dp)
-                    .align(Alignment.BottomEnd)
+                    .padding(top = 5.dp, end = leftColumnMargin)
+                    .align(Alignment.TopEnd)
             )
         }
     }

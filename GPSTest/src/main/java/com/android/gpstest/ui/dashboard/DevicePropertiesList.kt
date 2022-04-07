@@ -40,17 +40,18 @@ import com.android.gpstest.util.IOUtils.getAppVersionDescription
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DevicePropertiesList(userCountry: UserCountry) {
-    TitleWithHelp(
-        titleTextId = R.string.dashboard_device_properties,
-        helpTitleId = R.string.dashboard_device_properties,
-        helpTextId = R.string.dashboard_device_properties_help
-    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(leftColumnMargin)
+        ) {
+            TitleWithHelp(
+                titleTextId = R.string.dashboard_device_properties,
+                helpTitleId = R.string.dashboard_device_properties,
+                helpTextId = R.string.dashboard_device_properties_help
+            )
             DeviceMakeModel()
             GnssHardwareName()
             GnssHardwareYear()
@@ -155,14 +156,13 @@ fun PropertiesRow(
                 .padding(start = imagePaddingDp, end = 10.dp)
         ) {
             Text(
-                modifier = Modifier.padding(start = 5.dp, top = if (description.isNotEmpty()) 5.dp else 0.dp),
+                modifier = Modifier.padding(top = if (description.isNotEmpty()) 5.dp else 0.dp),
                 text = stringResource(id = titleId),
                 style = smallSubtitleStyle
             )
             if (description.isNotEmpty()) {
                 Text(
                     modifier = Modifier.padding(
-                        start = 5.dp,
                         bottom = 5.dp
                     ),
                     text = description,
