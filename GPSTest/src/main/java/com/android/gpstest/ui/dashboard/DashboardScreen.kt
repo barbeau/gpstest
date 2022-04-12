@@ -205,7 +205,6 @@ fun GnssList(
                         maybeDivider(index, supportedGnss.size)
                     }
                 }
-                Spacer(modifier = Modifier.padding(5.dp))
             }
         }
     }
@@ -265,7 +264,6 @@ fun GnssList(
                                 )
                                 maybeDivider(index = index, size = sbasToCf.entries.size)
                             }
-                            Spacer(modifier = Modifier.padding(5.dp))
                         }
                     }
                 }
@@ -285,7 +283,6 @@ fun GnssList(
                                 )
                                 maybeDivider(index = index, size = supportedSbas.size)
                             }
-                            Spacer(modifier = Modifier.padding(5.dp))
                         }
                     }
                 }

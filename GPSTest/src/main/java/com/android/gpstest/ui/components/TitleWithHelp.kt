@@ -79,7 +79,7 @@ fun ListHeader(
     modifier: Modifier = Modifier.padding(
         start = leftColumnMargin,
         end = leftColumnMargin,
-        top = 15.dp,
+        top = 10.dp,
         bottom = leftColumnMargin
     ),
     style: TextStyle = headingStyle,

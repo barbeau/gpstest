@@ -93,7 +93,6 @@ fun FeaturesAccuracyList(
                 scanStatus
             )
             AntennaInfo(satelliteMetadata)
-            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

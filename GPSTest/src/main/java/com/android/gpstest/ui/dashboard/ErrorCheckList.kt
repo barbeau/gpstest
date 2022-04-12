@@ -97,7 +97,6 @@ fun ErrorCheckList(
             if (SatelliteUtils.isGnssAntennaInfoSupported(locationManager)) {
                 AntennaInfo()
             }
-            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }

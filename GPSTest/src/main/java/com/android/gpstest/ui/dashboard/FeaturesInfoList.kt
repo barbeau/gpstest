@@ -17,7 +17,10 @@ package com.android.gpstest.ui.dashboard
 
 import android.location.Location
 import android.os.Build
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,7 +65,6 @@ fun FeaturesInfoList(
                 satelliteMetadata,
                 scanStatus
             )
-            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }
