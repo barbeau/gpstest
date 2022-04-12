@@ -67,7 +67,8 @@ fun FeaturesAccuracyList(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Column(
             modifier = Modifier.padding(leftColumnMargin)

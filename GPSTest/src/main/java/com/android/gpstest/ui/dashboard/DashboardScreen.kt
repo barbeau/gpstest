@@ -19,10 +19,13 @@ import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,11 +35,9 @@ import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -181,7 +182,8 @@ fun GnssList(
     } else {
         Card(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ) {
             Column(modifier = Modifier.padding(leftColumnMargin)) {
                 GnssListHeader()
@@ -221,7 +223,7 @@ fun GnssList(
                     .padding(start = leftColumnMargin, end = leftColumnMargin)
                     .fillMaxWidth(),
                 thickness = Dp.Hairline,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha)
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = helpIconAlpha)
             )
         }
     }
@@ -252,7 +254,8 @@ fun GnssList(
                 sbasToCf.isNotEmpty() -> {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Column(modifier = Modifier.padding(leftColumnMargin)) {
                             SbasListHeader()
@@ -270,7 +273,8 @@ fun GnssList(
                 supportedSbas.isNotEmpty() -> {
                     Card(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Column(modifier = Modifier.padding(leftColumnMargin)) {
                             SbasListHeader()
@@ -582,26 +586,6 @@ fun GnssList(
         Chip(
             stringResource(R.string.dashboard_fail),
             backgroundColor = MaterialTheme.colorScheme.error
-        )
-    }
-
-    @Composable
-    fun HelpIcon(
-        modifier: Modifier = Modifier,
-        onClick: () -> Unit,
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(
-                R.drawable.ic_baseline_question_24
-            ),
-            contentDescription = stringResource(R.string.help),
-            modifier
-                .size(helpIconSize)
-                .padding(start = helpIconStartPadding)
-                .clickable {
-                    onClick()
-                },
-            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = helpIconAlpha),
         )
     }
 

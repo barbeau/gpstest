@@ -37,7 +37,7 @@ val Indigo300 = Color(0xFF7986cb)
 val Indigo200 = Color(0xFF9fa8da)
 val IndigoLight = Color(0xFF757DE8)
 val Green500 = Color(0xFF4caf50)
-val DarkGray = Color(0xFF1F1F1F)
+val DarkGray = Color(0xFF232323)
 
 private val lightColors = lightColorScheme(
     primary = Indigo500,
@@ -49,7 +49,7 @@ private val lightColors = lightColorScheme(
 private val darkColors = darkColorScheme(
     primary = Indigo500,
     onPrimary = Color.Black,
-    //primaryContainer = DarkGray
+    primaryContainer = DarkGray
     //secondary = primaryDark
 )
 

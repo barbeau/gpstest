@@ -55,7 +55,7 @@ fun CollapsibleCard(
     topContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit,
     initialExpandedState: Boolean = false,
-    backgroundColor: Color = MaterialTheme.colorScheme.background,
+    backgroundColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onClick: (newExpandedState: Boolean) -> Unit,
 ) {
     var expandedState by rememberSaveable { mutableStateOf(initialExpandedState) }

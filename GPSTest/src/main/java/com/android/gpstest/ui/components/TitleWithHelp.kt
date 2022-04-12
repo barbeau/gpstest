@@ -16,20 +16,20 @@
 package com.android.gpstest.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.android.gpstest.ui.dashboard.HelpIcon
-import com.android.gpstest.ui.dashboard.headingStyle
-import com.android.gpstest.ui.dashboard.leftColumnMargin
+import com.android.gpstest.ui.dashboard.*
 
 /**
  * A title and help icon that's used as a header for each section in Dashboard. A dialog is shown
@@ -92,4 +92,23 @@ fun ListHeader(
     )
 }
 
+@Composable
+fun HelpIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(
+            com.android.gpstest.R.drawable.ic_baseline_question_24
+        ),
+        contentDescription = stringResource(com.android.gpstest.R.string.help),
+        modifier
+            .size(helpIconSize)
+            .padding(start = helpIconStartPadding)
+            .clickable {
+                onClick()
+            },
+        tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = helpIconAlpha),
+    )
+}
 
