@@ -54,7 +54,7 @@ private val lightColors = lightColorScheme(
 )
 
 private val darkColors = darkColorScheme(
-    primary = Indigo500,
+    primary = IndigoLight,
     onPrimary = Color.Black,
     primaryContainer = DarkGray
     //secondary = primaryDark
