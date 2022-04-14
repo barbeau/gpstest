@@ -24,7 +24,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -43,7 +42,7 @@ fun Chip(
     text: String,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     textStyle: TextStyle = chipStyle,
-    backgroundColor: Color = colorResource(id = R.color.colorPrimary),
+    backgroundColor: Color = MaterialTheme.colorScheme.primary,
     width: Dp = 54.dp,
 ) {
     Surface(
