@@ -38,7 +38,7 @@ import com.android.gpstest.data.FixState
 fun LockIcon(
     modifier: Modifier = Modifier,
     fixState: FixState,
-    tint: Color = MaterialTheme.colorScheme.onBackground
+    tint: Color = MaterialTheme.colorScheme.onPrimaryContainer
 ) {
     var visible by rememberSaveable { mutableStateOf(false) }
     visible = fixState == FixState.Acquired

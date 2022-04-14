@@ -32,17 +32,24 @@ import androidx.compose.ui.graphics.Color
 private val Indigo500 = Color(0xFF3F51B5)
 private val primaryDark = Color(0xFF002984)
 //val Purple200 = Color(0xFFBB86FC)
-val Indigo400 = Color(0xFF5c6bc0)
-val Indigo300 = Color(0xFF7986cb)
+val Indigo050 = Color(0xFFE8EAF6)
+val Indigo100 = Color(0xFFc5cae9)
 val Indigo200 = Color(0xFF9fa8da)
+val Indigo300 = Color(0xFF7986cb)
+val Indigo400 = Color(0xFF5c6bc0)
+val Indigo600 = Color(0xFF3949ab)
+val Indigo700 = Color(0xFF303f9f)
+val Indigo800 = Color(0xFF283593)
+val Indigo900 = Color(0xFF1a237e)
 val IndigoLight = Color(0xFF757DE8)
+val LightGray = Color(0xFFE3E1EC)
 val Green500 = Color(0xFF4caf50)
 val DarkGray = Color(0xFF232323)
 
 private val lightColors = lightColorScheme(
     primary = Indigo500,
     onPrimary = Color.White,
-    //primaryContainer = IndigoLight
+    primaryContainer = LightGray
     //secondary = primaryDark
 )
 

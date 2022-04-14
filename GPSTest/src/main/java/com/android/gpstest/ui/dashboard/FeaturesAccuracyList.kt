@@ -33,7 +33,6 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -46,12 +45,8 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.ScanStatus
-import com.android.gpstest.ui.components.ListHeader
-import com.android.gpstest.ui.components.OkDialog
-import com.android.gpstest.ui.components.StrikeThrough
-import com.android.gpstest.ui.components.Wave
+import com.android.gpstest.ui.components.*
 import com.android.gpstest.ui.dashboard.Support.*
-import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils.*
 import com.android.gpstest.util.SatelliteUtils
 import kotlinx.coroutines.launch
@@ -381,36 +376,6 @@ fun FeatureRow(
             }
         }
     }
-}
-
-@Composable
-fun Check(
-    modifier: Modifier = Modifier,
-    supported: Support
-) {
-    Icon(
-        modifier = modifier
-            .size(34.dp)
-            .padding(end = 5.dp, top = 4.dp, bottom = 4.dp),
-        imageVector = ImageVector.vectorResource(
-            id = when (supported) {
-                YES -> R.drawable.ic_baseline_check_circle_24
-                NO -> R.drawable.ic_baseline_cancel_24
-                UNKNOWN -> R.drawable.ic_baseline_question_24
-            }
-        ),
-        contentDescription =
-        when (supported) {
-            YES -> stringResource(R.string.dashboard_supported)
-            NO -> stringResource(R.string.dashboard_not_supported)
-            UNKNOWN -> stringResource(R.string.unknown)
-        },
-        tint = when (supported) {
-            YES -> Green500
-            NO -> MaterialTheme.colorScheme.error
-            UNKNOWN -> Color.DarkGray
-        }
-    )
 }
 
 @Composable

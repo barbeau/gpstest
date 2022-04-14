@@ -45,7 +45,7 @@ fun SignalSummaryCard(
     if (satelliteMetadata.numSignalsTotal == 0) {
         // Make the ProgressCard about the height of the CircleGraph to avoid UI quickly expanding
         ProgressCard(
-            modifier = Modifier.height(150.dp),
+            modifier = Modifier.height(138.dp),
             progressVisible = true,
             message = stringResource(id = R.string.dashboard_waiting_for_signals)
         )
@@ -155,6 +155,9 @@ fun ExpandedContent(satelliteMetadata: SatelliteMetadata) {
                 }
             }
         }
-        LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
+        LastUpdatedText(
+            currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis,
+            color = MaterialTheme.colorScheme.onPrimary
+        )
     }
 }

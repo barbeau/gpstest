@@ -18,29 +18,25 @@ package com.android.gpstest.ui.dashboard
 import android.location.Location
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,9 +44,10 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.ui.components.Chip
+import com.android.gpstest.ui.components.ChipProgress
 import com.android.gpstest.ui.components.ListHeader
 import com.android.gpstest.ui.components.ProgressCard
-import com.android.gpstest.ui.theme.Green500
 import com.android.gpstest.util.PreferenceUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -149,6 +146,7 @@ fun Dashboard(
                 Spacer(modifier = Modifier.padding(5.dp))
             } else {
                 // Show message to turn on GNSS
+                Spacer(modifier = Modifier.padding(5.dp))
                 ProgressCard(
                     progressVisible = false,
                     message = stringResource(id = R.string.dashboard_turn_on_gnss)
@@ -173,9 +171,9 @@ fun GnssList(
     scanStatus: ScanStatus,
 ) {
     if (supportedGnss.isEmpty()) {
-        // Make the ProgressCard about the height of GNSS card to avoid UI quickly expanding
+        // Make the ProgressCard about the height of GNSS card with 3 records to avoid UI quickly expanding
         ProgressCard(
-            modifier = Modifier.height(240.dp),
+            modifier = Modifier.height(280.dp),
             progressVisible = true,
             message = stringResource(id = R.string.dashboard_waiting_for_signals)
         )
@@ -246,6 +244,7 @@ fun GnssList(
         // SBAS usually show up after GNSS, so wait for GNSS to show up before potentially saying "No SBAS"
         if (supportedGnss.isEmpty()) {
             ProgressCard(
+                modifier = Modifier.height(65.dp),
                 progressVisible = true,
                 message = stringResource(R.string.dashboard_waiting_for_signals)
             )
@@ -524,70 +523,7 @@ fun GnssList(
         }
     }
 
-    @Composable
-    fun ChipProgress(
-        modifier: Modifier = Modifier,
-        scanStatus: ScanStatus
-    ) {
-        var progress by remember { mutableStateOf(1.0f) }
-        // Only show the "scanning" mini progress circle if it's within the time threshold
-        // following the first fix
-        if (!scanStatus.finishedScanningCfs && scanStatus.timeUntilScanCompleteMs >= 0) {
-            progress =
-                scanStatus.timeUntilScanCompleteMs.toFloat() / scanStatus.scanDurationMs.toFloat()
-            val animatedProgress = animateFloatAsState(
-                targetValue = progress,
-                animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-            ).value
 
-            CircularProgressIndicator(
-                modifier = modifier
-                    .size(20.dp),
-                progress = animatedProgress,
-            )
-        }
-    }
-
-    @Composable
-    fun Chip(
-        text: String,
-        textColor: Color = MaterialTheme.colorScheme.onPrimary,
-        textStyle: TextStyle = chipStyle,
-        backgroundColor: Color = colorResource(id = R.color.colorPrimary),
-        width: Dp = 54.dp,
-    ) {
-        Surface(
-            modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp, top = 4.dp, bottom = 4.dp)
-                .width(width),
-            shape = RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp),
-            color = backgroundColor
-        ) {
-            Text(
-                text = text,
-                style = textStyle,
-                color = textColor,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 2.dp, bottom = 2.dp)
-            )
-        }
-    }
-
-    @Composable
-    fun PassChip() {
-        Chip(
-            stringResource(R.string.dashboard_pass),
-            backgroundColor = Green500
-        )
-    }
-
-    @Composable
-    fun FailChip() {
-        Chip(
-            stringResource(R.string.dashboard_fail),
-            backgroundColor = MaterialTheme.colorScheme.error
-        )
-    }
 
     val headingStyle = TextStyle(
         fontWeight = FontWeight.SemiBold,

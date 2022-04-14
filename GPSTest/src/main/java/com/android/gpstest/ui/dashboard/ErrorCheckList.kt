@@ -41,10 +41,7 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
-import com.android.gpstest.ui.components.Globe
-import com.android.gpstest.ui.components.OkDialog
-import com.android.gpstest.ui.components.Orbit
-import com.android.gpstest.ui.components.TitleWithHelp
+import com.android.gpstest.ui.components.*
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis

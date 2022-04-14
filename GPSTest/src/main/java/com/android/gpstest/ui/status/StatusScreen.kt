@@ -93,6 +93,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
             LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }
@@ -165,7 +166,8 @@ fun StatusCard(
     }
 
     Card(
-        modifier = modifier
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         if (showList(isGnss, satStatuses)) {
             Column {

@@ -121,7 +121,8 @@ fun LocationCard(
             .padding(5.dp)
             .clickable {
                 copyToClipboard(context, location)
-            }
+            },
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Box {
             Row(
