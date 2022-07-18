@@ -36,7 +36,7 @@ The header of the CSV file explains the format for each data type:
 #   Raw,utcTimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
 #
 # Location fix format:
-#   Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+#   Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters,IsMockLocation
 #
 # Navigation message format:
 #   Nav,Svid,Type,Status,MessageId,Sub-messageId,Data(Bytes)
@@ -77,7 +77,7 @@ Status,0,2,13,1,22,1575420032,27.5,304.0,40.0,0,1,0,22.5
 Status,0,3,13,1,25,1575420032,28.3,42.0,19.0,0,1,0,23.3
 Status,0,4,13,1,26,1575420032,22.6,174.0,55.0,0,1,0,17.6
 Status,0,5,13,1,32,1575420032,38.1,74.0,47.0,0,1,1,33.1
-Fix,gps,28.07124449,-82.42663169,-16.32806396484375,0.0,21.196445,0.0,1637264742000,1.9549425,,1308594915408632,13.918213
+Fix,gps,28.07124449,-82.42663169,-16.32806396484375,0.0,21.196445,0.0,1637264742000,1.9549425,,1308594915408632,13.918213,0
 ~~~
 
 Google's documentation for the [Smartphone Decimeter Challenge](https://www.kaggle.com/c/google-smartphone-decimeter-challenge/data#) has additional information.
@@ -233,6 +233,9 @@ Android 7.0 and higher:
 
 * **GNSS Measurements** - Raw GNSS satellite measurements observed by the GNSS subsystem.  Disabled by default for Android Studio.  To show only this output in Android Monitor, use the search box text `GpsOutputMeasure`.
 * **GNSS Navigation Message** - Navigation messages observed by the GNSS subsystem.  Disabled by default for Android Studio.  To show only this output in Android Monitor, use the search box text `GpsOutputNav`.
+
+Android 12 and higher:
+* `IsMockLocation` for location fixes
 
 ## What devices support pseudorange measurements and navigation messages?
 

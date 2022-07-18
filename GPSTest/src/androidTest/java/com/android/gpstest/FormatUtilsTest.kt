@@ -56,12 +56,12 @@ class FormatUtilsTest {
         // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
         if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
             assertEquals(
-                "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,382.7,284.1,123456789,583.4",
+                "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,382.7,284.1,123456789,583.4,0",
                 l.toLog()
             )
         } else {
             assertEquals(
-                "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,,,123456789,",
+                "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,,,123456789,0",
                 l.toLog()
             )
         }
@@ -87,12 +87,36 @@ class FormatUtilsTest {
         // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
         if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
             assertEquals(
-                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010",
+                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010,0",
                 l.toLog()
             )
         } else {
             assertEquals(
-                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,,,123456789,",
+                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,,,123456789,,0",
+                l.toLog()
+            )
+        }
+    }
+
+    @Test
+    fun locationToLog_MockLocation() {
+        val l = Location("test")
+        l.latitude = 45.34567899
+        l.longitude = 12.45678901
+        l.time = 12345
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            l.isMock = true
+        }
+
+        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            assertEquals(
+                "Fix,test,45.34567899,12.45678901,0.0,0.0,0.0,0.0,12345,,,0,,1",
+                l.toLog()
+            )
+        } else {
+            assertEquals(
+                "Fix,test,45.34567899,12.45678901,,,,,12345,,,,,",
                 l.toLog()
             )
         }

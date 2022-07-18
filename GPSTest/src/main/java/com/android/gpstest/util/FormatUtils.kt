@@ -232,7 +232,7 @@ internal object FormatUtils {
 
     /**
      * Returns location data formatted to CSV for logging in the following format:
-     * Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+     * Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters,IsMockLocation
      */
     @JvmStatic
     fun Location.toLog(): String {
@@ -240,7 +240,8 @@ internal object FormatUtils {
                 "${if (isSpeedAccuracySupported()) speedAccuracyMetersPerSecond.toLog() else ""}," +
                 "${if (isBearingAccuracySupported()) bearingAccuracyDegrees.toLog() else ""}," +
                 "$elapsedRealtimeNanos," +
-                if (isVerticalAccuracySupported()) verticalAccuracyMeters.toLog() else ""
+                "${if (isVerticalAccuracySupported()) verticalAccuracyMeters.toLog() else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) isMock.toLog() else ""}"
     }
 
     /**
@@ -257,9 +258,9 @@ internal object FormatUtils {
                 "$unixTimeMillis," +
                 "$signalCount,$signalIndex,${gnssType.toGnssStatusConstellationType()},$svid," +
                 "${carrierFrequencyHz.toLog()},${cn0DbHz.toLog()},${azimuthDegrees.toLog()},${elevationDegrees.toLog()}," +
-                "${if (usedInFix) "1" else "0"}," +
-                "${if (hasAlmanac) "1" else "0"}," +
-                "${if (hasEphemeris) "1" else "0"}," +
+                "${usedInFix.toLog()}," +
+                "${hasAlmanac.toLog()}," +
+                "${hasEphemeris.toLog()}," +
                 if (hasBasebandCn0DbHz) basebandCn0DbHz.toLog() else ""
     }
 
@@ -383,5 +384,13 @@ internal object FormatUtils {
     @JvmStatic
     fun Double.toLog(): String {
         return this.toBigDecimal().toPlainString()
+    }
+
+    /**
+     * Formats [this] boolean as 1 for true and 0 for false
+     */
+    @JvmStatic
+    fun Boolean.toLog(): String {
+        return if (this) "1" else "0"
     }
 }
