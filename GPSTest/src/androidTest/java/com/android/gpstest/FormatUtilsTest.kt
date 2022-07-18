@@ -55,10 +55,17 @@ class FormatUtilsTest {
 
         // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
         if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
-            assertEquals(
-                "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,382.7,284.1,123456789,583.4,0",
-                l.toLog()
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                assertEquals(
+                    "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,382.7,284.1,123456789,583.4,0",
+                    l.toLog()
+                )
+            } else {
+                assertEquals(
+                    "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,382.7,284.1,123456789,583.4,",
+                    l.toLog()
+                )
+            }
         } else {
             assertEquals(
                 "Fix,test,45.34567899,12.45678901,56.2,19.2,98.7,100.1,12345,,,123456789,0",
@@ -86,10 +93,17 @@ class FormatUtilsTest {
 
         // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
         if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
-            assertEquals(
-                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010,0",
-                l.toLog()
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                assertEquals(
+                    "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010,0",
+                    l.toLog()
+                )
+            } else {
+                assertEquals(
+                    "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010,",
+                    l.toLog()
+                )
+            }
         } else {
             assertEquals(
                 "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,,,123456789,,0",
@@ -116,7 +130,7 @@ class FormatUtilsTest {
             )
         } else {
             assertEquals(
-                "Fix,test,45.34567899,12.45678901,,,,,12345,,,,,",
+                "Fix,test,45.34567899,12.45678901,0.0,0.0,0.0,0.0,12345,,,,,",
                 l.toLog()
             )
         }
