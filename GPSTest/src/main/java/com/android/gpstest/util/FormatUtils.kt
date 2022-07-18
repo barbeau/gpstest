@@ -283,7 +283,7 @@ internal object FormatUtils {
         return "Raw,$elapsedRealtime,$timeNanos," +
                 "${if (hasLeapSecond()) leapSecond else ""}," +
                 "${if (hasTimeUncertaintyNanos()) timeUncertaintyNanos.toLog() else ""}," +
-                "$fullBiasNanos" +
+                "$fullBiasNanos," +
                 "${if (hasBiasNanos()) biasNanos.toLog() else ""}," +
                 "${if (hasBiasUncertaintyNanos()) biasUncertaintyNanos.toLog() else ""}," +
                 "${if (hasDriftNanosPerSecond()) driftNanosPerSecond.toLog() else ""}," +
