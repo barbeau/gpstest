@@ -236,11 +236,11 @@ internal object FormatUtils {
      */
     @JvmStatic
     fun Location.toLog(): String {
-        return "Fix,$provider,$latitude,$longitude,$altitude,$speed,$accuracy,$bearing,$time," +
-                "${if (isSpeedAccuracySupported()) speedAccuracyMetersPerSecond else ""}," +
-                "${if (isBearingAccuracySupported()) bearingAccuracyDegrees else ""}," +
+        return "Fix,${provider},${latitude.toLog()},${longitude.toLog()},${altitude.toLog()},${speed.toLog()},${accuracy.toLog()},${bearing.toLog()},$time," +
+                "${if (isSpeedAccuracySupported()) speedAccuracyMetersPerSecond.toLog() else ""}," +
+                "${if (isBearingAccuracySupported()) bearingAccuracyDegrees.toLog() else ""}," +
                 "$elapsedRealtimeNanos," +
-                "${if (isVerticalAccuracySupported()) verticalAccuracyMeters else ""}"
+                if (isVerticalAccuracySupported()) verticalAccuracyMeters.toLog() else ""
     }
 
     /**
@@ -256,11 +256,11 @@ internal object FormatUtils {
         return "Status," +
                 "$unixTimeMillis," +
                 "$signalCount,$signalIndex,${gnssType.toGnssStatusConstellationType()},$svid," +
-                "${carrierFrequencyHz.toBigDecimal().toPlainString()},$cn0DbHz,$azimuthDegrees,$elevationDegrees," +
+                "${carrierFrequencyHz.toLog()},${cn0DbHz.toLog()},${azimuthDegrees.toLog()},${elevationDegrees.toLog()}," +
                 "${if (usedInFix) "1" else "0"}," +
                 "${if (hasAlmanac) "1" else "0"}," +
                 "${if (hasEphemeris) "1" else "0"}," +
-                "${if (hasBasebandCn0DbHz) basebandCn0DbHz else ""}"
+                if (hasBasebandCn0DbHz) basebandCn0DbHz.toLog() else ""
     }
 
     /**
@@ -282,12 +282,12 @@ internal object FormatUtils {
     private fun GnssClock.toLog(elapsedRealtime: Long): String {
         return "Raw,$elapsedRealtime,$timeNanos," +
                 "${if (hasLeapSecond()) leapSecond else ""}," +
-                "${if (hasTimeUncertaintyNanos()) timeUncertaintyNanos else ""}," +
+                "${if (hasTimeUncertaintyNanos()) timeUncertaintyNanos.toLog() else ""}," +
                 "$fullBiasNanos" +
-                "${if (hasBiasNanos()) biasNanos else ""}," +
-                "${if (hasBiasUncertaintyNanos()) biasUncertaintyNanos else ""}," +
-                "${if (hasDriftNanosPerSecond()) driftNanosPerSecond else ""}," +
-                "${if (hasDriftUncertaintyNanosPerSecond()) driftUncertaintyNanosPerSecond else ""}," +
+                "${if (hasBiasNanos()) biasNanos.toLog() else ""}," +
+                "${if (hasBiasUncertaintyNanos()) biasUncertaintyNanos.toLog() else ""}," +
+                "${if (hasDriftNanosPerSecond()) driftNanosPerSecond.toLog() else ""}," +
+                "${if (hasDriftUncertaintyNanosPerSecond()) driftUncertaintyNanosPerSecond.toLog() else ""}," +
                 "$hardwareClockDiscontinuityCount"
     }
 
@@ -298,25 +298,25 @@ internal object FormatUtils {
     @JvmStatic
     private fun GnssMeasurement.toLog(elapsedRealtimeNanos: Long): String {
         // Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,
-        return "$svid,$timeOffsetNanos,$state,$receivedSvTimeNanos,$receivedSvTimeUncertaintyNanos," +
-                "$cn0DbHz,$pseudorangeRateMetersPerSecond,$pseudorangeRateUncertaintyMetersPerSecond," +
-                "$accumulatedDeltaRangeState,$accumulatedDeltaRangeMeters," +
-                "$accumulatedDeltaRangeUncertaintyMeters," +
+        return "$svid,${timeOffsetNanos.toLog()},$state,$receivedSvTimeNanos,$receivedSvTimeUncertaintyNanos," +
+                "${cn0DbHz.toLog()},${pseudorangeRateMetersPerSecond.toLog()},${pseudorangeRateUncertaintyMetersPerSecond.toLog()}," +
+                "$accumulatedDeltaRangeState,${accumulatedDeltaRangeMeters.toLog()}," +
+                "${accumulatedDeltaRangeUncertaintyMeters.toLog()}," +
                 // CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,
-                "${if (hasCarrierFrequencyHz()) carrierFrequencyHz.toBigDecimal().toPlainString() else ""}," +
+                "${if (hasCarrierFrequencyHz()) carrierFrequencyHz.toLog() else ""}," +
                 "${if (hasCarrierCycles()) carrierCycles else ""}," +
-                "${if (hasCarrierPhase()) carrierPhase else ""}," +
-                "${if (hasCarrierPhaseUncertainty()) carrierPhaseUncertainty else ""}," +
+                "${if (hasCarrierPhase()) carrierPhase.toLog() else ""}," +
+                "${if (hasCarrierPhaseUncertainty()) carrierPhaseUncertainty.toLog() else ""}," +
                 "$multipathIndicator," +
-                "${if (hasSnrInDb()) snrInDb else ""}," +
+                "${if (hasSnrInDb()) snrInDb.toLog() else ""}," +
                 "$constellationType," +
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasAutomaticGainControlLevelDb()) automaticGainControlLevelDb else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && hasAutomaticGainControlLevelDb()) automaticGainControlLevelDb.toLog() else ""}," +
                 // BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasBasebandCn0DbHz()) basebandCn0DbHz else ""}," +
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasNanos()) fullInterSignalBiasNanos else ""}," +
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasUncertaintyNanos()) fullInterSignalBiasUncertaintyNanos else ""}," +
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasNanos()) satelliteInterSignalBiasNanos else ""}," +
-                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasUncertaintyNanos()) satelliteInterSignalBiasUncertaintyNanos else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasBasebandCn0DbHz()) basebandCn0DbHz.toLog() else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasNanos()) fullInterSignalBiasNanos.toLog() else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasFullInterSignalBiasUncertaintyNanos()) fullInterSignalBiasUncertaintyNanos.toLog() else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasNanos()) satelliteInterSignalBiasNanos.toLog() else ""}," +
+                "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasSatelliteInterSignalBiasUncertaintyNanos()) satelliteInterSignalBiasUncertaintyNanos.toLog() else ""}," +
                 "${if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && hasCodeType()) codeType else ""}," +
                 "$elapsedRealtimeNanos"
     }
@@ -328,20 +328,20 @@ internal object FormatUtils {
     @RequiresApi(api = Build.VERSION_CODES.R)
     @JvmStatic
     fun GnssAntennaInfo.toLog(): String {
-        return "GnssAntennaInfo,$carrierFrequencyMHz,${phaseCenterOffset.xOffsetMm}," +
-                "${phaseCenterOffset.xOffsetUncertaintyMm},${phaseCenterOffset.yOffsetMm}," +
-                "${phaseCenterOffset.yOffsetUncertaintyMm},${phaseCenterOffset.zOffsetMm}," +
-                "${phaseCenterOffset.zOffsetUncertaintyMm},${
+        return "GnssAntennaInfo,${carrierFrequencyMHz.toLog()},${phaseCenterOffset.xOffsetMm.toLog()}," +
+                "${phaseCenterOffset.xOffsetUncertaintyMm.toLog()},${phaseCenterOffset.yOffsetMm.toLog()}," +
+                "${phaseCenterOffset.yOffsetUncertaintyMm.toLog()},${phaseCenterOffset.zOffsetMm.toLog()}," +
+                "${phaseCenterOffset.zOffsetUncertaintyMm.toLog()},${
             IOUtils.serialize(
                 phaseCenterVariationCorrections!!.correctionsArray
             )
         },${IOUtils.serialize(phaseCenterVariationCorrections!!.correctionUncertaintiesArray)}," +
-                "${phaseCenterVariationCorrections!!.deltaPhi},${phaseCenterVariationCorrections!!.deltaTheta},${
+                "${phaseCenterVariationCorrections!!.deltaPhi.toLog()},${phaseCenterVariationCorrections!!.deltaTheta.toLog()},${
             IOUtils.serialize(
                 signalGainCorrections!!.correctionsArray
             )
         },${IOUtils.serialize(signalGainCorrections!!.correctionUncertaintiesArray)}," +
-                "${signalGainCorrections!!.deltaPhi},${signalGainCorrections!!.deltaTheta}"
+                "${signalGainCorrections!!.deltaPhi.toLog()},${signalGainCorrections!!.deltaTheta.toLog()}"
     }
 
     /**
@@ -362,6 +362,26 @@ internal object FormatUtils {
         val timeAtBootMs = currentTimeMs - millisSinceBootMs
         return "OrientationDeg,${TimeUnit.NANOSECONDS.toMillis(elapsedRealtimeNanos) + timeAtBootMs}," +
                 "$elapsedRealtimeNanos," +
-                "${values[0]},${values[1]},${values[2]}"
+                "${values[0].toLog()},${values[1].toLog()},${values[2].toLog()}"
+    }
+
+    /**
+     * Formats [this] value to it's full numeric value in String format, NOT using scientific notation.
+     *
+     * For example, `0.00000000000000000001` will be output as `0.00000000000000000001`, not `1.0E-20`
+     */
+    @JvmStatic
+    fun Float.toLog(): String {
+        return this.toBigDecimal().toPlainString()
+    }
+
+    /**
+     * Formats [this] value to it's full numeric value in String format, NOT using scientific notation.
+     *
+     * For example, `0.00000000000000000001` will be output as `0.00000000000000000001`, not `1.0E-20`
+     */
+    @JvmStatic
+    fun Double.toLog(): String {
+        return this.toBigDecimal().toPlainString()
     }
 }

@@ -67,6 +67,37 @@ class FormatUtilsTest {
         }
     }
 
+    @Test
+    fun locationToLog_NoExponentialNotation() {
+        val l = Location("test")
+        l.latitude = 0.00000000000000000001
+        l.longitude = 0.00000000000000000001
+        l.altitude = 0.00000000000000000001
+        l.speed = 0.00000000000000000001f
+        l.accuracy = 0.00000000000000000001f
+        l.bearing = 0.00000000000000000001f
+        l.time = 12345
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            l.speedAccuracyMetersPerSecond = 0.00000000000000000001f
+            l.bearingAccuracyDegrees = 0.00000000000000000001f
+            l.verticalAccuracyMeters = 0.00000000000000000001f
+        }
+        l.elapsedRealtimeNanos = 123456789
+
+        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+        if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
+            assertEquals(
+                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,0.000000000000000000010,0.000000000000000000010,123456789,0.000000000000000000010",
+                l.toLog()
+            )
+        } else {
+            assertEquals(
+                "Fix,test,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,0.000000000000000000010,12345,,,123456789,",
+                l.toLog()
+            )
+        }
+    }
+
     /**
      * Test writing GnssAntennaInfo to CSV format (only runs on Android R or higher)
      */
