@@ -54,6 +54,7 @@ import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
@@ -66,7 +67,6 @@ import com.android.gpstest.util.PreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.util.PreferenceUtil.minDistance
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.PreferenceUtil.runInBackground
-import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -137,16 +137,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
-    // Repository of location data that the service will observe, injected via Hilt
+    // Repository of location data that the activity will observe, injected via Hilt
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
-
-    // Preference listener that will cancel the above flows when the user turns off tracking via service notification
-    private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { gpsStop() }
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -160,8 +160,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         UIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
 
-        // Observe stopping location updates from the service
-        Application.prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
+        // Observe preference state for stopping location updates from the service
+        observePreferences()
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -397,7 +397,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (Application.prefs.getBoolean(
                 getString(R.string.pref_key_auto_start_gps),
                 true
-            ) || isTrackingStarted()
+            ) || prefsRepo.prefs().isTrackingStarted
         ) {
             gpsStart()
         }
@@ -689,8 +689,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @ExperimentalCoroutinesApi
     private fun deleteAidingData() {
         // If GPS is currently running, stop it
-        val lastStartState = isTrackingStarted()
-        if (isTrackingStarted()) {
+        val lastStartState = prefsRepo.prefs().isTrackingStarted
+        if (prefsRepo.prefs().isTrackingStarted) {
             gpsStop()
         }
         val success =
@@ -734,7 +734,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @SuppressLint("MissingPermission")
     @Synchronized
     private fun gpsStart() {
-        PreferenceUtils.saveTrackingStarted(true)
+        lifecycleScope.launch {
+            prefsRepo.updateTracking(true)
+        }
         service?.subscribeToLocationUpdates()
         showProgressBar()
 
@@ -759,6 +761,22 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Reset the options menu to trigger updates to action bar menu items
         invalidateOptionsMenu()
+    }
+
+    private fun observePreferences() {
+        // Observe preferences via Flow as they change
+        // TODO - should all components listen to this to start GNSS instead of
+        //  SharedLocationManager.receivingLocationUpdates?
+        prefsRepo.userPreferencesFlow
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Cancel the location flows when the user turns off tracking via service notification
+                if (!it.isTrackingStarted) {
+                    gpsStop()
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -792,7 +810,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val gnssStateObserver = Observer<FixState> { fixState ->
             when (fixState) {
                 is FixState.Acquired -> hideProgressBar()
-                is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
+                is FixState.NotAcquired -> if (prefsRepo.prefs().isTrackingStarted) showProgressBar()
             }
         }
         signalInfoViewModel.fixState.observe(
@@ -802,7 +820,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @Synchronized
     private fun gpsStop() {
-        PreferenceUtils.saveTrackingStarted(false)
+        lifecycleScope.launch {
+            prefsRepo.updateTracking(false)
+        }
         locationFlow?.cancel()
 
         // Reset the options menu to trigger updates to action bar menu items
@@ -843,16 +863,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             switch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
             if (switch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                switch!!.isChecked = isTrackingStarted()
+                switch!!.isChecked = prefsRepo.prefs().isTrackingStarted
 
                 // Set up listener for GPS on/off switch
                 switch!!.setOnClickListener {
                     // Turn GPS on or off
-                    if (!switch!!.isChecked && isTrackingStarted()) {
+                    if (!switch!!.isChecked && prefsRepo.prefs().isTrackingStarted) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
                     } else {
-                        if (switch!!.isChecked && !isTrackingStarted()) {
+                        if (switch!!.isChecked && !prefsRepo.prefs().isTrackingStarted) {
                             gpsStart()
                         }
                     }

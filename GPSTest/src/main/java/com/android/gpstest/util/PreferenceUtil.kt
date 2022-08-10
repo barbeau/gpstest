@@ -211,23 +211,6 @@ internal object PreferenceUtil {
     }
 
     /**
-     * Creates a new preference listener that will invoke the provide [cancelFlows] function (e.g., to cancel jobs)
-     * when the user turns off tracking via the UI.
-     *
-     * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
-     * anonymous preference listeners tend to get GC'd by Android.
-     */
-    fun newStopTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
-        return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == PreferenceUtils.KEY_SERVICE_TRACKING_ENABLED) {
-                if (!PreferenceUtils.isTrackingStarted()) {
-                    cancelFlows()
-                }
-            }
-        }
-    }
-
-    /**
      * Creates a new preference listener that will invoke the provide [initLogging] function
      * when the user turns on file logging via any of the Settings options and all of the other file
      * logging settings were previously off

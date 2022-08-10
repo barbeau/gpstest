@@ -36,13 +36,13 @@ import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.components.GnssList
 import com.android.gpstest.ui.components.ProgressCard
 import com.android.gpstest.ui.components.SbasList
-import com.android.gpstest.util.PreferenceUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
 fun DashboardScreen(viewModel: SignalInfoViewModel) {
+    val prefs: AppPreferences by viewModel.prefs.observeAsState(AppPreferences(true))
     val allSatellites: SatelliteGroup by viewModel.allSatellitesGroup.observeAsState(
         SatelliteGroup(emptyMap(), satelliteMetadata = SatelliteMetadata())
     )
@@ -75,7 +75,8 @@ fun DashboardScreen(viewModel: SignalInfoViewModel) {
         adrStates = adrStates,
         timeBetweenLocationUpdatesSeconds = timeBetweenLocationUpdatesSeconds,
         timeBetweenGnssSystemTimeSeconds = timeBetweenGnssSystemTimeSeconds,
-        userCountry = userCountry
+        userCountry = userCountry,
+        prefs = prefs
     )
 }
 
@@ -91,6 +92,7 @@ fun Dashboard(
     timeBetweenLocationUpdatesSeconds: Double,
     timeBetweenGnssSystemTimeSeconds: Double,
     userCountry: UserCountry,
+    prefs: AppPreferences,
 ) {
     Box(
         modifier = Modifier
@@ -101,7 +103,7 @@ fun Dashboard(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            if (PreferenceUtils.isTrackingStarted()) {
+            if (prefs.isTrackingStarted) {
                 Spacer(modifier = Modifier.padding(5.dp))
                 SignalSummaryCard(satelliteMetadata, fixState)
                 Spacer(modifier = Modifier.padding(5.dp))

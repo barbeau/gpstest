@@ -210,6 +210,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
     //Integration with LiveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-beta03'
+    // Preference datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.5'
 

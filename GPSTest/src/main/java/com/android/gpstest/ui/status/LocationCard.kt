@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
+import com.android.gpstest.model.AppPreferences
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
 import com.android.gpstest.model.GeoidAltitude
@@ -78,7 +79,8 @@ fun LocationCardPreview(
         GeoidAltitude(0,  1.4, -24.0),
         DilutionOfPrecision(1.0, 2.0, 3.0),
         SatelliteMetadata(),
-        FixState.Acquired
+        FixState.Acquired,
+        AppPreferences(true)
     )
 }
 
@@ -113,6 +115,7 @@ fun LocationCard(
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
     fixState: FixState,
+    prefs: AppPreferences,
 ) {
     val context = LocalContext.current
     Card(
@@ -132,7 +135,7 @@ fun LocationCard(
                 LabelColumn1()
                 ValueColumn1(location, geoidAltitude, dop)
                 LabelColumn2(location)
-                ValueColumn2(location, ttff, dop, satelliteMetadata)
+                ValueColumn2(location, ttff, dop, satelliteMetadata, prefs)
             }
             LockIcon(fixState = fixState)
         }
@@ -208,6 +211,7 @@ fun ValueColumn2(
     ttff: String,
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
+    prefs: AppPreferences,
 ) {
     Column(
         modifier = Modifier
@@ -217,7 +221,7 @@ fun ValueColumn2(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Time(location)
+        Time(location, prefs)
         TTFF(ttff)
         Accuracy(location)
         NumSats(satelliteMetadata)
@@ -228,8 +232,8 @@ fun ValueColumn2(
 }
 
 @Composable
-fun Time(location: Location) {
-    if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
+fun Time(location: Location, prefs: AppPreferences) {
+    if (location.time == 0L || !prefs.isTrackingStarted) {
         LocationValue("")
     } else {
         formattedTime(location.time)

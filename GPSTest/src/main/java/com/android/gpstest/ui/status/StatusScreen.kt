@@ -59,11 +59,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
 fun StatusScreen(viewModel: SignalInfoViewModel) {
-
-
     //
     // Observe LiveData from ViewModel
     //
+    val prefs: AppPreferences by viewModel.prefs.observeAsState(AppPreferences(true))
     val location: Location by viewModel.location.observeAsState(Location(dummyProvider))
     val ttff: String by viewModel.ttff.observeAsState("")
     val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
@@ -86,7 +85,8 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 geoidAltitude,
                 dop,
                 satelliteMetadata,
-                fixState)
+                fixState,
+                prefs)
             if (gnssFilter().isNotEmpty()) {
                 Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter() }
             }

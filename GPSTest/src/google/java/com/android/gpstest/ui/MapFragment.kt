@@ -34,6 +34,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
 import com.android.gpstest.map.MapViewModelController.MapInterface
@@ -88,13 +89,13 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
-
-    // Preference listener that will cancel the above flows when the user turns off tracking via UI
-    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,7 +105,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
         lastLocation = null
 
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+        observePreferences()
 
         if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
@@ -307,6 +308,20 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         if (lastLocation == null) {
             lastLocation = loc
         }
+    }
+
+    private fun observePreferences() {
+        // Observe preferences via Flow as they change
+        prefsRepo.userPreferencesFlow
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Cancel the location flows when the user turns off tracking via UI
+                if (!it.isTrackingStarted) {
+                    onGnssStopped()
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     private fun onOrientationChanged(orientation: Double, tilt: Double) {
