@@ -16,7 +16,6 @@
  */
 package com.android.gpstest.ui
 
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -33,13 +32,13 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
 import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
 import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtil.newStopTrackingListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -81,13 +80,13 @@ class MapFragment : Fragment(), MapInterface {
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
-
-    // Preference listener that will cancel the above flows when the user turns off tracking via UI
-    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        newStopTrackingListener { onGnssStopped() }
 
     @ExperimentalCoroutinesApi
     override fun onCreateView(
@@ -113,7 +112,7 @@ class MapFragment : Fragment(), MapInterface {
         mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
         map.invalidate()
 
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+        observePreferences()
 
         addMapClickListener()
         observeLocationUpdateStates()
@@ -269,6 +268,20 @@ class MapFragment : Fragment(), MapInterface {
     private fun observeFlows() {
         observeLocationFlow()
         observeSensorFlow()
+    }
+
+    private fun observePreferences() {
+        // Observe preferences via Flow as they change
+        prefsRepo.userPreferencesFlow
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Cancel the location flows when the user turns off tracking via UI
+                if (!it.isTrackingStarted) {
+                    onGnssStopped()
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi
