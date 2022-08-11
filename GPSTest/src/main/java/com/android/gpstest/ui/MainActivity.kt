@@ -57,6 +57,8 @@ import com.android.gpstest.data.LocationRepository
 import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
+import com.android.gpstest.ui.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY
+import com.android.gpstest.ui.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.ui.dashboard.DashboardFragment
 import com.android.gpstest.ui.sky.SkyFragment
@@ -882,9 +884,14 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val item = menu.findItem(R.id.share)
-        if (item != null) {
-            item.isVisible = lastLocation != null || isFileLoggingEnabled() == true
+        val share = menu.findItem(R.id.share)
+        if (share != null) {
+            share.isVisible = lastLocation != null || isFileLoggingEnabled() == true
+        }
+        val filter = menu.findItem(R.id.filter_sats)
+        if (filter != null) {
+            filter.isVisible =
+                currentNavDrawerPosition == NAVDRAWER_ITEM_STATUS || currentNavDrawerPosition == NAVDRAWER_ITEM_SKY
         }
         return true
     }
