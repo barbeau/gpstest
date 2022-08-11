@@ -17,8 +17,12 @@
 package com.android.gpstest
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.test.InstrumentationRegistry
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.data.*
@@ -31,6 +35,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 @RunWith(AndroidJUnit4ClassRunner::class)
 class SignalInfoViewModelTest {
 
@@ -38,7 +44,7 @@ class SignalInfoViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val repository = LocationRepository(
+    private val locationRepo = LocationRepository(
         SharedLocationManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
         SharedGnssStatusManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
         SharedNmeaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
@@ -48,16 +54,19 @@ class SignalInfoViewModelTest {
         SharedAntennaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope)
     )
 
+    private val prefsRepo =
+        PreferencesRepository(dataStore = InstrumentationRegistry.getTargetContext().applicationContext.dataStore)
+
     /**
      * Test aggregating signal information into satellites
      */
     @Test
     fun testDeviceInfoViewModel() {
-        val modelEmpty = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelEmpty = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelEmpty.updateStatus(emptyList())
 
         // Test GPS L1 - should be 1 satellite, no L5 or dual-frequency
-        val modelGpsL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelGpsL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelGpsL1.updateStatus(listOf(gpsL1(1, true)))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
@@ -109,7 +118,7 @@ class SignalInfoViewModelTest {
 
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
-        val modelGpsL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelGpsL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelGpsL1L5.updateStatus(listOf(gpsL1(1, false), gpsL5(1, true)))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
@@ -279,7 +288,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L5 not in use - should be 1 satellites, non-primary frequency in view, but not dual-frequency in view or use
-        val modelGpsL5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelGpsL5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelGpsL5.updateStatus(listOf(gpsL5(1, false)))
         assertEquals(1, modelGpsL5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL5.getSupportedGnss().size)
@@ -314,7 +323,7 @@ class SignalInfoViewModelTest {
         }
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
-        val modelGpsL1GlonassL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelGpsL1GlonassL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelGpsL1GlonassL1.updateStatus(listOf(gpsL1(1, true), glonassL1variant1()))
         assertEquals(2, modelGpsL1GlonassL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
@@ -340,7 +349,7 @@ class SignalInfoViewModelTest {
         }
 
         // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
-        val modelGalileoE1E5a = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelGalileoE1E5a = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelGalileoE1E5a.updateStatus(listOf(galileoE1(1, true), galileoE5a(2, true)))
         assertEquals(2, modelGalileoE1E5a.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
@@ -410,7 +419,7 @@ class SignalInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
-        val modelWaasL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
+        val modelWaasL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, locationRepo, prefsRepo)
         modelWaasL1L5.updateStatus(listOf(galaxy15_135L1(true)))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
@@ -476,7 +485,8 @@ class SignalInfoViewModelTest {
         // Test two GPS L1s from same satellite
         val model = SignalInfoViewModel(
             InstrumentationRegistry.getTargetContext().applicationContext as Application,
-            repository
+            locationRepo,
+            prefsRepo
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL1(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
@@ -497,7 +507,8 @@ class SignalInfoViewModelTest {
         // Test two GPS signals from same satellite
         val model = SignalInfoViewModel(
             InstrumentationRegistry.getTargetContext().applicationContext as Application,
-            repository
+            locationRepo,
+            prefsRepo
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
@@ -530,7 +541,8 @@ class SignalInfoViewModelTest {
         // Test two GPS signals from same satellite
         val model = SignalInfoViewModel(
             InstrumentationRegistry.getTargetContext().applicationContext as Application,
-            repository
+            locationRepo,
+            prefsRepo
         )
         model.updateStatus(listOf(gpsL1(1, true), gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
@@ -563,7 +575,8 @@ class SignalInfoViewModelTest {
         // Test two GPS signals from same satellite
         val model = SignalInfoViewModel(
             InstrumentationRegistry.getTargetContext().applicationContext as Application,
-            repository
+            locationRepo,
+            prefsRepo
         )
         model.updateStatus(listOf(gpsL5DifferentElevationAzimuthAlmanacEphemeris(1, true)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
@@ -579,7 +592,8 @@ class SignalInfoViewModelTest {
         // Test two GPS signals from same satellite
         val model = SignalInfoViewModel(
             InstrumentationRegistry.getTargetContext().applicationContext as Application,
-            repository
+            locationRepo,
+            prefsRepo
         )
         model.updateStatus(listOf(gpsL1NoSignal(1)))
         assertEquals(1, model.filteredGnssSatellites.value?.size)
