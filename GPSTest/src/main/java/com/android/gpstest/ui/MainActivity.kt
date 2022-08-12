@@ -149,6 +149,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
+    private var prefsFlow: Job? = null
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -767,9 +768,14 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun observePreferences() {
         // Observe preferences via Flow as they change
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+
         // TODO - should all components listen to this to start GNSS instead of
         //  SharedLocationManager.receivingLocationUpdates?
-        prefsRepo.userPreferencesFlow
+        prefsFlow = prefsRepo.userPreferencesFlow
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")

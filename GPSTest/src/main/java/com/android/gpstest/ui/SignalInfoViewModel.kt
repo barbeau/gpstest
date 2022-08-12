@@ -68,6 +68,7 @@ class SignalInfoViewModel @Inject constructor(
     private var gnssFlow: Job? = null
     private var nmeaFlow: Job? = null
     private var measurementFlow: Job? = null
+    private var prefsFlow: Job? = null
 
     //
     // LiveData observed by Composables
@@ -261,7 +262,12 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     private fun observePrefs() {
-        prefsRepo.userPreferencesFlow
+        // Observe preferences via Flow as they change
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        prefsFlow = prefsRepo.userPreferencesFlow
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
                 // Cancel the above flows when the user turns off tracking via UI

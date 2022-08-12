@@ -96,6 +96,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var sensorFlow: Job? = null
+    private var prefsFlow: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -312,7 +313,12 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
     private fun observePreferences() {
         // Observe preferences via Flow as they change
-        prefsRepo.userPreferencesFlow
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+
+        prefsFlow = prefsRepo.userPreferencesFlow
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
