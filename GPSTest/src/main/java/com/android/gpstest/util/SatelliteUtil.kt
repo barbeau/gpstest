@@ -302,8 +302,6 @@ internal object SatelliteUtil {
             return SbasType.GAGAN
         } else if (this == 129 || this == 137) {
             return SbasType.MSAS
-        } else if (this == 122) {
-            return SbasType.SouthPAN
         }
         return SbasType.UNKNOWN
     }

@@ -218,13 +218,6 @@ public class CarrierFreqUtils {
             } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
-        } else if (svid == 122) {
-            // SouthPAN (Australia/New Zealand)
-            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
-                return "L1";
-            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
-                return "L5";
-            }            
         } else if (svid == 127 || svid == 128 || svid == 139) {
             // GAGAN (India)
             if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
