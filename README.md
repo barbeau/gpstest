@@ -30,6 +30,7 @@ It supports dual-frequency¹ GNSS for:
     * System for Differential Corrections and Monitoring (SDCM) (Russia)
     * Satellite Navigation Augmentation System (SNAS) (China)
     * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
+    * Southern Positioning Augmentation Network (SouthPAN) (Australia / New Zealand)
     
 ¹*Dual-frequency GNSS requires device hardware support and Android 8.0 Oreo or higher. See [Dual-frequency GNSS on Android](https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c) for more details.*
 
