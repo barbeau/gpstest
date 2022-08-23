@@ -193,6 +193,7 @@
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
     <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+    <string name="sky_legend_shape_southpan">SouthPAN (Australia/New Zealand)</string>
 
     <string name="sky_legend_shape_availability_title">Signal Availability</string>
     <string name="sky_legend_shape_not_in_view">Not in view of device</string>
@@ -208,6 +209,7 @@
     <string name="japan_flag">Japan flag</string>
     <string name="india_flag">India flag</string>
     <string name="icao_flag">ICAO flag</string>
+    <string name="southpan_flag">SouthPAN flag</string>
 
     <string name="circle">circle</string>
     <string name="square">square</string>
@@ -455,7 +457,7 @@
         - Pentagons\n&#8226;\u0020
         <b>IRNSS/NavIC (India)</b>
         - Ovals\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA, SouthPAN)</b>
         - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
