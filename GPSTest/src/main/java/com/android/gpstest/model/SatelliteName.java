@@ -19,5 +19,5 @@ package com.android.gpstest.model;
  * Types of Global Navigation Satellite Systems
  */
 public enum SatelliteName {
-    ANIK, GALAXY_15, INMARSAT_3F2, INMARSAT_3F5, INMARSAT_4F1, INMARSAT_4F3, SES_5, ASTRA_5B, GEO5, UNKNOWN
+    ANIK, GALAXY_15, INMARSAT_3F2, INMARSAT_3F5, INMARSAT_4F3, SES_5, ASTRA_5B, GEO5, UNKNOWN
 }
