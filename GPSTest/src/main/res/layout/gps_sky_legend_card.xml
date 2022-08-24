@@ -699,7 +699,7 @@
                     android:contentDescription="@string/diamond"/>
 
                 <View
-                    android:id="@+id/sky_legend_shape_line16a"
+                    android:id="@+id/sky_legend_shape_line17a"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
@@ -718,7 +718,7 @@
                     android:contentDescription="@string/southpan_flag"/>
 
                 <View
-                    android:id="@+id/sky_legend_shape_line16b"
+                    android:id="@+id/sky_legend_shape_line17b"
                     android:layout_width="@dimen/sky_legend_shape_small_line"
                     android:layout_height="1dp"
                     android:layout_gravity="center_vertical"
