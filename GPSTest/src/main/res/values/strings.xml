@@ -149,6 +149,7 @@
     <string name="sdcm_content_description">SDCM</string>
     <string name="snas_content_description">SNAS</string>
     <string name="saccsa_content_description">SACCSA</string>
+    <string name="southpan_content_description">SouthPAN</string>    
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
