@@ -276,7 +276,6 @@ internal object SatelliteUtil {
             GnssType.QZSS -> GnssStatus.CONSTELLATION_QZSS
             GnssType.GALILEO -> GnssStatus.CONSTELLATION_GALILEO
             GnssType.IRNSS -> GnssStatus.CONSTELLATION_IRNSS
-            GnssType.SouthPAN -> GnssStatus.CONSTELLATION_SouthPAN
             GnssType.SBAS -> GnssStatus.CONSTELLATION_SBAS
             GnssType.UNKNOWN -> GnssStatus.CONSTELLATION_UNKNOWN
         }
