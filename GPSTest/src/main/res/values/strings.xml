@@ -194,7 +194,7 @@
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
     <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
-    <string name="sky_legend_shape_southpan">SouthPAN (Australia/New Zealand)</string>
+    <string name="sky_legend_shape_southpan">SouthPAN (Australia / New Zealand)</string>
 
     <string name="sky_legend_shape_availability_title">Signal Availability</string>
     <string name="sky_legend_shape_not_in_view">Not in view of device</string>
