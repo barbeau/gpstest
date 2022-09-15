@@ -772,7 +772,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             // If we're already observing updates, don't register again
             return
         }
-        
+
         prefsFlow = prefsRepo.userPreferencesFlow
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
