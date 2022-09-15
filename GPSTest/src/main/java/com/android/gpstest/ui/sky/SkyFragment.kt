@@ -123,8 +123,6 @@ class SkyFragment : Fragment() {
         // Observe preference to cancel the location flows when the user turns off tracking via UI
         observePreferences()
 
-        observeLocationUpdateStates()
-
         return v
     }
 
@@ -167,20 +165,8 @@ class SkyFragment : Fragment() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
-                // Cancel the location flows when the user turns off tracking via UI
-                if (!it.isTrackingStarted) {
-                    onGnssStopped()
-                }
-            }
-            .launchIn(lifecycleScope)
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        repository.receivingLocationUpdates
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                when (it) {
+                // Start or stop the location flows when the app init or user turns on/off tracking via UI
+                when (it.isTrackingStarted) {
                     true -> onGnssStarted()
                     false -> onGnssStopped()
                 }

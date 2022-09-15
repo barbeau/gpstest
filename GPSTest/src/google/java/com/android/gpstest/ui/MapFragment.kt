@@ -106,8 +106,6 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
         lastLocation = null
 
-        observePreferences()
-
         if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
             this.savedInstanceState = savedInstanceState
@@ -115,7 +113,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
             lifecycle.coroutineScope.launchWhenCreated {
                 val googleMap = awaitMap()
                 setupMap(mapFragment, googleMap)
-                observeLocationUpdateStates()
+                observePreferences()
             }
         } else {
             val sp = Application.prefs
@@ -188,19 +186,6 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         googleMap.setOnMapLongClickListener(mapFragment)
         googleMap.setOnMyLocationButtonClickListener(mapFragment)
         googleMap.uiSettings.isMapToolbarEnabled = false
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        repository.receivingLocationUpdates
-            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach {
-                when (it) {
-                    true -> onGnssStarted()
-                    false -> onGnssStopped()
-                }
-            }
-            .launchIn(lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -311,6 +296,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun observePreferences() {
         // Observe preferences via Flow as they change
         if (prefsFlow?.isActive == true) {
@@ -322,9 +308,10 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
-                // Cancel the location flows when the user turns off tracking via UI
-                if (!it.isTrackingStarted) {
-                    onGnssStopped()
+                // Start or stop the location flows when the app init or user turns on/off tracking via UI
+                when (it.isTrackingStarted) {
+                    true -> onGnssStarted()
+                    false -> onGnssStopped()
                 }
             }
             .launchIn(lifecycleScope)

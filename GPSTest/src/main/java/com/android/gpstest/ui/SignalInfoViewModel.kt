@@ -154,20 +154,10 @@ class SignalInfoViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            // Observe state changes here, NOT flows. Observe flows in setStarted().
-            observeLocationUpdateStates()
+            // Observe state changes here, NOT GNSS data flows. Observe GNSS data flows in setStarted().
             observeGnssStates()
             observePrefs()
         }
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        locationRepo.receivingLocationUpdates
-            .onEach {
-                setStarted(it)
-            }
-            .launchIn(viewModelScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -270,10 +260,8 @@ class SignalInfoViewModel @Inject constructor(
         prefsFlow = prefsRepo.userPreferencesFlow
             .onEach {
                 Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
-                // Cancel the above flows when the user turns off tracking via UI
-                if (!it.isTrackingStarted) {
-                    setStarted(false)
-                }
+                // Start or stop the location flows when the app init or user turns on/off tracking via UI
+                setStarted(it.isTrackingStarted)
                 _prefs.value = it
             }
             .launchIn(viewModelScope)

@@ -42,10 +42,6 @@ class SharedLocationManager constructor(
     private val context: Context,
     externalScope: CoroutineScope
 ) {
-    private val _receivingLocationUpdates: MutableStateFlow<Boolean> =
-        MutableStateFlow(false)
-    val receivingLocationUpdates: StateFlow<Boolean>
-        get() = _receivingLocationUpdates
 
     @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
@@ -62,7 +58,6 @@ class SharedLocationManager constructor(
         ) close()
 
         Log.d(TAG, "Starting location updates with minTime=${minTimeMillis()}ms and minDistance=${minDistance()}m")
-        _receivingLocationUpdates.value = true
 
         try {
             locationManager.requestLocationUpdates(
@@ -78,7 +73,6 @@ class SharedLocationManager constructor(
 
         awaitClose {
             Log.d(TAG, "Stopping location updates")
-            _receivingLocationUpdates.value = false
             locationManager.removeUpdates(callback) // clean up when Flow collection ends
         }
     }.shareIn(

@@ -772,9 +772,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             // If we're already observing updates, don't register again
             return
         }
-
-        // TODO - should all components listen to this to start GNSS instead of
-        //  SharedLocationManager.receivingLocationUpdates?
+        
         prefsFlow = prefsRepo.userPreferencesFlow
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
