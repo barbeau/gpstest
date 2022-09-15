@@ -1114,9 +1114,18 @@ internal object UIUtils {
             val alt = FormatUtils.formatAltitude(this)
             val speed = FormatUtils.formatSpeed(this)
             val bearing = FormatUtils.formatBearing(this)
-            "$lat $lon $alt | $speed | $bearing"
+            "$lat $lon $alt \u2022 $speed \u2022 $bearing"
         } else {
             "Unknown location"
         }
+    }
+
+    /**
+     * Trims a single trailing zero after a decimal point (.0) off a String.
+     * Used for elevation and azimuth.
+     */
+    fun String.trimZeros(): String {
+        return this.replace(".0", "")
+            .replace(",0", "")
     }
 }

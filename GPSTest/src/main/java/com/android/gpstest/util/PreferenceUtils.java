@@ -38,8 +38,6 @@ public class PreferenceUtils {
     public static final int CAPABILITY_SUPPORTED = 1;
     public static final int CAPABILITY_LOCATION_DISABLED = 2;
 
-    public static final String KEY_SERVICE_TRACKING_ENABLED = "tracking_foreground_location";
-
     /**
      * Gets the string description of a CAPABILITY_* constant
      * @param capability CAPABILITY_* constant defined in this class
@@ -243,21 +241,5 @@ public class PreferenceUtils {
     public static void remove(String key) {
         SharedPreferences.Editor edit = Application.Companion.getPrefs().edit();
         edit.remove(key).apply();
-    }
-
-    /**
-     * Returns true if service location tracking is active, and false if it is not
-     * @return true if service location tracking is active, and false if it is not
-     */
-    public static boolean isTrackingStarted() {
-        return Application.Companion.getPrefs().getBoolean(KEY_SERVICE_TRACKING_ENABLED, false);
-    }
-
-    /**
-     * Saves the provided value as the current service location tracking state
-     * @param value true if service location tracking is active, and false if it is not
-     */
-    public static void saveTrackingStarted(boolean value) {
-        saveBoolean(KEY_SERVICE_TRACKING_ENABLED, value);
     }
 }

@@ -30,6 +30,10 @@ package com.android.gpstest.model
  * only primary carrier frequencies are in use.
  * [duplicateCarrierStatuses] is a Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to the status that
  * has been detected as having duplicate carrier frequency data with another signal.
+ * [mismatchAzimuthElevationSameSatStatuses] is a Map of status keys (created using SatelliteUtils.createGnssStatusKey()) to
+ * the status that has been detected as having different azimuth or elevation from another signal from the same satellite
+ * [numSignalsInViewByCf] is a Map of carrier frequency strings to a count of the number of that CF in view of the device.
+ * [numSignalsUsedByCf] is a Map of carrier frequency strings to a count of the number of that CF used by the device.
  */
 data class SatelliteMetadata(
         val numSignalsInView: Int = 0,
@@ -38,14 +42,23 @@ data class SatelliteMetadata(
         val numSatsInView: Int = 0,
         val numSatsUsed: Int = 0,
         val numSatsTotal: Int = 0,
-        val supportedGnss: Set<GnssType> = HashSet(),
-        val supportedGnssCfs: Set<String> = HashSet(),
-        val supportedSbas: Set<SbasType> = HashSet(),
-        val supportedSbasCfs: Set<String> = HashSet(),
-        val unknownCarrierStatuses: Map<String, SatelliteStatus> = HashMap(),
-        val duplicateCarrierStatuses: Map<String, SatelliteStatus> = HashMap(),
+        val supportedGnss: Set<GnssType> = LinkedHashSet(),
+        val supportedGnssCfs: Set<String> = LinkedHashSet(),
+        val supportedSbas: Set<SbasType> = LinkedHashSet(),
+        val supportedSbasCfs: Set<String> = LinkedHashSet(),
+        val unknownCarrierStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val duplicateCarrierStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
         val isDualFrequencyPerSatInView: Boolean = false,
         val isDualFrequencyPerSatInUse: Boolean = false,
         val isNonPrimaryCarrierFreqInView: Boolean = false,
         val isNonPrimaryCarrierFreqInUse: Boolean = false,
+        val gnssToCf: MutableMap<GnssType, MutableSet<String>> = LinkedHashMap(),
+        val sbasToCf: MutableMap<SbasType, MutableSet<String>> = LinkedHashMap(),
+        val mismatchAzimuthElevationSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val mismatchAlmanacEphemerisSameSatStatuses: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val missingAlmanacEphemerisButHaveAzimuthElevation: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val signalsWithoutData: Map<String, SatelliteStatus> = LinkedHashMap(),
+        val numSignalsUsedByCf: MutableMap<String, Int> = LinkedHashMap(),
+        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap(),
+        val systemCurrentTimeMillis: Long = System.currentTimeMillis()
 )

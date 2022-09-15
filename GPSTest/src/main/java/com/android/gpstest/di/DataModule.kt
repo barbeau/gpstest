@@ -2,6 +2,10 @@ package com.android.gpstest.di
 
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.android.gpstest.data.*
 import dagger.Module
 import dagger.Provides
@@ -10,6 +14,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.GlobalScope
 import javax.inject.Singleton
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 /**
  * Configuration for DI on the repository and shared location manager
@@ -66,4 +72,10 @@ object DataModule {
         @ApplicationContext context: Context
     ): SharedAntennaManager =
         SharedAntennaManager(context, GlobalScope)
+
+    @Provides
+    @Singleton
+    fun providePreferencesRepository(
+        @ApplicationContext context: Context
+    ): PreferencesRepository = PreferencesRepository(dataStore = context.dataStore)
 }

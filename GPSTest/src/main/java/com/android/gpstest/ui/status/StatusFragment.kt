@@ -71,4 +71,8 @@ class StatusFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setHasOptionsMenu(true)
     }
+
+    companion object {
+        const val TAG = "StatusFragment"
+    }
 }

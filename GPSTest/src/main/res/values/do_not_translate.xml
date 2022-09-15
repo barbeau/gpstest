@@ -120,6 +120,7 @@
     <string name="pref_key_never_show_clear_assist_warning">never_show_clear_assist_warning</string>
     <string name="pref_key_coordinate_format">coordinate_format</string>
     <string name="pref_key_share_include_altitude">share_include_altitude</string>
+    <string name="pref_key_expand_signal_summary">expand_signal_summary</string>
 
     <string name="pref_key_never_show_qr_code_instructions">never_show_qr_code_instructions</string>
     <string name="pref_key_preferred_distance_units_v2">preference_distance_units_v2</string>
@@ -156,6 +157,12 @@
 
     <!-- Send feedback -->
     <string name="app_feedback_email">barbeaudev@gmail.com</string>
+
+    <!-- Dashboard -->
+    <string name="nmea_prefix">$GN</string>
+    <string name="dashboard_geoid_pass">%1$.1f (N) \u2245 %2$.3f (h) - %3$.1f (H)</string>
+    <string name="dashboard_geoid_fail">%1$.1f (N) \u2260 %2$.3f (h) - %3$.1f (H),\nError = %4$.3f m</string>
+    <string name="dashboard_cn0">%.1f dB-Hz</string>
 
     <!-- Device capabilities -->
     <string name="capability_key_inject_psds">capability_key_inject_psds</string>

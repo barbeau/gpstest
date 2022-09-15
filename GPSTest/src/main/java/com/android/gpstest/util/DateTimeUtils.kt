@@ -29,23 +29,23 @@ import kotlin.math.abs
 class DateTimeUtils {
 
     companion object {
-        const val NUM_DAYS_TIME_VALID = 5
+        const val NUM_DAYS_TIME_VALID_WEEK_ROLLOVER = 5
         /**
          * Returns true if the provided UTC time of the fix, in milliseconds since January 1, 1970,
-         * is valid, and false if it is not
+         * is valid when looking at potential GPS week rollover issues, and false if it is not
          */
-        fun isTimeValid(time: Long): Boolean {
+        fun isTimeValidWeekRollover(time: Long): Boolean {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // If the GPS time is less than five days different than system clock time, consider it valid
-                Duration.between(Instant.ofEpochMilli(time), Instant.now()).toDays() < NUM_DAYS_TIME_VALID
+                Duration.between(Instant.ofEpochMilli(time), Instant.now()).toDays() < NUM_DAYS_TIME_VALID_WEEK_ROLLOVER
             } else {
-                isTimeValidLegacy(time)
+                isTimeValidWeekRolloverLegacy(time)
             }
         }
 
         @VisibleForTesting
-        internal fun isTimeValidLegacy(time: Long): Boolean {
-            return TimeUnit.MILLISECONDS.toDays(abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID
+        internal fun isTimeValidWeekRolloverLegacy(time: Long): Boolean {
+            return TimeUnit.MILLISECONDS.toDays(abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID_WEEK_ROLLOVER
         }
     }
 }

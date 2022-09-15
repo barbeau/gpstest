@@ -20,9 +20,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -45,10 +46,13 @@ import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.model.*
 import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.ui.components.LastUpdatedText
+import com.android.gpstest.ui.dashboard.dummyProvider
 import com.android.gpstest.util.CarrierFreqUtils
 import com.android.gpstest.util.MathUtils
 import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
+import com.android.gpstest.util.UIUtils.trimZeros
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -58,9 +62,10 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     //
     // Observe LiveData from ViewModel
     //
-    val location: Location by viewModel.location.observeAsState(Location("default"))
+    val prefs: AppPreferences by viewModel.prefs.observeAsState(AppPreferences(true))
+    val location: Location by viewModel.location.observeAsState(Location(dummyProvider))
     val ttff: String by viewModel.ttff.observeAsState("")
-    val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
+    val geoidAltitude: GeoidAltitude by viewModel.geoidAltitude.observeAsState(GeoidAltitude())
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
     val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata())
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
@@ -73,19 +78,22 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        Column {
+        Column (horizontalAlignment = Alignment.CenterHorizontally) {
             LocationCard(
                 location,
                 ttff,
-                altitudeMsl,
+                geoidAltitude,
                 dop,
                 satelliteMetadata,
-                fixState)
+                fixState,
+                prefs)
             if (gnssFilter().isNotEmpty()) {
                 Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter() }
             }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
+            LastUpdatedText(currentTimeMillis = satelliteMetadata.systemCurrentTimeMillis)
+            Spacer(modifier = Modifier.padding(5.dp))
         }
     }
 }
@@ -108,13 +116,13 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
             ),
             fontSize = 13.sp,
             fontStyle = FontStyle.Italic,
-            color = MaterialTheme.colors.onBackground
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
@@ -142,6 +150,7 @@ fun SbasStatusCard(satStatuses: List<SatelliteStatus>) {
     StatusCard(satStatuses, false)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatusCard(
     satStatuses: List<SatelliteStatus>,
@@ -158,7 +167,7 @@ fun StatusCard(
 
     Card(
         modifier = modifier,
-        elevation = 2.dp
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         if (showList(isGnss, satStatuses)) {
             Column {
@@ -341,11 +350,6 @@ fun Elevation(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     } else {
         StatusValue("", modifier)
     }
-}
-
-private fun String.trimZeros(): String {
-    return this.replace(".0", "")
-        .replace(",0", "")
 }
 
 @Composable

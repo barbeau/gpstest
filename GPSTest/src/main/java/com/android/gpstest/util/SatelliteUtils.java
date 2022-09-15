@@ -22,9 +22,11 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.GnssMeasurement;
+import android.location.GnssMeasurementsEvent;
 import android.location.LocationManager;
 import android.os.Build;
 
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.model.GnssType;
@@ -110,12 +112,28 @@ public class SatelliteUtils {
     }
 
     /**
-     * Returns true if automatic gain control is supported for this GNSS measurement, false if it is not
+     * Returns true if automatic gain control is supported for this GNSS measurement, false if it is not.
+     *
+     * Should only be used on Android API levels 32 and lower. On Android API level 33 and higher
+     * use [{@link #isAutomaticGainControlSupported(GnssMeasurementsEvent)} instead.
+     *
      * @param gnssMeasurement
      * @return true if automatic gain control is supported for this GNSS measurement, false if it is not
      */
+    @Deprecated
     public static boolean isAutomaticGainControlSupported(GnssMeasurement gnssMeasurement) {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && gnssMeasurement.hasAutomaticGainControlLevelDb();
+    }
+
+    /**
+     * Returns true if automatic gain control is supported for this GNSS measurement event, false if it is not.
+     *
+     * @param gnssMeasurementEvent
+     * @return true if automatic gain control is supported for this GNSS measurement event, false if it is not
+     */
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    public static boolean isAutomaticGainControlSupported(GnssMeasurementsEvent gnssMeasurementEvent) {
+        return !gnssMeasurementEvent.getGnssAutomaticGainControls().isEmpty();
     }
 
     /**

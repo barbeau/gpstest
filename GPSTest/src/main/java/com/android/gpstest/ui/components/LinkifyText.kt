@@ -1,8 +1,8 @@
 package com.android.gpstest.ui.components
 
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +51,7 @@ fun LinkifyText(text: String, modifier: Modifier = Modifier) {
             )
         }
     }
-    Text(text = annotatedString, style = MaterialTheme.typography.body1, modifier = modifier.pointerInput(Unit) {
+    Text(text = annotatedString, style = MaterialTheme.typography.bodyLarge, modifier = modifier.pointerInput(Unit) {
         detectTapGestures { offsetPosition ->
             layoutResult.value?.let {
                 val position = it.getOffsetForPosition(offsetPosition)

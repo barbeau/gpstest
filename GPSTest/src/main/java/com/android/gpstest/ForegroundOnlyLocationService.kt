@@ -43,6 +43,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.model.SatelliteGroup
@@ -111,6 +112,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var nmeaFlow: Job? = null
@@ -157,7 +162,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 try {
                     observeFlows()
                 } catch (unlikely: Exception) {
-                    PreferenceUtils.saveTrackingStarted(false)
+                    lifecycleScope.launch {
+                        prefsRepo.updateTracking(false)
+                    }
                     Log.e(TAG, "Exception registering for updates: $unlikely")
                 }
 
@@ -230,7 +237,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
     fun subscribeToLocationUpdates() {
         Log.d(TAG, "subscribeToLocationUpdates()")
 
-        PreferenceUtils.saveTrackingStarted(true)
+        lifecycleScope.launch {
+            prefsRepo.updateTracking(true)
+        }
 
         // Binding to this service doesn't actually trigger onStartCommand(). That is needed to
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
@@ -246,12 +255,16 @@ class ForegroundOnlyLocationService : LifecycleService() {
             stopSelf()
             stopLogging()
             isStarted = false
-            PreferenceUtils.saveTrackingStarted(false)
+            lifecycleScope.launch {
+                prefsRepo.updateTracking(false)
+            }
             removeOngoingActivityNotification()
             currentLocation = null
             currentSatellites = SatelliteGroup(emptyMap(),SatelliteMetadata())
         } catch (unlikely: SecurityException) {
-            PreferenceUtils.saveTrackingStarted(true)
+            lifecycleScope.launch {
+                prefsRepo.updateTracking(true)
+            }
             Log.e(TAG, "Lost location permissions. Couldn't remove updates. $unlikely")
         }
     }
@@ -482,7 +495,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private fun goForegroundOrStopSelf() {
         lifecycleScope.launch {
             // We may have been restarted by the system - check if we're still monitoring data
-            if (PreferenceUtils.isTrackingStarted()) {
+            if (prefsRepo.prefs().isTrackingStarted) {
                 // Monitoring GNSS data
                 postOngoingActivityNotification()
             } else {

@@ -54,9 +54,13 @@ import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.map.MapConstants
+import com.android.gpstest.ui.NavigationDrawerFragment.NAVDRAWER_ITEM_SKY
+import com.android.gpstest.ui.NavigationDrawerFragment.NAVDRAWER_ITEM_STATUS
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.ui.dashboard.DashboardFragment
 import com.android.gpstest.ui.sky.SkyFragment
 import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.*
@@ -65,7 +69,6 @@ import com.android.gpstest.util.PreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.util.PreferenceUtil.minDistance
 import com.android.gpstest.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.util.PreferenceUtil.runInBackground
-import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -98,6 +101,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private var mapFragment: MapFragment? = null
     private var skyFragment: SkyFragment? = null
     private var accuracyFragment: MapFragment? = null
+    private var dashboardFragment: DashboardFragment? = null
 
     // Main signal view model
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -135,16 +139,17 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
-    // Repository of location data that the service will observe, injected via Hilt
+    // Repository of location data that the activity will observe, injected via Hilt
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
-
-    // Preference listener that will cancel the above flows when the user turns off tracking via service notification
-    private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { gpsStop() }
+    private var prefsFlow: Job? = null
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
@@ -158,8 +163,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         UIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
 
-        // Observe stopping location updates from the service
-        Application.prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
+        // Observe preference state for stopping location updates from the service
+        observePreferences()
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -395,7 +400,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (Application.prefs.getBoolean(
                 getString(R.string.pref_key_auto_start_gps),
                 true
-            ) || isTrackingStarted()
+            ) || prefsRepo.prefs().isTrackingStarted
         ) {
             gpsStart()
         }
@@ -423,6 +428,10 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
             NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_ACCURACY) {
                 showAccuracyFragment()
+                currentNavDrawerPosition = item
+            }
+            NavigationDrawerFragment.NAVDRAWER_ITEM_DASHBOARD -> if (currentNavDrawerPosition != NavigationDrawerFragment.NAVDRAWER_ITEM_DASHBOARD) {
+                showDashboardFragment()
                 currentNavDrawerPosition = item
             }
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
@@ -470,6 +479,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideMapFragment()
         hideSkyFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -477,13 +487,13 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         // Show fragment (we use show instead of replace to keep the map state)
         if (statusFragment == null) {
             // First check to see if an instance of fragment already exists
-            statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+            statusFragment = fm.findFragmentByTag(StatusFragment.TAG) as StatusFragment?
             if (statusFragment == null) {
                 // No existing fragment was found, so create a new one
                 Log.d(TAG, "Creating new StatusFragment")
                 statusFragment = StatusFragment()
                 fm.beginTransaction()
-                    .add(R.id.fragment_container, statusFragment!!, TAG)
+                    .add(R.id.fragment_container, statusFragment!!, StatusFragment.TAG)
                     .commit()
             }
         }
@@ -493,7 +503,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun hideStatusFragment() {
         val fm = supportFragmentManager
-        statusFragment = fm.findFragmentByTag(TAG) as StatusFragment?
+        statusFragment = fm.findFragmentByTag(StatusFragment.TAG) as StatusFragment?
         if (statusFragment != null && !statusFragment!!.isHidden) {
             fm.beginTransaction().hide(statusFragment!!).commit()
         }
@@ -505,6 +515,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideSkyFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -543,6 +554,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideMapFragment()
         hideAccuracyFragment()
+        hideDashboardFragment()
         if (benchmarkController != null) {
             benchmarkController!!.hide()
         }
@@ -577,6 +589,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         hideStatusFragment()
         hideMapFragment()
         hideSkyFragment()
+        hideDashboardFragment()
         // Show fragment (we use show instead of replace to keep the map state)
         if (accuracyFragment == null) {
             // First check to see if an instance of fragment already exists
@@ -608,6 +621,42 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
+    private fun showDashboardFragment() {
+        val fm = supportFragmentManager
+        // Hide everything that shouldn't be shown
+        hideStatusFragment()
+        hideMapFragment()
+        hideSkyFragment()
+        hideAccuracyFragment()
+        if (benchmarkController != null) {
+            benchmarkController!!.hide()
+        }
+
+        // Show fragment (we use show instead of replace to keep the map state)
+        if (dashboardFragment == null) {
+            // First check to see if an instance of fragment already exists
+            dashboardFragment = fm.findFragmentByTag(DashboardFragment.TAG) as DashboardFragment?
+            if (dashboardFragment == null) {
+                // No existing fragment was found, so create a new one
+                Log.d(TAG, "Creating new DashboardFragment")
+                dashboardFragment = DashboardFragment()
+                fm.beginTransaction()
+                    .add(R.id.fragment_container, dashboardFragment!!, DashboardFragment.TAG)
+                    .commit()
+            }
+        }
+        supportFragmentManager.beginTransaction().show(dashboardFragment!!).commit()
+        title = resources.getString(R.string.dashboard_title)
+    }
+
+    private fun hideDashboardFragment() {
+        val fm = supportFragmentManager
+        dashboardFragment = fm.findFragmentByTag(DashboardFragment.TAG) as DashboardFragment?
+        if (dashboardFragment != null && !dashboardFragment!!.isHidden) {
+            fm.beginTransaction().hide(dashboardFragment!!).commit()
+        }
+    }
+
     private fun forcePsdsInjection() {
         val success =
             IOUtils.forcePsdsInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
@@ -616,19 +665,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.force_psds_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.force_psds_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
     }
 
@@ -640,27 +681,19 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.force_time_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.force_time_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
     }
 
     @ExperimentalCoroutinesApi
     private fun deleteAidingData() {
         // If GPS is currently running, stop it
-        val lastStartState = isTrackingStarted()
-        if (isTrackingStarted()) {
+        val lastStartState = prefsRepo.prefs().isTrackingStarted
+        if (prefsRepo.prefs().isTrackingStarted) {
             gpsStop()
         }
         val success =
@@ -670,19 +703,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 this, getString(R.string.delete_aiding_data_success),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_SUPPORTED
-            )
         } else {
             Toast.makeText(
                 this, getString(R.string.delete_aiding_data_failure),
                 Toast.LENGTH_SHORT
             ).show()
-            PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
-            )
         }
         // Restart the GPS, if it was previously started, with a slight delay,
         // to refresh the assistance data
@@ -712,7 +737,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @SuppressLint("MissingPermission")
     @Synchronized
     private fun gpsStart() {
-        PreferenceUtils.saveTrackingStarted(true)
+        lifecycleScope.launch {
+            prefsRepo.updateTracking(true)
+        }
         service?.subscribeToLocationUpdates()
         showProgressBar()
 
@@ -737,6 +764,25 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Reset the options menu to trigger updates to action bar menu items
         invalidateOptionsMenu()
+    }
+
+    private fun observePreferences() {
+        // Observe preferences via Flow as they change
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+
+        prefsFlow = prefsRepo.userPreferencesFlow
+            .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Cancel the location flows when the user turns off tracking via service notification
+                if (!it.isTrackingStarted) {
+                    gpsStop()
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -770,7 +816,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val gnssStateObserver = Observer<FixState> { fixState ->
             when (fixState) {
                 is FixState.Acquired -> hideProgressBar()
-                is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
+                is FixState.NotAcquired -> if (prefsRepo.prefs().isTrackingStarted) showProgressBar()
             }
         }
         signalInfoViewModel.fixState.observe(
@@ -780,7 +826,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @Synchronized
     private fun gpsStop() {
-        PreferenceUtils.saveTrackingStarted(false)
+        lifecycleScope.launch {
+            prefsRepo.updateTracking(false)
+        }
         locationFlow?.cancel()
 
         // Reset the options menu to trigger updates to action bar menu items
@@ -821,16 +869,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             switch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
             if (switch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                switch!!.isChecked = isTrackingStarted()
+                switch!!.isChecked = prefsRepo.prefs().isTrackingStarted
 
                 // Set up listener for GPS on/off switch
                 switch!!.setOnClickListener {
                     // Turn GPS on or off
-                    if (!switch!!.isChecked && isTrackingStarted()) {
+                    if (!switch!!.isChecked && prefsRepo.prefs().isTrackingStarted) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
                     } else {
-                        if (switch!!.isChecked && !isTrackingStarted()) {
+                        if (switch!!.isChecked && !prefsRepo.prefs().isTrackingStarted) {
                             gpsStart()
                         }
                     }
@@ -840,9 +888,14 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val item = menu.findItem(R.id.share)
-        if (item != null) {
-            item.isVisible = lastLocation != null || isFileLoggingEnabled() == true
+        val share = menu.findItem(R.id.share)
+        if (share != null) {
+            share.isVisible = lastLocation != null || isFileLoggingEnabled() == true
+        }
+        val filter = menu.findItem(R.id.filter_sats)
+        if (filter != null) {
+            filter.isVisible =
+                currentNavDrawerPosition == NAVDRAWER_ITEM_STATUS || currentNavDrawerPosition == NAVDRAWER_ITEM_SKY
         }
         return true
     }

@@ -21,6 +21,7 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,11 +45,13 @@ import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.databinding.GpsSkyBinding
 import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.model.SatelliteStatus
+import com.android.gpstest.ui.MapFragment
 import com.android.gpstest.ui.SignalInfoViewModel
 import com.android.gpstest.ui.status.Filter
 import com.android.gpstest.ui.theme.AppTheme
@@ -94,13 +97,14 @@ class SkyFragment : Fragment() {
     @Inject
     lateinit var repository: LocationRepository
 
+    // Repository of app preferences, injected via Hilt
+    @Inject
+    lateinit var prefsRepo: PreferencesRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var gnssFlow: Job? = null
     private var sensorFlow: Job? = null
-
-    // Preference listener that will cancel the above flows when the user turns off tracking via UI
-    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
+    private var prefsFlow: Job? = null
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -116,9 +120,8 @@ class SkyFragment : Fragment() {
 
         initLegendViews()
 
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
-
-        observeLocationUpdateStates()
+        // Observe preference to cancel the location flows when the user turns off tracking via UI
+        observePreferences()
 
         return v
     }
@@ -152,12 +155,18 @@ class SkyFragment : Fragment() {
         _binding = null
     }
 
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        repository.receivingLocationUpdates
+    private fun observePreferences() {
+        // Observe preferences via Flow as they change
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        prefsFlow = prefsRepo.userPreferencesFlow
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
-                when (it) {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Start or stop the location flows when the app init or user turns on/off tracking via UI
+                when (it.isTrackingStarted) {
                     true -> onGnssStarted()
                     false -> onGnssStopped()
                 }
@@ -182,7 +191,7 @@ class SkyFragment : Fragment() {
             .onEach {
                 when (it) {
                     is FixState.Acquired -> onGnssFixAcquired()
-                    is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
+                    is FixState.NotAcquired -> if (prefsRepo.prefs().isTrackingStarted) onGnssFixLost()
                 }
             }
             .launchIn(lifecycleScope)
@@ -577,6 +586,6 @@ class SkyFragment : Fragment() {
     }
 
     companion object {
-        const val TAG = "GpsSkyFragment"
+        const val TAG = "SkyFragment"
     }
 }

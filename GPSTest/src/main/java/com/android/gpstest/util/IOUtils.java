@@ -24,6 +24,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.GnssMeasurement;
 import android.location.GnssNavigationMessage;
 import android.location.Location;
@@ -398,6 +400,7 @@ public class IOUtils {
         return year;
     }
 
+
     /**
      * Returns the GNSS hardware model name for the device, or empty String if the year couldn't be determined
      *
@@ -409,10 +412,37 @@ public class IOUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (locationManager.getGnssHardwareModelName() != null) {
-                modelName = String.valueOf(locationManager.getGnssHardwareModelName());
+                modelName = locationManager.getGnssHardwareModelName();
             }
         }
         return modelName;
+    }
+
+    /**
+     * Returns a full version description of the app, including version name, version code, and
+     * build flavor
+     * @return a full version description of the app, including version name, version code, and
+     * build flavor
+     */
+    public static String getAppVersionDescription() {
+        String versionString = "";
+        int versionCode = 0;
+        try {
+            PackageInfo info = Application.Companion.getApp().getPackageManager().getPackageInfo(Application.Companion.getApp().getPackageName(), 0);
+            versionString = info.versionName;
+            versionCode = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        StringBuilder version = new StringBuilder();
+        // Version info
+        version.append("v")
+                .append(versionString)
+                .append(" (")
+                .append(versionCode)
+                .append("-" + BuildConfig.FLAVOR + ")");
+        return version.toString();
     }
 
     /**
@@ -424,7 +454,20 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.force_time_injection_command), null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.force_time_injection_command), null);
+
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_time),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_time),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**
@@ -442,7 +485,19 @@ public class IOUtils {
         } else {
             command = Application.Companion.getApp().getString(R.string.force_xtra_injection_command);
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, command, null);
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_psds),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_inject_psds),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**
@@ -454,7 +509,20 @@ public class IOUtils {
         if (locationManager == null) {
             return false;
         }
-        return locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.delete_aiding_data_command), null);
+        boolean success = locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, Application.Companion.getApp().getString(R.string.delete_aiding_data_command), null);
+
+        if (success) {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_delete_assist),
+                    PreferenceUtils.CAPABILITY_SUPPORTED
+            );
+        } else {
+            PreferenceUtils.saveInt(
+                    Application.Companion.getApp().getString(R.string.capability_key_delete_assist),
+                    PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+            );
+        }
+        return success;
     }
 
     /**

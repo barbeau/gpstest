@@ -18,7 +18,9 @@ package com.android.gpstest.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.gpstest.model.Datum;
 import com.android.gpstest.model.DilutionOfPrecision;
+import com.android.gpstest.model.GeoidAltitude;
 
 public class NmeaUtils {
 
@@ -33,38 +35,63 @@ public class NmeaUtils {
      * $GPGGA,032739.0,2804.732835,N,08224.639709,W,1,08,0.8,19.2,M,-24.0,M,,*5B
      * $GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,78.9,-24.0,,*23
      * $GNGGA,172814.00,2803.208136,N,08225.981423,W,1,08,1.1,-19.7,M,-24.8,M,,*5F
+     * $GNGNS,165422,2804.28021,N,8225.598206,W,AAANNN,20,0.6,18.1,-24,,,V*24,,,,,,,
      *
      * Example outputs would be:
-     * 19.2
-     * 78.9
-     * -19.7
+     * 19.2 (altitude MSL) and -24.0 (height of geoid above WGS84 ellipsoid)
+     * 78.9 (altitude MSL) and -24.0 (height of geoid above WGS84 ellipsoid)
+     * -19.7 (altitude MSL) and -24.8 (height of geoid above WGS84 ellipsoid)
+     * 18.1 (altitude MSL) and -24 (height of geoid above WGS84 ellipsoid)
      *
+     * @param timestamp date and time of the location fix, as reported by the GNSS chipset. The
+     *                  value is specified in milliseconds since 0:00 UTC 1 January 1970.
      * @param nmeaSentence a $GPGGA, $GNGNS, or $GNGGA NMEA sentence
-     * @return the altitude above mean sea level (geoid altitude), or null if altitude can't be
-     * parsed
+     * @return the altitude above mean sea level (geoid altitude) and height of the geoid above
+     * the WGS84 ellipsoid in a {@link GeoidAltitude}, or null if these values can't be parsed
      */
-    public static Double getAltitudeMeanSeaLevel(String nmeaSentence) {
+    public static GeoidAltitude getAltitudeMeanSeaLevel(long timestamp, String nmeaSentence) {
         final int ALTITUDE_INDEX = 9;
+        final int GEOID_HEIGHT_INDEX = 10;
         String[] tokens = nmeaSentence.split(",");
 
         if (nmeaSentence.startsWith("$GPGGA") || nmeaSentence.startsWith("$GNGNS") || nmeaSentence.startsWith("$GNGGA")) {
             String altitude;
+            String geoidHeight;
             try {
                 altitude = tokens[ALTITUDE_INDEX];
             } catch (ArrayIndexOutOfBoundsException e) {
                 Log.e(TAG, "Bad NMEA sentence for geoid altitude - " + nmeaSentence + " :" + e);
                 return null;
             }
-            if (!TextUtils.isEmpty(altitude)) {
+            try {
+                if (nmeaSentence.startsWith("$GNGNS")) {
+                    geoidHeight = tokens[GEOID_HEIGHT_INDEX];
+                } else {
+                    geoidHeight = tokens[GEOID_HEIGHT_INDEX + 1];
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for geoid height - " + nmeaSentence + " :" + e);
+                return null;
+            }
+            if (!TextUtils.isEmpty(altitude) && !TextUtils.isEmpty(geoidHeight)) {
                 Double altitudeParsed = null;
+                Double geoidHeightParsed = null;
                 try {
                     altitudeParsed = Double.parseDouble(altitude);
                 } catch (NumberFormatException e) {
                     Log.e(TAG, "Bad geoid altitude value of '" + altitude + "' in NMEA sentence " + nmeaSentence + " :" + e);
+                    return null;
                 }
-                return altitudeParsed;
+
+                try {
+                    geoidHeightParsed = Double.parseDouble(geoidHeight);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "Bad geoid height value of '" + geoidHeightParsed + "' in NMEA sentence " + nmeaSentence + " :" + e);
+                    return null;
+                }
+                return new GeoidAltitude(timestamp, altitudeParsed, geoidHeightParsed);
             } else {
-                Log.w(TAG, "Couldn't parse geoid altitude from NMEA: " + nmeaSentence);
+                Log.w(TAG, "Couldn't parse geoid altitude and height above WGS84 ellipsoid from NMEA: " + nmeaSentence);
                 return null;
             }
         } else {
@@ -127,5 +154,66 @@ public class NmeaUtils {
             Log.w(TAG, "Input must be a $GNGSA NMEA: " + nmeaSentence);
             return null;
         }
+    }
+
+    /**
+     * Given a $GNDTM NMEA sentence, return NMEA DTM Local datum code and NMEA DTM datum, or null if
+     * the data can't be parsed.
+     *
+     * Example inputs are:
+     * $GNDTM,P90,,0.000021,S,0.000002,E,0.989,W84*57,,,,,,,,,,,,,
+     *
+     * Example outputs would be:
+     * P90 (NMEA DTM Local datum code) and W84 (DTM datum)
+     *
+     * @param timestamp date and time of the location fix, as reported by the GNSS chipset. The
+     *                  value is specified in milliseconds since 0:00 UTC 1 January 1970.
+     * @param nmeaSentence a $GNDTM NMEA sentence
+     * @return the datum information, or null if these values can't be parsed
+     */
+    public static Datum getDatum(long timestamp, String nmeaSentence) {
+        final int LOCAL_DATUM_CODE = 1;
+        final int DATUM = 8;
+        String[] tokens = nmeaSentence.split(",");
+
+        if (nmeaSentence.startsWith("$GNDTM")) {
+            String localDatumCode;
+            String datum;
+            try {
+                localDatumCode = tokens[LOCAL_DATUM_CODE];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for local datum code - " + nmeaSentence + " :" + e);
+                return null;
+            }
+            try {
+                datum = tokens[DATUM];
+                if (datum.contains("*")) {
+                    datum = datum.split("\\*")[0];
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.e(TAG, "Bad NMEA sentence for datum - " + nmeaSentence + " :" + e);
+                return null;
+            }
+            if (!TextUtils.isEmpty(localDatumCode) && !TextUtils.isEmpty(datum)) {
+                return new Datum(timestamp, localDatumCode, datum);
+            } else {
+                Log.w(TAG, "Couldn't parse local datum code and datum from NMEA: " + nmeaSentence);
+                return null;
+            }
+        } else {
+            Log.w(TAG, "Input must be $GNDTM NMEA: " + nmeaSentence);
+            return null;
+        }
+    }
+
+    /**
+     * Returns true if this datum is valid for use of GNSS in phones (WGS84), and false if it is not.
+     *
+     * See https://issuetracker.google.com/issues/191674805
+     *
+     * @param datum
+     */
+    public static boolean isValidDatum(String datum) {
+        return datum.equalsIgnoreCase("W84");
     }
 }

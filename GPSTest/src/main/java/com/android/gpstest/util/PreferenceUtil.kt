@@ -7,6 +7,7 @@ import android.location.LocationManager
 import android.os.Build
 import com.android.gpstest.Application
 import com.android.gpstest.R
+import com.android.gpstest.util.SatelliteUtils.*
 
 /**
  * Provides access to SharedPreferences to Activities and Services.
@@ -139,6 +140,12 @@ internal object PreferenceUtil {
         )
     }
 
+    fun expandSignalSummary(): Boolean {
+        return Application.prefs.getBoolean(
+            Application.app.getString(R.string.pref_key_expand_signal_summary), false
+        )
+    }
+
     /**
      * Returns true if preferences related to raw measurements should be enabled,
      * false if they should be disabled
@@ -146,7 +153,7 @@ internal object PreferenceUtil {
     fun enableMeasurementsPref(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val manager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            return SatelliteUtils.isMeasurementsSupported(manager)
+            return isMeasurementsSupported(manager)
         }
         // Legacy versions before Android S
         val capabilityMeasurementsInt = Application.prefs.getInt(
@@ -163,7 +170,7 @@ internal object PreferenceUtil {
     fun enableNavMessagesPref(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val manager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            return SatelliteUtils.isNavMessagesSupported(manager)
+            return isNavMessagesSupported(manager)
         }
         // Legacy versions before Android S
         val capabilityNavMessagesInt = Application.prefs.getInt(
@@ -179,14 +186,24 @@ internal object PreferenceUtil {
     fun saveMeasurementCapabilities(event: GnssMeasurementsEvent) {
         var agcSupport = PreferenceUtils.CAPABILITY_UNKNOWN
         var carrierPhaseSupport = PreferenceUtils.CAPABILITY_UNKNOWN
-        // Loop through all measurements - if at least one supports, then mark as supported
-        for (measurement in event.measurements) {
-            if (SatelliteUtils.isAutomaticGainControlSupported(measurement)) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (isAutomaticGainControlSupported(event)) {
                 agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED
             } else if (agcSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
                 agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED
             }
-            if (SatelliteUtils.isCarrierPhaseSupported(measurement)) {
+        }
+        // Loop through all measurements - if at least one supports, then mark as supported
+        for (measurement in event.measurements) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                if (isAutomaticGainControlSupported(measurement)) {
+                    agcSupport = PreferenceUtils.CAPABILITY_SUPPORTED
+                } else if (agcSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
+                    agcSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+                }
+            }
+            if (isCarrierPhaseSupported(measurement)) {
                 carrierPhaseSupport = PreferenceUtils.CAPABILITY_SUPPORTED
             } else if (carrierPhaseSupport == PreferenceUtils.CAPABILITY_UNKNOWN) {
                 carrierPhaseSupport = PreferenceUtils.CAPABILITY_NOT_SUPPORTED
@@ -202,23 +219,6 @@ internal object PreferenceUtil {
                 .getString(R.string.capability_key_measurement_delta_range),
             carrierPhaseSupport
         )
-    }
-
-    /**
-     * Creates a new preference listener that will invoke the provide [cancelFlows] function (e.g., to cancel jobs)
-     * when the user turns off tracking via the UI.
-     *
-     * Returns a reference to the OnSharedPreferenceChangeListener so it can be held by the calling class, as
-     * anonymous preference listeners tend to get GC'd by Android.
-     */
-    fun newStopTrackingListener(cancelFlows: () -> Unit): SharedPreferences.OnSharedPreferenceChangeListener {
-        return SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            if (key == PreferenceUtils.KEY_SERVICE_TRACKING_ENABLED) {
-                if (!PreferenceUtils.isTrackingStarted()) {
-                    cancelFlows()
-                }
-            }
-        }
     }
 
     /**

@@ -16,12 +16,18 @@
 package com.android.gpstest.util
 
 import android.annotation.SuppressLint
+import android.location.GnssMeasurement
+import android.location.GnssMeasurement.*
 import android.location.GnssStatus
 import android.location.Location
 import android.os.Build
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.R
 import com.android.gpstest.model.*
+import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
 import com.android.gpstest.util.CarrierFreqUtils.*
 import com.android.gpstest.util.SatelliteUtils.createGnssSatelliteKey
+import java.math.RoundingMode
 
 internal object SatelliteUtil {
 
@@ -66,21 +72,29 @@ internal object SatelliteUtil {
      * [SatelliteUtils.createGnssSatelliteKey()]. Various other metadata is also included.
      */
     fun List<SatelliteStatus>.toSatelliteGroup(): SatelliteGroup {
-        val satellites: MutableMap<String, Satellite> = HashMap()
+        val satellites: MutableMap<String, Satellite> = LinkedHashMap()
         var numSignalsUsed = 0
         var numSignalsInView = 0
+        val numSignalsUsedByCf: MutableMap<String, Int> = LinkedHashMap()
+        val numSignalsInViewByCf: MutableMap<String, Int> = LinkedHashMap()
         var numSatsUsed = 0
         var numSatsInView = 0
-        val supportedGnss: MutableSet<GnssType> = HashSet()
-        val supportedGnssCfs: MutableSet<String> = HashSet()
-        val supportedSbas: MutableSet<SbasType> = HashSet()
-        val supportedSbasCfs: MutableSet<String> = HashSet()
-        val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
-        val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = HashMap()
+        val supportedGnss: MutableSet<GnssType> = LinkedHashSet()
+        val supportedGnssCfs: MutableSet<String> = LinkedHashSet()
+        val supportedSbas: MutableSet<SbasType> = LinkedHashSet()
+        val supportedSbasCfs: MutableSet<String> = LinkedHashSet()
+        val unknownCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val duplicateCarrierStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val mismatchAzimuthElevationSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val mismatchAlmanacEphemerisSameSatStatuses: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val missingAlmanacEphemerisButHaveAzimuthElevation: MutableMap<String, SatelliteStatus> = LinkedHashMap()
+        val signalsWithoutData: MutableMap<String, SatelliteStatus> = LinkedHashMap()
         var isDualFrequencyPerSatInView = false
         var isDualFrequencyPerSatInUse = false
         var isNonPrimaryCarrierFreqInView = false
         var isNonPrimaryCarrierFreqInUse = false
+        val gnssToCf: MutableMap<GnssType, MutableSet<String>> = LinkedHashMap()
+        val sbasToCf: MutableMap<SbasType, MutableSet<String>> = LinkedHashMap()
 
         if (this.isEmpty()) {
             return SatelliteGroup(satellites, SatelliteMetadata())
@@ -89,8 +103,18 @@ internal object SatelliteUtil {
             if (s.usedInFix) {
                 numSignalsUsed++
             }
-            if (s.cn0DbHz != SatelliteStatus.NO_DATA) {
+            if (s.cn0DbHz != NO_DATA) {
                 numSignalsInView++
+            }
+            if (s.isMissingData()) {
+                // Signal doesn't have enough data to be valid
+                signalsWithoutData[SatelliteUtils.createGnssStatusKey(s)] = s
+            }
+
+            if ((s.elevationDegrees != NO_DATA || s.azimuthDegrees != NO_DATA) &&
+                (!s.hasAlmanac && !s.hasEphemeris)) {
+                // Signal has elevation or azimuth data but no almanac or ephemeris (which it needs for elevation or azimuth)
+                missingAlmanacEphemerisButHaveAzimuthElevation[SatelliteUtils.createGnssStatusKey(s)] = s
             }
 
             // Save the supported GNSS or SBAS type
@@ -107,6 +131,13 @@ internal object SatelliteUtil {
 
             // Get carrier label
             val carrierLabel = getCarrierFrequencyLabel(s)
+
+            // Increment count of in view / used by CF
+            numSignalsInViewByCf.addOrIncrement(carrierLabel)
+            if (s.usedInFix) {
+                numSignalsUsedByCf.addOrIncrement(carrierLabel)
+            }
+
             if (carrierLabel == CF_UNKNOWN) {
                 unknownCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
             }
@@ -115,9 +146,11 @@ internal object SatelliteUtil {
                 if (s.gnssType != GnssType.UNKNOWN) {
                     if (s.gnssType != GnssType.SBAS) {
                         supportedGnssCfs.add(carrierLabel)
+                        addToMap(gnssToCf, s.gnssType, carrierLabel)
                     } else {
                         if (s.sbasType != SbasType.UNKNOWN) {
                             supportedSbasCfs.add(carrierLabel)
+                            addToMap(sbasToCf, s.sbasType, carrierLabel)
                         }
                     }
                 }
@@ -132,14 +165,14 @@ internal object SatelliteUtil {
             var satStatuses: MutableMap<String, SatelliteStatus>
             if (!satellites.containsKey(key)) {
                 // Create new satellite and add signal
-                satStatuses = HashMap()
+                satStatuses = LinkedHashMap()
                 satStatuses[carrierLabel] = s
                 val sat = Satellite(key, satStatuses)
                 satellites[key] = sat
                 if (s.usedInFix) {
                     numSatsUsed++
                 }
-                if (s.cn0DbHz != SatelliteStatus.NO_DATA) {
+                if (s.cn0DbHz != NO_DATA) {
                     numSatsInView++
                 }
             } else {
@@ -151,12 +184,28 @@ internal object SatelliteUtil {
                     satStatuses[carrierLabel] = s
                     var frequenciesInUse = 0
                     var frequenciesInView = 0
-                    for ((_, _, cn0DbHz, _, _, usedInFix) in satStatuses.values) {
-                        if (usedInFix) {
+                    satStatuses.values.forEach { status ->
+                        if (status.usedInFix) {
                             frequenciesInUse++
                         }
-                        if (cn0DbHz != SatelliteStatus.NO_DATA) {
+                        if (status.cn0DbHz != NO_DATA) {
                             frequenciesInView++
+                        }
+                        if ((s.azimuthDegrees != status.azimuthDegrees) ||
+                            (s.elevationDegrees != status.elevationDegrees)) {
+                            // Found disagreement on azimuth and elevation on signals from same satellite
+                            mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
+                                s
+                            mismatchAzimuthElevationSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
+                                status
+                        }
+                        if ((s.hasAlmanac != status.hasAlmanac) ||
+                            (s.hasEphemeris != status.hasEphemeris)) {
+                            // Found disagreement on almanac and ephemeris on signals from same satellite
+                            mismatchAlmanacEphemerisSameSatStatuses[SatelliteUtils.createGnssStatusKey(s)] =
+                                s
+                            mismatchAlmanacEphemerisSameSatStatuses[SatelliteUtils.createGnssStatusKey(status)] =
+                                status
                         }
                     }
                     if (frequenciesInUse > 1) {
@@ -169,10 +218,11 @@ internal object SatelliteUtil {
                     if (frequenciesInView > 1) {
                         isDualFrequencyPerSatInView = true
                     }
-                    if (frequenciesInView == 1 && s.cn0DbHz != SatelliteStatus.NO_DATA) {
+                    if (frequenciesInView == 1 && s.cn0DbHz != NO_DATA) {
                         // The new frequency we just added was the first in view for this satellite
                         numSatsInView++
                     }
+
                 } else {
                     // This shouldn't happen - we found a satellite signal with the same constellation, sat ID, and carrier frequency (including multiple "unknown" or "unsupported" frequencies) as an existing one
                     duplicateCarrierStatuses[SatelliteUtils.createGnssStatusKey(s)] = s
@@ -182,24 +232,48 @@ internal object SatelliteUtil {
         return SatelliteGroup(
             satellites,
             SatelliteMetadata(
-                numSignalsInView,
-                numSignalsUsed,
-                this.size,
-                numSatsInView,
-                numSatsUsed,
-                satellites.size,
-                supportedGnss,
-                supportedGnssCfs,
-                supportedSbas,
-                supportedSbasCfs,
-                unknownCarrierStatuses,
-                duplicateCarrierStatuses,
-                isDualFrequencyPerSatInView,
-                isDualFrequencyPerSatInUse,
-                isNonPrimaryCarrierFreqInView,
-                isNonPrimaryCarrierFreqInUse
+                numSignalsInView = numSignalsInView,
+                numSignalsUsed = numSignalsUsed,
+                numSignalsTotal = this.size,
+                numSatsInView = numSatsInView,
+                numSatsUsed = numSatsUsed,
+                numSatsTotal = satellites.size,
+                supportedGnss = supportedGnss,
+                supportedGnssCfs = supportedGnssCfs,
+                supportedSbas = supportedSbas,
+                supportedSbasCfs = supportedSbasCfs,
+                unknownCarrierStatuses = unknownCarrierStatuses,
+                duplicateCarrierStatuses = duplicateCarrierStatuses,
+                isDualFrequencyPerSatInView = isDualFrequencyPerSatInView,
+                isDualFrequencyPerSatInUse = isDualFrequencyPerSatInUse,
+                isNonPrimaryCarrierFreqInView = isNonPrimaryCarrierFreqInView,
+                isNonPrimaryCarrierFreqInUse = isNonPrimaryCarrierFreqInUse,
+                gnssToCf = gnssToCf,
+                sbasToCf = sbasToCf,
+                mismatchAzimuthElevationSameSatStatuses = mismatchAzimuthElevationSameSatStatuses,
+                mismatchAlmanacEphemerisSameSatStatuses = mismatchAlmanacEphemerisSameSatStatuses,
+                missingAlmanacEphemerisButHaveAzimuthElevation = missingAlmanacEphemerisButHaveAzimuthElevation,
+                signalsWithoutData = signalsWithoutData,
+                numSignalsInViewByCf = numSignalsInViewByCf,
+                numSignalsUsedByCf = numSignalsUsedByCf
             )
         )
+    }
+
+    private fun <T> addToMap(map: MutableMap<T, MutableSet<String>>, key: T, cf: String) {
+        val cfs: MutableSet<String> = map.getOrDefault(key, mutableSetOf(cf))
+        cfs.add(cf)
+        map[key] = cfs
+    }
+
+    /**
+     * Increments the value for the given key by 1, or adds the key with an initial value of 1 if
+     * it doesn't yet exist in the Map
+     */
+    private fun MutableMap<String, Int>.addOrIncrement(key: String) {
+        var count = getOrDefault(key, 0)
+        count++
+        this[key] = count
     }
 
     /**
@@ -304,5 +378,184 @@ internal object SatelliteUtil {
             return SbasType.MSAS
         }
         return SbasType.UNKNOWN
+    }
+
+    fun SatelliteStatus.constellationName(): String {
+        return when (this.gnssType) {
+            GnssType.NAVSTAR -> {
+                app.getString(R.string.gps_content_description)
+            }
+            GnssType.GALILEO -> {
+                app.getString(R.string.galileo_content_description)
+            }
+            GnssType.GLONASS -> {
+                app.getString(R.string.glonass_content_description)
+            }
+            GnssType.QZSS -> {
+                app.getString(R.string.qzss_content_description)
+            }
+            GnssType.BEIDOU -> {
+                app.getString(R.string.beidou_content_description)
+            }
+            GnssType.IRNSS -> {
+                app.getString(R.string.irnss_content_description)
+            }
+            GnssType.SBAS -> {
+                this.sbasName()
+            }
+            GnssType.UNKNOWN -> {
+                app.getString(R.string.unknown)
+            }
+        }
+    }
+
+    fun SatelliteStatus.sbasName(): String {
+        return when (sbasType) {
+            SbasType.WAAS -> {
+                app.getString(R.string.waas_content_description)
+            }
+            SbasType.EGNOS -> {
+                app.getString(R.string.egnos_content_description)
+            }
+            SbasType.SDCM -> {
+                app.getString(R.string.sdcm_content_description)
+            }
+            SbasType.MSAS -> {
+                app.getString(R.string.msas_content_description)
+            }
+            SbasType.SNAS -> {
+                app.getString(R.string.snas_content_description)
+            }
+            SbasType.GAGAN -> {
+                app.getString(R.string.gagan_content_description)
+            }
+            SbasType.SACCSA -> {
+                app.getString(R.string.saccsa_content_description)
+            }
+            SbasType.UNKNOWN -> {
+                app.getString(R.string.unknown)
+            }
+        }
+    }
+
+    /**
+     * Returns the difference between the altitude of [this] location and true if it's approx.
+     * equal to the provided [geoidAltitude], within hMinusH container, using the formula:
+     *
+     * H = -N + h
+     *
+     * or
+     * N = h - H
+     *
+     * ..where:
+     * * H = [geoidAltitude.altitudeMsl], or geoid altitude
+     * * N = [geoidAltitude.heightOfGeoid] above the WGS84 ellipsoid
+     * * h = [this.altitude], or the location WGS84 altitude (height above the WGS84 ellipsoid)
+     *
+     * See https://issuetracker.google.com/issues/191674805 for details.
+     *
+     * @return the difference value and true if H ~= -N + h, and false if it does not, within
+     * hMinusH container. If not enough data exists to calculate the difference, hMinusH.difference
+     * will bet set to Double.NaN.
+     */
+    fun Location.altitudeComparedTo(geoidAltitude: GeoidAltitude): hMinusH {
+        if (geoidAltitude.altitudeMsl.isNaN() || geoidAltitude.heightOfGeoid.isNaN() || !hasAltitude()) {
+            return hMinusH()
+        }
+        val difference = altitude - geoidAltitude.altitudeMsl
+        // Log.d("MSL", "${geoidAltitude.heightOfGeoid} = $altitude - ${geoidAltitude.altitudeMsl}")
+        // Location.altitude has far greater precision than the others (which are 1 decimal), so
+        // round the difference for comparison
+        val roundedDifference =
+            (altitude - geoidAltitude.altitudeMsl).toBigDecimal().setScale(1, RoundingMode.HALF_UP)
+                .toDouble()
+        return hMinusH(
+            hMinusH = geoidAltitude.heightOfGeoid - difference,
+            isSame = geoidAltitude.heightOfGeoid == roundedDifference
+        )
+    }
+
+    /**
+     * Returns true if the timestamp of [this] is approximately the same as the timestamp of [geoidAltitude]
+     */
+    fun Location.isTimeApproxEqualTo(geoidAltitude: GeoidAltitude): Boolean {
+        val thresholdMs = 900
+        return kotlin.math.abs(timeDiffMs(geoidAltitude)) < thresholdMs
+    }
+
+    /**
+     * Returns the number of milliseconds difference between the location time and [geoidAltitude]
+     * time, signed
+     */
+    fun Location.timeDiffMs(geoidAltitude: GeoidAltitude): Long {
+        return this.time - geoidAltitude.timestamp
+    }
+
+    /**
+     * Returns true if the signal has a minimum amount of information to be considered valid, false
+     * if it does not
+     */
+    fun SatelliteStatus.isMissingData(): Boolean {
+        if (this.elevationDegrees == NO_DATA && this.azimuthDegrees == NO_DATA &&
+            !this.hasAlmanac && !this.hasEphemeris
+        ) {
+            // Signal is missing all basic information needed to decode it
+            return true
+        } else if (this.usedInFix && (
+                    this.cn0DbHz == NO_DATA || !this.hasAlmanac || !this.hasEphemeris ||
+                            this.azimuthDegrees == NO_DATA || this.elevationDegrees == NO_DATA
+                    )
+        ) {
+            // Signal was used in fix but missing information required to use it in a fix
+                // FIXME - this is way too noisy for missing ephemeris data, so return false
+                // until we figure out how to handle this (separate check?)
+            return false
+        }
+        return false
+    }
+
+    /**
+     * Provide a comma-delimited string of ADR states for [this] GnssMeasurement from {@link GnssMeasurement#getAccumulatedDeltaRangeState()}.
+     * Note that {@link GnssMeasurement#getAccumulatedDeltaRangeState()} is a bitwise Int, so this
+     * function extracts the multiple ADR states from this Int and turns them into a comma-delimited
+     * String, unless the state is ADR_STATE_UNKNOWN, it which case it just returns UNKNOWN.
+     * Implementation is from AOSP private method {@link GnssMeasurement#getAccumulatedDeltaRangeStateString()}
+     */
+    fun GnssMeasurement.accumulatedDeltaRangeStateString(): String {
+        if (accumulatedDeltaRangeState == ADR_STATE_UNKNOWN) {
+            return "Unknown"
+        }
+        val ADR_STATE_ALL =
+            ADR_STATE_VALID or ADR_STATE_RESET or ADR_STATE_CYCLE_SLIP or
+                    ADR_STATE_HALF_CYCLE_RESOLVED or ADR_STATE_HALF_CYCLE_REPORTED
+        val builder = StringBuilder()
+        if (accumulatedDeltaRangeState and ADR_STATE_VALID == ADR_STATE_VALID) {
+            builder.append("Valid|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_RESET == ADR_STATE_RESET) {
+            builder.append("Reset|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_CYCLE_SLIP == ADR_STATE_CYCLE_SLIP) {
+            builder.append("CycleSlip|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_HALF_CYCLE_RESOLVED ==
+            ADR_STATE_HALF_CYCLE_RESOLVED
+        ) {
+            builder.append("HalfCycleResolved|")
+        }
+        if (accumulatedDeltaRangeState and ADR_STATE_HALF_CYCLE_REPORTED
+            == ADR_STATE_HALF_CYCLE_REPORTED
+        ) {
+            builder.append("HalfCycleReported|")
+        }
+        val remainingStates: Int =
+            accumulatedDeltaRangeState and ADR_STATE_ALL.inv()
+        if (remainingStates > 0) {
+            builder.append("Other(")
+            builder.append(Integer.toBinaryString(remainingStates))
+            builder.append(")|")
+        }
+        builder.deleteCharAt(builder.length - 1)
+        return builder.toString()
     }
 }

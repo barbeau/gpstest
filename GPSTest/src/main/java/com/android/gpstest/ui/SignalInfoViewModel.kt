@@ -18,7 +18,9 @@ package com.android.gpstest.ui
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
+import android.location.GnssMeasurement
 import android.location.Location
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -27,21 +29,26 @@ import androidx.lifecycle.viewModelScope
 import com.android.gpstest.data.FirstFixState
 import com.android.gpstest.data.FixState
 import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.data.PreferencesRepository
 import com.android.gpstest.model.*
 import com.android.gpstest.util.CarrierFreqUtils.getCarrierFrequencyLabel
 import com.android.gpstest.util.FormatUtils.formatTtff
+import com.android.gpstest.util.GeocodeUtils.geocode
 import com.android.gpstest.util.NmeaUtils
 import com.android.gpstest.util.PreferenceUtil
 import com.android.gpstest.util.PreferenceUtils
+import com.android.gpstest.util.SatelliteUtil.accumulatedDeltaRangeStateString
 import com.android.gpstest.util.SatelliteUtil.toSatelliteGroup
 import com.android.gpstest.util.SatelliteUtil.toSatelliteStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -51,7 +58,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignalInfoViewModel @Inject constructor(
     application: Application,
-    private val repository: LocationRepository
+    private val locationRepo: LocationRepository,
+    private val prefsRepo: PreferencesRepository
 ) : AndroidViewModel(application) {
     //
     // Flows from the repository
@@ -59,10 +67,16 @@ class SignalInfoViewModel @Inject constructor(
     private var locationFlow: Job? = null
     private var gnssFlow: Job? = null
     private var nmeaFlow: Job? = null
+    private var measurementFlow: Job? = null
+    private var prefsFlow: Job? = null
 
     //
     // LiveData observed by Composables
     //
+
+    // Preferences
+    private val _prefs = MutableLiveData<AppPreferences>()
+    val prefs: LiveData<AppPreferences> = _prefs
 
     // All statuses BEFORE filtering
     private val _allStatuses = MutableLiveData<List<SatelliteStatus>>()
@@ -99,39 +113,51 @@ class SignalInfoViewModel @Inject constructor(
     private val _location = MutableLiveData<Location>()
     val location: LiveData<Location> = _location
 
+    private val _timeBetweenLocationUpdatesSeconds = MutableLiveData<Double>()
+    val timeBetweenLocationUpdatesSeconds: LiveData<Double> = _timeBetweenLocationUpdatesSeconds
+
+    private val _timeBetweenGnssSystemTimeSeconds = MutableLiveData<Double>()
+    val timeBetweenGnssSystemTimeSeconds: LiveData<Double> = _timeBetweenGnssSystemTimeSeconds
+
     private val _ttff = MutableLiveData("")
     val ttff: LiveData<String> = _ttff
 
-    private val _altitudeMsl = MutableLiveData<Double>()
-    val altitudeMsl: LiveData<Double> = _altitudeMsl
+    private val _geoidAltitude = MutableLiveData<GeoidAltitude>()
+    val geoidAltitude: LiveData<GeoidAltitude> = _geoidAltitude
 
     private val _dop = MutableLiveData<DilutionOfPrecision>()
     val dop: LiveData<DilutionOfPrecision> = _dop
 
+    private val _datum = MutableLiveData<Datum>()
+    val datum: LiveData<Datum> = _datum
+
     private val _fixState = MutableLiveData<FixState>(FixState.NotAcquired)
     val fixState: LiveData<FixState> = _fixState
 
-    private var started = false
+    private var scanningJob: Job? = null
+    val scanDurationMs = TimeUnit.SECONDS.toMillis(15)
 
-    // Preference listener that will cancel the above flows when the user turns off tracking via UI
-    private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { setStarted(false) }
+    private val _finishedScanningCfs = MutableLiveData(false)
+    val finishedScanningCfs: LiveData<Boolean> = _finishedScanningCfs
+
+    private val _timeUntilScanCompleteMs = MutableLiveData(scanDurationMs)
+    val timeUntilScanCompleteMs: LiveData<Long> = _timeUntilScanCompleteMs
+
+    // Human-readable set of observed ADR states for GNSS measurements
+    private val _adrStates = MutableLiveData<Set<String>>(emptySet())
+    val adrStates: LiveData<Set<String>> = _adrStates
+
+    private val _userCountry = MutableLiveData(UserCountry())
+    val userCountry: LiveData<UserCountry> = _userCountry
+
+    private var started = false
 
     init {
         viewModelScope.launch {
-            observeLocationUpdateStates()
+            // Observe state changes here, NOT GNSS data flows. Observe GNSS data flows in setStarted().
             observeGnssStates()
-            com.android.gpstest.Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+            observePrefs()
         }
-    }
-
-    @ExperimentalCoroutinesApi
-    private fun observeLocationUpdateStates() {
-        repository.receivingLocationUpdates
-            .onEach {
-                setStarted(it)
-            }
-            .launchIn(viewModelScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -141,10 +167,19 @@ class SignalInfoViewModel @Inject constructor(
             return
         }
         // Observe locations via Flow as they are generated by the repository
-        locationFlow = repository.getLocations()
-            .onEach {
-                //Log.d(TAG, "SignalInfoViewModel location: ${it.toNotificationTitle()}")
-                _location.value = it
+        locationFlow = locationRepo.getLocations()
+            .onEach { location ->
+                //Log.d(TAG, "SignalInfoViewModel location: ${location.toNotificationTitle()}")
+                // Save time between location updates
+                val previousLocation = _location.value
+                previousLocation?.let {
+                    _timeBetweenLocationUpdatesSeconds.value =  ((location.time - it.time).toDouble() / 1000f)
+                }
+                // Store the latest location and time diff
+                _location.value = location
+                _timeBetweenGnssSystemTimeSeconds.value = ((System.currentTimeMillis() - location.time).toDouble() / 1000f)
+                // Try to get user country
+                _userCountry.value = geocode(location)
                 setGotFirstFix(true)
             }
             .launchIn(viewModelScope)
@@ -157,7 +192,7 @@ class SignalInfoViewModel @Inject constructor(
             return
         }
         // Observe locations via Flow as they are generated by the repository
-        gnssFlow = repository.getGnssStatus()
+        gnssFlow = locationRepo.getGnssStatus()
             .map { it.toSatelliteStatus() }
             .onEach {
                 //Log.d(TAG, "SignalInfoViewModel gnssStatus: ${it}")
@@ -166,23 +201,68 @@ class SignalInfoViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    @ExperimentalCoroutinesApi
+    private fun observeMeasurementsFlow() {
+        if (measurementFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        // Observe via Flow as they are generated by the repository
+        measurementFlow = locationRepo.getMeasurements()
+            .onEach {
+                //Log.d(TAG, "SignalInfoViewModel measurement: $it")
+                setAdrStates(it.measurements)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    /**
+     * Assemble a human-readable set of current accumulated delta range states to show to the user
+     */
+    private fun setAdrStates(gnssMeasurements: Collection<GnssMeasurement>) {
+        val adrStates: MutableSet<String> = LinkedHashSet()
+        for (m in gnssMeasurements) {
+            val description = m.accumulatedDeltaRangeStateString()
+            if (description.isNotEmpty()) {
+                adrStates.add(description)
+            }
+        }
+        _adrStates.value = adrStates
+    }
+
     private fun observeGnssStates() {
-        repository.firstFixState
+        locationRepo.firstFixState
             .onEach {
                 when (it) {
                     is FirstFixState.Acquired -> {
                         onGnssFirstFix(it.ttffMillis)
                     }
-                    is FirstFixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
+                    is FirstFixState.NotAcquired -> if (prefsRepo.prefs().isTrackingStarted) onGnssFixLost()
                 }
             }
             .launchIn(viewModelScope)
-        repository.fixState
+        locationRepo.fixState
             .onEach {
                 when (it) {
                     is FixState.Acquired -> onGnssFixAcquired()
-                    is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
+                    is FixState.NotAcquired -> if (prefsRepo.prefs().isTrackingStarted) onGnssFixLost()
                 }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observePrefs() {
+        // Observe preferences via Flow as they change
+        if (prefsFlow?.isActive == true) {
+            // If we're already observing updates, don't register again
+            return
+        }
+        prefsFlow = prefsRepo.userPreferencesFlow
+            .onEach {
+                Log.d(TAG, "Tracking foreground location: ${it.isTrackingStarted}")
+                // Start or stop the location flows when the app init or user turns on/off tracking via UI
+                setStarted(it.isTrackingStarted)
+                _prefs.value = it
             }
             .launchIn(viewModelScope)
     }
@@ -193,14 +273,16 @@ class SignalInfoViewModel @Inject constructor(
             // If we're already observing updates, don't register again
             return
         }
-        // Observe locations via Flow as they are generated by the repository
-        nmeaFlow = repository.getNmea()
+        // Observe NMEA sentences via Flow as they are generated by the repository
+        nmeaFlow = locationRepo.getNmea()
             .onEach {
                 //Log.d(TAG, "SignalInfoViewModel NMEA: ${it}")
                 onNmeaMessage(it.message, it.timestamp)
             }
             .launchIn(viewModelScope)
     }
+
+
 
     @ExperimentalCoroutinesApi
     @VisibleForTesting
@@ -338,22 +420,26 @@ class SignalInfoViewModel @Inject constructor(
         this._filteredSbasSatellites.value = sbasSatellites.satellites
 
         _filteredSatelliteMetadata.value = SatelliteMetadata(
-            gnssSatellites.satelliteMetadata.numSignalsInView + sbasSatellites.satelliteMetadata.numSignalsInView,
-            gnssSatellites.satelliteMetadata.numSignalsUsed + sbasSatellites.satelliteMetadata.numSignalsUsed,
-            gnssSatellites.satelliteMetadata.numSignalsTotal + sbasSatellites.satelliteMetadata.numSignalsTotal,
-            gnssSatellites.satelliteMetadata.numSatsInView + sbasSatellites.satelliteMetadata.numSatsInView,
-            gnssSatellites.satelliteMetadata.numSatsUsed + sbasSatellites.satelliteMetadata.numSatsUsed,
-            gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal,
-            gnssSatellites.satelliteMetadata.supportedGnss,
-            gnssSatellites.satelliteMetadata.supportedGnssCfs,
-            sbasSatellites.satelliteMetadata.supportedSbas,
-            sbasSatellites.satelliteMetadata.supportedSbasCfs,
-            gnssSatellites.satelliteMetadata.unknownCarrierStatuses + sbasSatellites.satelliteMetadata.unknownCarrierStatuses,
-            gnssSatellites.satelliteMetadata.duplicateCarrierStatuses + sbasSatellites.satelliteMetadata.duplicateCarrierStatuses,
-            gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInView or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInView,
-            gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInUse or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInUse,
-            gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView,
-            gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse
+            numSignalsInView = gnssSatellites.satelliteMetadata.numSignalsInView + sbasSatellites.satelliteMetadata.numSignalsInView,
+            numSignalsUsed = gnssSatellites.satelliteMetadata.numSignalsUsed + sbasSatellites.satelliteMetadata.numSignalsUsed,
+            numSignalsTotal = gnssSatellites.satelliteMetadata.numSignalsTotal + sbasSatellites.satelliteMetadata.numSignalsTotal,
+            numSatsInView = gnssSatellites.satelliteMetadata.numSatsInView + sbasSatellites.satelliteMetadata.numSatsInView,
+            numSatsUsed = gnssSatellites.satelliteMetadata.numSatsUsed + sbasSatellites.satelliteMetadata.numSatsUsed,
+            numSatsTotal = gnssSatellites.satelliteMetadata.numSatsTotal + sbasSatellites.satelliteMetadata.numSatsTotal,
+            supportedGnss = gnssSatellites.satelliteMetadata.supportedGnss,
+            supportedGnssCfs = gnssSatellites.satelliteMetadata.supportedGnssCfs,
+            supportedSbas = sbasSatellites.satelliteMetadata.supportedSbas,
+            supportedSbasCfs = sbasSatellites.satelliteMetadata.supportedSbasCfs,
+            unknownCarrierStatuses = gnssSatellites.satelliteMetadata.unknownCarrierStatuses + sbasSatellites.satelliteMetadata.unknownCarrierStatuses,
+            duplicateCarrierStatuses = gnssSatellites.satelliteMetadata.duplicateCarrierStatuses + sbasSatellites.satelliteMetadata.duplicateCarrierStatuses,
+            isDualFrequencyPerSatInView = gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInView or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInView,
+            isDualFrequencyPerSatInUse = gnssSatellites.satelliteMetadata.isDualFrequencyPerSatInUse or sbasSatellites.satelliteMetadata.isDualFrequencyPerSatInUse,
+            isNonPrimaryCarrierFreqInView = gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInView,
+            isNonPrimaryCarrierFreqInUse = gnssSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse or sbasSatellites.satelliteMetadata.isNonPrimaryCarrierFreqInUse,
+            mismatchAlmanacEphemerisSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAlmanacEphemerisSameSatStatuses,
+            mismatchAzimuthElevationSameSatStatuses = gnssSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses + sbasSatellites.satelliteMetadata.mismatchAzimuthElevationSameSatStatuses,
+            missingAlmanacEphemerisButHaveAzimuthElevation = gnssSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation + sbasSatellites.satelliteMetadata.missingAlmanacEphemerisButHaveAzimuthElevation,
+            signalsWithoutData = gnssSatellites.satelliteMetadata.signalsWithoutData + sbasSatellites.satelliteMetadata.signalsWithoutData
         )
     }
 
@@ -364,17 +450,34 @@ class SignalInfoViewModel @Inject constructor(
 
     private fun onGnssFixAcquired() {
         _fixState.value = FixState.Acquired
+        scanningJob = viewModelScope.launch {
+            val endTime = System.currentTimeMillis() + scanDurationMs
+            while (_timeUntilScanCompleteMs.value!! >= 0) {
+                _timeUntilScanCompleteMs.value = endTime - System.currentTimeMillis()
+                delay(10)
+            }
+
+            // If we still have a fix after scanDurationMs, consider the scan complete
+            if (_fixState.value == FixState.Acquired) {
+                _finishedScanningCfs.value = true
+            }
+        }
     }
 
     private fun onGnssFixLost() {
         _fixState.value = FixState.NotAcquired
+        _finishedScanningCfs.value = false
+        if (scanningJob?.isActive == true) {
+            // Cancel any existing scan
+            scanningJob?.cancel()
+        }
     }
 
     private fun onNmeaMessage(message: String, timestamp: Long) {
         if (message.startsWith("\$GPGGA") || message.startsWith("\$GNGNS") || message.startsWith("\$GNGGA")) {
-            val altitudeMsl = NmeaUtils.getAltitudeMeanSeaLevel(message)
-            if (altitudeMsl != null && started) {
-                _altitudeMsl.value = altitudeMsl
+            val geoidAltitude = NmeaUtils.getAltitudeMeanSeaLevel(timestamp, message)
+            if (geoidAltitude != null && started) {
+                _geoidAltitude.value = geoidAltitude
             }
         }
         if (message.startsWith("\$GNGSA") || message.startsWith("\$GPGSA")) {
@@ -383,6 +486,13 @@ class SignalInfoViewModel @Inject constructor(
                 _dop.value = dop
             }
         }
+        if (message.startsWith("\$GNDTM")) {
+            val datum = NmeaUtils.getDatum(timestamp, message)
+            if (datum != null && started) {
+                _datum.value = datum
+            }
+        }
+
     }
 
     @ExperimentalCoroutinesApi
@@ -397,6 +507,7 @@ class SignalInfoViewModel @Inject constructor(
             observeLocationFlow()
             observeGnssFlow()
             observeNmeaFlow()
+            observeMeasurementsFlow()
         } else {
             // Cancel updates (Note that these are canceled via trackingListener preference listener
             // in the case where updates are stopped from the Activity UI switch)
@@ -412,6 +523,7 @@ class SignalInfoViewModel @Inject constructor(
         locationFlow?.cancel()
         gnssFlow?.cancel()
         nmeaFlow?.cancel()
+        measurementFlow?.cancel()
     }
 
     /**
@@ -517,18 +629,25 @@ class SignalInfoViewModel @Inject constructor(
     }
 
     fun reset() {
+        _prefs.value = prefsRepo.prefs()
+        _allStatuses.value = emptyList()
+        _filteredStatuses.value = emptyList()
         _filteredGnssStatuses.value = emptyList()
         _filteredSbasStatuses.value = emptyList()
         _filteredGnssSatellites.value = emptyMap()
         _filteredSbasSatellites.value = emptyMap()
         _location.value = Location("reset")
         _ttff.value = ""
-        _altitudeMsl.value = Double.NaN
+        _geoidAltitude.value = GeoidAltitude()
         _dop.value = DilutionOfPrecision(Double.NaN, Double.NaN, Double.NaN)
         _filteredSatelliteMetadata.value = SatelliteMetadata()
         _fixState.value = FixState.NotAcquired
         _allSatellitesGroup.value = SatelliteGroup(emptyMap(),SatelliteMetadata())
         gotFirstFix = false
+        _finishedScanningCfs.value = false
+        _timeUntilScanCompleteMs.value = scanDurationMs
+        _adrStates.value = emptySet()
+        _timeBetweenLocationUpdatesSeconds.value = Double.NaN
     }
 
     /**
@@ -537,5 +656,9 @@ class SignalInfoViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         reset()
+    }
+
+    companion object {
+        private const val TAG = "SignalInfoViewModel"
     }
 }

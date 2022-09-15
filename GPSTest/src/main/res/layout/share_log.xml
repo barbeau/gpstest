@@ -13,7 +13,7 @@
 
     <TextView
         android:id="@+id/log_file_label"
-        style="@style/TextAppearance.MaterialComponents.Overline"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/file_name"
@@ -22,7 +22,7 @@
 
     <TextView
         android:id="@+id/log_file_name"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/TextAppearance.Material3.TitleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/log_instructions"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

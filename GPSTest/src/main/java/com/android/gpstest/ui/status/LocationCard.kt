@@ -23,21 +23,22 @@ import android.text.TextUtils
 import android.text.format.DateFormat
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,10 +52,13 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
 import com.android.gpstest.R
 import com.android.gpstest.data.FixState
+import com.android.gpstest.model.AppPreferences
 import com.android.gpstest.model.CoordinateType
 import com.android.gpstest.model.DilutionOfPrecision
+import com.android.gpstest.model.GeoidAltitude
 import com.android.gpstest.model.SatelliteMetadata
 import com.android.gpstest.ui.components.LinkifyText
+import com.android.gpstest.ui.components.LockIcon
 import com.android.gpstest.util.*
 import com.android.gpstest.util.FormatUtils.formatBearing
 import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
@@ -72,10 +76,11 @@ fun LocationCardPreview(
     LocationCard(
         location,
         "5 sec",
-        1.4,
+        GeoidAltitude(0,  1.4, -24.0),
         DilutionOfPrecision(1.0, 2.0, 3.0),
         SatelliteMetadata(),
-        FixState.Acquired
+        FixState.Acquired,
+        AppPreferences(true)
     )
 }
 
@@ -101,15 +106,16 @@ fun previewLocation(): Location {
     return l
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun LocationCard(
     location: Location,
     ttff: String,
-    altitudeMsl: Double,
+    geoidAltitude: GeoidAltitude,
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
     fixState: FixState,
+    prefs: AppPreferences,
 ) {
     val context = LocalContext.current
     Card(
@@ -119,7 +125,7 @@ fun LocationCard(
             .clickable {
                 copyToClipboard(context, location)
             },
-        elevation = 2.dp
+        containerColor = MaterialTheme.colorScheme.primaryContainer
     ) {
         Box {
             Row(
@@ -127,11 +133,11 @@ fun LocationCard(
                     .horizontalScroll(rememberScrollState())
             ) {
                 LabelColumn1()
-                ValueColumn1(location, altitudeMsl, dop)
+                ValueColumn1(location, geoidAltitude, dop)
                 LabelColumn2(location)
-                ValueColumn2(location, ttff, dop, satelliteMetadata)
+                ValueColumn2(location, ttff, dop, satelliteMetadata, prefs)
             }
-            LockIcon(fixState)
+            LockIcon(fixState = fixState)
         }
     }
 }
@@ -139,7 +145,7 @@ fun LocationCard(
 @Composable
 fun ValueColumn1(
     location: Location,
-    altitudeMsl: Double,
+    geoidAltitude: GeoidAltitude,
     dop: DilutionOfPrecision,
 ) {
     Column(
@@ -153,7 +159,7 @@ fun ValueColumn1(
         Latitude(location)
         Longitude(location)
         Altitude(location)
-        AltitudeMsl(altitudeMsl)
+        AltitudeMsl(geoidAltitude.altitudeMsl)
         Speed(location)
         SpeedAccuracy(location)
         Pdop(dop)
@@ -205,6 +211,7 @@ fun ValueColumn2(
     ttff: String,
     dop: DilutionOfPrecision,
     satelliteMetadata: SatelliteMetadata,
+    prefs: AppPreferences,
 ) {
     Column(
         modifier = Modifier
@@ -214,7 +221,7 @@ fun ValueColumn2(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        Time(location)
+        Time(location, prefs)
         TTFF(ttff)
         Accuracy(location)
         NumSats(satelliteMetadata)
@@ -225,16 +232,32 @@ fun ValueColumn2(
 }
 
 @Composable
-fun Time(location: Location) {
-    if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
+fun Time(location: Location, prefs: AppPreferences) {
+    if (location.time == 0L || !prefs.isTrackingStarted) {
         LocationValue("")
     } else {
-        formatTime(location.time)
+        formattedTime(location.time)
     }
 }
 
 @Composable
-private fun formatTime(time: Long) {
+fun formattedTime(time: Long) {
+    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValidWeekRollover(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
+        val dateAndTime = formatTime(time, includeDate = true)
+        // Time and date
+        if (DateTimeUtils.isTimeValidWeekRollover(time)) {
+            LocationValue(dateAndTime)
+        } else {
+            ErrorTime(dateAndTime, time)
+        }
+    } else {
+        // Time
+        LocationValue(formatTime(time))
+    }
+}
+
+@Composable
+fun formatTime(time: Long, includeDate: Boolean = false): String {
     // SimpleDateFormat can only do 3 digits of fractional seconds (.SSS)
     val SDF_TIME_24_HOUR = "HH:mm:ss.SSS"
     val SDF_TIME_12_HOUR = "hh:mm:ss.SSS a"
@@ -255,21 +278,15 @@ private fun formatTime(time: Long) {
         )
     }
 
-    if (LocalConfiguration.current.screenWidthDp > 450 || !DateTimeUtils.isTimeValid(time)) { // 450dp is a little larger than the width of a Samsung Galaxy S8+
-        val dateAndTime = timeAndDateFormat.format(time).trimZeros()
-        // Time and date
-        if (DateTimeUtils.isTimeValid(time)) {
-            LocationValue(dateAndTime)
-        } else {
-            ErrorTime(dateAndTime, time)
-        }
+    return if (includeDate) {
+        timeAndDateFormat.format(time).trimTimeZeros()
     } else {
         // Time
-        LocationValue(timeFormat.format(time).trimZeros())
+        timeFormat.format(time).trimTimeZeros()
     }
 }
 
-private fun String.trimZeros(): String {
+private fun String.trimTimeZeros(): String {
     return this.replace(".000", "")
         .replace(",000", "")
 }
@@ -424,7 +441,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             .wrapContentHeight()
             .wrapContentWidth()
             .clip(RoundedCornerShape(4.dp))
-            .background(MaterialTheme.colors.error)
+            .background(MaterialTheme.colorScheme.error)
             .clickable {
                 openDialog.value = true
             }
@@ -433,7 +450,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
             text = timeText,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
             fontSize = 13.sp,
-            color = MaterialTheme.colors.onError
+            color = MaterialTheme.colorScheme.onError
         )
     }
 
@@ -458,7 +475,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
                     LinkifyText(
                         text = Application.app.getString(
                             R.string.error_time_message, format.format(timeMs),
-                            DateTimeUtils.NUM_DAYS_TIME_VALID
+                            DateTimeUtils.NUM_DAYS_TIME_VALID_WEEK_ROLLOVER
                         )
                     )
                 }
@@ -484,25 +501,6 @@ private fun reduceSpacing(): Boolean {
 private fun letterSpacing(): TextUnit {
     // Reduce text spacing on narrow displays to make both columns fit
     return (-0.01).em
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun LockIcon(fixState: FixState) {
-    var visible by remember { mutableStateOf(false) }
-    visible = fixState == FixState.Acquired
-    AnimatedVisibility(
-        visible = visible,
-        enter = scaleIn() + expandVertically(expandFrom = Alignment.CenterVertically),
-        exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_lock_24),
-            contentDescription = stringResource(id = R.string.lock),
-            tint = MaterialTheme.colors.onBackground,
-            modifier = Modifier.padding(6.dp)
-        )
-    }
 }
 
 private fun copyToClipboard(context: Context, location: Location) {

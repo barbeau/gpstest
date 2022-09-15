@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/upload_details"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/upload_no_location"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+        style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

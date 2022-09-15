@@ -15,9 +15,11 @@
  */
 package com.android.gpstest.ui;
 
+import static com.android.gpstest.util.IOUtils.getAppVersionDescription;
+import static com.android.gpstest.util.IOUtils.getGnssHardwareModelName;
+import static com.android.gpstest.util.IOUtils.getGnssHardwareYear;
+
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -25,9 +27,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.util.IOUtils;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -39,29 +39,14 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView versionView = (TextView) findViewById(R.id.app_version);
-        TextView helpView = (TextView) findViewById(R.id.help_text);
-
-        String versionString = "";
-        int versionCode = 0;
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            versionString = info.versionName;
-            versionCode = info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        TextView versionView = findViewById(R.id.app_version);
+        TextView helpView = findViewById(R.id.help_text);
 
         StringBuilder version = new StringBuilder();
-        // Version info
-        version.append("v")
-                .append(versionString)
-                .append(" (")
-                .append(versionCode)
-                .append("-" + BuildConfig.FLAVOR + ")\n");
+        version.append(getAppVersionDescription() + "\n");
 
-        version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + "\n");
-        version.append("GNSS HW Name: " + IOUtils.getGnssHardwareModelName() + "\n");
+        version.append("GNSS HW Year: " + getGnssHardwareYear() + "\n");
+        version.append("GNSS HW Name: " + getGnssHardwareModelName() + "\n");
 
         String versionRelease = Build.VERSION.RELEASE;
         version.append("Platform: " + versionRelease + "\n");

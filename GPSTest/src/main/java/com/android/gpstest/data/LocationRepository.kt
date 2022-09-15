@@ -16,12 +16,6 @@ class LocationRepository @Inject constructor(
     private val sharedAntennaManager: SharedAntennaManager
 ) {
     /**
-     * Status of whether the app is actively subscribed to location changes.
-     */
-    val receivingLocationUpdates: StateFlow<Boolean> =
-        sharedLocationManager.receivingLocationUpdates
-
-    /**
      * Observable flow for location updates
      */
     @ExperimentalCoroutinesApi
