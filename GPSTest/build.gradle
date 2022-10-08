@@ -6,6 +6,10 @@ apply plugin: 'dagger.hilt.android.plugin'
 android {
     compileSdkVersion 31
 
+    lint {
+        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent"
+    }
+
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 29
