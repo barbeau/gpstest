@@ -1,2 +1,3 @@
 include ':GPSTest'
-include ':gpswearos'
+include ':wear'
+include ':library'

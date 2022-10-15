@@ -123,7 +123,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.0-beta02'
+        kotlinCompilerExtensionVersion '1.1.0-rc02'
     }
 
     buildFeatures {
@@ -199,7 +199,7 @@ dependencies {
 
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation "androidx.compose.compiler:compiler:1.1.0-beta02"
+    implementation "androidx.compose.compiler:compiler:1.1.0-rc02"
     // Compose Material Design
     implementation 'androidx.compose.material:material:1.0.5'
     // Bridging XML themes to Compose

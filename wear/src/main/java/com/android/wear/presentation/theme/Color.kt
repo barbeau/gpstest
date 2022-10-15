@@ -1,4 +1,4 @@
-package com.android.gpswearos.presentation.theme
+package com.android.wear.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Colors
