@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.android.wear'
+    namespace 'com.android.gpstest.wear'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.android.wear"
+        applicationId "com.android.gpstest.wear"
         minSdk 25
         targetSdk 32
         versionCode 1
@@ -17,9 +17,6 @@ android {
             useSupportLibrary true
         }
 
-    }
-    lint {
-        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent"
     }
 
     buildTypes {

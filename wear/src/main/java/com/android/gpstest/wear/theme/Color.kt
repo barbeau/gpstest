@@ -1,4 +1,4 @@
-package com.android.wear.presentation.theme
+package com.android.gpstest.wear.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Colors

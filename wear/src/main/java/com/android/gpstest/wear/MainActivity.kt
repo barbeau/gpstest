@@ -1,4 +1,4 @@
-package com.android.wear.presentation
+package com.android.gpstest.wear
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.android.library.LocationLabelAndData
-import com.android.wear.presentation.theme.GpstestTheme
+import com.android.gpstest.wear.theme.GpstestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WearApp(LocationLabelAndData.statusSample)
+            WearApp(LocationLabelAndData.locationLabelAndDataSample)
         }
     }
 }
