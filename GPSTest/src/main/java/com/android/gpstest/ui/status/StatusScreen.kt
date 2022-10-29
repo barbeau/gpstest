@@ -51,8 +51,6 @@ import com.android.gpstest.util.PreferenceUtils
 import com.android.gpstest.util.PreferenceUtils.gnssFilter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
-@ExperimentalFoundationApi
 @Composable
 fun StatusScreen(viewModel: SignalInfoViewModel) {
     //

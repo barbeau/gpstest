@@ -101,7 +101,6 @@ fun previewLocation(): Location {
     return l
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LocationCard(
     location: Location,
