@@ -1,4 +1,4 @@
-package com.android.library
+package com.android.gpstest.library
 
 object LocationLabelAndData {
     // Sample conversation data

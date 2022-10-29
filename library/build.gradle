@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.android.library'
+    namespace 'com.android.gpstest.library'
     compileSdk 32
 
     defaultConfig {
