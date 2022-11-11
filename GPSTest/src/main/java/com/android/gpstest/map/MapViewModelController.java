@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.android.gpstest.model.MeasuredError;
+import com.android.gpstest.library.model.MeasuredError;
 import com.android.gpstest.ui.BenchmarkViewModel;
 
 import java.lang.ref.WeakReference;
@@ -32,8 +32,6 @@ public class MapViewModelController {
         /**
          * Draws a path line on the map between the two points if the distance between the two points
          * exceeds a threshold
-         * @param loc1
-         * @param loc2
          * @return true if the line was drawn, or false if the distance between the points didn't
          * exceed the threshold and the line was not drawn
          */

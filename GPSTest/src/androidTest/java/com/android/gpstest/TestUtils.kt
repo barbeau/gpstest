@@ -15,10 +15,10 @@
  */
 package com.android.gpstest
 
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SatelliteStatus
-import com.android.gpstest.model.SatelliteStatus.Companion.NO_DATA
-import com.android.gpstest.model.SbasType
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.SatelliteStatus.Companion.NO_DATA
+import com.android.gpstest.library.model.SbasType
 
 /**
  * Returns a status for a GPS NAVSTAR L1 signal

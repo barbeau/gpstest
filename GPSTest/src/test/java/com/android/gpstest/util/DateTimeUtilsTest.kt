@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.util
 
+import com.android.gpstest.library.util.DateTimeUtils
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

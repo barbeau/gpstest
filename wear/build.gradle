@@ -25,6 +25,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -34,6 +39,8 @@ android {
     }
     buildFeatures {
         compose true
+        dataBinding true
+        viewBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.1.0-rc02'
@@ -52,6 +59,7 @@ dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.wear.compose:compose-material:$wear_compose_version"
     implementation "androidx.wear.compose:compose-foundation:$wear_compose_version"

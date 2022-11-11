@@ -33,11 +33,11 @@ import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
-import com.android.gpstest.util.PermissionUtils
-import com.android.gpstest.util.PreferenceUtil.enableMeasurementsPref
-import com.android.gpstest.util.PreferenceUtil.enableNavMessagesPref
-import com.android.gpstest.util.SatelliteUtils
-import com.android.gpstest.util.UIUtils.resetActivityTitle
+import com.android.gpstest.library.util.PermissionUtils
+import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
+import com.android.gpstest.library.util.SatelliteUtils
+import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
+import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var forceFullGnssMeasurements: CheckBoxPreference? = null
@@ -175,7 +175,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             }
         chkLogFileNavMessages =
             findPreference(getString(R.string.pref_key_file_navigation_message_output)) as CheckBoxPreference
-        chkLogFileNavMessages?.isEnabled = enableNavMessagesPref()
+        chkLogFileNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
         chkLogFileNavMessages?.onPreferenceChangeListener =
             OnPreferenceChangeListener { _: Preference?, _: Any? ->
                 PermissionUtils.requestFileWritePermission(this@Preferences)
@@ -183,7 +183,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             }
         chkLogFileMeasurements =
             findPreference(getString(R.string.pref_key_file_measurement_output)) as CheckBoxPreference
-        chkLogFileMeasurements?.isEnabled = enableMeasurementsPref();
+        chkLogFileMeasurements?.isEnabled = enableMeasurementsPref(app, prefs);
         chkLogFileMeasurements?.onPreferenceChangeListener =
             OnPreferenceChangeListener { preference: Preference?, newValue: Any? ->
                 PermissionUtils.requestFileWritePermission(this@Preferences)
@@ -223,9 +223,9 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
 
         // Disable Android Studio logging if not supported by platform
         chkAsMeasurements = findPreference(getString(R.string.pref_key_as_measurement_output)) as CheckBoxPreference
-        chkAsMeasurements?.isEnabled = enableMeasurementsPref()
+        chkAsMeasurements?.isEnabled = enableMeasurementsPref(app, prefs)
         chkAsNavMessages = findPreference(getString(R.string.pref_key_as_navigation_message_output)) as CheckBoxPreference
-        chkAsNavMessages?.isEnabled = enableNavMessagesPref()
+        chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
         prefs.registerOnSharedPreferenceChangeListener(this)
     }

@@ -58,7 +58,6 @@ class Application : MultiDexApplication() {
 
         lateinit var localeManager: LocaleManager
             private set
-
         lateinit var prefs: SharedPreferences
             private set
     }

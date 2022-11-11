@@ -18,12 +18,12 @@ package com.android.gpstest
 
 import android.os.Build
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SatelliteStatus
-import com.android.gpstest.model.SbasType
-import com.android.gpstest.util.CarrierFreqUtils
-import com.android.gpstest.util.CarrierFreqUtils.CF_UNKNOWN
-import com.android.gpstest.util.CarrierFreqUtils.CF_UNSUPPORTED
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.util.CarrierFreqUtils
+import com.android.gpstest.library.util.CarrierFreqUtils.CF_UNKNOWN
+import com.android.gpstest.library.util.CarrierFreqUtils.CF_UNSUPPORTED
 import junit.framework.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

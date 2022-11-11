@@ -7,9 +7,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.android.gpstest.Application;
 import com.android.gpstest.R;
-import com.android.gpstest.model.GnssType;
-import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.library.model.GnssType;
+import com.android.gpstest.library.util.PreferenceUtils;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class GnssFilterDialog extends DialogFragment
             }
         }
 
-        PreferenceUtils.saveGnssFilter(filter);
+        PreferenceUtils.saveGnssFilter(Application.Companion.getApp(), filter, Application.Companion.getPrefs());
         dialog.dismiss();
     }
 

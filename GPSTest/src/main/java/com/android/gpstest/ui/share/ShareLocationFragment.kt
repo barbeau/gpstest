@@ -13,11 +13,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.model.CoordinateType
-import com.android.gpstest.util.IOUtils
-import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.UIUtils
+import com.android.gpstest.library.model.CoordinateType
+import com.android.gpstest.library.util.IOUtils
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.LibUIUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -64,7 +66,8 @@ class ShareLocationFragment : Fragment() {
         // Check selected coordinate format and show in UI
         val coordinateFormat = Application.prefs.getString(Application.app.getString(R.string.pref_key_coordinate_format), Application.app.getString(R.string.preferences_coordinate_format_dd_key))
         if (location != null) {
-            UIUtils.formatLocationForDisplay(
+            LibUIUtils.formatLocationForDisplay(
+                app,
                 location,
                 locationValue,
                 includeAltitude.isChecked,
@@ -86,7 +89,8 @@ class ShareLocationFragment : Fragment() {
                 format = "ddm"
             }
             if (location != null) {
-                UIUtils.formatLocationForDisplay(
+                LibUIUtils.formatLocationForDisplay(
+                    app,
                     location,
                     locationValue,
                     isChecked,
@@ -96,7 +100,7 @@ class ShareLocationFragment : Fragment() {
                     format
                 )
             }
-            PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked)
+            PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked, prefs)
         }
 
         chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -110,8 +114,9 @@ class ShareLocationFragment : Fragment() {
         chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDMSFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                            UIUtils.getDMSFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                    locationValue.text = IOUtils.createLocationShare(
+                        LibUIUtils.getDMSFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
+                            LibUIUtils.getDMSFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
                             if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
                 }
             }
@@ -119,8 +124,9 @@ class ShareLocationFragment : Fragment() {
         chipDegreesDecimalMin.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
                 if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(UIUtils.getDDMFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                            UIUtils.getDDMFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                    locationValue.text = IOUtils.createLocationShare(
+                        LibUIUtils.getDDMFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
+                            LibUIUtils.getDDMFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
                             if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
                 }
             }
@@ -130,7 +136,7 @@ class ShareLocationFragment : Fragment() {
             // Copy to clipboard
             if (location != null) {
                 val locationString = locationValue.text.toString()
-                IOUtils.copyToClipboard(locationString)
+                IOUtils.copyToClipboard(app, locationString)
                 Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show()
             }
         }
@@ -149,7 +155,7 @@ class ShareLocationFragment : Fragment() {
             // Open the location in another app
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(IOUtils.createGeoUri(location, includeAltitude.isChecked))
+                intent.data = Uri.parse(IOUtils.createGeoUri(app, location, includeAltitude.isChecked))
                 if (intent.resolveActivity(requireActivity().packageManager) != null) {
                     requireActivity().startActivity(intent)
                 }
@@ -161,7 +167,7 @@ class ShareLocationFragment : Fragment() {
             if (location != null) {
                 val intent = Intent(Intent.ACTION_SEND)
                 val text: String = if (chipDecimalDegrees.isChecked) {
-                    IOUtils.createGeoUri(location, includeAltitude.isChecked)
+                    IOUtils.createGeoUri(app, location, includeAltitude.isChecked)
                 } else {
                     locationValue.text.toString()
                 }

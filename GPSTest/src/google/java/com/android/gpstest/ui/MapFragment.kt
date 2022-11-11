@@ -32,15 +32,16 @@ import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
 import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtil
+import com.android.gpstest.library.util.MathUtils
+import com.android.gpstest.library.util.PreferenceUtil
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -94,7 +95,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
+        PreferenceUtil.newStopTrackingListener ({ onGnssStopped() }, prefs)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

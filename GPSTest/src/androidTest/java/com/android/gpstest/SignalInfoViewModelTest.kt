@@ -21,10 +21,10 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.InstrumentationRegistry
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.data.*
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SbasType
-import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.library.data.*
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.theme.SignalInfoViewModel
 import kotlinx.coroutines.GlobalScope
 import org.junit.Assert.*
 import org.junit.Rule

@@ -37,10 +37,10 @@ import androidx.core.content.ContextCompat;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.model.Orientation;
-import com.android.gpstest.model.SatelliteStatus;
-import com.android.gpstest.util.FormatUtils;
-import com.android.gpstest.util.IOUtils;
+import com.android.gpstest.library.model.Orientation;
+import com.android.gpstest.library.model.SatelliteStatus;
+import com.android.gpstest.library.util.FormatUtils;
+import com.android.gpstest.library.util.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -121,7 +121,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             version.append("Manufacturer: " + manufacturer + ", ");
             version.append("Model: " + model + ", ");
 
-            version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + ", ");
+            version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + ", ");
 
             String versionRelease = Build.VERSION.RELEASE;
             version.append("Platform: " + versionRelease + ", ");

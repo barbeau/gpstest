@@ -19,6 +19,8 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+import com.android.gpstest.library.util.MathUtils;
+
 import org.junit.Test;
 
 public class MathUtilTest {

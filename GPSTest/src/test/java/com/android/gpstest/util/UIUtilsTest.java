@@ -2,6 +2,8 @@ package com.android.gpstest.util;
 
 import static junit.framework.Assert.assertEquals;
 
+import com.android.gpstest.library.util.LibUIUtils;
+
 import org.junit.Test;
 
 public class UIUtilsTest {
@@ -16,15 +18,15 @@ public class UIUtilsTest {
         final int MAX_PX = 140;
 
         // CN0 value of 27.5 dB-Hz is 50% between 10 and 45, so output should be halfway between -6px and 140px, which is 70px
-        marginPx = UIUtils.cn0ToIndicatorLeftMarginPx(27.5f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(27.5f, MIN_PX, MAX_PX);
         assertEquals(67, marginPx);
 
         // CN0 value of 45.0 dB-Hz is 100% of 45, so output should be 100% of 140px, which is 140px
-        marginPx = UIUtils.cn0ToIndicatorLeftMarginPx(45.0f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(45.0f, MIN_PX, MAX_PX);
         assertEquals(140, marginPx);
 
         // CN0 value of 10.0 dB-Hz is 0% (min value of CN0), so output should be 0% of px range, which is -6
-        marginPx = UIUtils.cn0ToIndicatorLeftMarginPx(10.0f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(10.0f, MIN_PX, MAX_PX);
         assertEquals(-6, marginPx);
     }
 
@@ -38,15 +40,15 @@ public class UIUtilsTest {
         final int MAX_PX = 149;
 
         // CN0 value of 27.5 dB-Hz is 50% between 10 and 45, so output should be halfway between 3px and 149px, which is 76px
-        marginPx = UIUtils.cn0ToTextViewLeftMarginPx(27.5f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(27.5f, MIN_PX, MAX_PX);
         assertEquals(76, marginPx);
 
         // CN0 value of 45.0 dB-Hz is 100% of 149, so output should be 100% of 149px, which is 149px
-        marginPx = UIUtils.cn0ToTextViewLeftMarginPx(45.0f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(45.0f, MIN_PX, MAX_PX);
         assertEquals(149, marginPx);
 
         // CN0 value of 10.0 dB-Hz is 0% (min value of CN0), so output should be 0% of px range, which is 3px
-        marginPx = UIUtils.cn0ToTextViewLeftMarginPx(10.0f, MIN_PX, MAX_PX);
+        marginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(10.0f, MIN_PX, MAX_PX);
         assertEquals(3, marginPx);
     }
 
@@ -57,11 +59,11 @@ public class UIUtilsTest {
     public void testToFeet() {
         double meters = 1.0d;
 
-        assertEquals(3.2808398950131235d, UIUtils.toFeet(meters));
+        assertEquals(3.2808398950131235d, LibUIUtils.toFeet(meters));
 
         meters = 30.0d;
 
-        assertEquals(98.4251968503937d, UIUtils.toFeet(meters));
+        assertEquals(98.4251968503937d, LibUIUtils.toFeet(meters));
     }
 
     /**
@@ -71,11 +73,11 @@ public class UIUtilsTest {
     public void testToKilometersPerHour() {
         float metersPerSecond = 1.0f;
 
-        assertEquals(3.6f, UIUtils.toKilometersPerHour(metersPerSecond));
+        assertEquals(3.6f, LibUIUtils.toKilometersPerHour(metersPerSecond));
 
         metersPerSecond = 30.0f;
 
-        assertEquals(108.0f, UIUtils.toKilometersPerHour(metersPerSecond));
+        assertEquals(108.0f, LibUIUtils.toKilometersPerHour(metersPerSecond));
     }
 
     /**
@@ -85,10 +87,10 @@ public class UIUtilsTest {
     public void testToMilesPerHour() {
         float metersPerSecond = 1.0f;
 
-        assertEquals(2.2369363f, UIUtils.toMilesPerHour(metersPerSecond));
+        assertEquals(2.2369363f, LibUIUtils.toMilesPerHour(metersPerSecond));
 
         metersPerSecond = 60.0f;
 
-        assertEquals(134.21617f, UIUtils.toMilesPerHour(metersPerSecond));
+        assertEquals(134.21617f, LibUIUtils.toMilesPerHour(metersPerSecond));
     }
 }
