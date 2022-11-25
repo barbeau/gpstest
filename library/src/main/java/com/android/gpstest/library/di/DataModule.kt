@@ -33,10 +33,17 @@ object DataModule {
         SharedLocationManager(context, GlobalScope, prefs)
 
     @Provides
+    fun provideContext(
+        @ApplicationContext context: Context,
+    ): Context {
+        return context
+    }
+
+    @Provides
     @Singleton
     fun provideSharedGnssStatusManager(
         @ApplicationContext context: Context,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
     ): SharedGnssStatusManager =
         SharedGnssStatusManager(context, GlobalScope, prefs)
 
@@ -44,7 +51,7 @@ object DataModule {
     @Singleton
     fun provideSharedNmeaManager(
         @ApplicationContext context: Context,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
     ): SharedNmeaManager =
         SharedNmeaManager(context, GlobalScope, prefs)
 
@@ -60,7 +67,7 @@ object DataModule {
     @Singleton
     fun provideSharedNavMessageManager(
         @ApplicationContext context: Context,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
     ): SharedNavMessageManager =
         SharedNavMessageManager(context, GlobalScope, prefs)
 
@@ -76,7 +83,7 @@ object DataModule {
     @Singleton
     fun provideSharedAntennaManager(
         @ApplicationContext context: Context,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
     ): SharedAntennaManager =
         SharedAntennaManager(context, GlobalScope,prefs)
 }
