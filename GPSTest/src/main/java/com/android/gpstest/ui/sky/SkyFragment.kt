@@ -51,7 +51,7 @@ import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.library.model.SatelliteMetadata
 import com.android.gpstest.library.model.SatelliteStatus
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.ui.status.Filter
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.library.util.MathUtils

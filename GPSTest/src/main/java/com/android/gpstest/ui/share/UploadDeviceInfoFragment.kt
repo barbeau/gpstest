@@ -26,7 +26,7 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.IOUtils.*
 import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtils

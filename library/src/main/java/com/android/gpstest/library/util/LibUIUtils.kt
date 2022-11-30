@@ -48,10 +48,9 @@ import com.android.gpstest.library.R
 import com.android.gpstest.library.model.CoordinateType
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SbasType
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.google.android.material.chip.Chip
 import com.sothree.slidinguppanel.library.BuildConfig
-import com.sothree.slidinguppanel.library.BuildConfig.FLAVOR
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*

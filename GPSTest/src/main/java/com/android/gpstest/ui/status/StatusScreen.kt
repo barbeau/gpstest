@@ -46,7 +46,7 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.model.*
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.CarrierFreqUtils
 import com.android.gpstest.library.util.MathUtils
 import com.android.gpstest.library.util.PreferenceUtils

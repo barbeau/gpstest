@@ -24,7 +24,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.library.data.*
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SbasType
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import kotlinx.coroutines.GlobalScope
 import org.junit.Assert.*
 import org.junit.Rule

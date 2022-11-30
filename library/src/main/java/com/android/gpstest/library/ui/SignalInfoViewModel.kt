@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.gpstest.library.theme
+package com.android.gpstest.library.ui
 
 import android.annotation.SuppressLint
 import android.app.Application

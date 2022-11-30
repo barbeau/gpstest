@@ -25,7 +25,7 @@ import androidx.fragment.app.activityViewModels
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.library.util.PreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils.showSortByDialog

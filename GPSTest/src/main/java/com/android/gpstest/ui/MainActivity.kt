@@ -57,7 +57,7 @@ import com.android.gpstest.R
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
-import com.android.gpstest.library.theme.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
