@@ -19,18 +19,17 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -225,21 +224,73 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
                         Text(text = satStatue)
                     }
                 }
-
+                item{
+                    StatusRowHeader(isGnss = true)
+                }
                 for(satelliteStatus in gnssStatuses) {
                     item {
-                        val small = Modifier.defaultMinSize(minWidth = 10.dp)
-                        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-                        val large = Modifier.defaultMinSize(minWidth = 20.dp)
-                        Svid(satelliteStatus, small)
-                        Flag(satelliteStatus, large)
-                        CarrierFrequency(satelliteStatus, small)
-                        Cn0(satelliteStatus, medium)
-                        AEU(satelliteStatus, medium)
+                        StatusRow(satelliteStatus = satelliteStatus)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun StatusRowHeader(isGnss: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(top = 5.dp, start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val small = Modifier.defaultMinSize(minWidth = 5.dp)
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val large = Modifier.defaultMinSize(minWidth = 8.dp)
+
+        StatusLabel(R.string.id_column_label, small)
+        if (isGnss) {
+            StatusLabel(R.string.gnss_flag_image_label, large)
+        } else {
+            StatusLabel(R.string.sbas_flag_image_label, large)
+        }
+        StatusLabel(R.string.cf_column_label, small)
+        StatusLabel(R.string.gps_cn0_column_label, medium)
+        StatusLabel(R.string.flags_aeu_column_label, medium)
+    }
+}
+
+@Composable
+fun StatusLabel(@StringRes id: Int, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(id),
+        modifier = modifier.padding(start = 3.dp, end = 3.dp),
+        fontWeight = FontWeight.Bold,
+        fontSize = 13.sp,
+        textAlign = TextAlign.Start
+    )
+}
+
+@Composable
+fun StatusRow(satelliteStatus: SatelliteStatus) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(start = 16.dp, end = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        val small = Modifier.defaultMinSize(minWidth = 5.dp)
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val large = Modifier.defaultMinSize(minWidth = 8.dp)
+
+        Svid(satelliteStatus, small)
+        Flag(satelliteStatus, large)
+        CarrierFrequency(satelliteStatus, small)
+        Cn0(satelliteStatus, medium)
+        AEU(satelliteStatus, medium)
     }
 }
 
