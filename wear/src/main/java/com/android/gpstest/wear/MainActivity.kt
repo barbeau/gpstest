@@ -1,13 +1,16 @@
 package com.android.gpstest.wear
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
-import androidx.lifecycle.Observer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,34 +19,39 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.material.*
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.library.LocationLabelAndData
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SatelliteStatus
 import com.android.gpstest.library.model.SbasType
 import com.android.gpstest.library.ui.SignalInfoViewModel
-import com.android.gpstest.wear.theme.GpstestTheme
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.res.dimensionResource
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import com.android.gpstest.Application.Companion.prefs
-import com.android.gpstest.library.data.FixState
-import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.util.*
+import com.android.gpstest.wear.theme.GpstestTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -53,6 +61,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var progressBar: ProgressBar? = null
+    private var userDeniedPermission = false
     @OptIn(ExperimentalCoroutinesApi::class)
     private val signalInfoViewModel: SignalInfoViewModel by viewModels()
 
@@ -74,12 +83,40 @@ class MainActivity : ComponentActivity() {
         progressBar = findViewById(R.id.progress_horizontal)
         // Observe stopping location updates from the service
         prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
-        gpsStart()
 
+        if (!userDeniedPermission) {
+            requestPermission(this)
+        } else {
+            LibUIUtils.showLocationPermissionDialog(this)
+        }
+        gpsStart()
         setContent {
             WearApp(LocationLabelAndData.locationLabelAndDataSample, signalInfoViewModel)
         }
     }
+
+    private fun requestPermission(activity: Activity) {
+        // Request permissions from the user
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
+            PermissionUtils.LOCATION_PERMISSION_REQUEST
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                userDeniedPermission = false
+            } else {
+                userDeniedPermission = true
+            }
+        }
+    }
+
     @ExperimentalCoroutinesApi
     @SuppressLint("MissingPermission")
     @Synchronized
@@ -191,9 +228,9 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
 
                 for(satelliteStatus in gnssStatuses) {
                     item {
-                        val small = Modifier.defaultMinSize(minWidth = 36.dp)
+                        val small = Modifier.defaultMinSize(minWidth = 10.dp)
                         val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-                        val large = Modifier.defaultMinSize(minWidth = 50.dp)
+                        val large = Modifier.defaultMinSize(minWidth = 20.dp)
                         Svid(satelliteStatus, small)
                         Flag(satelliteStatus, large)
                         CarrierFrequency(satelliteStatus, small)
@@ -205,7 +242,6 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
         }
     }
 }
-
 
 @Composable
 fun CarrierFrequency(satelliteStatus: SatelliteStatus, modifier: Modifier) {
