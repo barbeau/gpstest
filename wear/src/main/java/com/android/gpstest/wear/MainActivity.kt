@@ -6,20 +6,21 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.View
-import android.widget.ProgressBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -35,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.material.*
@@ -59,7 +59,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private var progressBar: ProgressBar? = null
     private var userDeniedPermission = false
     @OptIn(ExperimentalCoroutinesApi::class)
     private val signalInfoViewModel: SignalInfoViewModel by viewModels()
@@ -79,28 +78,31 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        progressBar = findViewById(R.id.progress_horizontal)
         // Observe stopping location updates from the service
         prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
 
         if (!userDeniedPermission) {
-            requestPermission(this)
+            requestPermissionAndStartGps(this)
         } else {
             LibUIUtils.showLocationPermissionDialog(this)
         }
-        gpsStart()
+
         setContent {
             WearApp(LocationLabelAndData.locationLabelAndDataSample, signalInfoViewModel)
         }
     }
 
-    private fun requestPermission(activity: Activity) {
-        // Request permissions from the user
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
-            PermissionUtils.LOCATION_PERMISSION_REQUEST
-        )
+    private fun requestPermissionAndStartGps(activity: Activity) {
+        if (PermissionUtils.hasGrantedPermissions(activity, arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))) {
+            gpsStart()
+        } else {
+            // Request permissions from the user
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION),
+                PermissionUtils.LOCATION_PERMISSION_REQUEST
+            )
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -110,6 +112,7 @@ class MainActivity : ComponentActivity() {
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 userDeniedPermission = false
+                gpsStart()
             } else {
                 userDeniedPermission = true
             }
@@ -124,7 +127,6 @@ class MainActivity : ComponentActivity() {
 
         // Observe flows
         observeLocationFlow()
-        observeGnssStates()
     }
 
     @ExperimentalCoroutinesApi
@@ -144,43 +146,10 @@ class MainActivity : ComponentActivity() {
             .launchIn(lifecycleScope)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeGnssStates() {
-        // Use ViewModel here to ensure that it's populated for fragments as well -
-        // otherwise ViewModel is lazily initialized and we don't save TTFF if viewed later in Status (e.g., if started in Accuracy or Map)
-        val gnssStateObserver = Observer<FixState> { fixState ->
-            when (fixState) {
-                is FixState.Acquired -> hideProgressBar()
-                is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted(prefs)) showProgressBar()
-            }
-        }
-        signalInfoViewModel.fixState.observe(
-            this, gnssStateObserver
-        )
-    }
-
-    private fun showProgressBar() {
-        val p = progressBar
-        if (p != null) {
-            LibUIUtils.showViewWithAnimation(p, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
-    }
-
-    private fun hideProgressBar() {
-        val p = progressBar
-        if (p != null) {
-            LibUIUtils.hideViewWithAnimation(p, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
-        }
-    }
-
     @Synchronized
     private fun gpsStop() {
         PreferenceUtils.saveTrackingStarted(false, prefs)
         locationFlow?.cancel()
-
-        // Reset the options menu to trigger updates to action bar menu items
-        invalidateOptionsMenu()
-        progressBar?.visibility = View.GONE
     }
 
     companion object {
@@ -192,6 +161,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(emptyList())
+    val location: Location by signalInfoViewModel.location.observeAsState(Location("default"))
+    val fixState: FixState by signalInfoViewModel.fixState.observeAsState(FixState.NotAcquired)
     GpstestTheme {
         val listState = rememberScalingLazyListState()
         Scaffold(
@@ -213,11 +184,15 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
             val contentModifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
+
             ScalingLazyColumn(
                 modifier = contentModifier,
                 autoCentering = AutoCenteringParams(itemIndex = 0),
                 state = listState
             ) {
+                item{
+                    CustomLinearProgressBar(fixState)
+                }
 
                 for (satStatue in satStatues) {
                     item {
@@ -234,6 +209,19 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CustomLinearProgressBar(fixState: FixState){
+    AnimatedVisibility(visible = (fixState == FixState.NotAcquired)) {
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(5.dp),
+            backgroundColor = Color.LightGray,
+            color = Color.Gray
+        )
     }
 }
 

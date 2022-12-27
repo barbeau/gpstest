@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.library.util
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.Activity
@@ -815,7 +816,10 @@ object LibUIUtils {
                 // Request permissions from the user
                 ActivityCompat.requestPermissions(
                     activity,
-                    PermissionUtils.REQUIRED_PERMISSIONS,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
                     PermissionUtils.LOCATION_PERMISSION_REQUEST
                 )
             }
