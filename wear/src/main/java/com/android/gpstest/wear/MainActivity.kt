@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.icu.text.SimpleDateFormat
 import android.location.Location
 import android.os.Bundle
 import android.text.format.DateFormat
@@ -40,7 +41,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.material.*
 import com.android.gpstest.Application.Companion.prefs
-import com.android.gpstest.library.LocationLabelAndData
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.GnssType
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            WearApp(LocationLabelAndData.locationLabelAndDataSample, signalInfoViewModel)
+            WearApp(signalInfoViewModel)
         }
     }
 
@@ -159,7 +159,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) {
+fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(emptyList())
     val location: Location by signalInfoViewModel.location.observeAsState(Location("default"))
     val fixState: FixState by signalInfoViewModel.fixState.observeAsState(FixState.NotAcquired)
@@ -194,14 +194,26 @@ fun WearApp(satStatues: List<String>, signalInfoViewModel: SignalInfoViewModel) 
                     CustomLinearProgressBar(fixState)
                 }
 
-                for (satStatue in satStatues) {
-                    item {
-                        Text(text = satStatue)
-                    }
+                item {
+                    Text(text = String.format("Lat: %.7f °",location.latitude))
+                }
+                item {
+                    Text(text = String.format("Long: %.5f °",location.longitude))
+                }
+                item {
+                    Text(text = String.format("Bearing: %.1f",location.bearing))
+                }
+                item {
+                    Text(text = String.format("Speed: %.1f",location.speed))
+                }
+                item {
+                    // val netDate = Date()
+                    Text(text = "Time: " + SimpleDateFormat("HH:mm:ss").format(location.time))
                 }
                 item{
                     StatusRowHeader(isGnss = true)
                 }
+
                 for(satelliteStatus in gnssStatuses) {
                     item {
                         StatusRow(satelliteStatus = satelliteStatus)
