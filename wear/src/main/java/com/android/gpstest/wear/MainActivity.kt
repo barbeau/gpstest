@@ -43,9 +43,7 @@ import androidx.wear.compose.material.*
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
-import com.android.gpstest.library.model.GnssType
-import com.android.gpstest.library.model.SatelliteStatus
-import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.model.*
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
 import com.android.gpstest.wear.theme.GpstestTheme
@@ -60,6 +58,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var userDeniedPermission = false
+
     @OptIn(ExperimentalCoroutinesApi::class)
     private val signalInfoViewModel: SignalInfoViewModel by viewModels()
 
@@ -72,7 +71,7 @@ class MainActivity : ComponentActivity() {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via service notification
     private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener ({ gpsStop() }, prefs)
+        PreferenceUtil.newStopTrackingListener({ gpsStop() }, prefs)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,7 +92,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestPermissionAndStartGps(activity: Activity) {
-        if (PermissionUtils.hasGrantedPermissions(activity, arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION))) {
+        if (PermissionUtils.hasGrantedPermissions(
+                activity,
+                arrayOf(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
+            )
+        ) {
             gpsStart()
         } else {
             // Request permissions from the user
@@ -160,9 +163,21 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
-    val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(emptyList())
+    val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(
+        emptyList()
+    )
     val location: Location by signalInfoViewModel.location.observeAsState(Location("default"))
     val fixState: FixState by signalInfoViewModel.fixState.observeAsState(FixState.NotAcquired)
+    val satelliteMetadata: SatelliteMetadata by signalInfoViewModel.filteredSatelliteMetadata.observeAsState(
+        SatelliteMetadata()
+    )
+    val dop: DilutionOfPrecision by signalInfoViewModel.dop.observeAsState(
+        DilutionOfPrecision(
+            Double.NaN,
+            Double.NaN,
+            Double.NaN
+        )
+    )
     GpstestTheme {
         val listState = rememberScalingLazyListState()
         Scaffold(
@@ -190,31 +205,61 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 autoCentering = AutoCenteringParams(itemIndex = 0),
                 state = listState
             ) {
-                item{
+                item {
                     CustomLinearProgressBar(fixState)
                 }
 
                 item {
-                    Text(text = String.format("Lat: %.7f °",location.latitude))
+                    Text(text = String.format("Lat: %.7f °", location.latitude))
                 }
                 item {
-                    Text(text = String.format("Long: %.5f °",location.longitude))
+                    Text(text = String.format("Long: %.5f °", location.longitude))
                 }
                 item {
-                    Text(text = String.format("Bearing: %.1f",location.bearing))
+                    Text(
+                        text = String.format(
+                            "# Sats:", stringResource(
+                                R.string.gps_num_sats_value,
+                                satelliteMetadata.numSatsUsed,
+                                satelliteMetadata.numSatsInView,
+                                satelliteMetadata.numSatsTotal
+                            )
+                        )
+                    )
                 }
                 item {
-                    Text(text = String.format("Speed: %.1f",location.speed))
+                    Text(text = String.format("Bearing: %.1f", location.bearing))
+                }
+                item {
+                    Text(
+                        text = String.format(
+                            "PDOP: ",
+                            stringResource(R.string.pdop_value, dop.positionDop)
+                        )
+                    )
+                }
+                item {
+                    Text(
+                        text = String.format(
+                            "H/V DOP: ", stringResource(
+                                R.string.hvdop_value, dop.horizontalDop,
+                                dop.verticalDop
+                            )
+                        )
+                    )
+                }
+                item {
+                    Text(text = String.format("Speed: %.1f", location.speed))
                 }
                 item {
                     // val netDate = Date()
                     Text(text = "Time: " + SimpleDateFormat("HH:mm:ss").format(location.time))
                 }
-                item{
+                item {
                     StatusRowHeader(isGnss = true)
                 }
 
-                for(satelliteStatus in gnssStatuses) {
+                for (satelliteStatus in gnssStatuses) {
                     item {
                         StatusRow(satelliteStatus = satelliteStatus)
                     }
@@ -225,7 +270,7 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
 }
 
 @Composable
-private fun CustomLinearProgressBar(fixState: FixState){
+private fun CustomLinearProgressBar(fixState: FixState) {
     AnimatedVisibility(visible = (fixState == FixState.NotAcquired)) {
         LinearProgressIndicator(
             modifier = Modifier
@@ -357,7 +402,11 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
             FlagImage(R.drawable.ic_flag_china, R.string.beidou_content_description, modifier)
         }
         GnssType.GALILEO -> {
-            FlagImage(R.drawable.ic_flag_european_union, R.string.galileo_content_description, modifier)
+            FlagImage(
+                R.drawable.ic_flag_european_union,
+                R.string.galileo_content_description,
+                modifier
+            )
         }
         GnssType.IRNSS -> {
             FlagImage(R.drawable.ic_flag_india, R.string.irnss_content_description, modifier)
@@ -378,7 +427,11 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
             FlagImage(R.drawable.ic_flag_usa, R.string.waas_content_description, modifier)
         }
         SbasType.EGNOS -> {
-            FlagImage(R.drawable.ic_flag_european_union, R.string.egnos_content_description, modifier)
+            FlagImage(
+                R.drawable.ic_flag_european_union,
+                R.string.egnos_content_description,
+                modifier
+            )
         }
         SbasType.GAGAN -> {
             FlagImage(R.drawable.ic_flag_india, R.string.gagan_content_description, modifier)
