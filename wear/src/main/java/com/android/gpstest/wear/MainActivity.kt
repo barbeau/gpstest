@@ -184,9 +184,11 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
             timeText = {
                 if (!listState.isScrollInProgress) {
                     TimeText(
-                        timeSource = TimeTextDefaults.timeSource(
-                            DateFormat.getBestDateTimePattern(Locale.getDefault(), "hh:mm:ss")
-                        )
+                        timeSource = object : TimeSource {
+                            override val currentTime: String
+                                @Composable
+                                get() = SimpleDateFormat("HH:mm:ss").format(location.time)
+                        }
                     )
                 }
             },
@@ -218,7 +220,7 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 item {
                     Text(
                         text = String.format(
-                            "# Sats:", stringResource(
+                            "# Sats: %s", stringResource(
                                 R.string.gps_num_sats_value,
                                 satelliteMetadata.numSatsUsed,
                                 satelliteMetadata.numSatsInView,
@@ -233,7 +235,7 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 item {
                     Text(
                         text = String.format(
-                            "PDOP: ",
+                            "PDOP: %s",
                             stringResource(R.string.pdop_value, dop.positionDop)
                         )
                     )
@@ -241,7 +243,7 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 item {
                     Text(
                         text = String.format(
-                            "H/V DOP: ", stringResource(
+                            "H/V DOP: %s", stringResource(
                                 R.string.hvdop_value, dop.horizontalDop,
                                 dop.verticalDop
                             )
@@ -250,10 +252,6 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 }
                 item {
                     Text(text = String.format("Speed: %.1f", location.speed))
-                }
-                item {
-                    // val netDate = Date()
-                    Text(text = "Time: " + SimpleDateFormat("HH:mm:ss").format(location.time))
                 }
                 item {
                     StatusRowHeader(isGnss = true)
