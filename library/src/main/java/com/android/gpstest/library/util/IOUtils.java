@@ -71,7 +71,7 @@ public class IOUtils {
      * SHOW_RADAR action (com.google.android.radar.SHOW_RADAR) with a valid latitude and longitude or ACTION_VIEW action with geo URI, or
      * null if the Intent doesn't have a SHOW_RADAR action or the intent has an invalid latitude or longitude
      */
-    public static Location getLocationFromIntent(Context context, Intent intent) {
+    public static Location  getLocationFromIntent(Context context, Intent intent) {
         Location groundTruth = null;
         if (isShowRadarIntent(context, intent)) {
             double lat = Double.NaN, lon = Double.NaN;

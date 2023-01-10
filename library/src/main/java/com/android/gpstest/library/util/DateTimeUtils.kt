@@ -44,7 +44,7 @@ class DateTimeUtils {
         }
 
         @VisibleForTesting
-        internal fun isTimeValidLegacy(time: Long): Boolean {
+        fun isTimeValidLegacy(time: Long): Boolean {
             return TimeUnit.MILLISECONDS.toDays(abs(System.currentTimeMillis() - time)) < NUM_DAYS_TIME_VALID
         }
     }

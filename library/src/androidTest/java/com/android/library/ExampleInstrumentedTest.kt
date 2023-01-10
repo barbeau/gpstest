@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.android.library.test", appContext.packageName)
+        assertEquals("com.android.gpstest.library.test", appContext.packageName)
     }
 }
