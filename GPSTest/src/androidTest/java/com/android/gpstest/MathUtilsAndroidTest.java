@@ -17,7 +17,7 @@ package com.android.gpstest;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.android.gpstest.util.MathUtils;
+import com.android.gpstest.library.util.MathUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

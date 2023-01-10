@@ -41,18 +41,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.data.FixState
-import com.android.gpstest.model.*
-import com.android.gpstest.ui.SignalInfoViewModel
-import com.android.gpstest.util.CarrierFreqUtils
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.model.*
+import com.android.gpstest.library.ui.SignalInfoViewModel
+import com.android.gpstest.library.util.CarrierFreqUtils
+import com.android.gpstest.library.util.MathUtils
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
 
-@ExperimentalCoroutinesApi
-@ExperimentalFoundationApi
 @Composable
 fun StatusScreen(viewModel: SignalInfoViewModel) {
     //
@@ -62,7 +61,9 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
-    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata())
+    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(
+        SatelliteMetadata()
+    )
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     val gnssStatuses: List<SatelliteStatus> by viewModel.filteredGnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.filteredSbasStatuses.observeAsState(emptyList())
@@ -81,8 +82,8 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 dop,
                 satelliteMetadata,
                 fixState)
-            if (gnssFilter().isNotEmpty()) {
-                Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter() }
+            if (gnssFilter(app, prefs).isNotEmpty()) {
+                Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter(app, prefs) }
             }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)

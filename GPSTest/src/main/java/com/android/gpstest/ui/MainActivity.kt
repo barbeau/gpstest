@@ -49,23 +49,28 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
-import com.android.gpstest.data.FixState
-import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.databinding.ActivityMainBinding
+import com.android.gpstest.library.ui.SignalInfoViewModel
+import com.android.gpstest.library.util.*
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
 import com.android.gpstest.ui.sky.SkyFragment
 import com.android.gpstest.ui.status.StatusFragment
-import com.android.gpstest.util.*
-import com.android.gpstest.util.PreferenceUtil.darkTheme
-import com.android.gpstest.util.PreferenceUtil.isFileLoggingEnabled
-import com.android.gpstest.util.PreferenceUtil.minDistance
-import com.android.gpstest.util.PreferenceUtil.minTimeMillis
-import com.android.gpstest.util.PreferenceUtil.runInBackground
-import com.android.gpstest.util.PreferenceUtils.isTrackingStarted
+import com.android.gpstest.library.util.PreferenceUtil.darkTheme
+import com.android.gpstest.library.util.PreferenceUtil.isFileLoggingEnabled
+import com.android.gpstest.library.util.PreferenceUtil.minDistance
+import com.android.gpstest.library.util.PreferenceUtil.minTimeMillis
+import com.android.gpstest.library.util.PreferenceUtil.runInBackground
+import com.android.gpstest.library.util.PreferenceUtils.isTrackingStarted
+import com.android.gpstest.util.BuildUtils
+import com.android.gpstest.util.UIUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
@@ -144,18 +149,18 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via service notification
     private val stopTrackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { gpsStop() }
+        PreferenceUtil.newStopTrackingListener ({ gpsStop() }, prefs)
 
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
-        if (darkTheme()) {
+        if (darkTheme(app,Application.prefs)) {
             setTheme(R.style.AppTheme_Dark_NoActionBar)
             useDarkTheme = true
         }
         super.onCreate(savedInstanceState)
         // Reset the activity title to make sure dynamic locale changes are shown
-        UIUtils.resetActivityTitle(this)
+        LibUIUtils.resetActivityTitle(this)
         saveInstanceState(savedInstanceState)
 
         // Observe stopping location updates from the service
@@ -163,9 +168,9 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
-        initialMinTimeMillis = minTimeMillis()
-        initialMinDistance = minDistance()
+        initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language), prefs)
+        initialMinTimeMillis = minTimeMillis(app, prefs)
+        initialMinDistance = minDistance(app, prefs)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
@@ -189,7 +194,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         // If another app is passing in a ground truth location, recreate the activity to initialize an existing instance
-        if (IOUtils.isShowRadarIntent(intent) || IOUtils.isGeoIntent(intent)) {
+        if (IOUtils.isShowRadarIntent(app, intent) || IOUtils.isGeoIntent(app, intent)) {
             recreateApp(intent)
         }
     }
@@ -228,7 +233,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         } else {
             // Explain permission to user (don't request permission here directly to avoid infinite
             // loop if user selects "Don't ask again") in system permission prompt
-            UIUtils.showLocationPermissionDialog(this)
+            LibUIUtils.showLocationPermissionDialog(this)
         }
         maybeRecreateApp()
         benchmarkController!!.onResume()
@@ -236,7 +241,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UIUtils.PICKFILE_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == LibUIUtils.PICKFILE_REQUEST_CODE && resultCode == RESULT_OK) {
             // User picked a file to share from the Share dialog - update the dialog
             val uri = data?.data
             if (uri != null) {
@@ -244,7 +249,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 val location = lastLocation
                 shareDialogOpen = true
                 UIUtils.showShareFragmentDialog(
-                    this, location, isFileLoggingEnabled(),
+                    this, location, isFileLoggingEnabled(app, prefs),
                     service!!.csvFileLogger, service!!.jsonFileLogger, uri
                 )
             }
@@ -253,11 +258,11 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             val scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (scanResult != null) {
                 val geoUri = scanResult.contents
-                val l = IOUtils.getLocationFromGeoUri(geoUri)
+                val l = IOUtils.getLocationFromGeoUri(app, geoUri)
                 if (l != null) {
                     l.removeAltitude() // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
                     // Create a SHOW_RADAR intent out of the Geo URI and pass that to set ground truth
-                    val showRadar = IOUtils.createShowRadarIntent(l)
+                    val showRadar = IOUtils.createShowRadarIntent(app, l)
                     recreateApp(showRadar)
                 } else {
                     Toast.makeText(
@@ -272,16 +277,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun maybeRecreateApp() {
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate App
         if (Application.prefs.contains(getString(R.string.pref_key_language))) {
-            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language))
+            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language), prefs)
             if (currentLanguage != initialLanguage) {
                 initialLanguage = currentLanguage
                 recreateApp(null)
             }
         }
         // If the user changed the location update settings, recreate the App
-        if (minTimeMillis() != initialMinTimeMillis || minDistance() != initialMinDistance) {
-            initialMinTimeMillis = minTimeMillis()
-            initialMinDistance = minDistance()
+        if (minTimeMillis(app, prefs) != initialMinTimeMillis || minDistance(app, prefs) != initialMinDistance) {
+            initialMinTimeMillis = minTimeMillis(app, prefs)
+            initialMinDistance = minDistance(app, prefs)
             recreateApp(null)
         }
     }
@@ -294,17 +299,18 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
      */
     private fun recreateApp(currentIntent: Intent?) {
         val i = Intent(this, MainActivity::class.java)
-        if (IOUtils.isShowRadarIntent(currentIntent)) {
+        if (IOUtils.isShowRadarIntent(app, currentIntent)) {
             // If we're creating the app because we got a SHOW_RADAR intent, copy over the intent action and extras
             i.action = currentIntent!!.action
             i.putExtras(currentIntent.extras!!)
-        } else if (IOUtils.isGeoIntent(currentIntent)) {
+        } else if (IOUtils.isGeoIntent(app,currentIntent)) {
             // If we're creating the app because we got a geo: intent, turn it into a SHOW_RADAR intent for simplicity (they are used the same way)
             val l = IOUtils.getLocationFromGeoUri(
+                app,
                 currentIntent!!.data.toString()
             )
             if (l != null) {
-                val showRadarIntent = IOUtils.createShowRadarIntent(l)
+                val showRadarIntent = IOUtils.createShowRadarIntent(app, l)
                 i.action = showRadarIntent.action
                 i.putExtras(showRadarIntent.extras!!)
             }
@@ -366,24 +372,24 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
         }
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            UIUtils.promptEnableGps(this)
+            LibUIUtils.promptEnableGps(app,this)
         }
         setupStartState(lastSavedInstanceState)
 
         // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
-        val useDarkTheme = darkTheme()
+        val useDarkTheme = darkTheme(app, prefs)
         if (this.useDarkTheme != useDarkTheme) {
             this.useDarkTheme = useDarkTheme
             recreate()
         }
         val settings = Application.prefs
         checkKeepScreenOn(settings)
-        UIUtils.autoShowWhatsNew(this)
+        LibUIUtils.autoShowWhatsNew(prefs, app,this)
     }
 
     override fun onPause() {
         // Stop GNSS if this isn't a configuration change and the user hasn't opted to run in background
-        if (!isChangingConfigurations && !runInBackground()) {
+        if (!isChangingConfigurations && !runInBackground(app, prefs)) {
             service?.unsubscribeToLocationUpdates()
         }
         super.onPause()
@@ -395,7 +401,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (Application.prefs.getBoolean(
                 getString(R.string.pref_key_auto_start_gps),
                 true
-            ) || isTrackingStarted()
+            ) || isTrackingStarted(prefs)
         ) {
             gpsStart()
         }
@@ -434,7 +440,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                         false
                     )
                 ) {
-                    showDialog(UIUtils.CLEAR_ASSIST_WARNING_DIALOG)
+                    showDialog(LibUIUtils.CLEAR_ASSIST_WARNING_DIALOG)
                 } else {
                     deleteAidingData()
                 }
@@ -445,7 +451,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                     Preferences::class.java
                 )
             )
-            NavigationDrawerFragment.NAVDRAWER_ITEM_HELP -> showDialog(UIUtils.HELP_DIALOG)
+            NavigationDrawerFragment.NAVDRAWER_ITEM_HELP -> showDialog(LibUIUtils.HELP_DIALOG)
             NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE -> {
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(getString(R.string.open_source_github))
@@ -458,7 +464,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 if (lastLocation != null) {
                     locationString = LocationUtils.printLocationDetails(lastLocation)
                 }
-                UIUtils.sendEmail(this, email, locationString, signalInfoViewModel)
+                LibUIUtils.sendEmail(app, email, locationString, signalInfoViewModel, BuildUtils.getPlayServicesVersion(), prefs)
             }
         }
         invalidateOptionsMenu()
@@ -610,7 +616,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun forcePsdsInjection() {
         val success =
-            IOUtils.forcePsdsInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
+            IOUtils.forcePsdsInjection(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.force_psds_injection_success),
@@ -618,7 +624,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_SUPPORTED
+                PreferenceUtils.CAPABILITY_SUPPORTED,
+                prefs
             )
         } else {
             Toast.makeText(
@@ -627,14 +634,15 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_inject_psds),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
+                prefs
             )
         }
     }
 
     private fun forceTimeInjection() {
         val success =
-            IOUtils.forceTimeInjection(getSystemService(LOCATION_SERVICE) as LocationManager)
+            IOUtils.forceTimeInjection(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.force_time_injection_success),
@@ -642,7 +650,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_SUPPORTED
+                PreferenceUtils.CAPABILITY_SUPPORTED,
+                prefs
             )
         } else {
             Toast.makeText(
@@ -651,7 +660,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_inject_time),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
+                prefs
             )
         }
     }
@@ -659,12 +669,12 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @ExperimentalCoroutinesApi
     private fun deleteAidingData() {
         // If GPS is currently running, stop it
-        val lastStartState = isTrackingStarted()
-        if (isTrackingStarted()) {
+        val lastStartState = isTrackingStarted(prefs)
+        if (isTrackingStarted(prefs)) {
             gpsStop()
         }
         val success =
-            IOUtils.deleteAidingData(getSystemService(LOCATION_SERVICE) as LocationManager)
+            IOUtils.deleteAidingData(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
                 this, getString(R.string.delete_aiding_data_success),
@@ -672,7 +682,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_SUPPORTED
+                PreferenceUtils.CAPABILITY_SUPPORTED,
+                prefs
             )
         } else {
             Toast.makeText(
@@ -681,7 +692,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             ).show()
             PreferenceUtils.saveInt(
                 Application.app.getString(R.string.capability_key_delete_assist),
-                PreferenceUtils.CAPABILITY_NOT_SUPPORTED
+                PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
+                prefs
             )
         }
         // Restart the GPS, if it was previously started, with a slight delay,
@@ -712,7 +724,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @SuppressLint("MissingPermission")
     @Synchronized
     private fun gpsStart() {
-        PreferenceUtils.saveTrackingStarted(true)
+        PreferenceUtils.saveTrackingStarted(true, prefs)
         service?.subscribeToLocationUpdates()
         showProgressBar()
 
@@ -721,15 +733,15 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         observeGnssStates()
 
         // Show Toast only if the user has set minTime or minDistance to something other than default values
-        if (minTimeMillis() != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
-            minDistance() != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
+        if (minTimeMillis(app, prefs) != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
+            minDistance(app, prefs) != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
         ) {
             Toast.makeText(
                 this,
                 String.format(
                     getString(R.string.gnss_running),
-                    (minTimeMillis().toDouble() / SECONDS_TO_MILLISECONDS).toString(),
-                    minDistance().toString()
+                    (minTimeMillis(app, prefs).toDouble() / SECONDS_TO_MILLISECONDS).toString(),
+                    minDistance(app, prefs).toString()
                 ),
                 Toast.LENGTH_SHORT
             ).show()
@@ -770,7 +782,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val gnssStateObserver = Observer<FixState> { fixState ->
             when (fixState) {
                 is FixState.Acquired -> hideProgressBar()
-                is FixState.NotAcquired -> if (isTrackingStarted()) showProgressBar()
+                is FixState.NotAcquired -> if (isTrackingStarted(prefs)) showProgressBar()
             }
         }
         signalInfoViewModel.fixState.observe(
@@ -780,7 +792,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     @Synchronized
     private fun gpsStop() {
-        PreferenceUtils.saveTrackingStarted(false)
+        PreferenceUtils.saveTrackingStarted(false, prefs)
         locationFlow?.cancel()
 
         // Reset the options menu to trigger updates to action bar menu items
@@ -791,14 +803,14 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun hideProgressBar() {
         val p = progressBar
         if (p != null) {
-            UIUtils.hideViewWithAnimation(p, UIUtils.ANIMATION_DURATION_SHORT_MS)
+            LibUIUtils.hideViewWithAnimation(p, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
     private fun showProgressBar() {
         val p = progressBar
         if (p != null) {
-            UIUtils.showViewWithAnimation(p, UIUtils.ANIMATION_DURATION_SHORT_MS)
+            LibUIUtils.showViewWithAnimation(p, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
         }
     }
 
@@ -821,16 +833,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             switch = MenuItemCompat.getActionView(item).findViewById(R.id.gps_switch)
             if (switch != null) {
                 // Initialize state of GPS switch before we set the listener, so we don't double-trigger start or stop
-                switch!!.isChecked = isTrackingStarted()
+                switch!!.isChecked = isTrackingStarted(prefs)
 
                 // Set up listener for GPS on/off switch
                 switch!!.setOnClickListener {
                     // Turn GPS on or off
-                    if (!switch!!.isChecked && isTrackingStarted()) {
+                    if (!switch!!.isChecked && isTrackingStarted(prefs)) {
                         gpsStop()
                         service?.unsubscribeToLocationUpdates()
                     } else {
-                        if (switch!!.isChecked && !isTrackingStarted()) {
+                        if (switch!!.isChecked && !isTrackingStarted(prefs)) {
                             gpsStart()
                         }
                     }
@@ -842,7 +854,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val item = menu.findItem(R.id.share)
         if (item != null) {
-            item.isVisible = lastLocation != null || isFileLoggingEnabled() == true
+            item.isVisible = lastLocation != null || isFileLoggingEnabled(app, prefs) == true
         }
         return true
     }
@@ -868,16 +880,16 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val location = lastLocation
         shareDialogOpen = true
         UIUtils.showShareFragmentDialog(
-            this, location, isFileLoggingEnabled(),
+            this, location, isFileLoggingEnabled(app, prefs),
             service!!.csvFileLogger, service!!.jsonFileLogger, null
         )
     }
 
     override fun onCreateDialog(id: Int): Dialog {
         when (id) {
-            UIUtils.WHATSNEW_DIALOG -> return UIUtils.createWhatsNewDialog(this)
-            UIUtils.HELP_DIALOG -> return UIUtils.createHelpDialog(this)
-            UIUtils.CLEAR_ASSIST_WARNING_DIALOG -> return createClearAssistWarningDialog()
+            LibUIUtils.WHATSNEW_DIALOG -> return UIUtils.createWhatsNewDialog(this)
+            LibUIUtils.HELP_DIALOG -> return UIUtils.createHelpDialog(this)
+            LibUIUtils.CLEAR_ASSIST_WARNING_DIALOG -> return createClearAssistWarningDialog()
         }
         return super.onCreateDialog(id)
     }
@@ -890,7 +902,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             // Save the preference
             PreferenceUtils.saveBoolean(
                 getString(R.string.pref_key_never_show_clear_assist_warning),
-                isChecked
+                isChecked,
+                prefs
             )
         }
         val icon = ContextCompat.getDrawable(Application.app, R.drawable.ic_delete)

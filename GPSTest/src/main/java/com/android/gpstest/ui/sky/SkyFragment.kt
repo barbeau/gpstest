@@ -41,24 +41,26 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.data.FixState
-import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.databinding.GpsSkyBinding
 import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
-import com.android.gpstest.model.SatelliteMetadata
-import com.android.gpstest.model.SatelliteStatus
-import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.ui.status.Filter
 import com.android.gpstest.ui.theme.AppTheme
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtil
-import com.android.gpstest.util.PreferenceUtil.darkTheme
-import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.PreferenceUtils.clearGnssFilter
-import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import com.android.gpstest.util.UIUtils
+import com.android.gpstest.library.util.MathUtils
+import com.android.gpstest.library.util.PreferenceUtil
+import com.android.gpstest.library.util.PreferenceUtil.darkTheme
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.PreferenceUtils.clearGnssFilter
+import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
+import com.android.gpstest.library.util.LibUIUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -100,7 +102,7 @@ class SkyFragment : Fragment() {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        PreferenceUtil.newStopTrackingListener { onGnssStopped() }
+        PreferenceUtil.newStopTrackingListener ({ onGnssStopped() }, prefs)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
@@ -126,7 +128,7 @@ class SkyFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val color: Int
-        if (darkTheme()) {
+        if (darkTheme(app, prefs)) {
             // Dark theme
             color = ContextCompat.getColor(requireContext(), android.R.color.secondary_text_dark)
             legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark)
@@ -182,7 +184,7 @@ class SkyFragment : Fragment() {
             .onEach {
                 when (it) {
                     is FixState.Acquired -> onGnssFixAcquired()
-                    is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted()) onGnssFixLost()
+                    is FixState.NotAcquired -> if (PreferenceUtils.isTrackingStarted(prefs)) onGnssFixLost()
                 }
             }
             .launchIn(lifecycleScope)
@@ -252,15 +254,15 @@ class SkyFragment : Fragment() {
             // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                AppTheme(darkTheme = darkTheme()) {
+                AppTheme(darkTheme = darkTheme(app, prefs)) {
                     val allStatuses: List<SatelliteStatus> by viewModel.allStatuses.observeAsState(emptyList())
                     val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(
                         SatelliteMetadata()
                     )
                     // Order of arguments seems to matter in below IF statement - it doesn't seem
                     // to recompose if gnssFilter().isNotEmpty() is first
-                    if (allStatuses.isNotEmpty() && gnssFilter().isNotEmpty()) {
-                        Filter(allStatuses.size, satelliteMetadata) { clearGnssFilter() }
+                    if (allStatuses.isNotEmpty() && gnssFilter(app, prefs).isNotEmpty()) {
+                        Filter(allStatuses.size, satelliteMetadata) { clearGnssFilter(app, prefs) }
                     }
                 }
             }
@@ -351,7 +353,7 @@ class SkyFragment : Fragment() {
         // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         val meterWidthPx = (Application.app.resources.getDimension(R.dimen.cn0_meter_width)
             .toInt()
-                - UIUtils.dpToPixels(Application.app, 7.0f)) // Reduce width for padding
+                - LibUIUtils.dpToPixels(Application.app, 7.0f)) // Reduce width for padding
         val minIndicatorMarginPx = Application.app.resources
             .getDimension(R.dimen.cn0_indicator_min_left_margin).toInt()
         val maxIndicatorMarginPx = meterWidthPx + minIndicatorMarginPx
@@ -365,7 +367,7 @@ class SkyFragment : Fragment() {
         // Calculate normal offsets for avg in view satellite C/N0 value TextViews
         var leftInViewTextViewMarginPx: Int? = null
         if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
-            leftInViewTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(
+            leftInViewTextViewMarginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(
                 binding.skyView.cn0InViewAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
@@ -374,7 +376,7 @@ class SkyFragment : Fragment() {
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         var leftUsedTextViewMarginPx: Int? = null
         if (MathUtils.isValidFloat(binding.skyView.cn0UsedAvg)) {
-            leftUsedTextViewMarginPx = UIUtils.cn0ToTextViewLeftMarginPx(
+            leftUsedTextViewMarginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(
                 binding.skyView.cn0UsedAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
@@ -382,7 +384,7 @@ class SkyFragment : Fragment() {
 
         // See if we need to apply the offset margin to try and keep the two TextViews from overlapping by shifting one of the two left
         if (leftInViewTextViewMarginPx != null && leftUsedTextViewMarginPx != null) {
-            val offset = UIUtils.dpToPixels(Application.app, TEXTVIEW_NON_OVERLAP_OFFSET_DP)
+            val offset = LibUIUtils.dpToPixels(Application.app, TEXTVIEW_NON_OVERLAP_OFFSET_DP)
             if (leftInViewTextViewMarginPx <= leftUsedTextViewMarginPx) {
                 leftInViewTextViewMarginPx += offset
             } else {
@@ -391,8 +393,8 @@ class SkyFragment : Fragment() {
         }
 
         // Define paddings used for TextViews
-        val pSides = UIUtils.dpToPixels(Application.app, 7f)
-        val pTopBottom = UIUtils.dpToPixels(Application.app, 4f)
+        val pSides = LibUIUtils.dpToPixels(Application.app, 7f)
+        val pTopBottom = LibUIUtils.dpToPixels(Application.app, 4f)
 
         // Set avg C/N0 of satellites in view of device
         if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
@@ -444,7 +446,7 @@ class SkyFragment : Fragment() {
             }
 
             // Set position and visibility of indicator
-            val leftIndicatorMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(
+            val leftIndicatorMarginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(
                 binding.skyView.cn0InViewAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
@@ -508,7 +510,7 @@ class SkyFragment : Fragment() {
             }
 
             // Set position and visibility of indicator
-            val leftMarginPx = UIUtils.cn0ToIndicatorLeftMarginPx(
+            val leftMarginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(
                 binding.skyView.cn0UsedAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
@@ -552,7 +554,7 @@ class SkyFragment : Fragment() {
                     currentMargin - (abs(currentMargin - goalLeftMarginPx)
                             * interpolatedTime).toInt()
                 }
-                UIUtils.setMargins(
+                LibUIUtils.setMargins(
                     v,
                     newLeft,
                     p.topMargin,
@@ -569,11 +571,11 @@ class SkyFragment : Fragment() {
     }
 
     private fun showHaveFix() {
-        UIUtils.showViewWithAnimation(binding.skyLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
+        LibUIUtils.showViewWithAnimation(binding.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     private fun showLostFix() {
-        UIUtils.hideViewWithAnimation(binding.skyLock, UIUtils.ANIMATION_DURATION_SHORT_MS)
+        LibUIUtils.hideViewWithAnimation(binding.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
     }
 
     companion object {

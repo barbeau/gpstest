@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008-2021 The Android Open Source Project, Sean J. Barbeau
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:id="@+id/gps_group">
+        <item
+            android:id="@+id/filter_sats"
+            android:title="@string/menu_option_filter"
+            android:icon="@drawable/ic_baseline_filter_list_24"
+            android:orderInCategory="2"
+            app:showAsAction="ifRoom"
+            android:contentDescription="@string/menu_option_filter_content_description" />
+        <item
+            android:id="@+id/share"
+            android:title="@string/share"
+            android:icon="@drawable/social_share"
+            android:orderInCategory="10"
+            app:showAsAction="ifRoom|withText"
+            android:contentDescription="@string/share" />
+
+        <item
+            android:id="@+id/gps_switch_item"
+            android:title="@string/gps_switch"
+            android:orderInCategory="11"
+            app:showAsAction="always|withText"
+            app:actionLayout="@layout/gps_switch"
+            android:contentDescription="@string/gps_switch_content_description"/>
+    </group>
+</menu>

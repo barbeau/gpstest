@@ -24,9 +24,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.android.gpstest.model.AvgError;
-import com.android.gpstest.model.MeasuredError;
-import com.android.gpstest.util.BenchmarkUtils;
+import com.android.gpstest.library.model.AvgError;
+import com.android.gpstest.library.model.MeasuredError;
+import com.android.gpstest.library.util.BenchmarkUtils;
 
 import java.util.ArrayList;
 import java.util.List;

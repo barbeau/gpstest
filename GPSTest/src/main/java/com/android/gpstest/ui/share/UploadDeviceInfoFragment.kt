@@ -21,13 +21,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.io.DevicePropertiesUploader
-import com.android.gpstest.ui.SignalInfoViewModel
-import com.android.gpstest.util.IOUtils.*
-import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.SatelliteUtils
+import com.android.gpstest.library.ui.SignalInfoViewModel
+import com.android.gpstest.library.util.IOUtils.*
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.SatelliteUtils
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -66,7 +68,7 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadNoLocationTextView.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(context)
+                val geocoder = Geocoder(context!!)
                 var addresses: List<Address>? = emptyList()
                 try {
                     addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -98,10 +100,10 @@ class UploadDeviceInfoFragment : Fragment() {
             val psdsSuccessBoolean: Boolean
             val psdsSuccessString: String
             if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
-                psdsSuccessBoolean = forcePsdsInjection(locationManager)
-                psdsSuccessString = PreferenceUtils.getCapabilityDescription(psdsSuccessBoolean)
+                psdsSuccessBoolean = forcePsdsInjection(app, locationManager)
+                psdsSuccessString = PreferenceUtils.getCapabilityDescription(app, psdsSuccessBoolean)
             } else {
-                psdsSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectPsdsInt)
+                psdsSuccessString = PreferenceUtils.getCapabilityDescription(app, capabilityInjectPsdsInt)
             }
 
             // Inject time
@@ -109,10 +111,10 @@ class UploadDeviceInfoFragment : Fragment() {
             val timeSuccessBoolean: Boolean
             val timeSuccessString: String
             if (capabilityInjectTimeInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
-                timeSuccessBoolean = forceTimeInjection(locationManager)
-                timeSuccessString = PreferenceUtils.getCapabilityDescription(timeSuccessBoolean)
+                timeSuccessBoolean = forceTimeInjection(app, locationManager)
+                timeSuccessString = PreferenceUtils.getCapabilityDescription(app, timeSuccessBoolean)
             } else {
-                timeSuccessString = PreferenceUtils.getCapabilityDescription(capabilityInjectTimeInt)
+                timeSuccessString = PreferenceUtils.getCapabilityDescription(app, capabilityInjectTimeInt)
             }
 
             // Delete assist capability
@@ -120,7 +122,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val deleteAssistSuccessString: String
             if (capabilityDeleteAssistInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 // Deleting assist data can be destructive, so don't force it - just use existing info
-                deleteAssistSuccessString = PreferenceUtils.getCapabilityDescription(capabilityDeleteAssistInt)
+                deleteAssistSuccessString = PreferenceUtils.getCapabilityDescription(app, capabilityDeleteAssistInt)
             } else {
                 deleteAssistSuccessString = ""
             }
@@ -129,7 +131,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val capabilityMeasurementsInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityMeasurementsString: String
             if (capabilityMeasurementsInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
-                capabilityMeasurementsString = PreferenceUtils.getCapabilityDescription(capabilityMeasurementsInt)
+                capabilityMeasurementsString = PreferenceUtils.getCapabilityDescription(app, capabilityMeasurementsInt)
             } else {
                 capabilityMeasurementsString = ""
             }
@@ -138,17 +140,17 @@ class UploadDeviceInfoFragment : Fragment() {
             val capabilityNavMessagesInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityNavMessagesString: String
             if (capabilityNavMessagesInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
-                capabilityNavMessagesString = PreferenceUtils.getCapabilityDescription(capabilityNavMessagesInt)
+                capabilityNavMessagesString = PreferenceUtils.getCapabilityDescription(app, capabilityNavMessagesInt)
             } else {
                 capabilityNavMessagesString = ""
             }
 
-            val gnssAntennaInfo = PreferenceUtils.getCapabilityDescription(SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
+            val gnssAntennaInfo = PreferenceUtils.getCapabilityDescription(app, SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
             val numAntennas: String
             val antennaCfs: String
             if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
-                numAntennas = PreferenceUtils.getInt(Application.app.getString(R.string.capability_key_num_antenna), -1).toString()
-                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf))
+                numAntennas = PreferenceUtils.getInt(Application.app.getString(R.string.capability_key_num_antenna), -1, prefs).toString()
+                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf), prefs)
             } else {
                 numAntennas = ""
                 antennaCfs = ""
@@ -161,24 +163,24 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.DEVICE to Build.DEVICE,
                     DevicePropertiesUploader.ANDROID_VERSION to Build.VERSION.RELEASE,
                     DevicePropertiesUploader.API_LEVEL to Build.VERSION.SDK_INT.toString(),
-                    DevicePropertiesUploader.GNSS_HARDWARE_YEAR to getGnssHardwareYear(),
-                    DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to getGnssHardwareModelName(),
-                    DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(signalInfoViewModel.isNonPrimaryCarrierFreqInView),
+                    DevicePropertiesUploader.GNSS_HARDWARE_YEAR to getGnssHardwareYear(app),
+                    DevicePropertiesUploader.GNSS_HARDWARE_MODEL_NAME to getGnssHardwareModelName(app),
+                    DevicePropertiesUploader.DUAL_FREQUENCY to PreferenceUtils.getCapabilityDescription(app, signalInfoViewModel.isNonPrimaryCarrierFreqInView),
                     DevicePropertiesUploader.SUPPORTED_GNSS to trimEnds(replaceNavstar(signalInfoViewModel.getSupportedGnss().sorted().toString())),
                     DevicePropertiesUploader.GNSS_CFS to trimEnds(signalInfoViewModel.getSupportedGnssCfs().sorted().toString()),
                     DevicePropertiesUploader.SUPPORTED_SBAS to trimEnds(signalInfoViewModel.getSupportedSbas().sorted().toString()),
                     DevicePropertiesUploader.SBAS_CFS to trimEnds(signalInfoViewModel.getSupportedSbasCfs().sorted().toString()),
                     DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
                     DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
-                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
                     DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
-                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     // TODO - Add below clock values? What should they be to generalize across all of the same model?
                     DevicePropertiesUploader.HARDWARE_CLOCK to "",
                     DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
-                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to gnssAntennaInfo,
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
                     DevicePropertiesUploader.USER_COUNTRY to userCountry,
@@ -205,13 +207,13 @@ class UploadDeviceInfoFragment : Fragment() {
                 lifecycle.coroutineScope.launch {
                     val uploader = DevicePropertiesUploader(bundle)
                     if (uploader.upload()) {
-                        Toast.makeText(Application.app, R.string.upload_success, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(app, R.string.upload_success, Toast.LENGTH_SHORT).show()
                         // Remove app version and code, and then save hash to compare against next upload attempt
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_NAME)
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_CODE)
-                        PreferenceUtils.saveInt(Application.app.getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode())
+                        PreferenceUtils.saveInt(app.getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode(), prefs)
                     } else {
-                        Toast.makeText(Application.app, R.string.upload_failure, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(app, R.string.upload_failure, Toast.LENGTH_SHORT).show()
                     }
                     upload.isEnabled = true
                     uploadProgress.visibility = View.INVISIBLE

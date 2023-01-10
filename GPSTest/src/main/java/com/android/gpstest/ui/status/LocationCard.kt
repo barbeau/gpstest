@@ -49,19 +49,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.Application
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.data.FixState
-import com.android.gpstest.model.CoordinateType
-import com.android.gpstest.model.DilutionOfPrecision
-import com.android.gpstest.model.SatelliteMetadata
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.model.CoordinateType
+import com.android.gpstest.library.model.DilutionOfPrecision
+import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.util.*
 import com.android.gpstest.ui.components.LinkifyText
-import com.android.gpstest.util.*
-import com.android.gpstest.util.FormatUtils.formatBearing
-import com.android.gpstest.util.FormatUtils.formatBearingAccuracy
-import com.android.gpstest.util.PreferenceUtil.coordinateFormat
-import com.android.gpstest.util.PreferenceUtil.shareIncludeAltitude
-import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
+import com.android.gpstest.library.util.FormatUtils.formatBearing
+import com.android.gpstest.library.util.FormatUtils.formatBearingAccuracy
+import com.android.gpstest.library.util.PreferenceUtil.coordinateFormat
+import com.android.gpstest.library.util.PreferenceUtil.shareIncludeAltitude
+import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
+import com.android.gpstest.library.util.SatelliteUtil.isVerticalAccuracySupported
 import java.text.SimpleDateFormat
 
 @Preview
@@ -101,7 +103,6 @@ fun previewLocation(): Location {
     return l
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LocationCard(
     location: Location,
@@ -162,32 +163,32 @@ fun ValueColumn1(
 
 @Composable
 fun Latitude(location: Location) {
-    LocationValue(FormatUtils.formatLatOrLon(location.latitude, CoordinateType.LATITUDE))
+    LocationValue(FormatUtils.formatLatOrLon(app, location.latitude, CoordinateType.LATITUDE, prefs))
 }
 
 @Composable
 fun Longitude(location: Location) {
-    LocationValue(FormatUtils.formatLatOrLon(location.longitude, CoordinateType.LONGITUDE))
+    LocationValue(FormatUtils.formatLatOrLon(app, location.longitude, CoordinateType.LONGITUDE, prefs))
 }
 
 @Composable
 fun Altitude(location: Location) {
-    LocationValue(FormatUtils.formatAltitude(location))
+    LocationValue(FormatUtils.formatAltitude(app, location, prefs))
 }
 
 @Composable
 fun AltitudeMsl(altitudeMsl: Double) {
-    LocationValue(FormatUtils.formatAltitudeMsl(altitudeMsl))
+    LocationValue(FormatUtils.formatAltitudeMsl(app, altitudeMsl, prefs))
 }
 
 @Composable
 fun Speed(location: Location) {
-    LocationValue(FormatUtils.formatSpeed(location))
+    LocationValue(FormatUtils.formatSpeed(app, location, prefs))
 }
 
 @Composable
 fun SpeedAccuracy(location: Location) {
-    LocationValue(FormatUtils.formatSpeedAccuracy(location))
+    LocationValue(FormatUtils.formatSpeedAccuracy(app, location, prefs))
 }
 
 @Composable
@@ -226,7 +227,7 @@ fun ValueColumn2(
 
 @Composable
 fun Time(location: Location) {
-    if (location.time == 0L || !PreferenceUtils.isTrackingStarted()) {
+    if (location.time == 0L || !PreferenceUtils.isTrackingStarted(prefs)) {
         LocationValue("")
     } else {
         formatTime(location.time)
@@ -285,12 +286,12 @@ fun TTFF(ttff: String) {
  */
 @Composable
 fun Accuracy(location: Location) {
-    LocationValue(FormatUtils.formatAccuracy(location))
+    LocationValue(FormatUtils.formatAccuracy(app, location, prefs))
 }
 
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
-    val fontStyle = if (gnssFilter().isNotEmpty()) {
+    val fontStyle = if (gnssFilter(app, prefs).isNotEmpty()) {
         // Make text italic so it matches filter text
         FontStyle.Italic
     } else {
@@ -310,7 +311,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun Bearing(location: Location) {
     if (location.hasBearing()) {
-        LocationValue(formatBearing(location))
+        LocationValue(formatBearing(app, location))
     } else {
         LocationValue("")
     }
@@ -318,7 +319,7 @@ fun Bearing(location: Location) {
 
 @Composable
 fun BearingAccuracy(location: Location) {
-    LocationValue(formatBearingAccuracy(location))
+    LocationValue(formatBearingAccuracy(app, location))
 }
 
 @Composable
@@ -507,12 +508,12 @@ fun LockIcon(fixState: FixState) {
 
 private fun copyToClipboard(context: Context, location: Location) {
     if (location.latitude == 0.0 && location.longitude == 0.0) return
-    val formattedLocation = UIUtils.formatLocationForDisplay(
-        location, null, shareIncludeAltitude(),
-        null, null, null, coordinateFormat()
+    val formattedLocation = LibUIUtils.formatLocationForDisplay(
+        app, location, null, shareIncludeAltitude(app, prefs),
+        null, null, null, coordinateFormat(app, prefs)
     )
     if (!TextUtils.isEmpty(formattedLocation)) {
-        IOUtils.copyToClipboard(formattedLocation)
+        IOUtils.copyToClipboard(app, formattedLocation)
         // Android 12 and higher generates a Toast automatically
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_LONG)

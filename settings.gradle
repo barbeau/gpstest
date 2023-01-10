@@ -1,1 +1,3 @@
 include ':GPSTest'
+include ':wear'
+include ':library'

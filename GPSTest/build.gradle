@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 24
@@ -104,6 +104,9 @@ android {
             }
         }
     }
+    dataBinding {
+        enabled = true
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -119,10 +122,11 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.0-beta02'
+        kotlinCompilerExtensionVersion '1.1.0-rc02'
     }
 
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
 
@@ -167,6 +171,7 @@ dependencies {
 
     // Multidex - Needed for APIs < 21
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation project(path: ':library')
 
     // To observe flows via co-routines within the Service
     def lifecycle_version = "2.4.0-rc01"
@@ -195,7 +200,7 @@ dependencies {
 
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation "androidx.compose.compiler:compiler:1.1.0-beta02"
+    implementation "androidx.compose.compiler:compiler:1.1.0-rc02"
     // Compose Material Design
     implementation 'androidx.compose.material:material:1.0.5'
     // Bridging XML themes to Compose
@@ -205,7 +210,7 @@ dependencies {
     // Tooling support (Previews, etc.)
     implementation 'androidx.compose.ui:ui-tooling:1.0.5'
     // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
     //Integration with LiveData
     implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-beta02'
     // UI Tests

@@ -18,24 +18,21 @@ package com.android.gpstest.ui.status
 
 import android.os.Bundle
 import android.view.*
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.ui.theme.AppTheme
-import com.android.gpstest.util.PreferenceUtil.darkTheme
+import com.android.gpstest.library.util.PreferenceUtil.darkTheme
 import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class StatusFragment : Fragment() {
-
-    @ExperimentalFoundationApi
-    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +44,7 @@ class StatusFragment : Fragment() {
             setContent {
                 AppTheme(
                     // TODO - add "system dark setting" as an option in preferences - Issue #277
-                    darkTheme = darkTheme()
+                    darkTheme = darkTheme(app, prefs)
                 ) {
                     StatusScreen(viewModel = viewModel)
                 }

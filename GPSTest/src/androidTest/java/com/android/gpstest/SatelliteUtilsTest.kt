@@ -18,10 +18,10 @@ package com.android.gpstest
 import android.location.GnssMeasurement.*
 import android.os.Build
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SatelliteStatus
-import com.android.gpstest.model.SbasType
-import com.android.gpstest.util.SatelliteUtils
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.util.SatelliteUtils
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith

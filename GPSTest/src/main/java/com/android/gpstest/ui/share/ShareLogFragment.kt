@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
-import com.android.gpstest.util.IOUtils
-import com.android.gpstest.util.UIUtils
+import com.android.gpstest.library.util.IOUtils
+import com.android.gpstest.library.util.LibUIUtils
 import com.google.android.material.button.MaterialButton
 import java.io.File
 import java.util.*
@@ -88,7 +89,7 @@ class ShareLogFragment : Fragment() {
             val uri = IOUtils.getUriFromFile(activity, files?.get(0))
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.data = uri
-            activity!!.startActivityForResult(intent, UIUtils.PICKFILE_REQUEST_CODE)
+            activity!!.startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
             // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
             listener.onFileBrowse()
         }
@@ -97,11 +98,11 @@ class ShareLogFragment : Fragment() {
             // Send the log file
             if (alternateFileUri == null && files != null) {
                 // Send the log file currently being logged to by the FileLogger
-                IOUtils.sendLogFile(activity, *files.toTypedArray())
+                IOUtils.sendLogFile(app, activity, *files.toTypedArray())
                 listener.onLogFileSent()
             } else {
                 // Send the log file selected by the user using the File Browse button
-                IOUtils.sendLogFile(activity, ArrayList(Collections.singleton(alternateFileUri)))
+                IOUtils.sendLogFile(app, activity, ArrayList(Collections.singleton(alternateFileUri)))
                 listener.onLogFileSent()
             }
         }

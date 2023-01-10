@@ -15,7 +15,8 @@
  */
 package com.android.gpstest.util;
 
-import com.android.gpstest.model.DilutionOfPrecision;
+import com.android.gpstest.library.model.DilutionOfPrecision;
+import com.android.gpstest.library.util.NmeaUtils;
 
 import org.junit.Test;
 

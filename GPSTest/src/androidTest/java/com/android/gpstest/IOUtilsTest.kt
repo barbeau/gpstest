@@ -17,8 +17,9 @@ package com.android.gpstest
 
 import android.content.Intent
 import android.location.Location
+import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.util.IOUtils
+import com.android.gpstest.library.util.IOUtils
 import junit.framework.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,11 +38,11 @@ class IOUtilsTest {
     fun testIsShowRadarIntent() {
         // SHOW_RADAR intent
         val intent = Intent("com.google.android.radar.SHOW_RADAR")
-        assertTrue(IOUtils.isShowRadarIntent(intent))
+        assertTrue(IOUtils.isShowRadarIntent(getTargetContext(),intent))
 
         // Not SHOW_RADAR intents
-        assertFalse(IOUtils.isShowRadarIntent(Intent("not.show.radar.intent")))
-        assertFalse(IOUtils.isShowRadarIntent(null));
+        assertFalse(IOUtils.isShowRadarIntent(getTargetContext(),Intent("not.show.radar.intent")))
+        assertFalse(IOUtils.isShowRadarIntent(getTargetContext(),null));
     }
 
     /**
@@ -58,7 +59,7 @@ class IOUtilsTest {
         intent.putExtra("latitude", 28.0527222f)
         intent.putExtra("longitude", -82.4331001f)
 
-        val location = IOUtils.getLocationFromIntent(intent)
+        val location = IOUtils.getLocationFromIntent(getTargetContext(),intent)
         assertEquals(28.0527222, location.latitude, delta)
         assertEquals(-82.433100, location.longitude, delta)
         assertFalse(location.hasAltitude())
@@ -69,7 +70,7 @@ class IOUtilsTest {
         intentWithAltitude.putExtra("longitude", -82.4331001f)
         intentWithAltitude.putExtra("altitude", 20.3f)
 
-        val locationWithAltitude = IOUtils.getLocationFromIntent(intentWithAltitude)
+        val locationWithAltitude = IOUtils.getLocationFromIntent(getTargetContext(),intentWithAltitude)
         assertEquals(28.0527222, locationWithAltitude.latitude, delta)
         assertEquals(-82.433100, locationWithAltitude.longitude, delta)
         assertEquals(20.3, locationWithAltitude.altitude, delta)
@@ -79,7 +80,7 @@ class IOUtilsTest {
         intentDouble.putExtra("latitude", 28.0527222)
         intentDouble.putExtra("longitude", -82.4331001)
 
-        val locationDouble = IOUtils.getLocationFromIntent(intentDouble)
+        val locationDouble = IOUtils.getLocationFromIntent(getTargetContext(), intentDouble)
         assertEquals(28.0527222, locationDouble.latitude, delta)
         assertEquals(-82.433100, locationDouble.longitude, delta)
         assertFalse(locationDouble.hasAltitude())
@@ -90,7 +91,7 @@ class IOUtilsTest {
         intentDoubleWithAltitude.putExtra("longitude", -82.4331001)
         intentDoubleWithAltitude.putExtra("altitude", 20.3)
 
-        val locationDoubleWithAltitude = IOUtils.getLocationFromIntent(intentDoubleWithAltitude)
+        val locationDoubleWithAltitude = IOUtils.getLocationFromIntent(getTargetContext(), intentDoubleWithAltitude)
         assertEquals(28.0527222, locationDoubleWithAltitude.latitude, delta)
         assertEquals(-82.433100, locationDoubleWithAltitude.longitude, delta)
         assertEquals(20.3, locationDoubleWithAltitude.altitude, delta)
@@ -101,7 +102,7 @@ class IOUtilsTest {
         intentNullAltitude.putExtra("longitude", -82.4331001)
         intentNullAltitude.putExtra("altitude", Double.NaN)
 
-        val locationNullAltitude = IOUtils.getLocationFromIntent(intentNullAltitude)
+        val locationNullAltitude = IOUtils.getLocationFromIntent(getTargetContext(), intentNullAltitude)
         assertEquals(28.0527222, locationNullAltitude.latitude, delta)
         assertEquals(-82.433100, locationNullAltitude.longitude, delta)
         assertFalse(locationNullAltitude.hasAltitude())
@@ -112,7 +113,7 @@ class IOUtilsTest {
         intentDoubleWithFloatAltitude.putExtra("longitude", -82.4331001)
         intentDoubleWithFloatAltitude.putExtra("altitude", 20.3f)
 
-        val locationDoubleWithFloatAltitude = IOUtils.getLocationFromIntent(intentDoubleWithFloatAltitude)
+        val locationDoubleWithFloatAltitude = IOUtils.getLocationFromIntent(getTargetContext(),intentDoubleWithFloatAltitude)
         assertEquals(28.0527222, locationDoubleWithFloatAltitude.latitude, delta)
         assertEquals(-82.433100, locationDoubleWithFloatAltitude.longitude, delta)
         assertEquals(20.3, locationDoubleWithFloatAltitude.altitude, delta)
@@ -123,12 +124,12 @@ class IOUtilsTest {
      */
     @Test
     fun testCreateShowRadarIntent() {
-        val resultNoAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, null)
+        val resultNoAltitude = IOUtils.createShowRadarIntent(getTargetContext(),24.5253, 87.23434, null)
         assertEquals(24.5253, resultNoAltitude?.extras?.get("latitude"))
         assertEquals(87.23434, resultNoAltitude?.extras?.get("longitude"))
         assertFalse(resultNoAltitude.hasExtra("altitude"))
 
-        val resultWithAltitude = IOUtils.createShowRadarIntent(24.5253, 87.23434, 15.5)
+        val resultWithAltitude = IOUtils.createShowRadarIntent(getTargetContext(),24.5253, 87.23434, 15.5)
         assertEquals(24.5253, resultWithAltitude.extras?.get("latitude"))
         assertEquals(87.23434, resultWithAltitude.extras?.get("longitude"))
         assertEquals(15.5, resultWithAltitude.extras?.get("altitude"))
@@ -137,7 +138,7 @@ class IOUtilsTest {
         locationNoAltitude.latitude = -20.8373
         locationNoAltitude.longitude = -120.8273
 
-        val resultFromLocationNoAltitude = IOUtils.createShowRadarIntent(locationNoAltitude)
+        val resultFromLocationNoAltitude = IOUtils.createShowRadarIntent(getTargetContext(),locationNoAltitude)
         assertEquals(-20.8373, resultFromLocationNoAltitude?.extras?.get("latitude"))
         assertEquals(-120.8273, resultFromLocationNoAltitude?.extras?.get("longitude"))
         assertFalse(resultNoAltitude.hasExtra("altitude"))
@@ -147,7 +148,7 @@ class IOUtilsTest {
         locationWithAltitude.longitude = -126.8273
         locationWithAltitude.altitude = -13.5
 
-        val resultFromLocationWithAltitude = IOUtils.createShowRadarIntent(locationWithAltitude)
+        val resultFromLocationWithAltitude = IOUtils.createShowRadarIntent(getTargetContext(),locationWithAltitude)
         assertEquals(-26.8373, resultFromLocationWithAltitude.extras?.get("latitude"))
         assertEquals(-126.8273, resultFromLocationWithAltitude.extras?.get("longitude"))
         assertEquals(-13.5, resultFromLocationWithAltitude.extras?.get("altitude"))
@@ -160,60 +161,60 @@ class IOUtilsTest {
     @Test
     fun testGetLocationFromGeoUri() {
         val geoUriLatLon = "geo:37.786971,-122.399677"
-        val result1 = IOUtils.getLocationFromGeoUri(geoUriLatLon)
+        val result1 = IOUtils.getLocationFromGeoUri(getTargetContext(),geoUriLatLon)
         assertEquals(37.786971, result1.latitude)
         assertEquals(-122.399677, result1.longitude)
         assertFalse(result1.hasAltitude())
 
         val geoUriLatLonAlt = "geo:-28.9876,87.1937,15"
-        val result2 = IOUtils.getLocationFromGeoUri(geoUriLatLonAlt)
+        val result2 = IOUtils.getLocationFromGeoUri(getTargetContext(),geoUriLatLonAlt)
         assertEquals(-28.9876, result2.latitude)
         assertEquals(87.1937, result2.longitude)
         assertEquals(15.0, result2.altitude)
 
         val geoUriLatLonZoom = "geo:-28.9876,87.1937?z=14"
-        val resultWithZoom = IOUtils.getLocationFromGeoUri(geoUriLatLonZoom)
+        val resultWithZoom = IOUtils.getLocationFromGeoUri(getTargetContext(),geoUriLatLonZoom)
         assertEquals(-28.9876, resultWithZoom.latitude)
         assertEquals(87.1937, resultWithZoom.longitude)
         assertFalse(resultWithZoom.hasAltitude())
 
         val geoUriLatLonAltZoom = "geo:-28.9876,87.1937,15?z=14"
-        val resultWithAltZoom = IOUtils.getLocationFromGeoUri(geoUriLatLonAltZoom)
+        val resultWithAltZoom = IOUtils.getLocationFromGeoUri(getTargetContext(), geoUriLatLonAltZoom)
         assertEquals(-28.9876, resultWithAltZoom.latitude)
         assertEquals(87.1937, resultWithAltZoom.longitude)
         assertEquals(15.0, resultWithAltZoom.altitude)
         assertTrue(resultWithAltZoom.hasAltitude())
 
         val geoUriLatLonCrs = "geo:32.3482,43.06480;crs=EPSG:32618"
-        val resultLatLonCrs = IOUtils.getLocationFromGeoUri(geoUriLatLonCrs)
+        val resultLatLonCrs = IOUtils.getLocationFromGeoUri(getTargetContext(),geoUriLatLonCrs)
         assertEquals(32.3482, resultLatLonCrs.latitude)
         assertEquals(43.06480, resultLatLonCrs.longitude)
         assertFalse(resultLatLonCrs.hasAltitude())
 
         val geoUriLatLonAltCrs = "geo:32.3482,43.06480,15;crs=EPSG:32618"
-        val resultLatLonAltCrs = IOUtils.getLocationFromGeoUri(geoUriLatLonAltCrs)
+        val resultLatLonAltCrs = IOUtils.getLocationFromGeoUri(getTargetContext(),geoUriLatLonAltCrs)
         assertEquals(32.3482, resultLatLonAltCrs.latitude)
         assertEquals(43.06480, resultLatLonAltCrs.longitude)
         assertEquals(15.0, resultLatLonAltCrs.altitude)
         assertTrue(resultLatLonAltCrs.hasAltitude())
 
         val invalidGeoUri = "http://not.a.geo.uri"
-        val result3 = IOUtils.getLocationFromGeoUri(invalidGeoUri)
+        val result3 = IOUtils.getLocationFromGeoUri(getTargetContext(), invalidGeoUri)
         assertNull(result3)
 
         val invalidLatLon = "geo:-999.9876,999.1937"
-        val result4 = IOUtils.getLocationFromGeoUri(invalidLatLon)
+        val result4 = IOUtils.getLocationFromGeoUri(getTargetContext(),invalidLatLon)
         assertNull(result4)
 
-        val result5 = IOUtils.getLocationFromGeoUri(null)
+        val result5 = IOUtils.getLocationFromGeoUri(getTargetContext(), null)
         assertNull(result5)
 
         val invalidData2 = ""
-        val result6 = IOUtils.getLocationFromGeoUri(invalidData2)
+        val result6 = IOUtils.getLocationFromGeoUri(getTargetContext(), invalidData2)
         assertNull(result6)
 
         val invalidGeoUri2 = "http://not,a,geo,uri"
-        val result7 = IOUtils.getLocationFromGeoUri(invalidGeoUri2)
+        val result7 = IOUtils.getLocationFromGeoUri(getTargetContext(),invalidGeoUri2)
         assertNull(result7)
     }
 
@@ -225,17 +226,17 @@ class IOUtilsTest {
         val l = Location("geouri-no-alt")
         l.latitude = 28.12345
         l.longitude = -82.1345
-        val geoUri = IOUtils.createGeoUri(l, true)
+        val geoUri = IOUtils.createGeoUri(getTargetContext(), l, true)
         assertEquals("geo:28.12345,-82.1345", geoUri)
 
         val lAlt = Location("geouri-with-alt")
         lAlt.latitude = 28.12345
         lAlt.longitude = -82.1345
         lAlt.altitude = 104.2
-        val geoUriWithAlt = IOUtils.createGeoUri(lAlt, true)
+        val geoUriWithAlt = IOUtils.createGeoUri(getTargetContext(),lAlt, true)
         assertEquals("geo:28.12345,-82.1345,104.2", geoUriWithAlt)
 
-        val geoUriAltExcluded = IOUtils.createGeoUri(lAlt, false)
+        val geoUriAltExcluded = IOUtils.createGeoUri(getTargetContext(), lAlt, false)
         assertEquals("geo:28.12345,-82.1345", geoUriAltExcluded)
     }
 
