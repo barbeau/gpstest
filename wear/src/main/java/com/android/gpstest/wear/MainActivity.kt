@@ -166,7 +166,7 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(
         emptyList()
     )
-    val location: Location by signalInfoViewModel.location.observeAsState(Location("default"))
+    val location: Location by signalInfoViewModel.location.observeAsState(Location("invalid"))
     val fixState: FixState by signalInfoViewModel.fixState.observeAsState(FixState.NotAcquired)
     val satelliteMetadata: SatelliteMetadata by signalInfoViewModel.filteredSatelliteMetadata.observeAsState(
         SatelliteMetadata()
@@ -187,7 +187,9 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                         timeSource = object : TimeSource {
                             override val currentTime: String
                                 @Composable
-                                get() = SimpleDateFormat("HH:mm:ss").format(location.time)
+                                get() = if (location.time == 0L) "" else SimpleDateFormat("HH:mm:ss").format(
+                                    location.time
+                                )
                         }
                     )
                 }
@@ -212,10 +214,18 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 }
 
                 item {
-                    Text(text = String.format("Lat: %.7f °", location.latitude))
+                    if (location.provider.equals("invalid")) {
+                        Text(text = String.format("Lat:"))
+                    } else {
+                        Text(text = String.format("Lat: %.7f °", location.latitude))
+                    }
                 }
                 item {
-                    Text(text = String.format("Long: %.5f °", location.longitude))
+                    if (location.provider.equals("invalid")) {
+                        Text(text = String.format("Long:"))
+                    } else {
+                        Text(text = String.format("Long: %.5f °", location.longitude))
+                    }
                 }
                 item {
                     Text(
@@ -230,28 +240,44 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                     )
                 }
                 item {
-                    Text(text = String.format("Bearing: %.1f", location.bearing))
+                    if (location.provider.equals("invalid")) {
+                        Text(text = String.format("Bearing:"))
+                    } else {
+                        Text(text = String.format("Bearing: %.1f", location.bearing))
+                    }
                 }
                 item {
-                    Text(
-                        text = String.format(
-                            "PDOP: %s",
-                            stringResource(R.string.pdop_value, dop.positionDop)
-                        )
-                    )
-                }
-                item {
-                    Text(
-                        text = String.format(
-                            "H/V DOP: %s", stringResource(
-                                R.string.hvdop_value, dop.horizontalDop,
-                                dop.verticalDop
+                    if (dop.positionDop.isNaN()) {
+                        Text(text = "PDOP:")
+                    } else {
+                        Text(
+                            text = String.format(
+                                "PDOP: %s",
+                                stringResource(R.string.pdop_value, dop.positionDop)
                             )
                         )
-                    )
+                    }
                 }
                 item {
-                    Text(text = String.format("Speed: %.1f", location.speed))
+                    if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) {
+                        Text(text = "H/V DOP:")
+                    } else {
+                        Text(
+                            text = String.format(
+                                "H/V DOP: %s", stringResource(
+                                    R.string.hvdop_value, dop.horizontalDop,
+                                    dop.verticalDop
+                                )
+                            )
+                        )
+                    }
+                }
+                item {
+                    if (location.provider.equals("invalid")) {
+                        Text(text = String.format("Speed:"))
+                    } else {
+                        Text(text = String.format("Speed: %.1f", location.speed))
+                    }
                 }
                 item {
                     StatusRowHeader(isGnss = true)
