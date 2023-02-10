@@ -8,6 +8,7 @@ import android.location.GnssMeasurement
 import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.stringResource
 import com.android.gpstest.library.R
 import com.android.gpstest.library.model.*
 import com.android.gpstest.library.util.SatelliteUtil.isBearingAccuracySupported
@@ -55,6 +56,19 @@ object FormatUtils {
             }
         }
     }
+
+    fun formatSats(
+        context: Context,
+        satelliteMetadata: SatelliteMetadata
+    ): String =
+        context.getResources()
+            .getString(
+                R.string.gps_num_sats_value,
+                satelliteMetadata.numSatsUsed,
+                satelliteMetadata.numSatsInView,
+                satelliteMetadata.numSatsTotal
+            )
+
 
     fun formatDOP(context: Context, dop: DilutionOfPrecision): String =
         if (dop.positionDop.isNaN()) "" else context.getResources()

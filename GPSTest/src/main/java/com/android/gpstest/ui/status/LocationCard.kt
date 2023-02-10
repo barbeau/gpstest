@@ -66,6 +66,7 @@ import com.android.gpstest.library.util.FormatUtils.formatBearingAccuracy
 import com.android.gpstest.library.util.FormatUtils.formatDOP
 import com.android.gpstest.library.util.FormatUtils.formatHVDOP
 import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
+import com.android.gpstest.library.util.FormatUtils.formatSats
 import com.android.gpstest.library.util.FormatUtils.formatSpeed
 import com.android.gpstest.library.util.FormatUtils.formatSpeedAccuracy
 import com.android.gpstest.library.util.PreferenceUtil.coordinateFormat
@@ -304,12 +305,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
         FontStyle.Normal
     }
     LocationValue(
-        stringResource(
-            R.string.gps_num_sats_value,
-            satelliteMetadata.numSatsUsed,
-            satelliteMetadata.numSatsInView,
-            satelliteMetadata.numSatsTotal
-        ),
+        formatSats(app, satelliteMetadata),
         fontStyle
     )
 }

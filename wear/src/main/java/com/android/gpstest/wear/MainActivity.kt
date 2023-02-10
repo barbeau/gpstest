@@ -51,6 +51,7 @@ import com.android.gpstest.library.util.FormatUtils.formatBearing
 import com.android.gpstest.library.util.FormatUtils.formatDOP
 import com.android.gpstest.library.util.FormatUtils.formatHVDOP
 import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
+import com.android.gpstest.library.util.FormatUtils.formatSats
 import com.android.gpstest.wear.theme.GpstestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -237,14 +238,7 @@ fun WearApp(context: Context, signalInfoViewModel: SignalInfoViewModel) {
                 }
                 item {
                     Text(
-                        text = String.format(
-                            "# Sats: %s", stringResource(
-                                R.string.gps_num_sats_value,
-                                satelliteMetadata.numSatsUsed,
-                                satelliteMetadata.numSatsInView,
-                                satelliteMetadata.numSatsTotal
-                            )
-                        )
+                        text = "# Sats: " + formatSats(context, satelliteMetadata)
                     )
                 }
                 item {
