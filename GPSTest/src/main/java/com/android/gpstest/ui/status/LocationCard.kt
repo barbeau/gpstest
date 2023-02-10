@@ -57,9 +57,17 @@ import com.android.gpstest.library.model.CoordinateType
 import com.android.gpstest.library.model.DilutionOfPrecision
 import com.android.gpstest.library.model.SatelliteMetadata
 import com.android.gpstest.library.util.*
+import com.android.gpstest.library.util.FormatUtils.formatAccuracy
+import com.android.gpstest.library.util.FormatUtils.formatAltitude
+import com.android.gpstest.library.util.FormatUtils.formatAltitudeMsl
 import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.library.util.FormatUtils.formatBearing
 import com.android.gpstest.library.util.FormatUtils.formatBearingAccuracy
+import com.android.gpstest.library.util.FormatUtils.formatDOP
+import com.android.gpstest.library.util.FormatUtils.formatHVDOP
+import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
+import com.android.gpstest.library.util.FormatUtils.formatSpeed
+import com.android.gpstest.library.util.FormatUtils.formatSpeedAccuracy
 import com.android.gpstest.library.util.PreferenceUtil.coordinateFormat
 import com.android.gpstest.library.util.PreferenceUtil.shareIncludeAltitude
 import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
@@ -128,7 +136,7 @@ fun LocationCard(
                     .horizontalScroll(rememberScrollState())
             ) {
                 LabelColumn1()
-                ValueColumn1(location, altitudeMsl, dop)
+                ValueColumn1(context, location, altitudeMsl, dop)
                 LabelColumn2(location)
                 ValueColumn2(location, ttff, dop, satelliteMetadata)
             }
@@ -139,6 +147,7 @@ fun LocationCard(
 
 @Composable
 fun ValueColumn1(
+    context: Context,
     location: Location,
     altitudeMsl: Double,
     dop: DilutionOfPrecision,
@@ -163,41 +172,37 @@ fun ValueColumn1(
 
 @Composable
 fun Latitude(location: Location) {
-    LocationValue(FormatUtils.formatLatOrLon(app, location.latitude, CoordinateType.LATITUDE, prefs))
+    LocationValue(formatLatOrLon(app, location.latitude, CoordinateType.LATITUDE, prefs))
 }
 
 @Composable
 fun Longitude(location: Location) {
-    LocationValue(FormatUtils.formatLatOrLon(app, location.longitude, CoordinateType.LONGITUDE, prefs))
+    LocationValue(formatLatOrLon(app, location.longitude, CoordinateType.LONGITUDE, prefs))
 }
 
 @Composable
 fun Altitude(location: Location) {
-    LocationValue(FormatUtils.formatAltitude(app, location, prefs))
+    LocationValue(formatAltitude(app, location, prefs))
 }
 
 @Composable
 fun AltitudeMsl(altitudeMsl: Double) {
-    LocationValue(FormatUtils.formatAltitudeMsl(app, altitudeMsl, prefs))
+    LocationValue(formatAltitudeMsl(app, altitudeMsl, prefs))
 }
 
 @Composable
 fun Speed(location: Location) {
-    LocationValue(FormatUtils.formatSpeed(app, location, prefs))
+    LocationValue(formatSpeed(app, location, prefs))
 }
 
 @Composable
 fun SpeedAccuracy(location: Location) {
-    LocationValue(FormatUtils.formatSpeedAccuracy(app, location, prefs))
+    LocationValue(formatSpeedAccuracy(app, location, prefs))
 }
 
 @Composable
 fun Pdop(dop: DilutionOfPrecision) {
-    if (dop.positionDop.isNaN()) {
-        LocationValue("")
-    } else {
-        LocationValue(stringResource(R.string.pdop_value, dop.positionDop))
-    }
+    LocationValue(formatDOP(app, dop = dop))
 }
 
 @Composable
@@ -249,6 +254,7 @@ private fun formatTime(time: Long) {
             if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
         )
     }
+
     @SuppressLint("SimpleDateFormat")
     val timeAndDateFormat = remember {
         SimpleDateFormat(
@@ -286,7 +292,7 @@ fun TTFF(ttff: String) {
  */
 @Composable
 fun Accuracy(location: Location) {
-    LocationValue(FormatUtils.formatAccuracy(app, location, prefs))
+    LocationValue(formatAccuracy(app, location, prefs))
 }
 
 @Composable
@@ -310,11 +316,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 
 @Composable
 fun Bearing(location: Location) {
-    if (location.hasBearing()) {
-        LocationValue(formatBearing(app, location))
-    } else {
-        LocationValue("")
-    }
+    LocationValue(formatBearing(app, location))
 }
 
 @Composable
@@ -324,16 +326,7 @@ fun BearingAccuracy(location: Location) {
 
 @Composable
 fun HVDOP(dop: DilutionOfPrecision) {
-    if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) {
-        LocationValue("")
-    } else {
-        LocationValue(
-            stringResource(
-                R.string.hvdop_value, dop.horizontalDop,
-                dop.verticalDop
-            )
-        )
-    }
+    LocationValue(formatHVDOP(app, dop))
 }
 
 @Composable

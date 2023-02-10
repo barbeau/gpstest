@@ -4,12 +4,12 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
 import android.location.Location
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,19 +40,23 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.material.*
+import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.*
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
+import com.android.gpstest.library.util.FormatUtils.formatBearing
+import com.android.gpstest.library.util.FormatUtils.formatDOP
+import com.android.gpstest.library.util.FormatUtils.formatHVDOP
+import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
 import com.android.gpstest.wear.theme.GpstestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -87,7 +91,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            WearApp(signalInfoViewModel)
+            WearApp(this, signalInfoViewModel)
         }
     }
 
@@ -162,7 +166,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
+fun WearApp(context: Context, signalInfoViewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(
         emptyList()
     )
@@ -214,18 +218,22 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                 }
 
                 item {
-                    if (location.provider.equals("invalid")) {
-                        Text(text = String.format("Lat:"))
-                    } else {
-                        Text(text = String.format("Lat: %.7f °", location.latitude))
-                    }
+                    Text(
+                        text = String.format("Lat: ") + formatLatOrLon(
+                            Application.app, location.latitude, CoordinateType.LATITUDE,
+                            prefs
+                        )
+                    )
                 }
                 item {
-                    if (location.provider.equals("invalid")) {
-                        Text(text = String.format("Long:"))
-                    } else {
-                        Text(text = String.format("Long: %.5f °", location.longitude))
-                    }
+                    Text(
+                        text = String.format("Long: ") + formatLatOrLon(
+                            Application.app,
+                            location.longitude,
+                            CoordinateType.LONGITUDE,
+                            prefs
+                        )
+                    )
                 }
                 item {
                     Text(
@@ -240,44 +248,25 @@ fun WearApp(signalInfoViewModel: SignalInfoViewModel) {
                     )
                 }
                 item {
-                    if (location.provider.equals("invalid")) {
-                        Text(text = String.format("Bearing:"))
-                    } else {
-                        Text(text = String.format("Bearing: %.1f", location.bearing))
-                    }
-                }
-                item {
-                    if (dop.positionDop.isNaN()) {
-                        Text(text = "PDOP:")
-                    } else {
-                        Text(
-                            text = String.format(
-                                "PDOP: %s",
-                                stringResource(R.string.pdop_value, dop.positionDop)
-                            )
+                    Text(
+                        text = "Bearing: " + formatBearing(
+                            Application.app,
+                            location
                         )
-                    }
+                    )
                 }
                 item {
-                    if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) {
-                        Text(text = "H/V DOP:")
-                    } else {
-                        Text(
-                            text = String.format(
-                                "H/V DOP: %s", stringResource(
-                                    R.string.hvdop_value, dop.horizontalDop,
-                                    dop.verticalDop
-                                )
-                            )
+                    Text(text = "PDOP: " + formatDOP(context, dop))
+                }
+                item {
+                    Text(text = "H/V DOP: " + formatHVDOP(context, dop))
+                }
+                item {
+                    Text(
+                        text = "Speed: " + FormatUtils.formatSpeed(
+                            context, location, prefs
                         )
-                    }
-                }
-                item {
-                    if (location.provider.equals("invalid")) {
-                        Text(text = String.format("Speed:"))
-                    } else {
-                        Text(text = String.format("Speed: %.1f", location.speed))
-                    }
+                    )
                 }
                 item {
                     StatusRowHeader(isGnss = true)

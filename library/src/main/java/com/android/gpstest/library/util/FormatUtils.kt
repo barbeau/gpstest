@@ -9,10 +9,7 @@ import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.android.gpstest.library.R
-import com.android.gpstest.library.model.CoordinateType
-import com.android.gpstest.library.model.Orientation
-import com.android.gpstest.library.model.SatelliteGroup
-import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.*
 import com.android.gpstest.library.util.SatelliteUtil.isBearingAccuracySupported
 import com.android.gpstest.library.util.SatelliteUtil.isSpeedAccuracySupported
 import com.android.gpstest.library.util.SatelliteUtil.isVerticalAccuracySupported
@@ -23,7 +20,12 @@ import java.util.concurrent.TimeUnit
  * Provides access to formatting utilities for view in the UI
  **/
 object FormatUtils {
-    fun formatLatOrLon(context: Context, latOrLong: Double, coordinateType: CoordinateType, prefs: SharedPreferences): String {
+    fun formatLatOrLon(
+        context: Context,
+        latOrLong: Double,
+        coordinateType: CoordinateType,
+        prefs: SharedPreferences
+    ): String {
         if (latOrLong == 0.0) return "             "
 
         when (PreferenceUtil.coordinateFormat(context, prefs)) {
@@ -54,10 +56,22 @@ object FormatUtils {
         }
     }
 
+    fun formatDOP(context: Context, dop: DilutionOfPrecision): String =
+        if (dop.positionDop.isNaN()) "" else context.getResources()
+            .getString(R.string.pdop_value, dop.positionDop)
+
+    fun formatHVDOP(context: Context, dop: DilutionOfPrecision): String =
+        if (dop.horizontalDop.isNaN() || dop.verticalDop.isNaN()) "" else context.getResources()
+            .getString(
+                R.string.hvdop_value, dop.horizontalDop,
+                dop.verticalDop
+            )
+
     fun formatAltitude(context: Context, location: Location, prefs: SharedPreferences): String {
         if (location.hasAltitude()) {
             val text = when {
-                PreferenceUtil.distanceUnits(context, prefs).equals(PreferenceUtil.METERS, ignoreCase = true) -> {
+                PreferenceUtil.distanceUnits(context, prefs)
+                    .equals(PreferenceUtil.METERS, ignoreCase = true) -> {
                     context.getString(R.string.gps_altitude_value_meters, location.altitude)
                 }
                 else -> {
@@ -118,12 +132,14 @@ object FormatUtils {
 
     fun formatAccuracy(context: Context, location: Location, prefs: SharedPreferences): String {
         if (location.isVerticalAccuracySupported()) {
-            if (PreferenceUtil.distanceUnits(context, prefs).equals(PreferenceUtil.METERS, ignoreCase = true)) {
+            if (PreferenceUtil.distanceUnits(context, prefs)
+                    .equals(PreferenceUtil.METERS, ignoreCase = true)
+            ) {
                 return context.getString(
                     R.string.gps_hor_and_vert_accuracy_value_meters,
-                        location.accuracy,
-                        location.verticalAccuracyMeters
-                    )
+                    location.accuracy,
+                    location.verticalAccuracyMeters
+                )
             } else {
                 // Feet
                 return context.getString(
@@ -132,12 +148,13 @@ object FormatUtils {
                     LibUIUtils.toFeet(
                         location.verticalAccuracyMeters.toDouble()
                     )
-                    )
+                )
             }
         } else {
             if (location.hasAccuracy()) {
                 return if (PreferenceUtil.distanceUnits(context, prefs)
-                        .equals(PreferenceUtil.METERS, ignoreCase = true)) {
+                        .equals(PreferenceUtil.METERS, ignoreCase = true)
+                ) {
                     context.getString(
                         R.string.gps_accuracy_value_meters, location.accuracy
                     )
@@ -157,10 +174,12 @@ object FormatUtils {
         if (altitudeMsl.isNaN()) return ""
 
         return if (PreferenceUtil.distanceUnits(context, prefs)
-                .equals(PreferenceUtil.METERS, ignoreCase = true)) {
+                .equals(PreferenceUtil.METERS, ignoreCase = true)
+        ) {
             context.getString(
                 R.string.gps_altitude_msl_value_meters,
-                altitudeMsl)
+                altitudeMsl
+            )
         } else {
             context.getString(
                 R.string.gps_altitude_msl_value_feet,
@@ -169,7 +188,11 @@ object FormatUtils {
         }
     }
 
-    fun formatSpeedAccuracy(context: Context, location: Location, prefs: SharedPreferences): String {
+    fun formatSpeedAccuracy(
+        context: Context,
+        location: Location,
+        prefs: SharedPreferences
+    ): String {
         if (location.isSpeedAccuracySupported()) {
             when {
                 PreferenceUtil.speedUnits(context, prefs)
@@ -198,9 +221,11 @@ object FormatUtils {
         return ""
     }
 
-    fun formatBearing(context: Context, location: Location): String {
-        return context.getString(R.string.gps_bearing_value, location.bearing)
-    }
+    fun formatBearing(context: Context, location: Location): String =
+        if (location.hasBearing()) context.getString(
+            R.string.gps_bearing_value,
+            location.bearing
+        ) else ""
 
     fun formatBearingAccuracy(context: Context, location: Location): String {
         return if (location.isBearingAccuracySupported()) {
@@ -226,9 +251,9 @@ object FormatUtils {
             meta.numSignalsUsed,
             meta.numSignalsInView
         ) +
-            if (meta.supportedGnssCfs.isNotEmpty())
-                " (" + IOUtils.trimEnds(meta.supportedGnssCfs.sorted().toString()) + ")"
-            else ""
+                if (meta.supportedGnssCfs.isNotEmpty())
+                    " (" + IOUtils.trimEnds(meta.supportedGnssCfs.sorted().toString()) + ")"
+                else ""
     }
 
     /**
@@ -272,7 +297,12 @@ object FormatUtils {
      * Raw,utcTimeMillis,TimeNanos,LeapSecond,TimeUncertaintyNanos,FullBiasNanos,BiasNanos,BiasUncertaintyNanos,DriftNanosPerSecond,DriftUncertaintyNanosPerSecond,HardwareClockDiscontinuityCount,Svid,TimeOffsetNanos,State,ReceivedSvTimeNanos,ReceivedSvTimeUncertaintyNanos,Cn0DbHz,PseudorangeRateMetersPerSecond,PseudorangeRateUncertaintyMetersPerSecond,AccumulatedDeltaRangeState,AccumulatedDeltaRangeMeters,AccumulatedDeltaRangeUncertaintyMeters,CarrierFrequencyHz,CarrierCycles,CarrierPhase,CarrierPhaseUncertainty,MultipathIndicator,SnrInDb,ConstellationType,AgcDb,BasebandCn0DbHz,FullInterSignalBiasNanos,FullInterSignalBiasUncertaintyNanos,SatelliteInterSignalBiasNanos,SatelliteInterSignalBiasUncertaintyNanos,CodeType,ChipsetElapsedRealtimeNanos
      */
     @JvmStatic
-    fun toLog(elapsedRealtime: Long, elapsedRealtimeNanos: Long, clock: GnssClock, measurement: GnssMeasurement): String {
+    fun toLog(
+        elapsedRealtime: Long,
+        elapsedRealtimeNanos: Long,
+        clock: GnssClock,
+        measurement: GnssMeasurement
+    ): String {
         return clock.toLog(elapsedRealtime) + "," + measurement.toLog(elapsedRealtimeNanos)
     }
 
@@ -337,12 +367,12 @@ object FormatUtils {
                     IOUtils.serialize(
                         phaseCenterVariationCorrections!!.correctionsArray
                     )
-        },${IOUtils.serialize(phaseCenterVariationCorrections!!.correctionUncertaintiesArray)}," +
+                },${IOUtils.serialize(phaseCenterVariationCorrections!!.correctionUncertaintiesArray)}," +
                 "${phaseCenterVariationCorrections!!.deltaPhi.toLog()},${phaseCenterVariationCorrections!!.deltaTheta.toLog()},${
                     IOUtils.serialize(
                         signalGainCorrections!!.correctionsArray
                     )
-        },${IOUtils.serialize(signalGainCorrections!!.correctionUncertaintiesArray)}," +
+                },${IOUtils.serialize(signalGainCorrections!!.correctionUncertaintiesArray)}," +
                 "${signalGainCorrections!!.deltaPhi.toLog()},${signalGainCorrections!!.deltaTheta.toLog()}"
     }
 
