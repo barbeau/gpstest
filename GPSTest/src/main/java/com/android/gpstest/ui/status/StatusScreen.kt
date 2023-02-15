@@ -190,7 +190,7 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val small = Modifier.defaultMinSize(minWidth = 36.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
         Svid(satelliteStatus, small)
@@ -373,21 +373,21 @@ fun StatusRowHeader(isGnss: Boolean) {
             .padding(top = 5.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val small = Modifier.defaultMinSize(minWidth = 36.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-        val large = Modifier.defaultMinSize(minWidth = 50.dp)
+        val small = Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_small))
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_medium))
+        val large = Modifier.defaultMinSize(dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_large))
 
-        StatusLabel(R.string.id_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.id_column_label, small)
         if (isGnss) {
-            StatusLabel(R.string.gnss_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.gnss_flag_image_label, large)
         } else {
-            StatusLabel(R.string.sbas_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.sbas_flag_image_label, large)
         }
-        StatusLabel(R.string.cf_column_label, small)
-        StatusLabel(R.string.gps_cn0_column_label, medium)
-        StatusLabel(R.string.flags_aeu_column_label, medium)
-        StatusLabel(R.string.elevation_column_label, medium)
-        StatusLabel(R.string.azimuth_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.cf_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.gps_cn0_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.flags_aeu_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.elevation_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.azimuth_column_label, medium)
     }
 }
 

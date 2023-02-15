@@ -63,10 +63,10 @@ import com.android.gpstest.library.util.FormatUtils.formatAltitudeMsl
 import com.android.gpstest.ui.components.LinkifyText
 import com.android.gpstest.library.util.FormatUtils.formatBearing
 import com.android.gpstest.library.util.FormatUtils.formatBearingAccuracy
-import com.android.gpstest.library.util.FormatUtils.formatDOP
-import com.android.gpstest.library.util.FormatUtils.formatHVDOP
+import com.android.gpstest.library.util.FormatUtils.formatDoP
+import com.android.gpstest.library.util.FormatUtils.formatHvDOP
 import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
-import com.android.gpstest.library.util.FormatUtils.formatSats
+import com.android.gpstest.library.util.FormatUtils.formatNumSats
 import com.android.gpstest.library.util.FormatUtils.formatSpeed
 import com.android.gpstest.library.util.FormatUtils.formatSpeedAccuracy
 import com.android.gpstest.library.util.PreferenceUtil.coordinateFormat
@@ -203,7 +203,7 @@ fun SpeedAccuracy(location: Location) {
 
 @Composable
 fun Pdop(dop: DilutionOfPrecision) {
-    LocationValue(formatDOP(app, dop = dop))
+    LocationValue(formatDoP(app, dop = dop))
 }
 
 @Composable
@@ -305,7 +305,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
         FontStyle.Normal
     }
     LocationValue(
-        formatSats(app, satelliteMetadata),
+        formatNumSats(app, satelliteMetadata),
         fontStyle
     )
 }
@@ -322,7 +322,7 @@ fun BearingAccuracy(location: Location) {
 
 @Composable
 fun HVDOP(dop: DilutionOfPrecision) {
-    LocationValue(formatHVDOP(app, dop))
+    LocationValue(formatHvDOP(app, dop))
 }
 
 @Composable

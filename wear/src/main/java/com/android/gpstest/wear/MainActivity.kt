@@ -4,11 +4,8 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.icu.text.SimpleDateFormat
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,8 +20,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,19 +35,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.wear.compose.material.*
-import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.*
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
-import com.android.gpstest.library.util.FormatUtils.formatBearing
-import com.android.gpstest.library.util.FormatUtils.formatDOP
-import com.android.gpstest.library.util.FormatUtils.formatHVDOP
-import com.android.gpstest.library.util.FormatUtils.formatLatOrLon
-import com.android.gpstest.library.util.FormatUtils.formatSats
-import com.android.gpstest.wear.theme.GpstestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -92,7 +80,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            WearApp(this, signalInfoViewModel)
+            StatusScreen(signalInfoViewModel)
         }
     }
 
@@ -165,119 +153,9 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun WearApp(context: Context, signalInfoViewModel: SignalInfoViewModel) {
-    val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(
-        emptyList()
-    )
-    val location: Location by signalInfoViewModel.location.observeAsState(Location("invalid"))
-    val fixState: FixState by signalInfoViewModel.fixState.observeAsState(FixState.NotAcquired)
-    val satelliteMetadata: SatelliteMetadata by signalInfoViewModel.filteredSatelliteMetadata.observeAsState(
-        SatelliteMetadata()
-    )
-    val dop: DilutionOfPrecision by signalInfoViewModel.dop.observeAsState(
-        DilutionOfPrecision(
-            Double.NaN,
-            Double.NaN,
-            Double.NaN
-        )
-    )
-    GpstestTheme {
-        val listState = rememberScalingLazyListState()
-        Scaffold(
-            timeText = {
-                if (!listState.isScrollInProgress) {
-                    TimeText(
-                        timeSource = object : TimeSource {
-                            override val currentTime: String
-                                @Composable
-                                get() = if (location.time == 0L) "" else SimpleDateFormat("HH:mm:ss").format(
-                                    location.time
-                                )
-                        }
-                    )
-                }
-            },
-            positionIndicator = {
-                PositionIndicator(
-                    scalingLazyListState = listState
-                )
-            }
-        ) {
-            val contentModifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-
-            ScalingLazyColumn(
-                modifier = contentModifier,
-                autoCentering = AutoCenteringParams(itemIndex = 0),
-                state = listState
-            ) {
-                item {
-                    CustomLinearProgressBar(fixState)
-                }
-
-                item {
-                    Text(
-                        text = String.format("Lat: ") + formatLatOrLon(
-                            Application.app, location.latitude, CoordinateType.LATITUDE,
-                            prefs
-                        )
-                    )
-                }
-                item {
-                    Text(
-                        text = String.format("Long: ") + formatLatOrLon(
-                            Application.app,
-                            location.longitude,
-                            CoordinateType.LONGITUDE,
-                            prefs
-                        )
-                    )
-                }
-                item {
-                    Text(
-                        text = "# Sats: " + formatSats(context, satelliteMetadata)
-                    )
-                }
-                item {
-                    Text(
-                        text = "Bearing: " + formatBearing(
-                            Application.app,
-                            location
-                        )
-                    )
-                }
-                item {
-                    Text(text = "PDOP: " + formatDOP(context, dop))
-                }
-                item {
-                    Text(text = "H/V DOP: " + formatHVDOP(context, dop))
-                }
-                item {
-                    Text(
-                        text = "Speed: " + FormatUtils.formatSpeed(
-                            context, location, prefs
-                        )
-                    )
-                }
-                item {
-                    StatusRowHeader(isGnss = true)
-                }
-
-                for (satelliteStatus in gnssStatuses) {
-                    item {
-                        StatusRow(satelliteStatus = satelliteStatus)
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
-private fun CustomLinearProgressBar(fixState: FixState) {
+fun CustomLinearProgressBar(fixState: FixState) {
     AnimatedVisibility(visible = (fixState == FixState.NotAcquired)) {
         LinearProgressIndicator(
             modifier = Modifier
@@ -298,9 +176,12 @@ fun StatusRowHeader(isGnss: Boolean) {
             .padding(top = 5.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val small = Modifier.defaultMinSize(minWidth = 5.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-        val large = Modifier.defaultMinSize(minWidth = 8.dp)
+        val small =
+            Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_small))
+        val medium =
+            Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_medium))
+        val large =
+            Modifier.defaultMinSize(dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_large))
 
         StatusLabel(R.string.id_column_label, small)
         if (isGnss) {
@@ -335,7 +216,8 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val small = Modifier.defaultMinSize(minWidth = 5.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val medium =
+            Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 8.dp)
 
         Svid(satelliteStatus, small)

@@ -16,6 +16,15 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.0-rc02'
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -49,7 +58,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.compose.material:material:1.0.5'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+    // implementation "androidx.wear.compose:compose-foundation:1.0.2"
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation("javax.inject:javax.inject:1")
     implementation 'com.google.dagger:dagger:2.40.1'

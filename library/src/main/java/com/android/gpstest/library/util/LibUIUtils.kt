@@ -40,7 +40,19 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.material.Text
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -57,7 +69,7 @@ import java.math.RoundingMode
 import java.util.*
 
 /**
- * Utilities for processing user inteface elements
+ * Utilities for processing user interface elements
  */
 object LibUIUtils {
     const val TAG = "UIUtils"

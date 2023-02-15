@@ -59,7 +59,9 @@
     values-350dp, values-w350dp-v26) don't cover a specific device.  In that case, if we don't
     include the below defaults it would cause a crash.  To edit these values on the vast majority
     of devices, see the other values-* folders. -->
-    <dimen name="min_column_width">42dp</dimen>
+    <dimen name="min_column_width_small">36dp</dimen>
+    <dimen name="min_column_width_medium">42dp</dimen>
+    <dimen name="min_column_width_large">50dp</dimen>
     <dimen name="status_text_size">13sp</dimen>
 
     <!-- Share layout dimensions -->
