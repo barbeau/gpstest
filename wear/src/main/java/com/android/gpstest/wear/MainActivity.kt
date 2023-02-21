@@ -153,20 +153,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-@Composable
-fun CustomLinearProgressBar(fixState: FixState) {
-    AnimatedVisibility(visible = (fixState == FixState.NotAcquired)) {
-        LinearProgressIndicator(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(5.dp),
-            backgroundColor = Color.LightGray,
-            color = Color.Gray
-        )
-    }
-}
-
 @Composable
 fun StatusRowHeader(isGnss: Boolean) {
     Row(

@@ -2,12 +2,16 @@ package com.android.gpstest.wear
 
 import android.icu.text.SimpleDateFormat
 import android.location.Location
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.android.gpstest.Application
@@ -21,6 +25,9 @@ import com.android.gpstest.library.util.FormatUtils
 import com.android.gpstest.wear.theme.GpstestTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+/**
+ * The main user interface for Wear OS that displays the basic information of GNSS
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
@@ -73,53 +80,26 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
                 item {
                     CustomLinearProgressBar(fixState)
                 }
-
                 item {
-                    Text(
-                        text = String.format("Lat: ") + FormatUtils.formatLatOrLon(
-                            Application.app, location.latitude, CoordinateType.LATITUDE,
-                            Application.prefs
-                        )
-                    )
+                    Latitude(location)
                 }
                 item {
-                    Text(
-                        text = String.format("Long: ") + FormatUtils.formatLatOrLon(
-                            Application.app,
-                            location.longitude,
-                            CoordinateType.LONGITUDE,
-                            Application.prefs
-                        )
-                    )
+                    Longitude(location)
                 }
                 item {
-                    Text(
-                        text = "# Sats: " + FormatUtils.formatNumSats(
-                            Application.app,
-                            satelliteMetadata
-                        )
-                    )
+                    NumSats(satelliteMetadata)
                 }
                 item {
-                    Text(
-                        text = "Bearing: " + FormatUtils.formatBearing(
-                            Application.app,
-                            location
-                        )
-                    )
+                    Bearing(location)
                 }
                 item {
-                    Text(text = "PDOP: " + FormatUtils.formatDoP(Application.app, dop))
+                    DoP(dop)
                 }
                 item {
-                    Text(text = "H/V DOP: " + FormatUtils.formatHvDOP(Application.app, dop))
+                    HvDOP(dop)
                 }
                 item {
-                    Text(
-                        text = "Speed: " + FormatUtils.formatSpeed(
-                            Application.app, location, Application.prefs
-                        )
-                    )
+                    Speed(location)
                 }
                 item {
                     StatusRowHeader(isGnss = true)
@@ -132,5 +112,79 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun Latitude(location: Location) {
+    Text(
+        text = String.format("Lat: ") + FormatUtils.formatLatOrLon(
+            Application.app, location.latitude, CoordinateType.LATITUDE,
+            Application.prefs
+        )
+    )
+}
+
+@Composable
+fun Longitude(location: Location) {
+    Text(
+        text = String.format("Long: ") + FormatUtils.formatLatOrLon(
+            Application.app,
+            location.longitude,
+            CoordinateType.LONGITUDE,
+            Application.prefs
+        )
+    )
+}
+
+@Composable
+fun NumSats(satelliteMetadata: SatelliteMetadata) {
+    Text(
+        text = "# Sats: " + FormatUtils.formatNumSats(
+            Application.app,
+            satelliteMetadata
+        )
+    )
+}
+
+@Composable
+fun Bearing(location: Location) {
+    Text(
+        text = "Bearing: " + FormatUtils.formatBearing(
+            Application.app,
+            location
+        )
+    )
+}
+
+@Composable
+fun DoP(dop: DilutionOfPrecision) {
+    Text(text = "PDOP: " + FormatUtils.formatDoP(Application.app, dop))
+}
+
+@Composable
+fun HvDOP(dop: DilutionOfPrecision) {
+    Text(text = "H/V DOP: " + FormatUtils.formatHvDOP(Application.app, dop))
+}
+
+@Composable
+fun Speed(location: Location) {
+    Text(
+        text = "Speed: " + FormatUtils.formatSpeed(
+            Application.app, location, Application.prefs
+        )
+    )
+}
+
+@Composable
+private fun CustomLinearProgressBar(fixState: FixState) {
+    AnimatedVisibility(visible = (fixState == FixState.NotAcquired)) {
+        LinearProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(5.dp),
+            backgroundColor = Color.LightGray,
+            color = Color.Gray
+        )
     }
 }
