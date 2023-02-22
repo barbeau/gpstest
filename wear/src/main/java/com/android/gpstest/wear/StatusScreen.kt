@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
 import com.android.gpstest.Application
@@ -118,7 +119,7 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
 @Composable
 fun Latitude(location: Location) {
     Text(
-        text = String.format("Lat: ") + FormatUtils.formatLatOrLon(
+        text = stringResource(R.string.latitude_label) + " " + FormatUtils.formatLatOrLon(
             Application.app, location.latitude, CoordinateType.LATITUDE,
             Application.prefs
         )
@@ -128,7 +129,7 @@ fun Latitude(location: Location) {
 @Composable
 fun Longitude(location: Location) {
     Text(
-        text = String.format("Long: ") + FormatUtils.formatLatOrLon(
+        text = stringResource(R.string.longitude_label) + " " + FormatUtils.formatLatOrLon(
             Application.app,
             location.longitude,
             CoordinateType.LONGITUDE,
@@ -140,7 +141,7 @@ fun Longitude(location: Location) {
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
     Text(
-        text = "# Sats: " + FormatUtils.formatNumSats(
+        text = stringResource(R.string.num_sats_label) + " " + FormatUtils.formatNumSats(
             Application.app,
             satelliteMetadata
         )
@@ -150,7 +151,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun Bearing(location: Location) {
     Text(
-        text = "Bearing: " + FormatUtils.formatBearing(
+        text = stringResource(R.string.bearing_label) + " " + FormatUtils.formatBearing(
             Application.app,
             location
         )
@@ -159,18 +160,19 @@ fun Bearing(location: Location) {
 
 @Composable
 fun DoP(dop: DilutionOfPrecision) {
-    Text(text = "PDOP: " + FormatUtils.formatDoP(Application.app, dop))
+    Text(text = stringResource(R.string.pdop_label) + " " + FormatUtils.formatDoP(Application.app, dop))
 }
 
 @Composable
 fun HvDOP(dop: DilutionOfPrecision) {
-    Text(text = "H/V DOP: " + FormatUtils.formatHvDOP(Application.app, dop))
+    Text(text = stringResource(R.string.hvdop_label) + " " + FormatUtils.formatHvDOP(Application.app,
+                                                                               dop))
 }
 
 @Composable
 fun Speed(location: Location) {
     Text(
-        text = "Speed: " + FormatUtils.formatSpeed(
+        text = stringResource(R.string.speed_label) + " " + FormatUtils.formatSpeed(
             Application.app, location, Application.prefs
         )
     )
