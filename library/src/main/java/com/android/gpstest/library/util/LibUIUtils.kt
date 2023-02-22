@@ -44,7 +44,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-// import com.android.gpstest.library.BuildConfig
 import com.android.gpstest.library.R
 import com.android.gpstest.library.model.CoordinateType
 import com.android.gpstest.library.model.GnssType
@@ -57,7 +56,7 @@ import java.math.RoundingMode
 import java.util.*
 
 /**
- * Utilities for processing user inteface elements
+ * Utilities for processing user interface elements
  */
 object LibUIUtils {
     const val TAG = "UIUtils"
