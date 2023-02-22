@@ -75,7 +75,7 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
 
             ScalingLazyColumn(
                 modifier = contentModifier,
-                autoCentering = AutoCenteringParams(itemIndex = 0),
+                autoCentering = AutoCenteringParams(itemIndex = 3),
                 state = listState
             ) {
                 item {
