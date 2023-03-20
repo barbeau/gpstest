@@ -3,15 +3,24 @@ package com.android.gpstest.wear
 import android.icu.text.SimpleDateFormat
 import android.location.Location
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.*
@@ -25,11 +34,12 @@ import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.FormatUtils
 import com.android.gpstest.wear.theme.GpstestTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
 /**
  * The main user interface for Wear OS that displays the basic information of GNSS
  */
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by signalInfoViewModel.filteredGnssStatuses.observeAsState(
@@ -49,6 +59,7 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
     )
     GpstestTheme {
         val listState = rememberScalingLazyListState()
+        val coroutineScope = rememberCoroutineScope()
         Scaffold(
             timeText = {
                 if (!listState.isScrollInProgress) {
@@ -69,9 +80,18 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
                 )
             }
         ) {
+            val focusRequester = remember { FocusRequester() }
             val contentModifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
+                .onRotaryScrollEvent {
+                    coroutineScope.launch {
+                        listState.scrollBy(it.verticalScrollPixels)
+                    }
+                    true
+                }
+                .focusRequester(focusRequester)
+                .focusable()
 
             ScalingLazyColumn(
                 modifier = contentModifier,
@@ -112,6 +132,7 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
                     }
                 }
             }
+            LaunchedEffect(Unit) { focusRequester.requestFocus() }
         }
     }
 }
