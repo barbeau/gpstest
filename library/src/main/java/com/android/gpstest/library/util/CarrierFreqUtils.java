@@ -204,21 +204,21 @@ public class CarrierFreqUtils {
      * @return carrier frequency label
      */
     public static String getSbasCf(int svid, double carrierFrequencyMhz) {
-        if (svid == 120 || svid == 123 || svid == 126 || svid == 136) {
+        if (svid == 121 || svid == 123 || svid == 126 || svid == 136 || svid == 150) {
             // EGNOS - https://gssc.esa.int/navipedia/index.php/EGNOS_Space_Segment
             if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
             } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
-        } else if (svid == 129 || svid == 137) {
+        } else if (svid == 129 || svid == 137 || svid == 139) {
             // MSAS (Japan) - https://gssc.esa.int/navipedia/index.php/MSAS_Space_Segment
             if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
             } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
-        } else if (svid == 127 || svid == 128 || svid == 139) {
+        } else if (svid == 127 || svid == 128 || svid == 132) {
             // GAGAN (India)
             if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
                 return "L1";
@@ -230,6 +230,12 @@ public class CarrierFreqUtils {
             } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
+        } else if (svid == 125 || svid == 140 || svid == 141) {
+            // SDCM (Russia)
+            return getGlonassCf(carrierFrequencyMhz);
+        } else if (svid == 130 || svid == 143 || svid == 144) {
+            // BDSBAS (China)
+            return getBeidoucCf(carrierFrequencyMhz);
         }
         return CF_UNKNOWN;
     }

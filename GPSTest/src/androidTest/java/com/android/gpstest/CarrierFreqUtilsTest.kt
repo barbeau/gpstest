@@ -303,20 +303,20 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gagan)
         assertEquals("L1", label)
 
-        // EGNOS - ID 120 L1
-        val egnos120 = SatelliteStatus(120,
-                GnssType.SBAS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        egnos120.hasCarrierFrequency = true
-        egnos120.carrierFrequencyHz = 1575420000.0
-        egnos120.sbasType = SbasType.EGNOS
+        // EGNOS - ID 121 L1
+        val egnos121 = SatelliteStatus(121,
+                                       GnssType.SBAS,
+                                       30f,
+                                       true,
+                                       true,
+                                       true,
+                                       72f,
+                                       25f);
+        egnos121.hasCarrierFrequency = true
+        egnos121.carrierFrequencyHz = 1575420000.0
+        egnos121.sbasType = SbasType.EGNOS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos120)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos121)
         assertEquals("L1", label)
 
         // EGNOS - ID 123 L1
@@ -367,20 +367,20 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos136)
         assertEquals("L1", label)
 
-        // EGNOS - ID 120 L5
-        val egnos120L5 = SatelliteStatus(120,
-                GnssType.SBAS,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        egnos120L5.hasCarrierFrequency = true
-        egnos120L5.carrierFrequencyHz = 1176450000.0
-        egnos120L5.sbasType = SbasType.EGNOS
+        // EGNOS - ID 121 L5
+        val egnos121L5 = SatelliteStatus(121,
+                                         GnssType.SBAS,
+                                         30f,
+                                         true,
+                                         true,
+                                         true,
+                                         72f,
+                                         25f);
+        egnos121L5.hasCarrierFrequency = true
+        egnos121L5.carrierFrequencyHz = 1176450000.0
+        egnos121L5.sbasType = SbasType.EGNOS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos120L5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(egnos121L5)
         assertEquals("L5", label)
 
         // EGNOS - ID 123 L5
@@ -612,6 +612,38 @@ class CarrierFreqUtilsTest {
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(msas137L5)
         assertEquals("L5", label)
+
+      // SDCM L1 - 125
+      val sdcm125L1 = SatelliteStatus(125,
+                                      GnssType.SBAS,
+                                      30f,
+                                      true,
+                                      true,
+                                      true,
+                                      72f,
+                                      25f);
+      sdcm125L1.hasCarrierFrequency = true
+      sdcm125L1.carrierFrequencyHz = 1575420000.0
+      sdcm125L1.sbasType = SbasType.SDCM
+
+      label = CarrierFreqUtils.getCarrierFrequencyLabel(sdcm125L1)
+      assertEquals("L1-C", label)
+
+      // SDCM L5 - 141
+      val sdcm125L5 = SatelliteStatus(141,
+                                      GnssType.SBAS,
+                                      30f,
+                                      true,
+                                      true,
+                                      true,
+                                      72f,
+                                      25f);
+      sdcm125L5.hasCarrierFrequency = true
+      sdcm125L5.carrierFrequencyHz = 1176450000.0
+      sdcm125L5.sbasType = SbasType.SDCM
+
+      label = CarrierFreqUtils.getCarrierFrequencyLabel(sdcm125L5)
+      assertEquals("L5", label)
 
         // Test variations on the "same" numbers to make sure floating point equality works
         val gpsL1variation = SatelliteStatus(1,
