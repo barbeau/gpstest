@@ -1,6 +1,5 @@
 package com.android.gpstest.library.util
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.location.GnssMeasurementsEvent
@@ -125,6 +124,12 @@ object PreferenceUtil {
         return prefs.getBoolean(context.getString(R.string.pref_key_gnss_background), false)
     }
 
+    private fun saveRunInBackground(context: Context, prefs: SharedPreferences, value: Boolean) {
+        PreferenceUtils.saveBoolean(context.getString(R.string.pref_key_gnss_background),
+                                    value,
+                                    prefs)
+    }
+
     fun darkTheme(context: Context, prefs: SharedPreferences): Boolean {
         return prefs.getBoolean(context.getString(R.string.pref_key_dark_theme), false)
     }
@@ -234,6 +239,9 @@ object PreferenceUtil {
                 key == context.getString(R.string.pref_key_file_navigation_message_output) ||
                 key == context.getString(R.string.pref_key_file_antenna_output_csv) ||
                 key == context.getString(R.string.pref_key_file_antenna_output_json)) {
+
+                // Enable background execution for file logging
+                saveRunInBackground(context, prefs, true)
 
                 // Count number of file logging preferences that are enabled
                 val loggingEnabled = arrayOf(writeLocationToFile(context, prefs), writeMeasurementsToFile(context, prefs), writeNmeaToFile(context, prefs), writeNavMessageToFile(context, prefs), writeAntennaInfoToFileCsv(context, prefs), writeAntennaInfoToFileJson(context, prefs))
