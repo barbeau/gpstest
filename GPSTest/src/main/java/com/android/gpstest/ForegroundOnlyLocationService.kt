@@ -304,9 +304,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (writeLocationToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeLocationToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onLocationChanged(it)
                     }
@@ -338,9 +336,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 )
                 // Log Status
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (writeStatusToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeStatusToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssStatusChanged(it, currentLocation)
                     }
@@ -367,9 +363,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                             if (writeNmeaTimestampToLogcat(app, prefs)) it.timestamp else Long.MIN_VALUE
                         )
                     }
-                    if (writeNmeaToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeNmeaToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onNmeaReceived(it.timestamp, it.message)
                     }
@@ -393,9 +387,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                     if (writeNavMessageToLogcat(app, prefs)) {
                         writeNavMessageToAndroidStudio(it)
                     }
-                    if (writeNavMessageToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeNavMessageToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssNavigationMessageReceived(it)
                     }
@@ -421,9 +413,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                             writeMeasurementToLogcat(m)
                         }
                     }
-                    if (writeMeasurementsToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeMeasurementsToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssMeasurementsReceived(it)
                     }
@@ -445,9 +435,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .onEach {
                 //Log.d(TAG, "Service antennas: $it")
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        return@launch
-                    }
                     if (writeAntennaInfoToFileCsv(app, prefs) || writeAntennaInfoToFileJson(app, prefs)) {
                         initLogging()
                     }
@@ -473,9 +460,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service sensor: orientation ${it.values[0]}, tilt ${it.values[1]}")
-                if (writeOrientationToFile(app, prefs) &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
+                if (writeOrientationToFile(app, prefs)) {
                     initLogging()
                     csvFileLogger.onOrientationChanged(it, System.currentTimeMillis(), SystemClock.elapsedRealtime())
                 }
@@ -606,9 +591,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
      * permissions but logging hasn't been started yet.
      */
     private fun initLogging() {
-        if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            return
-        }
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Inject time and/or PSDS to make sure timestamps and assistance are as updated as possible
@@ -636,7 +618,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             // If we've already deleted files on this application execution, don't do it again
             return
         }
-        if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) && (csvFileLogger.isStarted || jsonFileLogger.isStarted)) {
+        if (csvFileLogger.isStarted || jsonFileLogger.isStarted) {
             // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
             var baseDirectory: File = csvFileLogger.baseDirectory
             if (baseDirectory == null) {

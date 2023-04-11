@@ -146,7 +146,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.newLine();
             writer.write(COMMENT_START);
             writer.write(
-                    "  Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters");
+                    "  Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters,MockLocation");
             writer.newLine();
             writer.write(COMMENT_START);
             writer.newLine();
