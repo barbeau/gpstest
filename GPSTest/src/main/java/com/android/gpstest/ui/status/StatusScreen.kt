@@ -113,13 +113,14 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
         )
         Text(
             text = buildAnnotatedString {
+                val string = stringResource(id = R.string.filter_showall)
                 withStyle(
                     style = SpanStyle(
                         color = MaterialTheme.colors.primary,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    append(stringResource(id = R.string.filter_showall))
+                    append(string)
                 }
             },
             fontStyle = FontStyle.Italic,

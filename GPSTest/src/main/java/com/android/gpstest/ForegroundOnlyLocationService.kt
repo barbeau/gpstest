@@ -21,6 +21,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -37,6 +38,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
+import androidx.core.app.PendingIntentCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
@@ -302,9 +304,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (writeLocationToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeLocationToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onLocationChanged(it)
                     }
@@ -336,9 +336,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 )
                 // Log Status
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (writeStatusToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeStatusToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssStatusChanged(it, currentLocation)
                     }
@@ -365,9 +363,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                             if (writeNmeaTimestampToLogcat(app, prefs)) it.timestamp else Long.MIN_VALUE
                         )
                     }
-                    if (writeNmeaToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeNmeaToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onNmeaReceived(it.timestamp, it.message)
                     }
@@ -391,9 +387,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                     if (writeNavMessageToLogcat(app, prefs)) {
                         writeNavMessageToAndroidStudio(it)
                     }
-                    if (writeNavMessageToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeNavMessageToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssNavigationMessageReceived(it)
                     }
@@ -419,9 +413,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
                             writeMeasurementToLogcat(m)
                         }
                     }
-                    if (writeMeasurementsToFile(app, prefs) &&
-                        applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    ) {
+                    if (writeMeasurementsToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssMeasurementsReceived(it)
                     }
@@ -443,9 +435,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .onEach {
                 //Log.d(TAG, "Service antennas: $it")
                 GlobalScope.launch(Dispatchers.IO) {
-                    if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        return@launch
-                    }
                     if (writeAntennaInfoToFileCsv(app, prefs) || writeAntennaInfoToFileJson(app, prefs)) {
                         initLogging()
                     }
@@ -471,9 +460,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service sensor: orientation ${it.values[0]}, tilt ${it.values[1]}")
-                if (writeOrientationToFile(app, prefs) &&
-                    applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                ) {
+                if (writeOrientationToFile(app, prefs)) {
                     initLogging()
                     csvFileLogger.onOrientationChanged(it, System.currentTimeMillis(), SystemClock.elapsedRealtime())
                 }
@@ -532,7 +519,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .bigText(summaryText)
             .setBigContentTitle(titleText)
 
-        // 3. Set up main Intent/Pending Intents for notification.
+        // 3. Set up main Intent/Pending Intents for notification
         val launchActivityIntent = Intent(this, MainActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
             // NOTE: The above causes the activity/viewmodel to be recreated from scratch for Accuracy when it's already visible
@@ -540,21 +527,23 @@ class ForegroundOnlyLocationService : LifecycleService() {
             // FLAG_ACTIVITY_REORDER_TO_FRONT seems like it should work, but if this is used then onResume() is called
             // again (and onPause() is never called). This seems to freeze up Status into a blank state because GNSS inits again.
         }
-        val openActivityPendingIntent = PendingIntent.getActivity(
+        val openActivityPendingIntent = PendingIntentCompat.getActivity(
             applicationContext,
             System.currentTimeMillis().toInt(),
             launchActivityIntent,
-            0
+            0,
+            false
         )
 
         val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java).apply {
             putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)
         }
-        val stopServicePendingIntent = PendingIntent.getService(
+        val stopServicePendingIntent = PendingIntentCompat.getService(
             applicationContext,
             System.currentTimeMillis().toInt(),
             cancelIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT,
+            false
         )
 
         // 4. Build and issue the notification.
@@ -602,9 +591,6 @@ class ForegroundOnlyLocationService : LifecycleService() {
      * permissions but logging hasn't been started yet.
      */
     private fun initLogging() {
-        if (!applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            return
-        }
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Inject time and/or PSDS to make sure timestamps and assistance are as updated as possible
@@ -632,7 +618,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             // If we've already deleted files on this application execution, don't do it again
             return
         }
-        if (applicationContext.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) && (csvFileLogger.isStarted || jsonFileLogger.isStarted)) {
+        if (csvFileLogger.isStarted || jsonFileLogger.isStarted) {
             // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
             var baseDirectory: File = csvFileLogger.baseDirectory
             if (baseDirectory == null) {
