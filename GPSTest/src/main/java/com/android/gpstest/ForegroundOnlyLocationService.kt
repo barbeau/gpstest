@@ -21,6 +21,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -37,6 +38,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.PRIORITY_LOW
+import androidx.core.app.PendingIntentCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
@@ -532,7 +534,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .bigText(summaryText)
             .setBigContentTitle(titleText)
 
-        // 3. Set up main Intent/Pending Intents for notification.
+        // 3. Set up main Intent/Pending Intents for notification
         val launchActivityIntent = Intent(this, MainActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
             // NOTE: The above causes the activity/viewmodel to be recreated from scratch for Accuracy when it's already visible
@@ -540,21 +542,23 @@ class ForegroundOnlyLocationService : LifecycleService() {
             // FLAG_ACTIVITY_REORDER_TO_FRONT seems like it should work, but if this is used then onResume() is called
             // again (and onPause() is never called). This seems to freeze up Status into a blank state because GNSS inits again.
         }
-        val openActivityPendingIntent = PendingIntent.getActivity(
+        val openActivityPendingIntent = PendingIntentCompat.getActivity(
             applicationContext,
             System.currentTimeMillis().toInt(),
             launchActivityIntent,
-            0
+            0,
+            false
         )
 
         val cancelIntent = Intent(this, ForegroundOnlyLocationService::class.java).apply {
             putExtra(EXTRA_CANCEL_LOCATION_TRACKING_FROM_NOTIFICATION, true)
         }
-        val stopServicePendingIntent = PendingIntent.getService(
+        val stopServicePendingIntent = PendingIntentCompat.getService(
             applicationContext,
             System.currentTimeMillis().toInt(),
             cancelIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT,
+            false
         )
 
         // 4. Build and issue the notification.

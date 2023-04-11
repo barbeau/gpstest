@@ -16,6 +16,7 @@
 package com.android.gpstest.library.util;
 
 import android.Manifest;
+import android.Manifest.permission;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 
@@ -32,7 +33,8 @@ public class PermissionUtils {
     public static final int LOCATION_PERMISSION_REQUEST = 1;
 
     public static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
 

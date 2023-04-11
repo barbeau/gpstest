@@ -239,7 +239,7 @@
 
     <!-- Permissions -->
     <string name="title_location_permission">Need location permission</string>
-    <string name="text_location_permission">GPSTest needs access to your location to show GNSS data. If you select \"Never ask again\" you will need to reinstall the app or enable permissions via system settings.</string>
+    <string name="text_location_permission">GPSTest needs access to your \"Precise\" location to show GNSS data. If you repeatedly select \"Approximate\" or \"Don\'t allow\" you will need to reinstall the app or enable permissions via system settings.</string>
     <string name="ok">OK</string>
     <string name="exit">EXIT</string>
 

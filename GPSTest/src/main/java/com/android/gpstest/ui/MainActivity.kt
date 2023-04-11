@@ -464,7 +464,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 if (lastLocation != null) {
                     locationString = LocationUtils.printLocationDetails(lastLocation)
                 }
-                LibUIUtils.sendEmail(app, email, locationString, signalInfoViewModel, BuildUtils.getPlayServicesVersion(), prefs)
+                LibUIUtils.sendEmail(this, email, locationString, signalInfoViewModel, BuildUtils.getPlayServicesVersion(), prefs)
             }
         }
         invalidateOptionsMenu()
