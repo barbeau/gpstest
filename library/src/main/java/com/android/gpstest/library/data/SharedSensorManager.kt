@@ -136,12 +136,14 @@ class SharedSensorManager constructor(
                 )
             } else {
                 // Use the legacy orientation sensors
-                val sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
-                sensorManager.registerListener(
-                    callback,
-                    sensor,
-                    SensorManager.SENSOR_DELAY_GAME
-                )
+                val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
+                if (sensor != null) {
+                    sensorManager.registerListener(
+                        callback,
+                        sensor,
+                        SensorManager.SENSOR_DELAY_GAME
+                    )
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in location flow: $e")

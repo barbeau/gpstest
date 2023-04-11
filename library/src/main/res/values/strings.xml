@@ -17,7 +17,7 @@
 ** limitations under the License.
 */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Fragments -->
     <string name="gps_status_title">Status</string>
     <string name="gps_map_title">Map</string>
@@ -242,6 +242,14 @@
     <string name="text_location_permission">GPSTest needs access to your \"Precise\" location to show GNSS data. If you repeatedly select \"Approximate\" or \"Don\'t allow\" you will need to reinstall the app or enable permissions via system settings.</string>
     <string name="ok">OK</string>
     <string name="exit">EXIT</string>
+
+    <string name="user_declined_notification_permission_dialog_title" tools:ignore="MissingTranslation">
+      Notification permission suggested
+    </string>
+
+    <string name="user_declined_notification_permission_dialog_text" tools:ignore="MissingTranslation">
+      Please grant notification permissions if you would like to see GNSS details in a notification while the app is running.
+    </string>
 
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>

@@ -17,7 +17,6 @@ package com.android.gpstest.util
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import com.android.gpstest.R
@@ -132,6 +131,28 @@ internal object UIUtils {
             .setNegativeButton(
                 R.string.not_now
             ) { dialog: DialogInterface?, which: Int -> }
+        return builder.create()
+    }
+
+    @JvmStatic
+    fun createNotificationPermissionDialog(activity: AppCompatActivity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val neverShowDialog = view.findViewById<CheckBox>(R.id.notification_permissions_never_show_again)
+        neverShowDialog.setOnCheckedChangeListener { compoundButton: CompoundButton?, isChecked: Boolean ->
+            // Save the preference
+            PreferenceUtils.saveBoolean(
+                app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
+                isChecked,
+                prefs
+            )
+        }
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.user_declined_notification_permission_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
@@ -258,7 +279,7 @@ internal object UIUtils {
             activity
         )
         builder.setTitle(R.string.menu_option_sort_by)
-        val currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences(app, Application.prefs)
+        val currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences(app, prefs)
         builder.setSingleChoiceItems(
             R.array.sort_sats, currentSatOrder
         ) { dialog: DialogInterface, index: Int ->

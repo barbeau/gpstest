@@ -25,6 +25,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
@@ -36,7 +38,10 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -54,34 +59,34 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
+import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
-import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
-import com.android.gpstest.map.MapConstants
-import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
-import com.android.gpstest.ui.sky.SkyFragment
-import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.library.util.PreferenceUtil.darkTheme
 import com.android.gpstest.library.util.PreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.minDistance
 import com.android.gpstest.library.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.library.util.PreferenceUtil.runInBackground
 import com.android.gpstest.library.util.PreferenceUtils.isTrackingStarted
+import com.android.gpstest.map.MapConstants
+import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.ui.sky.SkyFragment
+import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.BuildUtils
 import com.android.gpstest.util.UIUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.system.exitProcess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
@@ -113,6 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
     private var benchmarkController: BenchmarkController? = null
+    private var notificationPermissionRequest: ActivityResultLauncher<String>? = null
 
     private var initialLanguage: String? = null
     private var initialMinTimeMillis: Long? = null
@@ -164,7 +170,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         saveInstanceState(savedInstanceState)
 
         // Observe stopping location updates from the service
-        Application.prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
+        prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -189,6 +195,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupNavigationDrawer()
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
+
+        initPermissions()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -334,9 +342,36 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         benchmarkController!!.show()
     }
 
+    private fun initPermissions() {
+        notificationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { result ->
+            if (result != null && result) {
+                // Notification permission granted - No-op - notification will be posted by the
+                // service
+            } else {
+                // User rejected permission - show dialog unless user has told us not to
+                if (!prefs.getBoolean(
+                        app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
+                                      false)
+                ) {
+                    UIUtils.createNotificationPermissionDialog(this).show()
+                }
+            }
+            // Initialize GNSS after user has responded to notification permission request
+            initGnss()
+        }
+    }
+
     private fun requestPermissionAndInit(activity: Activity) {
         if (PermissionUtils.hasGrantedPermissions(activity, PermissionUtils.REQUIRED_PERMISSIONS)) {
-            init()
+            if (!PermissionUtils.hasGrantedNotificationPermissions(this)
+                && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                // Request notification permissions and defer init of GNSS until user responds
+                requestNotificationPermission()
+            } else {
+                initGnss()
+            }
         } else {
             // Request permissions from the user
             ActivityCompat.requestPermissions(
@@ -348,20 +383,20 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 userDeniedPermission = false
-                init()
+                initGnss()
             } else {
                 userDeniedPermission = true
             }
         }
     }
 
-    private fun init() {
+    private fun initGnss() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
         if (provider == null) {
@@ -398,7 +433,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun setupStartState(savedInstanceState: Bundle?) {
         // Use "Auto-start GNSS" setting, or existing tracking state (e.g., if service is running)
-        if (Application.prefs.getBoolean(
+        if (prefs.getBoolean(
                 getString(R.string.pref_key_auto_start_gps),
                 true
             ) || isTrackingStarted(prefs)
@@ -749,6 +784,17 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Reset the options menu to trigger updates to action bar menu items
         invalidateOptionsMenu()
+    }
+
+    /**
+     * Requests permission to show notifications with the `timerValuesSet` to be used to start
+     * the logging service.
+     */
+    @RequiresApi(api = VERSION_CODES.TIRAMISU)
+    fun requestNotificationPermission() {
+        if (!PermissionUtils.hasGrantedNotificationPermissions(this)) {
+            notificationPermissionRequest?.launch(PermissionUtils.getNotificationPermission())
+        }
     }
 
     @ExperimentalCoroutinesApi
