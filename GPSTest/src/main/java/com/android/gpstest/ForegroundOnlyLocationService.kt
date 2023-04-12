@@ -557,10 +557,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setContentText(summaryText)
             .setSmallIcon(R.drawable.ic_sat_notification)
             .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setPriority(PRIORITY_LOW)
+            .setPriority(PRIORITY_LOW) // For < API 26
+            .setDefaults(NotificationCompat.DEFAULT_LIGHTS) // For < API 26
             .setContentIntent(openActivityPendingIntent)
             .addAction(
                 R.drawable.ic_baseline_launch_24, getString(R.string.open),
