@@ -41,7 +41,7 @@
     <string name="gps_start">Start</string>
     <string name="gps_pause">Pause</string>
 
-    <string name="delete_aiding_data_success">Successfully deleted assist data.</string>
+    <string name="delete_aiding_data_success">Submitted delete assist data request.</string>
     <string name="delete_aiding_data_failure">Device does not support deleting assist data.
     </string>
     <string name="gps_switch">Off/On</string>
@@ -57,11 +57,11 @@
     <string name="no_location">Try sharing your location after getting a GNSS fix…</string>
     <string name="include_altitude">Include altitude</string>
     <string name="set_fix_frequency">Set Fix Frequency</string>
-    <string name="force_time_injection_success">Successfully injected time data.</string>
+    <string name="force_time_injection_success">Submitted time injection request.</string>
     <string name="force_time_injection_failure">Device does not support injecting time data.
     </string>
 
-    <string name="force_psds_injection_success">Successfully injected PSDS data.</string>
+    <string name="force_psds_injection_success">Submitted PSDS injection request.</string>
     <string name="force_psds_injection_failure">Device does not support injecting PSDS data.
     </string>
 
