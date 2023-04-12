@@ -60,6 +60,7 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import java.io.UnsupportedEncodingException
 import javax.inject.Inject
+import org.osmdroid.views.overlay.CopyrightOverlay
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), MapInterface {
@@ -107,7 +108,10 @@ class MapFragment : Fragment(), MapInterface {
         map.controller.setZoom(3.0)
         rotationGestureOverlay = RotationGestureOverlay(map)
         rotationGestureOverlay!!.isEnabled = true
-        map.overlays.add(rotationGestureOverlay)
+        map.overlays.apply {
+            add(rotationGestureOverlay)
+            add(CopyrightOverlay(inflater.context))
+        }
         lastLocation = null
         mapController = MapViewModelController(activity, this)
         mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
@@ -230,6 +234,10 @@ class MapFragment : Fragment(), MapInterface {
                             + "/" + MapTileIndex.getX(pMapTileIndex)
                             + "/" + MapTileIndex.getY(pMapTileIndex)
                             + "@2x.jpg?key=" + key)
+                }
+
+                override fun getCopyrightNotice(): String {
+                    return "© MapTiler © OpenStreetMap contributors"
                 }
             }
             map!!.setTileSource(tileSource)
