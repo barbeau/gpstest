@@ -252,12 +252,14 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>\"Force full GNSS measurements\" setting (Android 12 and up)</b>
-        - No more digging into the Android system developer mode. See https://bit.ly/gnss-force-full-measurements for details.\n&#8226;\u0020
-        <b>Better capture of device GNSS capabilities (Android 12 and up)</b>
-        - Uses GnssCapabilities API for GPSTest Database. See https://bit.ly/gpstest-database-article for details.\n&#8226;\u0020
-        <b>Improved accessibility</b>
-        - Better labels for buttons and images that are announced if TalkBack is enabled.\n&#8226;\u0020
+        <b>Background execution</b>
+        - You can now log on your device while you do something else!\n&#8226;\u0020
+        <b>GNSS status notification</b>
+        - Shows the number of signals &amp; satellites in view and in use in a convenient notification.\n&#8226;\u0020
+        <b>Filter the Sky</b>
+        - The filter feature now works on the Status AND Sky screens!\n&#8226;\u0020
+        <b>Themed icon support (Android 13 and up)</b>
+        - No more disruptions to your otherwise color-perfect home screen :).\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
