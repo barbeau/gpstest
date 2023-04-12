@@ -29,3 +29,7 @@
 -dontwarn com.sothree.**
 -keep class com.sothree.**
 -keep interface com.sothree.**
+
+# for Jackon and outputting AntennaInfo
+-dontwarn java.beans.ConstructorProperties
+-dontwarn java.beans.Transient
