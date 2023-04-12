@@ -51,6 +51,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
+import com.android.gpstest.BuildConfig
 import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
@@ -464,7 +465,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 if (lastLocation != null) {
                     locationString = LocationUtils.printLocationDetails(lastLocation)
                 }
-                LibUIUtils.sendEmail(this, email, locationString, signalInfoViewModel, BuildUtils.getPlayServicesVersion(), prefs)
+                LibUIUtils.sendEmail(this, email, locationString, signalInfoViewModel, BuildUtils.getPlayServicesVersion(), prefs, BuildConfig.FLAVOR)
             }
         }
         invalidateOptionsMenu()

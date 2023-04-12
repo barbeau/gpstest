@@ -40,7 +40,6 @@ import androidx.core.content.FileProvider;
 import com.android.gpstest.library.R;
 import com.android.gpstest.library.io.FileToDeleteFilter;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.sothree.slidinguppanel.library.BuildConfig;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -273,11 +272,11 @@ public class IOUtils {
      * @param activity Activity used to open the chooser to send the file
      * @param files files to send
      */
-    public static void sendLogFile(Context context, Activity activity, File... files) {
+    public static void sendLogFile(Context context, String applicationId, Activity activity, File... files) {
         ArrayList<android.net.Uri> uris = new ArrayList<>();
         for (File file : files) {
             if (file != null) {
-                uris.add(IOUtils.getUriFromFile(activity, file));
+                uris.add(IOUtils.getUriFromFile(activity, applicationId, file));
             }
         }
 
@@ -304,11 +303,12 @@ public class IOUtils {
      * Returns an Android URI for the provided File that can be used to attach the file to a message via ACTION_SEND Intent
      *
      * @param context
+     * @param applicationId
      * @param file
      * @return an Android URI for the provided File that can be used to attach the file to a message via ACTION_SEND Intent
      */
-    public static android.net.Uri getUriFromFile(Context context, File file) {
-        return FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file);
+    public static android.net.Uri getUriFromFile(Context context, String applicationId, File file) {
+        return FileProvider.getUriForFile(context, applicationId + ".provider", file);
     }
 
     /**

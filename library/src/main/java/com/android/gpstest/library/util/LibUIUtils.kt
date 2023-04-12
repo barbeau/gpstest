@@ -50,7 +50,6 @@ import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SbasType
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.google.android.material.chip.Chip
-import com.sothree.slidinguppanel.library.BuildConfig
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -213,7 +212,8 @@ object LibUIUtils {
         location: String?,
         signalInfoViewModel: SignalInfoViewModel,
         playServicesVersion: String,
-        prefs: SharedPreferences
+        prefs: SharedPreferences,
+        buildFlavor: String,
     ) {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val pm = context.packageManager
@@ -240,7 +240,7 @@ object LibUIUtils {
             .append(versionCode)
             .append(
                 """
-    -${BuildConfig.FLAVOR})
+    -${buildFlavor})
     
     """.trimIndent()
             )
