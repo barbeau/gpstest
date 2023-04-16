@@ -21,5 +21,5 @@ package com.android.gpstest.library.model;
  * http://mgex.igs.org/IGS_MGEX_Status_SBAS.php.
  */
 public enum SbasType {
-    WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA, SouthPAN, UNKNOWN
+    WAAS, EGNOS, GAGAN, MSAS, SDCM, SNAS, SACCSA, SOUTHPAN, UNKNOWN
 }
