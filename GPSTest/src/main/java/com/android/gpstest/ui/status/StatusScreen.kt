@@ -263,7 +263,7 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
         SbasType.SACCSA -> {
             FlagImage(R.drawable.ic_flag_icao, R.string.saccsa_content_description, modifier)
         }
-        SbasType.SouthPAN -> {
+        SbasType.SOUTHPAN -> {
             FlagImage(R.drawable.ic_flag_southpan, R.string.southpan_content_description, modifier)
         }        
         SbasType.UNKNOWN -> {
