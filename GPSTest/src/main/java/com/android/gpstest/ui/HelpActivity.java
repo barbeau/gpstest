@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
-import com.android.gpstest.util.IOUtils;
+import com.android.gpstest.library.util.IOUtils;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -60,8 +60,8 @@ public class HelpActivity extends AppCompatActivity {
                 .append(versionCode)
                 .append("-" + BuildConfig.FLAVOR + ")\n");
 
-        version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear() + "\n");
-        version.append("GNSS HW Name: " + IOUtils.getGnssHardwareModelName() + "\n");
+        version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + "\n");
+        version.append("GNSS HW Name: " + IOUtils.getGnssHardwareModelName(Application.Companion.getApp()) + "\n");
 
         String versionRelease = Build.VERSION.RELEASE;
         version.append("Platform: " + versionRelease + "\n");

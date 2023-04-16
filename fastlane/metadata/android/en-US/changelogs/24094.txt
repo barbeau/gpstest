@@ -1,0 +1,5 @@
+• Background execution - You can now log on your device while you do something else!
+• GNSS status notification - Shows the number of signals & satellites in view and in use in a convenient notification.
+• Filter the Sky - The filter feature now works on the Status AND Sky screens!
+• Themed icon support (Android 13 and up) - No more disruptions to your otherwise color-perfect home screen :).
+• Bug fixes - see http://bit.ly/gpstest-releases

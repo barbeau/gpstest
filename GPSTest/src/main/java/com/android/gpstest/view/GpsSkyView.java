@@ -1,6 +1,6 @@
 package com.android.gpstest.view;
 
-import static com.android.gpstest.model.SatelliteStatus.NO_DATA;
+import static com.android.gpstest.library.model.SatelliteStatus.NO_DATA;
 import static java.util.Collections.emptyList;
 
 import android.content.Context;
@@ -19,9 +19,9 @@ import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
-import com.android.gpstest.model.GnssType;
-import com.android.gpstest.model.SatelliteStatus;
-import com.android.gpstest.util.UIUtils;
+import com.android.gpstest.library.model.GnssType;
+import com.android.gpstest.library.model.SatelliteStatus;
+import com.android.gpstest.library.util.LibUIUtils;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class GpsSkyView extends View {
     private void init(Context context) {
         mContext = context;
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-        SAT_RADIUS = UIUtils.dpToPixels(context, 5);
+        SAT_RADIUS = LibUIUtils.dpToPixels(context, 5);
 
         int textColor;
         int backgroundColor;
@@ -155,7 +155,7 @@ public class GpsSkyView extends View {
         mPrnIdPaint.setColor(textColor);
         mPrnIdPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         mPrnIdPaint
-                .setTextSize(UIUtils.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
+                .setTextSize(LibUIUtils.dpToPixels(getContext(), SAT_RADIUS * PRN_TEXT_SCALE));
         mPrnIdPaint.setAntiAlias(true);
 
         mNotInViewPaint = new Paint();

@@ -44,8 +44,8 @@ import androidx.fragment.app.Fragment;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
-import com.android.gpstest.util.IOUtils;
-import com.android.gpstest.util.UIUtils;
+import com.android.gpstest.library.util.IOUtils;
+import com.android.gpstest.library.util.LibUIUtils;
 import com.android.gpstest.view.ScrimInsetsScrollView;
 
 import java.util.ArrayList;
@@ -177,7 +177,7 @@ public class NavigationDrawerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         SharedPreferences sp = Application.Companion.getPrefs();
 
-        if (IOUtils.isShowRadarIntent(getActivity().getIntent())) {
+        if (IOUtils.isShowRadarIntent(Application.Companion.getApp(), getActivity().getIntent())) {
             // If another app (e.g., BenchMap) passed in a ground truth location, show the Accuracy view
             mCurrentSelectedPosition = NAVDRAWER_ITEM_ACCURACY;
             Log.d(TAG, "Using Accuracy position due to RADAR intent = " + mCurrentSelectedPosition);
@@ -463,7 +463,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         if (isSeparator(itemId)) {
             // we are done
-            UIUtils.setAccessibilityIgnore(view);
+            LibUIUtils.setAccessibilityIgnore(view);
             return view;
         }
 

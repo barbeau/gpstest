@@ -5,11 +5,12 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DecimalFormat;
 
-public class DistanceValueFormatter implements IValueFormatter, IAxisValueFormatter {
+public class DistanceValueFormatter extends ValueFormatter implements IValueFormatter, IAxisValueFormatter {
     private final DecimalFormat mFormat;
     private String mSuffix;
 

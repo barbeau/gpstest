@@ -17,14 +17,17 @@
 package com.android.gpstest
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
+import android.preference.PreferenceManager
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.InstrumentationRegistry
+import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.data.*
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.SbasType
-import com.android.gpstest.ui.SignalInfoViewModel
+import com.android.gpstest.library.data.*
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.ui.SignalInfoViewModel
 import kotlinx.coroutines.GlobalScope
 import org.junit.Assert.*
 import org.junit.Rule
@@ -39,13 +42,13 @@ class SignalInfoViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val repository = LocationRepository(
-        SharedLocationManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedGnssStatusManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedNmeaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedSensorManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedNavMessageManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedGnssMeasurementManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedAntennaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope)
+        SharedLocationManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedGnssStatusManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedNmeaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedSensorManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()),InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
+        SharedNavMessageManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedGnssMeasurementManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()), InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
+        SharedAntennaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext()))
     )
 
     /**
@@ -53,12 +56,13 @@ class SignalInfoViewModelTest {
      */
     @Test
     fun testDeviceInfoViewModel() {
-        val modelEmpty = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelEmpty.updateStatus(emptyList())
+        val context = getTargetContext()
+        val modelEmpty = SignalInfoViewModel(context, context.applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelEmpty.updateStatus(context,emptyList(), PreferenceManager.getDefaultSharedPreferences(context))
 
         // Test GPS L1 - should be 1 satellite, no L5 or dual-frequency
-        val modelGpsL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1.updateStatus(listOf(gpsL1(1, true)))
+        val modelGpsL1 = SignalInfoViewModel(context, InstrumentationRegistry.getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelGpsL1.updateStatus(context, listOf(gpsL1(1, true)), PreferenceManager.getDefaultSharedPreferences(getTargetContext()))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
@@ -84,7 +88,7 @@ class SignalInfoViewModelTest {
         modelGpsL1.reset();
 
         // Test GPS L1 no signal - should be 1 satellite, no L5 or dual-frequency
-        modelGpsL1.updateStatus(listOf(gpsL1NoSignal(1)))
+        modelGpsL1.updateStatus(context, listOf(gpsL1NoSignal(1)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInUse)
@@ -109,8 +113,8 @@ class SignalInfoViewModelTest {
 
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual frequency in view and but not in use
-        val modelGpsL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1L5.updateStatus(listOf(gpsL1(1, false), gpsL5(1, true)))
+        val modelGpsL1L5 = SignalInfoViewModel(context, context.applicationContext as Application, repository , PreferenceManager.getDefaultSharedPreferences(context))
+        modelGpsL1L5.updateStatus(context, listOf(gpsL1(1, false), gpsL5(1, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -143,7 +147,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and use
-        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(1, true)))
+        modelGpsL1L5.updateStatus(context, listOf(gpsL1(1, true), gpsL5(1, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -176,7 +180,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv - should be 1 satellite, dual-frequency in view and but not used (only 1 sv in use)
-        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(1, false)))
+        modelGpsL1L5.updateStatus(context, listOf(gpsL1(1, true), gpsL5(1, false)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -209,7 +213,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 but different satellites - should be 2 satellites, non-primary frequency in view and in use, but not dual-frequency in view or use
-        modelGpsL1L5.updateStatus(listOf(gpsL1(1, true), gpsL5(2, true)))
+        modelGpsL1L5.updateStatus(context, listOf(gpsL1(1, true), gpsL5(2, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(2, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -246,7 +250,7 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L1 + L5 same sv, but no L1 signal - should be 1 satellite, dual-frequency not in view or in use
-        modelGpsL1L5.updateStatus(listOf(gpsL1NoSignal(1), gpsL5(1, true)))
+        modelGpsL1L5.updateStatus(context, listOf(gpsL1NoSignal(1), gpsL5(1, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL1L5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL1L5.getSupportedGnss().size)
         assertEquals(0, modelGpsL1L5.getSupportedSbas().size)
@@ -279,8 +283,8 @@ class SignalInfoViewModelTest {
         modelGpsL1L5.reset();
 
         // Test GPS L5 not in use - should be 1 satellites, non-primary frequency in view, but not dual-frequency in view or use
-        val modelGpsL5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL5.updateStatus(listOf(gpsL5(1, false)))
+        val modelGpsL5 = SignalInfoViewModel(context, context.applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelGpsL5.updateStatus(context, listOf(gpsL5(1, false)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGpsL5.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGpsL5.getSupportedGnss().size)
         assertEquals(0, modelGpsL5.getSupportedSbas().size)
@@ -314,8 +318,8 @@ class SignalInfoViewModelTest {
         }
 
         // Test GPS L1 + GLONASS L1 - should be 2 satellites, no non-primary carrier of dual-freq
-        val modelGpsL1GlonassL1 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGpsL1GlonassL1.updateStatus(listOf(gpsL1(1, true), glonassL1variant1()))
+        val modelGpsL1GlonassL1 = SignalInfoViewModel(context, context.applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelGpsL1GlonassL1.updateStatus(context, listOf(gpsL1(1, true), glonassL1variant1()), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(2, modelGpsL1GlonassL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInView)
         assertFalse(modelGpsL1GlonassL1.isNonPrimaryCarrierFreqInUse)
@@ -340,8 +344,8 @@ class SignalInfoViewModelTest {
         }
 
         // Test Galileo E1 + E5a - should be 2 satellites, dual frequency not in use, non-primary carrier of dual-freq
-        val modelGalileoE1E5a = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelGalileoE1E5a.updateStatus(listOf(galileoE1(1, true), galileoE5a(2, true)))
+        val modelGalileoE1E5a = SignalInfoViewModel(context, context.applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelGalileoE1E5a.updateStatus(context, listOf(galileoE1(1, true), galileoE5a(2, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(2, modelGalileoE1E5a.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
         assertEquals(0, modelGalileoE1E5a.getSupportedSbas().size)
@@ -378,7 +382,7 @@ class SignalInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test Galileo E1 + E5a - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
-        modelGalileoE1E5a.updateStatus(listOf(galileoE1(1, true), galileoE5a(1, true)))
+        modelGalileoE1E5a.updateStatus(context, listOf(galileoE1(1, true), galileoE5a(1, true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelGalileoE1E5a.filteredGnssSatellites.value?.size)
         assertEquals(1, modelGalileoE1E5a.getSupportedGnss().size)
         assertEquals(0, modelGalileoE1E5a.getSupportedSbas().size)
@@ -410,8 +414,8 @@ class SignalInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
-        val modelWaasL1L5 = SignalInfoViewModel(InstrumentationRegistry.getTargetContext().applicationContext as Application, repository)
-        modelWaasL1L5.updateStatus(listOf(galaxy15_135L1(true)))
+        val modelWaasL1L5 = SignalInfoViewModel(context, InstrumentationRegistry.getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        modelWaasL1L5.updateStatus(context, listOf(galaxy15_135L1(true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInUse)
@@ -437,7 +441,7 @@ class SignalInfoViewModelTest {
         modelWaasL1L5.reset()
 
         // Test WAAS SBAS - L1 + L5 - should be 1 satellites, dual frequency in use, non-primary carrier of dual-freq
-        modelWaasL1L5.updateStatus(listOf(galaxy15_135L1(true), galaxy15_135L5(true)))
+        modelWaasL1L5.updateStatus(context, listOf(galaxy15_135L1(true), galaxy15_135L5(true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertEquals(0, modelWaasL1L5.getSupportedGnss().size)
         assertEquals(0, modelWaasL1L5.getSupportedGnssCfs().size)

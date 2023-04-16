@@ -20,14 +20,14 @@ import android.location.Location
 import android.os.Build
 import androidx.test.filters.SdkSuppress
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import com.android.gpstest.model.GnssType
-import com.android.gpstest.model.Orientation
-import com.android.gpstest.model.SatelliteStatus
-import com.android.gpstest.util.FormatUtils.toLog
-import com.android.gpstest.util.IOUtils
-import com.android.gpstest.util.SatelliteUtil.isBearingAccuracySupported
-import com.android.gpstest.util.SatelliteUtil.isSpeedAccuracySupported
-import com.android.gpstest.util.SatelliteUtil.isVerticalAccuracySupported
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.Orientation
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.util.FormatUtils.toLog
+import com.android.gpstest.library.util.IOUtils
+import com.android.gpstest.library.util.SatelliteUtil.isBearingAccuracySupported
+import com.android.gpstest.library.util.SatelliteUtil.isSpeedAccuracySupported
+import com.android.gpstest.library.util.SatelliteUtil.isVerticalAccuracySupported
 import junit.framework.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -53,7 +53,7 @@ class FormatUtilsTest {
         }
         l.elapsedRealtimeNanos = 123456789
 
-        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters,MockLocation
         if (l.isSpeedAccuracySupported() && l.isBearingAccuracySupported() && l.isVerticalAccuracySupported()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 assertEquals(
@@ -122,7 +122,7 @@ class FormatUtilsTest {
             l.isMock = true
         }
 
-        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters
+        // Fix,Provider,LatitudeDegrees,LongitudeDegrees,AltitudeMeters,SpeedMps,AccuracyMeters,BearingDegrees,UnixTimeMillis,SpeedAccuracyMps,BearingAccuracyDegrees,elapsedRealtimeNanos,VerticalAccuracyMeters,MockLocation
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             assertEquals(
                 "Fix,test,45.34567899,12.45678901,0.0,0.0,0.0,0.0,12345,,,0,,1",

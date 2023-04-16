@@ -40,7 +40,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.android.gpstest.view.VerticalTextView
+                <com.android.gpstest.library.view.VerticalTextView
                     android:id="@+id/error_y_axis_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.android.gpstest.view.VerticalTextView
+                <com.android.gpstest.library.view.VerticalTextView
                     android:id="@+id/vert_error_y_axis_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

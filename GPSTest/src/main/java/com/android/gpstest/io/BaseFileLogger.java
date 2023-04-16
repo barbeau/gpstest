@@ -80,7 +80,7 @@ public abstract class BaseFileLogger implements FileLogger {
         boolean isNewFile = false;
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            baseDirectory = new File(Environment.getExternalStorageDirectory(), FILE_PREFIX);
+            baseDirectory = new File(context.getExternalFilesDir(null), FILE_PREFIX);
             baseDirectory.mkdirs();
         } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             logError("Cannot write to external storage.");

@@ -46,11 +46,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
 import com.android.gpstest.chart.DistanceValueFormatter;
-import com.android.gpstest.model.AvgError;
-import com.android.gpstest.model.MeasuredError;
-import com.android.gpstest.util.IOUtils;
-import com.android.gpstest.util.MathUtils;
-import com.android.gpstest.util.PreferenceUtils;
+import com.android.gpstest.library.model.AvgError;
+import com.android.gpstest.library.model.MeasuredError;
+import com.android.gpstest.library.util.IOUtils;
+import com.android.gpstest.library.util.MathUtils;
+import com.android.gpstest.library.util.PreferenceUtils;
+import com.android.gpstest.library.util.LibUIUtils;
 import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -121,16 +122,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     // Set default text size and align units properly
                     mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
                     mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
-                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+                    LibUIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
+                    LibUIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
                 } else {
                     // No altitude provided - Hide vertical error chart card
                     mVerticalErrorCardView.setVisibility(GONE);
                     // Set default text size and align units properly
                     mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
                     mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-                    UIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
-                    UIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+                    LibUIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
+                    LibUIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
                 }
 
                 // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
@@ -180,7 +181,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     mErrorUnit.setText(Application.Companion.getApp().getString(R.string.meters_abbreviation));
                 } else {
                     // Feet
-                    mErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, UIUtils.toFeet(error.getError())));
+                    mErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(error.getError())));
                     mErrorUnit.setText(Application.Companion.getApp().getString(R.string.feet_abbreviation));
                 }
             }
@@ -194,7 +195,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     mVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, Math.abs(error.getVertError())));
                 } else {
                     // Feet
-                    mVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, UIUtils.toFeet(Math.abs(error.getVertError()))));
+                    mVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(Math.abs(error.getVertError()))));
                 }
                 mVerticalErrorCardView.setVisibility(VISIBLE);
             } else {
@@ -220,7 +221,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     mAvgErrorUnit.setText(Application.Companion.getApp().getString(R.string.meters_abbreviation));
                 } else {
                     // Feet
-                    mAvgErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, UIUtils.toFeet(avgError.getAvgError())));
+                    mAvgErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgError())));
                     mAvgErrorUnit.setText(Application.Companion.getApp().getString(R.string.feet_abbreviation));
                 }
                 mAvgErrorLabel.setText(Application.Companion.getApp().getString(R.string.avg_error_label, avgError.getCount()));
@@ -231,7 +232,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                     mAvgVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, avgError.getAvgVertAbsError()));
                 } else {
-                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, UIUtils.toFeet(avgError.getAvgVertAbsError())));
+                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgVertAbsError())));
                 }
             } else {
                 // Hide any vertical error indication
@@ -337,9 +338,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         } else {
             Location groundTruth;
             // If a SHOW_RADAR or geo: URI was passed via an Intent (e.g., from BenchMap or OsmAnd app), use that as ground truth
-            if (IOUtils.isShowRadarIntent(activity.getIntent()) || IOUtils.isGeoIntent(activity.getIntent())) {
-                groundTruth = IOUtils.getLocationFromIntent(activity.getIntent());
-                if (IOUtils.isGeoIntent(activity.getIntent())) {
+            if (IOUtils.isShowRadarIntent(Application.Companion.getApp(), activity.getIntent()) || IOUtils.isGeoIntent(Application.Companion.getApp(), activity.getIntent())) {
+                groundTruth = IOUtils.getLocationFromIntent(Application.Companion.getApp(), activity.getIntent());
+                if (IOUtils.isGeoIntent(Application.Companion.getApp(), activity.getIntent())) {
                     groundTruth.removeAltitude(); // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
                 }
                 if (groundTruth != null) {
@@ -351,10 +352,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             } else if (Application.Companion.getPrefs().contains(GROUND_TRUTH_LAT)) {
                 // If there is a saved ground truth value from previous executions, start test using that
                 groundTruth = new Location("ground_truth");
-                groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN));
-                groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN));
+                groundTruth.setLatitude(PreferenceUtils.getDouble(GROUND_TRUTH_LAT, Double.NaN, Application.Companion.getPrefs()));
+                groundTruth.setLongitude(PreferenceUtils.getDouble(GROUND_TRUTH_LONG, Double.NaN, Application.Companion.getPrefs()));
                 if (Application.Companion.getPrefs().contains(GROUND_TRUTH_ALT)) {
-                    groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN));
+                    groundTruth.setAltitude(PreferenceUtils.getDouble(GROUND_TRUTH_ALT, Double.NaN, Application.Companion.getPrefs()));
                 }
                 restoreGroundTruth(groundTruth);
             }
@@ -418,12 +419,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mViewModel.setBenchmarkCardCollapsed(true);
         mViewModel.setAllowGroundTruthEdit(false);
 
-        PreferenceUtils.saveDouble(GROUND_TRUTH_LAT, groundTruthLocation.getLatitude());
-        PreferenceUtils.saveDouble(GROUND_TRUTH_LONG, groundTruthLocation.getLongitude());
+        PreferenceUtils.saveDouble(GROUND_TRUTH_LAT, groundTruthLocation.getLatitude(), Application.Companion.getPrefs());
+        PreferenceUtils.saveDouble(GROUND_TRUTH_LONG, groundTruthLocation.getLongitude(), Application.Companion.getPrefs());
         if (groundTruthLocation.hasAltitude()) {
-            PreferenceUtils.saveDouble(GROUND_TRUTH_ALT, groundTruthLocation.getAltitude());
+            PreferenceUtils.saveDouble(GROUND_TRUTH_ALT, groundTruthLocation.getAltitude(), Application.Companion.getPrefs());
         } else {
-            PreferenceUtils.remove(GROUND_TRUTH_ALT);
+            PreferenceUtils.remove(GROUND_TRUTH_ALT, Application.Companion.getPrefs());
         }
     }
 
@@ -595,8 +596,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             horAccuracy = location.getAccuracy();
         } else {
             // Feet
-            horError = (float) UIUtils.toFeet(error.getError());
-            horAccuracy = (float) UIUtils.toFeet(location.getAccuracy());
+            horError = (float) LibUIUtils.toFeet(error.getError());
+            horAccuracy = (float) LibUIUtils.toFeet(location.getAccuracy());
         }
         addErrorToGraph(index, mErrorChart, horError, horAccuracy);
 
@@ -607,14 +608,14 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 vertError = Math.abs(error.getVertError());
             } else {
                 // Feet
-                vertError = UIUtils.toFeet(Math.abs(error.getVertError()));
+                vertError = LibUIUtils.toFeet(Math.abs(error.getVertError()));
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                     vertAccuracy = location.getVerticalAccuracyMeters();
                 } else {
                     // Feet
-                    vertAccuracy = (float) UIUtils.toFeet(location.getVerticalAccuracyMeters());
+                    vertAccuracy = (float) LibUIUtils.toFeet(location.getVerticalAccuracyMeters());
                 }
             }
 

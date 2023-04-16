@@ -41,18 +41,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.android.gpstest.Application.Companion.app
+import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
-import com.android.gpstest.data.FixState
-import com.android.gpstest.model.*
-import com.android.gpstest.ui.SignalInfoViewModel
-import com.android.gpstest.util.CarrierFreqUtils
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtils
-import com.android.gpstest.util.PreferenceUtils.gnssFilter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.model.*
+import com.android.gpstest.library.ui.SignalInfoViewModel
+import com.android.gpstest.library.util.CarrierFreqUtils
+import com.android.gpstest.library.util.MathUtils
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
 
-@ExperimentalCoroutinesApi
-@ExperimentalFoundationApi
 @Composable
 fun StatusScreen(viewModel: SignalInfoViewModel) {
     //
@@ -62,7 +61,9 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val ttff: String by viewModel.ttff.observeAsState("")
     val altitudeMsl: Double by viewModel.altitudeMsl.observeAsState(Double.NaN)
     val dop: DilutionOfPrecision by viewModel.dop.observeAsState(DilutionOfPrecision(Double.NaN,Double.NaN,Double.NaN))
-    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(SatelliteMetadata())
+    val satelliteMetadata: SatelliteMetadata by viewModel.filteredSatelliteMetadata.observeAsState(
+        SatelliteMetadata()
+    )
     val fixState: FixState by viewModel.fixState.observeAsState(FixState.NotAcquired)
     val gnssStatuses: List<SatelliteStatus> by viewModel.filteredGnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.filteredSbasStatuses.observeAsState(emptyList())
@@ -81,8 +82,8 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 dop,
                 satelliteMetadata,
                 fixState)
-            if (gnssFilter().isNotEmpty()) {
-                Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter() }
+            if (gnssFilter(app, prefs).isNotEmpty()) {
+                Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter(app, prefs) }
             }
             GnssStatusCard(gnssStatuses)
             SbasStatusCard(sbasStatuses)
@@ -112,13 +113,14 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
         )
         Text(
             text = buildAnnotatedString {
+                val string = stringResource(id = R.string.filter_showall)
                 withStyle(
                     style = SpanStyle(
                         color = MaterialTheme.colors.primary,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    append(stringResource(id = R.string.filter_showall))
+                    append(string)
                 }
             },
             fontStyle = FontStyle.Italic,
@@ -189,7 +191,7 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val small = Modifier.defaultMinSize(minWidth = 36.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
         Svid(satelliteStatus, small)
@@ -375,21 +377,21 @@ fun StatusRowHeader(isGnss: Boolean) {
             .padding(top = 5.dp, start = 16.dp, end = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val small = Modifier.defaultMinSize(minWidth = 36.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width))
-        val large = Modifier.defaultMinSize(minWidth = 50.dp)
+        val small = Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_small))
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_medium))
+        val large = Modifier.defaultMinSize(dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_large))
 
-        StatusLabel(R.string.id_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.id_column_label, small)
         if (isGnss) {
-            StatusLabel(R.string.gnss_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.gnss_flag_image_label, large)
         } else {
-            StatusLabel(R.string.sbas_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.sbas_flag_image_label, large)
         }
-        StatusLabel(R.string.cf_column_label, small)
-        StatusLabel(R.string.gps_cn0_column_label, medium)
-        StatusLabel(R.string.flags_aeu_column_label, medium)
-        StatusLabel(R.string.elevation_column_label, medium)
-        StatusLabel(R.string.azimuth_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.cf_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.gps_cn0_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.flags_aeu_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.elevation_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.azimuth_column_label, medium)
     }
 }
 

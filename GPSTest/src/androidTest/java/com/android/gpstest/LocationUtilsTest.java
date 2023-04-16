@@ -20,7 +20,7 @@ import android.content.res.Resources;
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 
-import com.android.gpstest.util.LocationUtils;
+import com.android.gpstest.library.util.LocationUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

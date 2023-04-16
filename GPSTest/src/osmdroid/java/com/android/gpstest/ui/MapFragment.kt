@@ -32,14 +32,15 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application
 import com.android.gpstest.R
-import com.android.gpstest.data.LocationRepository
+import com.android.gpstest.library.data.LocationRepository
+import com.android.gpstest.library.util.MathUtils
+import com.android.gpstest.library.util.PreferenceUtil
+import com.android.gpstest.library.util.PreferenceUtil.newStopTrackingListener
 import com.android.gpstest.map.MapConstants
 import com.android.gpstest.map.MapViewModelController
 import com.android.gpstest.map.MapViewModelController.MapInterface
 import com.android.gpstest.map.OnMapClickListener
 import com.android.gpstest.util.MapUtils
-import com.android.gpstest.util.MathUtils
-import com.android.gpstest.util.PreferenceUtil.newStopTrackingListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -59,6 +60,7 @@ import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import java.io.UnsupportedEncodingException
 import javax.inject.Inject
+import org.osmdroid.views.overlay.CopyrightOverlay
 
 @AndroidEntryPoint
 class MapFragment : Fragment(), MapInterface {
@@ -87,9 +89,8 @@ class MapFragment : Fragment(), MapInterface {
 
     // Preference listener that will cancel the above flows when the user turns off tracking via UI
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        newStopTrackingListener { onGnssStopped() }
+        newStopTrackingListener ({ onGnssStopped() }, Application.prefs)
 
-    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -107,7 +108,10 @@ class MapFragment : Fragment(), MapInterface {
         map.controller.setZoom(3.0)
         rotationGestureOverlay = RotationGestureOverlay(map)
         rotationGestureOverlay!!.isEnabled = true
-        map.overlays.add(rotationGestureOverlay)
+        map.overlays.apply {
+            add(rotationGestureOverlay)
+            add(CopyrightOverlay(inflater.context))
+        }
         lastLocation = null
         mapController = MapViewModelController(activity, this)
         mapController!!.restoreState(savedInstanceState, arguments, groundTruthMarker == null)
@@ -230,6 +234,10 @@ class MapFragment : Fragment(), MapInterface {
                             + "/" + MapTileIndex.getX(pMapTileIndex)
                             + "/" + MapTileIndex.getY(pMapTileIndex)
                             + "@2x.jpg?key=" + key)
+                }
+
+                override fun getCopyrightNotice(): String {
+                    return "© MapTiler © OpenStreetMap contributors"
                 }
             }
             map!!.setTileSource(tileSource)

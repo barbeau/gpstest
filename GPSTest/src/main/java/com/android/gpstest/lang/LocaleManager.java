@@ -17,7 +17,7 @@ import android.preference.PreferenceManager;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
-import com.android.gpstest.util.LocaleUtils;
+import com.android.gpstest.library.util.LocaleUtils;
 
 import java.util.Locale;
 

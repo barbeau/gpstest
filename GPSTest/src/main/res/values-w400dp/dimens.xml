@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Status view (used for screens with 400 width and higher (e.g., Samsung Galaxy S8+) -->
-    <dimen name="min_column_width">50dp</dimen>
-    <dimen name="status_text_size">14sp</dimen>
-</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <dimen name="min_column_width_small">5dp</dimen>
+    <dimen name="min_column_width_large">8dp</dimen>
+</resources>
