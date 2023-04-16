@@ -211,6 +211,13 @@ public class CarrierFreqUtils {
             } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
                 return "L5";
             }
+		} else if (svid == 122) {
+            // SouthPAN (Australia/New Zealand)
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
+                return "L1";
+            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
+                return "L5";
+            }       
         } else if (svid == 129 || svid == 137 || svid == 139) {
             // MSAS (Japan) - https://gssc.esa.int/navipedia/index.php/MSAS_Space_Segment
             if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
