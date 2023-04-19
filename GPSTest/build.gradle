@@ -189,7 +189,7 @@ dependencies {
     // Calculating offset for camera target in map view (Google flavor only)
     googleImplementation 'com.google.maps.android:android-maps-utils:2.2.6'
     // Use suspend coroutines instead of callbacks (Google flavor only)
-    implementation 'com.google.maps.android:maps-ktx:3.1.0'
+    googleImplementation 'com.google.maps.android:maps-ktx:3.1.0'
     // OSM Droid (fdroid flavor only)
     osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.11'
 
