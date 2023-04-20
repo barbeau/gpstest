@@ -47,8 +47,8 @@
     <string name="gps_num_sats_value">%1$d/%2$d/%3$d</string>
     <string name="pdop_value">%1$.1f</string>
     <string name="hvdop_value">%1$.1f/%2$.1f</string>
-    <string name="gps_elevation_column_value">%1$.1f\u00B0</string>
-    <string name="gps_azimuth_column_value">%1$.1f\u00B0</string>
+    <string name="gps_elevation_column_value">%1$.0f\u00B0</string>
+    <string name="gps_azimuth_column_value">%1$.0f\u00B0</string>
     <string name="feet_abbreviation">ft</string>
     <string name="meters_abbreviation">m</string>
     <string name="sbas">SBAS</string>
