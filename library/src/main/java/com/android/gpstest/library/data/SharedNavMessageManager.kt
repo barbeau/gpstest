@@ -68,6 +68,7 @@ class SharedNavMessageManager constructor(
                     trySend(event)
                 }
 
+                @Deprecated("Deprecated in Java")
                 override fun onStatusChanged(status: Int) {
                     // These status messages are deprecated on Android S and higher and should not be used
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

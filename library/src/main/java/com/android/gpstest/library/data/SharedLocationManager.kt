@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Bundle
 import android.util.Log
 import com.android.gpstest.library.util.PreferenceUtil.minDistance
 import com.android.gpstest.library.util.PreferenceUtil.minTimeMillis
@@ -53,10 +54,25 @@ class SharedLocationManager constructor(
     @SuppressLint("MissingPermission")
     private val _locationUpdates = callbackFlow {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val callback = LocationListener { location ->
-            //Log.d(TAG, "New location: ${location.toNotificationTitle()}")
-            // Send the new location to the Flow observers
-            trySend(location)
+        // Implementation of unused methods is still required for API Level 30 and lower (#627)
+        @Suppress("RedundantOverride") val callback = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                //Log.d(TAG, "New location: ${location.toNotificationTitle()}")
+                // Send the new location to the Flow observers
+                trySend(location)
+            }
+            override fun onProviderDisabled(provider: String) {
+                super.onProviderDisabled(provider)
+            }
+
+            override fun onProviderEnabled(provider: String) {
+                super.onProviderEnabled(provider)
+            }
+
+            @Deprecated("Deprecated in Java")
+            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+                super.onStatusChanged(provider, status, extras)
+            }
         }
 
         if (!context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION) ||

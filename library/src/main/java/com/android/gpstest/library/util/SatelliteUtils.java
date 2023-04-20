@@ -103,6 +103,19 @@ public class SatelliteUtils {
     }
 
     /**
+     * Returns true if this device supports the Sensor.TYPE_ORIENTATION sensor, false if it
+     * doesn't
+     *
+     * @return true if this device supports the Sensor.TYPE_ORIENTATION sensor, false if it
+     * doesn't
+     */
+    public static boolean isOrientationSensorSupported(Context context) {
+        SensorManager sensorManager = (SensorManager) context
+            .getSystemService(Context.SENSOR_SERVICE);
+        return sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION) != null;
+    }
+
+    /**
      * Returns true if the platform supports providing carrier frequencies for each satellite, false if it does not
      *
      * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not

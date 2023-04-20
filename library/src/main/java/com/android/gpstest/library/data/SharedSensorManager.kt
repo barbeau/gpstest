@@ -134,7 +134,7 @@ class SharedSensorManager constructor(
                     vectorSensor,
                     SensorManager.SENSOR_DELAY_FASTEST
                 )
-            } else {
+            } else if (SatelliteUtils.isOrientationSensorSupported(context)) {
                 // Use the legacy orientation sensors
                 val sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
                 sensorManager.registerListener(
@@ -142,9 +142,13 @@ class SharedSensorManager constructor(
                     sensor,
                     SensorManager.SENSOR_DELAY_GAME
                 )
+            } else {
+                // No sensors to observe
+                Log.e(TAG, "Device doesn't support sensor TYPE_ROTATION_VECTOR or TYPE_ORIENTATION")
+                close()
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in location flow: $e")
+            Log.e(TAG, "Exception in sensor flow: $e")
             close(e) // in case of exception, close the Flow
         }
 
