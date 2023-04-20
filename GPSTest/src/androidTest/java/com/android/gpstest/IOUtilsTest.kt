@@ -216,6 +216,9 @@ class IOUtilsTest {
         val invalidGeoUri2 = "http://not,a,geo,uri"
         val result7 = IOUtils.getLocationFromGeoUri(getTargetContext(),invalidGeoUri2)
         assertNull(result7)
+
+        assertNull(IOUtils.getLocationFromGeoUri(getTargetContext(), "geo:,43.06480"))
+        assertNull(IOUtils.getLocationFromGeoUri(getTargetContext(), "geo:37.786971,"))
     }
 
     /**

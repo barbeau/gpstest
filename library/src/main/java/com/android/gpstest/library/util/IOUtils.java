@@ -189,6 +189,9 @@ public class IOUtils {
         String removedQuery = removedPrefix.split("\\?")[0];
         String removedMetadata = removedQuery.split(";")[0];
         String[] coords = removedMetadata.split(",");
+        if (coords.length < 2 || TextUtils.isEmpty(coords[0]) || TextUtils.isEmpty(coords[1])) {
+            return null;
+        }
         if (isValidLatitude(Double.parseDouble(coords[0])) && isValidLongitude(Double.parseDouble(coords[1]))) {
             l = new Location("Geo URI");
             l.setLatitude(Double.parseDouble(coords[0]));
