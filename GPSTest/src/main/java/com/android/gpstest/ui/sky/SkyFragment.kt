@@ -76,7 +76,7 @@ class SkyFragment : Fragment() {
 
     // Binding variables
     private var _binding: GpsSkyBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
     private lateinit var legendLines: List<View>
     private lateinit var legendShapes: List<ImageView>
     private lateinit var meter: GpsSkySignalMeterBinding
@@ -110,9 +110,9 @@ class SkyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = GpsSkyBinding.inflate(inflater, container, false)
-        val v = binding.root
-        meter = binding.skyCn0IndicatorCard.gpsSkySignalMeter
-        legend = binding.skyLegendCard
+        val v = binding!!.root
+        meter = binding!!.skyCn0IndicatorCard.gpsSkySignalMeter
+        legend = binding!!.skyLegendCard
         
         initFilterView(viewModel)
 
@@ -215,14 +215,14 @@ class SkyFragment : Fragment() {
     }
 
     private fun updateGnssStatus(statuses: List<SatelliteStatus>) {
-        binding.skyView.setStatus(statuses)
+        binding?.skyView?.setStatus(statuses)
         updateCn0AvgMeterText()
         updateCn0Avgs()
     }
 
     @ExperimentalCoroutinesApi
     private fun onGnssStarted() {
-        binding.skyView.setStarted()
+        binding?.skyView?.setStarted()
         // Activity or service is observing updates, so observe here too
         observeGnssStatus()
         observeGnssStates()
@@ -235,8 +235,8 @@ class SkyFragment : Fragment() {
         sensorFlow?.cancel()
         gnssFlow?.cancel()
 
-        binding.skyView.setStopped()
-        binding.skyLock.visibility = View.GONE
+        binding?.skyView?.setStopped()
+        binding?.skyLock?.visibility = View.GONE
     }
 
     private fun onOrientationChanged(orientation: Double, tilt: Double) {
@@ -245,12 +245,12 @@ class SkyFragment : Fragment() {
         if (!userVisibleHint) {
             return
         }
-        binding.skyView.onOrientationChanged(orientation, tilt)
+        binding?.skyView?.onOrientationChanged(orientation, tilt)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun initFilterView(viewModel: SignalInfoViewModel) {
-        binding.filterView.apply {
+        binding!!.filterView.apply {
             // Dispose the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -336,7 +336,7 @@ class SkyFragment : Fragment() {
     }
 
     private fun updateCn0AvgMeterText() {
-        binding.skyCn0IndicatorCard.gpsSkySignalTitle.apply {
+        binding?.skyCn0IndicatorCard?.gpsSkySignalTitle?.apply {
             skyLegendCn0Title.setText(R.string.gps_cn0_column_label)
             skyLegendCn0Units.setText(R.string.sky_legend_cn0_units)
         }
@@ -350,6 +350,9 @@ class SkyFragment : Fragment() {
     }
 
     private fun updateCn0Avgs() {
+        if (binding == null) {
+            return
+        }
         // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
         val meterWidthPx = (Application.app.resources.getDimension(R.dimen.cn0_meter_width)
             .toInt()
@@ -366,18 +369,18 @@ class SkyFragment : Fragment() {
 
         // Calculate normal offsets for avg in view satellite C/N0 value TextViews
         var leftInViewTextViewMarginPx: Int? = null
-        if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
+        if (MathUtils.isValidFloat(binding!!.skyView.cn0InViewAvg)) {
             leftInViewTextViewMarginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(
-                binding.skyView.cn0InViewAvg,
+                binding!!.skyView.cn0InViewAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
         }
 
         // Calculate normal offsets for avg used satellite C/N0 value TextViews
         var leftUsedTextViewMarginPx: Int? = null
-        if (MathUtils.isValidFloat(binding.skyView.cn0UsedAvg)) {
+        if (MathUtils.isValidFloat(binding!!.skyView.cn0UsedAvg)) {
             leftUsedTextViewMarginPx = LibUIUtils.cn0ToTextViewLeftMarginPx(
-                binding.skyView.cn0UsedAvg,
+                binding!!.skyView.cn0UsedAvg,
                 minTextViewMarginPx, maxTextViewMarginPx
             )
         }
@@ -397,12 +400,12 @@ class SkyFragment : Fragment() {
         val pTopBottom = LibUIUtils.dpToPixels(Application.app, 4f)
 
         // Set avg C/N0 of satellites in view of device
-        if (MathUtils.isValidFloat(binding.skyView.cn0InViewAvg)) {
+        if (MathUtils.isValidFloat(binding!!.skyView.cn0InViewAvg)) {
             meter.cn0TextInView.cn0TextInView.text =
-                String.format("%.1f", binding.skyView.cn0InViewAvg)
+                String.format("%.1f", binding!!.skyView.cn0InViewAvg)
 
             // Set color of TextView
-            val color = binding.skyView.getSatelliteColor(binding.skyView.cn0InViewAvg)
+            val color = binding!!.skyView.getSatelliteColor(binding!!.skyView.cn0InViewAvg)
             val background = ContextCompat.getDrawable(
                 Application.app,
                 R.drawable.cn0_round_corner_background_in_view
@@ -447,7 +450,7 @@ class SkyFragment : Fragment() {
 
             // Set position and visibility of indicator
             val leftIndicatorMarginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(
-                binding.skyView.cn0InViewAvg,
+                binding!!.skyView.cn0InViewAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
 
@@ -471,10 +474,10 @@ class SkyFragment : Fragment() {
         }
 
         // Set avg C/N0 of satellites used in fix
-        if (MathUtils.isValidFloat(binding.skyView.cn0UsedAvg)) {
-            meter.cn0TextUsed.cn0TextUsed.text = String.format("%.1f", binding.skyView.cn0UsedAvg)
+        if (MathUtils.isValidFloat(binding!!.skyView.cn0UsedAvg)) {
+            meter.cn0TextUsed.cn0TextUsed.text = String.format("%.1f", binding!!.skyView.cn0UsedAvg)
             // Set color of TextView
-            val color = binding.skyView.getSatelliteColor(binding.skyView.cn0UsedAvg)
+            val color = binding!!.skyView.getSatelliteColor(binding!!.skyView.cn0UsedAvg)
             val background =
                 ContextCompat.getDrawable(Application.app, usedCn0Background) as LayerDrawable?
 
@@ -511,7 +514,7 @@ class SkyFragment : Fragment() {
 
             // Set position and visibility of indicator
             val leftMarginPx = LibUIUtils.cn0ToIndicatorLeftMarginPx(
-                binding.skyView.cn0UsedAvg,
+                binding!!.skyView.cn0UsedAvg,
                 minIndicatorMarginPx, maxIndicatorMarginPx
             )
 
@@ -571,11 +574,11 @@ class SkyFragment : Fragment() {
     }
 
     private fun showHaveFix() {
-        LibUIUtils.showViewWithAnimation(binding.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
+        binding?.let { LibUIUtils.showViewWithAnimation(it.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS) }
     }
 
     private fun showLostFix() {
-        LibUIUtils.hideViewWithAnimation(binding.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS)
+        binding?.let { LibUIUtils.hideViewWithAnimation(it.skyLock, LibUIUtils.ANIMATION_DURATION_SHORT_MS) }
     }
 
     companion object {
