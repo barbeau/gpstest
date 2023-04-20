@@ -64,6 +64,8 @@ public class SatelliteUtils {
             case SBAS:
                 if (svid == 120) {
                     return SatelliteName.INMARSAT_3F2;
+                } else if (svid == 122) {
+                    return SatelliteName.INMARSAT_4F1;
                 } else if (svid == 123) {
                     return SatelliteName.ASTRA_5B;
                 } else if (svid == 126) {

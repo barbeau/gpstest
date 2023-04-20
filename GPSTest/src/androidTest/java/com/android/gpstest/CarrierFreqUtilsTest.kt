@@ -644,6 +644,41 @@ class CarrierFreqUtilsTest {
 
       label = CarrierFreqUtils.getCarrierFrequencyLabel(sdcm125L5)
       assertEquals("L5", label)
+	  
+        // INMARSAT_4F1 (SBAS)
+
+        // SouthPAN - ID 122 L1
+        val southpan122L1 = SatelliteStatus(122,
+                GnssType.SBAS,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        southpan122L1.hasCarrierFrequency = true
+        southpan122L1.carrierFrequencyHz = 1575420000.0
+        southpan122L1.sbasType = SbasType.SOUTHPAN
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(southpan122L1)
+        assertEquals("L1", label)
+
+        // SouthPAN - ID 122 L5
+        val southpan122L5 = SatelliteStatus(122,
+                GnssType.SBAS,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        southpan122L5.hasCarrierFrequency = true
+        southpan122L5.carrierFrequencyHz = 1176450000.0
+        southpan122L5.sbasType = SbasType.SOUTHPAN
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(southpan122L5)
+        assertEquals("L5", label)	  
+	  
 
         // Test variations on the "same" numbers to make sure floating point equality works
         val gpsL1variation = SatelliteStatus(1,

@@ -149,6 +149,7 @@
     <string name="sdcm_content_description">SDCM</string>
     <string name="snas_content_description">SNAS</string>
     <string name="saccsa_content_description">SACCSA</string>
+    <string name="southpan_content_description">SouthPAN</string>    
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
@@ -193,6 +194,7 @@
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
     <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
+    <string name="sky_legend_shape_southpan">SouthPAN (Australia / New Zealand)</string>
 
     <string name="sky_legend_shape_availability_title">Signal Availability</string>
     <string name="sky_legend_shape_not_in_view">Not in view of device</string>
@@ -208,6 +210,7 @@
     <string name="japan_flag">Japan flag</string>
     <string name="india_flag">India flag</string>
     <string name="icao_flag">ICAO flag</string>
+    <string name="southpan_flag">SouthPAN flag</string>
 
     <string name="circle">circle</string>
     <string name="square">square</string>
@@ -457,7 +460,7 @@
         - Pentagons\n&#8226;\u0020
         <b>IRNSS/NavIC (India)</b>
         - Ovals\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA)</b>
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA, SouthPAN)</b>
         - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
@@ -485,6 +488,7 @@
         &#8226;\u0020 <b>Mike Lockwood</b> - original developer for v1.x\n
         &#8226;\u0020 <b>Sean Barbeau</b> - developer for v2.x and higher\n
         &#8226;\u0020 GPSTest launcher icon is derived from the Android Material Design "satellite" icon, licensed by Google under Apache v2.0.  Other Google material design icons are also used under Apache v2.0. QR code icon by Austin Andrews from https://materialdesignicons.com/icon/qrcode.\n
+        &#8226;\u0020 Land Information New Zealand has approved use of the SouthPAN logo for the GPSTest open-source application. For further information, please contact southpan@linz.govt.nz \n
         &#8226;\u0020 Chinese translation provided by wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 German translation provided by SIRSteiner\n
         &#8226;\u0020 Dutch translation provided by Dennis Dolman, Meteor0id\n
