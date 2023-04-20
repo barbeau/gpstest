@@ -48,7 +48,9 @@ class ShareDialogFragment : DialogFragment() {
                 .setNeutralButton(R.string.main_help_close) { dialog, _ -> }
         shareCollectionAdapter = ShareCollectionAdapter(this)
         shareCollectionAdapter.setArguments(arguments)
-        shareCollectionAdapter.setListener(listener)
+        if (this::listener.isInitialized) {
+            shareCollectionAdapter.setListener(listener)
+        }
         viewPager = view.findViewById(R.id.pager)
         viewPager.offscreenPageLimit = 2
         viewPager.adapter = shareCollectionAdapter
@@ -80,6 +82,9 @@ class ShareDialogFragment : DialogFragment() {
 
     fun setListener(listener: Listener) {
         this.listener = listener
+        if (this::shareCollectionAdapter.isInitialized) {
+            shareCollectionAdapter.setListener(listener)
+        }
     }
 }
 
