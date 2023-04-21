@@ -263,6 +263,10 @@
         - The filter feature now works on the Status AND Sky screens!\n&#8226;\u0020
         <b>Themed icon support (Android 13 and up)</b>
         - No more disruptions to your otherwise color-perfect home screen :).\n&#8226;\u0020
+        <b>Log files available in \"Downloads/GPSTest\" directory (Android 11 and up)</b>
+        - To comply with new Android permission requirements.\n&#8226;\u0020
+        <b>Support for SouthPAN SBAS</b>
+        - Thanks Dave Collett!\n&#8226;\u0020
         <b>Bug fixes</b>
         - See https://bit.ly/gpstest-releases
     </string>
