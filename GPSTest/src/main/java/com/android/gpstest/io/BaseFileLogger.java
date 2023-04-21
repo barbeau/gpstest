@@ -1,17 +1,24 @@
 package com.android.gpstest.io;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Downloads;
 import android.util.Log;
 import android.widget.Toast;
-
+import androidx.annotation.RequiresApi;
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,6 +30,8 @@ public abstract class BaseFileLogger implements FileLogger {
 
     protected final String TAG = this.getClass().getName();
     protected static final String FILE_PREFIX = "gnss_log";
+
+    protected static final String DIRECTORY = "Download/GPSTest";
 
     protected final Context context;
 
@@ -177,6 +186,10 @@ public abstract class BaseFileLogger implements FileLogger {
                 return;
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && file != null) {
+            copyFileToDownloads(file);
+        }
     }
 
     protected void logException(String errorMessage, Exception e) {
@@ -187,5 +200,22 @@ public abstract class BaseFileLogger implements FileLogger {
     protected void logError(String errorMessage) {
         Log.e(TAG, errorMessage);
         Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    protected void copyFileToDownloads(File fileToCopy) {
+        ContentResolver contentResolver = context.getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Downloads.DISPLAY_NAME, fileToCopy.getName());
+        contentValues.put(Downloads.RELATIVE_PATH, DIRECTORY);
+        Uri fileUri =
+            contentResolver.insert(
+                MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), contentValues);
+        try (OutputStream outputStream =
+            contentResolver.openOutputStream(fileUri)) {
+            Files.copy(fileToCopy.toPath(), outputStream);
+        } catch (IOException e) {
+            Log.e(TAG, "Error while writing to Downloads folder:", e);
+        }
     }
 }

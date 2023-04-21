@@ -12,14 +12,14 @@ Steps to log and view data:
 1. In the GPSTest app, go to "Settings", scroll down, tap on "Logging and Output" and under "File Output" make sure the box is checked for each data output type you'd like to see (see next sections).
 1. You can share CSV and JSON log files via the "Share" button in the top action bar of the app, or by copying them off internal memory or SD card over USB.
 
-*Note: The file output from GPSTest is buffered, so if you manually copy the file off the device while the app is running you can end up with a partial file if the buffer hasn't been fully flushed. You can force the flush of the buffer by killing the app (e.g., via the Back button), and then if you refresh your file view you should get the complete file with all your data.*
+*Note: The file output from GPSTest is buffered, so if you manually copy the file off the device while the app is running you can end up with a partial file if the buffer hasn't been fully flushed. You can force the flush of the buffer by tapping the "Share" button in the app and sharing the file or the "Stop" button in the notification, and then if you refresh your file view you should get the complete file with all your data.*
 
 #### Data output - CSV
 
 Here are the details of file logging:
 * CSV format - Same file format as the Google [GPS Measurement Tools (GNSS Logger) project](https://github.com/google/gps-measurement-tools) so you can use MATLAB tools under that project to [analyze the data](https://github.com/google/gps-measurement-tools#to-process-a-log-file-you-collected-from-gnsslogger).
-* Files are saved to your Android device storage under the `gnss_log` directory.
-* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.txt`). If you end the app (e.g., hit back button) and restart it, another file gets created.
+* Files are saved to your Android device storage under the `Downloads/GPSTest` directory for Android 11 and up, and in the `gnss_log` directory for Android 10 and under.
+* After you've enabled logging via Settings, each time you start the app a new file will be created named with the date and time (e.g., `gnss_log_2019_09_11_13_09_50.txt`). If you tap on the notification "Stop" button or share the file, another file gets created.
 * Each row of the file is prefixed with a string designating the data type:
     * `Raw` - Raw GNSS measurements
     * `Fix` - Location fix information
@@ -211,7 +211,7 @@ Here's a screenshot from the GPS Measurement Tools desktop software:
 
 ![image](https://user-images.githubusercontent.com/928045/64804800-844fae00-d55d-11e9-8212-b0ef65885dc7.png)
 
-## Accessing the system log via Android Studio
+## Accessing the real-time output via Android Studio
 
 You can view the data output from GPSTest by using Android Monitor, which is included with Android Studio.
 
