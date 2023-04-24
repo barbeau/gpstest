@@ -62,8 +62,8 @@
     <string name="sky_legend_cn0_units">(dB-Hz)</string>
 
     <!-- Values and units display - Accuracy View -->
-    <string name="benchmark_lat_long">%1$.7f</string>
-    <string name="benchmark_alt">%1$.1f</string>
+    <string name="benchmark_lat_long">%1$.10f</string>
+    <string name="benchmark_alt">%1$.4f</string>
     <string name="benchmark_error">%1$.2f</string>
     <string name="benchmark_header_error_divider">/</string>
 
