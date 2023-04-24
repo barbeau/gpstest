@@ -55,34 +55,34 @@ import com.android.gpstest.BuildConfig
 import com.android.gpstest.ForegroundOnlyLocationService
 import com.android.gpstest.ForegroundOnlyLocationService.LocalBinder
 import com.android.gpstest.R
+import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
-import com.android.gpstest.databinding.ActivityMainBinding
 import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.android.gpstest.library.util.*
-import com.android.gpstest.map.MapConstants
-import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
-import com.android.gpstest.ui.sky.SkyFragment
-import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.library.util.PreferenceUtil.darkTheme
 import com.android.gpstest.library.util.PreferenceUtil.isFileLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.minDistance
 import com.android.gpstest.library.util.PreferenceUtil.minTimeMillis
 import com.android.gpstest.library.util.PreferenceUtil.runInBackground
 import com.android.gpstest.library.util.PreferenceUtils.isTrackingStarted
+import com.android.gpstest.map.MapConstants
+import com.android.gpstest.ui.NavigationDrawerFragment.NavigationDrawerCallbacks
+import com.android.gpstest.ui.sky.SkyFragment
+import com.android.gpstest.ui.status.StatusFragment
 import com.android.gpstest.util.BuildUtils
 import com.android.gpstest.util.UIUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.system.exitProcess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     /** Called when the activity is first created.  */
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
-        if (darkTheme(app,Application.prefs)) {
+        if (darkTheme(app, prefs)) {
             setTheme(R.style.AppTheme_Dark_NoActionBar)
             useDarkTheme = true
         }
@@ -165,7 +165,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         saveInstanceState(savedInstanceState)
 
         // Observe stopping location updates from the service
-        Application.prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
+        prefs.registerOnSharedPreferenceChangeListener(stopTrackingListener)
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun maybeRecreateApp() {
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate App
-        if (Application.prefs.contains(getString(R.string.pref_key_language))) {
+        if (prefs.contains(getString(R.string.pref_key_language))) {
             val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language), prefs)
             if (currentLanguage != initialLanguage) {
                 initialLanguage = currentLanguage
@@ -383,7 +383,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             this.useDarkTheme = useDarkTheme
             recreate()
         }
-        val settings = Application.prefs
+        val settings = prefs
         checkKeepScreenOn(settings)
         LibUIUtils.autoShowWhatsNew(prefs, app,this)
     }
@@ -399,7 +399,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun setupStartState(savedInstanceState: Bundle?) {
         // Use "Auto-start GNSS" setting, or existing tracking state (e.g., if service is running)
-        if (Application.prefs.getBoolean(
+        if (prefs.getBoolean(
                 getString(R.string.pref_key_auto_start_gps),
                 true
             ) || isTrackingStarted(prefs)
@@ -435,7 +435,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_PSDS_DATA -> forcePsdsInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_INJECT_TIME_DATA -> forceTimeInjection()
             NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA -> {
-                val prefs = Application.prefs
+                val prefs = prefs
                 if (!prefs.getBoolean(
                         getString(R.string.pref_key_never_show_clear_assist_warning),
                         false
@@ -624,7 +624,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
+                app.getString(R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
@@ -634,7 +634,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_psds),
+                app.getString(R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -650,7 +650,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
+                app.getString(R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
@@ -660,7 +660,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_inject_time),
+                app.getString(R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -682,7 +682,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
+                app.getString(R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
@@ -692,7 +692,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                Application.app.getString(R.string.capability_key_delete_assist),
+                app.getString(R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -907,7 +907,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 prefs
             )
         }
-        val icon = ContextCompat.getDrawable(Application.app, R.drawable.ic_delete)
+        val icon = ContextCompat.getDrawable(app, R.drawable.ic_delete)
         if (icon != null) {
             DrawableCompat.setTint(icon, resources.getColor(R.color.colorPrimary))
         }
