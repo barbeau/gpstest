@@ -52,8 +52,10 @@ private const val TAG = "SharedSensorManager"
 class SharedSensorManager constructor(
     private val prefs: SharedPreferences,
     private val context: Context,
-    externalScope: CoroutineScope
+    externalScope: CoroutineScope,
 ) {
+    private val ROT_VECTOR_SENSOR_DELAY_MICROS = 10 * 1000 // 100Hz updates
+
     // Holds sensor data
     private val rotationMatrix = FloatArray(16)
     private val remappedMatrix = FloatArray(16)
@@ -132,7 +134,7 @@ class SharedSensorManager constructor(
                 sensorManager.registerListener(
                     callback,
                     vectorSensor,
-                    SensorManager.SENSOR_DELAY_FASTEST
+                    ROT_VECTOR_SENSOR_DELAY_MICROS
                 )
             } else if (SatelliteUtils.isOrientationSensorSupported(context)) {
                 // Use the legacy orientation sensors
@@ -140,7 +142,7 @@ class SharedSensorManager constructor(
                 sensorManager.registerListener(
                     callback,
                     sensor,
-                    SensorManager.SENSOR_DELAY_GAME
+                    ROT_VECTOR_SENSOR_DELAY_MICROS
                 )
             } else {
                 // No sensors to observe
