@@ -15,13 +15,11 @@
  */
 package com.android.gpstest
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -46,14 +44,14 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
-import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
+import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.SatelliteGroup
 import com.android.gpstest.library.model.SatelliteMetadata
-import com.android.gpstest.ui.MainActivity
 import com.android.gpstest.library.util.FormatUtils.toNotificationTitle
 import com.android.gpstest.library.util.IOUtils.*
+import com.android.gpstest.library.util.LibUIUtils.toNotificationSummary
 import com.android.gpstest.library.util.PreferenceUtil
 import com.android.gpstest.library.util.PreferenceUtil.injectPsdsWhenLogging
 import com.android.gpstest.library.util.PreferenceUtil.injectTimeWhenLogging
@@ -75,16 +73,15 @@ import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteGroup
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
-import com.android.gpstest.library.util.LibUIUtils.toNotificationSummary
-import com.android.gpstest.library.util.hasPermission
+import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.util.*
+import javax.inject.Inject
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import java.io.File
-import java.util.*
-import javax.inject.Inject
 
 /**
  * Service tracks location, logs to files, and shows a notification to the user.
@@ -460,9 +457,15 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service sensor: orientation ${it.values[0]}, tilt ${it.values[1]}")
-                if (writeOrientationToFile(app, prefs)) {
-                    initLogging()
-                    csvFileLogger.onOrientationChanged(it, System.currentTimeMillis(), SystemClock.elapsedRealtime())
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (writeOrientationToFile(app, prefs)) {
+                        initLogging()
+                        csvFileLogger.onOrientationChanged(
+                            it,
+                            System.currentTimeMillis(),
+                            SystemClock.elapsedRealtime()
+                        )
+                    }
                 }
             }
             .launchIn(lifecycleScope)
