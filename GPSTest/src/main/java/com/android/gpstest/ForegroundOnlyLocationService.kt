@@ -53,8 +53,6 @@ import com.android.gpstest.library.util.FormatUtils.toNotificationTitle
 import com.android.gpstest.library.util.IOUtils.*
 import com.android.gpstest.library.util.LibUIUtils.toNotificationSummary
 import com.android.gpstest.library.util.PreferenceUtil
-import com.android.gpstest.library.util.PreferenceUtil.injectPsdsWhenLogging
-import com.android.gpstest.library.util.PreferenceUtil.injectTimeWhenLogging
 import com.android.gpstest.library.util.PreferenceUtil.isCsvLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.isJsonLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.writeAntennaInfoToFileCsv
@@ -128,6 +126,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private val loggingSettingListener: SharedPreferences.OnSharedPreferenceChangeListener =
         PreferenceUtil.newFileLoggingListener(app, { initLogging() }, prefs)
     private var deletedFiles = false
+    private var injectedAssistData = false
 
     override fun onCreate() {
         super.onCreate()
@@ -593,16 +592,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
      * file permissions. So we need to call this on each update in case the user just granted file
      * permissions but logging hasn't been started yet.
      */
+    @Synchronized
     private fun initLogging() {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
         // Inject time and/or PSDS to make sure timestamps and assistance are as updated as possible
-        if (injectTimeWhenLogging(app, prefs)) {
-            forceTimeInjection(app, locationManager)
-        }
-        if (injectPsdsWhenLogging(app, prefs)) {
-            forcePsdsInjection(app, locationManager)
-        }
+        maybeInjectAssistData()
 
         val date = Date()
         if (!csvFileLogger.isStarted && isCsvLoggingEnabled(app, prefs)) {
@@ -614,6 +607,21 @@ class ForegroundOnlyLocationService : LifecycleService() {
             jsonFileLogger.startLog(null, date)
         }
         maybeDeleteFiles()
+    }
+
+    private fun maybeInjectAssistData() {
+        if (injectedAssistData) {
+            // Only inject once per logging session
+            return
+        }
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (PreferenceUtil.injectTimeWhenLogging(app, prefs)) {
+            forceTimeInjection(app, locationManager)
+        }
+        if (PreferenceUtil.injectPsdsWhenLogging(app, prefs)) {
+            forcePsdsInjection(app, locationManager)
+        }
+        injectedAssistData = true
     }
 
     private fun maybeDeleteFiles() {
