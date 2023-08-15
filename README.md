@@ -1,7 +1,6 @@
 # <img src="/icons/ic_launcher-playstore.png" width="50"/> GPSTest 
 [![Build Status](https://github.com/barbeau/gpstest/actions/workflows/android.yml/badge.svg)](https://github.com/barbeau/gpstest/actions/workflows/android.yml) 
 [![GitHub issues](https://img.shields.io/github/issues/barbeau/gpstest?color=red)](https://github.com/barbeau/gpstest/issues)
-[![Donate](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow)](https://www.buymeacoffee.com/barbeau) 
 [![Twitter Follow](https://img.shields.io/twitter/follow/sjbarbeau.svg?style=social&label=Follow)](https://twitter.com/sjbarbeau)
 [![GitHub](https://img.shields.io/github/license/barbeau/gpstest)](/LICENSE)
 
@@ -67,12 +66,6 @@ Questions?  Check out the [FAQ](FAQ.md), the [Slack group](https://gpstest-andro
 - Data Output and Logging: Want to know how to output GNSS data to the system log for further analysis?  Check out the [Data Output and Logging](LOGGING.md) page.
 
 - Building the project: You can open and build this project using [Android Studio](https://developer.android.com/studio).  For more details, see the [Build documentation](BUILD.MD).
-
-## Donate
-
-GPSTest is free and open-source, and I work on it on my lunch breaks as a side project! If you'd like to support GPSTest, please consider [buying me a coffee](https://www.buymeacoffee.com/barbeau).
-
-[![Donate by buying me a coffee](https://user-images.githubusercontent.com/928045/113343981-82476e80-92fe-11eb-9bc6-c7a281761bad.png)](https://www.buymeacoffee.com/barbeau)
 
 ## Trusted by industry experts
 
