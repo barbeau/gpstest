@@ -150,7 +150,7 @@ class CarrierFreqUtilsTest {
 
         // Beidou
 
-        // Beidou B1
+        // Beidou B1I
         val beidouB1 = SatelliteStatus(1,
                 GnssType.BEIDOU,
                 30f,
@@ -163,22 +163,7 @@ class CarrierFreqUtilsTest {
         beidouB1.carrierFrequencyHz = 1561098000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1)
-        assertEquals("B1", label)
-
-        // Beidou B1-2
-        val beidouB1_2 = SatelliteStatus(1,
-                GnssType.BEIDOU,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        beidouB1_2.hasCarrierFrequency = true
-        beidouB1_2.carrierFrequencyHz = 1589742000.0
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1_2)
-        assertEquals("B1-2", label)
+        assertEquals("B1I", label)
 
         // Beidou B1C
         val beidouB1c = SatelliteStatus(1,
@@ -210,21 +195,6 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB1c202)
         assertEquals("B1C", label)
 
-        // Beidou B2
-        val beidouB2 = SatelliteStatus(1,
-                GnssType.BEIDOU,
-                30f,
-                true,
-                true,
-                true,
-                72f,
-                25f);
-        beidouB2.hasCarrierFrequency = true
-        beidouB2.carrierFrequencyHz = 1207140000.0
-
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2)
-        assertEquals("B2", label)
-
         // Beidou B2a
         val beidouB2a = SatelliteStatus(1,
                 GnssType.BEIDOU,
@@ -240,7 +210,23 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2a)
         assertEquals("B2a", label)
 
-        // Beidou B3
+	
+        // Beidou B2b
+        val beidouB2b = SatelliteStatus(1,
+                GnssType.BEIDOU,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        beidouB2.hasCarrierFrequency = true
+        beidouB2.carrierFrequencyHz = 1207140000.0
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2)
+        assertEquals("B2b", label)
+
+        // Beidou B3I
         val beidouB3 = SatelliteStatus(1,
                 GnssType.BEIDOU,
                 30f,
@@ -253,9 +239,24 @@ class CarrierFreqUtilsTest {
         beidouB3.carrierFrequencyHz = 1268520000.0
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB3)
-        assertEquals("B3", label)
+        assertEquals("B3I", label)
 
         // IRNSS
+
+        // IRNSS L1
+        val irnssL1 = SatelliteStatus(1,
+                GnssType.IRNSS,
+                30f,
+                true,
+                true,
+                true,
+                72f,
+                25f);
+        irnssL5.hasCarrierFrequency = true
+        irnssL5.carrierFrequencyHz = 1575420000.0
+
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(irnssL5)
+        assertEquals("L1", label)
 
         // IRNSS L5
         val irnssL5 = SatelliteStatus(1,
@@ -732,7 +733,7 @@ class CarrierFreqUtilsTest {
     fun testIsPrimaryCarrier() {
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("E1"))
-        assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1"))
+        assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1I"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("B1C"))
         assertTrue(CarrierFreqUtils.isPrimaryCarrier("L1-C"))
 
