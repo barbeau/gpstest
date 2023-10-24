@@ -6,7 +6,7 @@ Supports dual-frequency* GNSS for:
 • GLONASS (Russia) (L1, L2, L3, L5)
 • QZSS (Japan) (L1, L2, L5, L6)
 • BeiDou/COMPASS (China) (B1I, B2a, B2b, B3I)
-• IRNSS/NavIC (India) (L5, S)
+• IRNSS/NavIC (India) (L1, L5, S)
 • Various satellite-based augmentation systems SBAS (e.g., GAGAN, Anik F1, Galaxy 15, Inmarsat 3-F2, Inmarsat 4-F3, SES-5) (L1, L5)
 
 *Dual-frequency GNSS requires device hardware support and Android 8.0 Oreo or higher. More at https://medium.com/@sjbarbeau/dual-frequency-gnss-on-android-devices-152b8826e1c.
