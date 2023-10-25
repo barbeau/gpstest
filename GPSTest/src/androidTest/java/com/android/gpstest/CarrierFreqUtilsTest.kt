@@ -220,10 +220,10 @@ class CarrierFreqUtilsTest {
                 true,
                 72f,
                 25f);
-        beidouB2.hasCarrierFrequency = true
-        beidouB2.carrierFrequencyHz = 1207140000.0
+        beidouB2b.hasCarrierFrequency = true
+        beidouB2b.carrierFrequencyHz = 1207140000.0
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(beidouB2b)
         assertEquals("B2b", label)
 
         // Beidou B3I
@@ -252,10 +252,10 @@ class CarrierFreqUtilsTest {
                 true,
                 72f,
                 25f);
-        irnssL5.hasCarrierFrequency = true
-        irnssL5.carrierFrequencyHz = 1575420000.0
+        irnssL1.hasCarrierFrequency = true
+        irnssL1.carrierFrequencyHz = 1575420000.0
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(irnssL5)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(irnssL1)
         assertEquals("L1", label)
 
         // IRNSS L5
