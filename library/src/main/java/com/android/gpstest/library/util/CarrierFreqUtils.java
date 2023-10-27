@@ -126,17 +126,15 @@ public class CarrierFreqUtils {
      */
     public static String getBeidoucCf(double carrierFrequencyMhz) {
         if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1561.098, CF_TOLERANCE_MHZ)) {
-            return "B1";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1589.742, CF_TOLERANCE_MHZ)) {
-            return "B1-2";
+            return "B1I";
         } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
             return "B1C";
-        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14, CF_TOLERANCE_MHZ)) {
-            return "B2";
         } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "B2a";
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1207.14, CF_TOLERANCE_MHZ)) {
+            return "B2b";
         } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1268.52, CF_TOLERANCE_MHZ)) {
-            return "B3";
+            return "B3I";
         } else {
             return CF_UNKNOWN;
         }
@@ -188,7 +186,9 @@ public class CarrierFreqUtils {
      * @return carrier frequency label
      */
     public static String getIrnssCf(double carrierFrequencyMhz) {
-        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
+        if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
+            return "L1";
+        } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
             return "L5";
         } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 2492.028, CF_TOLERANCE_MHZ)) {
             return "S";
@@ -289,6 +289,6 @@ public class CarrierFreqUtils {
      * * frequency
      */
     public static boolean isPrimaryCarrier(String label) {
-        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1") || label.equals("B1C");
+        return label.equals("L1") || label.equals("E1") || label.equals("L1-C") || label.equals("B1I") || label.equals("B1C");
     }
 }
