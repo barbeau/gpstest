@@ -147,7 +147,7 @@
     <string name="gagan_content_description">GAGAN</string>
     <string name="msas_content_description">MSAS</string>
     <string name="sdcm_content_description">SDCM</string>
-    <string name="bdsbas_content_description">BDSBAS</string>
+    <string name="snas_content_description">BDSBAS</string>
     <string name="saccsa_content_description">SACCSA</string>
     <string name="southpan_content_description">SouthPAN</string>    
 
