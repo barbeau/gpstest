@@ -147,7 +147,7 @@
     <string name="gagan_content_description">GAGAN</string>
     <string name="msas_content_description">MSAS</string>
     <string name="sdcm_content_description">SDCM</string>
-    <string name="snas_content_description">SNAS</string>
+    <string name="bdsbas_content_description">BDSBAS</string>
     <string name="saccsa_content_description">SACCSA</string>
     <string name="southpan_content_description">SouthPAN</string>    
 
@@ -192,7 +192,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
-    <string name="sky_legend_shape_snas">BDSBAS/SNAS (China)</string>
+    <string name="sky_legend_shape_bdsbas">BDSBAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
     <string name="sky_legend_shape_southpan">SouthPAN (Australia / New Zealand)</string>
 
@@ -464,7 +464,7 @@
         - Pentagons\n&#8226;\u0020
         <b>IRNSS/NavIC (India)</b>
         - Ovals\n&#8226;\u0020
-        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS/SNAS, SACCSA, SouthPAN)</b>
+        <b>SBAS (WAAS, EGNOS, GAGAN, MSAS, SDCM, BDSBAS, SACCSA, SouthPAN)</b>
         - Diamonds\n\n
 
         &#8226;\u0020 Transparent satellites - Not in view\n
