@@ -242,7 +242,11 @@ public class CarrierFreqUtils {
             return getGlonassCf(carrierFrequencyMhz);
         } else if (svid == 130 || svid == 143 || svid == 144) {
             // BDSBAS (China)
-            return getBeidoucCf(carrierFrequencyMhz);
+            if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1575.42, CF_TOLERANCE_MHZ)) {
+                return "B1C";
+            } else if (MathUtils.fuzzyEquals(carrierFrequencyMhz, 1176.45, CF_TOLERANCE_MHZ)) {
+                return "B2a";
+            }
         }
         return CF_UNKNOWN;
     }
