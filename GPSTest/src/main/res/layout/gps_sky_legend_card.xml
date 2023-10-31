@@ -611,7 +611,7 @@
                     android:background="@color/body_text_2_light" />
 
                 <ImageView
-                    android:id="@+id/legend_flag_snas_5"
+                    android:id="@+id/legend_flag_bdsbas_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -634,7 +634,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@string/sky_legend_shape_snas" />
+                    android:text="@string/sky_legend_shape_bdsbas" />
             </TableRow>
 
             <TableRow
