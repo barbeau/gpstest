@@ -22,7 +22,7 @@ More details are in the European Global Navigation Satellite System Agency (GSA)
     * GPS-aided GEO augmented navigation (GAGAN) (India)
     * Multi-functional Satellite Augmentation System (MSAS) (Japan)
     * System for Differential Corrections and Monitoring (SDCM) (Russia)
-    * Satellite Navigation Augmentation System (SNAS) (China)
+    * BeiDou Satellite-Based Augmentation System (BDSBAS) (China)
     * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
 
 For lists of upcoming satellite launches and real-time satellite status on-line see https://github.com/barbeau/awesome-gnss#lists.
