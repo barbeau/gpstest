@@ -691,7 +691,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas130B1C.hasCarrierFrequency = true
         bdsbas130B1C.carrierFrequencyHz = 1575420000.0
-        bdsbas130B1C.sbasType = SbasType.BDSBAS
+        bdsbas130B1C.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas130B1C)
         assertEquals("B1C", label)
@@ -707,7 +707,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas130B2a.hasCarrierFrequency = true
         bdsbas130B2a.carrierFrequencyHz = 1176450000.0
-        bdsbas130B2a.sbasType = SbasType.BDSBAS
+        bdsbas130B2a.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas130B2a)
         assertEquals("B2a", label)	  
@@ -723,7 +723,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas143B1C.hasCarrierFrequency = true
         bdsbas143B1C.carrierFrequencyHz = 1575420000.0
-        bdsbas143B1C.sbasType = SbasType.BDSBAS
+        bdsbas143B1C.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas143B1C)
         assertEquals("B1C", label)
@@ -739,7 +739,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas143B2a.hasCarrierFrequency = true
         bdsbas143B2a.carrierFrequencyHz = 1176450000.0
-        bdsbas143B2a.sbasType = SbasType.BDSBAS
+        bdsbas143B2a.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas143B2a)
         assertEquals("B2a", label)	  
@@ -755,7 +755,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas144B1C.hasCarrierFrequency = true
         bdsbas144B1C.carrierFrequencyHz = 1575420000.0
-        bdsbas144B1C.sbasType = SbasType.BDSBAS
+        bdsbas144B1C.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas144B1C)
         assertEquals("B1C", label)
@@ -771,7 +771,7 @@ class CarrierFreqUtilsTest {
                 25f);
         bdsbas144B2a.hasCarrierFrequency = true
         bdsbas144B2a.carrierFrequencyHz = 1176450000.0
-        bdsbas144B2a.sbasType = SbasType.BDSBAS
+        bdsbas144B2a.sbasType = SbasType.SNAS
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas144B2a)
         assertEquals("B2a", label)	  
