@@ -152,7 +152,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (هند)</string>
     <string name="sky_legend_shape_msas">MSAS (ژاپن)</string>
     <string name="sky_legend_shape_sdcm">SDCM (روسیه)</string>
-    <string name="sky_legend_shape_bdsbas">BDSBAS (چین)</string>
+    <string name="sky_legend_shape_snas">BDSBAS (چین)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ایکائو)</string>
 
     <string name="sky_legend_shape_availability_title">سطح سیگنال</string>
