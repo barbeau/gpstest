@@ -174,7 +174,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Jepang)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Rusia)</string>
-    <string name="sky_legend_shape_BDSBAS">BDSBAS (China)</string>
+    <string name="sky_legend_shape_snas">BDSBAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
 
     <string name="sky_legend_shape_availability_title">Ketersediaan Sinyal</string>
