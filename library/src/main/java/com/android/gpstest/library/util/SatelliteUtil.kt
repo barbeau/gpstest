@@ -294,8 +294,7 @@ object SatelliteUtil {
         } else if (this == 125 || this == 140 || this == 141) {
             return SbasType.SDCM
         } else if (this == 130 || this == 143 || this == 144) {
-            // Also referred to as BDSBAS
-            return SbasType.SNAS
+            return SbasType.BDSBAS
         } else if (this == 131 || this == 133 || this == 135 || this == 138) {
             return SbasType.WAAS
         } else if (this == 127 || this == 128 || this == 139) {
