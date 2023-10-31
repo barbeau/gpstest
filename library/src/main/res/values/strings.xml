@@ -192,7 +192,7 @@
     <string name="sky_legend_shape_gagan">GAGAN (India)</string>
     <string name="sky_legend_shape_msas">MSAS (Japan)</string>
     <string name="sky_legend_shape_sdcm">SDCM (Russia)</string>
-    <string name="sky_legend_shape_bdsbas">BDSBAS (China)</string>
+    <string name="sky_legend_shape_snas">BDSBAS (China)</string>
     <string name="sky_legend_shape_saccsa">SACCSA (ICAO)</string>
     <string name="sky_legend_shape_southpan">SouthPAN (Australia / New Zealand)</string>
 
