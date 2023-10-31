@@ -318,7 +318,7 @@ fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
             FlagImage(R.drawable.ic_flag_russia, R.string.sdcm_content_description, modifier)
         }
         SbasType.BDSBAS -> {
-            FlagImage(R.drawable.ic_flag_china, R.string.bdsbas_content_description, modifier)
+            FlagImage(R.drawable.ic_flag_china, R.string.snas_content_description, modifier)
         }
         SbasType.SACCSA -> {
             FlagImage(R.drawable.ic_flag_icao, R.string.saccsa_content_description, modifier)
