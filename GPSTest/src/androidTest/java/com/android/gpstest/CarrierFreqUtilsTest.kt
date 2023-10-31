@@ -680,7 +680,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(southpan122L5)
         assertEquals("L5", label)	  
 
-        // BDSBAS GEO-01 B1C - 130
+        // BDSBAS 130 B1C
         val bdsbas130B1C = SatelliteStatus(130,
                 GnssType.SBAS,
                 30f,
@@ -696,7 +696,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas130B1C)
         assertEquals("B1C", label)
 
-        // BDSBAS GEO-01 B2a - 130
+        // BDSBAS 130 B2a
         val bdsbas130B2a = SatelliteStatus(130,
                 GnssType.SBAS,
                 30f,
@@ -712,7 +712,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas130B2a)
         assertEquals("B2a", label)	  
 
-        // BDSBAS GEO-01 B1C - 143
+        // BDSBAS 143 B1C
         val bdsbas143B1C = SatelliteStatus(143,
                 GnssType.SBAS,
                 30f,
@@ -728,7 +728,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas143B1C)
         assertEquals("B1C", label)
 
-        // BDSBAS GEO-01 B2a - 143
+        // BDSBAS 143 B2a
         val bdsbas143B2a = SatelliteStatus(122,
                 GnssType.SBAS,
                 30f,
@@ -744,7 +744,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas143B2a)
         assertEquals("B2a", label)	  
 
-        // BDSBAS GEO-01 B1C - 144
+        // BDSBAS 144 B1C
         val bdsbas144B1C = SatelliteStatus(144,
                 GnssType.SBAS,
                 30f,
@@ -760,7 +760,7 @@ class CarrierFreqUtilsTest {
         label = CarrierFreqUtils.getCarrierFrequencyLabel(bdsbas144B1C)
         assertEquals("B1C", label)
 
-        // BDSBAS GEO-01 B2a - 144
+        // BDSBAS 144 B2a
         val bdsbas144B2a = SatelliteStatus(144,
                 GnssType.SBAS,
                 30f,
