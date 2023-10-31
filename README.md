@@ -27,7 +27,7 @@ It supports dual-frequency¹ GNSS for:
     * GPS-aided GEO augmented navigation (GAGAN) (India)
     * Multi-functional Satellite Augmentation System (MSAS) (Japan)
     * System for Differential Corrections and Monitoring (SDCM) (Russia)
-    * Satellite Navigation Augmentation System (SNAS) (China)
+    * BeiDou Satellite-Based Augmentation System (BDSBAS) (China)
     * Soluciόn de Aumentaciόn para Caribe, Centro y Sudamérica (SACCSA) (ICAO)
     * Southern Positioning Augmentation Network (SouthPAN) (Australia / New Zealand)
     
