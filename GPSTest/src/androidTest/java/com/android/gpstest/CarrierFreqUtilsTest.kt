@@ -693,7 +693,7 @@ class CarrierFreqUtilsTest {
         snas130B1C.carrierFrequencyHz = 1575420000.0
         snas130B1C.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas130B1C, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas130B1C)
         assertEquals("B1C", label)
 
         // BDSBAS 130 B2a
@@ -709,7 +709,7 @@ class CarrierFreqUtilsTest {
         snas130B2a.carrierFrequencyHz = 1176450000.0
         snas130B2a.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas130B2a, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas130B2a)
         assertEquals("B2a", label)	  
 
         // BDSBAS 143 B1C
@@ -725,7 +725,7 @@ class CarrierFreqUtilsTest {
         snas143B1C.carrierFrequencyHz = 1575420000.0
         snas143B1C.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas143B1C, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas143B1C)
         assertEquals("B1C", label)
 
         // BDSBAS 143 B2a
@@ -741,7 +741,7 @@ class CarrierFreqUtilsTest {
         snas143B2a.carrierFrequencyHz = 1176450000.0
         snas143B2a.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas143B2a, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas143B2a)
         assertEquals("B2a", label)	  
 
         // BDSBAS 144 B1C
@@ -757,7 +757,7 @@ class CarrierFreqUtilsTest {
         snas144B1C.carrierFrequencyHz = 1575420000.0
         snas144B1C.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas144B1C, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas144B1C)
         assertEquals("B1C", label)
 
         // BDSBAS 144 B2a
@@ -773,7 +773,7 @@ class CarrierFreqUtilsTest {
         snas144B2a.carrierFrequencyHz = 1176450000.0
         snas144B2a.sbasType = SbasType.SNAS
 
-        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas144B2a, GnssType.BEIDOU)
+        label = CarrierFreqUtils.getCarrierFrequencyLabel(snas144B2a)
         assertEquals("B2a", label)	  
 
         // Test variations on the "same" numbers to make sure floating point equality works
