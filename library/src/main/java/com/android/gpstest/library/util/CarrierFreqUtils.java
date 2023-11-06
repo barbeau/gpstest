@@ -243,7 +243,6 @@ public class CarrierFreqUtils {
         } else if (svid == 130 || svid == 143 || svid == 144) {
             // BDSBAS (China)
             return getBeidoucCf(carrierFrequencyMhz);
-            }
         }
         return CF_UNKNOWN;
     }
