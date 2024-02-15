@@ -286,7 +286,6 @@
     <string name="pref_dark_theme_summary">为背景铺上暗色而文字显示为亮色</string>
 
     <string name="pref_coordinate_format_title">坐标格式</string>
-    <string name="pref_coordinate_format_summary">度分秒等坐标显示格式</string>
     <string name="preferences_coordinate_format_dd">度</string>
     <string name="preferences_coordinate_format_dms">度分秒</string>
     <string name="preferences_coordinate_format_ddm">度分</string>

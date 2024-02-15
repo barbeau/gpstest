@@ -270,7 +270,6 @@
 	</string>
 
     <string name="pref_coordinate_format_title">Coördinaat-formaat</string>
-    <string name="pref_coordinate_format_summary">Geef weer als decimale graden, graden minuten seconden of graden decimale minuten</string>
     <string name="preferences_coordinate_format_dd">Decimale graden</string>
     <string name="preferences_coordinate_format_dms">Graden, minuten, decimale seconden</string>
     <string name="preferences_coordinate_format_ddm">Graden, decimale minuten</string>

@@ -259,7 +259,6 @@
     <string name="pref_dark_theme_summary">Θέμα πιο σκοτεινό με φωτεινά γράμματα</string>
 
     <string name="pref_coordinate_format_title">Μορφή συντεταγμένων</string>
-    <string name="pref_coordinate_format_summary">Εμφάνιση σε δεκαδικές μοίρες, DMS, </string>
     <string name="preferences_coordinate_format_dd">Δεκαδικές Μοίρες</string>
     <string name="preferences_coordinate_format_dms">Μοίρες, Λεπτά, Δεκαδικά Δευτερόλεπτα</string>
     <string name="preferences_coordinate_format_ddm">Μοίρες, Δεκαδικά Λεπτά</string>

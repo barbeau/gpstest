@@ -307,7 +307,6 @@ Crea il tuo QR Code qui: https://zxing.appspot.com/generator/.</string>
     <string name="pref_dark_theme_summary">Rende lo sfondo scuro con testo a contrasto</string>
 
     <string name="pref_coordinate_format_title">Formato delle coordinate</string>
-    <string name="pref_coordinate_format_summary">Mostra in DD (gradi decimali), DMS (gradi minuti secondi), o DM (gradi minuti decimali)</string>
     <string name="preferences_coordinate_format_dd">DD (gradi decimali)</string>
     <string name="preferences_coordinate_format_dms">DMS (gradi minuti secondi)</string>
     <string name="preferences_coordinate_format_ddm">DM (gradi minuti decimali)</string>

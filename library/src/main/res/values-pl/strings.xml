@@ -294,7 +294,6 @@ Rejestruje szczegóły anteny GNSS w pliku JSON. Dostępne tylko na obsługiwany
     <string name="pref_dark_theme_summary">Zmień kolor tła na ciemny, a kolor tekstu na jasny</string>
 
     <string name="pref_coordinate_format_title">Format współrzędnych</string>
-    <string name="pref_coordinate_format_summary">Wyświetlaj w stopniach dziesiętnych, DMS lub stopniach minut dziesiętnych</string>
     <string name="preferences_coordinate_format_dd">Stopnie dziesiętne</string>
     <string name="preferences_coordinate_format_dms">Stopnie, Minuty, Sekundy dziesiętne</string>
     <string name="preferences_coordinate_format_ddm">Stopnie, Minuty dziesiętne</string>
