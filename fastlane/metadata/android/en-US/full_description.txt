@@ -15,7 +15,7 @@ The "Accuracy" feature lets you measure the error in your device's position agai
 
 Menu options:
 • Inject Time Data - Injects Time assistance data for GPS into the platform, using information from a Network Time Protocol (NTP) server
-• Inject PSDS Data - Injects Predicted Satellite Data Service (PSDS) assistance data for GNSS into the platform, using information from a PSDS server. Note that some devices don't use PSDS for assistance data - if this is your device, you'll see a message saying "Platform does not support injecting PSDS data". PSDS is the generic term for products like [XTRA assistance data](http://goo.gl/3RjWX).
+• Inject PSDS Data - Injects Predicted Satellite Data Service (PSDS) assistance data for GNSS into the platform, using information from a PSDS server. Note that some devices don't use PSDS for assistance data - if this is your device, you'll see a message saying "Platform does not support injecting PSDS data". PSDS is the generic term for products like [XTRA assistance data](https://www.qualcomm.com/news/releases/2007/02/qualcomm-introduces-gpsonextra-assistance-expand-capabilities-standalone).
 • Clear Assist Data - Clears all assistance data used for GNSS, including NTP and XTRA data (Note: if you select this option to fix broken GNSS on your device, for GPS to work again you may need to ‘Inject Time’ and ‘Inject PSDS’ data. You may also see a large delay until your device acquires a fix again, so please use this feature with caution.)
 • Settings - Switch between light and dark themes, change map tile type, auto-start GPS on startup, minimum time and distance between GPS updates, keep screen on.
 
