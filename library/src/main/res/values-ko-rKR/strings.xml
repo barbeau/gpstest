@@ -268,7 +268,6 @@ legacy GPSStatus.Listener를 사용합니다.</string>
 </string>
 
     <string name="pref_coordinate_format_title">좌표 형식</string>
-    <string name="pref_coordinate_format_summary">십진수 도(DD), 도, 분 및 초(DMS) 혹은 십진수 분(DMM) 표기</string>
     <string name="preferences_coordinate_format_dd">십진수 도</string>
     <string name="preferences_coordinate_format_dms">도, 분 및 초</string>
     <string name="preferences_coordinate_format_ddm">도 및 십진수 분</string>

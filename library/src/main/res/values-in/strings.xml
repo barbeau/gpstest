@@ -302,7 +302,6 @@
     </string>
 
     <string name="pref_coordinate_format_title">Format koordinat</string>
-    <string name="pref_coordinate_format_summary">Tampilkan dalam derajat desimal, DMS, atau derajat desimal menit</string>
     <string name="preferences_coordinate_format_dd">Derajat desimal</string>
     <string name="preferences_coordinate_format_dms">Derajat, menit, desimal detik</string>
     <string name="preferences_coordinate_format_ddm">Derajat, desimal menit</string>

@@ -308,7 +308,6 @@
     </string>
 
     <string name="pref_coordinate_format_title">Koordinatformat</string>
-    <string name="pref_coordinate_format_summary">Vis i decimalgrader, DMS eller decimalgrader, minutter</string>
     <string name="preferences_coordinate_format_dd">Decimalgrader</string>
     <string name="preferences_coordinate_format_dms">Decimalgrader, minutter, sekunder</string>
     <string name="preferences_coordinate_format_ddm">Decimalgrader, minutter</string>

@@ -263,7 +263,6 @@ esté sujetando el dispositivo</string>
     <string name="pref_dark_theme_summary">Dar al fondo un color oscuro y al texto un color claro</string>
 
     <string name="pref_coordinate_format_title">Formato de coordenadas</string>
-    <string name="pref_coordinate_format_summary">Mostrar en grados decimales, DMS, o grados decimal minutos</string>
     <string name="preferences_coordinate_format_dd">Grados decimales</string>
     <string name="preferences_coordinate_format_dms">Grados, minutos, segundos decimales</string>
     <string name="preferences_coordinate_format_ddm">Grados, minutos decimales</string>

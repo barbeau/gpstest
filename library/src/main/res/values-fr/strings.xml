@@ -262,7 +262,6 @@ Le GPSStatus.Listener par défaut sera utilisé</string>
     <string name="pref_dark_theme_summary">Donne à l\'arrière plan une couleur sombre et au texte une couleur claire</string>
 
     <string name="pref_coordinate_format_title">Format des coordonnées</string>
-    <string name="pref_coordinate_format_summary">Affichage en degrés décimaux, DMS ou degrés décimal et minutes</string>
     <string name="preferences_coordinate_format_dd">Degrés décimaux</string>
     <string name="preferences_coordinate_format_dms">Degrés, Minutes, Secondes Décimales </string>
     <string name="preferences_coordinate_format_ddm">Degrés, Minutes Décimales</string>
