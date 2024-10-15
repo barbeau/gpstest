@@ -72,4 +72,4 @@ Questions?  Check out the [FAQ](FAQ.md), the [Slack group](https://gpstest-andro
 Notable appearances of GPSTest:
 
 * Xiaomi - [*Xiaomi Redmi Note 9 Pro Max launch*](https://youtu.be/Y_5cfCZBOV4?t=3035), March 12, 2020.
-* European Union Global Navigation Satellite Systems Agency (GSA) - [*Test your Android device’s satellite navigation performance*](https://www.gsa.europa.eu/newsroom/news/test-your-android-device-s-satellite-navigation-performance), August 21, 2018.
+* European Union Global Navigation Satellite Systems Agency (GSA) - [*Test your Android device’s satellite navigation performance*](https://www.euspa.europa.eu/newsroom-events/news-archive/test-your-android-devices-satellite-navigation-performance), August 21, 2018.
