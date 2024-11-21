@@ -309,7 +309,6 @@
     </string>
 
     <string name="pref_coordinate_format_title">Формат координат</string>
-    <string name="pref_coordinate_format_summary">Отображать в десятичных градусах, градусах, минутах, секундах или в градусах и десятичных минутах</string>
     <string name="preferences_coordinate_format_dd">Десятичные градусы</string>
     <string name="preferences_coordinate_format_dms">Градусы, минуты, десятичные секунды</string>
     <string name="preferences_coordinate_format_ddm">Градусы, десятичные минуты</string>

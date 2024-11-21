@@ -50,6 +50,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var preferredDistanceUnits: ListPreference? = null
     var preferredSpeedUnits: ListPreference? = null
 
+    var preferredCoordinateFormat: ListPreference? = null
+
     var language: ListPreference? = null
 
     var chkLogFileNmea: CheckBoxPreference? = null
@@ -131,6 +133,9 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         preferredSpeedUnits = findPreference(
             getString(R.string.pref_key_preferred_speed_units_v2)
         ) as ListPreference
+        preferredCoordinateFormat = findPreference(
+            getString(R.string.pref_key_coordinate_format)
+        ) as ListPreference
         language = findPreference(getString(R.string.pref_key_language)) as ListPreference
         language?.onPreferenceChangeListener =
             OnPreferenceChangeListener { preference: Preference?, newValue: Any ->
@@ -188,6 +193,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         super.onResume()
         changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units_v2))
         changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units_v2))
+        changePreferenceSummary(getString(R.string.pref_key_coordinate_format))
         changePreferenceSummary(getString(R.string.pref_key_language))
     }
 
@@ -208,9 +214,18 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 // Change the preferred speed units description
                 changePreferenceSummary(key)
             } else {
-                if (key.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
-                    // Change the preferred language description
+                if (key.equals(
+                    getString(R.string.pref_key_coordinate_format),
+                    ignoreCase = true
+                   )
+                ) {
+                    // Change the preferred coordinate formats description
                     changePreferenceSummary(key)
+                } else {
+                    if (key.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
+                        // Change the preferred language description
+                        changePreferenceSummary(key)
+                    }
                 }
             }
         }
@@ -276,6 +291,18 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 if (values[i] == preferredSpeedUnits!!.value) {
                     preferredSpeedUnits!!.summary = entries[i]
                 }
+            }
+        } else if (prefKey.equals(
+                getString(R.string.pref_key_coordinate_format),
+                ignoreCase = true
+            )
+        ) {
+            val values = app.resources.getStringArray(R.array.preferred_coordinate_format_values)
+            val entries = app.resources.getStringArray(R.array.preferred_coordinate_format_entries)
+            for (i in values.indices) {
+              if (values[i] == preferredCoordinateFormat!!.value) {
+                preferredCoordinateFormat!!.summary = entries[i]
+              }
             }
         } else if (prefKey.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
             val values = app.resources.getStringArray(R.array.language_values)

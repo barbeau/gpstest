@@ -257,7 +257,6 @@ Studio (Android 7.0 und höher)</string>
     <string name="pref_dark_theme_summary">Stellt den Hintergrund in einer dunklen Farbe und den Text in einer hellen Farbe dar</string>
 
     <string name="pref_coordinate_format_title">Koordinatenformat</string>
-    <string name="pref_coordinate_format_summary">Anzeige in \"Dezimalgrad\" (DG) , \"Grad, Minuten, Sekunden\" (GMS) oder \"Grad, Dezimalminuten\" (GM)</string>
     <string name="preferences_coordinate_format_dd">Dezimalgrad</string>
     <string name="preferences_coordinate_format_dms">Grad, Minuten, Dezimalsekunden</string>
     <string name="preferences_coordinate_format_ddm">Grad, Dezimalminuten</string>
