@@ -219,7 +219,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         int i = 0;
         for (SatelliteStatus s : statuses) {
             try {
-                writeStatusToFile(s, location != null ? location.getTime() : 0, i, statuses.size());
+                writeStatusToFile(s, location != null ? location.getTime() : 0, statuses.size(), i);
             } catch (IOException e) {
                 logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
             }
