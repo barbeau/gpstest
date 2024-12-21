@@ -52,6 +52,11 @@
         android:title="@string/pref_gps_category_title"
         android:key="@string/pref_key_gps_category">
         <CheckBoxPreference
+            android:key="@string/pref_key_show_notification"
+            android:title="@string/pref_gnss_show_notification_title"
+            android:summary="@string/pref_gnss_show_notification_summary"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="@string/pref_key_gnss_background"
             android:title="@string/pref_gnss_background_title"
             android:summary="@string/pref_gnss_background_summary"

@@ -27,6 +27,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.Toolbar
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
@@ -38,6 +39,7 @@ import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
 import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
+import com.android.gpstest.util.UIUtils
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var forceFullGnssMeasurements: CheckBoxPreference? = null
@@ -283,6 +285,25 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             for (i in values.indices) {
                 if (values[i] == language!!.value) {
                     language!!.summary = entries[i]
+                }
+            }
+        }
+    }
+
+    private fun initPermissions() {
+        notificationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { result ->
+            if (result != null && result) {
+                // Notification permission granted - No-op - notification will be posted by the
+                // service
+            } else {
+                // User rejected permission - show dialog unless user has told us not to
+                if (!prefs.getBoolean(
+                        app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
+                        false)
+                ) {
+                    UIUtils.createNotificationPermissionDialog(this).show()
                 }
             }
         }

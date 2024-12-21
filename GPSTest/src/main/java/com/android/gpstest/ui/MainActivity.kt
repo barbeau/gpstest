@@ -25,6 +25,8 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
@@ -36,7 +38,10 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -114,6 +119,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
     private var benchmarkController: BenchmarkController? = null
+    private var notificationPermissionRequest: ActivityResultLauncher<String>? = null
 
     private var initialLanguage: String? = null
     private var initialMinTimeMillis: Long? = null
@@ -190,6 +196,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupNavigationDrawer()
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
+
+        initPermissions()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -337,7 +345,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun requestPermissionAndInit(activity: Activity) {
         if (PermissionUtils.hasGrantedPermissions(activity, PermissionUtils.REQUIRED_PERMISSIONS)) {
-            init()
+            initGnss()
         } else {
             // Request permissions from the user
             ActivityCompat.requestPermissions(
@@ -349,20 +357,39 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 userDeniedPermission = false
-                init()
+                initGnss()
             } else {
                 userDeniedPermission = true
             }
         }
     }
 
-    private fun init() {
+    private fun initPermissions() {
+        notificationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { result ->
+            if (result != null && result) {
+                // Notification permission granted - No-op - notification will be posted by the
+                // service
+            } else {
+                // User rejected permission - show dialog unless user has told us not to
+                if (!prefs.getBoolean(
+                        app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
+                        false)
+                ) {
+                    UIUtils.createNotificationPermissionDialog(this).show()
+                }
+            }
+        }
+    }
+
+    private fun initGnss() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
         if (provider == null) {
@@ -386,6 +413,12 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val settings = prefs
         checkKeepScreenOn(settings)
         LibUIUtils.autoShowWhatsNew(prefs, app,this)
+
+        if (!PermissionUtils.hasGrantedNotificationPermissions(this)
+            && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+            // Request notification permissions and defer init of GNSS until user responds
+            requestNotificationPermission()
+        }
     }
 
     override fun onPause() {
@@ -750,6 +783,17 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Reset the options menu to trigger updates to action bar menu items
         invalidateOptionsMenu()
+    }
+
+    /**
+     * Requests permission to show notifications with the `timerValuesSet` to be used to start
+     * the logging service.
+     */
+    @RequiresApi(api = VERSION_CODES.TIRAMISU)
+    fun requestNotificationPermission() {
+        if (!PermissionUtils.hasGrantedNotificationPermissions(this)) {
+            notificationPermissionRequest?.launch(PermissionUtils.getNotificationPermission())
+        }
     }
 
     @ExperimentalCoroutinesApi

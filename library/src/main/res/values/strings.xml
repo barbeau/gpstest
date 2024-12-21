@@ -17,7 +17,7 @@
 ** limitations under the License.
 */
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Fragments -->
     <string name="gps_status_title">Status</string>
     <string name="gps_map_title">Map</string>
@@ -149,7 +149,7 @@
     <string name="sdcm_content_description">SDCM</string>
     <string name="snas_content_description">SNAS</string>
     <string name="saccsa_content_description">SACCSA</string>
-    <string name="southpan_content_description">SouthPAN</string>    
+    <string name="southpan_content_description">SouthPAN</string>
 
     <!-- Map view -->
     <string name="ground_truth_latitude">Your latitude</string>
@@ -246,6 +246,14 @@
     <string name="ok">OK</string>
     <string name="exit">EXIT</string>
 
+    <string name="user_declined_notification_permission_dialog_title" tools:ignore="MissingTranslation">
+      Notification permission suggested
+    </string>
+
+    <string name="user_declined_notification_permission_dialog_text" tools:ignore="MissingTranslation">
+      Please grant notification permissions if you would like to see GNSS details in a notification while the app is running.
+    </string>
+
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>
@@ -296,6 +304,9 @@
 
     <string name="pref_auto_start_gps_title">Auto-Start GNSS</string>
     <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
+
+    <string name="pref_gnss_show_notification_title">Show a notification</string>
+    <string name="pref_gnss_show_notification_summary">If checked, the app will show a notification with real-time GNSS information.</string>
 
     <string name="pref_gnss_background_title">Run GNSS in background</string>
     <string name="pref_gnss_background_summary">If checked, when you leave the app a notification will keep GNSS running in the background until you stop it from that notification. This setting is automatically enabled when you enable logging data to files to allow logging in the background.</string>

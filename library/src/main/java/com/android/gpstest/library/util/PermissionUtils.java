@@ -18,8 +18,12 @@ package com.android.gpstest.library.util;
 import android.Manifest;
 import android.Manifest.permission;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -27,8 +31,8 @@ public class PermissionUtils {
     public static final int LOCATION_PERMISSION_REQUEST = 1;
 
     public static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
     /**
@@ -42,6 +46,21 @@ public class PermissionUtils {
             if (ContextCompat.checkSelfPermission(activity, p) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
+        }
+        return true;
+    }
+
+    /** Returns the permission string for notification permission */
+    @RequiresApi(api = VERSION_CODES.TIRAMISU)
+    public static String getNotificationPermission() {
+        return Manifest.permission.POST_NOTIFICATIONS;
+    }
+
+    /** Returns true if the context has been granted notification permissions, false if it has not */
+    public static boolean hasGrantedNotificationPermissions(Context context) {
+        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(context, getNotificationPermission())
+                == PackageManager.PERMISSION_GRANTED;
         }
         return true;
     }
