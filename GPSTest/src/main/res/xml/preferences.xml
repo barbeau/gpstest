@@ -29,7 +29,6 @@
         <ListPreference
             android:key="@string/pref_key_coordinate_format"
             android:title="@string/pref_coordinate_format_title"
-            android:summary="@string/pref_coordinate_format_summary"
             android:dialogTitle="@string/pref_coordinate_format_title"
             android:entries="@array/preferred_coordinate_format_entries"
             android:entryValues="@array/preferred_coordinate_format_values"

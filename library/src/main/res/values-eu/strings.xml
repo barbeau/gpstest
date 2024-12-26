@@ -282,7 +282,6 @@ GPSStatus klasikoa erabiliko du.</string>
     <string name="pref_dark_theme_summary">Eman atzeko planoari kolore iluna eta testuari kolore argia</string>
 
     <string name="pref_coordinate_format_title">Koordenatuen formatua</string>
-    <string name="pref_coordinate_format_summary">Bistarazi gradu hamartarretan, DMSan edo gradu hamartarren minutuetan</string>
     <string name="preferences_coordinate_format_dd">Gradu hamartarrak</string>
     <string name="preferences_coordinate_format_dms">Graduak, minutuak, segundo hamartarrak</string>
     <string name="preferences_coordinate_format_ddm">Graduak, minutu hamartarrak</string>
