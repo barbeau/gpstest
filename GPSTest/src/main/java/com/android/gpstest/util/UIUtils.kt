@@ -17,10 +17,8 @@ package com.android.gpstest.util
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import com.android.gpstest.R
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -34,13 +32,14 @@ import androidx.fragment.app.FragmentActivity
 import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
+import com.android.gpstest.R
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.util.IOUtils
+import com.android.gpstest.library.util.LibUIUtils
 import com.android.gpstest.library.util.LocationUtils
 import com.android.gpstest.library.util.PreferenceUtils
-import com.android.gpstest.library.util.LibUIUtils
 import com.android.gpstest.ui.GnssFilterDialog
 import com.android.gpstest.ui.HelpActivity
 import com.android.gpstest.ui.share.ShareDialogFragment
@@ -49,7 +48,6 @@ import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOCATION
 import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOGGING_ENABLED
 import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOG_FILES
 import java.io.File
-import java.util.*
 
 /**
  * Utilities for processing user inteface elements
@@ -258,7 +256,7 @@ internal object UIUtils {
             activity
         )
         builder.setTitle(R.string.menu_option_sort_by)
-        val currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences(app, Application.prefs)
+        val currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences(app, prefs)
         builder.setSingleChoiceItems(
             R.array.sort_sats, currentSatOrder
         ) { dialog: DialogInterface, index: Int ->

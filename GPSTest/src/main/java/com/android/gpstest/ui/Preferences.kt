@@ -15,29 +15,51 @@
  */
 package com.android.gpstest.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.preference.*
+import android.preference.CheckBoxPreference
+import android.preference.EditTextPreference
+import android.preference.ListPreference
+import android.preference.Preference
 import android.preference.Preference.OnPreferenceChangeListener
+import android.preference.PreferenceActivity
+import android.preference.PreferenceCategory
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
-import com.android.gpstest.library.util.PermissionUtils
-import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
-import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
+import com.android.gpstest.library.util.PermissionUtils
+import com.android.gpstest.library.util.PreferenceUtil
+import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
+import com.android.gpstest.library.util.PreferenceUtils
+import com.android.gpstest.library.util.SatelliteUtils
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var forceFullGnssMeasurements: CheckBoxPreference? = null
@@ -52,6 +74,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
 
     var language: ListPreference? = null
 
+    var chkShowNotification: CheckBoxPreference? = null
+    var chkRunInBackground: CheckBoxPreference? = null
     var chkLogFileNmea: CheckBoxPreference? = null
     var chkLogFileNavMessages: CheckBoxPreference? = null
     var chkLogFileMeasurements: CheckBoxPreference? = null
@@ -181,6 +205,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         chkAsNavMessages = findPreference(getString(R.string.pref_key_as_navigation_message_output)) as CheckBoxPreference
         chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
+        initNotificationPermissionDialog()
+
         prefs.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -286,5 +312,187 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 }
             }
         }
+    }
+
+    /**
+     * Initializes the dialog for notification permissions, which is required for
+     * notifications, background execution and logging.
+     */
+    @SuppressLint("NewApi")
+    private fun initNotificationPermissionDialog() {
+        chkShowNotification =
+            findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+        if (VERSION.SDK_INT < VERSION_CODES.TIRAMISU) {
+            // Notifications are always shown on Android 12 and lower
+            chkShowNotification?.isEnabled = false
+            PreferenceUtils.saveBoolean(
+                getString(R.string.pref_key_show_notification),
+                true,
+                prefs
+            )
+            return
+        }
+
+        // Permissions for notifications are used in place of a user-defined setting. This workflow
+        // supports users that have installed an update, who will already have permissions granted.
+        // Additionally, revoking notification permissions seems to be the only way to disable
+        // user-facing notifications for the foreground service, because they are required.
+        PreferenceUtils.saveBoolean(
+            getString(R.string.pref_key_show_notification),
+            PermissionUtils.hasGrantedNotificationPermissions(this),
+            prefs
+        )
+
+        chkRunInBackground =
+            findPreference(getString(R.string.pref_key_gnss_background)) as CheckBoxPreference
+        chkLogFileNmea =
+            findPreference(getString(R.string.pref_key_file_nmea_output)) as CheckBoxPreference
+        chkLogFileNavMessages =
+            findPreference(getString(R.string.pref_key_file_navigation_message_output)) as CheckBoxPreference
+        chkLogFileMeasurements =
+            findPreference(getString(R.string.pref_key_file_measurement_output)) as CheckBoxPreference
+        chkLogFileLocation =
+            findPreference(getString(R.string.pref_key_file_location_output)) as CheckBoxPreference
+        chkLogFileAntennaJson =
+            findPreference(getString(R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
+        chkLogFileAntennaCsv =
+            findPreference(getString(R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
+        val prefsThatNeedNotificationPermissions = listOf(
+            chkShowNotification,
+            chkRunInBackground,
+            chkLogFileNmea,
+            chkLogFileNavMessages,
+            chkLogFileMeasurements,
+            chkLogFileLocation,
+            chkLogFileAntennaJson,
+            chkLogFileAntennaCsv
+        )
+        prefsThatNeedNotificationPermissions.forEach {
+            it?.onPreferenceChangeListener =
+                OnPreferenceChangeListener { preference, newValue ->
+                    if (newValue as Boolean && !PermissionUtils.hasGrantedNotificationPermissions(
+                            this
+                        )
+                    ) {
+                        // User must have granted notification permissions first
+                        createNotificationPermissionDialog(this).show()
+                        // Reject change to setting by returning false
+                        return@OnPreferenceChangeListener false
+                    } else {
+                        if (preference == chkShowNotification && !newValue &&
+                            (PreferenceUtil.runInBackground(
+                                this,
+                                prefs
+                            ) || PreferenceUtil.isFileLoggingEnabled(this, prefs))
+                        ) {
+                            // Don't let the user disable notifications if background execution or logging is enabled
+                            createCanNotDisableSettingDialog(this).show()
+                            // Reject change to setting by returning false
+                            return@OnPreferenceChangeListener false
+                        }
+
+                        if (preference == chkShowNotification && !newValue) {
+                            // If the user disabled the notification setting prompt them to restart app
+                            createRestartApplicationDialog(this).show()
+                            return@OnPreferenceChangeListener false
+                        }
+
+                        // Accept change to setting by returning true
+                        return@OnPreferenceChangeListener true
+                    }
+                }
+        }
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createNotificationPermissionDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.notification_permission_required_dialog_text)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+        return builder.create()
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createCanNotDisableSettingDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.can_not_disable_setting_dialog_text)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
+        return builder.create()
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createRestartApplicationDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.need_to_restart_application_dialog_text)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.need_to_restart_application_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> revokeNotificationPermissionAndRestartApplication() }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+        return builder.create()
+    }
+
+    @RequiresApi(api = VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(PermissionUtils.getNotificationPermission()),
+            PermissionUtils.NOTIFICATION_PERMISSION_REQUEST
+        )
+    }
+
+    @SuppressLint("NewApi")
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionUtils.NOTIFICATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Notification permission granted - change the setting in the Preferences UI
+                // The notification will automatically be posted by the service
+                PreferenceUtils.saveBoolean(
+                    getString(R.string.pref_key_show_notification),
+                    true,
+                    prefs
+                )
+                recreate()
+            } else {
+                // Prompt the user to grant permissions again
+                createNotificationPermissionDialog(this).show();
+            }
+        }
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    private fun Context.revokeNotificationPermissionAndRestartApplication() {
+        revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+        PreferenceUtils.saveBoolean(getString(R.string.pref_key_show_notification), false, prefs)
+
+        Executors.newSingleThreadScheduledExecutor().schedule({
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            val componentName = intent?.component
+            val mainIntent = Intent.makeRestartActivityTask(componentName)
+            startActivity(mainIntent)
+            Runtime.getRuntime().exit(0)
+        }, 200, TimeUnit.MILLISECONDS)
     }
 }

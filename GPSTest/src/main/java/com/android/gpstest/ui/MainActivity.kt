@@ -75,14 +75,14 @@ import com.android.gpstest.util.UIUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlin.system.exitProcess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
@@ -337,7 +337,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun requestPermissionAndInit(activity: Activity) {
         if (PermissionUtils.hasGrantedPermissions(activity, PermissionUtils.REQUIRED_PERMISSIONS)) {
-            init()
+            initGnss()
         } else {
             // Request permissions from the user
             ActivityCompat.requestPermissions(
@@ -349,20 +349,20 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.LOCATION_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 userDeniedPermission = false
-                init()
+                initGnss()
             } else {
                 userDeniedPermission = true
             }
         }
     }
 
-    private fun init() {
+    private fun initGnss() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
         if (provider == null) {
@@ -928,6 +928,5 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     companion object {
         private const val TAG = "GpsTestActivity"
         private const val SECONDS_TO_MILLISECONDS = 1000
-        private const val GPS_RESUME = "gps_resume"
     }
 }

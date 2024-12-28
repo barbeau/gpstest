@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="24dp"
+    android:paddingStart="24dp"
+    android:paddingRight="12dp"
+    android:paddingEnd="12dp">
+
+    <TextView
+        android:id="@+id/notification_permission_instructions"
+        style="?android:attr/textAppearance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="14dp"
+        android:paddingBottom="6dp"
+        android:text="@string/notification_permission_required_dialog_text"
+        android:textSize="16sp"
+        android:autoLink="web"
+        android:linksClickable="true" />
+
+</LinearLayout>

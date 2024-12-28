@@ -25,6 +25,9 @@
     <!-- Required for foreground services on P+ -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- Required for notifications on T+ -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".Application"
         android:label="@string/app_name"
@@ -52,7 +55,8 @@
         <activity
             android:name=".ui.Preferences"
             android:label="@string/pref_title"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />

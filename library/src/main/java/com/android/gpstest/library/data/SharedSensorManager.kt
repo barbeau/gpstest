@@ -138,16 +138,18 @@ class SharedSensorManager constructor(
                 )
             } else if (SatelliteUtils.isOrientationSensorSupported(context)) {
                 // Use the legacy orientation sensors
-                val sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
-                sensorManager.registerListener(
-                    callback,
-                    sensor,
-                    ROT_VECTOR_SENSOR_DELAY_MICROS
+                val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
+                if (sensor != null) {
+                    sensorManager.registerListener(
+                        callback,
+                        sensor,
+                        ROT_VECTOR_SENSOR_DELAY_MICROS
                 )
             } else {
                 // No sensors to observe
-                Log.e(TAG, "Device doesn't support sensor TYPE_ROTATION_VECTOR or TYPE_ORIENTATION")
+                    Log.e(TAG, "Device doesn't support sensor TYPE_ROTATION_VECTOR or TYPE_ORIENTATION")
                 close()
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in sensor flow: $e")

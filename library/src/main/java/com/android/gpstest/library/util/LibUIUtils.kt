@@ -52,7 +52,7 @@ import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.google.android.material.chip.Chip
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.*
+import java.util.Collections
 
 /**
  * Utilities for processing user interface elements
