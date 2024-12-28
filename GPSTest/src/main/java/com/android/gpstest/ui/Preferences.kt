@@ -58,6 +58,8 @@ import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
 import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtils
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var forceFullGnssMeasurements: CheckBoxPreference? = null
@@ -483,10 +485,13 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @RequiresApi(VERSION_CODES.TIRAMISU)
     private fun Context.revokeNotificationPermissionAndRestartApplication() {
         revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        val componentName = intent?.component
-        val mainIntent = Intent.makeRestartActivityTask(componentName)
-        startActivity(mainIntent)
-        Runtime.getRuntime().exit(0)
+
+        Executors.newSingleThreadScheduledExecutor().schedule({
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            val componentName = intent?.component
+            val mainIntent = Intent.makeRestartActivityTask(componentName)
+            startActivity(mainIntent)
+            Runtime.getRuntime().exit(0)
+        }, 200, TimeUnit.MILLISECONDS)
     }
 }
