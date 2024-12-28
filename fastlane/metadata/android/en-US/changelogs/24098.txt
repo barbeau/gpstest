@@ -1,0 +1,3 @@
+• Notification permissions - On fresh installs the GNSS status notification now needs to be enabled in Settings due to changes in how Android handles permissions.
+• Add support for BDS B2b and IRNSS L1 - Thanks Narugakuruga!
+• Bug fixes - see http://bit.ly/gpstest-releases
