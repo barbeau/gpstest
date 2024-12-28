@@ -333,7 +333,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         // Permissions for notifications are used in place of a user-defined setting. This workflow
         // supports users that have installed an update, who will already have permissions granted.
         // Additionally, revoking notification permissions seems to be the only way to disable
-        // user-facing notifications.
+        // user-facing notifications for the foreground service, because they are required.
         PreferenceUtils.saveBoolean(
             getString(R.string.pref_key_show_notification),
             PermissionUtils.hasGrantedNotificationPermissions(this),
