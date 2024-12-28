@@ -15,6 +15,7 @@
  */
 package com.android.gpstest.ui
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
@@ -24,6 +25,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.preference.CheckBoxPreference
@@ -37,11 +39,13 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
@@ -49,8 +53,10 @@ import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
 import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
 import com.android.gpstest.library.util.PermissionUtils
+import com.android.gpstest.library.util.PreferenceUtil
 import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
+import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtils
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
@@ -197,9 +203,9 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         chkAsNavMessages = findPreference(getString(R.string.pref_key_as_navigation_message_output)) as CheckBoxPreference
         chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
-        prefs.registerOnSharedPreferenceChangeListener(this)
-
         initNotificationPermissionDialog()
+
+        prefs.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
@@ -314,6 +320,27 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     private fun initNotificationPermissionDialog() {
         chkShowNotification =
             findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+        if (VERSION.SDK_INT < VERSION_CODES.TIRAMISU) {
+            // Notifications are always shown on Android 12 and lower
+            chkShowNotification?.isEnabled = false
+            PreferenceUtils.saveBoolean(
+                getString(R.string.pref_key_show_notification),
+                true,
+                prefs
+            )
+            return
+        }
+
+        // Permissions for notifications are used in place of a user-defined setting. This workflow
+        // supports users that have installed an update, who will already have permissions granted.
+        // Additionally, revoking notification permissions seems to be the only way to disable
+        // user-facing notifications.
+        PreferenceUtils.saveBoolean(
+            getString(R.string.pref_key_show_notification),
+            PermissionUtils.hasGrantedNotificationPermissions(this),
+            prefs
+        )
+
         chkRunInBackground =
             findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
         chkLogFileNmea =
@@ -340,16 +367,35 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         )
         prefsThatNeedNotificationPermissions.forEach {
             it?.onPreferenceChangeListener =
-                OnPreferenceChangeListener { _, newValue ->
+                OnPreferenceChangeListener { preference, newValue ->
                     if (newValue as Boolean && !PermissionUtils.hasGrantedNotificationPermissions(
                             this
                         )
                     ) {
                         // User must have granted notification permissions first
                         createNotificationPermissionDialog(this).show()
-                        false
+                        // Reject change to setting by returning false
+                        return@OnPreferenceChangeListener false
                     } else {
-                        true
+                        if (preference == chkShowNotification && !newValue &&
+                            (PreferenceUtil.runInBackground(
+                                this,
+                                prefs
+                            ) || PreferenceUtil.isFileLoggingEnabled(this, prefs))
+                        ) {
+                            // Don't let the user disable notifications if background execution or logging is enabled
+                            createCanNotDisableSettingDialog(this).show()
+                            // Reject change to setting by returning false
+                            return@OnPreferenceChangeListener false
+                        }
+
+                        if (!newValue) {
+                            // If the user disabled the setting revoke the notification permission
+                            revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+
+                        // Accept change to setting by returning true
+                        return@OnPreferenceChangeListener true
                     }
                 }
         }
@@ -358,6 +404,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @RequiresApi(VERSION_CODES.TIRAMISU)
     fun createNotificationPermissionDialog(activity: Activity): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.notification_permission_required_dialog_text)
         val builder = AlertDialog.Builder(activity)
             .setTitle(R.string.notification_permission_required_dialog_title)
             .setCancelable(false)
@@ -366,6 +414,21 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 R.string.ok
             ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
             .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+        return builder.create()
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createCanNotDisableSettingDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.can_not_disable_setting_dialog_text)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
         return builder.create()
     }
 
@@ -385,8 +448,14 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PermissionUtils.NOTIFICATION_PERMISSION_REQUEST) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Notification permission granted - No-op - notification will be posted by the
-                // service
+                // Notification permission granted - change the setting in the Preferences UI
+                // The notification will automatically be posted by the service
+                PreferenceUtils.saveBoolean(
+                    getString(R.string.pref_key_show_notification),
+                    true,
+                    prefs
+                )
+                addPreferencesFromResource(R.xml.preferences)
             } else {
                 // Prompt the user to grant permissions again
                 createNotificationPermissionDialog(this).show();
