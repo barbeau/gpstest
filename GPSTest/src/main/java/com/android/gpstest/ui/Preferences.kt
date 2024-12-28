@@ -341,7 +341,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         )
 
         chkRunInBackground =
-            findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+            findPreference(getString(R.string.pref_key_gnss_background)) as CheckBoxPreference
         chkLogFileNmea =
             findPreference(getString(R.string.pref_key_file_nmea_output)) as CheckBoxPreference
         chkLogFileNavMessages =
