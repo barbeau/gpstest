@@ -258,6 +258,14 @@
       You can\'t disable notifications while background execution or file logging is enabled. Please disable these settings first.
     </string>
 
+    <string name="need_to_restart_application_dialog_title" tools:ignore="MissingTranslation">
+      App restart required
+    </string>
+
+    <string name="need_to_restart_application_dialog_text" tools:ignore="MissingTranslation">
+      To disable notifications the application needs to be restarted. Tap \"Ok\" to restart.
+    </string>
+
     <!-- Send feedback -->
     <string name="feedback_subject">GPSTest: Feedback</string>
     <string name="feedback_body">Complaints, kudos, or bug reports are welcome!\n\n\n</string>

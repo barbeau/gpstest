@@ -21,6 +21,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
@@ -388,11 +389,10 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                             return@OnPreferenceChangeListener false
                         }
 
-                        if (!newValue) {
-                            // If the user disabled the setting revoke the notification permission
-                            revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
-                            // Destroy and recreate Activity
-                            recreate()
+                        if (preference == chkShowNotification && !newValue) {
+                            // If the user disabled the notification setting prompt them to restart app
+                            createRestartApplicationDialog(this).show()
+                            return@OnPreferenceChangeListener false
                         }
 
                         // Accept change to setting by returning true
@@ -433,6 +433,22 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         return builder.create()
     }
 
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createRestartApplicationDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
+        textView.text = getString(R.string.need_to_restart_application_dialog_text)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.need_to_restart_application_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, _: Int -> revokeNotificationPermissionAndRestartApplication() }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+        return builder.create()
+    }
+
     @RequiresApi(api = VERSION_CODES.TIRAMISU)
     private fun requestNotificationPermission() {
         ActivityCompat.requestPermissions(
@@ -462,5 +478,15 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 createNotificationPermissionDialog(this).show();
             }
         }
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    private fun Context.revokeNotificationPermissionAndRestartApplication() {
+        revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val componentName = intent?.component
+        val mainIntent = Intent.makeRestartActivityTask(componentName)
+        startActivity(mainIntent)
+        Runtime.getRuntime().exit(0)
     }
 }
