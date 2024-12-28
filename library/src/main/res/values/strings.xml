@@ -310,7 +310,7 @@
     <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
 
     <string name="pref_gnss_show_notification_title">Show a notification</string>
-    <string name="pref_gnss_show_notification_summary">If checked, the app will show a notification with real-time GNSS information. This setting must be enabled to run in the background or log data. This setting can only be changed on Android 13 and up.</string>
+    <string name="pref_gnss_show_notification_summary">If checked, the app will show a notification with real-time GNSS information. This setting must be enabled to run in the background or log data. When disabling this setting you must kill and restart the app for it to take effect. This setting can only be changed on Android 13 and up.</string>
 
     <string name="pref_gnss_background_title">Run GNSS in background</string>
     <string name="pref_gnss_background_summary">If checked, when you leave the app a notification will keep GNSS running in the background until you stop it from that notification. This setting is automatically enabled when you enable logging data to files to allow logging in the background.</string>

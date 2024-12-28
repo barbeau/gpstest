@@ -45,7 +45,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
@@ -392,6 +391,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                         if (!newValue) {
                             // If the user disabled the setting revoke the notification permission
                             revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+                            // Destroy and recreate Activity
+                            recreate()
                         }
 
                         // Accept change to setting by returning true
@@ -455,7 +456,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                     true,
                     prefs
                 )
-                addPreferencesFromResource(R.xml.preferences)
+                recreate()
             } else {
                 // Prompt the user to grant permissions again
                 createNotificationPermissionDialog(this).show();
