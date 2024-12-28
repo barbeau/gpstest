@@ -52,7 +52,7 @@ import com.android.gpstest.library.ui.SignalInfoViewModel
 import com.google.android.material.chip.Chip
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.*
+import java.util.Collections
 
 /**
  * Utilities for processing user interface elements
@@ -883,6 +883,15 @@ object LibUIUtils {
         val oldVer = prefs.getInt(WHATS_NEW_VER, 0)
         val newVer = appInfo.versionCode
         if (oldVer < newVer) {
+            if (newVer == 24098) {
+                // Existing users that are upgrading will have notification permissions enabled, so
+                // reflect that in settings
+                PreferenceUtils.saveBoolean(
+                    context.getString(R.string.pref_key_show_notification),
+                    true,
+                    prefs)
+            }
+
             activity.showDialog(WHATSNEW_DIALOG)
             PreferenceUtils.saveInt(WHATS_NEW_VER, appInfo.versionCode, prefs)
         }

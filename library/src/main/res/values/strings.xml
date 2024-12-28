@@ -251,7 +251,7 @@
     </string>
 
     <string name="notification_permission_required_dialog_text" tools:ignore="MissingTranslation">
-      You must grant notification permissions before enabling this setting.
+      You must grant notification permissions before enabling this setting. Tap \"Ok\" to grant permissions.
     </string>
 
     <!-- Send feedback -->

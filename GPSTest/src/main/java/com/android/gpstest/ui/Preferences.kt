@@ -26,8 +26,13 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.preference.*
+import android.preference.CheckBoxPreference
+import android.preference.EditTextPreference
+import android.preference.ListPreference
+import android.preference.Preference
 import android.preference.Preference.OnPreferenceChangeListener
+import android.preference.PreferenceActivity
+import android.preference.PreferenceCategory
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -359,7 +364,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             .setView(view)
             .setPositiveButton(
                 R.string.ok
-            ) { _: DialogInterface?, which: Int -> requestNotificationPermission() }
+            ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
