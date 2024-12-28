@@ -28,6 +28,9 @@
     <!-- Required for notifications on T+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Required for the location service when targeting API 34 and up -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+
     <application
         android:name=".Application"
         android:label="@string/app_name"
