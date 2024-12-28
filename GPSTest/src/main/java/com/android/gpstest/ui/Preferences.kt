@@ -485,6 +485,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @RequiresApi(VERSION_CODES.TIRAMISU)
     private fun Context.revokeNotificationPermissionAndRestartApplication() {
         revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+        recreate()
 
         Executors.newSingleThreadScheduledExecutor().schedule({
             val intent = packageManager.getLaunchIntentForPackage(packageName)
