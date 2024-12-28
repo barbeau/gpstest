@@ -55,7 +55,8 @@
         <activity
             android:name=".ui.Preferences"
             android:label="@string/pref_title"
-            android:exported="true">
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />

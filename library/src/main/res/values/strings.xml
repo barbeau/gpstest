@@ -263,7 +263,7 @@
     </string>
 
     <string name="need_to_restart_application_dialog_text" tools:ignore="MissingTranslation">
-      To disable notifications the application needs to be restarted. Tap \"Ok\" to restart.
+      To revoke notification permissions the application needs to be restarted. Tap \"Ok\" to restart.
     </string>
 
     <!-- Send feedback -->

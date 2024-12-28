@@ -215,7 +215,6 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units_v2))
         changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units_v2))
         changePreferenceSummary(getString(R.string.pref_key_language))
-        recreate()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -486,6 +485,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @RequiresApi(VERSION_CODES.TIRAMISU)
     private fun Context.revokeNotificationPermissionAndRestartApplication() {
         revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
+        PreferenceUtils.saveBoolean(getString(R.string.pref_key_show_notification), false, prefs)
 
         Executors.newSingleThreadScheduledExecutor().schedule({
             val intent = packageManager.getLaunchIntentForPackage(packageName)
