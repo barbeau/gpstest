@@ -15,10 +15,16 @@
  */
 package com.android.gpstest.ui
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.preference.*
 import android.preference.Preference.OnPreferenceChangeListener
@@ -27,19 +33,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
+import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
 import com.android.gpstest.library.util.PermissionUtils
 import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
-import com.android.gpstest.library.util.SatelliteUtils
-import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
-import com.android.gpstest.util.UIUtils
+import com.android.gpstest.library.util.SatelliteUtils
 
 class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     var forceFullGnssMeasurements: CheckBoxPreference? = null
@@ -54,6 +61,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
 
     var language: ListPreference? = null
 
+    var chkShowNotification: CheckBoxPreference? = null
+    var chkRunInBackground: CheckBoxPreference? = null
     var chkLogFileNmea: CheckBoxPreference? = null
     var chkLogFileNavMessages: CheckBoxPreference? = null
     var chkLogFileMeasurements: CheckBoxPreference? = null
@@ -184,6 +193,8 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
         prefs.registerOnSharedPreferenceChangeListener(this)
+
+        initNotificationPermissionDialog()
     }
 
     override fun onResume() {
@@ -290,21 +301,89 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun initPermissions() {
-        notificationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { result ->
-            if (result != null && result) {
+    /**
+     * Initializes the dialog for notification permissions, which is required for
+     * notifications, background execution and logging.
+     */
+    @SuppressLint("NewApi")
+    private fun initNotificationPermissionDialog() {
+        chkShowNotification =
+            findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+        chkRunInBackground =
+            findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+        chkLogFileNmea =
+            findPreference(getString(R.string.pref_key_file_nmea_output)) as CheckBoxPreference
+        chkLogFileNavMessages =
+            findPreference(getString(R.string.pref_key_file_navigation_message_output)) as CheckBoxPreference
+        chkLogFileMeasurements =
+            findPreference(getString(R.string.pref_key_file_measurement_output)) as CheckBoxPreference
+        chkLogFileLocation =
+            findPreference(getString(R.string.pref_key_file_location_output)) as CheckBoxPreference
+        chkLogFileAntennaJson =
+            findPreference(getString(R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
+        chkLogFileAntennaCsv =
+            findPreference(getString(R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
+        val prefsThatNeedNotificationPermissions = listOf(
+            chkShowNotification,
+            chkRunInBackground,
+            chkLogFileNmea,
+            chkLogFileNavMessages,
+            chkLogFileMeasurements,
+            chkLogFileLocation,
+            chkLogFileAntennaJson,
+            chkLogFileAntennaCsv
+        )
+        prefsThatNeedNotificationPermissions.forEach {
+            it?.onPreferenceChangeListener =
+                OnPreferenceChangeListener { _, newValue ->
+                    if (newValue as Boolean && !PermissionUtils.hasGrantedNotificationPermissions(
+                            this
+                        )
+                    ) {
+                        // User must have granted notification permissions first
+                        createNotificationPermissionDialog(this).show()
+                        false
+                    } else {
+                        true
+                    }
+                }
+        }
+    }
+
+    @RequiresApi(VERSION_CODES.TIRAMISU)
+    fun createNotificationPermissionDialog(activity: Activity): Dialog {
+        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
+        val builder = AlertDialog.Builder(activity)
+            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setCancelable(false)
+            .setView(view)
+            .setPositiveButton(
+                R.string.ok
+            ) { _: DialogInterface?, which: Int -> requestNotificationPermission() }
+        return builder.create()
+    }
+
+    @RequiresApi(api = VERSION_CODES.TIRAMISU)
+    private fun requestNotificationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(PermissionUtils.getNotificationPermission()),
+            PermissionUtils.NOTIFICATION_PERMISSION_REQUEST
+        )
+    }
+
+    @SuppressLint("NewApi")
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PermissionUtils.NOTIFICATION_PERMISSION_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Notification permission granted - No-op - notification will be posted by the
                 // service
             } else {
-                // User rejected permission - show dialog unless user has told us not to
-                if (!prefs.getBoolean(
-                        app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
-                        false)
-                ) {
-                    UIUtils.createNotificationPermissionDialog(this).show()
-                }
+                // Prompt the user to grant permissions again
+                createNotificationPermissionDialog(this).show();
             }
         }
     }

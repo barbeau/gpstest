@@ -246,12 +246,12 @@
     <string name="ok">OK</string>
     <string name="exit">EXIT</string>
 
-    <string name="user_declined_notification_permission_dialog_title" tools:ignore="MissingTranslation">
-      Notification permission suggested
+    <string name="notification_permission_required_dialog_title" tools:ignore="MissingTranslation">
+      Notification permission required
     </string>
 
-    <string name="user_declined_notification_permission_dialog_text" tools:ignore="MissingTranslation">
-      Please grant notification permissions if you would like to see GNSS details in a notification while the app is running.
+    <string name="notification_permission_required_dialog_text" tools:ignore="MissingTranslation">
+      You must grant notification permissions before enabling this setting.
     </string>
 
     <!-- Send feedback -->
@@ -306,7 +306,7 @@
     <string name="pref_auto_start_gps_summary">Start GNSS when the app starts</string>
 
     <string name="pref_gnss_show_notification_title">Show a notification</string>
-    <string name="pref_gnss_show_notification_summary">If checked, the app will show a notification with real-time GNSS information.</string>
+    <string name="pref_gnss_show_notification_summary">If checked, the app will show a notification with real-time GNSS information. This setting is automatically enabled when you enable logging data to files to allow logging in the background.</string>
 
     <string name="pref_gnss_background_title">Run GNSS in background</string>
     <string name="pref_gnss_background_summary">If checked, when you leave the app a notification will keep GNSS running in the background until you stop it from that notification. This setting is automatically enabled when you enable logging data to files to allow logging in the background.</string>

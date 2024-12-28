@@ -127,7 +127,6 @@
     <string name="pref_key_preferred_speed_units_v2">preference_speed_units_v2</string>
     <string name="pref_key_language">preference_language</string>
     <string name="pref_key_force_full_gnss_measurements">preference_force_full_gnss_measurements</string>
-    <string name="pref_key_never_show_notification_permissions_dialog">never_show_notification_permissions_dialog</string>
 
     <!-- Default preference values -->
     <string name="pref_gps_min_time_default_sec">1</string>

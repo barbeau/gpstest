@@ -25,8 +25,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.os.IBinder
 import android.preference.PreferenceManager
@@ -38,10 +36,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -80,14 +75,14 @@ import com.android.gpstest.util.UIUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
-import kotlin.system.exitProcess
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
@@ -119,7 +114,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     var lastSavedInstanceState: Bundle? = null
     private var userDeniedPermission = false
     private var benchmarkController: BenchmarkController? = null
-    private var notificationPermissionRequest: ActivityResultLauncher<String>? = null
 
     private var initialLanguage: String? = null
     private var initialMinTimeMillis: Long? = null
@@ -196,8 +190,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupNavigationDrawer()
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
-
-        initPermissions()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -370,25 +362,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         }
     }
 
-    private fun initPermissions() {
-        notificationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { result ->
-            if (result != null && result) {
-                // Notification permission granted - No-op - notification will be posted by the
-                // service
-            } else {
-                // User rejected permission - show dialog unless user has told us not to
-                if (!prefs.getBoolean(
-                        app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
-                        false)
-                ) {
-                    UIUtils.createNotificationPermissionDialog(this).show()
-                }
-            }
-        }
-    }
-
     private fun initGnss() {
         val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
@@ -413,12 +386,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val settings = prefs
         checkKeepScreenOn(settings)
         LibUIUtils.autoShowWhatsNew(prefs, app,this)
-
-        if (!PermissionUtils.hasGrantedNotificationPermissions(this)
-            && VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-            // Request notification permissions and defer init of GNSS until user responds
-            requestNotificationPermission()
-        }
     }
 
     override fun onPause() {
@@ -785,17 +752,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         invalidateOptionsMenu()
     }
 
-    /**
-     * Requests permission to show notifications with the `timerValuesSet` to be used to start
-     * the logging service.
-     */
-    @RequiresApi(api = VERSION_CODES.TIRAMISU)
-    fun requestNotificationPermission() {
-        if (!PermissionUtils.hasGrantedNotificationPermissions(this)) {
-            notificationPermissionRequest?.launch(PermissionUtils.getNotificationPermission())
-        }
-    }
-
     @ExperimentalCoroutinesApi
     private fun observeLocationFlow() {
         // This should be a Flow and not LiveData to ensure that the Flow is active before the Service is bound
@@ -972,6 +928,5 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     companion object {
         private const val TAG = "GpsTestActivity"
         private const val SECONDS_TO_MILLISECONDS = 1000
-        private const val GPS_RESUME = "gps_resume"
     }
 }

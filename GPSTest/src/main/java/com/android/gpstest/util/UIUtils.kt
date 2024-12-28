@@ -19,7 +19,6 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
-import com.android.gpstest.R
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -33,13 +32,14 @@ import androidx.fragment.app.FragmentActivity
 import com.android.gpstest.Application
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
+import com.android.gpstest.R
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.util.IOUtils
+import com.android.gpstest.library.util.LibUIUtils
 import com.android.gpstest.library.util.LocationUtils
 import com.android.gpstest.library.util.PreferenceUtils
-import com.android.gpstest.library.util.LibUIUtils
 import com.android.gpstest.ui.GnssFilterDialog
 import com.android.gpstest.ui.HelpActivity
 import com.android.gpstest.ui.share.ShareDialogFragment
@@ -48,7 +48,6 @@ import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOCATION
 import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOGGING_ENABLED
 import com.android.gpstest.ui.share.ShareDialogFragment.Companion.KEY_LOG_FILES
 import java.io.File
-import java.util.*
 
 /**
  * Utilities for processing user inteface elements
@@ -131,28 +130,6 @@ internal object UIUtils {
             .setNegativeButton(
                 R.string.not_now
             ) { dialog: DialogInterface?, which: Int -> }
-        return builder.create()
-    }
-
-    @JvmStatic
-    fun createNotificationPermissionDialog(activity: AppCompatActivity): Dialog {
-        val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
-        val neverShowDialog = view.findViewById<CheckBox>(R.id.notification_permissions_never_show_again)
-        neverShowDialog.setOnCheckedChangeListener { compoundButton: CompoundButton?, isChecked: Boolean ->
-            // Save the preference
-            PreferenceUtils.saveBoolean(
-                app.getString(R.string.pref_key_never_show_notification_permissions_dialog),
-                isChecked,
-                prefs
-            )
-        }
-        val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.user_declined_notification_permission_dialog_title)
-            .setCancelable(false)
-            .setView(view)
-            .setPositiveButton(
-                R.string.ok
-            ) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
