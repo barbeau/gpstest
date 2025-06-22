@@ -61,12 +61,12 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @Override
-    String getFileExtension() {
+    public String getFileExtension() {
         return "txt";
     }
 
     @Override
-    boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile) {
+    public boolean postFileInit(@NonNull BufferedWriter fileWriter, boolean isNewFile) {
         ContextCompat.getMainExecutor(context).execute(() -> Toast.makeText(
                 Application.Companion.getApp().getApplicationContext(),
                 Application.Companion.getApp().getString(
@@ -85,7 +85,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
      * @param filePath path to the current file
      */
     @Override
-    void writeFileHeader(BufferedWriter writer, String filePath) {
+    public void writeFileHeader(@NonNull BufferedWriter writer, String filePath) {
         // TODO - update header to new field formats
         try {
             writer.write(COMMENT_START);

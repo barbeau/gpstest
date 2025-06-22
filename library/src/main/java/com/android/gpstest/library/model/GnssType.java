@@ -15,11 +15,33 @@
  */
 package com.android.gpstest.library.model;
 
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 /**
  * Types of Global Navigation Satellite Systems
  */
 public enum GnssType {
     NAVSTAR, GLONASS, GALILEO, QZSS, BEIDOU, IRNSS, SBAS, UNKNOWN;
+
+    /**
+     * RINEX representation as defined in the The Receiver Independent Exchange Format document
+     * @return character representing the satellite constelation or null if unknown
+     */
+    @Nullable
+    public Character toRinexChar() {
+        return switch (this) {
+            case NAVSTAR -> 'G';
+            case GLONASS -> 'R';
+            case GALILEO -> 'E';
+            case QZSS -> 'J';
+            case BEIDOU -> 'C';
+            case IRNSS -> 'I';
+            case SBAS -> 'S';
+            default -> null;
+        };
+    }
 
     /**
      * Converts from the string representation of GnssType to the enum, or null if the input is

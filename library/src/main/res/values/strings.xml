@@ -50,6 +50,7 @@
     <string name="copied_to_clipboard">Location copied to clipboard</string>
     <string name="send_log">"Send log…"</string>
     <string name="log">Log</string>
+    <string name="rinex">RINEX</string>
     <string name="file_name">File name</string>
     <string name="location">Location</string>
     <string name="log_instructions">Enable logging for NMEA, raw measurements, navigation messages, and more in Settings</string>
@@ -373,6 +374,8 @@
     <string name="pref_file_antenna_output_csv_summary">Logs GNSS antenna details to the CSV file. (Android 11 and up, and only available on some devices)</string>
     <string name="pref_file_antenna_output_json_title">Antenna Info (JSON)</string>
     <string name="pref_file_antenna_output_json_summary">Logs GNSS antenna details to the JSON file. (Android 11 and up, and only available on some devices)</string>
+    <string name="pref_file_antenna_output_rinex_title">RINEX Logging</string>
+    <string name="pref_file_antenna_output_rinex_summary">Generate RINEX navigation and observation files (Android 11 and up, and only available on some devices)</string>
     <string name="pref_file_gnss_status_output_title">GnssStatus</string>
     <string name="pref_file_gnss_status_output_summary">Logs GnssStatus data per signal to the CSV file</string>
     <string name="pref_file_orientation_output_title">Orientation</string>

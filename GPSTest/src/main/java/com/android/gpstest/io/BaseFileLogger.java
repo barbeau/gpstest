@@ -10,6 +10,9 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Downloads;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
@@ -23,8 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * A base implementation of a GNSS logger to store information to a file. Originally from https://github.com/google/gps-measurement-tools/tree/master/GNSSLogger,
- * modified for GPSTest.
+ * A base implementation of a GNSS logger to store information to a file.
  */
 public abstract class BaseFileLogger implements FileLogger {
 
@@ -58,7 +60,7 @@ public abstract class BaseFileLogger implements FileLogger {
      * @return the file extension to be used, following the ".". So "json" would
      *      * be used for files with the ".json" extension.
      */
-    abstract String getFileExtension();
+    public abstract String getFileExtension();
 
     /**
      * Initialize file by adding a header, if desired for the given implementation
@@ -66,16 +68,16 @@ public abstract class BaseFileLogger implements FileLogger {
      * @param writer   writer to use when writing file
      * @param filePath path to the current file
      */
-    abstract void writeFileHeader(BufferedWriter writer, String filePath);
+    public abstract void writeFileHeader(@NonNull BufferedWriter writer, String filePath);
 
     /**
      * Called after files have finished initialing within startLog() but prior to returning from startLog(), if
      * additional init is required for a specific file logging implementation
-     * @param fileWriter
+     * @param fileWriter writer to use when writing file
      * @param isNewFile true if the file is new, or false if it already existed and was re-opened
      * @return true if the operation was successful, false if it was not
      */
-    abstract boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile);
+    public abstract boolean postFileInit(@NonNull BufferedWriter fileWriter, boolean isNewFile);
 
     /**
      * Start a file logging process
@@ -85,7 +87,7 @@ public abstract class BaseFileLogger implements FileLogger {
      * @param date The date and time to use for the file name
      * @return true if a new file was created, false if an existing file was used
      */
-    public synchronized boolean startLog(File existingFile, Date date) {
+    public synchronized boolean startLog(@Nullable File existingFile, @NonNull Date date) {
         boolean isNewFile = false;
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {

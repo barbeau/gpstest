@@ -134,6 +134,11 @@
                     android:title="@string/pref_file_antenna_output_json_title"
                     android:summary="@string/pref_file_antenna_output_json_summary"
                     android:defaultValue="false" />
+                <CheckBoxPreference
+                    android:key="@string/pref_key_file_output_rinex"
+                    android:title="@string/pref_file_antenna_output_rinex_title"
+                    android:summary="@string/pref_file_antenna_output_rinex_summary"
+                    android:defaultValue="false" />
             </PreferenceCategory>
 
             <PreferenceCategory

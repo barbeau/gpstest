@@ -46,6 +46,8 @@ import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
+import com.android.gpstest.io.rinex.RinexNavigationFileLogger
+import com.android.gpstest.io.rinex.RinexObservationFileLogger
 import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.SatelliteGroup
 import com.android.gpstest.library.model.SatelliteMetadata
@@ -55,6 +57,7 @@ import com.android.gpstest.library.util.LibUIUtils.toNotificationSummary
 import com.android.gpstest.library.util.PreferenceUtil
 import com.android.gpstest.library.util.PreferenceUtil.isCsvLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.isJsonLoggingEnabled
+import com.android.gpstest.library.util.PreferenceUtil.isRinexLoggingEnabled
 import com.android.gpstest.library.util.PreferenceUtil.writeAntennaInfoToFileCsv
 import com.android.gpstest.library.util.PreferenceUtil.writeAntennaInfoToFileJson
 import com.android.gpstest.library.util.PreferenceUtil.writeLocationToFile
@@ -121,6 +124,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
     lateinit var csvFileLogger: CsvFileLogger
     lateinit var jsonFileLogger: JsonFileLogger
+    lateinit var rinexObservationFileLogger: RinexObservationFileLogger
+    lateinit var rinexNavigationFileLogger: RinexNavigationFileLogger
 
     // Preference listener that will init the loggers if the user changes Settings while Service is running
     private val loggingSettingListener: SharedPreferences.OnSharedPreferenceChangeListener =
@@ -135,6 +140,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
 
         csvFileLogger = CsvFileLogger(applicationContext)
         jsonFileLogger = JsonFileLogger(applicationContext)
+        rinexObservationFileLogger = RinexObservationFileLogger(applicationContext)
+        rinexNavigationFileLogger = RinexNavigationFileLogger(applicationContext)
 
         // Observe logging setting changes
         Application.prefs.registerOnSharedPreferenceChangeListener(loggingSettingListener)
@@ -387,6 +394,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
                         initLogging()
                         csvFileLogger.onGnssNavigationMessageReceived(it)
                     }
+                    if (isRinexLoggingEnabled(app, prefs)) {
+                        initLogging()
+                        rinexNavigationFileLogger.onGnssNavigationMessageReceived(it)
+                    }
                 }
             }
             .launchIn(lifecycleScope)
@@ -412,6 +423,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
                     if (writeMeasurementsToFile(app, prefs)) {
                         initLogging()
                         csvFileLogger.onGnssMeasurementsReceived(it)
+                    }
+                    if (isRinexLoggingEnabled(app, prefs)) {
+                        initLogging()
+                        rinexObservationFileLogger.onGnssMeasurementsReceived(it)
                     }
                 }
             }
@@ -606,6 +621,15 @@ class ForegroundOnlyLocationService : LifecycleService() {
         if (!jsonFileLogger.isStarted && isJsonLoggingEnabled(app, prefs)) {
             jsonFileLogger.startLog(null, date)
         }
+
+        if (!rinexObservationFileLogger.isStarted && isRinexLoggingEnabled(app, prefs)) {
+            rinexObservationFileLogger.startLog(null, date)
+        }
+
+        if (!rinexNavigationFileLogger.isStarted && isRinexLoggingEnabled(app, prefs)) {
+            rinexNavigationFileLogger.startLog(null, date)
+        }
+
         maybeDeleteFiles()
     }
 
@@ -629,13 +653,21 @@ class ForegroundOnlyLocationService : LifecycleService() {
             // If we've already deleted files on this application execution, don't do it again
             return
         }
-        if (csvFileLogger.isStarted || jsonFileLogger.isStarted) {
+        if (csvFileLogger.isStarted || jsonFileLogger.isStarted || rinexObservationFileLogger.isStarted) {
             // Base directories should be the same, so we only need one of the two (whichever is logging) to clear old files
-            var baseDirectory: File = csvFileLogger.baseDirectory
+            var baseDirectory: File? = csvFileLogger.baseDirectory
             if (baseDirectory == null) {
                 baseDirectory = jsonFileLogger.baseDirectory
             }
-            deleteOldFiles(baseDirectory, csvFileLogger.file, jsonFileLogger.file)
+            if (baseDirectory == null) {
+                baseDirectory = rinexObservationFileLogger.baseDirectory
+            }
+            if (baseDirectory == null) {
+                baseDirectory = rinexNavigationFileLogger.baseDirectory
+            }
+            if (baseDirectory != null) {
+                deleteOldFiles(baseDirectory, csvFileLogger.file, jsonFileLogger.file, rinexObservationFileLogger.file)
+            }
             deletedFiles = true
         }
     }
@@ -643,6 +675,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private fun stopLogging() {
         csvFileLogger.close()
         jsonFileLogger.close()
+        rinexObservationFileLogger.close()
+        rinexNavigationFileLogger.close()
     }
 
     /**
