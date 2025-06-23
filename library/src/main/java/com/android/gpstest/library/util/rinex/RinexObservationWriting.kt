@@ -104,7 +104,9 @@ object RinexObservationWriting {
         val sb = StringBuilder()
 
         // Epoch line
-        val clockBiasNs = hardwareClock.fullBiasNanos + hardwareClock.biasNanos
+        val fullBiasNanos = if (hardwareClock.hasFullBiasNanos()) hardwareClock.fullBiasNanos else 0
+        val biasNanos = if (hardwareClock.hasBiasNanos()) hardwareClock.biasNanos else 0.0
+        val clockBiasNs = fullBiasNanos + biasNanos
         val gpsTimeNs = hardwareClock.timeNanos - clockBiasNs
         val datePart = formatGpst(gpsTimeNs.toLong(), "> yyyy MM dd HH mm ss.")
         val micro = gpstToMicroseconds(gpsTimeNs.toLong())
@@ -474,7 +476,7 @@ object RinexObservationWriting {
         val tail = "SYS / # / OBS TYPES"
         val sb = StringBuilder()
         for ((sys, list) in obsList) {
-            val lines = splitArray(list, 13)
+            val lines = splitArray(list, 8)
             for ((i, line) in lines.withIndex()) {
                 val prefix = if (i == 0) "%c  %3d".format(sys.toRinexChar(), list.size) else "      "
                 val body = line.joinToString("") { " %3s".format(it) }
@@ -507,7 +509,9 @@ object RinexObservationWriting {
     @JvmStatic
     private fun writeRnx3HeaderFirstObs(hardwareClock: GnssClock): String {
         val tail = "TIME OF FIRST OBS"
-        val clockBiasNs = hardwareClock.fullBiasNanos + hardwareClock.biasNanos
+        val fullBiasNanos = if (hardwareClock.hasFullBiasNanos()) hardwareClock.fullBiasNanos else 0
+        val biasNanos = if (hardwareClock.hasBiasNanos()) hardwareClock.biasNanos else 0.0
+        val clockBiasNs = fullBiasNanos + biasNanos
         val gpsTimeNs = hardwareClock.timeNanos - clockBiasNs
         val datePart = formatGpst(gpsTimeNs.toLong(), "  yyyy    MM    dd    HH    mm    ss.")
         val micro = gpstToMicroseconds(gpsTimeNs.toLong())

@@ -83,17 +83,13 @@ class RinexObservationFileLogger(context: Context) : BaseFileLogger(context), Fi
         if (writeHeaderWhenPossible) {
             /* @see {RinexObservationWriting::getRnxAttr} */
             val allPossibleObservations = mapOf(
-                GnssType.NAVSTAR to listOf("C1C", "L1C", "D1C", "S1C"),
-                GnssType.NAVSTAR to listOf("C2C", "L2C", "D2C", "S2C"),
+                GnssType.NAVSTAR to listOf("C1C", "L1C", "D1C", "S1C", "C2C", "L2C", "D2C", "S2C"),
 
-                GnssType.GLONASS to listOf("C1B", "L1B", "D1B", "S1B"),
-                GnssType.GLONASS to listOf("C2C", "L2C", "D2C", "S2C"),
+                GnssType.GLONASS to listOf("C1B", "L1B", "D1B", "S1B", "C2C", "L2C", "D2C", "S2C"),
 
-                GnssType.GALILEO to listOf("C1C", "L1C", "D1C", "S1C"),
-                GnssType.GALILEO to listOf("C5X", "L5X", "D5X", "S5X"),
+                GnssType.GALILEO to listOf("C1C", "L1C", "D1C", "S1C", "C5X", "L5X", "D5X", "S5X"),
 
-                GnssType.QZSS to listOf("C1C", "L1C", "D1C", "S1C"),
-                GnssType.QZSS to listOf("C1X", "L1X", "D1X", "S1X"),
+                GnssType.QZSS to listOf("C1C", "L1C", "D1C", "S1C", "C1X", "L1X", "D1X", "S1X"),
 
                 GnssType.BEIDOU to listOf("C2I", "L2I", "D2I", "S2I"),
 
