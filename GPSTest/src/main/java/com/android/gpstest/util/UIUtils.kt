@@ -148,7 +148,7 @@ internal object UIUtils {
         activity: AppCompatActivity, location: Location?, loggingEnabled: Boolean,
         loggers: List<FileLogger>, alternateFileUri: Uri?
     ) {
-        val files = ArrayList<File>(2)
+        val files = ArrayList<File>(4)
         for (logger in loggers) {
             if (logger.file != null) {
                 files.add(logger.file)

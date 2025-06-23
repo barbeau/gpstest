@@ -16,6 +16,7 @@ import com.android.gpstest.R
 import com.android.gpstest.library.util.IOUtils
 import com.android.gpstest.library.util.LibUIUtils
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -86,7 +87,10 @@ class ShareLogFragment : Fragment() {
         }
 
         logBrowse.setOnClickListener { _: View? ->
-            if (files.isEmpty()) return@setOnClickListener
+            if (files.isEmpty()) {
+                Snackbar.make(view, R.string.no_files_error, Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             // File browse
             val uri = IOUtils.getUriFromFile(
