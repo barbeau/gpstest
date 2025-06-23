@@ -310,7 +310,7 @@ public class IOUtils {
      * @param file
      * @return an Android URI for the provided File that can be used to attach the file to a message via ACTION_SEND Intent
      */
-    public static android.net.Uri getUriFromFile(Context context, String applicationId, File file) {
+    public static android.net.Uri getUriFromFile(@NonNull Context context, @NonNull  String applicationId, @NonNull File file) {
         return FileProvider.getUriForFile(context, applicationId + ".provider", file);
     }
 

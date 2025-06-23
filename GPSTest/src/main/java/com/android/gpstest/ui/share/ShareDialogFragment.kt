@@ -71,7 +71,7 @@ class ShareDialogFragment : DialogFragment() {
                 }
             }
         }.attach()
-        val alternateFileUri = arguments?.getParcelable<Uri>(KEY_ALTERNATE_FILE_URI)
+        val alternateFileUri = requireArguments().getParcelable<Uri?>(KEY_ALTERNATE_FILE_URI)
         if (alternateFileUri != null) {
             // If the user picked a file from the browser, go back to the file logging tab
             viewPager.setCurrentItem(1, false)

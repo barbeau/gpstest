@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ShareLogFragment : Fragment() {
+
+    companion object {
+        const val TAG = "ShareLogFragment"
+    }
 
     private lateinit var listener: Listener
 
@@ -47,11 +52,11 @@ class ShareLogFragment : Fragment() {
         val logBrowse: MaterialButton = view.findViewById(R.id.log_browse)
         val logShare: MaterialButton = view.findViewById(R.id.log_share)
 
-        val loggingEnabled = arguments?.getBoolean(ShareDialogFragment.KEY_LOGGING_ENABLED) ?: false
-        val files = arguments?.getSerializable(ShareDialogFragment.KEY_LOG_FILES) as ArrayList<File>?
-        val alternateFileUri = arguments?.getParcelable<Uri>(ShareDialogFragment.KEY_ALTERNATE_FILE_URI)
+        val loggingEnabled = requireArguments().getBoolean(ShareDialogFragment.KEY_LOGGING_ENABLED)
+        val files = requireArguments().getSerializable(ShareDialogFragment.KEY_LOG_FILES) as ArrayList<File>
+        val alternateFileUri = requireArguments().getParcelable<Uri?>(ShareDialogFragment.KEY_ALTERNATE_FILE_URI)
 
-        if (loggingEnabled && files != null) {
+        if (loggingEnabled) {
             // Hide the logging instructions - logging is enabled and working
             logInstructions.visibility = View.GONE
         } else {
@@ -64,41 +69,40 @@ class ShareLogFragment : Fragment() {
 
         // Set the log file name
         if (loggingEnabled) {
-            if (files != null) {
-                if (alternateFileUri == null) {
-                    var fileNameText = ""
-                    // Set the log file currently being logged to by the FileLogger
-                    for (file in files) {
-                        fileNameText += file.name + System.getProperty("line.separator")
-                    }
-                    fileName.text = fileNameText
-                } else {
-                    // Set the log file selected by the user using the File Browse button
-                    val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
-                    // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
-                    val parts = lastPathSegment?.split("/".toRegex())?.toTypedArray()
-                    fileName.text = parts?.get(parts.size - 1) ?: ""
+            if (alternateFileUri == null) {
+                var fileNameText = ""
+                // Set the log file currently being logged to by the FileLogger
+                for (file in files) {
+                    fileNameText += file.name + System.getProperty("line.separator")
                 }
+                fileName.text = fileNameText
             } else {
-                // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
-                logInstructions.setText(R.string.log_error)
-                return
+                // Set the log file selected by the user using the File Browse button
+                val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
+                // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
+                val parts = lastPathSegment?.split("/".toRegex())?.toTypedArray()
+                fileName.text = parts?.get(parts.size - 1) ?: ""
             }
         }
 
         logBrowse.setOnClickListener { _: View? ->
+            if (files.isEmpty()) return@setOnClickListener
+
             // File browse
-            val uri = IOUtils.getUriFromFile(activity, BuildConfig.APPLICATION_ID, files?.get(0))
+            val uri = IOUtils.getUriFromFile(
+                requireActivity(), BuildConfig.APPLICATION_ID,
+                files[0]
+            )
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.data = uri
-            activity!!.startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
+            requireActivity().startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
             // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
             listener.onFileBrowse()
         }
 
         logShare.setOnClickListener { _: View? ->
             // Send the log file
-            if (alternateFileUri == null && files != null) {
+            if (alternateFileUri == null) {
                 // Send the log file currently being logged to by the FileLogger
                 IOUtils.sendLogFile(app, BuildConfig.APPLICATION_ID, activity, *files.toTypedArray())
                 listener.onLogFileSent()

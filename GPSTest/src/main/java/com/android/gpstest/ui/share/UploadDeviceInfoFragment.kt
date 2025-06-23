@@ -52,7 +52,7 @@ class UploadDeviceInfoFragment : Fragment() {
         val uploadProgress: ProgressBar = view.findViewById(R.id.upload_progress)
         val upload: MaterialButton = view.findViewById(R.id.upload)
 
-        val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
+        val location = requireArguments().getParcelable<Location?>(ShareDialogFragment.KEY_LOCATION)
         val signalInfoViewModel: SignalInfoViewModel by activityViewModels()
         var userCountry = ""
 

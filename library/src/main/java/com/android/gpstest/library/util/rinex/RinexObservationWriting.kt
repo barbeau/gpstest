@@ -383,7 +383,8 @@ object RinexObservationWriting {
         constellation: GnssType,
         state: Int
     ): Char {
-        //TODO support GnssType.IRNSS
+        //TODO support IRNSS
+        //TODO support SBAS C1X
 
         var attr = 'C'
 

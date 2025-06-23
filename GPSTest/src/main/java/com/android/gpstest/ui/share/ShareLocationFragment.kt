@@ -43,7 +43,7 @@ class ShareLocationFragment : Fragment() {
         val chipDMS: Chip = view.findViewById(R.id.chip_dms)
         val chipDegreesDecimalMin: Chip = view.findViewById(R.id.chip_degrees_decimal_minutes)
 
-        val location = arguments?.getParcelable<Location>(ShareDialogFragment.KEY_LOCATION)
+        val location = requireArguments().getParcelable<Location?>(ShareDialogFragment.KEY_LOCATION)
 
         if (location == null) {
             // No location - Hide the location info

@@ -100,7 +100,7 @@ class RinexObservationFileLogger(context: Context) : BaseFileLogger(context), Fi
                 //GnssType.IRNSS to listOf("C5X", "L5X", "D5X", "S5X"), //TODO support
 
                 GnssType.SBAS to listOf("C1C", "L1C", "D1C", "S1C"),
-                GnssType.SBAS to listOf("C1X", "L1X", "D1X", "S1X"), //TODO validate data
+                // GnssType.SBAS to listOf("C1X", "L1X", "D1X", "S1X"), //TODO support
             )
             val header = RinexObservationWriting.generateHeader(allPossibleObservations, event.clock, runAtTime)
             try {
