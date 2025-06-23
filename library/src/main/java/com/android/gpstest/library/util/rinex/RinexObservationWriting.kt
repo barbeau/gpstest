@@ -23,12 +23,11 @@ import com.android.gpstest.library.util.rinex.RinexWriting.NS_TO_S
 import com.android.gpstest.library.util.rinex.RinexWriting.SPEED_OF_LIGHT
 import com.android.gpstest.library.util.rinex.RinexWriting.WEEK_TO_S
 import com.android.gpstest.library.util.rinex.RinexWriting.formatGpst
-import com.android.gpstest.library.util.rinex.RinexWriting.gpstToMicroseconds
+import com.android.gpstest.library.util.rinex.RinexWriting.formatSecondsFromGpst
 import com.android.gpstest.library.util.rinex.RinexWriting.writeRnx3Header
 import com.android.gpstest.library.util.rinex.RinexWriting.writeRnx3HeaderEnd
 import com.android.gpstest.library.util.rinex.RinexWriting.writeRnx3HeaderRunBy
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 import kotlin.math.floor
 import kotlin.math.round
@@ -108,9 +107,9 @@ object RinexObservationWriting {
         val biasNanos = if (hardwareClock.hasBiasNanos()) hardwareClock.biasNanos else 0.0
         val clockBiasNs = fullBiasNanos + biasNanos
         val gpsTimeNs = hardwareClock.timeNanos - clockBiasNs
-        val datePart = formatGpst(gpsTimeNs.toLong(), "> yyyy MM dd HH mm ss.")
-        val micro = gpstToMicroseconds(gpsTimeNs.toLong())
-        sb.append(String.format(Locale.US, "%s%s %2d %2d%n", datePart, micro, epochFlag, measurements.size))
+        val datePart = formatGpst(gpsTimeNs.toLong(), "> yyyy MM dd HH mm ")
+        val seconds = formatSecondsFromGpst(gpsTimeNs.toLong())
+        sb.append(String.format(Locale.US, "%s%s %2d %2d%n", datePart, seconds, epochFlag, measurements.size))
 
         if(epochFlag == EpochFlag.OK || epochFlag == EpochFlag.POWER_FAILURE) {
             for (measurement in measurements) {
@@ -513,9 +512,9 @@ object RinexObservationWriting {
         val biasNanos = if (hardwareClock.hasBiasNanos()) hardwareClock.biasNanos else 0.0
         val clockBiasNs = fullBiasNanos + biasNanos
         val gpsTimeNs = hardwareClock.timeNanos - clockBiasNs
-        val datePart = formatGpst(gpsTimeNs.toLong(), "  yyyy    MM    dd    HH    mm    ss.")
-        val micro = gpstToMicroseconds(gpsTimeNs.toLong())
-        val full = "$datePart$micro"
+        val datePart = formatGpst(gpsTimeNs.toLong(), "  yyyy    MM    dd    HH    mm    ")
+        val seconds = formatSecondsFromGpst(gpsTimeNs.toLong())
+        val full = "$datePart$seconds"
         return String.format("%-60s%s%n", full, tail)
     }
 

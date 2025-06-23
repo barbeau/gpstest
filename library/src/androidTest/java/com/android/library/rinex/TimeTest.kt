@@ -1,7 +1,6 @@
 package com.android.library.rinex
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.gpstest.library.util.rinex.RinexObservationWriting
 import com.android.gpstest.library.util.rinex.RinexWriting
 
 import org.junit.Test
@@ -37,10 +36,10 @@ class TimeTest {
     @Test
     fun gpsTimeToMicroseconds() {
         // See https://gnsscalc.com/ for data
-        val result = RinexWriting.gpstToMicroseconds(
+        val result = RinexWriting.formatSecondsFromGpst(
             (1434488539.658 * RinexWriting.S_TO_NS).toLong()
         )
 
-        assertEquals(658_000, result)
+        assertEquals("19.658000", result)
     }
 }

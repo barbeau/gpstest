@@ -2,10 +2,8 @@ package com.android.gpstest.library.util.rinex
 
 import android.text.format.DateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import kotlin.math.truncate
 
 object RinexWriting {
     val GPS_EPOCH = run {
@@ -13,12 +11,13 @@ object RinexWriting {
         calendar.set(1980, 0, 6, 0, 0, 0)
         calendar
     }
-    const val S_TO_NS = 1_000_000_000
-    const val NS_TO_S = 1e-9
-    const val NS_TO_uS = 1e-3
-    const val NS_TO_MS = 1e-6
-    const val WEEK_TO_S = 7 * 24 * 60 * 60
-    const val SPEED_OF_LIGHT = 299792458.0
+    const val S_TO_NS: Long = 1_000_000_000
+    const val NS_TO_S: Double = 1e-9
+    const val NS_TO_uS: Double = 1e-3
+    const val S_TO_uS: Long = 1_000_000
+    const val WEEK_TO_S: Long = 7 * 24 * 60 * 60
+    const val YEAR_TO_S: Long = 365 * 24 * 60 * 60
+    const val SPEED_OF_LIGHT: Double = 299792458.0
 
     /**
      * Leap seconds difference between BDST and GPST
@@ -43,10 +42,9 @@ object RinexWriting {
      * Get the microseconds nanoseconds, bounded to 1s
      */
     @JvmStatic
-    fun gpstToMicroseconds(gpstNs: Long): CharSequence {
-        val nanos = truncate((gpstNs % (1.0 * S_TO_NS)) * NS_TO_uS).toLong()
-        val micro = "%06d0".format(nanos)
-        return micro
+    fun formatSecondsFromGpst(gpstNs: Long): CharSequence {
+        val nanos = gpstNs.mod(60 * S_TO_NS) * NS_TO_S
+        return "%2.6f".format(nanos)
     }
 
     @JvmStatic
