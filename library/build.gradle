@@ -27,6 +27,8 @@ android {
     }
 
     buildFeatures {
+        // Enables BuildConfig class
+        buildConfig = true
         dataBinding true
         viewBinding true
     }

@@ -6,6 +6,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 android {
     compileSdkVersion 33
 
+
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 34
@@ -20,6 +21,8 @@ android {
     }
 
     buildFeatures {
+        // Enables BuildConfig class
+        buildConfig = true
         // Enables Jetpack Compose for this module
         compose true
     }
