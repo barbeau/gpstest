@@ -44,7 +44,7 @@ object RinexWriting {
     @JvmStatic
     fun formatSecondsFromGpst(gpstNs: Long): CharSequence {
         val nanos = gpstNs.mod(60 * S_TO_NS) * NS_TO_S
-        return "%2.6f".format(nanos)
+        return String.format(Locale.US, "%2.6f", nanos)
     }
 
     @JvmStatic
