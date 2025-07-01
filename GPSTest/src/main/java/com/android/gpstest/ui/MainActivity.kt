@@ -249,9 +249,13 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 Log.i(TAG, "Uri: $uri")
                 val location = lastLocation
                 shareDialogOpen = true
+
+                val loggerList = listOfNotNull(
+                    service?.csvFileLogger, service?.jsonFileLogger,
+                    service?.rinexObservationFileLogger, service?.rinexNavigationFileLogger
+                )
                 UIUtils.showShareFragmentDialog(
-                    this, location, isFileLoggingEnabled(app, prefs),
-                    service!!.csvFileLogger, service!!.jsonFileLogger, uri
+                    this, location, isFileLoggingEnabled(app, prefs), loggerList, uri
                 )
             }
         } else {
@@ -880,9 +884,12 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun share() {
         val location = lastLocation
         shareDialogOpen = true
+        val loggerList = listOfNotNull(
+            service?.csvFileLogger, service?.jsonFileLogger,
+            service?.rinexObservationFileLogger, service?.rinexNavigationFileLogger
+        )
         UIUtils.showShareFragmentDialog(
-            this, location, isFileLoggingEnabled(app, prefs),
-            service!!.csvFileLogger, service!!.jsonFileLogger, null
+            this, location, isFileLoggingEnabled(app, prefs), loggerList, null
         )
     }
 

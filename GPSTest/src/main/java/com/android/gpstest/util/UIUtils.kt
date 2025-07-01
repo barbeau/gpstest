@@ -34,6 +34,7 @@ import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.io.CsvFileLogger
+import com.android.gpstest.io.FileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.util.IOUtils
@@ -144,23 +145,22 @@ internal object UIUtils {
      * @return a dialog for sharing location and files
      */
     fun showShareFragmentDialog(
-        activity: AppCompatActivity, location: Location?,
-        loggingEnabled: Boolean, csvFileLogger: CsvFileLogger?,
-        jsonFileLogger: JsonFileLogger?, alternateFileUri: Uri?
+        activity: AppCompatActivity, location: Location?, loggingEnabled: Boolean,
+        loggers: List<FileLogger>, alternateFileUri: Uri?
     ) {
-        val files = ArrayList<File>(2)
-        if (csvFileLogger != null && csvFileLogger.file != null) {
-            files.add(csvFileLogger.file)
-        }
-        if (jsonFileLogger != null && jsonFileLogger.file != null) {
-            files.add(jsonFileLogger.file)
+        val files = ArrayList<File>(4)
+        for (logger in loggers) {
+            if (logger.file != null) {
+                files.add(logger.file)
+            }
         }
         val fm = activity.supportFragmentManager
         val dialog = ShareDialogFragment()
         val shareListener: ShareDialogFragment.Listener = object : ShareDialogFragment.Listener {
             override fun onLogFileSent() {
-                csvFileLogger?.close()
-                jsonFileLogger?.close()
+                for (logger in loggers) {
+                    logger.close()
+                }
             }
 
             override fun onFileBrowse() {

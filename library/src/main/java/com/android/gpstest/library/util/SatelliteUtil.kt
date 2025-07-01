@@ -249,7 +249,7 @@ object SatelliteUtil {
      *
      * @return GnssType for the given GnssStatus constellation type
      */
-    private fun Int.toGnssType(): GnssType {
+    fun Int.toGnssType(): GnssType {
         return when (this) {
             GnssStatus.CONSTELLATION_GPS -> GnssType.NAVSTAR
             GnssStatus.CONSTELLATION_GLONASS -> GnssType.GLONASS

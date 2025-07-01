@@ -43,6 +43,8 @@ android {
                 "-Xjvm-default=all"]
     }
     buildFeatures {
+        // Enables BuildConfig class
+        buildConfig = true
         compose true
         dataBinding true
         viewBinding true

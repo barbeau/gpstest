@@ -95,6 +95,7 @@ object PreferenceUtil {
 
     fun isFileLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {
         return isCsvLoggingEnabled(context, prefs) || isJsonLoggingEnabled(context, prefs)
+                || isRinexLoggingEnabled(context, prefs)
     }
 
     fun isCsvLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {
@@ -103,6 +104,10 @@ object PreferenceUtil {
 
     fun isJsonLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {
         return writeAntennaInfoToFileJson(context, prefs)
+    }
+
+    fun isRinexLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_output_rinex), false);
     }
 
     fun distanceUnits(context: Context, prefs: SharedPreferences): String {

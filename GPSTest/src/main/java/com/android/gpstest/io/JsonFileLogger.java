@@ -40,7 +40,7 @@ import java.util.List;
  * A GNSS logger to store information to a JSON file. Originally from https://github.com/google/gps-measurement-tools/tree/master/GNSSLogger,
  * modified for GPSTest.
  */
-public class JsonFileLogger extends BaseFileLogger implements FileLogger {
+public class JsonFileLogger extends BaseFileLogger {
 
     ObjectMapper mapper;
     JsonGenerator jsonGenerator;
@@ -50,17 +50,17 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
     }
 
     @Override
-    String getFileExtension() {
+    public String getFileExtension() {
         return "json";
     }
 
     @Override
-    void writeFileHeader(BufferedWriter writer, String filePath) {
+    public void writeFileHeader(@NonNull BufferedWriter writer, String filePath) {
         // No-op for JSON files
     }
 
     @Override
-    boolean postFileInit(BufferedWriter fileWriter, boolean isNewFile) {
+    public boolean postFileInit(@NonNull BufferedWriter fileWriter, boolean isNewFile) {
         if (jsonGenerator == null) {
             try {
                 jsonGenerator = mapper.getFactory().createGenerator(fileWriter);
@@ -92,7 +92,7 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
      * @return true if a new file was created, false if an existing file was used
      */
     @Override
-    public synchronized boolean startLog(File existingFile, Date date) {
+    public synchronized boolean startLog(@NonNull File existingFile, @NonNull Date date) {
         if (mapper == null) {
             mapper = new ObjectMapper();
             // We manage closing the underlying file streams in super.close()
