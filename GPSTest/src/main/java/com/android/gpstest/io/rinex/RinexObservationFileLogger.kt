@@ -23,12 +23,12 @@ import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.R
 import com.android.gpstest.io.BaseFileLogger
 import com.android.gpstest.io.FileLogger
+import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.util.rinex.RinexObservationWriting
 import java.io.BufferedWriter
 import java.io.IOException
 import java.util.Calendar
-import java.util.SimpleTimeZone
 import java.util.TimeZone
 
 /**
@@ -41,6 +41,8 @@ class RinexObservationFileLogger(context: Context) : BaseFileLogger(context), Fi
      * Cannot write the header until there is a first observation
      */
     private var writeHeaderWhenPossible = false
+
+    private var hasFix = false
 
     private val runAtTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
 
@@ -74,9 +76,21 @@ class RinexObservationFileLogger(context: Context) : BaseFileLogger(context), Fi
         writeHeaderWhenPossible = true
     }
 
+    /**
+     * Callback for when the [FixState] changes, only used to know when to stop saving observations
+     */
+    @Synchronized
+    fun onFixState(fix: FixState) {
+        hasFix = fix == FixState.Acquired
+    }
+
     @Synchronized
     fun onGnssMeasurementsReceived(event: GnssMeasurementsEvent) {
         if (fileWriter == null) {
+            return
+        }
+
+        if (!hasFix) {
             return
         }
 
