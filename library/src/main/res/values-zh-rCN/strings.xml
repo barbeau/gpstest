@@ -44,6 +44,7 @@
     <string name="delete_aiding_data_success">已成功删除辅助数据。</string>
     <string name="delete_aiding_data_failure">设备不支持删除辅助数据。</string>
     <string name="gps_switch">开关</string>
+    <string name="gps_switch_content_description">GNSS 开关</string>
     <string name="share">分享</string>
     <string name="copied_to_clipboard">位置已复制到粘贴板</string>
     <string name="send_log">发送日志</string>
@@ -79,7 +80,7 @@
     <string name="ttff_label">TTFF:</string>
     <string name="altitude_label">高度:</string>
     <string name="altitude_msl_label">高度(MSL):</string>
-    <string name="accuracy_label">E H Acc:</string>
+    <string name="accuracy_label">E H 精度:</string>
     <string name="hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="speed_label">速度:</string>
     <string name="speed_acc_label">速度精度:</string>
@@ -93,13 +94,12 @@
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
     <string name="cf_column_label">CF</string>
-    <string name="gps_snr_column_label">SNR</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="avg_cn0_label">平均</string>
     <string name="elevation_column_label">高度角</string>
     <string name="azimuth_column_label">方位角</string>
     <string name="flags_aeu_column_label">标识</string>
-    <string name="gps_not_supported">请检查系统设置或者设备不支持GNSS/GPS。</string>
+    <string name="gps_not_supported">请检查系统设置或者设备不支持 GNSS/GPS。</string>
     <string name="install">安装</string>
     <string name="no_thanks">不了</string>
     <string name="please_install_google_maps">地图视图需要安装 Google 地图</string>
@@ -120,9 +120,12 @@
     <string name="gnss_not_available">全球卫星导航系统（GNSS）卫星不可用</string>
     <string name="sbas_not_available">星基增强系统（SBAS）卫星不可用</string>
     <string name="menu_option_sort_by">分类</string>
+    <string name="menu_option_sort_by_content_description">排列信号</string>
     <string name="menu_option_filter">过滤器</string>
+    <string name="menu_option_filter_content_description">过滤信号</string>
     <string name="filter_dialog_title">只显示这些全球卫星导航系统</string>
     <string name="filter_text">显示 %2$d颗卫星中的%1$d颗</string>
+    <string name="filter_signal_text">已展示 %2$d 个中的 %1$d 个卫星</string>
     <string name="filter_showall">(显示全部)</string>
     <string name="error_time_title">你的 GNSS 时间有误</string>
     <string name="error_time_message">设备的 GNSS 时间：\n\n%1$s\n\n… 和你的设备时钟的时间相差超过 %2$d天。这可能是由GPS 周翻转问题造成的。- 细节请询问您的设备制造商。更多信息见https://github.com/barbeau/gpstest/blob/master/FAQ.md#why-is-my-gps-time-wrong</string>
@@ -173,12 +176,15 @@
     <string name="sky_legend_shape_snas">北斗星基增强系统/卫星导航增强系统(中国)</string>
     <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
 
+    <string name="sky_legend_shape_southpan">SouthPAN (澳大利亚 / 新西兰)</string>
     <string name="sky_legend_shape_availability_title">信号可用性</string>
     <string name="sky_legend_shape_not_in_view">不可见</string>
     <string name="sky_legend_shape_in_view">可见</string>
     <string name="sky_legend_shape_used_in_fix">使用中</string>
 
     <!-- GNSS Status callbacks -->
+    <string name="browse_folder">浏览文件夹</string>
+    <string name="upload">上传</string>
     <string name="gnss_nav_msg_status_loc_disabled">GNSS提供者或者此位置已被禁用，直至启用将不会有更新</string>
     <string name="gnss_nav_msg_status_not_supported">设备不支持追踪GNSS导航信息</string>
     <string name="gnss_nav_msg_status_ready">GNSS导航信息正在被正常追踪中</string>
@@ -196,6 +202,7 @@
     <string name="exit">退出</string>
 
     <!-- Send feedback -->
+    <string name="need_to_restart_application_dialog_text">"        撤销通知权限需要重启应用。点击确认重启。"</string>
     <string name="feedback_subject">GPSTest: 反馈</string>
     <string name="feedback_body">欢迎任何意见、建议、bug 报告！\n\n\n</string>
     <string name="feedback_error">无法发送反馈：没有找到合适的应用程序。</string>
@@ -219,9 +226,11 @@
     <string name="pref_tilt_map_with_sensors_summary">当你拿起设备时变更为第一人称显示</string>
 
     <string name="pref_gps_category_title">GNSS</string>
+    <string name="pref_force_full_gnss_measurements_summary">适用于 Android 12 及更高版本。启用此选项后，GNSS 芯片将关闭节能循环（duty cycling），从而避免时钟不连续的情况，并在支持的设备上，在信号良好时保持载波相位的连续性。若未启用，GNSS 芯片将通过节能循环、限制星座数量和频率等方式优化功耗。</string>
     <string name="pref_auto_start_gps_title">自动启动 GNSS</string>
     <string name="pref_auto_start_gps_summary">应用启动时自动启动 GNSS</string>
 
+    <string name="pref_gnss_background_summary">勾选后，离开应用时会显示通知，GNSS 会继续在后台运行，直到你通过该通知停止它。开启文件日志记录时，系统会自动启用此设置，以支持后台日志记录。</string>
     <string name="pref_gps_min_time_title">时间间隔</string>
     <string name="pref_gps_min_time_summary">GNSS 修正的时间间隔（单位：秒）</string>
     <string name="pref_gps_min_time_dialog_title">输入时间间隔（单位：秒）</string>
@@ -259,6 +268,7 @@
 (Android 7.0 及以上)</string>
 
     <!-- File Output -->
+    <string name="pref_inject_psds_when_logging_summary">开始文件日志记录时，自动注入预测卫星数据服务（PSDS）（如 XTRA）数据。</string>
     <string name="pref_file_output_category_title">文件输出</string>
     <string name="pref_file_nmea_output_summary">输出 NMEA 信息至文件</string>
     <string name="pref_file_measurement_output_summary">输出 GNSS 测量数据至文件
@@ -272,6 +282,7 @@
     <string name="pref_file_antenna_output_json_title">天线信息 （JSON）</string>
     <string name="pref_file_antenna_output_json_summary">将 GNSS 天线详细信息记录到 JSON 文件中。仅在支持的设备上可用 （安卓11及以上系统）。</string>
 
+    <string name="pref_file_orientation_output_summary">将方向传感器数据记录到 CSV 文件。</string>
     <string name="logging_to_new_file">日志写入至: %1$s</string>
     <string name="unable_to_close_all_file_streams">无法关闭所有文件流</string>
     <string name="could_not_initialize_file">无法初始化文件: %1$s</string>
@@ -305,6 +316,27 @@
     <string name="pref_language_dialog_title">选择语言</string>
 
     <!-- Help -->
+    <string name="no_location_text">没有当前位置</string>
     <string name="title_help">帮助</string>
+    <string name="notification_title">%1$d/%2$d 个卫星 | %3$d/%4$d 个信号</string>
+    <string name="notification_permission_required_dialog_title">"       需要通知权限"</string>
+    <string name="notification_permission_required_dialog_text">"       请在启动本设置项前授予通知权限。点击OK以授予权限。"</string>
+    <string name="can_not_disable_setting_dialog_text">"        在后台执行或日志处理启用的状态下无法禁用通知。请先在设置中关闭。"</string>
+    <string name="need_to_restart_application_dialog_title">"        请重启应用"</string>
+    <string name="pref_force_full_gnss_measurements_title">强制完全的 GNSS 测量数据</string>
+    <string name="pref_gnss_show_notification_title">显示通知</string>
+    <string name="pref_gnss_show_notification_summary">勾选后，应用会显示包含实时 GNSS 信息的通知。必须启用此设置，应用才能在后台运行或进行数据记录。关闭此设置后，需完全退出并重新启动应用才能生效。此设置仅限 Android 13 及以上版本修改。</string>
+    <string name="pref_gnss_background_title">在后台运行 GNSS</string>
+    <string name="open_in_geohack">在 GeoHack 中打开</string>
+    <string name="open_in_map_app">在地图应用中打开</string>
+    <string name="pref_inject_assist_data_when_logging_category_title">自动注入辅助数据</string>
+    <string name="pref_inject_time_when_logging_title">自动注入时间数据</string>
+    <string name="pref_inject_time_when_logging_summary">开始文件日志记录时，自动从网络时间协议（NTP）服务器注入时间数据。</string>
+    <string name="pref_inject_psds_when_logging_title">自动注入 PSDS</string>
+    <string name="pref_file_gnss_status_output_title">GnssStatus</string>
+    <string name="pref_file_gnss_status_output_summary">将每个信号的 GnssStatus 数据记录到 CSV 文件。</string>
+    <string name="pref_file_orientation_output_title">方向</string>
+    <string name="stop">停止</string>
+    <string name="open">开始</string>
 
-    </resources>
+</resources>

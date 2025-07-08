@@ -19,53 +19,55 @@
 -->
 <resources>
     <!-- Fragments -->
-    <string name="gps_status_title">状態</string>
+    <string name="gps_status_title">ステータス</string>
     <string name="gps_map_title">マップ</string>
     <string name="gps_sky_title">スカイ</string>
     <string name="gps_accuracy_title">精度</string>
 
     <!-- Navigation Drawer -->
-    <string name="navdrawer_separator_assist_data">アシストデータを変更</string>
-    <string name="force_time_injection">時間データを注入</string>
-    <string name="delete_aiding_data">アシストデータを削除</string>
+    <string name="navdrawer_separator_assist_data">アシストデータ</string>
+    <string name="force_psds_injection">PSDS データを注入</string>
+    <string name="force_time_injection">時刻データを注入</string>
+    <string name="delete_aiding_data">補助データを削除</string>
     <string name="navdrawer_item_settings">設定</string>
     <string name="navdrawer_item_help">ヘルプ</string>
-    <string name="navdrawer_item_send_feedback">フィードバックを送信</string>
+    <string name="navdrawer_item_send_feedback">フィードバック</string>
     <string name="navdrawer_item_open_source">GitHub</string>
 
-    <string name="navigation_drawer_open">ナビゲーション欄を開く</string>
-    <string name="navigation_drawer_close">ナビゲーション欄を閉じる</string>
+    <string name="navigation_drawer_open">サイドメニューを開く</string>
+    <string name="navigation_drawer_close">サイドメニューを閉じる</string>
 
     <!-- GPS functionality -->
     <string name="gps_start">開始</string>
     <string name="gps_pause">一時停止</string>
 
     <string name="delete_aiding_data_success">アシストデータを削除しました。</string>
-    <string name="delete_aiding_data_failure">デバイスはアシストデータの削除をサポートしていません。
-    </string>
-    <string name="gps_switch">オフ/オン</string>
-    <string name="set_fix_frequency">周波数を設定する</string>
-    <string name="force_time_injection_success">時間データを注入しました。</string>
-    <string name="force_time_injection_failure">デバイスは時間データの注入をサポートしていません。
-    </string>
+    <string name="delete_aiding_data_failure">端末はアシストデータの削除に対応していません。</string>
+    <string name="gps_switch">スイッチ</string>
+    <string name="include_altitude">高度情報を含む</string>
+    <string name="set_fix_frequency">Fix 周波数を設定</string>
+    <string name="force_time_injection_success">時刻データを注入しました。</string>
+    <string name="force_time_injection_failure">端末はアシストデータの注入に対応していません。</string>
 
-    <string name="zoom_in">ズームイン</string>
-    <string name="zoom_out">ズームアウト</string>
+    <string name="upload_nothing_changed">前回のアップロード以降、変更はありません。しばらくしてからもう一度お試しください。</string>
+    <string name="zoom_in">拡大</string>
+    <string name="zoom_out">縮小</string>
     <string name="mode_map">マップ</string>
     <string name="mode_satellite">衛星</string>
 
     <string name="latitude_label">緯度:</string>
     <string name="longitude_label">経度:</string>
-    <string name="fix_time_label">時間:</string>
+    <string name="fix_time_label">時刻:</string>
     <string name="ttff_label">TTFF:</string>
     <string name="altitude_label">高度:</string>
     <string name="altitude_msl_label">高度(MSL):</string>
+    <string name="accuracy_label">精度:</string>
     <string name="hor_and_vert_accuracy_label">H/V 精度:</string>
     <string name="speed_label">速度:</string>
     <string name="speed_acc_label">速度精度:</string>
     <string name="bearing_label">方位:</string>
     <string name="bearing_acc_label">方位精度:</string>
-    <string name="num_sats_label"># 衛星:</string>
+    <string name="num_sats_label"># 衛星数:</string>
     <string name="pdop_label">PDOP:</string>
     <string name="hvdop_label">H/V PDOP:</string>
 
@@ -73,19 +75,22 @@
     <string name="gnss_flag_image_label">GNSS</string>
     <string name="sbas_flag_image_label">SBAS</string>
     <string name="cf_column_label">CF</string>
-    <string name="gps_snr_column_label">SN比</string>
     <string name="gps_cn0_column_label">C/N0</string>
     <string name="avg_cn0_label">平均</string>
     <string name="elevation_column_label">仰角</string>
     <string name="azimuth_column_label">方位角</string>
     <string name="flags_aeu_column_label">フラグ</string>
-    <string name="gps_not_supported">システム設定を確認してください - デバイスがGNSS/GPSをサポートしていないようです。</string>
+    <string name="gps_not_supported">システム設定を確認してください - 端末が GNSS/GPS に対応していないようです。</string>
     <string name="install">インストール</string>
     <string name="no_thanks">いいえ</string>
-    <string name="please_install_google_maps">Googleマップが必要です</string>
+    <string name="please_install_google_maps">Google マップが必要です</string>
+    <string name="enable_gps_positive_button">GPS/GNSS を有効</string>
     <string name="enable_gps_negative_button">いいえ</string>
+    <string name="gnss_running">GNSS は時間間隔 %1$ss、最小距離 %2$sm で動作中</string>
     <string name="clear_assist_warning_title">アシストデータを削除しますか？</string>
+    <string name="clear_assist_warning">一部の端末ではアシストデータの自動更新に24時間かかる場合があります。手動での注入に対応していない端末では、自動更新が完了するまで GNSS がアプリで動作しない可能性があります。よろしいですか？</string>
     <string name="never_ask_again">今後表示しない</string>
+    <string name="not_now">やめる</string>
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
     <string name="gnss_not_available">衛星測位システム（GNSS）衛星は利用できません</string>
@@ -94,38 +99,48 @@
     <!-- Map view -->
     <string name="ground_truth_latitude">緯度</string>
     <string name="ground_truth_longitude">経度</string>
+    <string name="ground_truth_altitude">WGS84 楕円上の高度（オプショナル）</string>
     <string name="set_ground_truth_title">測定精度</string>
+    <string name="set_ground_truth_subtitle">実際の位置をマップ上で選択するか、入力してください</string>
     <string name="save">保存</string>
     <string name="edit">編集</string>
-    <string name="ground_truth_marker_title">あなたのいる場所</string>
-    <string name="ground_truth_invalid_location_title">無効な場所</string>
+    <string name="ground_truth_marker_title">実際の位置</string>
+    <string name="ground_truth_invalid_location_title">無効な位置</string>
+    <string name="ground_truth_invalid_alt">高度は WGS84 ベースのメートル数で指定する必要があります</string>
     <string name="horizontal_error_title">水平誤差</string>
     <string name="vertical_error_title">垂直誤差</string>
     <string name="horizontal_error_label">誤差</string>
-    <string name="measured_error_graph_label">測定誤差</string>
-    <string name="horizontal_vertical_error_label">H/V誤差</string>
+    <string name="measured_error_graph_label">測量誤差</string>
+    <string name="estimated_accuracy_graph_label">ハードウェア推定精度</string>
+    <string name="horizontal_vertical_error_label">H/V 誤差</string>
     <!-- Sky view -->
+    <string name="show_radar_invalid_location">インポートした基準位置が正しくありません</string>
     <string name="sky_legend_title">凡例</string>
     <string name="sky_legend_shape_gnss_title">衛星測位システム（GNSS）</string>
-    <string name="sky_legend_shape_navstar">全地球測位システム（アメリカ）</string>
+    <string name="sky_legend_shape_navstar">GPS 衛星（アメリカ）</string>
     <string name="sky_legend_shape_glonass">GLONASS（ロシア）</string>
     <string name="sky_legend_shape_galileo">ガリレオ（EU）</string>
     <string name="sky_legend_shape_qzss">準天頂衛星システム（日本）</string>
     <string name="sky_legend_shape_beidou">北斗衛星導航系統（中国）</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC（インド）</string>
     <string name="sky_legend_shape_sbas_title">衛星航法補強システム（SBAS）</string>
     <string name="sky_legend_shape_waas">WAAS（アメリカ）</string>
     <string name="sky_legend_shape_egnos">EGNOS（EU）</string>
     <string name="sky_legend_shape_gagan">GAGAN（インド）</string>
     <string name="sky_legend_shape_msas">MSAS（日本）</string>
     <string name="sky_legend_shape_sdcm">SDCM（ロシア）</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS（中国）</string>
     <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
 
+    <string name="sky_legend_shape_southpan">SouthPAN（オーストラリア／ニュージーランド）</string>
     <string name="sky_legend_shape_availability_title">信号の可用性</string>
-    <string name="sky_legend_shape_not_in_view">見えない</string>
-    <string name="sky_legend_shape_in_view">見える</string>
-    <string name="sky_legend_shape_used_in_fix">使用中</string>
+    <string name="sky_legend_shape_not_in_view">不可視</string>
+    <string name="sky_legend_shape_in_view">可視</string>
+    <string name="sky_legend_shape_used_in_fix">Fix</string>
 
     <!-- GNSS Status callbacks -->
+    <string name="browse_folder">フォルダを参照</string>
+    <string name="upload">アップロード</string>
     <string name="gnss_nav_msg_status_loc_disabled">GNSSプロバイダまたは場所は無効になっており、有効になるまで更新しません</string>
     <string name="gnss_nav_msg_status_not_supported">デバイスはGNSSナビゲーションメッセージの追跡をサポートしていません</string>
     <string name="gnss_nav_msg_status_ready">GNSSナビゲーションメッセージが正常に追跡されています</string>
@@ -143,9 +158,11 @@
     <string name="exit">終了</string>
 
     <!-- Send feedback -->
+    <string name="need_to_restart_application_dialog_text">"       通知権限を取消にはアプリの再起動が必要です。「はい」をタップして再起動してください。"</string>
     <string name="feedback_subject">GPSTest: フィードバック</string>
-    <string name="feedback_body">不満、称賛、バグ報告は歓迎です！\n\n\n</string>
+    <string name="feedback_body">各種意見、感想、不具合の報告など、歓迎いたします！</string>
     <!-- What's New -->
+    <string name="device_properties_upload_success">端末</string>
     <string name="main_help_whatsnew_title">更新履歴</string>
     <string name="main_help_close">閉じる</string>
 
@@ -153,27 +170,26 @@
     <string name="pref_title">設定</string>
     <string name="pref_map_category_title">マップ</string>
     <string name="pref_map_type_title">地図の種類</string>
-    <string name="pref_map_type_summary">表示されているマップタイルの種類を設定する</string>
-    <string name="pref_map_type_dialog_title">地図の種類を選択</string>
+    <string name="pref_map_type_summary">表示する地図タイルの種類を設定する</string>
+    <string name="pref_map_type_dialog_title">地図タイプを選ぶ</string>
 
     <string name="pref_rotate_map_with_compass_title">コンパスで地図を回転する</string>
-    <string name="pref_rotate_map_with_compass_summary">あなたの方向に合わせて地図の向きを変更する</string>
+    <string name="pref_rotate_map_with_compass_summary">自分の向きに合わせて地図の向きを変更する</string>
 
     <string name="pref_tilt_map_with_sensors_title">デバイスによる地図を傾斜する</string>
-    <string name="pref_tilt_map_with_sensors_summary">デバイスを持ち上げたときに一人称マップビューに変更する</string>
+    <string name="pref_tilt_map_with_sensors_summary">端末を持ち上げると一人称視点の地図         に切り替わる</string>
 
     <string name="pref_gps_category_title">GNSS</string>
 
-    <string name="pref_auto_start_gps_title">GNSS自動起動</string>
-    <string name="pref_auto_start_gps_summary">アプリの起動時にGNSSを起動する</string>
+    <string name="pref_force_full_gnss_measurements_summary">Android 12以降で利用可能です。 チェックを入れると、GNSSチップセットのデューティサイクリングが無効になり、クロックの不連続が発生しなくなります。端末が対応している場合、良好な信号環境下ではキャリア位相も連続になることが期待できます。 チェックを外すと、GNSSチップセットはデューティサイクリングや使用する衛星群・周波数帯の制限などにより、電力消費を最適化します。</string>
+    <string name="pref_auto_start_gps_title">GNSS 自動起動</string>
+    <string name="pref_auto_start_gps_summary">アプリの起動時に GNSS を起動する</string>
 
+    <string name="pref_gnss_background_summary">チェックすると、アプリを閉じても通知が表示され、そこから停止するまで GNSS がバックグラウンドで動作し続けます。ファイルへのログ記録を有効にすると、バックグラウンドでの記録を可能にするため、この設定も自動で有効になります。</string>
     <string name="pref_gps_min_time_title">時間間隔</string>
     <string name="pref_gps_min_time_summary">GNSS修正の時間間隔（秒単位）</string>
     <string name="pref_gps_min_time_dialog_title">間隔を秒単位で入力します</string>
     <string name="pref_gps_min_time_invalid_entry">間隔は数字でなければなりません</string>
-
-    <string name="pref_use_gnss_apis_title">GNSS APIsを使用する</string>
-    <string name="pref_use_gnss_apis_summary">従来のGPSStatus.Listenerを使用する(Android 7.0以上)</string>
 
     <string name="pref_gps_min_distance_title">最小距離</string>
     <string name="pref_gps_min_distance_summary">GNSS修正の最小距離間隔（メートル単位）</string>
@@ -183,21 +199,26 @@
     <string name="pref_display_category_title">画面</string>
     <string name="pref_keep_screen_on_title">画面をオンのまま</string>
     <string name="pref_keep_screen_on_summary">画面をオンのままにする</string>
-    <string name="pref_true_north_title">真北の向き</string>
-    <string name="pref_true_north_summary">コンパスは磁北の代わりに真北を指す</string>
+    <string name="pref_true_north_title">コンパスを真北に合わせる</string>
+    <string name="pref_true_north_summary">コンパスは磁北ではなく真北を向きます</string>
 
+    <string name="pref_as_output_category_title">Android Monitor 出力</string>
     <string name="pref_nmea_output_title">NMEA</string>
-    <string name="pref_nmea_timestamp_output_title">NMEAタイムスタンプ</string>
-    <string name="pref_nmea_timestamp_output_summary">出力にNMEAタイムスタンプを含める</string>
-    <string name="pref_measurement_output_title">測定値</string>
-    <string name="pref_navigation_message_output_title">ナビゲーションメッセージ</string>
+    <string name="pref_as_nmea_output_summary">NMEA を Android Studio にログ出力</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA タイムスタンプ</string>
+    <string name="pref_nmea_timestamp_output_summary">NMEA タイムスタンプを出力にを含む</string>
+    <string name="pref_measurement_output_title">測定データ</string>
+    <string name="pref_as_measurement_output_summary">GNSS 測位データを Android Studio にログ出力（Android 7.0以上）</string>
+    <string name="pref_navigation_message_output_title">航法メッセージ</string>
+    <string name="unable_to_open_json_generator">JSON ジェネレーターを開けませんでした。</string>
     <string name="pref_about_category_title">アプリについて</string>
     <string name="pref_show_tutorial_title">マニュアルを表示</string>
-    <string name="pref_show_tutorial_summary">アプリの使用方法を表示します</string>
+    <string name="pref_show_tutorial_summary">アプリの使い方を表示</string>
 
-    <string name="pref_dark_theme_title">暗いテーマを使用する</string>
-    <string name="pref_dark_theme_summary">背景に暗い色を、テキストに薄い色を付ける</string>
+    <string name="pref_dark_theme_title">ダークモードを使用する</string>
+    <string name="pref_dark_theme_summary">背景を暗くして、文字を明るくします</string>
 
+    <string name="preferences_coordinate_format_ddm">度・小数分</string>
     <string name="preferences_preferred_distance_units_title">距離単位</string>
     <string name="preferences_preferred_distance_units_option_meters">m</string>
     <string name="preferences_preferred_distance_units_option_feet">ft</string>
@@ -205,9 +226,95 @@
     <string name="preferences_preferred_speed_units_title">速度単位</string>
     <string name="preferences_preferred_speed_units_option_meters_per_second">m/s</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">km/h</string>
-    <string name="preferences_preferred_speed_units_option_miles_per_hour">mi/h</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">mph</string>
 
     <!-- Help -->
+    <string name="no_location_text">現在位置がありません</string>
     <string name="title_help">ヘルプ</string>
+    <string name="copied_to_clipboard">位置情報をクリップボードにコピーしました</string>
+    <string name="send_log">ログを送信</string>
+    <string name="log">ログ</string>
+    <string name="file_name">ファイル名</string>
+    <string name="gps_switch_content_description">GNSS を ON/OFF する</string>
+    <string name="share">共有</string>
+    <string name="location">位置情報</string>
+    <string name="log_instructions">まずは設定で NMEA、生測量データ、航法メッセージなどのログを有効にしてください</string>
+    <string name="log_error">ファイル出力でエラーが起きました。ストレージ権限を許可していますか？設定でログ出力を再度有効化にして、許可が求められたら許可をしてください。</string>
+    <string name="no_location">GNSS 確定後に位置情報を共有する</string>
+    <string name="force_psds_injection_failure">端末は PSDS の注入に対応していません。</string>
+    <string name="device">(未使用)</string>
+    <string name="menu_option_sort_by_content_description">信号並び</string>
+    <string name="menu_option_filter">絞り込み</string>
+    <string name="menu_option_filter_content_description">信号絞り込み</string>
+    <string name="filter_dialog_title">以下の GNSS だけを表示する</string>
+    <string name="error_time_message">デバイスの GNSS 時刻 %1$s はシステム時刻より %2$d 日ずれています。これは、GPS週数ロールオーバーによるものかもしれません。端末のメーカーに確認してください。詳細は https://bit.ly/gps-week-rollover を確認してください。</string>
+    <string name="unknown">未知</string>
+    <string name="cancel">取消</string>
+    <string name="force_psds_injection_success">PSDS 注入のリクエストを発行しました。</string>
+    <string name="upload_details">端末の詳細情報（メーカー、機種、対応 GNSS、対応 SBAS、マルチバンド）を GPSTest 端末データベース（https://bit.ly/gpstest-device-database）にアップロードします。個人情報は含まれません。</string>
+    <string name="upload_no_location">ステータス画面に切り替えて、GNSS が一回確定してから端末情報をアップロードしてください。</string>
+    <string name="upload_success">端末情報をアップロードしました。</string>
+    <string name="upload_failure">端末情報のアップロードに失敗しました。もう一度試してください。</string>
+    <string name="enable_gps_message">GPS/GNSS が無効化しています。有効にしますか</string>
+    <string name="qr_code_instructions_title">QR コードをスキャン</string>
+    <string name="qr_code_instructions_text">Geo URI 形式 (geo:28.0587,-82.4139) の QR コードから参考位置情報を読み込みます。https://zxing.appspot.com/generator/ から作成できます。</string>
+    <string name="qr_code_cannot_read_code">QR コードから Geo URI を読み込みませんでした</string>
+    <string name="never_show_again">再表示しない</string>
+    <string name="filter_signal_text">%2$d つの中に %1$d つの信号を表示中</string>
+    <string name="filter_showall">（すべて表示）</string>
+    <string name="error_time_title">GNSS 時刻が間違っています</string>
+    <string name="ground_truth_invalid_lat">緯度は-90から90の間の10進数で指定する必要があります</string>
+    <string name="ground_truth_invalid_long">経度は-180から180の間の10進数で指定する必要があります</string>
+    <string name="notification_title">%1$d/%2$d 衛星 | %3$d/%4$d 信号</string>
+    <string name="avg_error_label">平均 %1$d つ Fix</string>
+    <string name="fix_number">Fix #</string>
+    <string name="notification_permission_required_dialog_title">"       通知権限が必要です"</string>
+    <string name="notification_permission_required_dialog_text">"       この設定有効するには、通知権限が必要です。「はい」をタップして権限付与してください。"</string>
+    <string name="can_not_disable_setting_dialog_text">"       バックグランド実行やファイルログを有効している場合は通知を無効化できません。まずは設定でこれらを無効にしてください。"</string>
+    <string name="need_to_restart_application_dialog_title">"       アプリ再起動が必要"</string>
+    <string name="feedback_error">フィードバックを送信できませんでした: 送信できるアプリがありません</string>
+    <string name="pref_force_full_gnss_measurements_title">GNSS の全測位データを強制的に取得する</string>
+    <string name="pref_gnss_show_notification_title">通知を表示する</string>
+    <string name="pref_gnss_show_notification_summary">チェックを入れると、アプリはリアルタイムのGNSS情報を含む通知を表示します。この設定は、バックグラウンドでの動作やデータのログ取得を行うために有効である必要があります。この設定を無効にしたい場合は、アプリを完全に終了し、再起動する必要があります。この設定はAndroid 13以降の端末でのみ変更可能です。</string>
+    <string name="pref_gnss_background_title">バックグラウンドで GNSS を実行</string>
+    <string name="pref_output_category_title">ログと出力</string>
+    <string name="pref_output_category_summary">NMEA、生の測量データ、航法メッセージをファイルか Android Studio まで出力する</string>
+    <string name="pref_as_navigation_message_output_summary">GNSS 航法メッセージを Android Studio にログ出力（Android 7.0以上、一部の端末のみ）</string>
+    <string name="pref_inject_psds_when_logging_summary">ファイルのログ記録開始時に、予測衛星データサービス（PSDS）（例: XTRA）のデータを自動で注入します。</string>
+    <string name="pref_file_output_category_title">ファイル出力</string>
+    <string name="pref_file_nmea_output_summary">NMEA を CSV ファイルに出力</string>
+    <string name="pref_file_measurement_output_summary">GNSS 測量データを CSV ファイルに出力（Android 7.0以上）</string>
+    <string name="pref_file_navigation_message_output_summary">GNSS 航法メッセージを CSV ファイルにログ出力（Android 7.0以上、一部の端末のみ）</string>
+    <string name="pref_file_location_output_title">位置情報</string>
+    <string name="pref_file_location_output_summary">位置 Fix の詳細を CSV ファイルにログ出力</string>
+    <string name="pref_file_antenna_output_csv_title">アンテナ情報（CSV）</string>
+    <string name="pref_file_antenna_output_csv_summary">GNSS アンテナの詳細を CSV ファイルにログ出力（Android 11以上、一部端末のみ）</string>
+    <string name="pref_file_antenna_output_json_title">アンテナ情報（JSON）</string>
+    <string name="pref_file_antenna_output_json_summary">GNSS アンテナの詳細を JSON ファイルにログ出力（Android 11以上、一部端末のみ）</string>
+    <string name="pref_file_orientation_output_summary">向きセンサーのデータ CSV ファイルにログ出力</string>
+    <string name="logging_to_new_file">新しいファイルにログ出力中: %1$s</string>
+    <string name="unable_to_close_all_file_streams">すべてのファイルストリームを閉じることができませんでした。</string>
+    <string name="could_not_initialize_file">ファイルを初期化できませんでした: %1$s</string>
+    <string name="error_writing_file">ファイル書込に問題が発生しました。</string>
+    <string name="pref_coordinate_format_title">座標形式</string>
+    <string name="pref_coordinate_format_summary">10進度数、度分秒（DMS）、または度・小数分で表示します</string>
+    <string name="preferences_coordinate_format_dd">10進度数</string>
+    <string name="preferences_coordinate_format_dms">度分秒（DMS）</string>
+    <string name="pref_language_title">言語</string>
+    <string name="pref_language_summary">アプリの表示言語を手動設定します</string>
+    <string name="pref_language_dialog_title">言語を選ぶ</string>
+    <string name="copy">コピー</string>
+    <string name="open_in_geohack">GeoHack で開く</string>
+    <string name="open_in_map_app">地図アプリで開く</string>
+    <string name="pref_inject_assist_data_when_logging_category_title">アシストデータ自動注入</string>
+    <string name="pref_inject_time_when_logging_title">時刻データ自動注入</string>
+    <string name="pref_inject_time_when_logging_summary">ファイルのログ記録開始時に、NTPサーバーから時刻データを自動で注入します</string>
+    <string name="pref_inject_psds_when_logging_title">PSDS 自動注入</string>
+    <string name="pref_file_gnss_status_output_title">GnssStatus</string>
+    <string name="pref_file_gnss_status_output_summary">信号毎に GnssStatus を CSV ファイルにログ出力</string>
+    <string name="pref_file_orientation_output_title">向き</string>
+    <string name="stop">停止</string>
+    <string name="open">開始</string>
+    <string name="show_radar_valid_location">基準位置をインポートしました</string>
 
-    </resources>
+</resources>
