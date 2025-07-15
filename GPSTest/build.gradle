@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
-apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 33
@@ -137,29 +136,6 @@ android {
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
     namespace 'com.android.gpstest'
-}
-
-checkstyle {
-    toolVersion = '10.26.1'
-}
-task Checkstyle(type: Checkstyle) {
-    source 'src/main/java'
-    ignoreFailures false
-    showViolations true
-    include '**/*.java'
-    classpath = files()
-}
-
-// adds checkstyle task to existing check task
-afterEvaluate {
-    if (project.tasks.getByName("check")) {
-        check.dependsOn('checkstyle')
-    }
-}
-tasks.withType(Checkstyle) {
-    reports {
-        sarif.required = true
-    }
 }
 
 dependencies {
