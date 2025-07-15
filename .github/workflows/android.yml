@@ -23,6 +23,9 @@ jobs:
           allowed-endpoints: >
             dl.google.com:443
             github.com:443
+            jitpack.io:443
+            objects.githubusercontent.com:443
+            release-assets.githubusercontent.com:443
             repo.maven.apache.org:443
             services.gradle.org:443
 
