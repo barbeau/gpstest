@@ -29,6 +29,9 @@ jobs:
       with:
         log-accepted-android-sdk-licenses: false
 
+    - name: List packages
+      run: sdkmanager --list
+
     - name: Build app
       run: ./gradlew --no-daemon build -x lint
   
