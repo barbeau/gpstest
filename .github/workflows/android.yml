@@ -45,6 +45,7 @@ jobs:
           wear/build/outputs/apk/debug/*.apk
   
   test:
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
