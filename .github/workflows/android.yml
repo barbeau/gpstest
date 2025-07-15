@@ -92,6 +92,12 @@ jobs:
     - name: Build app
       run: ./gradlew --no-daemon assembleDebug -x lint --stacktrace
 
+    - name: Print paths
+      run: |
+        ls -R GPSTest/build/outputsGPSTest/build/outputs
+        ls -R library/build/outputs
+        ls -R wear/build/outputs
+
     - name: Upload APKs
       uses: actions/upload-artifact@v4
       with:
