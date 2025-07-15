@@ -61,6 +61,12 @@ jobs:
         uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
         with:
           log-accepted-android-sdk-licenses: false
+      
+      - name: Setup Gradle and cache
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+        with:
+          gradle-version: '8.9'
+          cache-read-only: true
 
       - name: Build app
         run: ./gradlew assembleDebug -x lint --stacktrace
@@ -105,7 +111,8 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.9'  
+          gradle-version: '8.9'
+          cache-read-only: true
 
       - name: Configure AVD cache
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
