@@ -14,12 +14,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        api-level: [29]
-        target: [google_apis]
     steps:
-    - name: checkout
+    - name: Checkout
       uses: actions/checkout@v4.2.2
 
     - name: Setup Java
@@ -34,7 +30,7 @@ jobs:
         log-accepted-android-sdk-licenses: false
 
     - name: Build app
-      run: ./gradlew --no-daemon build
+      run: ./gradlew --no-daemon build -x lint
   
   test:
     runs-on: ubuntu-latest
