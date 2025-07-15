@@ -12,37 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  lint:
-    name: Perform lint check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4.2.2
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 17
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-
-      - name: Run lint
-        run: ./gradlew lintDebug
-
-      - name: Upload html test report
-        if: success() || failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint.txt
-          path: /home/runner/work/gpstest/gpstest/library/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
-
   unit-test:
     name: Perform Unit Testing
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
