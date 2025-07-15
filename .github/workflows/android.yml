@@ -140,8 +140,7 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            adb install -d /tmp/GPSTest/build/outputs/apk/google/debug/GPSTest-google-debug.apk
-            adb install -d /tmp/wear/build/outputs/apk/debug/wear-debug.apk
-            ./gradlew connectedCheck -x lint --stacktrace
+            ./gradlew installGoogleDebug -x lint --stacktrace
+            adb shell am instrument -w com.android.gpstest/androidx.test.runner.AndroidJUnitRunner
           arch: x86_64
           profile: Nexus 6
