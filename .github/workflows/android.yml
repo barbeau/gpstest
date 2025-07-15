@@ -165,7 +165,6 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
           script: |
-            sdkmanager install system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator
             adb wait-for-device
             ./gradlew connectedGoogleDebugAndroidTest -x lint --stacktrace
           arch: x86_64
