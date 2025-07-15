@@ -204,8 +204,7 @@
 
     <!-- What's New -->
     <string name="main_help_whatsnew_title">Hvad er nyt?</string>
-    <string name="main_help_whatsnew">
-        &#8226;\u0020
+    <string name="main_help_whatsnew">&#8226;\u0020
         <b>Crowd-source enhedsfunktioner</b>
         - Du kan eventuelt bidrage med dine enhedsfunktioner til den offentlige GPSTest enhedsdatabase (https://bit.ly/gpstest-device-database) via skærmdelingen. Se https://bit.ly/gpstest-database-article for detaljer.\n&#8226;\u0020
         <b>Log antenne info</b>
@@ -333,8 +332,8 @@
     <string name="help_text">
         <b>Ofte stillede spørgsmål (FAQ)</b>
         - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
-        <b>*** Statusvisning ***</b>
-        \n\n&#8226;\u0020
+
+        <b>*** Statusvisning ***</b>\n\n&#8226;\u0020
         <b>Breddegrad</b>
         - I decimalgrader (WGS 84)\n&#8226;\u0020
         <b>Længdegrad</b>
@@ -373,10 +372,11 @@
         - Carrier til støj-forhold tæthed (Android N og højere) (https://bit.ly/SNR-CN0)\n&#8226;\u0020
         <b>Flag</b>
         -(E) hvis enheden har flygtig data om satellitten, (A) hvis enheden har almanakdata for satellitten, (U) hvis satellitten blev brugt til beregning af den seneste positionsbestemmelse. For SBAS angiver Android-specifikationen ikke, om (U) henviser til pseudoafstand fra satellitten, der bruges i positioneringen, eller til korrektionsoplysninger, der stammer fra den satellit, der bruges .\n\n
+
         <b>Tilføj PSDS data</b>
         - Anmoder om, at enheden opdaterer sin forudsagte satellitdatatjeneste (f.eks. XTRA-data), hvis PSDS-data bruges af enheden .\n\n
-        <b>*** Himmel ***</b>
-        \n\n&#8226;\u0020
+
+        <b>*** Himmel ***</b>\n\n&#8226;\u0020
         <b>GPS (USA Navstar)</b>
         - Cirkler\n&#8226;\u0020
         <b>GLONASS (Russisk)</b>
@@ -400,22 +400,18 @@
         &#8226;\u0020 Forventet S/N interval er 10 dB (rød) til 45 dB (grøn) på Android 7.0 og højere. \n
         &#8226;\u0020 Forventet C/N0 interval er 10 dB-Hz (rød) til 45 dB-Hz (grøn) på Android 7.0 og højere. \n
         &#8226;\u0020 Hvis der ikke er nogen S/N eller C/N0 værdi for en satellit (f.eks. hvis det ikke er i syne for enheden), vil den have en transparent lysegrå farve. \n\n
-        <b>*** Nøjagtighedsvisning ***</b>
-        \n\n&#8226;\u0020
+
+        <b>*** Nøjagtighedsvisning ***</b>\n\n&#8226;\u0020
         <b>Vertikal fejl</b>
         - Vertikale fejlmålinger kan i modsætning til horisontale fejl være positive eller negative. Når de vises i nøjagtighedsvisningen, beregnes vertikale fejl og gennemsnitlig vertikale fejl ved hjælp af den absolutte værdi af fejlmålingen .\n\n
         &#8226;\u0020Indstil din rigtige placering hurtigt ved hjælp af QR-koder. Se https://bit.ly/gpstest-qr-codes for detaljer.\n\n
-        <b>*** Fil-logning ***</b>
-        \n\n
+
+        <b>*** Fil-logning ***</b>\n\n
         &#8226;\u0020Aktivér fillogning i indstillinger for NMEA, rå målinger, nav-beskeder og placeringsfikseringer. Se https://bit.ly/gpstest-file for detaljer .\n\n
-        <b>*** Anerkendelser ***</b>
-        \n\n
-        &#8226;\u0020
-        <b>Mike Lockwood</b>
-        - original  udvikler af v1.x\n
-        &#8226;\u0020
-        <b>Sean Barbeau</b>
-        - udvikler af v2.x og højere\n
+
+        <b>*** Anerkendelser ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - original  udvikler af v1.x\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - udvikler af v2.x og højere\n
         &#8226;\u0020 GPSTest start-ikonet stammer fra Android Material Design \"satellit\" -ikonet, licenseret af Google under Apache v2.0. Andre Google material design ikoner bruges også under Apache v2.0. QR-kode ikon af Austin Andrews fra https://materialdesignicons.com/icon/qrcode.\n
         &#8226;\u0020 Kinesisk oversættelse leveret af wangkf, liuyunli, SakuraSa233 &amp; Skimige\n
         &#8226;\u0020 Tyske oversættelse leveret af SIRSteiner\n
@@ -434,5 +430,5 @@
         &#8226;\u0020 Baskisk oversættelse leveret af Alexander Gabilondo\n
         &#8226;\u0020 Finsk oversættelse leveret af Ari Nygard\n
         &#8226;\u0020 Dansk oversættelse leveret af Claus Østergaard\n
-    </string>
+</string>
 </resources>
