@@ -118,7 +118,7 @@ jobs:
         with:
           gradle-version: '8.9'  
 
-      - name: AVD cache
+      - name: Configure AVD cache
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         id: avd-cache
         with:
