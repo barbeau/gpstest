@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'checkstyle'
 }
 
 android {
@@ -41,6 +42,15 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
+    }
+}
+
+checkstyle {
+    toolVersion = '10.26.1'
+}
+tasks.withType(Checkstyle) {
+    reports {
+        sarif.required = true
     }
 }
 

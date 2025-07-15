@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 33
@@ -136,6 +137,15 @@ android {
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
     namespace 'com.android.gpstest'
+}
+
+checkstyle {
+    toolVersion = '10.26.1'
+}
+tasks.withType(Checkstyle) {
+    reports {
+        sarif.required = true
+    }
 }
 
 dependencies {
