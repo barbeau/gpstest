@@ -75,9 +75,8 @@ jobs:
       with:
         name: apks
         path: |
-          GPSTest/build/outputs/apk/google/debug/*.apk
-          GPSTest/build/outputs/apk/osmdroid/debug/*.apk
-          wear/build/outputs/apk/debug/*.apk
+          GPSTest/build/outputs/apk/
+          wear/build/outputs/apk/
   
   instrumentation-test:
     needs: build
