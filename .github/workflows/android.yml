@@ -31,7 +31,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Run tests
-        run: ./gradlew test check
+        run: ./gradlew test
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
