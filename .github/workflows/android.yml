@@ -79,14 +79,14 @@ jobs:
           wear/build/outputs/apk/
   
   instrumentation-test:
-    env:
-      ANDROID_ARCH: x86_64
-      ANDROID_TARGET: google_apis_playstore
-      API_LEVEL: 33
-      ANDROID_BUILD_TOOLS_VERSION: 33.0.3
-      ANDROID_SDK_PACKAGES: system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator
-      EMULATOR_TIMEOUT: 350
-      EMULATOR_NAME: nexus
+    # env:
+    #   ANDROID_ARCH: x86_64
+    #   ANDROID_TARGET: google_apis_playstore
+    #   API_LEVEL: 33
+    #   ANDROID_BUILD_TOOLS_VERSION: 33.0.3
+    #   ANDROID_SDK_PACKAGES: system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator
+    #   EMULATOR_TIMEOUT: 350
+    #   EMULATOR_NAME: nexus
     needs: build
     runs-on: ubuntu-latest
     strategy:
@@ -117,56 +117,56 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
         
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          log-accepted-android-sdk-licenses: false
-          packages: 'tools system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator'
+      # - name: Setup Android SDK
+      #   uses: android-actions/setup-android@v3
+      #   with:
+      #     log-accepted-android-sdk-licenses: false
+      #     packages: 'tools system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator'
 
-      - name: Build emulator
-        run: |
-            echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
+      # - name: Build emulator
+      #   run: |
+      #       echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
       
-      - name: Launch emulator
-        run: |
-          adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
-          options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
-          nohup emulator $options -gpu off &
+      # - name: Launch emulator
+      #   run: |
+      #     adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
+      #     options="@${emulator_name} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
+      #     nohup emulator $options -gpu off &
 
-      - name: Run Gradle instrumentation test
-        run: ./gradlew connectedCheck -x lint --stacktrace      
+      # - name: Run Gradle instrumentation test
+      #   run: ./gradlew connectedCheck -x lint --stacktrace      
 
-      # - name: 
-      # - name: AVD cache
-      #   uses: actions/cache@v4
-      #   id: avd-cache
-      #   with:
-      #     path: |
-      #       ~/.android/avd/*
-      #       ~/.android/adb*
-      #     key: avd-${{ matrix.api-level }}
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
 
-      # - name: Create AVD and generate snapshot for caching
-      #   if: steps.avd-cache.outputs.cache-hit != 'true'
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: ${{ matrix.api-level }}
-      #     force-avd-creation: false
-      #     emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-      #     disable-animations: false
-      #     script: echo "Generated AVD snapshot for caching."
-      #     arch: x86_64
-      #     profile: Nexus 6
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+          arch: x86_64
+          profile: Nexus 6
 
-      # - name: Run instrumentation tests
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: ${{ matrix.api-level }}
-      #     force-avd-creation: false
-      #     emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
-      #     disable-animations: true
-      #     script: |
-      #       adb wait-for-device
-      #       ./gradlew connectedDebugAndroidTest -x lint --stacktrace
-      #     arch: x86_64
-      #     profile: Nexus 6
+      - name: Run instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: true
+          script: |
+            sdkmanager install system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator
+            adb wait-for-device
+            ./gradlew connectedGoogleDebugAndroidTest -x lint --stacktrace
+          arch: x86_64
+          profile: Nexus 6
