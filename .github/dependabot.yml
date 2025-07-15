@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: "github-actions"
+  directory: "/"
+  commit-message:
+    prefix: "actions-update"
+  labels: [ 'enhancement' ]
+  schedule:
+    interval: "daily"
+  groups:
+    actions-dependencies:
+      applies-to: version-updates
+      patterns:
+      - "*"
