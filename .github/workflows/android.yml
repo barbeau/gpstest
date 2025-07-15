@@ -33,7 +33,7 @@ jobs:
       run: sdkmanager --list
 
     - name: Build app
-      run: ./gradlew --no-daemon build -x lint
+      run: ./gradlew --no-daemon assembleDebug -x lint
   
   test:
     runs-on: ubuntu-latest
