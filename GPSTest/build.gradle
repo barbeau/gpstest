@@ -170,14 +170,14 @@ dependencies {
     // Uploading device properties on user request
     implementation 'androidx.core:core-ktx:1.10.0-rc01'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-    implementation 'commons-io:commons-io:2.8.0'
+    implementation 'commons-io:commons-io:2.14.0'
 
     // Share dialog
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     // Write GNSS antenna info to JSON
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.7.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7.1'
 
     // Multidex - Needed for APIs < 21
     implementation 'androidx.multidex:multidex:2.0.1'
