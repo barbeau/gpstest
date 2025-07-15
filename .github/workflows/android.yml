@@ -58,6 +58,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: apks
+          path: /tmp
+
+      - name: Display structure of downloaded files
+        run: ls -R /tmp
 
       - name: Enable KVM
         run: |
@@ -103,4 +107,4 @@ jobs:
           script: |
             ./gradlew tasks
             adb wait-for-device
-            adb install -d *.apk
+            adb install -d /tmp/apks/wear/build/outputs/apk/debug/*.apk
