@@ -96,11 +96,11 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: Download APKs
-        uses: actions/download-artifact@v4
-        with:
-          name: apks
-          path: /tmp
+      # - name: Download APKs
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: apks
+      #     path: /tmp
 
       - name: Enable KVM
         run: |
