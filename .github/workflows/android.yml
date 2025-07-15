@@ -61,7 +61,7 @@ jobs:
       run: sdkmanager --list
 
     - name: Build app
-      run: ./gradlew --no-daemon assembleDebug -x lint --stacktrace
+      run: ./gradlew assembleDebug -x lint --stacktrace
 
     - name: Print paths
       run: |
