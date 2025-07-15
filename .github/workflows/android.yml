@@ -13,14 +13,14 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   unit-test:
-    name: Perform Unit Testing
+    name: Perform unit testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4.2.2
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.7.1
         with:
           distribution: 'temurin'
           java-version: 17
@@ -31,13 +31,13 @@ jobs:
           gradle-version: '8.9'
 
       - name: Run tests
-        run: ./gradlew test
+        run: ./gradlew test check
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
           name: unit_test_report
-          path: app/build/reports/test/testDebugUnitTest/
+          path: GPSTest/build/reports/test/testDebugUnitTest/
 
   build:
     runs-on: ubuntu-latest
