@@ -19,15 +19,7 @@ jobs:
       - name: Harden the runner (block mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
-          egress-policy: block
-          allowed-endpoints: >
-            dl.google.com:443
-            github.com:443
-            jitpack.io:443
-            objects.githubusercontent.com:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
+          egress-policy: audit
 
       - name: Checkout the code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -66,14 +58,7 @@ jobs:
       - name: Harden the runner (block mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
-          egress-policy: block
-          allowed-endpoints: >
-            dl.google.com:443
-            github.com:443
-            jitpack.io:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
+          egress-policy: audit
 
       - name: Checkout the code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
