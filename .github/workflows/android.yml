@@ -141,6 +141,6 @@ jobs:
           script: |
             adb wait-for-device
             ./gradlew installGoogleDebug -x lint --stacktrace
-            adb shell am instrument -w com.android.gpstest/androidx.test.runner.AndroidJUnitRunner
+            ./gradlew connectedCheck -x lint --stacktrace
           arch: x86_64
           profile: Nexus 6
