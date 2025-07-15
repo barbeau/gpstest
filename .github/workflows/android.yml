@@ -40,6 +40,7 @@ jobs:
           path: GPSTest/build/reports/test/testDebugUnitTest/
 
   build:
+    name: Build debug APK
     runs-on: ubuntu-latest
     needs: unit-test
     steps:
@@ -74,8 +75,8 @@ jobs:
       with:
         name: apks
         path: |
-          GPSTest/build/outputs/apk/debug/*.apk
-          library/build/outputs/apk/debug/*.apk
+          GPSTest/build/outputs/apk/google/debug/*.apk
+          GPSTest/build/outputs/apk/osmdroid/debug/*.apk
           wear/build/outputs/apk/debug/*.apk
   
   instrumentation-test:
@@ -137,6 +138,10 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: true
-          script: ./gradlew connectedCheck -x lint --stacktrace
+          script: |
+            adb wait-for-device
+            adb install -d /tmp/GPSTest/build/outputs/apk/google/debug/GPSTest-google-debug.apk
+            adb install -d /tmp/wear/build/outputs/apk/debug/wear-debug.apk
+            ./gradlew connectedCheck -x lint --stacktrace
           arch: x86_64
           profile: Nexus 6
