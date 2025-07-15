@@ -134,7 +134,7 @@ jobs:
           nohup emulator $options -gpu off &
 
       - name: Run Gradle instrumentation test
-        run: ./gradlew connectedTest -x lint --stacktrace      
+        run: ./gradlew connectedCheck -x lint --stacktrace      
 
       # - name: 
       # - name: AVD cache
