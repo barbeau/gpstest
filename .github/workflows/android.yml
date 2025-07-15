@@ -23,6 +23,7 @@ jobs:
           allowed-endpoints: >
             dl.google.com:443
             github.com:443
+            repo.maven.apache.org:443
             services.gradle.org:443
 
       - name: Checkout the code
