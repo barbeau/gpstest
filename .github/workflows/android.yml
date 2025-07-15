@@ -42,13 +42,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: unit_test_report
-          path: GPSTest/build/reports/test/testDebugUnitTest/
-
-      # Upload the SARIF file generated in the previous step
-      # - name: Upload SARIF results file
-      #   uses: github/codeql-action/upload-sarif@181d5eefc20863364f96762470ba6f862bdef56b # v3.29.2
-      #   with:
-      #     sarif_file: results.sarif
+          path: GPSTest/build/outputs/reports/
 
   build:
     name: Build debug APK
