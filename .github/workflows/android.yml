@@ -40,9 +40,9 @@ jobs:
 
       - name: Print
         run: |
-          ls -R build/outputs
           ls -R GPSTest/build/outputs
           ls -R library/build/outputs
+          ls -R wear/build/outputs
 
       - name: Upload test report
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
