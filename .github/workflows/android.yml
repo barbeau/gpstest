@@ -16,7 +16,7 @@ jobs:
     name: Perform checks
     runs-on: ubuntu-latest
     steps:
-      - name: Harden the runner (block mode)
+      - name: Harden the runner (audit mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
           egress-policy: audit
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: unit-test
     steps:
-      - name: Harden the runner (block mode)
+      - name: Harden the runner (audit mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
           egress-policy: audit
@@ -82,7 +82,7 @@ jobs:
         api-level: [24, 29, 33]
         target: [default, google_apis]
     steps:
-      - name: Harden the runner (Audit all outbound calls)
+      - name: Harden the runner (audit mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
           egress-policy: audit
