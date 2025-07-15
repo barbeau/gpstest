@@ -34,27 +34,69 @@ jobs:
 
     - name: Build app
       run: ./gradlew --no-daemon assembleDebug -x lint --stacktrace
+
+    - name: Upload APKs
+      uses: actions/upload-artifact@v4
+      with:
+        name: apks
+        path: |
+          GPSTest/build/outputs/apk/debug/*.apk
+          library/build/outputs/apk/debug/*.apk
+          wear/build/outputs/apk/debug/*.apk
   
   test:
     runs-on: ubuntu-latest
-    needs: build
     strategy:
       matrix:
-        api-level: [29]
-        target: [google_apis]
-    
+        api-level: [21, 23, 29]
     steps:
+      - name: Download APKs
+        uses: actions/download-artifact@v4
+        with:
+          name: apks
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Setup Java
+        uses: actions/setup-java@v4.7.1
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+        
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ matrix.api-level }}
-          target: ${{ matrix.target }}
-          arch: x86_64
-          profile: Nexus 6
-          script: ./gradlew test check connectedCheck -x lint --stacktrace
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            ./gradlew tasks
+            ./adb wait-for-device
+            ./adb install -d *.apk
