@@ -142,6 +142,20 @@ android {
 checkstyle {
     toolVersion = '10.26.1'
 }
+task Checkstyle(type: Checkstyle) {
+    source 'src/main/java'
+    ignoreFailures false
+    showViolations true
+    include '**/*.java'
+    classpath = files()
+}
+
+// adds checkstyle task to existing check task
+afterEvaluate {
+    if (project.tasks.getByName("check")) {
+        check.dependsOn('checkstyle')
+    }
+}
 tasks.withType(Checkstyle) {
     reports {
         sarif.required = true
