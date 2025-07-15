@@ -37,8 +37,8 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
-          name: lint.html
-          path: gpstest/gpstest/library/build/reports/lint-results-debug.html
+          name: lint.txt
+          path: /home/runner/work/gpstest/gpstest/library/build/intermediates/lint_intermediate_text_report/debug/lintReportDebug/lint-results-debug.txt
 
   unit-test:
     name: Perform Unit Testing
