@@ -102,5 +102,5 @@ jobs:
           disable-animations: true
           script: |
             ./gradlew tasks
-            ./adb wait-for-device
-            ./adb install -d *.apk
+            adb wait-for-device
+            adb install -d *.apk
