@@ -87,6 +87,7 @@ jobs:
       matrix:
         api-level: [24, 29, 33]
         target: [default, google_apis]
+        tasks: [connectedGoogleDebugAndroidTest, connectedOsmdroidDebugAndroidTest]
     steps:
       - name: Harden the runner (audit mode)
         uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
@@ -146,6 +147,6 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew connectedGoogleDebugAndroidTest -x lint --stacktrace
+            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
           arch: x86_64
           profile: Nexus 6
