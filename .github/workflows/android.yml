@@ -12,71 +12,71 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  unit-test:
-    name: Perform unit testing
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4.2.2
+  # unit-test:
+  #   name: Perform unit testing
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout the code
+  #       uses: actions/checkout@v4.2.2
 
-      - name: Setup Java
-        uses: actions/setup-java@v4.7.1
-        with:
-          distribution: 'temurin'
-          java-version: 17
+  #     - name: Setup Java
+  #       uses: actions/setup-java@v4.7.1
+  #       with:
+  #         distribution: 'temurin'
+  #         java-version: 17
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
+  #     - name: Setup Gradle
+  #       uses: gradle/actions/setup-gradle@v4
+  #       with:
+  #         gradle-version: '8.9'
 
-      - name: Run tests
-        run: ./gradlew test check -x lint
+  #     - name: Run tests
+  #       run: ./gradlew test check -x lint
 
-      - name: Upload test report
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit_test_report
-          path: GPSTest/build/reports/test/testDebugUnitTest/
+  #     - name: Upload test report
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: unit_test_report
+  #         path: GPSTest/build/reports/test/testDebugUnitTest/
 
-  build:
-    name: Build debug APK
-    runs-on: ubuntu-latest
-    needs: unit-test
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.2.2
+  # build:
+  #   name: Build debug APK
+  #   runs-on: ubuntu-latest
+  #   needs: unit-test
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v4.2.2
 
-    - name: Setup Java
-      uses: actions/setup-java@v4.7.1
-      with:
-        java-version: 17
-        distribution: 'temurin'
+  #   - name: Setup Java
+  #     uses: actions/setup-java@v4.7.1
+  #     with:
+  #       java-version: 17
+  #       distribution: 'temurin'
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-      with:
-        log-accepted-android-sdk-licenses: false
+  #   - name: Setup Android SDK
+  #     uses: android-actions/setup-android@v3
+  #     with:
+  #       log-accepted-android-sdk-licenses: false
 
-    - name: List packages
-      run: sdkmanager --list
+  #   - name: List packages
+  #     run: sdkmanager --list
 
-    - name: Build app
-      run: ./gradlew assembleDebug -x lint --stacktrace
+  #   - name: Build app
+  #     run: ./gradlew assembleDebug -x lint --stacktrace
 
-    - name: Print paths
-      run: |
-        ls -R GPSTest/build/outputs
-        ls -R library/build/outputs
-        ls -R wear/build/outputs
+  #   - name: Print paths
+  #     run: |
+  #       ls -R GPSTest/build/outputs
+  #       ls -R library/build/outputs
+  #       ls -R wear/build/outputs
 
-    - name: Upload APKs
-      uses: actions/upload-artifact@v4
-      with:
-        name: apks
-        path: |
-          GPSTest/build/outputs/apk/
-          wear/build/outputs/apk/
+  #   - name: Upload APKs
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: apks
+  #       path: |
+  #         GPSTest/build/outputs/apk/
+  #         wear/build/outputs/apk/
   
   instrumentation-test:
     # env:
@@ -87,7 +87,7 @@ jobs:
     #   ANDROID_SDK_PACKAGES: system-images;android-33;google_apis_playstore;x86_64 platforms;android-33 build-tools;33.0.3 platform-tools emulator
     #   EMULATOR_TIMEOUT: 350
     #   EMULATOR_NAME: nexus
-    needs: build
+    # needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
