@@ -15,7 +15,7 @@
         android:theme="@android:style/Theme.DeviceDefault">
         <uses-library
             android:name="com.google.android.wearable"
-            android:required="false" />
+            android:required="true" />
 
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
