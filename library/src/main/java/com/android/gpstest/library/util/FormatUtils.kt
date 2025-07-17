@@ -9,7 +9,12 @@ import android.location.Location
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.android.gpstest.library.R
-import com.android.gpstest.library.model.*
+import com.android.gpstest.library.model.CoordinateType
+import com.android.gpstest.library.model.DilutionOfPrecision
+import com.android.gpstest.library.model.Orientation
+import com.android.gpstest.library.model.SatelliteGroup
+import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.model.SatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtil.isBearingAccuracySupported
 import com.android.gpstest.library.util.SatelliteUtil.isSpeedAccuracySupported
 import com.android.gpstest.library.util.SatelliteUtil.isVerticalAccuracySupported

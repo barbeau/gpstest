@@ -21,6 +21,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+
 import com.android.gpstest.library.R;
 import com.android.gpstest.library.model.GnssType;
 

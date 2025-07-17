@@ -23,7 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.*
+import androidx.wear.compose.material.AutoCenteringParams
+import androidx.wear.compose.material.PositionIndicator
+import androidx.wear.compose.material.Scaffold
+import androidx.wear.compose.material.ScalingLazyColumn
+import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.TimeSource
+import androidx.wear.compose.material.TimeText
+import androidx.wear.compose.material.rememberScalingLazyListState
 import com.android.gpstest.Application
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.model.CoordinateType

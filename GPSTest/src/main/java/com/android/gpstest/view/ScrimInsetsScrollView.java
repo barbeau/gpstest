@@ -26,9 +26,9 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ScrollView;
 
-import com.android.gpstest.R;
-
 import androidx.core.view.ViewCompat;
+
+import com.android.gpstest.R;
 
 /**
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(android.graphics.Rect)},

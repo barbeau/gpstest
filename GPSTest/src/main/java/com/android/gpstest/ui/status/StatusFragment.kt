@@ -17,7 +17,12 @@
 package com.android.gpstest.ui.status
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
@@ -26,8 +31,8 @@ import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.library.ui.SignalInfoViewModel
-import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.library.util.PreferenceUtil.darkTheme
+import com.android.gpstest.ui.theme.AppTheme
 import com.android.gpstest.util.UIUtils.showSortByDialog
 import dagger.hilt.android.AndroidEntryPoint
 

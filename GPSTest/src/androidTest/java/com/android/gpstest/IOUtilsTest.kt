@@ -20,7 +20,10 @@ import android.location.Location
 import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.library.util.IOUtils
-import junit.framework.Assert.*
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertFalse
+import junit.framework.Assert.assertNull
+import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
