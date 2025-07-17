@@ -12,27 +12,139 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test:
-    runs-on: macos-latest
+  unit-test:
+    name: Perform checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (audit mode)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout the code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Java
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle and cache
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+        with:
+          gradle-version: '8.9'
+
+      - name: Run checks
+        run: ./gradlew check -x lint
+
+  build:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden the runner (audit mode)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout the code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Java
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3.2.2
+        with:
+          log-accepted-android-sdk-licenses: false
+      
+      - name: Setup Gradle and cache
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+        with:
+          gradle-version: '8.9'
+          cache-read-only: true
+
+      - name: Build app
+        run: ./gradlew assembleDebug -x lint --stacktrace
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: apks
+          path: |
+            GPSTest/build/outputs/apk/
+            wear/build/outputs/apk/
+  
+  instrumentation-test:
+    name: Run instrumented tests
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        api-level: [24, 29]
+        api-level: [24, 29, 33]
         target: [default, google_apis]
+        tasks: [connectedGoogleDebugAndroidTest, connectedOsmdroidDebugAndroidTest]
     steps:
-    - name: checkout
-      uses: actions/checkout@v2
+      - name: Harden the runner (audit mode)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
 
-    - name: Setup Java
-      uses: actions/setup-java@v2
-      with:
-        java-version: 17
-        distribution: 'adopt'
+      - name: Checkout the code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    - name: run tests
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: x86_64
-        profile: Nexus 6
-        script: ./gradlew test check connectedCheck -x lint --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Setup Java
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Setup Gradle and cache
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+        with:
+          gradle-version: '8.9'
+          cache-read-only: true
+
+      - name: Configure AVD cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.target }}-${{ matrix.api-level }}
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+          arch: x86_64
+          profile: Nexus 6
+
+      - name: Run instrumentation tests
+        uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
+          disable-animations: true
+          script: |
+            adb wait-for-device
+            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
+          arch: x86_64
+          profile: Nexus 6
