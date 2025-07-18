@@ -21,7 +21,7 @@ updates:
     interval: "daily"
   groups:
     gradle-dependencies:
-      applies-to: version-updates
+      applies-to: security-updates
       patterns:
       - "*"
       update-types:
