@@ -20,7 +20,7 @@ updates:
   schedule:
     interval: "daily"
   groups:
-    actions-dependencies:
+    gradle-dependencies:
       applies-to: version-updates
       patterns:
       - "*"
