@@ -217,14 +217,16 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         changePreferenceSummary(getString(R.string.pref_key_language))
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals(
                 getString(R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
             )
         ) {
             // Change the preferred distance units description
-            changePreferenceSummary(key)
+            if (key != null) {
+                changePreferenceSummary(key)
+            }
         } else {
             if (key.equals(
                     getString(R.string.pref_key_preferred_speed_units_v2),
@@ -232,11 +234,15 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 )
             ) {
                 // Change the preferred speed units description
-                changePreferenceSummary(key)
+                if (key != null) {
+                    changePreferenceSummary(key)
+                }
             } else {
                 if (key.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
                     // Change the preferred language description
-                    changePreferenceSummary(key)
+                    if (key != null) {
+                        changePreferenceSummary(key)
+                    }
                 }
             }
         }

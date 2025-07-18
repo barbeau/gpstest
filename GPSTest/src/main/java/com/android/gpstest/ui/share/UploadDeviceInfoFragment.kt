@@ -88,7 +88,7 @@ class UploadDeviceInfoFragment : Fragment() {
             var versionCode = ""
             try {
                 val info: PackageInfo = Application.app.packageManager.getPackageInfo(Application.app.packageName, 0)
-                versionName = info.versionName
+                versionName = info.versionName.toString()
                 versionCode = info.versionCode.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
