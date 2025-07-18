@@ -4,7 +4,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 35
 
     defaultConfig {
         minSdkVersion 24
