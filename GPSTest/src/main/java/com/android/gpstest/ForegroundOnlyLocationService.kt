@@ -50,7 +50,12 @@ import com.android.gpstest.library.data.LocationRepository
 import com.android.gpstest.library.model.SatelliteGroup
 import com.android.gpstest.library.model.SatelliteMetadata
 import com.android.gpstest.library.util.FormatUtils.toNotificationTitle
-import com.android.gpstest.library.util.IOUtils.*
+import com.android.gpstest.library.util.IOUtils.deleteOldFiles
+import com.android.gpstest.library.util.IOUtils.forcePsdsInjection
+import com.android.gpstest.library.util.IOUtils.forceTimeInjection
+import com.android.gpstest.library.util.IOUtils.writeMeasurementToLogcat
+import com.android.gpstest.library.util.IOUtils.writeNavMessageToAndroidStudio
+import com.android.gpstest.library.util.IOUtils.writeNmeaToAndroidStudio
 import com.android.gpstest.library.util.LibUIUtils.toNotificationSummary
 import com.android.gpstest.library.util.PreferenceUtil
 import com.android.gpstest.library.util.PreferenceUtil.isCsvLoggingEnabled
@@ -73,13 +78,18 @@ import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
-import java.util.*
-import javax.inject.Inject
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import java.io.File
+import java.util.Date
+import javax.inject.Inject
 
 /**
  * Service tracks location, logs to files, and shows a notification to the user.

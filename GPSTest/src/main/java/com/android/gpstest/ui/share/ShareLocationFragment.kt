@@ -18,8 +18,8 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.library.model.CoordinateType
 import com.android.gpstest.library.util.IOUtils
-import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.LibUIUtils
+import com.android.gpstest.library.util.PreferenceUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup

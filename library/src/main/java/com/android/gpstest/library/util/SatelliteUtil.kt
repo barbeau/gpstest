@@ -19,8 +19,16 @@ import android.annotation.SuppressLint
 import android.location.GnssStatus
 import android.location.Location
 import android.os.Build
-import com.android.gpstest.library.model.*
-import com.android.gpstest.library.util.CarrierFreqUtils.*
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.Satellite
+import com.android.gpstest.library.model.SatelliteGroup
+import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.SbasType
+import com.android.gpstest.library.util.CarrierFreqUtils.CF_UNKNOWN
+import com.android.gpstest.library.util.CarrierFreqUtils.CF_UNSUPPORTED
+import com.android.gpstest.library.util.CarrierFreqUtils.getCarrierFrequencyLabel
+import com.android.gpstest.library.util.CarrierFreqUtils.isPrimaryCarrier
 import com.android.gpstest.library.util.SatelliteUtils.createGnssSatelliteKey
 
 object SatelliteUtil {

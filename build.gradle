@@ -4,17 +4,18 @@ buildscript {
         compose_version = '1.2.0-alpha05'
         wear_compose_version = '1.0.2'
     }
-    ext.kotlin_version = '1.8.0'
-    ext.hilt_version = '2.45'
+    ext.kotlin_version = '2.1.0'
+    ext.hilt_version = '2.56.2'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.2'
+        classpath 'com.android.tools.build:gradle:8.11.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Hilt for dependency injection
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.1.0'
     }
 }
 

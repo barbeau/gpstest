@@ -2,7 +2,6 @@ package com.android.gpstest.ui.share
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,6 @@ import com.android.gpstest.library.util.LibUIUtils
 import com.google.android.material.button.MaterialButton
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ShareLogFragment : Fragment() {
 
