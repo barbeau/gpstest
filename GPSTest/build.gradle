@@ -5,11 +5,11 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 34
         multiDexEnabled true
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
         versionCode 24099

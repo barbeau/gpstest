@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "com.android.gpstest.wear"
         minSdk 25
-        targetSdk 35
+        targetSdk 32
         versionCode 1
         versionName "1.0"
         vectorDrawables {
