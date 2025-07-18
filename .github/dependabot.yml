@@ -12,17 +12,3 @@ updates:
       applies-to: version-updates
       patterns:
       - "*"
-- package-ecosystem: "gradle"
-  directory: "/"
-  commit-message:
-    prefix: "gradle-update"
-  labels: [ 'enhancement' ]
-  schedule:
-    interval: "daily"
-  groups:
-    actions-dependencies:
-      applies-to: version-updates
-      patterns:
-      - "*"
-      update-types:
-      - "patch"
