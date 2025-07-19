@@ -19,10 +19,11 @@ updates:
   labels: [ 'enhancement' ]
   schedule:
     interval: "daily"
+  ignore:
+  - dependency-name: "*"
+    update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
   groups:
     gradle-dependencies:
-      applies-to: security-updates
+      applies-to: version-updates
       patterns:
       - "*"
-      update-types:
-      - "patch"
