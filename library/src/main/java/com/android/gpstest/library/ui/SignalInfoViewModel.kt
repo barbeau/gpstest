@@ -28,7 +28,13 @@ import androidx.lifecycle.viewModelScope
 import com.android.gpstest.library.data.FirstFixState
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
-import com.android.gpstest.library.model.*
+import com.android.gpstest.library.model.DilutionOfPrecision
+import com.android.gpstest.library.model.GnssType
+import com.android.gpstest.library.model.Satellite
+import com.android.gpstest.library.model.SatelliteGroup
+import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.model.SatelliteStatus
+import com.android.gpstest.library.model.SbasType
 import com.android.gpstest.library.util.CarrierFreqUtils.getCarrierFrequencyLabel
 import com.android.gpstest.library.util.FormatUtils.formatTtff
 import com.android.gpstest.library.util.NmeaUtils

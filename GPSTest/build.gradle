@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
     compileSdkVersion 33
@@ -128,6 +129,10 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     // Gradle automatically adds 'android.test.runner' as a dependency.

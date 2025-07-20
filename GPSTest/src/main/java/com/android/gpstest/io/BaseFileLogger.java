@@ -10,9 +10,12 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Downloads;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
+
 import com.android.gpstest.Application;
 import com.android.gpstest.R;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

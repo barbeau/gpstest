@@ -36,7 +36,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.shareIn
-import java.util.*
 
 private const val TAG = "SharedAntennaManager"
 

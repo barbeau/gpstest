@@ -3,7 +3,13 @@ package com.android.gpstest.library.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.android.gpstest.library.data.*
+import com.android.gpstest.library.data.SharedAntennaManager
+import com.android.gpstest.library.data.SharedGnssMeasurementManager
+import com.android.gpstest.library.data.SharedGnssStatusManager
+import com.android.gpstest.library.data.SharedLocationManager
+import com.android.gpstest.library.data.SharedNavMessageManager
+import com.android.gpstest.library.data.SharedNmeaManager
+import com.android.gpstest.library.data.SharedSensorManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

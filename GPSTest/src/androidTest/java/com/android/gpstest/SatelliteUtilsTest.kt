@@ -15,14 +15,21 @@
  */
 package com.android.gpstest
 
-import android.location.GnssMeasurement.*
+import android.location.GnssMeasurement.ADR_STATE_CYCLE_SLIP
+import android.location.GnssMeasurement.ADR_STATE_HALF_CYCLE_REPORTED
+import android.location.GnssMeasurement.ADR_STATE_HALF_CYCLE_RESOLVED
+import android.location.GnssMeasurement.ADR_STATE_RESET
+import android.location.GnssMeasurement.ADR_STATE_UNKNOWN
+import android.location.GnssMeasurement.ADR_STATE_VALID
 import android.os.Build
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SatelliteStatus
 import com.android.gpstest.library.model.SbasType
 import com.android.gpstest.library.util.SatelliteUtils
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 

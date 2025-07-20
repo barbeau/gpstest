@@ -15,13 +15,13 @@
  */
 package com.android.gpstest.util;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+
 import com.android.gpstest.library.model.DilutionOfPrecision;
 import com.android.gpstest.library.util.NmeaUtils;
 
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
 
 public class NmeaUtilsTest {
     /**
