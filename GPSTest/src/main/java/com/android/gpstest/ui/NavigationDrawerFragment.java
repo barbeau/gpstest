@@ -145,7 +145,7 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     // list of navdrawer items that were actually added to the navdrawer, in order
-    private List<Integer> mNavDrawerItems = new ArrayList<>();
+    private final List<Integer> mNavDrawerItems = new ArrayList<>();
 
     // views that correspond to each navdrawer item, null if not yet created
     private View[] mNavDrawerItemViews = null;
@@ -525,7 +525,6 @@ public class NavigationDrawerFragment extends Fragment {
         if (selected) {
             if (isNewActivityItem(itemId)) {
                 // Don't change any formatting, since this is a category that launches a new activity
-                return;
             } else {
                 // Show the category as highlighted by changing background, text, and icon color
                 view.setSelected(true);

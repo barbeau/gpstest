@@ -483,7 +483,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 recreate()
             } else {
                 // Prompt the user to grant permissions again
-                createNotificationPermissionDialog(this).show();
+                createNotificationPermissionDialog(this).show()
             }
         }
     }

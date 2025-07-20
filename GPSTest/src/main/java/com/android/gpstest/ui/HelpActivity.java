@@ -39,8 +39,8 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView versionView = (TextView) findViewById(R.id.app_version);
-        TextView helpView = (TextView) findViewById(R.id.help_text);
+        TextView versionView = findViewById(R.id.app_version);
+        TextView helpView = findViewById(R.id.help_text);
 
         String versionString = "";
         int versionCode = 0;
@@ -52,23 +52,21 @@ public class HelpActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        StringBuilder version = new StringBuilder();
         // Version info
-        version.append("v")
-                .append(versionString)
-                .append(" (")
-                .append(versionCode)
-                .append("-" + BuildConfig.FLAVOR + ")\n");
-
-        version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + "\n");
-        version.append("GNSS HW Name: " + IOUtils.getGnssHardwareModelName(Application.Companion.getApp()) + "\n");
 
         String versionRelease = Build.VERSION.RELEASE;
-        version.append("Platform: " + versionRelease + "\n");
         int apiLevel = Build.VERSION.SDK_INT;
-        version.append("API Level: " + apiLevel + "\n");
+        String version = "v" +
+                versionString +
+                " (" +
+                versionCode +
+                "-" + BuildConfig.FLAVOR + ")\n" +
+                "GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + "\n" +
+                "GNSS HW Name: " + IOUtils.getGnssHardwareModelName(Application.Companion.getApp()) + "\n" +
+                "Platform: " + versionRelease + "\n" +
+                "API Level: " + apiLevel + "\n";
 
-        versionView.setText(version.toString());
+        versionView.setText(version);
 
         helpView.setText(com.android.gpstest.library.R.string.help_text);
     }

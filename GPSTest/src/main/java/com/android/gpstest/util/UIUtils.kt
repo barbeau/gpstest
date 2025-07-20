@@ -117,7 +117,7 @@ internal object UIUtils {
             PreferenceUtils.saveBoolean(
                 app.getString(com.android.gpstest.library.R.string.pref_key_never_show_qr_code_instructions),
                 isChecked,
-                Application.prefs
+                prefs
             )
         }
         val builder = AlertDialog.Builder(activity)

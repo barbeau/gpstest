@@ -276,14 +276,14 @@ private fun formatTime(time: Long) {
     @SuppressLint("SimpleDateFormat")
     val timeFormat = remember {
         SimpleDateFormat(
-            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
+            if (DateFormat.is24HourFormat(app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
         )
     }
 
     @SuppressLint("SimpleDateFormat")
     val timeAndDateFormat = remember {
         SimpleDateFormat(
-            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
+            if (DateFormat.is24HourFormat(app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
         )
     }
 
@@ -468,9 +468,9 @@ fun ErrorTime(timeText: String, timeMs: Long) {
                 Text(stringResource(com.android.gpstest.library.R.string.error_time_title))
             },
             text = {
-                Column() {
+                Column {
                     LinkifyText(
-                        text = Application.app.getString(
+                        text = app.getString(
                             com.android.gpstest.library.R.string.error_time_message, format.format(timeMs),
                             DateTimeUtils.NUM_DAYS_TIME_VALID
                         )

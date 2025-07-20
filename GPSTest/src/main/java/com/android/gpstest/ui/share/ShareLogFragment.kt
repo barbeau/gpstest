@@ -72,7 +72,7 @@ class ShareLogFragment : Fragment() {
                     fileName.text = fileNameText
                 } else {
                     // Set the log file selected by the user using the File Browse button
-                    val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
+                    val lastPathSegment: String? = alternateFileUri.lastPathSegment
                     // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
                     val parts = lastPathSegment?.split("/".toRegex())?.toTypedArray()
                     fileName.text = parts?.get(parts.size - 1) ?: ""

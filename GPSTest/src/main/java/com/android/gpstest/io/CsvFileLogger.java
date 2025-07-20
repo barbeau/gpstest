@@ -109,25 +109,22 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 e.printStackTrace();
             }
 
-            StringBuilder version = new StringBuilder();
             // Version info
-            version.append("v")
-                    .append(versionString)
-                    .append(" (")
-                    .append(versionCode)
-                    .append("-" + BuildConfig.FLAVOR + "), ");
-
-            version.append("Manufacturer: " + manufacturer + ", ");
-            version.append("Model: " + model + ", ");
-
-            version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + ", ");
 
             String versionRelease = Build.VERSION.RELEASE;
-            version.append("Platform: " + versionRelease + ", ");
             int apiLevel = Build.VERSION.SDK_INT;
-            version.append("API Level: " + apiLevel + " ");
+            String version = "v" +
+                    versionString +
+                    " (" +
+                    versionCode +
+                    "-" + BuildConfig.FLAVOR + "), " +
+                    "Manufacturer: " + manufacturer + ", " +
+                    "Model: " + model + ", " +
+                    "GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + ", " +
+                    "Platform: " + versionRelease + ", " +
+                    "API Level: " + apiLevel + " ";
 
-            writer.write(version.toString());
+            writer.write(version);
             writer.newLine();
             writer.write(COMMENT_START);
             writer.newLine();
@@ -187,7 +184,6 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.newLine();
         } catch (IOException e) {
             logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.could_not_initialize_file, filePath), e);
-            return;
         }
     }
 

@@ -39,7 +39,7 @@ public class ScrimInsetsScrollView extends ScrollView {
 
     private Rect mInsets;
 
-    private Rect mTempRect = new Rect();
+    private final Rect mTempRect = new Rect();
 
     private OnInsetsCallback mOnInsetsCallback;
 
@@ -144,8 +144,8 @@ public class ScrimInsetsScrollView extends ScrollView {
         mOnInsetsCallback = onInsetsCallback;
     }
 
-    public static interface OnInsetsCallback {
+    public interface OnInsetsCallback {
 
-        public void onInsetsChanged(Rect insets);
+        void onInsetsChanged(Rect insets);
     }
 }

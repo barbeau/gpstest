@@ -54,7 +54,7 @@ class ShareDialogFragment : DialogFragment() {
         viewPager = view.findViewById(R.id.pager)
         viewPager.offscreenPageLimit = 2
         viewPager.adapter = shareCollectionAdapter
-        val tabLayout = view.findViewById(R.id.share_tab_layout) as TabLayout
+        val tabLayout: TabLayout = view.findViewById(R.id.share_tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {

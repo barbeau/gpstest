@@ -157,7 +157,7 @@ dependencies {
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
     // Graphs for sliding drawer
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     // QR Code reader for ground truth locations
     implementation 'com.google.zxing:android-integration:3.3.0'

@@ -5,7 +5,7 @@ buildscript {
         wear_compose_version = '1.4.1'
     }
     ext.kotlin_version = '2.1.21'
-    ext.hilt_version = '2.56.2'
+    ext.hilt_version = '2.57'
     repositories {
         google()
         mavenCentral()

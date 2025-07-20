@@ -116,7 +116,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
         lastLocation = null
 
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+        prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
@@ -128,7 +128,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
                 observeLocationUpdateStates()
             }
         } else {
-            val sp = Application.prefs
+            val sp = prefs
             if (!sp.getBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, false)) {
                 val builder = AlertDialog.Builder(
                     requireActivity()
@@ -441,7 +441,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     }
 
     private fun checkMapPreferences() {
-        val settings = Application.prefs
+        val settings = prefs
         if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
             if (map!!.mapType !=
                 settings.getString(
@@ -465,7 +465,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
             tiltEnabled = settings.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_tilt_map_with_sensors), true)
         }
         val useDarkTheme =
-            Application.prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)
+            prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)
         if (map != null && activity != null && useDarkTheme) {
             map!!.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
