@@ -70,7 +70,7 @@ public class HelpActivity extends AppCompatActivity {
 
         versionView.setText(version.toString());
 
-        helpView.setText(R.string.help_text);
+        helpView.setText(com.android.gpstest.library.R.string.help_text);
     }
 
     @Override

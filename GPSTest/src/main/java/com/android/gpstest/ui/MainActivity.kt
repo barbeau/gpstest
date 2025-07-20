@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
         if (darkTheme(app, prefs)) {
-            setTheme(R.style.AppTheme_Dark_NoActionBar)
+            setTheme(com.android.gpstest.library.R.style.AppTheme_Dark_NoActionBar)
             useDarkTheme = true
         }
         super.onCreate(savedInstanceState)
@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         // Set the default values from the XML file if this is the first execution of the app
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        initialLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language), prefs)
+        initialLanguage = PreferenceUtils.getString(getString(com.android.gpstest.library.R.string.pref_key_language), prefs)
         initialMinTimeMillis = minTimeMillis(app, prefs)
         initialMinDistance = minDistance(app, prefs)
 
@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                     recreateApp(showRadar)
                 } else {
                     Toast.makeText(
-                        this, getString(R.string.qr_code_cannot_read_code),
+                        this, getString(com.android.gpstest.library.R.string.qr_code_cannot_read_code),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -277,8 +277,8 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun maybeRecreateApp() {
         // If the set language has changed since we created the Activity (e.g., returning from Settings), recreate App
-        if (prefs.contains(getString(R.string.pref_key_language))) {
-            val currentLanguage = PreferenceUtils.getString(getString(R.string.pref_key_language), prefs)
+        if (prefs.contains(getString(com.android.gpstest.library.R.string.pref_key_language))) {
+            val currentLanguage = PreferenceUtils.getString(getString(com.android.gpstest.library.R.string.pref_key_language), prefs)
             if (currentLanguage != initialLanguage) {
                 initialLanguage = currentLanguage
                 recreateApp(null)
@@ -368,7 +368,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         if (provider == null) {
             Log.e(TAG, "Unable to get GPS_PROVIDER")
             Toast.makeText(
-                this, getString(R.string.gps_not_supported),
+                this, getString(com.android.gpstest.library.R.string.gps_not_supported),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -400,7 +400,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
     private fun setupStartState(savedInstanceState: Bundle?) {
         // Use "Auto-start GNSS" setting, or existing tracking state (e.g., if service is running)
         if (prefs.getBoolean(
-                getString(R.string.pref_key_auto_start_gps),
+                getString(com.android.gpstest.library.R.string.pref_key_auto_start_gps),
                 true
             ) || isTrackingStarted(prefs)
         ) {
@@ -437,7 +437,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             NavigationDrawerFragment.NAVDRAWER_ITEM_CLEAR_AIDING_DATA -> {
                 val prefs = prefs
                 if (!prefs.getBoolean(
-                        getString(R.string.pref_key_never_show_clear_assist_warning),
+                        getString(com.android.gpstest.library.R.string.pref_key_never_show_clear_assist_warning),
                         false
                     )
                 ) {
@@ -455,12 +455,12 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             NavigationDrawerFragment.NAVDRAWER_ITEM_HELP -> showDialog(LibUIUtils.HELP_DIALOG)
             NavigationDrawerFragment.NAVDRAWER_ITEM_OPEN_SOURCE -> {
                 val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(getString(R.string.open_source_github))
+                i.data = Uri.parse(getString(com.android.gpstest.library.R.string.open_source_github))
                 startActivity(i)
             }
             NavigationDrawerFragment.NAVDRAWER_ITEM_SEND_FEEDBACK -> {
                 // Send App feedback
-                val email = getString(R.string.app_feedback_email)
+                val email = getString(com.android.gpstest.library.R.string.app_feedback_email)
                 var locationString: String? = null
                 if (lastLocation != null) {
                     locationString = LocationUtils.printLocationDetails(lastLocation)
@@ -495,7 +495,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
         }
         supportFragmentManager.beginTransaction().show(statusFragment!!).commit()
-        title = resources.getString(R.string.gps_status_title)
+        title = resources.getString(com.android.gpstest.library.R.string.gps_status_title)
     }
 
     private fun hideStatusFragment() {
@@ -533,7 +533,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
         }
         supportFragmentManager.beginTransaction().show(mapFragment!!).commit()
-        title = resources.getString(R.string.gps_map_title)
+        title = resources.getString(com.android.gpstest.library.R.string.gps_map_title)
     }
 
     private fun hideMapFragment() {
@@ -567,7 +567,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
         }
         supportFragmentManager.beginTransaction().show(skyFragment!!).commit()
-        title = resources.getString(R.string.gps_sky_title)
+        title = resources.getString(com.android.gpstest.library.R.string.gps_sky_title)
     }
 
     private fun hideSkyFragment() {
@@ -601,7 +601,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             }
         }
         supportFragmentManager.beginTransaction().show(accuracyFragment!!).commit()
-        title = resources.getString(R.string.gps_accuracy_title)
+        title = resources.getString(com.android.gpstest.library.R.string.gps_accuracy_title)
         if (benchmarkController != null) {
             initAccuracy()
         }
@@ -620,21 +620,21 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             IOUtils.forcePsdsInjection(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
-                this, getString(R.string.force_psds_injection_success),
+                this, getString(com.android.gpstest.library.R.string.force_psds_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_inject_psds),
+                app.getString(com.android.gpstest.library.R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
         } else {
             Toast.makeText(
-                this, getString(R.string.force_psds_injection_failure),
+                this, getString(com.android.gpstest.library.R.string.force_psds_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_inject_psds),
+                app.getString(com.android.gpstest.library.R.string.capability_key_inject_psds),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -646,21 +646,21 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             IOUtils.forceTimeInjection(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
-                this, getString(R.string.force_time_injection_success),
+                this, getString(com.android.gpstest.library.R.string.force_time_injection_success),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_inject_time),
+                app.getString(com.android.gpstest.library.R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
         } else {
             Toast.makeText(
-                this, getString(R.string.force_time_injection_failure),
+                this, getString(com.android.gpstest.library.R.string.force_time_injection_failure),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_inject_time),
+                app.getString(com.android.gpstest.library.R.string.capability_key_inject_time),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -678,21 +678,21 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
             IOUtils.deleteAidingData(app, getSystemService(LOCATION_SERVICE) as LocationManager)
         if (success) {
             Toast.makeText(
-                this, getString(R.string.delete_aiding_data_success),
+                this, getString(com.android.gpstest.library.R.string.delete_aiding_data_success),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_delete_assist),
+                app.getString(com.android.gpstest.library.R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_SUPPORTED,
                 prefs
             )
         } else {
             Toast.makeText(
-                this, getString(R.string.delete_aiding_data_failure),
+                this, getString(com.android.gpstest.library.R.string.delete_aiding_data_failure),
                 Toast.LENGTH_SHORT
             ).show()
             PreferenceUtils.saveInt(
-                app.getString(R.string.capability_key_delete_assist),
+                app.getString(com.android.gpstest.library.R.string.capability_key_delete_assist),
                 PreferenceUtils.CAPABILITY_NOT_SUPPORTED,
                 prefs
             )
@@ -734,13 +734,13 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         observeGnssStates()
 
         // Show Toast only if the user has set minTime or minDistance to something other than default values
-        if (minTimeMillis(app, prefs) != (getString(R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
-            minDistance(app, prefs) != getString(R.string.pref_gps_min_distance_default_meters).toFloat()
+        if (minTimeMillis(app, prefs) != (getString(com.android.gpstest.library.R.string.pref_gps_min_time_default_sec).toDouble() * SECONDS_TO_MILLISECONDS).toLong() ||
+            minDistance(app, prefs) != getString(com.android.gpstest.library.R.string.pref_gps_min_distance_default_meters).toFloat()
         ) {
             Toast.makeText(
                 this,
                 String.format(
-                    getString(R.string.gnss_running),
+                    getString(com.android.gpstest.library.R.string.gnss_running),
                     (minTimeMillis(app, prefs).toDouble() / SECONDS_TO_MILLISECONDS).toString(),
                     minDistance(app, prefs).toString()
                 ),
@@ -817,7 +817,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
     private fun checkKeepScreenOn(settings: SharedPreferences) {
         binding.toolbar.keepScreenOn =
-            settings.getBoolean(getString(R.string.pref_key_keep_screen_on), true)
+            settings.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_keep_screen_on), true)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -902,25 +902,25 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         neverShowDialog.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             // Save the preference
             PreferenceUtils.saveBoolean(
-                getString(R.string.pref_key_never_show_clear_assist_warning),
+                getString(com.android.gpstest.library.R.string.pref_key_never_show_clear_assist_warning),
                 isChecked,
                 prefs
             )
         }
-        val icon = ContextCompat.getDrawable(app, R.drawable.ic_delete)
+        val icon = ContextCompat.getDrawable(app, com.android.gpstest.library.R.drawable.ic_delete)
         if (icon != null) {
-            DrawableCompat.setTint(icon, resources.getColor(R.color.colorPrimary))
+            DrawableCompat.setTint(icon, resources.getColor(com.android.gpstest.library.R.color.colorPrimary))
         }
         val builder = AlertDialog.Builder(this)
-            .setTitle(R.string.clear_assist_warning_title)
+            .setTitle(com.android.gpstest.library.R.string.clear_assist_warning_title)
             .setIcon(icon)
             .setCancelable(false)
             .setView(view)
             .setPositiveButton(
-                R.string.yes
+                com.android.gpstest.library.R.string.yes
             ) { _: DialogInterface?, _: Int -> deleteAidingData() }
             .setNegativeButton(
-                R.string.no
+                com.android.gpstest.library.R.string.no
             ) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }

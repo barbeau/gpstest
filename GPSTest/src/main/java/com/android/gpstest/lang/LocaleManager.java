@@ -16,7 +16,6 @@ import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.R;
 import com.android.gpstest.library.util.LocaleUtils;
 
 import java.util.Locale;
@@ -33,7 +32,7 @@ public class LocaleManager {
     }
 
     public Context setLocale(Context c) {
-        if (!prefs.contains(c.getString(R.string.pref_key_language))) {
+        if (!prefs.contains(c.getString(com.android.gpstest.library.R.string.pref_key_language))) {
             // User hasn't set the language manually, so use the default context and locale
             return c;
         }
@@ -46,15 +45,15 @@ public class LocaleManager {
     }
 
     String getLanguage(Context c) {
-        return prefs.getString(c.getString(R.string.pref_key_language),
-                c.getResources().getStringArray(R.array.language_values)[0]); // Default is English
+        return prefs.getString(c.getString(com.android.gpstest.library.R.string.pref_key_language),
+                c.getResources().getStringArray(com.android.gpstest.library.R.array.language_values)[0]); // Default is English
     }
 
     @SuppressLint("ApplySharedPref")
     private void persistLanguage(String language) {
         // use commit() instead of apply(), because sometimes we kill the application process immediately
         // which will prevent apply() to finish
-        prefs.edit().putString(Application.Companion.getApp().getString(R.string.pref_key_language), language).commit();
+        prefs.edit().putString(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.pref_key_language), language).commit();
     }
 
     private Context updateResources(Context context, String language) {

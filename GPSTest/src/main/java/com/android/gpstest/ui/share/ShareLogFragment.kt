@@ -79,7 +79,7 @@ class ShareLogFragment : Fragment() {
                 }
             } else {
                 // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
-                logInstructions.setText(R.string.log_error)
+                logInstructions.setText(com.android.gpstest.library.R.string.log_error)
                 return
             }
         }

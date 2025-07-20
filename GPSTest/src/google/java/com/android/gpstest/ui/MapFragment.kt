@@ -130,9 +130,9 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
                 val builder = AlertDialog.Builder(
                     requireActivity()
                 )
-                builder.setMessage(getString(R.string.please_install_google_maps))
+                builder.setMessage(getString(com.android.gpstest.library.R.string.please_install_google_maps))
                 builder.setPositiveButton(
-                    getString(R.string.install)
+                    getString(com.android.gpstest.library.R.string.install)
                 ) { _, _ ->
                     sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
                     val intent = Intent(
@@ -144,7 +144,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
                     startActivity(intent)
                 }
                 builder.setNegativeButton(
-                    getString(R.string.no_thanks)
+                    getString(com.android.gpstest.library.R.string.no_thanks)
                 ) { _, _ ->
                     sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
                 }
@@ -414,7 +414,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
             groundTruthMarker = map!!.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title(Application.app.getString(R.string.ground_truth_marker_title))
+                    .title(Application.app.getString(com.android.gpstest.library.R.string.ground_truth_marker_title))
             )
         } else {
             groundTruthMarker!!.position = latLng
@@ -444,13 +444,13 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
             if (map!!.mapType !=
                 settings.getString(
-                    getString(R.string.pref_key_map_type),
+                    getString(com.android.gpstest.library.R.string.pref_key_map_type),
                     GoogleMap.MAP_TYPE_NORMAL.toString()
                 )
                     ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
             ) {
                 map!!.mapType = settings.getString(
-                    getString(R.string.pref_key_map_type),
+                    getString(com.android.gpstest.library.R.string.pref_key_map_type),
                     GoogleMap.MAP_TYPE_NORMAL.toString()
                 )
                     ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
@@ -460,11 +460,11 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         }
         if (mapController!!.mode == MapConstants.MODE_MAP) {
             rotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true)
-            tiltEnabled = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true)
+                .getBoolean(getString(com.android.gpstest.library.R.string.pref_key_rotate_map_with_compass), true)
+            tiltEnabled = settings.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_tilt_map_with_sensors), true)
         }
         val useDarkTheme =
-            Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)
+            Application.prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)
         if (map != null && activity != null && useDarkTheme) {
             map!!.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(

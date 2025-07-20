@@ -89,7 +89,7 @@ class SkyFragment : Fragment() {
     var cn0UsedAvgAnimationTextView: Animation? = null
 
     // Default light theme values
-    private var usedCn0Background = R.drawable.cn0_round_corner_background_used
+    private var usedCn0Background = com.android.gpstest.library.R.drawable.cn0_round_corner_background_used
     private var usedCn0IndicatorColor = Color.BLACK
 
     // Repository of location data that the service will observe, injected via Hilt
@@ -131,14 +131,14 @@ class SkyFragment : Fragment() {
         if (darkTheme(app, prefs)) {
             // Dark theme
             color = ContextCompat.getColor(requireContext(), android.R.color.secondary_text_dark)
-            legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix_dark)
-            usedCn0Background = R.drawable.cn0_round_corner_background_used_dark
+            legend.skyLegendUsedInFix.setImageResource(com.android.gpstest.library.R.drawable.circle_used_in_fix_dark)
+            usedCn0Background = com.android.gpstest.library.R.drawable.cn0_round_corner_background_used_dark
             usedCn0IndicatorColor = resources.getColor(android.R.color.darker_gray)
         } else {
             // Light theme
-            color = ContextCompat.getColor(requireContext(), R.color.body_text_2_light)
-            legend.skyLegendUsedInFix.setImageResource(R.drawable.circle_used_in_fix)
-            usedCn0Background = R.drawable.cn0_round_corner_background_used
+            color = ContextCompat.getColor(requireContext(), com.android.gpstest.library.R.color.body_text_2_light)
+            legend.skyLegendUsedInFix.setImageResource(com.android.gpstest.library.R.drawable.circle_used_in_fix)
+            usedCn0Background = com.android.gpstest.library.R.drawable.cn0_round_corner_background_used
             usedCn0IndicatorColor = Color.BLACK
         }
         for (v in legendLines) {
@@ -337,15 +337,15 @@ class SkyFragment : Fragment() {
 
     private fun updateCn0AvgMeterText() {
         binding?.skyCn0IndicatorCard?.gpsSkySignalTitle?.apply {
-            skyLegendCn0Title.setText(R.string.gps_cn0_column_label)
-            skyLegendCn0Units.setText(R.string.sky_legend_cn0_units)
+            skyLegendCn0Title.setText(com.android.gpstest.library.R.string.gps_cn0_column_label)
+            skyLegendCn0Units.setText(com.android.gpstest.library.R.string.sky_legend_cn0_units)
         }
         meter.signalMeterTicksAndText.apply {
-            skyLegendCn0LeftText.setText(R.string.sky_legend_cn0_low)
-            skyLegendCn0LeftCenterText.setText(R.string.sky_legend_cn0_low_middle)
-            skyLegendCn0CenterText.setText(R.string.sky_legend_cn0_middle)
-            skyLegendCn0RightCenterText.setText(R.string.sky_legend_cn0_middle_high)
-            skyLegendCn0RightText.setText(R.string.sky_legend_cn0_high)
+            skyLegendCn0LeftText.setText(com.android.gpstest.library.R.string.sky_legend_cn0_low)
+            skyLegendCn0LeftCenterText.setText(com.android.gpstest.library.R.string.sky_legend_cn0_low_middle)
+            skyLegendCn0CenterText.setText(com.android.gpstest.library.R.string.sky_legend_cn0_middle)
+            skyLegendCn0RightCenterText.setText(com.android.gpstest.library.R.string.sky_legend_cn0_middle_high)
+            skyLegendCn0RightText.setText(com.android.gpstest.library.R.string.sky_legend_cn0_high)
         }
     }
 
@@ -354,14 +354,14 @@ class SkyFragment : Fragment() {
             return
         }
         // Based on the avg C/N0 for "in view" and "used" satellites the left margins need to be adjusted accordingly
-        val meterWidthPx = (Application.app.resources.getDimension(R.dimen.cn0_meter_width)
+        val meterWidthPx = (Application.app.resources.getDimension(com.android.gpstest.library.R.dimen.cn0_meter_width)
             .toInt()
                 - LibUIUtils.dpToPixels(Application.app, 7.0f)) // Reduce width for padding
         val minIndicatorMarginPx = Application.app.resources
-            .getDimension(R.dimen.cn0_indicator_min_left_margin).toInt()
+            .getDimension(com.android.gpstest.library.R.dimen.cn0_indicator_min_left_margin).toInt()
         val maxIndicatorMarginPx = meterWidthPx + minIndicatorMarginPx
         val minTextViewMarginPx = Application.app.resources
-            .getDimension(R.dimen.cn0_textview_min_left_margin).toInt()
+            .getDimension(com.android.gpstest.library.R.dimen.cn0_textview_min_left_margin).toInt()
         val maxTextViewMarginPx = meterWidthPx + minTextViewMarginPx
 
         // When both "in view" and "used" indicators and TextViews are shown, slide the "in view" TextView by this amount to the left to avoid overlap
@@ -408,17 +408,17 @@ class SkyFragment : Fragment() {
             val color = binding!!.skyView.getSatelliteColor(binding!!.skyView.cn0InViewAvg)
             val background = ContextCompat.getDrawable(
                 Application.app,
-                R.drawable.cn0_round_corner_background_in_view
+                com.android.gpstest.library.R.drawable.cn0_round_corner_background_in_view
             ) as LayerDrawable?
 
             // Fill
             val backgroundGradient =
-                background!!.findDrawableByLayerId(R.id.cn0_avg_in_view_fill) as GradientDrawable
+                background!!.findDrawableByLayerId(com.android.gpstest.library.R.id.cn0_avg_in_view_fill) as GradientDrawable
             backgroundGradient.setColor(color)
 
             // Stroke
             val borderGradient =
-                background.findDrawableByLayerId(R.id.cn0_avg_in_view_border) as GradientDrawable
+                background.findDrawableByLayerId(com.android.gpstest.library.R.id.cn0_avg_in_view_border) as GradientDrawable
             borderGradient.setColor(color)
             meter.cn0TextInView.cn0TextInView.background = background
 
@@ -483,7 +483,7 @@ class SkyFragment : Fragment() {
 
             // Fill
             val backgroundGradient =
-                background!!.findDrawableByLayerId(R.id.cn0_avg_used_fill) as GradientDrawable
+                background!!.findDrawableByLayerId(com.android.gpstest.library.R.id.cn0_avg_used_fill) as GradientDrawable
             backgroundGradient.setColor(color)
             meter.cn0TextUsed.cn0TextUsed.background = background
 

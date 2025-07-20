@@ -43,9 +43,9 @@ class ShareDialogFragment : DialogFragment() {
         val view = activity!!.layoutInflater.inflate(R.layout.share, null)
         setRetainInstance(true)
         val builder = AlertDialog.Builder(activity!!)
-                .setTitle(R.string.share)
+                .setTitle(com.android.gpstest.library.R.string.share)
                 .setView(view)
-                .setNeutralButton(R.string.main_help_close) { dialog, _ -> }
+                .setNeutralButton(com.android.gpstest.library.R.string.main_help_close) { dialog, _ -> }
         shareCollectionAdapter = ShareCollectionAdapter(this)
         shareCollectionAdapter.setArguments(arguments)
         if (this::listener.isInitialized) {
@@ -58,16 +58,16 @@ class ShareDialogFragment : DialogFragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = getString(R.string.location)
-                    tab.setIcon(R.drawable.ic_baseline_location_on_24)
+                    tab.text = getString(com.android.gpstest.library.R.string.location)
+                    tab.setIcon(com.android.gpstest.library.R.drawable.ic_baseline_location_on_24)
                 }
                 1 -> {
-                    tab.text = getString(R.string.log)
-                    tab.setIcon(R.drawable.ic_baseline_list_alt_24)
+                    tab.text = getString(com.android.gpstest.library.R.string.log)
+                    tab.setIcon(com.android.gpstest.library.R.drawable.ic_baseline_list_alt_24)
                 }
                 2 -> {
-                    tab.text = getString(R.string.device)
-                    tab.setIcon(R.drawable.ic_baseline_perm_device_information_24)
+                    tab.text = getString(com.android.gpstest.library.R.string.device)
+                    tab.setIcon(com.android.gpstest.library.R.drawable.ic_baseline_perm_device_information_24)
                 }
             }
         }.attach()

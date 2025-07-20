@@ -69,20 +69,20 @@ internal object UIUtils {
         lon: String?,
         alt: String?
     ): Boolean {
-        val dialogTitle = app.getString(R.string.ground_truth_invalid_location_title)
+        val dialogTitle = app.getString(com.android.gpstest.library.R.string.ground_truth_invalid_location_title)
         val dialogMessage: String
         if (!LocationUtils.isValidLatitude(lat)) {
-            dialogMessage = app.getString(R.string.ground_truth_invalid_lat)
+            dialogMessage = app.getString(com.android.gpstest.library.R.string.ground_truth_invalid_lat)
             showLocationErrorDialog(activity, dialogTitle, dialogMessage)
             return false
         }
         if (!LocationUtils.isValidLongitude(lon)) {
-            dialogMessage = app.getString(R.string.ground_truth_invalid_long)
+            dialogMessage = app.getString(com.android.gpstest.library.R.string.ground_truth_invalid_long)
             showLocationErrorDialog(activity, dialogTitle, dialogMessage)
             return false
         }
         if (!TextUtils.isEmpty(alt) && !LocationUtils.isValidAltitude(alt)) {
-            dialogMessage = app.getString(R.string.ground_truth_invalid_alt)
+            dialogMessage = app.getString(com.android.gpstest.library.R.string.ground_truth_invalid_alt)
             showLocationErrorDialog(activity, dialogTitle, dialogMessage)
             return false
         }
@@ -103,7 +103,7 @@ internal object UIUtils {
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(title)
             .setMessage(message)
-            .setPositiveButton(R.string.ok) { dialog: DialogInterface?, id: Int -> }
+            .setPositiveButton(com.android.gpstest.library.R.string.ok) { dialog: DialogInterface?, id: Int -> }
             .create()
             .show()
     }
@@ -115,20 +115,20 @@ internal object UIUtils {
         neverShowDialog.setOnCheckedChangeListener { compoundButton: CompoundButton?, isChecked: Boolean ->
             // Save the preference
             PreferenceUtils.saveBoolean(
-                app.getString(R.string.pref_key_never_show_qr_code_instructions),
+                app.getString(com.android.gpstest.library.R.string.pref_key_never_show_qr_code_instructions),
                 isChecked,
                 Application.prefs
             )
         }
         val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.qr_code_instructions_title)
+            .setTitle(com.android.gpstest.library.R.string.qr_code_instructions_title)
             .setCancelable(false)
             .setView(view)
             .setPositiveButton(
-                R.string.ok
+                com.android.gpstest.library.R.string.ok
             ) { dialog: DialogInterface?, which: Int -> IOUtils.openQrCodeReader(activity) }
             .setNegativeButton(
-                R.string.not_now
+                com.android.gpstest.library.R.string.not_now
             ) { dialog: DialogInterface?, which: Int -> }
         return builder.create()
     }
@@ -197,8 +197,8 @@ internal object UIUtils {
 
     fun createHelpDialog(activity: Activity): Dialog {
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle(R.string.title_help)
-        val options = R.array.main_help_options
+        builder.setTitle(com.android.gpstest.library.R.string.title_help)
+        val options = com.android.gpstest.library.R.array.main_help_options
         builder.setItems(
             options
         ) { dialog: DialogInterface?, which: Int ->
@@ -214,13 +214,13 @@ internal object UIUtils {
 
     fun createWhatsNewDialog(activity: Activity): Dialog {
         val textView = activity.layoutInflater.inflate(R.layout.whats_new_dialog, null) as TextView
-        textView.setText(R.string.main_help_whatsnew)
+        textView.setText(com.android.gpstest.library.R.string.main_help_whatsnew)
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle(R.string.main_help_whatsnew_title)
-        builder.setIcon(R.mipmap.ic_launcher)
+        builder.setTitle(com.android.gpstest.library.R.string.main_help_whatsnew_title)
+        builder.setIcon(com.android.gpstest.library.R.mipmap.ic_launcher)
         builder.setView(textView)
         builder.setNeutralButton(
-            R.string.main_help_close
+            com.android.gpstest.library.R.string.main_help_close
         ) { _: DialogInterface?, _: Int -> activity.dismissDialog(LibUIUtils.WHATSNEW_DIALOG) }
         return builder.create()
     }
@@ -255,10 +255,10 @@ internal object UIUtils {
         val builder = AlertDialog.Builder(
             activity
         )
-        builder.setTitle(R.string.menu_option_sort_by)
+        builder.setTitle(com.android.gpstest.library.R.string.menu_option_sort_by)
         val currentSatOrder = PreferenceUtils.getSatSortOrderFromPreferences(app, prefs)
         builder.setSingleChoiceItems(
-            R.array.sort_sats, currentSatOrder
+            com.android.gpstest.library.R.array.sort_sats, currentSatOrder
         ) { dialog: DialogInterface, index: Int ->
             LibUIUtils.setSortByClause(app, index, prefs)
             dialog.dismiss()
