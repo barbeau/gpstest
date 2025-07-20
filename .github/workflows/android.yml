@@ -33,7 +33,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: '8.14'
 
       - name: Run checks
         run: ./gradlew check -x lint
@@ -64,7 +64,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: '8.14'
           cache-read-only: true
 
       - name: Build app
@@ -110,7 +110,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: '8.14'
           cache-read-only: true
 
       - name: Configure AVD cache
