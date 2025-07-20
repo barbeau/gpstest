@@ -55,6 +55,7 @@ import java.util.Collections
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.view.isGone
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Utilities for processing user interface elements
@@ -206,6 +207,7 @@ object LibUIUtils {
      * @param location string that shows the current location
      * @param signalInfoViewModel view model that contains state of GNSS
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun sendEmail(
         context: Context,
         email: String,

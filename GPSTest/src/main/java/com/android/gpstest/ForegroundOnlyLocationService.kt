@@ -78,6 +78,7 @@ import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -150,6 +151,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         Application.prefs.registerOnSharedPreferenceChangeListener(loggingSettingListener)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand()")
 

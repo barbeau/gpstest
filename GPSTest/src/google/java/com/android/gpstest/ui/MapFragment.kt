@@ -67,6 +67,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import androidx.core.net.toUri
+import androidx.core.content.edit
 
 @AndroidEntryPoint
 class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
@@ -105,6 +107,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
         PreferenceUtil.newStopTrackingListener ({ onGnssStopped() }, prefs)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -134,19 +137,17 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
                 builder.setPositiveButton(
                     getString(com.android.gpstest.library.R.string.install)
                 ) { _, _ ->
-                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                    sp.edit { putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true) }
                     val intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(
-                            "market://details?id=com.google.android.apps.maps"
-                        )
+                        "market://details?id=com.google.android.apps.maps".toUri()
                     )
                     startActivity(intent)
                 }
                 builder.setNegativeButton(
                     getString(com.android.gpstest.library.R.string.no_thanks)
                 ) { _, _ ->
-                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                    sp.edit { putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true) }
                 }
                 val dialog = builder.create()
                 dialog.show()
