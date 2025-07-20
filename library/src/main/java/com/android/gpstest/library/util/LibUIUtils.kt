@@ -29,7 +29,6 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.location.Location
 import android.location.LocationManager
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.text.Spannable
@@ -53,6 +52,9 @@ import com.google.android.material.chip.Chip
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.Collections
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
+import androidx.core.view.isGone
 
 /**
  * Utilities for processing user interface elements
@@ -61,10 +63,8 @@ object LibUIUtils {
     const val TAG = "UIUtils"
     var PICKFILE_REQUEST_CODE = 101
     const val ANIMATION_DURATION_SHORT_MS = 200
-    const val ANIMATION_DURATION_MEDIUM_MS = 400
-    const val ANIMATION_DURATION_LONG_MS = 500
-    const val MIN_VALUE_CN0 = 10.0f
-    const val MAX_VALUE_CN0 = 45.0f
+    private const val MIN_VALUE_CN0 = 10.0f
+    private const val MAX_VALUE_CN0 = 45.0f
 
     // Dialogs
     const val WHATSNEW_DIALOG = 1
@@ -265,7 +265,7 @@ object LibUIUtils {
     
     """.trimIndent()
         )
-        if (!IOUtils.getGnssHardwareModelName(context).trim { it <= ' ' }.isEmpty()) {
+        if (IOUtils.getGnssHardwareModelName(context).trim { it <= ' ' }.isNotEmpty()) {
             body.append(
                 """
     GNSS HW name: ${IOUtils.getGnssHardwareModelName(context)}
@@ -387,7 +387,7 @@ object LibUIUtils {
             )
             // GNSS CF
             val gnssCfs: List<String> = ArrayList(signalInfoViewModel.getSupportedGnssCfs())
-            if (!gnssCfs.isEmpty()) {
+            if (gnssCfs.isNotEmpty()) {
                 Collections.sort(gnssCfs)
                 body.append(
                     context.getString(
@@ -398,7 +398,7 @@ object LibUIUtils {
             }
             // Supported SBAS
             val sbas: List<SbasType> = ArrayList(signalInfoViewModel.getSupportedSbas())
-            if (!sbas.isEmpty()) {
+            if (sbas.isNotEmpty()) {
                 Collections.sort(sbas)
                 body.append(
                     context.getString(
@@ -409,7 +409,7 @@ object LibUIUtils {
             }
             // SBAS CF
             val sbasCfs: List<String> = ArrayList(signalInfoViewModel.getSupportedSbasCfs())
-            if (!sbasCfs.isEmpty()) {
+            if (sbasCfs.isNotEmpty()) {
                 Collections.sort(sbasCfs)
                 body.append(
                     context.getString(
@@ -483,7 +483,7 @@ object LibUIUtils {
         }
         body.append("\n\n\n")
         val send = Intent(Intent.ACTION_SENDTO)
-        send.data = Uri.parse("mailto:")
+        send.data = "mailto:".toUri()
         send.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
         val subject = context.getString(R.string.feedback_subject)
         send.putExtra(Intent.EXTRA_SUBJECT, subject)
@@ -752,7 +752,7 @@ object LibUIUtils {
      * @param animationDuration duration of animation
      */
     fun showViewWithAnimation(v: View, animationDuration: Int) {
-        if (v.visibility == View.VISIBLE && v.alpha == 1f) {
+        if (v.isVisible && v.alpha == 1f) {
             // View is already visible and not transparent, return without doing anything
             return
         }
@@ -779,7 +779,7 @@ object LibUIUtils {
      * @param animationDuration duration of animation
      */
     fun hideViewWithAnimation(v: View, animationDuration: Int) {
-        if (v.visibility == View.GONE) {
+        if (v.isGone) {
             // View is already gone, return without doing anything
             return
         }
@@ -857,7 +857,7 @@ object LibUIUtils {
      *
      * @param index the index of R.array.sort_sats that should be set
      */
-    public fun setSortByClause(context: Context, index: Int, prefs: SharedPreferences) {
+    fun setSortByClause(context: Context, index: Int, prefs: SharedPreferences) {
         val sortOptions = context.resources.getStringArray(R.array.sort_sats)
         PreferenceUtils.saveString(
             context.resources.getString(R.string.pref_key_default_sat_sort),
