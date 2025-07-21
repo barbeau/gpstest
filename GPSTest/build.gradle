@@ -165,7 +165,7 @@ dependencies {
     // Uploading device properties on user request
     implementation 'androidx.core:core-ktx:1.16.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
-    implementation 'commons-io:commons-io:2.19.0'
+    implementation 'commons-io:commons-io:2.20.0'
 
     // Share dialog
     implementation 'androidx.viewpager2:viewpager2:1.1.0'
