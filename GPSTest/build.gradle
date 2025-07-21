@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
         multiDexEnabled = true
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
         versionCode 24099
