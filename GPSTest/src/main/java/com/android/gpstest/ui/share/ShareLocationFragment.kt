@@ -60,11 +60,12 @@ class ShareLocationFragment : Fragment() {
         }
 
         // Set default state of include altitude view
-        val includeAltitudePref = Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), false)
+        val includeAltitudePref = Application.prefs.getBoolean(Application.app.getString(com.android.gpstest.library.R.string.pref_key_share_include_altitude), false)
         includeAltitude.isChecked = includeAltitudePref
 
         // Check selected coordinate format and show in UI
-        val coordinateFormat = Application.prefs.getString(Application.app.getString(R.string.pref_key_coordinate_format), Application.app.getString(R.string.preferences_coordinate_format_dd_key))
+        val coordinateFormat = Application.prefs.getString(Application.app.getString(com.android.gpstest.library.R.string.pref_key_coordinate_format), Application.app.getString(
+            com.android.gpstest.library.R.string.preferences_coordinate_format_dd_key))
         if (location != null) {
             LibUIUtils.formatLocationForDisplay(
                 app,
@@ -100,7 +101,7 @@ class ShareLocationFragment : Fragment() {
                     format
                 )
             }
-            PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked, prefs)
+            PreferenceUtils.saveBoolean(Application.app.getString(com.android.gpstest.library.R.string.pref_key_share_include_altitude), isChecked, prefs)
         }
 
         chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -137,14 +138,14 @@ class ShareLocationFragment : Fragment() {
             if (location != null) {
                 val locationString = locationValue.text.toString()
                 IOUtils.copyToClipboard(app, locationString)
-                Toast.makeText(activity, R.string.copied_to_clipboard, Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, com.android.gpstest.library.R.string.copied_to_clipboard, Toast.LENGTH_LONG).show()
             }
         }
         locationGeohack.setOnClickListener { _: View? ->
             // Open the browser to the GeoHack site with lots of coordinate conversions
             if (location != null) {
                 val intent = Intent(Intent.ACTION_VIEW)
-                val geohackUrl = Application.app.getString(R.string.geohack_url) +
+                val geohackUrl = Application.app.getString(com.android.gpstest.library.R.string.geohack_url) +
                         location.latitude + ";" +
                         location.longitude
                 intent.data = Uri.parse(geohackUrl)
@@ -173,7 +174,8 @@ class ShareLocationFragment : Fragment() {
                 }
                 intent.putExtra(Intent.EXTRA_TEXT, text)
                 intent.type = "text/plain"
-                requireActivity().startActivity(Intent.createChooser(intent, Application.app.getString(R.string.share)))
+                requireActivity().startActivity(Intent.createChooser(intent, Application.app.getString(
+                    com.android.gpstest.library.R.string.share)))
             }
         }
     }

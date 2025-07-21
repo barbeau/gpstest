@@ -19,6 +19,7 @@ package com.android.gpstest.library.util;
 import android.util.Base64;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.text.ParseException;
 
@@ -164,7 +165,7 @@ public class MathUtils {
      */
     public static String fromBase64(String base64) throws UnsupportedEncodingException {
         byte[] data = Base64.decode(base64, Base64.DEFAULT);
-        return new String(data, "UTF-8");
+        return new String(data, StandardCharsets.UTF_8);
     }
 
     /**

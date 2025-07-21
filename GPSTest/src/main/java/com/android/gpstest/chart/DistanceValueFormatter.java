@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 
 public class DistanceValueFormatter extends ValueFormatter implements IValueFormatter, IAxisValueFormatter {
     private final DecimalFormat mFormat;
-    private String mSuffix;
+    private final String mSuffix;
 
     public DistanceValueFormatter(String suffix) {
         mFormat = new DecimalFormat();

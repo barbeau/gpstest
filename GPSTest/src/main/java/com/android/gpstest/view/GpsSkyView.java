@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.R;
 import com.android.gpstest.library.model.GnssType;
 import com.android.gpstest.library.model.SatelliteStatus;
 import com.android.gpstest.library.util.LibUIUtils;
@@ -83,14 +82,14 @@ public class GpsSkyView extends View {
         int textColor;
         int backgroundColor;
         int satStrokeColorUsed;
-        if (Application.Companion.getPrefs().getBoolean(mContext.getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(mContext.getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
             // Dark theme
             textColor = getResources().getColor(android.R.color.secondary_text_dark);
-            backgroundColor = ContextCompat.getColor(context, R.color.navdrawer_background_dark);
+            backgroundColor = ContextCompat.getColor(context, com.android.gpstest.library.R.color.navdrawer_background_dark);
             satStrokeColorUsed = getResources().getColor(android.R.color.darker_gray);
         } else {
             // Light theme
-            textColor = getResources().getColor(R.color.body_text_2_light);
+            textColor = getResources().getColor(com.android.gpstest.library.R.color.body_text_2_light);
             backgroundColor = Color.WHITE;
             satStrokeColorUsed = Color.BLACK;
         }
@@ -112,12 +111,12 @@ public class GpsSkyView extends View {
         mHorizonStrokePaint.setAntiAlias(true);
 
         mGridStrokePaint = new Paint();
-        mGridStrokePaint.setColor(ContextCompat.getColor(mContext, R.color.gray));
+        mGridStrokePaint.setColor(ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.gray));
         mGridStrokePaint.setStyle(Paint.Style.STROKE);
         mGridStrokePaint.setAntiAlias(true);
 
         mSatelliteFillPaint = new Paint();
-        mSatelliteFillPaint.setColor(ContextCompat.getColor(mContext, R.color.yellow));
+        mSatelliteFillPaint.setColor(ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.yellow));
         mSatelliteFillPaint.setStyle(Paint.Style.FILL);
         mSatelliteFillPaint.setAntiAlias(true);
 
@@ -134,10 +133,10 @@ public class GpsSkyView extends View {
         mSatelliteUsedStrokePaint.setAntiAlias(true);
 
         mCn0Thresholds = new float[]{MIN_VALUE_CN0, 21.67f, 33.3f, MAX_VALUE_CN0};
-        mCn0Colors = new int[]{ContextCompat.getColor(mContext, R.color.gray),
-                ContextCompat.getColor(mContext, R.color.red),
-                ContextCompat.getColor(mContext, R.color.yellow),
-                ContextCompat.getColor(mContext, R.color.green)};
+        mCn0Colors = new int[]{ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.gray),
+                ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.red),
+                ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.yellow),
+                ContextCompat.getColor(mContext, com.android.gpstest.library.R.color.green)};
 
         mNorthPaint = new Paint();
         mNorthPaint.setColor(Color.BLACK);
@@ -159,7 +158,7 @@ public class GpsSkyView extends View {
         mPrnIdPaint.setAntiAlias(true);
 
         mNotInViewPaint = new Paint();
-        mNotInViewPaint.setColor(ContextCompat.getColor(context, R.color.not_in_view_sat));
+        mNotInViewPaint.setColor(ContextCompat.getColor(context, com.android.gpstest.library.R.color.not_in_view_sat));
         mNotInViewPaint.setStyle(Paint.Style.FILL);
         mNotInViewPaint.setStrokeWidth(4.0f);
         mNotInViewPaint.setAntiAlias(true);

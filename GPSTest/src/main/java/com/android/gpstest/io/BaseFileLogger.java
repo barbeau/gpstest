@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.R;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -143,7 +142,7 @@ public abstract class BaseFileLogger implements FileLogger {
             file = currentFile;
             fileWriter = writer;
 
-            Log.d(TAG, Application.Companion.getApp().getString(R.string.logging_to_new_file, currentFilePath));
+            Log.d(TAG, Application.Companion.getApp().getString(com.android.gpstest.library.R.string.logging_to_new_file, currentFilePath));
             isNewFile = true;
         }
 
@@ -161,7 +160,7 @@ public abstract class BaseFileLogger implements FileLogger {
             try {
                 fileWriter.close();
             } catch (IOException e) {
-                logException(Application.Companion.getApp().getString(R.string.unable_to_close_all_file_streams), e);
+                logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.unable_to_close_all_file_streams), e);
                 return false;
             }
         }

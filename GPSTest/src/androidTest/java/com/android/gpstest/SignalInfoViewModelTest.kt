@@ -50,13 +50,13 @@ class SignalInfoViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val repository = LocationRepository(
-        SharedLocationManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
-        SharedGnssStatusManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
-        SharedNmeaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
-        SharedSensorManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()),InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedNavMessageManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
-        SharedGnssMeasurementManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()), InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope),
-        SharedAntennaManager(InstrumentationRegistry.getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext()))
+        SharedLocationManager(getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedGnssStatusManager(getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedNmeaManager(getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedSensorManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()),getTargetContext().applicationContext, GlobalScope),
+        SharedNavMessageManager(getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext())),
+        SharedGnssMeasurementManager(PreferenceManager.getDefaultSharedPreferences(getTargetContext()), getTargetContext().applicationContext, GlobalScope),
+        SharedAntennaManager(getTargetContext().applicationContext, GlobalScope, PreferenceManager.getDefaultSharedPreferences(getTargetContext()))
     )
 
     /**
@@ -69,7 +69,7 @@ class SignalInfoViewModelTest {
         modelEmpty.updateStatus(context,emptyList(), PreferenceManager.getDefaultSharedPreferences(context))
 
         // Test GPS L1 - should be 1 satellite, no L5 or dual-frequency
-        val modelGpsL1 = SignalInfoViewModel(context, InstrumentationRegistry.getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        val modelGpsL1 = SignalInfoViewModel(context, getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
         modelGpsL1.updateStatus(context, listOf(gpsL1(1, true)), PreferenceManager.getDefaultSharedPreferences(getTargetContext()))
         assertEquals(1, modelGpsL1.filteredGnssSatellites.value?.size)
         assertFalse(modelGpsL1.isNonPrimaryCarrierFreqInView)
@@ -422,7 +422,7 @@ class SignalInfoViewModelTest {
         modelGalileoE1E5a.reset()
 
         // Test WAAS SBAS - L1 - should be 1 satellite, dual frequency not in use, no non-primary carrier of dual-freq
-        val modelWaasL1L5 = SignalInfoViewModel(context, InstrumentationRegistry.getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
+        val modelWaasL1L5 = SignalInfoViewModel(context, getTargetContext().applicationContext as Application, repository, PreferenceManager.getDefaultSharedPreferences(context))
         modelWaasL1L5.updateStatus(context, listOf(galaxy15_135L1(true)), PreferenceManager.getDefaultSharedPreferences(context))
         assertEquals(1, modelWaasL1L5.filteredSbasSatellites.value?.size)
         assertFalse(modelWaasL1L5.isNonPrimaryCarrierFreqInView)

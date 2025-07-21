@@ -110,7 +110,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     String mPrefDistanceUnits;
 
-    private static final String METERS = Application.Companion.getApp().getResources().getStringArray(R.array.preferred_distance_units_values)[0];
+    private static final String METERS = Application.Companion.getApp().getResources().getStringArray(com.android.gpstest.library.R.array.preferred_distance_units_values)[0];
 
     BenchmarkViewModel mViewModel;
 
@@ -120,16 +120,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             if (!allowEdit) {
                 if (mViewModel.getGroundTruthLocation().getValue().hasAltitude()) {
                     // Set default text size and align units properly
-                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
-                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_vert_text_size));
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_sliding_header_vert_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_sliding_header_vert_text_size));
                     LibUIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
                     LibUIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_INCL_VERT_ERROR);
                 } else {
                     // No altitude provided - Hide vertical error chart card
                     mVerticalErrorCardView.setVisibility(GONE);
                     // Set default text size and align units properly
-                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
-                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_sliding_header_error_text_size));
+                    mErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_sliding_header_error_text_size));
+                    mAvgErrorView.setTextSize(TypedValue.COMPLEX_UNIT_PX, Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_sliding_header_error_text_size));
                     LibUIUtils.setVerticalBias(mErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
                     LibUIUtils.setVerticalBias(mAvgErrorUnit, UNIT_VERT_BIAS_HOR_ERROR_ONLY);
                 }
@@ -137,7 +137,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
                 FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
                 mMotionLayout.transitionToEnd();
-                lp.height = (int) Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
+                lp.height = (int) Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
 
                 // Show sliding panel if we're showing the Accuracy fragment and the sliding panel isn't visible
@@ -154,7 +154,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // Expand card to allow editing ground truth
                 mMotionLayout.transitionToStart();
                 // We have to set height on card manually because it doesn't auto-expand right when views are within card container
-                lp.height = (int) Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_cardview_height);
+                lp.height = (int) Application.Companion.getApp().getResources().getDimension(com.android.gpstest.library.R.dimen.ground_truth_cardview_height);
                 mGroundTruthCardView.setLayoutParams(lp);
 
                 // Collapse sliding panel if it's anchored so there is room
@@ -177,30 +177,30 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mErrorUnit.setVisibility(VISIBLE);
                 mErrorView.setVisibility(VISIBLE);
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, error.getError()));
-                    mErrorUnit.setText(Application.Companion.getApp().getString(R.string.meters_abbreviation));
+                    mErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, error.getError()));
+                    mErrorUnit.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.meters_abbreviation));
                 } else {
                     // Feet
-                    mErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(error.getError())));
-                    mErrorUnit.setText(Application.Companion.getApp().getString(R.string.feet_abbreviation));
+                    mErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, LibUIUtils.toFeet(error.getError())));
+                    mErrorUnit.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.feet_abbreviation));
                 }
             }
             if (mVertErrorView != null && !Double.isNaN(error.getVertError())) {
                 // Vertical errors
-                mErrorLabel.setText(R.string.horizontal_vertical_error_label);
+                mErrorLabel.setText(com.android.gpstest.library.R.string.horizontal_vertical_error_label);
                 mLeftDivider.setVisibility(VISIBLE);
                 mRightDivider.setVisibility(VISIBLE);
                 mVertErrorView.setVisibility(VISIBLE);
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, Math.abs(error.getVertError())));
+                    mVertErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, Math.abs(error.getVertError())));
                 } else {
                     // Feet
-                    mVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(Math.abs(error.getVertError()))));
+                    mVertErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, LibUIUtils.toFeet(Math.abs(error.getVertError()))));
                 }
                 mVerticalErrorCardView.setVisibility(VISIBLE);
             } else {
                 // Hide any vertical error indication
-                mErrorLabel.setText(R.string.horizontal_error_label);
+                mErrorLabel.setText(com.android.gpstest.library.R.string.horizontal_error_label);
                 mLeftDivider.setVisibility(GONE);
                 mRightDivider.setVisibility(GONE);
                 mVertErrorView.setVisibility(GONE);
@@ -217,22 +217,22 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mAvgErrorUnit.setVisibility(VISIBLE);
                 mAvgErrorView.setVisibility(VISIBLE);
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mAvgErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, avgError.getAvgError()));
-                    mAvgErrorUnit.setText(Application.Companion.getApp().getString(R.string.meters_abbreviation));
+                    mAvgErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, avgError.getAvgError()));
+                    mAvgErrorUnit.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.meters_abbreviation));
                 } else {
                     // Feet
-                    mAvgErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgError())));
-                    mAvgErrorUnit.setText(Application.Companion.getApp().getString(R.string.feet_abbreviation));
+                    mAvgErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgError())));
+                    mAvgErrorUnit.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.feet_abbreviation));
                 }
-                mAvgErrorLabel.setText(Application.Companion.getApp().getString(R.string.avg_error_label, avgError.getCount()));
+                mAvgErrorLabel.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.avg_error_label, avgError.getCount()));
             }
             if (mAvgVertErrorView != null && !Double.isNaN(avgError.getAvgVertAbsError())) {
                 // Vertical errors
                 mAvgVertErrorView.setVisibility(VISIBLE);
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, avgError.getAvgVertAbsError()));
+                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, avgError.getAvgVertAbsError()));
                 } else {
-                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgVertAbsError())));
+                    mAvgVertErrorView.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_error, LibUIUtils.toFeet(avgError.getAvgVertAbsError())));
                 }
             } else {
                 // Hide any vertical error indication
@@ -242,12 +242,12 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     };
 
     public BenchmarkControllerImpl(AppCompatActivity activity, View v) {
-        if (Application.Companion.getPrefs().getBoolean(activity.getString(R.string.pref_key_dark_theme), false)) {
+        if (Application.Companion.getPrefs().getBoolean(activity.getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
             // Dark theme
-            mChartTextColor = ContextCompat.getColor(activity, R.color.body_text_1_dark);
+            mChartTextColor = ContextCompat.getColor(activity, com.android.gpstest.library.R.color.body_text_1_dark);
         } else {
             // Light theme
-            mChartTextColor = ContextCompat.getColor(activity, R.color.body_text_1_light);
+            mChartTextColor = ContextCompat.getColor(activity, com.android.gpstest.library.R.color.body_text_1_light);
         }
         mSlidingPanel = v.findViewById(R.id.bottom_sliding_layout);
         mSlidingPanelHeader = v.findViewById(R.id.sliding_panel_header);
@@ -257,7 +257,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mAvgVertErrorView = v.findViewById(R.id.avg_vert_error);
         mErrorLabel = v.findViewById(R.id.error_label);
         mAvgErrorLabel = v.findViewById(R.id.avg_error_label);
-        mAvgErrorLabel.setText(Application.Companion.getApp().getString(R.string.avg_error_label, 0));
+        mAvgErrorLabel.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.avg_error_label, 0));
         mLeftDivider = v.findViewById(R.id.divider_left);
         mRightDivider = v.findViewById(R.id.divider_right);
         mErrorUnit = v.findViewById(R.id.error_unit);
@@ -316,7 +316,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
         mQrCode.setOnClickListener(view -> {
             if (!Application.Companion.getPrefs().getBoolean(
-                    Application.Companion.getApp().getString(R.string.pref_key_never_show_qr_code_instructions), false)) {
+                    Application.Companion.getApp().getString(com.android.gpstest.library.R.string.pref_key_never_show_qr_code_instructions), false)) {
                 UIUtils.createQrCodeDialog(activity).show();
             } else {
                 IOUtils.openQrCodeReader(activity);
@@ -344,10 +344,10 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     groundTruth.removeAltitude(); // TODO - RFC 5870 requires altitude height above geoid, which we can't support yet (see #296 and #530), so remove altitude here
                 }
                 if (groundTruth != null) {
-                    Toast.makeText(activity, Application.Companion.getApp().getString(R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, Application.Companion.getApp().getString(com.android.gpstest.library.R.string.show_radar_valid_location), Toast.LENGTH_LONG).show();
                     restoreGroundTruth(groundTruth);
                 } else {
-                    Toast.makeText(activity, Application.Companion.getApp().getString(R.string.show_radar_invalid_location), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, Application.Companion.getApp().getString(com.android.gpstest.library.R.string.show_radar_invalid_location), Toast.LENGTH_LONG).show();
                 }
             } else if (Application.Companion.getPrefs().contains(GROUND_TRUTH_LAT)) {
                 // If there is a saved ground truth value from previous executions, start test using that
@@ -378,7 +378,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      * Should be called when the ground truth card state is fully expanded
      */
     private void onCardExpanded() {
-        mSaveGroundTruth.setText(Application.Companion.getApp().getString(R.string.save));
+        mSaveGroundTruth.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.save));
         mLatText.setEnabled(true);
         mLongText.setEnabled(true);
         mAltText.setEnabled(true);
@@ -391,7 +391,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      * Should be called when the ground truth card state is fully collapsed
      */
     private void onCardCollapsed() {
-        mSaveGroundTruth.setText(Application.Companion.getApp().getString(R.string.edit));
+        mSaveGroundTruth.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.edit));
         mLatText.setEnabled(false);
         mLongText.setEnabled(false);
         mAltText.setEnabled(false);
@@ -486,9 +486,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     private void initChartUnits(LineChart errorChart) {
         String unit;
         if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
-            unit = Application.Companion.getApp().getString(R.string.meters_abbreviation);
+            unit = Application.Companion.getApp().getString(com.android.gpstest.library.R.string.meters_abbreviation);
         } else {
-            unit = Application.Companion.getApp().getString(R.string.feet_abbreviation);
+            unit = Application.Companion.getApp().getString(com.android.gpstest.library.R.string.feet_abbreviation);
         }
 
         DistanceValueFormatter formatter = new DistanceValueFormatter(unit);
@@ -505,7 +505,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mRightDivider.setVisibility(INVISIBLE);
         mErrorUnit.setVisibility(INVISIBLE);
         mAvgErrorUnit.setVisibility(INVISIBLE);
-        mAvgErrorLabel.setText(Application.Companion.getApp().getString(R.string.avg_error_label, 0));
+        mAvgErrorLabel.setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.avg_error_label, 0));
 
         mErrorChart.clearValues();
         mVertErrorChart.clearValues();
@@ -670,9 +670,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     private LineDataSet createGraphDataSet(int setType) {
         String label;
         if (setType == ERROR_SET) {
-            label = Application.Companion.getApp().getResources().getString(R.string.measured_error_graph_label);
+            label = Application.Companion.getApp().getResources().getString(com.android.gpstest.library.R.string.measured_error_graph_label);
         } else {
-            label = Application.Companion.getApp().getResources().getString(R.string.estimated_accuracy_graph_label);
+            label = Application.Companion.getApp().getResources().getString(com.android.gpstest.library.R.string.estimated_accuracy_graph_label);
         }
 
         LineDataSet set = new LineDataSet(null, label);
@@ -701,11 +701,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     private void updateGroundTruthEditTexts(Location location) {
-        mLatText.getEditText().setText(Application.Companion.getApp().getString(R.string.benchmark_lat_long, location.getLatitude()));
-        mLongText.getEditText().setText(Application.Companion.getApp().getString(R.string.benchmark_lat_long, location.getLongitude()));
+        mLatText.getEditText().setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_lat_long, location.getLatitude()));
+        mLongText.getEditText().setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_lat_long, location.getLongitude()));
 
         if (location.hasAltitude()) {
-            mAltText.getEditText().setText(Application.Companion.getApp().getString(R.string.benchmark_alt, location.getAltitude()));
+            mAltText.getEditText().setText(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.benchmark_alt, location.getAltitude()));
         }
     }
 
@@ -722,7 +722,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         Application app = Application.Companion.getApp();
 
         String prefDistanceUnits = settings
-                .getString(app.getString(R.string.pref_key_preferred_distance_units_v2), METERS);
+                .getString(app.getString(com.android.gpstest.library.R.string.pref_key_preferred_distance_units_v2), METERS);
         if (mPrefDistanceUnits != null && !prefDistanceUnits.equals(mPrefDistanceUnits)) {
             // Units have changed since the graphs were originally initialized - reload data
             mPrefDistanceUnits = prefDistanceUnits;
@@ -792,7 +792,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         float newOffset = MathUtils.mapToRange(slideOffset, ANIMATE_THRESHOLD_PERCENT, 1.0f, 0f, 1.0f);
         GradientDrawable shape =  new GradientDrawable();
         float[] corners = new float[8];
-        float radius = (1 - newOffset) * Application.Companion.getApp().getResources().getDimensionPixelSize(R.dimen.ground_truth_sliding_header_corner_radius);
+        float radius = (1 - newOffset) * Application.Companion.getApp().getResources().getDimensionPixelSize(com.android.gpstest.library.R.dimen.ground_truth_sliding_header_corner_radius);
         corners[0] = radius;
         corners[1] = radius;
         corners[2] = radius;
@@ -802,7 +802,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         corners[6] = 0;
         corners[7] = 0;
         shape.setCornerRadii(corners);
-        shape.setColor(Application.Companion.getApp().getResources().getColor(R.color.colorPrimary));
+        shape.setColor(Application.Companion.getApp().getResources().getColor(com.android.gpstest.library.R.color.colorPrimary));
         mSlidingPanelHeader.setBackground(shape);
     }
 }

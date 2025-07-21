@@ -276,14 +276,14 @@ private fun formatTime(time: Long) {
     @SuppressLint("SimpleDateFormat")
     val timeFormat = remember {
         SimpleDateFormat(
-            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
+            if (DateFormat.is24HourFormat(app.applicationContext)) SDF_TIME_24_HOUR else SDF_TIME_12_HOUR
         )
     }
 
     @SuppressLint("SimpleDateFormat")
     val timeAndDateFormat = remember {
         SimpleDateFormat(
-            if (DateFormat.is24HourFormat(Application.app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
+            if (DateFormat.is24HourFormat(app.applicationContext)) SDF_DATE_24_HOUR else SDF_DATE_12_HOUR
         )
     }
 
@@ -359,13 +359,13 @@ fun LabelColumn1() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
-        LocationLabel(R.string.latitude_label)
-        LocationLabel(R.string.longitude_label)
-        LocationLabel(R.string.altitude_label)
-        LocationLabel(R.string.altitude_msl_label)
-        LocationLabel(R.string.speed_label)
-        LocationLabel(R.string.speed_acc_label)
-        LocationLabel(R.string.pdop_label)
+        LocationLabel(com.android.gpstest.library.R.string.latitude_label)
+        LocationLabel(com.android.gpstest.library.R.string.longitude_label)
+        LocationLabel(com.android.gpstest.library.R.string.altitude_label)
+        LocationLabel(com.android.gpstest.library.R.string.altitude_msl_label)
+        LocationLabel(com.android.gpstest.library.R.string.speed_label)
+        LocationLabel(com.android.gpstest.library.R.string.speed_acc_label)
+        LocationLabel(com.android.gpstest.library.R.string.pdop_label)
     }
 }
 
@@ -379,13 +379,13 @@ fun LabelColumn2(location: Location) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.End
     ) {
-        LocationLabel(R.string.fix_time_label)
-        LocationLabel(R.string.ttff_label)
-        LocationLabel(if (location.isVerticalAccuracySupported()) R.string.hor_and_vert_accuracy_label else R.string.accuracy_label)
-        LocationLabel(R.string.num_sats_label)
-        LocationLabel(R.string.bearing_label)
-        LocationLabel(R.string.bearing_acc_label)
-        LocationLabel(R.string.hvdop_label)
+        LocationLabel(com.android.gpstest.library.R.string.fix_time_label)
+        LocationLabel(com.android.gpstest.library.R.string.ttff_label)
+        LocationLabel(if (location.isVerticalAccuracySupported()) com.android.gpstest.library.R.string.hor_and_vert_accuracy_label else com.android.gpstest.library.R.string.accuracy_label)
+        LocationLabel(com.android.gpstest.library.R.string.num_sats_label)
+        LocationLabel(com.android.gpstest.library.R.string.bearing_label)
+        LocationLabel(com.android.gpstest.library.R.string.bearing_acc_label)
+        LocationLabel(com.android.gpstest.library.R.string.hvdop_label)
     }
 }
 
@@ -465,13 +465,13 @@ fun ErrorTime(timeText: String, timeMs: Long) {
                 openDialog.value = false
             },
             title = {
-                Text(stringResource(R.string.error_time_title))
+                Text(stringResource(com.android.gpstest.library.R.string.error_time_title))
             },
             text = {
-                Column() {
+                Column {
                     LinkifyText(
-                        text = Application.app.getString(
-                            R.string.error_time_message, format.format(timeMs),
+                        text = app.getString(
+                            com.android.gpstest.library.R.string.error_time_message, format.format(timeMs),
                             DateTimeUtils.NUM_DAYS_TIME_VALID
                         )
                     )
@@ -483,7 +483,7 @@ fun ErrorTime(timeText: String, timeMs: Long) {
                         openDialog.value = false
                     }
                 ) {
-                    Text(stringResource(R.string.ok))
+                    Text(stringResource(com.android.gpstest.library.R.string.ok))
                 }
             }
         )
@@ -511,8 +511,8 @@ fun LockIcon(fixState: FixState) {
         exit = scaleOut() + shrinkVertically(shrinkTowards = Alignment.CenterVertically)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_lock_24),
-            contentDescription = stringResource(id = R.string.lock),
+            painter = painterResource(id = com.android.gpstest.library.R.drawable.ic_baseline_lock_24),
+            contentDescription = stringResource(id = com.android.gpstest.library.R.string.lock),
             tint = MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(6.dp)
         )
@@ -529,7 +529,7 @@ private fun copyToClipboard(context: Context, location: Location) {
         IOUtils.copyToClipboard(app, formattedLocation)
         // Android 12 and higher generates a Toast automatically
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_LONG)
+            Toast.makeText(context, com.android.gpstest.library.R.string.copied_to_clipboard, Toast.LENGTH_LONG)
                 .show()
         }
     }

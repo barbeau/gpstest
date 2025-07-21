@@ -142,7 +142,7 @@ class MapFragment : Fragment(), MapInterface {
         }
         if (mapController!!.mode == MapConstants.MODE_MAP) {
             rotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true)
+                .getBoolean(getString(com.android.gpstest.library.R.string.pref_key_rotate_map_with_compass), true)
         }
         map!!.onResume()
     }
@@ -407,7 +407,7 @@ class MapFragment : Fragment(), MapInterface {
         groundTruthMarker!!.position = MapUtils.makeGeoPoint(location)
         groundTruthMarker!!.icon =
             ContextCompat.getDrawable(Application.app, R.drawable.ic_ground_truth)
-        groundTruthMarker!!.title = Application.app.getString(R.string.ground_truth_marker_title)
+        groundTruthMarker!!.title = Application.app.getString(com.android.gpstest.library.R.string.ground_truth_marker_title)
         groundTruthMarker!!.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         if (!map!!.overlays.contains(groundTruthMarker)) {
             map!!.overlays.add(groundTruthMarker)

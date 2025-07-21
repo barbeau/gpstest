@@ -25,6 +25,7 @@ import android.location.GnssMeasurement;
 import android.location.LocationManager;
 import android.os.Build;
 
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.RequiresApi;
 
 import com.android.gpstest.library.model.GnssType;
@@ -120,6 +121,7 @@ public class SatelliteUtils {
      *
      * @return true if the platform supports providing carrier frequencies for each satellite, false if it does not
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.O)
     public static boolean isCfSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
@@ -178,6 +180,7 @@ public class SatelliteUtils {
      * Returns true if "force full GNSS measurements" can be programmatically invoked, and false if not
      * @return true if "force full GNSS measurements" can be programmatically invoked, and false if not
      */
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
     public static boolean isForceFullGnssMeasurementsSupported() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
     }

@@ -226,7 +226,7 @@ class FormatUtilsTest {
             usedInFix = true,
             elevationDegrees = 57.00f,
             azimuthDegrees = 136.00f
-        );
+        )
         gpsL1.hasCarrierFrequency = true
         gpsL1.carrierFrequencyHz = 1575420032.0
         gpsL1.hasBasebandCn0DbHz = true

@@ -1,11 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        compose_version = '1.2.0-alpha05'
-        wear_compose_version = '1.0.2'
+        compose_version = '1.8.3'
+        wear_compose_version = '1.4.1'
     }
-    ext.kotlin_version = '2.1.0'
-    ext.hilt_version = '2.56.2'
+    ext.kotlin_version = '2.2.0'
+    ext.hilt_version = '2.57'
     repositories {
         google()
         mavenCentral()
@@ -15,7 +15,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // Hilt for dependency injection
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.1.0'
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.2.0'
     }
 }
 
@@ -23,6 +23,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' } // For MPAndroidChart
+        maven { url = 'https://jitpack.io' } // For MPAndroidChart
     }
 }

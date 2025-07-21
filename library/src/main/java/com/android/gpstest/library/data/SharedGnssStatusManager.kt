@@ -49,7 +49,7 @@ private const val TAG = "SharedGnssStatusManager"
  * Derived in part from https://github.com/android/location-samples/blob/main/LocationUpdatesBackgroundKotlin/app/src/main/java/com/google/android/gms/location/sample/locationupdatesbackgroundkotlin/data/MyLocationManager.kt
  * and https://github.com/googlecodelabs/kotlin-coroutines/blob/master/ktx-library-codelab/step-06/myktxlibrary/src/main/java/com/example/android/myktxlibrary/LocationUtils.kt
  */
-class SharedGnssStatusManager constructor(
+class SharedGnssStatusManager(
     private val context: Context,
     externalScope: CoroutineScope,
     prefs: SharedPreferences

@@ -88,19 +88,19 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
-        if (prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
-            setTheme(R.style.AppTheme_Dark)
+        if (prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
+            setTheme(com.android.gpstest.library.R.style.AppTheme_Dark)
         }
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preferences)
         actionBar?.title = title
         resetActivityTitle(this)
         forceFullGnssMeasurements =
-            findPreference(getString(R.string.pref_key_force_full_gnss_measurements)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_force_full_gnss_measurements)) as CheckBoxPreference
         if (!SatelliteUtils.isForceFullGnssMeasurementsSupported()) {
             forceFullGnssMeasurements!!.isEnabled = false
         }
-        txtMinTime = findPreference(getString(R.string.pref_key_gps_min_time)) as EditTextPreference
+        txtMinTime = findPreference(getString(com.android.gpstest.library.R.string.pref_key_gps_min_time)) as EditTextPreference
         txtMinTime?.editText?.inputType =
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
@@ -111,7 +111,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                     // Tell user that entry must be valid decimal
                     Toast.makeText(
                         this@Preferences,
-                        getString(R.string.pref_gps_min_time_invalid_entry),
+                        getString(com.android.gpstest.library.R.string.pref_gps_min_time_invalid_entry),
                         Toast.LENGTH_SHORT
                     ).show()
                     false
@@ -121,7 +121,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             }
 
         txtMinDistance =
-            findPreference(getString(R.string.pref_key_gps_min_distance)) as EditTextPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_gps_min_distance)) as EditTextPreference
         txtMinDistance?.editText?.inputType =
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
 
@@ -132,7 +132,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                     // Tell user that entry must be valid decimal
                     Toast.makeText(
                         this@Preferences,
-                        getString(R.string.pref_gps_min_distance_invalid_entry),
+                        getString(com.android.gpstest.library.R.string.pref_gps_min_distance_invalid_entry),
                         Toast.LENGTH_SHORT
                     ).show()
                     false
@@ -142,7 +142,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             }
 
         // Check Dark Theme
-        chkDarkTheme = findPreference(getString(R.string.pref_key_dark_theme)) as CheckBoxPreference
+        chkDarkTheme = findPreference(getString(com.android.gpstest.library.R.string.pref_key_dark_theme)) as CheckBoxPreference
         chkDarkTheme?.onPreferenceChangeListener =
             OnPreferenceChangeListener { _: Preference?, _: Any? ->
                 // Destroy and recreate Activity
@@ -150,12 +150,12 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 true
             }
         preferredDistanceUnits = findPreference(
-            getString(R.string.pref_key_preferred_distance_units_v2)
+            getString(com.android.gpstest.library.R.string.pref_key_preferred_distance_units_v2)
         ) as ListPreference
         preferredSpeedUnits = findPreference(
-            getString(R.string.pref_key_preferred_speed_units_v2)
+            getString(com.android.gpstest.library.R.string.pref_key_preferred_speed_units_v2)
         ) as ListPreference
-        language = findPreference(getString(R.string.pref_key_language)) as ListPreference
+        language = findPreference(getString(com.android.gpstest.library.R.string.pref_key_language)) as ListPreference
         language?.onPreferenceChangeListener =
             OnPreferenceChangeListener { preference: Preference?, newValue: Any ->
                 localeManager.setNewLocale(app, newValue.toString())
@@ -168,10 +168,10 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         if (!SatelliteUtils.isRotationVectorSensorSupported(this) || BuildConfig.FLAVOR != "google") {
             // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
             val checkBoxTiltMap = findPreference(
-                getString(R.string.pref_key_tilt_map_with_sensors)
+                getString(com.android.gpstest.library.R.string.pref_key_tilt_map_with_sensors)
             ) as CheckBoxPreference
             val mMapCategory = findPreference(
-                getString(R.string.pref_key_map_category)
+                getString(com.android.gpstest.library.R.string.pref_key_map_category)
             ) as PreferenceCategory
             mMapCategory.removePreference(checkBoxTiltMap)
         }
@@ -180,10 +180,10 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         if (BuildConfig.FLAVOR != "google") {
             // We don't have tilt info or it's the OSM Droid flavor, so remove this preference
             val checkBoxMapType = findPreference(
-                getString(R.string.pref_key_map_type)
+                getString(com.android.gpstest.library.R.string.pref_key_map_type)
             ) as ListPreference
             val mMapCategory = findPreference(
-                getString(R.string.pref_key_map_category)
+                getString(com.android.gpstest.library.R.string.pref_key_map_category)
             ) as PreferenceCategory
             mMapCategory.removePreference(checkBoxMapType)
         }
@@ -191,18 +191,18 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         // Disable preferences for antenna info logging if it's not supported
         val manager = getSystemService(LOCATION_SERVICE) as LocationManager
         chkLogFileAntennaJson =
-            findPreference(getString(R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
         chkLogFileAntennaCsv =
-            findPreference(getString(R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
         if(!SatelliteUtils.isGnssAntennaInfoSupported(manager)) {
             chkLogFileAntennaJson!!.isEnabled = false
             chkLogFileAntennaCsv!!.isEnabled = false
         }
 
         // Disable Android Studio logging if not supported by platform
-        chkAsMeasurements = findPreference(getString(R.string.pref_key_as_measurement_output)) as CheckBoxPreference
+        chkAsMeasurements = findPreference(getString(com.android.gpstest.library.R.string.pref_key_as_measurement_output)) as CheckBoxPreference
         chkAsMeasurements?.isEnabled = enableMeasurementsPref(app, prefs)
-        chkAsNavMessages = findPreference(getString(R.string.pref_key_as_navigation_message_output)) as CheckBoxPreference
+        chkAsNavMessages = findPreference(getString(com.android.gpstest.library.R.string.pref_key_as_navigation_message_output)) as CheckBoxPreference
         chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
         initNotificationPermissionDialog()
@@ -212,14 +212,14 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
 
     override fun onResume() {
         super.onResume()
-        changePreferenceSummary(getString(R.string.pref_key_preferred_distance_units_v2))
-        changePreferenceSummary(getString(R.string.pref_key_preferred_speed_units_v2))
-        changePreferenceSummary(getString(R.string.pref_key_language))
+        changePreferenceSummary(getString(com.android.gpstest.library.R.string.pref_key_preferred_distance_units_v2))
+        changePreferenceSummary(getString(com.android.gpstest.library.R.string.pref_key_preferred_speed_units_v2))
+        changePreferenceSummary(getString(com.android.gpstest.library.R.string.pref_key_language))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key.equals(
-                getString(R.string.pref_key_preferred_distance_units_v2),
+                getString(com.android.gpstest.library.R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
             )
         ) {
@@ -229,7 +229,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             }
         } else {
             if (key.equals(
-                    getString(R.string.pref_key_preferred_speed_units_v2),
+                    getString(com.android.gpstest.library.R.string.pref_key_preferred_speed_units_v2),
                     ignoreCase = true
                 )
             ) {
@@ -238,7 +238,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                     changePreferenceSummary(key)
                 }
             } else {
-                if (key.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
+                if (key.equals(getString(com.android.gpstest.library.R.string.pref_key_language), ignoreCase = true)) {
                     // Change the preferred language description
                     if (key != null) {
                         changePreferenceSummary(key)
@@ -286,32 +286,32 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
      */
     private fun changePreferenceSummary(prefKey: String) {
         if (prefKey.equals(
-                getString(R.string.pref_key_preferred_distance_units_v2),
+                getString(com.android.gpstest.library.R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
             )
         ) {
-            val values = app.resources.getStringArray(R.array.preferred_distance_units_values)
-            val entries = app.resources.getStringArray(R.array.preferred_distance_units_entries)
+            val values = app.resources.getStringArray(com.android.gpstest.library.R.array.preferred_distance_units_values)
+            val entries = app.resources.getStringArray(com.android.gpstest.library.R.array.preferred_distance_units_entries)
             for (i in values.indices) {
                 if (values[i] == preferredDistanceUnits!!.value) {
                     preferredDistanceUnits!!.summary = entries[i]
                 }
             }
         } else if (prefKey.equals(
-                getString(R.string.pref_key_preferred_speed_units_v2),
+                getString(com.android.gpstest.library.R.string.pref_key_preferred_speed_units_v2),
                 ignoreCase = true
             )
         ) {
-            val values = app.resources.getStringArray(R.array.preferred_speed_units_values)
-            val entries = app.resources.getStringArray(R.array.preferred_speed_units_entries)
+            val values = app.resources.getStringArray(com.android.gpstest.library.R.array.preferred_speed_units_values)
+            val entries = app.resources.getStringArray(com.android.gpstest.library.R.array.preferred_speed_units_entries)
             for (i in values.indices) {
                 if (values[i] == preferredSpeedUnits!!.value) {
                     preferredSpeedUnits!!.summary = entries[i]
                 }
             }
-        } else if (prefKey.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
-            val values = app.resources.getStringArray(R.array.language_values)
-            val entries = app.resources.getStringArray(R.array.language_entries)
+        } else if (prefKey.equals(getString(com.android.gpstest.library.R.string.pref_key_language), ignoreCase = true)) {
+            val values = app.resources.getStringArray(com.android.gpstest.library.R.array.language_values)
+            val entries = app.resources.getStringArray(com.android.gpstest.library.R.array.language_entries)
             for (i in values.indices) {
                 if (values[i] == language!!.value) {
                     language!!.summary = entries[i]
@@ -327,12 +327,12 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @SuppressLint("NewApi")
     private fun initNotificationPermissionDialog() {
         chkShowNotification =
-            findPreference(getString(R.string.pref_key_show_notification)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_show_notification)) as CheckBoxPreference
         if (VERSION.SDK_INT < VERSION_CODES.TIRAMISU) {
             // Notifications are always shown on Android 12 and lower
             chkShowNotification?.isEnabled = false
             PreferenceUtils.saveBoolean(
-                getString(R.string.pref_key_show_notification),
+                getString(com.android.gpstest.library.R.string.pref_key_show_notification),
                 true,
                 prefs
             )
@@ -344,25 +344,25 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         // Additionally, revoking notification permissions seems to be the only way to disable
         // user-facing notifications for the foreground service, because they are required.
         PreferenceUtils.saveBoolean(
-            getString(R.string.pref_key_show_notification),
+            getString(com.android.gpstest.library.R.string.pref_key_show_notification),
             PermissionUtils.hasGrantedNotificationPermissions(this),
             prefs
         )
 
         chkRunInBackground =
-            findPreference(getString(R.string.pref_key_gnss_background)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_gnss_background)) as CheckBoxPreference
         chkLogFileNmea =
-            findPreference(getString(R.string.pref_key_file_nmea_output)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_nmea_output)) as CheckBoxPreference
         chkLogFileNavMessages =
-            findPreference(getString(R.string.pref_key_file_navigation_message_output)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_navigation_message_output)) as CheckBoxPreference
         chkLogFileMeasurements =
-            findPreference(getString(R.string.pref_key_file_measurement_output)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_measurement_output)) as CheckBoxPreference
         chkLogFileLocation =
-            findPreference(getString(R.string.pref_key_file_location_output)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_location_output)) as CheckBoxPreference
         chkLogFileAntennaJson =
-            findPreference(getString(R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_antenna_output_json)) as CheckBoxPreference
         chkLogFileAntennaCsv =
-            findPreference(getString(R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
+            findPreference(getString(com.android.gpstest.library.R.string.pref_key_file_antenna_output_csv)) as CheckBoxPreference
         val prefsThatNeedNotificationPermissions = listOf(
             chkShowNotification,
             chkRunInBackground,
@@ -414,15 +414,15 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     fun createNotificationPermissionDialog(activity: Activity): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
         val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
-        textView.text = getString(R.string.notification_permission_required_dialog_text)
+        textView.text = getString(com.android.gpstest.library.R.string.notification_permission_required_dialog_text)
         val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setTitle(com.android.gpstest.library.R.string.notification_permission_required_dialog_title)
             .setCancelable(false)
             .setView(view)
             .setPositiveButton(
-                R.string.ok
+                com.android.gpstest.library.R.string.ok
             ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
-            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+            .setNegativeButton(com.android.gpstest.library.R.string.cancel) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
@@ -430,13 +430,13 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     fun createCanNotDisableSettingDialog(activity: Activity): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
         val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
-        textView.text = getString(R.string.can_not_disable_setting_dialog_text)
+        textView.text = getString(com.android.gpstest.library.R.string.can_not_disable_setting_dialog_text)
         val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.notification_permission_required_dialog_title)
+            .setTitle(com.android.gpstest.library.R.string.notification_permission_required_dialog_title)
             .setCancelable(false)
             .setView(view)
             .setPositiveButton(
-                R.string.ok
+                com.android.gpstest.library.R.string.ok
             ) { _: DialogInterface?, _: Int -> requestNotificationPermission() }
         return builder.create()
     }
@@ -445,15 +445,15 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     fun createRestartApplicationDialog(activity: Activity): Dialog {
         val view = activity.layoutInflater.inflate(R.layout.notification_permissions_dialog, null)
         val textView = view.findViewById<TextView>(R.id.notification_permission_instructions)
-        textView.text = getString(R.string.need_to_restart_application_dialog_text)
+        textView.text = getString(com.android.gpstest.library.R.string.need_to_restart_application_dialog_text)
         val builder = AlertDialog.Builder(activity)
-            .setTitle(R.string.need_to_restart_application_dialog_title)
+            .setTitle(com.android.gpstest.library.R.string.need_to_restart_application_dialog_title)
             .setCancelable(false)
             .setView(view)
             .setPositiveButton(
-                R.string.ok
+                com.android.gpstest.library.R.string.ok
             ) { _: DialogInterface?, _: Int -> revokeNotificationPermissionAndRestartApplication() }
-            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int -> }
+            .setNegativeButton(com.android.gpstest.library.R.string.cancel) { _: DialogInterface?, _: Int -> }
         return builder.create()
     }
 
@@ -476,14 +476,14 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 // Notification permission granted - change the setting in the Preferences UI
                 // The notification will automatically be posted by the service
                 PreferenceUtils.saveBoolean(
-                    getString(R.string.pref_key_show_notification),
+                    getString(com.android.gpstest.library.R.string.pref_key_show_notification),
                     true,
                     prefs
                 )
                 recreate()
             } else {
                 // Prompt the user to grant permissions again
-                createNotificationPermissionDialog(this).show();
+                createNotificationPermissionDialog(this).show()
             }
         }
     }
@@ -491,7 +491,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     @RequiresApi(VERSION_CODES.TIRAMISU)
     private fun Context.revokeNotificationPermissionAndRestartApplication() {
         revokeSelfPermissionOnKill(Manifest.permission.POST_NOTIFICATIONS)
-        PreferenceUtils.saveBoolean(getString(R.string.pref_key_show_notification), false, prefs)
+        PreferenceUtils.saveBoolean(getString(com.android.gpstest.library.R.string.pref_key_show_notification), false, prefs)
 
         Executors.newSingleThreadScheduledExecutor().schedule({
             val intent = packageManager.getLaunchIntentForPackage(packageName)

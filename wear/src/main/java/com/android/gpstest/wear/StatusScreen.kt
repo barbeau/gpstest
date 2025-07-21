@@ -147,7 +147,7 @@ fun StatusScreen(signalInfoViewModel: SignalInfoViewModel) {
 @Composable
 fun Latitude(location: Location) {
     Text(
-        text = stringResource(R.string.latitude_label) + " " + FormatUtils.formatLatOrLon(
+        text = stringResource(com.android.gpstest.library.R.string.latitude_label) + " " + FormatUtils.formatLatOrLon(
             Application.app, location.latitude, CoordinateType.LATITUDE,
             Application.prefs
         )
@@ -157,7 +157,7 @@ fun Latitude(location: Location) {
 @Composable
 fun Longitude(location: Location) {
     Text(
-        text = stringResource(R.string.longitude_label) + " " + FormatUtils.formatLatOrLon(
+        text = stringResource(com.android.gpstest.library.R.string.longitude_label) + " " + FormatUtils.formatLatOrLon(
             Application.app,
             location.longitude,
             CoordinateType.LONGITUDE,
@@ -169,7 +169,7 @@ fun Longitude(location: Location) {
 @Composable
 fun NumSats(satelliteMetadata: SatelliteMetadata) {
     Text(
-        text = stringResource(R.string.num_sats_label) + " " + FormatUtils.formatNumSats(
+        text = stringResource(com.android.gpstest.library.R.string.num_sats_label) + " " + FormatUtils.formatNumSats(
             Application.app,
             satelliteMetadata
         )
@@ -179,7 +179,7 @@ fun NumSats(satelliteMetadata: SatelliteMetadata) {
 @Composable
 fun Bearing(location: Location) {
     Text(
-        text = stringResource(R.string.bearing_label) + " " + FormatUtils.formatBearing(
+        text = stringResource(com.android.gpstest.library.R.string.bearing_label) + " " + FormatUtils.formatBearing(
             Application.app,
             location
         )
@@ -188,19 +188,19 @@ fun Bearing(location: Location) {
 
 @Composable
 fun DoP(dop: DilutionOfPrecision) {
-    Text(text = stringResource(R.string.pdop_label) + " " + FormatUtils.formatDoP(Application.app, dop))
+    Text(text = stringResource(com.android.gpstest.library.R.string.pdop_label) + " " + FormatUtils.formatDoP(Application.app, dop))
 }
 
 @Composable
 fun HvDOP(dop: DilutionOfPrecision) {
-    Text(text = stringResource(R.string.hvdop_label) + " " + FormatUtils.formatHvDOP(Application.app,
+    Text(text = stringResource(com.android.gpstest.library.R.string.hvdop_label) + " " + FormatUtils.formatHvDOP(Application.app,
                                                                                dop))
 }
 
 @Composable
 fun Speed(location: Location) {
     Text(
-        text = stringResource(R.string.speed_label) + " " + FormatUtils.formatSpeed(
+        text = stringResource(com.android.gpstest.library.R.string.speed_label) + " " + FormatUtils.formatSpeed(
             Application.app, location, Application.prefs
         )
     )

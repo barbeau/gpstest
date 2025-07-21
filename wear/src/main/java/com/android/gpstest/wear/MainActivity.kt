@@ -93,6 +93,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun requestPermissionAndStartGps(activity: Activity) {
         if (PermissionUtils.hasGrantedPermissions(
                 activity,
@@ -110,6 +111,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)} passing\n      in a {@link RequestMultiplePermissions} object for the {@link ActivityResultContract} and\n      handling the result in the {@link ActivityResultCallback#onActivityResult(Object) callback}.")
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
@@ -178,15 +181,15 @@ fun StatusRowHeader(isGnss: Boolean) {
         val large =
             Modifier.defaultMinSize(dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_large))
 
-        StatusLabel(R.string.id_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.id_column_label, small)
         if (isGnss) {
-            StatusLabel(R.string.gnss_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.gnss_flag_image_label, large)
         } else {
-            StatusLabel(R.string.sbas_flag_image_label, large)
+            StatusLabel(com.android.gpstest.library.R.string.sbas_flag_image_label, large)
         }
-        StatusLabel(R.string.cf_column_label, small)
-        StatusLabel(R.string.gps_cn0_column_label, medium)
-        StatusLabel(R.string.flags_aeu_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.cf_column_label, small)
+        StatusLabel(com.android.gpstest.library.R.string.gps_cn0_column_label, medium)
+        StatusLabel(com.android.gpstest.library.R.string.flags_aeu_column_label, medium)
     }
 }
 
@@ -212,7 +215,7 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
     ) {
         val small = Modifier.defaultMinSize(minWidth = 5.dp)
         val medium =
-            Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
+            Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 8.dp)
 
         Svid(satelliteStatus, small)
@@ -274,26 +277,26 @@ fun StatusValue(text: String, modifier: Modifier = Modifier) {
 fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     when (satelliteStatus.gnssType) {
         GnssType.NAVSTAR -> {
-            FlagImage(R.drawable.ic_flag_usa, R.string.gps_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_usa, com.android.gpstest.library.R.string.gps_content_description, modifier)
         }
         GnssType.GLONASS -> {
-            FlagImage(R.drawable.ic_flag_russia, R.string.glonass_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_russia, com.android.gpstest.library.R.string.glonass_content_description, modifier)
         }
         GnssType.QZSS -> {
-            FlagImage(R.drawable.ic_flag_japan, R.string.qzss_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_japan, com.android.gpstest.library.R.string.qzss_content_description, modifier)
         }
         GnssType.BEIDOU -> {
-            FlagImage(R.drawable.ic_flag_china, R.string.beidou_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_china, com.android.gpstest.library.R.string.beidou_content_description, modifier)
         }
         GnssType.GALILEO -> {
             FlagImage(
-                R.drawable.ic_flag_european_union,
-                R.string.galileo_content_description,
+                com.android.gpstest.library.R.drawable.ic_flag_european_union,
+                com.android.gpstest.library.R.string.galileo_content_description,
                 modifier
             )
         }
         GnssType.IRNSS -> {
-            FlagImage(R.drawable.ic_flag_india, R.string.irnss_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_india, com.android.gpstest.library.R.string.irnss_content_description, modifier)
         }
         GnssType.SBAS -> SbasFlag(satelliteStatus, modifier)
         GnssType.UNKNOWN -> {
@@ -308,32 +311,32 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
 fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
     when (status.sbasType) {
         SbasType.WAAS -> {
-            FlagImage(R.drawable.ic_flag_usa, R.string.waas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_usa, com.android.gpstest.library.R.string.waas_content_description, modifier)
         }
         SbasType.EGNOS -> {
             FlagImage(
-                R.drawable.ic_flag_european_union,
-                R.string.egnos_content_description,
+                com.android.gpstest.library.R.drawable.ic_flag_european_union,
+                com.android.gpstest.library.R.string.egnos_content_description,
                 modifier
             )
         }
         SbasType.GAGAN -> {
-            FlagImage(R.drawable.ic_flag_india, R.string.gagan_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_india, com.android.gpstest.library.R.string.gagan_content_description, modifier)
         }
         SbasType.MSAS -> {
-            FlagImage(R.drawable.ic_flag_japan, R.string.msas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_japan, com.android.gpstest.library.R.string.msas_content_description, modifier)
         }
         SbasType.SDCM -> {
-            FlagImage(R.drawable.ic_flag_russia, R.string.sdcm_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_russia, com.android.gpstest.library.R.string.sdcm_content_description, modifier)
         }
         SbasType.SNAS -> {
-            FlagImage(R.drawable.ic_flag_china, R.string.snas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_china, com.android.gpstest.library.R.string.snas_content_description, modifier)
         }
         SbasType.SACCSA -> {
-            FlagImage(R.drawable.ic_flag_icao, R.string.saccsa_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_icao, com.android.gpstest.library.R.string.saccsa_content_description, modifier)
         }
         SbasType.SOUTHPAN -> {
-            FlagImage(R.drawable.ic_flag_southpan, R.string.southpan_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_southpan, com.android.gpstest.library.R.string.southpan_content_description, modifier)
         }		
         SbasType.UNKNOWN -> {
             Box(
