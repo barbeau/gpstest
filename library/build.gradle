@@ -51,8 +51,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation("javax.inject:javax.inject:1")
-    implementation 'com.google.dagger:dagger:2.56.2'
-    kapt 'com.google.dagger:dagger-compiler:2.56.2'
+    implementation 'com.google.dagger:dagger:2.57'
+    kapt 'com.google.dagger:dagger-compiler:2.57'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2'
     // Hilt for dependency injection
