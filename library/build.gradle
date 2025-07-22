@@ -24,7 +24,7 @@ android {
     }
 
     lintOptions {
-        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid'
+        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation'
     }
 
     buildFeatures {
