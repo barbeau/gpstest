@@ -41,7 +41,7 @@ jobs:
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Run checks
-        run: ./gradlew check -x lint
+        run: ./gradlew check
 
   build:
     name: Build debug APK
