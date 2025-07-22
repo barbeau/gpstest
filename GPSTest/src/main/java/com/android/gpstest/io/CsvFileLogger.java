@@ -36,7 +36,6 @@ import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
-import com.android.gpstest.R;
 import com.android.gpstest.library.model.Orientation;
 import com.android.gpstest.library.model.SatelliteStatus;
 import com.android.gpstest.library.util.FormatUtils;
@@ -70,7 +69,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
         ContextCompat.getMainExecutor(context).execute(() -> Toast.makeText(
                 Application.Companion.getApp().getApplicationContext(),
                 Application.Companion.getApp().getString(
-                        R.string.logging_to_new_file,
+                        com.android.gpstest.library.R.string.logging_to_new_file,
                         file.getAbsolutePath()
                 ),
                 Toast.LENGTH_LONG
@@ -110,25 +109,22 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 e.printStackTrace();
             }
 
-            StringBuilder version = new StringBuilder();
             // Version info
-            version.append("v")
-                    .append(versionString)
-                    .append(" (")
-                    .append(versionCode)
-                    .append("-" + BuildConfig.FLAVOR + "), ");
-
-            version.append("Manufacturer: " + manufacturer + ", ");
-            version.append("Model: " + model + ", ");
-
-            version.append("GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + ", ");
 
             String versionRelease = Build.VERSION.RELEASE;
-            version.append("Platform: " + versionRelease + ", ");
             int apiLevel = Build.VERSION.SDK_INT;
-            version.append("API Level: " + apiLevel + " ");
+            String version = "v" +
+                    versionString +
+                    " (" +
+                    versionCode +
+                    "-" + BuildConfig.FLAVOR + "), " +
+                    "Manufacturer: " + manufacturer + ", " +
+                    "Model: " + model + ", " +
+                    "GNSS HW Year: " + IOUtils.getGnssHardwareYear(Application.Companion.getApp()) + ", " +
+                    "Platform: " + versionRelease + ", " +
+                    "API Level: " + apiLevel + " ";
 
-            writer.write(version.toString());
+            writer.write(version);
             writer.newLine();
             writer.write(COMMENT_START);
             writer.newLine();
@@ -187,8 +183,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write("  OrientationDeg,utcTimeMillis,elapsedRealtimeNanos,yawDeg,rollDeg,pitchDeg");
             writer.newLine();
         } catch (IOException e) {
-            logException(Application.Companion.getApp().getString(R.string.could_not_initialize_file, filePath), e);
-            return;
+            logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.could_not_initialize_file, filePath), e);
         }
     }
 
@@ -202,7 +197,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
                 fileWriter.write(locationStream);
                 fileWriter.newLine();
             } catch (IOException e) {
-                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+                logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
             }
         }
     }
@@ -221,7 +216,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             try {
                 writeStatusToFile(s, location != null ? location.getTime() : 0, statuses.size(), i);
             } catch (IOException e) {
-                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+                logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
             }
             i++;
         }
@@ -243,7 +238,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             try {
                 writeGnssMeasurementToFile(gnssClock, measurement);
             } catch (IOException e) {
-                logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+                logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
             }
         }
     }
@@ -274,7 +269,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             fileWriter.write(builder.toString());
             fileWriter.newLine();
         } catch (IOException e) {
-            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+            logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
         }
     }
 
@@ -287,7 +282,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             fileWriter.write(nmeaStream);
             fileWriter.newLine();
         } catch (IOException e) {
-            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+            logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
         }
     }
 
@@ -324,7 +319,7 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             fileWriter.write(FormatUtils.toLog(orientation, currentTimeMs, millisSinceBootMs));
             fileWriter.newLine();
         } catch (IOException e) {
-            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
+            logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.error_writing_file), e);
         }
     }
 }

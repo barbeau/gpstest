@@ -28,8 +28,6 @@ import android.widget.ScrollView;
 
 import androidx.core.view.ViewCompat;
 
-import com.android.gpstest.R;
-
 /**
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(android.graphics.Rect)},
  * i.e. the area above UI chrome
@@ -41,7 +39,7 @@ public class ScrimInsetsScrollView extends ScrollView {
 
     private Rect mInsets;
 
-    private Rect mTempRect = new Rect();
+    private final Rect mTempRect = new Rect();
 
     private OnInsetsCallback mOnInsetsCallback;
 
@@ -62,11 +60,11 @@ public class ScrimInsetsScrollView extends ScrollView {
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
         final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.ScrimInsetsView, defStyle, 0);
+                com.android.gpstest.library.R.styleable.ScrimInsetsView, defStyle, 0);
         if (a == null) {
             return;
         }
-        mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsView_obaInsetForeground);
+        mInsetForeground = a.getDrawable(com.android.gpstest.library.R.styleable.ScrimInsetsView_obaInsetForeground);
         a.recycle();
 
         setWillNotDraw(true);
@@ -146,8 +144,8 @@ public class ScrimInsetsScrollView extends ScrollView {
         mOnInsetsCallback = onInsetsCallback;
     }
 
-    public static interface OnInsetsCallback {
+    public interface OnInsetsCallback {
 
-        public void onInsetsChanged(Rect insets);
+        void onInsetsChanged(Rect insets);
     }
 }

@@ -37,8 +37,8 @@ class Application : MultiDexApplication() {
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
         // Set theme
-        if (prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
-            setTheme(R.style.AppTheme_Dark)
+        if (prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
+            setTheme(com.android.gpstest.library.R.style.AppTheme_Dark)
         }
     }
 

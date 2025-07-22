@@ -68,7 +68,7 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadNoLocationTextView.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(context!!)
+                val geocoder = Geocoder(requireContext())
                 var addresses: List<Address>? = emptyList()
                 try {
                     addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -87,16 +87,16 @@ class UploadDeviceInfoFragment : Fragment() {
             var versionName = ""
             var versionCode = ""
             try {
-                val info: PackageInfo = Application.app.packageManager.getPackageInfo(Application.app.packageName, 0)
-                versionName = info.versionName
+                val info: PackageInfo = app.packageManager.getPackageInfo(app.packageName, 0)
+                versionName = info.versionName.toString()
                 versionCode = info.versionCode.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
             }
-            val locationManager = Application.app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val locationManager = app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
             // Inject PSDS capability
-            val capabilityInjectPsdsInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityInjectPsdsInt = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_inject_psds), PreferenceUtils.CAPABILITY_UNKNOWN)
             val psdsSuccessBoolean: Boolean
             val psdsSuccessString: String
             if (capabilityInjectPsdsInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
@@ -107,7 +107,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // Inject time
-            val capabilityInjectTimeInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityInjectTimeInt = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_inject_time), PreferenceUtils.CAPABILITY_UNKNOWN)
             val timeSuccessBoolean: Boolean
             val timeSuccessString: String
             if (capabilityInjectTimeInt == PreferenceUtils.CAPABILITY_UNKNOWN) {
@@ -118,7 +118,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // Delete assist capability
-            val capabilityDeleteAssistInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityDeleteAssistInt = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_delete_assist), PreferenceUtils.CAPABILITY_UNKNOWN)
             val deleteAssistSuccessString: String
             if (capabilityDeleteAssistInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 // Deleting assist data can be destructive, so don't force it - just use existing info
@@ -128,7 +128,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // GNSS measurements
-            val capabilityMeasurementsInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityMeasurementsInt = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_raw_measurements), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityMeasurementsString: String
             if (capabilityMeasurementsInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 capabilityMeasurementsString = PreferenceUtils.getCapabilityDescription(app, capabilityMeasurementsInt)
@@ -137,7 +137,7 @@ class UploadDeviceInfoFragment : Fragment() {
             }
 
             // GNSS navigation message
-            val capabilityNavMessagesInt = Application.prefs.getInt(Application.app.getString(R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
+            val capabilityNavMessagesInt = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_nav_messages), PreferenceUtils.CAPABILITY_UNKNOWN)
             val capabilityNavMessagesString: String
             if (capabilityNavMessagesInt != PreferenceUtils.CAPABILITY_UNKNOWN) {
                 capabilityNavMessagesString = PreferenceUtils.getCapabilityDescription(app, capabilityNavMessagesInt)
@@ -148,9 +148,9 @@ class UploadDeviceInfoFragment : Fragment() {
             val gnssAntennaInfo = PreferenceUtils.getCapabilityDescription(app, SatelliteUtils.isGnssAntennaInfoSupported(locationManager))
             val numAntennas: String
             val antennaCfs: String
-            if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
-                numAntennas = PreferenceUtils.getInt(Application.app.getString(R.string.capability_key_num_antenna), -1, prefs).toString()
-                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf), prefs)
+            if (gnssAntennaInfo.equals(app.getString(com.android.gpstest.library.R.string.capability_value_supported))) {
+                numAntennas = PreferenceUtils.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_num_antenna), -1, prefs).toString()
+                antennaCfs = PreferenceUtils.getString(app.getString(com.android.gpstest.library.R.string.capability_key_antenna_cf), prefs)
             } else {
                 numAntennas = ""
                 antennaCfs = ""
@@ -172,15 +172,18 @@ class UploadDeviceInfoFragment : Fragment() {
                     DevicePropertiesUploader.SBAS_CFS to trimEnds(signalInfoViewModel.getSupportedSbasCfs().sorted().toString()),
                     DevicePropertiesUploader.RAW_MEASUREMENTS to capabilityMeasurementsString,
                     DevicePropertiesUploader.NAVIGATION_MESSAGES to capabilityNavMessagesString,
-                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.NMEA to PreferenceUtils.getCapabilityDescription(app, prefs.getInt(app.getString(
+                        com.android.gpstest.library.R.string.capability_key_nmea), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.INJECT_PSDS to psdsSuccessString,
                     DevicePropertiesUploader.INJECT_TIME to timeSuccessString,
                     DevicePropertiesUploader.DELETE_ASSIST to deleteAssistSuccessString,
-                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.ACCUMULATED_DELTA_RANGE to PreferenceUtils.getCapabilityDescription(app, prefs.getInt(app.getString(
+                        com.android.gpstest.library.R.string.capability_key_measurement_delta_range), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     // TODO - Add below clock values? What should they be to generalize across all of the same model?
                     DevicePropertiesUploader.HARDWARE_CLOCK to "",
                     DevicePropertiesUploader.HARDWARE_CLOCK_DISCONTINUITY to "",
-                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(app, Application.prefs.getInt(Application.app.getString(R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
+                    DevicePropertiesUploader.AUTOMATIC_GAIN_CONTROL to PreferenceUtils.getCapabilityDescription(app, prefs.getInt(app.getString(
+                        com.android.gpstest.library.R.string.capability_key_measurement_automatic_gain_control), PreferenceUtils.CAPABILITY_UNKNOWN)),
                     DevicePropertiesUploader.GNSS_ANTENNA_INFO to gnssAntennaInfo,
                     DevicePropertiesUploader.APP_BUILD_FLAVOR to BuildConfig.FLAVOR,
                     DevicePropertiesUploader.USER_COUNTRY to userCountry,
@@ -193,10 +196,10 @@ class UploadDeviceInfoFragment : Fragment() {
             upload.isEnabled = false
 
             // Check to see if anything changed since last upload
-            val lastUpload = Application.prefs.getInt(Application.app.getString(R.string.capability_key_last_upload_hash), Int.MAX_VALUE)
+            val lastUpload = prefs.getInt(app.getString(com.android.gpstest.library.R.string.capability_key_last_upload_hash), Int.MAX_VALUE)
             if (lastUpload != Int.MAX_VALUE && lastUpload == bundle.toString().hashCode()) {
                 // Nothing changed since last upload
-                Toast.makeText(Application.app, R.string.upload_nothing_changed, Toast.LENGTH_SHORT).show()
+                Toast.makeText(app, com.android.gpstest.library.R.string.upload_nothing_changed, Toast.LENGTH_SHORT).show()
                 upload.isEnabled = true
             } else {
                 // First upload, or something changed since last upload - add app version and upload data
@@ -207,13 +210,13 @@ class UploadDeviceInfoFragment : Fragment() {
                 lifecycle.coroutineScope.launch {
                     val uploader = DevicePropertiesUploader(bundle)
                     if (uploader.upload()) {
-                        Toast.makeText(app, R.string.upload_success, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(app, com.android.gpstest.library.R.string.upload_success, Toast.LENGTH_SHORT).show()
                         // Remove app version and code, and then save hash to compare against next upload attempt
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_NAME)
                         bundle.remove(DevicePropertiesUploader.APP_VERSION_CODE)
-                        PreferenceUtils.saveInt(app.getString(R.string.capability_key_last_upload_hash), bundle.toString().hashCode(), prefs)
+                        PreferenceUtils.saveInt(app.getString(com.android.gpstest.library.R.string.capability_key_last_upload_hash), bundle.toString().hashCode(), prefs)
                     } else {
-                        Toast.makeText(app, R.string.upload_failure, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(app, com.android.gpstest.library.R.string.upload_failure, Toast.LENGTH_SHORT).show()
                     }
                     upload.isEnabled = true
                     uploadProgress.visibility = View.INVISIBLE

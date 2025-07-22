@@ -78,8 +78,8 @@ public class IOUtils {
             float lonFloat = intent.getFloatExtra(context.getString(R.string.radar_lon_key), Float.NaN);
             if (isValidLatitude(latFloat) && isValidLongitude(lonFloat)) {
                 // Use the float values
-                lat = (double) latFloat;
-                lon = (double) lonFloat;
+                lat = latFloat;
+                lon = lonFloat;
             } else {
                 // Try parsing doubles
                 double latDouble = intent.getDoubleExtra(context.getString(R.string.radar_lat_key), Double.NaN);

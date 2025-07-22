@@ -101,32 +101,32 @@ public class NavigationDrawerFragment extends Fragment {
 
     // titles for navdrawer items (indices must correspond to the above)
     private static final int[] NAVDRAWER_TITLE_RES_ID = new int[]{
-            R.string.gps_status_title,
-            R.string.gps_map_title,
-            R.string.gps_sky_title,
-            R.string.navdrawer_item_settings,
-            R.string.navdrawer_item_help,
-            R.string.navdrawer_item_open_source,
-            R.string.force_psds_injection,
-            R.string.force_time_injection,
-            R.string.delete_aiding_data,
-            R.string.navdrawer_item_send_feedback,
-            R.string.gps_accuracy_title
+            com.android.gpstest.library.R.string.gps_status_title,
+            com.android.gpstest.library.R.string.gps_map_title,
+            com.android.gpstest.library.R.string.gps_sky_title,
+            com.android.gpstest.library.R.string.navdrawer_item_settings,
+            com.android.gpstest.library.R.string.navdrawer_item_help,
+            com.android.gpstest.library.R.string.navdrawer_item_open_source,
+            com.android.gpstest.library.R.string.force_psds_injection,
+            com.android.gpstest.library.R.string.force_time_injection,
+            com.android.gpstest.library.R.string.delete_aiding_data,
+            com.android.gpstest.library.R.string.navdrawer_item_send_feedback,
+            com.android.gpstest.library.R.string.gps_accuracy_title
     };
 
     // icons for navdrawer items (indices must correspond to above array)
     private static final int[] NAVDRAWER_ICON_RES_ID = new int[]{
-            R.drawable.ic_wireless,  // Status
-            R.drawable.ic_map, // Map
-            R.drawable.ic_sky, // Sky
+            com.android.gpstest.library.R.drawable.ic_wireless,  // Status
+            com.android.gpstest.library.R.drawable.ic_map, // Map
+            com.android.gpstest.library.R.drawable.ic_sky, // Sky
             0, // Settings
             0, // Help
-            R.drawable.ic_drawer_github, // Open-source
-            R.drawable.ic_inject_psds, // Inject PSDS data
-            R.drawable.ic_inject_time, // Inject time data
-            R.drawable.ic_delete, // Clear assist data
+            com.android.gpstest.library.R.drawable.ic_drawer_github, // Open-source
+            com.android.gpstest.library.R.drawable.ic_inject_psds, // Inject PSDS data
+            com.android.gpstest.library.R.drawable.ic_inject_time, // Inject time data
+            com.android.gpstest.library.R.drawable.ic_delete, // Clear assist data
             0, // Send feedback
-            R.drawable.ic_accuracy // Accuracy
+            com.android.gpstest.library.R.drawable.ic_accuracy // Accuracy
     };
 
     // Secondary navdrawer item icons that appear align to right of list item layout
@@ -136,7 +136,7 @@ public class NavigationDrawerFragment extends Fragment {
             0, // Sky
             0, // Settings
             0, // Help
-            R.drawable.ic_drawer_link, // Open-source
+            com.android.gpstest.library.R.drawable.ic_drawer_link, // Open-source
             0, // Inject PSDS data
             0, // Inject time data
             0, // Clear assist data
@@ -145,7 +145,7 @@ public class NavigationDrawerFragment extends Fragment {
     };
 
     // list of navdrawer items that were actually added to the navdrawer, in order
-    private List<Integer> mNavDrawerItems = new ArrayList<>();
+    private final List<Integer> mNavDrawerItems = new ArrayList<>();
 
     // views that correspond to each navdrawer item, null if not yet created
     private View[] mNavDrawerItemViews = null;
@@ -226,7 +226,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerLayout.setDrawerShadow(com.android.gpstest.library.R.drawable.drawer_shadow, GravityCompat.START);
         ScrimInsetsScrollView navDrawer = mDrawerLayout.findViewById(R.id.navdrawer);
         if (selfItem == NAVDRAWER_ITEM_INVALID) {
             // do not show a nav drawer
@@ -249,8 +249,8 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle = new androidx.appcompat.app.ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
-                R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
-                R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
+                com.android.gpstest.library.R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
+                com.android.gpstest.library.R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -431,8 +431,8 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Set background color of nav drawer
-        if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
-            mDrawerItemsListContainer.setBackgroundColor(getContext().getResources().getColor(R.color.navdrawer_background_dark));
+        if (Application.Companion.getPrefs().getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
+            mDrawerItemsListContainer.setBackgroundColor(getContext().getResources().getColor(com.android.gpstest.library.R.color.navdrawer_background_dark));
         }
 
         // Populate views
@@ -467,10 +467,10 @@ public class NavigationDrawerFragment extends Fragment {
             return view;
         }
 
-        if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)
+        if (Application.Companion.getPrefs().getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)
                 && layoutToInflate == R.layout.navdrawer_item) {
             // Dark theme
-            view.setBackgroundResource(R.drawable.navdrawer_item_selectable_dark);
+            view.setBackgroundResource(com.android.gpstest.library.R.drawable.navdrawer_item_selectable_dark);
         }
 
         ImageView iconView = view.findViewById(R.id.icon);
@@ -525,31 +525,30 @@ public class NavigationDrawerFragment extends Fragment {
         if (selected) {
             if (isNewActivityItem(itemId)) {
                 // Don't change any formatting, since this is a category that launches a new activity
-                return;
             } else {
                 // Show the category as highlighted by changing background, text, and icon color
                 view.setSelected(true);
                 titleView.setTextColor(
-                        getResources().getColor(R.color.navdrawer_text_color_selected));
+                        getResources().getColor(com.android.gpstest.library.R.color.navdrawer_text_color_selected));
                 iconView.setColorFilter(
-                        getResources().getColor(R.color.navdrawer_icon_tint_selected));
+                        getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_selected));
                 secondaryIconView.setColorFilter(
-                        getResources().getColor(R.color.navdrawer_icon_tint_selected));
+                        getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_selected));
             }
         } else {
             // Show the category as not highlighted, if its not currently selected
             if (itemId != mCurrentSelectedPosition) {
                 view.setSelected(false);
-                if (Application.Companion.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+                if (Application.Companion.getPrefs().getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)) {
                     // Dark theme
-                    titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color_dark));
-                    iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_dark));
-                    secondaryIconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_dark));
+                    titleView.setTextColor(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_text_color_dark));
+                    iconView.setColorFilter(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_dark));
+                    secondaryIconView.setColorFilter(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_dark));
                 } else {
                     // Light theme
-                    titleView.setTextColor(getResources().getColor(R.color.navdrawer_text_color_light));
-                    iconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_light));
-                    secondaryIconView.setColorFilter(getResources().getColor(R.color.navdrawer_icon_tint_light));
+                    titleView.setTextColor(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_text_color_light));
+                    iconView.setColorFilter(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_light));
+                    secondaryIconView.setColorFilter(getResources().getColor(com.android.gpstest.library.R.color.navdrawer_icon_tint_light));
                 }
             }
         }

@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.R;
 import com.android.gpstest.library.model.GnssType;
 import com.android.gpstest.library.util.PreferenceUtils;
 
@@ -35,10 +34,10 @@ public class GnssFilterDialog extends DialogFragment
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        return builder.setTitle(R.string.filter_dialog_title)
+        return builder.setTitle(com.android.gpstest.library.R.string.filter_dialog_title)
                 .setMultiChoiceItems(items, mChecks, this)
-                .setPositiveButton(R.string.save, this)
-                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(com.android.gpstest.library.R.string.save, this)
+                .setNegativeButton(com.android.gpstest.library.R.string.cancel, null)
                 .create();
     }
 

@@ -36,15 +36,15 @@ import java.util.List;
  */
 public class BenchmarkViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Location> mGroundTruthLocation = new MutableLiveData<>();
+    private final MutableLiveData<Location> mGroundTruthLocation = new MutableLiveData<>();
 
-    private MutableLiveData<AvgError> mAvgError = new MutableLiveData<>();
+    private final MutableLiveData<AvgError> mAvgError = new MutableLiveData<>();
 
-    private MutableLiveData<Boolean> mAllowGroundTruthEdit = new MutableLiveData<>(true);
+    private final MutableLiveData<Boolean> mAllowGroundTruthEdit = new MutableLiveData<>(true);
 
     private boolean mBenchmarkCardCollapsed = false;
 
-    private MutableLiveData<Pair<Location, MeasuredError>> mLocationErrorPair = new MutableLiveData<>();
+    private final MutableLiveData<Pair<Location, MeasuredError>> mLocationErrorPair = new MutableLiveData<>();
 
     private List<Pair<Location, MeasuredError>> mLocationErrorPairs = new ArrayList<>();
 

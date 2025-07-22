@@ -122,7 +122,7 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
     ) {
         Text(
             text = stringResource(
-                id = R.string.filter_signal_text,
+                id = com.android.gpstest.library.R.string.filter_signal_text,
                 satelliteMetadata.numSignalsTotal,
                 totalNumSignals
             ),
@@ -132,7 +132,7 @@ fun Filter(totalNumSignals: Int, satelliteMetadata: SatelliteMetadata, onClick: 
         )
         Text(
             text = buildAnnotatedString {
-                val string = stringResource(id = R.string.filter_showall)
+                val string = stringResource(id = com.android.gpstest.library.R.string.filter_showall)
                 withStyle(
                     style = SpanStyle(
                         color = MaterialTheme.colors.primary,
@@ -210,7 +210,7 @@ fun StatusRow(satelliteStatus: SatelliteStatus) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val small = Modifier.defaultMinSize(minWidth = 36.dp)
-        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
+        val medium = Modifier.defaultMinSize(minWidth = dimensionResource(com.android.gpstest.library.R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
         Svid(satelliteStatus, small)
@@ -232,22 +232,22 @@ fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier) {
 fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     when (satelliteStatus.gnssType) {
         GnssType.NAVSTAR -> {
-            FlagImage(R.drawable.ic_flag_usa, R.string.gps_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_usa, com.android.gpstest.library.R.string.gps_content_description, modifier)
         }
         GnssType.GLONASS -> {
-            FlagImage(R.drawable.ic_flag_russia, R.string.glonass_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_russia, com.android.gpstest.library.R.string.glonass_content_description, modifier)
         }
         GnssType.QZSS -> {
-            FlagImage(R.drawable.ic_flag_japan, R.string.qzss_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_japan, com.android.gpstest.library.R.string.qzss_content_description, modifier)
         }
         GnssType.BEIDOU -> {
-            FlagImage(R.drawable.ic_flag_china, R.string.beidou_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_china, com.android.gpstest.library.R.string.beidou_content_description, modifier)
         }
         GnssType.GALILEO -> {
-            FlagImage(R.drawable.ic_flag_european_union, R.string.galileo_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_european_union, com.android.gpstest.library.R.string.galileo_content_description, modifier)
         }
         GnssType.IRNSS -> {
-            FlagImage(R.drawable.ic_flag_india, R.string.irnss_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_india, com.android.gpstest.library.R.string.irnss_content_description, modifier)
         }
         GnssType.SBAS -> SbasFlag(satelliteStatus, modifier)
         GnssType.UNKNOWN -> {
@@ -262,28 +262,28 @@ fun Flag(satelliteStatus: SatelliteStatus, modifier: Modifier) {
 fun SbasFlag(status: SatelliteStatus, modifier: Modifier = Modifier) {
     when (status.sbasType) {
         SbasType.WAAS -> {
-            FlagImage(R.drawable.ic_flag_usa, R.string.waas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_usa, com.android.gpstest.library.R.string.waas_content_description, modifier)
         }
         SbasType.EGNOS -> {
-            FlagImage(R.drawable.ic_flag_european_union, R.string.egnos_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_european_union, com.android.gpstest.library.R.string.egnos_content_description, modifier)
         }
         SbasType.GAGAN -> {
-            FlagImage(R.drawable.ic_flag_india, R.string.gagan_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_india, com.android.gpstest.library.R.string.gagan_content_description, modifier)
         }
         SbasType.MSAS -> {
-            FlagImage(R.drawable.ic_flag_japan, R.string.msas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_japan, com.android.gpstest.library.R.string.msas_content_description, modifier)
         }
         SbasType.SDCM -> {
-            FlagImage(R.drawable.ic_flag_russia, R.string.sdcm_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_russia, com.android.gpstest.library.R.string.sdcm_content_description, modifier)
         }
         SbasType.SNAS -> {
-            FlagImage(R.drawable.ic_flag_china, R.string.snas_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_china, com.android.gpstest.library.R.string.snas_content_description, modifier)
         }
         SbasType.SACCSA -> {
-            FlagImage(R.drawable.ic_flag_icao, R.string.saccsa_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_icao, com.android.gpstest.library.R.string.saccsa_content_description, modifier)
         }
         SbasType.SOUTHPAN -> {
-            FlagImage(R.drawable.ic_flag_southpan, R.string.southpan_content_description, modifier)
+            FlagImage(com.android.gpstest.library.R.drawable.ic_flag_southpan, com.android.gpstest.library.R.string.southpan_content_description, modifier)
         }        
         SbasType.UNKNOWN -> {
             Box(
@@ -357,7 +357,7 @@ fun Elevation(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     if (satelliteStatus.elevationDegrees != SatelliteStatus.NO_DATA) {
         StatusValue(
             stringResource(
-                R.string.gps_elevation_column_value,
+                com.android.gpstest.library.R.string.gps_elevation_column_value,
                 satelliteStatus.elevationDegrees
             ).trimZeros(),
             modifier
@@ -377,7 +377,7 @@ fun Azimuth(satelliteStatus: SatelliteStatus, modifier: Modifier) {
     if (satelliteStatus.azimuthDegrees != SatelliteStatus.NO_DATA) {
         StatusValue(
             stringResource(
-                R.string.gps_azimuth_column_value,
+                com.android.gpstest.library.R.string.gps_azimuth_column_value,
                 satelliteStatus.azimuthDegrees
             ).trimZeros(),
             modifier
@@ -438,9 +438,9 @@ fun StatusValue(text: String, modifier: Modifier = Modifier) {
 @Composable
 fun NotAvailable(isGnss: Boolean) {
     val message = if (isGnss) {
-        stringResource(R.string.gnss_not_available)
+        stringResource(com.android.gpstest.library.R.string.gnss_not_available)
     } else {
-        stringResource(R.string.sbas_not_available)
+        stringResource(com.android.gpstest.library.R.string.sbas_not_available)
     }
     NotAvailableText(message)
 }

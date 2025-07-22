@@ -47,7 +47,7 @@ class CarrierFreqUtilsTest {
         } else {
             assertEquals("unsupported", label)
             // The rest of the responses will be the same for API < 26, so we can skip remaining tests
-            return;
+            return
         }
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL2())
         assertEquals("L2", label)
@@ -84,7 +84,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         qzssL1.hasCarrierFrequency = true
         qzssL1.carrierFrequencyHz = 1575420000.0
 
@@ -99,7 +99,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         qzssL2.hasCarrierFrequency = true
         qzssL2.carrierFrequencyHz = 1227600000.0
 
@@ -114,7 +114,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         qzssL5.hasCarrierFrequency = true
         qzssL5.carrierFrequencyHz = 1176450000.0
 
@@ -129,7 +129,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         qzssL6.hasCarrierFrequency = true
         qzssL6.carrierFrequencyHz = 1278750000.0
 
@@ -158,7 +158,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB1.hasCarrierFrequency = true
         beidouB1.carrierFrequencyHz = 1561098000.0
 
@@ -173,7 +173,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB1c.hasCarrierFrequency = true
         beidouB1c.carrierFrequencyHz = 1575420000.0
 
@@ -188,7 +188,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB1c202.hasCarrierFrequency = true
         beidouB1c202.carrierFrequencyHz = 1575450000.0
 
@@ -203,7 +203,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB2a.hasCarrierFrequency = true
         beidouB2a.carrierFrequencyHz = 1176450000.0
 
@@ -219,7 +219,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB2b.hasCarrierFrequency = true
         beidouB2b.carrierFrequencyHz = 1207140000.0
 
@@ -234,7 +234,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         beidouB3.hasCarrierFrequency = true
         beidouB3.carrierFrequencyHz = 1268520000.0
 
@@ -251,7 +251,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         irnssL1.hasCarrierFrequency = true
         irnssL1.carrierFrequencyHz = 1575420000.0
 
@@ -266,7 +266,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         irnssL5.hasCarrierFrequency = true
         irnssL5.carrierFrequencyHz = 1176450000.0
 
@@ -281,7 +281,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         irnssS.hasCarrierFrequency = true
         irnssS.carrierFrequencyHz = 2492028000.0
 
@@ -296,7 +296,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         gagan.hasCarrierFrequency = true
         gagan.carrierFrequencyHz = 1575420000.0
         gagan.sbasType = SbasType.GAGAN
@@ -312,7 +312,7 @@ class CarrierFreqUtilsTest {
                                        true,
                                        true,
                                        72f,
-                                       25f);
+                                       25f)
         egnos121.hasCarrierFrequency = true
         egnos121.carrierFrequencyHz = 1575420000.0
         egnos121.sbasType = SbasType.EGNOS
@@ -328,7 +328,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos123.hasCarrierFrequency = true
         egnos123.carrierFrequencyHz = 1575420000.0
         egnos123.sbasType = SbasType.EGNOS
@@ -344,7 +344,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos126.hasCarrierFrequency = true
         egnos126.carrierFrequencyHz = 1575420000.0
         egnos126.sbasType = SbasType.EGNOS
@@ -360,7 +360,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos136.hasCarrierFrequency = true
         egnos136.carrierFrequencyHz = 1575420000.0
         egnos136.sbasType = SbasType.EGNOS
@@ -376,7 +376,7 @@ class CarrierFreqUtilsTest {
                                          true,
                                          true,
                                          72f,
-                                         25f);
+                                         25f)
         egnos121L5.hasCarrierFrequency = true
         egnos121L5.carrierFrequencyHz = 1176450000.0
         egnos121L5.sbasType = SbasType.EGNOS
@@ -392,7 +392,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos123L5.hasCarrierFrequency = true
         egnos123L5.carrierFrequencyHz = 1176450000.0
         egnos123L5.sbasType = SbasType.EGNOS
@@ -408,7 +408,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos126L5.hasCarrierFrequency = true
         egnos126L5.carrierFrequencyHz = 1176450000.0
         egnos126L5.sbasType = SbasType.EGNOS
@@ -424,7 +424,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos136L5.hasCarrierFrequency = true
         egnos136L5.carrierFrequencyHz = 1176450000.0
         egnos136L5.sbasType = SbasType.EGNOS
@@ -442,7 +442,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos133L1.hasCarrierFrequency = true
         egnos133L1.carrierFrequencyHz = 1575420000.0
         egnos133L1.sbasType = SbasType.EGNOS
@@ -458,7 +458,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         egnos133L5.hasCarrierFrequency = true
         egnos133L5.carrierFrequencyHz = 1176450000.0
         egnos133L5.sbasType = SbasType.EGNOS
@@ -492,7 +492,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         anik15_138L1.hasCarrierFrequency = true
         anik15_138L1.carrierFrequencyHz = 1575420000.0
         anik15_138L1.sbasType = SbasType.WAAS
@@ -508,7 +508,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         anik15_138L5.hasCarrierFrequency = true
         anik15_138L5.carrierFrequencyHz = 1176450000.0
         anik15_138L5.sbasType = SbasType.WAAS
@@ -524,7 +524,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         ses5_136L1.hasCarrierFrequency = true
         ses5_136L1.carrierFrequencyHz = 1575420000.0
         ses5_136L1.sbasType = SbasType.EGNOS
@@ -540,7 +540,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         ses5_136L5.hasCarrierFrequency = true
         ses5_136L5.carrierFrequencyHz = 1176450000.0
         ses5_136L5.sbasType = SbasType.EGNOS
@@ -558,7 +558,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         msas129L1.hasCarrierFrequency = true
         msas129L1.carrierFrequencyHz = 1575420000.0
         msas129L1.sbasType = SbasType.MSAS
@@ -574,7 +574,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         msas129L5.hasCarrierFrequency = true
         msas129L5.carrierFrequencyHz = 1176450000.0
         msas129L5.sbasType = SbasType.MSAS
@@ -590,7 +590,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         msas137L1.hasCarrierFrequency = true
         msas137L1.carrierFrequencyHz = 1575420000.0
         msas137L1.sbasType = SbasType.MSAS
@@ -606,7 +606,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         msas137L5.hasCarrierFrequency = true
         msas137L5.carrierFrequencyHz = 1176450000.0
         msas137L5.sbasType = SbasType.MSAS
@@ -622,8 +622,8 @@ class CarrierFreqUtilsTest {
                                       true,
                                       true,
                                       72f,
-                                      25f);
-      sdcm125L1.hasCarrierFrequency = true
+                                      25f)
+        sdcm125L1.hasCarrierFrequency = true
       sdcm125L1.carrierFrequencyHz = 1575420000.0
       sdcm125L1.sbasType = SbasType.SDCM
 
@@ -638,8 +638,8 @@ class CarrierFreqUtilsTest {
                                       true,
                                       true,
                                       72f,
-                                      25f);
-      sdcm125L5.hasCarrierFrequency = true
+                                      25f)
+        sdcm125L5.hasCarrierFrequency = true
       sdcm125L5.carrierFrequencyHz = 1176450000.0
       sdcm125L5.sbasType = SbasType.SDCM
 
@@ -656,7 +656,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         southpan122L1.hasCarrierFrequency = true
         southpan122L1.carrierFrequencyHz = 1575420000.0
         southpan122L1.sbasType = SbasType.SOUTHPAN
@@ -672,7 +672,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         southpan122L5.hasCarrierFrequency = true
         southpan122L5.carrierFrequencyHz = 1176450000.0
         southpan122L5.sbasType = SbasType.SOUTHPAN
@@ -689,7 +689,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         gpsL1variation.hasCarrierFrequency = true
         gpsL1variation.carrierFrequencyHz = 1575420000.0000000
 
@@ -704,7 +704,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
 
         label = CarrierFreqUtils.getCarrierFrequencyLabel(gpsL1noCf)
         assertEquals(CF_UNSUPPORTED, label)
@@ -717,7 +717,7 @@ class CarrierFreqUtilsTest {
                 true,
                 true,
                 72f,
-                25f);
+                25f)
         gpsL1badCf.hasCarrierFrequency = true
         gpsL1badCf.carrierFrequencyHz = 12345.0
 

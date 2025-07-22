@@ -72,14 +72,14 @@ class ShareLogFragment : Fragment() {
                     fileName.text = fileNameText
                 } else {
                     // Set the log file selected by the user using the File Browse button
-                    val lastPathSegment: String? = alternateFileUri.getLastPathSegment()
+                    val lastPathSegment: String? = alternateFileUri.lastPathSegment
                     // Parse file name from string like "primary:gnss_log/gnss_log_2019..."
                     val parts = lastPathSegment?.split("/".toRegex())?.toTypedArray()
                     fileName.text = parts?.get(parts.size - 1) ?: ""
                 }
             } else {
                 // Something went wrong - did user allow file/storage permissions when prompted when they enabled logging in Settings?
-                logInstructions.setText(R.string.log_error)
+                logInstructions.setText(com.android.gpstest.library.R.string.log_error)
                 return
             }
         }
@@ -89,7 +89,7 @@ class ShareLogFragment : Fragment() {
             val uri = IOUtils.getUriFromFile(activity, BuildConfig.APPLICATION_ID, files?.get(0))
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.data = uri
-            activity!!.startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
+            requireActivity().startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
             // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
             listener.onFileBrowse()
         }

@@ -26,7 +26,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.android.gpstest.Application;
-import com.android.gpstest.R;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -68,14 +67,14 @@ public class JsonFileLogger extends BaseFileLogger implements FileLogger {
                     jsonGenerator.writeStartArray();
                 }
             } catch (IOException e) {
-                logException(Application.Companion.getApp().getString(R.string.unable_to_open_json_generator), e);
+                logException(Application.Companion.getApp().getString(com.android.gpstest.library.R.string.unable_to_open_json_generator), e);
                 return false;
             }
         }
         ContextCompat.getMainExecutor(context).execute(() -> Toast.makeText(
                 Application.Companion.getApp().getApplicationContext(),
                 Application.Companion.getApp().getString(
-                        R.string.logging_to_new_file,
+                        com.android.gpstest.library.R.string.logging_to_new_file,
                         file.getAbsolutePath()
                 ),
                 Toast.LENGTH_LONG

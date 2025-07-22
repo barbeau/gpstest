@@ -100,7 +100,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="5dp"
                     app:srcCompat="@drawable/square"
-                    android:contentDescription="@string/square"/>/>
+                    android:contentDescription="@string/square"/>
 
                 <View
                     android:id="@+id/sky_legend_shape_line2a"

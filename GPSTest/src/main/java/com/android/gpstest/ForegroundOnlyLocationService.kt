@@ -78,6 +78,7 @@ import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -150,6 +151,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         Application.prefs.registerOnSharedPreferenceChangeListener(loggingSettingListener)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand()")
 
@@ -508,7 +510,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 NOTIFICATION_CHANNEL,
-                getString(R.string.app_name),
+                getString(com.android.gpstest.library.R.string.app_name),
                 NotificationManager.IMPORTANCE_LOW
             )
 
@@ -524,7 +526,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
      */
     private fun buildNotification(location: Location?, satellites: SatelliteGroup): Notification {
         val titleText = satellites.toNotificationTitle(app)
-        val summaryText = location?.toNotificationSummary(app, prefs) ?: getString(R.string.no_location_text)
+        val summaryText = location?.toNotificationSummary(app, prefs) ?: getString(com.android.gpstest.library.R.string.no_location_text)
 
         // 2. Build the BIG_TEXT_STYLE.
         val bigTextStyle = NotificationCompat.BigTextStyle()
@@ -567,20 +569,20 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .setStyle(bigTextStyle)
             .setContentTitle(titleText)
             .setContentText(summaryText)
-            .setSmallIcon(R.drawable.ic_sat_notification)
-            .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            .setSmallIcon(com.android.gpstest.library.R.drawable.ic_sat_notification)
+            .setColor(ContextCompat.getColor(this, com.android.gpstest.library.R.color.colorPrimary))
             .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(PRIORITY_LOW) // For < API 26
             .setDefaults(NotificationCompat.DEFAULT_LIGHTS) // For < API 26
             .setContentIntent(openActivityPendingIntent)
             .addAction(
-                R.drawable.ic_baseline_launch_24, getString(R.string.open),
+                com.android.gpstest.library.R.drawable.ic_baseline_launch_24, getString(com.android.gpstest.library.R.string.open),
                 openActivityPendingIntent
             )
             .addAction(
-                R.drawable.ic_baseline_cancel_24,
-                getString(R.string.stop),
+                com.android.gpstest.library.R.drawable.ic_baseline_cancel_24,
+                getString(com.android.gpstest.library.R.string.stop),
                 stopServicePendingIntent
             )
             .build()

@@ -67,6 +67,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import androidx.core.net.toUri
+import androidx.core.content.edit
 
 @AndroidEntryPoint
 class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
@@ -105,6 +107,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     private val trackingListener: SharedPreferences.OnSharedPreferenceChangeListener =
         PreferenceUtil.newStopTrackingListener ({ onGnssStopped() }, prefs)
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -113,7 +116,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
 
         lastLocation = null
 
-        Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
+        prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         if (isGooglePlayServicesInstalled) {
             // Save the savedInstanceState
@@ -125,28 +128,26 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
                 observeLocationUpdateStates()
             }
         } else {
-            val sp = Application.prefs
+            val sp = prefs
             if (!sp.getBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, false)) {
                 val builder = AlertDialog.Builder(
                     requireActivity()
                 )
-                builder.setMessage(getString(R.string.please_install_google_maps))
+                builder.setMessage(getString(com.android.gpstest.library.R.string.please_install_google_maps))
                 builder.setPositiveButton(
-                    getString(R.string.install)
+                    getString(com.android.gpstest.library.R.string.install)
                 ) { _, _ ->
-                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                    sp.edit { putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true) }
                     val intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(
-                            "market://details?id=com.google.android.apps.maps"
-                        )
+                        "market://details?id=com.google.android.apps.maps".toUri()
                     )
                     startActivity(intent)
                 }
                 builder.setNegativeButton(
-                    getString(R.string.no_thanks)
+                    getString(com.android.gpstest.library.R.string.no_thanks)
                 ) { _, _ ->
-                    sp.edit().putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true).apply()
+                    sp.edit { putBoolean(MapConstants.PREFERENCE_SHOWED_DIALOG, true) }
                 }
                 val dialog = builder.create()
                 dialog.show()
@@ -414,7 +415,7 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
             groundTruthMarker = map!!.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title(Application.app.getString(R.string.ground_truth_marker_title))
+                    .title(Application.app.getString(com.android.gpstest.library.R.string.ground_truth_marker_title))
             )
         } else {
             groundTruthMarker!!.position = latLng
@@ -440,17 +441,17 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
     }
 
     private fun checkMapPreferences() {
-        val settings = Application.prefs
+        val settings = prefs
         if (map != null && mapController!!.mode == MapConstants.MODE_MAP) {
             if (map!!.mapType !=
                 settings.getString(
-                    getString(R.string.pref_key_map_type),
+                    getString(com.android.gpstest.library.R.string.pref_key_map_type),
                     GoogleMap.MAP_TYPE_NORMAL.toString()
                 )
                     ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
             ) {
                 map!!.mapType = settings.getString(
-                    getString(R.string.pref_key_map_type),
+                    getString(com.android.gpstest.library.R.string.pref_key_map_type),
                     GoogleMap.MAP_TYPE_NORMAL.toString()
                 )
                     ?.toInt() ?: GoogleMap.MAP_TYPE_NORMAL
@@ -460,11 +461,11 @@ class MapFragment : SupportMapFragment(), View.OnClickListener, LocationSource,
         }
         if (mapController!!.mode == MapConstants.MODE_MAP) {
             rotate = settings
-                .getBoolean(getString(R.string.pref_key_rotate_map_with_compass), true)
-            tiltEnabled = settings.getBoolean(getString(R.string.pref_key_tilt_map_with_sensors), true)
+                .getBoolean(getString(com.android.gpstest.library.R.string.pref_key_rotate_map_with_compass), true)
+            tiltEnabled = settings.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_tilt_map_with_sensors), true)
         }
         val useDarkTheme =
-            Application.prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)
+            prefs.getBoolean(getString(com.android.gpstest.library.R.string.pref_key_dark_theme), false)
         if (map != null && activity != null && useDarkTheme) {
             map!!.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(

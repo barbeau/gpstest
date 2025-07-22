@@ -62,7 +62,7 @@ object PreferenceUtil {
     }
 
     fun writeAntennaInfoToFileJson(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_file_antenna_output_json), false);
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_antenna_output_json), false)
     }
 
     fun writeAntennaInfoToFileCsv(context: Context, prefs: SharedPreferences): Boolean {
@@ -70,27 +70,27 @@ object PreferenceUtil {
     }
 
     fun writeNavMessageToLogcat(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_as_navigation_message_output), false);
+        return prefs.getBoolean(context.getString(R.string.pref_key_as_navigation_message_output), false)
     }
 
     fun writeNavMessageToFile(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_file_navigation_message_output), false);
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_navigation_message_output), false)
     }
 
     fun writeStatusToFile(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_file_gnss_status_output), false);
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_gnss_status_output), false)
     }
 
     fun writeOrientationToFile(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_file_orientation_output), false);
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_orientation_output), false)
     }
 
     fun injectTimeWhenLogging(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_inject_time_when_logging), true);
+        return prefs.getBoolean(context.getString(R.string.pref_key_inject_time_when_logging), true)
     }
 
     fun injectPsdsWhenLogging(context: Context, prefs: SharedPreferences): Boolean {
-        return prefs.getBoolean(context.getString(R.string.pref_key_inject_psds_when_logging), true);
+        return prefs.getBoolean(context.getString(R.string.pref_key_inject_psds_when_logging), true)
     }
 
     fun isFileLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {

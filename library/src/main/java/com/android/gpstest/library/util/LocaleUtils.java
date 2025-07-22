@@ -6,8 +6,11 @@ package com.android.gpstest.library.util;
 
 import android.os.Build;
 
+import androidx.annotation.ChecksSdkIntAtLeast;
+
 public class LocaleUtils {
 
+    @ChecksSdkIntAtLeast(parameter = 0)
     public static boolean isAtLeastVersion(int version) {
         return Build.VERSION.SDK_INT >= version;
     }
