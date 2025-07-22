@@ -38,7 +38,9 @@ jobs:
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
           gradle-version: '8.14.3'
-          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          # Use an encryption key in case you want to cache the configuration data from Gradle
+          # Cf. https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#saving-configuration-cache-data
+          # cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Run checks
         run: ./gradlew check
