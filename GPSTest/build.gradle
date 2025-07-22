@@ -57,7 +57,6 @@ android {
 
     lintOptions {
         sarifReport true
-        checkDependencies true
         disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
     }
 
