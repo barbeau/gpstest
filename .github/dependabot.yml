@@ -22,8 +22,13 @@ updates:
   ignore:
   - dependency-name: "*"
     update-types: [ "version-update:semver-major" ]
+  - dependency-name: "com.google.maps.android:android-maps-utils:*"
+  - dependency-name: "com.google.maps.android:maps-ktx:*"
+  - dependency-name: "com.google.android.gms:play-services-maps"
   groups:
     gradle-dependencies:
       applies-to: version-updates
       patterns:
       - "*"
+      
+
