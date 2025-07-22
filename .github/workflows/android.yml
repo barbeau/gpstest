@@ -10,6 +10,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   unit-test:
@@ -84,6 +88,7 @@ jobs:
     name: Run instrumented tests
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
         api-level: [24, 29, 33]
         target: [default, google_apis]
@@ -123,6 +128,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
+            ~/.android/debug.keystore
           key: avd-${{ matrix.target }}-${{ matrix.api-level }}
 
       - name: Create AVD and generate snapshot for caching
