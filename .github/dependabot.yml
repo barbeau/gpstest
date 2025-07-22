@@ -22,8 +22,9 @@ updates:
   ignore:
   - dependency-name: "*"
     update-types: [ "version-update:semver-major", "version-update:semver-minor" ]
-  - dependency-name: "com.google.maps.android:android-maps-utils:*"
-  - dependency-name: "com.google.maps.android:maps-ktx:*"
+  # TODO: ignore the Google Maps dependencies, remove when refactoring is done to support breaking changes introduced by newer versions
+  - dependency-name: "com.google.maps.android:android-maps-utils"
+  - dependency-name: "com.google.maps.android:maps-ktx"
   - dependency-name: "com.google.android.gms:play-services-maps"
   groups:
     gradle-dependencies:
