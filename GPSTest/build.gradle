@@ -56,7 +56,7 @@ android {
     }
 
     lintOptions {
-        sarifReport true
+        sarifReport = true
         disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
     }
 
