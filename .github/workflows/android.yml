@@ -82,6 +82,7 @@ jobs:
     name: Run instrumented tests
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
         api-level: [24, 29, 33]
         target: [default, google_apis]
