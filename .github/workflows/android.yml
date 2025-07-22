@@ -38,9 +38,17 @@ jobs:
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
           gradle-version: '8.14.3'
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Run checks
-        run: ./gradlew check -x lint
+        run: ./gradlew check
+
+      - name: Upload SARIF report
+        uses: github/codeql-action/upload-sarif@d6bbdef45e766d081b84a2def353b0055f728d3e # v3.29.3
+        if: success() || failure()
+        with:
+          sarif_file: GPSTest/build/reports/lint-results-googleDebug.sarif
+          category: lint
 
   build:
     name: Build debug APK
@@ -70,9 +78,10 @@ jobs:
         with:
           gradle-version: '8.14.3'
           cache-read-only: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Build app
-        run: ./gradlew assembleDebug -x lint --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APKs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -117,6 +126,7 @@ jobs:
         with:
           gradle-version: '8.14.3'
           cache-read-only: true
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
       - name: Configure AVD cache
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
@@ -151,6 +161,6 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace && killall -INT crashpad_handler || true
+            ./gradlew ${{ matrix.tasks }} --stacktrace && killall -INT crashpad_handler || true
           arch: x86_64
           profile: Nexus 6
