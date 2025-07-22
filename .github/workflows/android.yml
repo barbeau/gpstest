@@ -75,7 +75,7 @@ jobs:
           cache-read-only: true
 
       - name: Build app
-        run: ./gradlew assembleDebug -x lint --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APKs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -152,6 +152,6 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
+            ./gradlew ${{ matrix.tasks }} --stacktrace && killall -INT crashpad_handler || true
           arch: x86_64
           profile: Nexus 6
