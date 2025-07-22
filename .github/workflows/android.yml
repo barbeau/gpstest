@@ -36,7 +36,7 @@ jobs:
           gradle-version: '8.13'
 
       - name: Run checks
-        run: ./gradlew check -x lint
+        run: ./gradlew check
 
   build:
     name: Build debug APK
