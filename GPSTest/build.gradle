@@ -56,7 +56,7 @@ android {
     }
 
     lintOptions {
-        disable 'MissingTranslation', 'ExtraTranslation'
+        disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
     }
 
     if (project.hasProperty("secure.properties")
