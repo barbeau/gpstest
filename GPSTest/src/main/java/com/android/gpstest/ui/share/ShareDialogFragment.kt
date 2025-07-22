@@ -40,10 +40,10 @@ class ShareDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = activity!!.layoutInflater.inflate(R.layout.share, null)
+        val view = requireActivity().layoutInflater.inflate(R.layout.share, null)
         setRetainInstance(true)
-        val builder = AlertDialog.Builder(activity!!)
-                .setTitle(R.string.share)
+        val builder = AlertDialog.Builder(requireActivity())
+                .setTitle(com.android.gpstest.library.R.string.share)
                 .setView(view)
                 .setNeutralButton(R.string.main_help_close) { dialog, _ -> }
         shareCollectionAdapter = ShareCollectionAdapter(this)
