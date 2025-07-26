@@ -89,7 +89,7 @@ class ShareLogFragment : Fragment() {
             val uri = IOUtils.getUriFromFile(activity, BuildConfig.APPLICATION_ID, files?.get(0))
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.data = uri
-            activity!!.startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
+            requireActivity().startActivityForResult(intent, LibUIUtils.PICKFILE_REQUEST_CODE)
             // Dismiss the dialog - it will be re-created in the callback to GpsTestActivity
             listener.onFileBrowse()
         }
