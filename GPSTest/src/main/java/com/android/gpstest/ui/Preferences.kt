@@ -224,9 +224,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             )
         ) {
             // Change the preferred distance units description
-            if (key != null) {
-                changePreferenceSummary(key)
-            }
+            changePreferenceSummary(key)
         } else {
             if (key.equals(
                     getString(R.string.pref_key_preferred_speed_units_v2),
@@ -234,15 +232,11 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
                 )
             ) {
                 // Change the preferred speed units description
-                if (key != null) {
-                    changePreferenceSummary(key)
-                }
+                changePreferenceSummary(key)
             } else {
                 if (key.equals(getString(R.string.pref_key_language), ignoreCase = true)) {
                     // Change the preferred language description
-                    if (key != null) {
-                        changePreferenceSummary(key)
-                    }
+                    changePreferenceSummary(key)
                 }
             }
         }

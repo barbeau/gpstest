@@ -172,8 +172,8 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     // Write GNSS antenna info to JSON
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.19.2'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.19.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
 
     // Multidex - Needed for APIs < 21
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -198,7 +198,7 @@ dependencies {
     // Use suspend coroutines instead of callbacks (Google flavor only)
     googleImplementation 'com.google.maps.android:maps-ktx:3.1.0'
     // OSM Droid (fdroid flavor only)
-    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.20'
+    osmdroidImplementation 'org.osmdroid:osmdroid-android:6.1.11'
 
     //
     // Jetpack Compose for UI

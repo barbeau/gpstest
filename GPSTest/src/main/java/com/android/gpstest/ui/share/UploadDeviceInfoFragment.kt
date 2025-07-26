@@ -68,7 +68,7 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadNoLocationTextView.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(requireContext())
+                val geocoder = Geocoder(context!!)
                 var addresses: List<Address>? = emptyList()
                 try {
                     addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
@@ -88,7 +88,7 @@ class UploadDeviceInfoFragment : Fragment() {
             var versionCode = ""
             try {
                 val info: PackageInfo = Application.app.packageManager.getPackageInfo(Application.app.packageName, 0)
-                versionName = info.versionName.toString()
+                versionName = info.versionName
                 versionCode = info.versionCode.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
