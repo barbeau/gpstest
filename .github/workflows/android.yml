@@ -145,6 +145,6 @@ jobs:
           disable-animations: true
           script: |
             adb wait-for-device
-            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
+            ./gradlew ${{ matrix.tasks }} -x lint --stacktrace && killall -INT crashpad_handler || true
           arch: x86_64
           profile: Nexus 6
