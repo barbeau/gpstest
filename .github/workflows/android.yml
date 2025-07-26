@@ -36,7 +36,14 @@ jobs:
           gradle-version: '8.13'
 
       - name: Run checks
-        run: ./gradlew check -x lint
+        run: ./gradlew check
+
+      - name: Upload SARIF report
+        uses: github/codeql-action/upload-sarif@4e828ff8d448a8a6e532957b1811f387a63867e8 # v3.29.4
+        if: success() || failure()
+        with:
+          sarif_file: GPSTest/build/reports/lint-results-googleDebug.sarif
+          category: lint
 
   build:
     name: Build debug APK
@@ -68,7 +75,7 @@ jobs:
           cache-read-only: true
 
       - name: Build app
-        run: ./gradlew assembleDebug -x lint --stacktrace
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APKs
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
