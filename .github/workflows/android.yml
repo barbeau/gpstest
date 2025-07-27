@@ -33,7 +33,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: wrapper
 
       - name: Run checks
         run: ./gradlew check
@@ -71,7 +71,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: wrapper
           cache-read-only: true
 
       - name: Build app
@@ -117,7 +117,7 @@ jobs:
       - name: Setup Gradle and cache
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
         with:
-          gradle-version: '8.13'
+          gradle-version: wrapper
           cache-read-only: true
 
       - name: Configure AVD cache
