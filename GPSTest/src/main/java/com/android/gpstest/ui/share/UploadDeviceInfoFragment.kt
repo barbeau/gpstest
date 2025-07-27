@@ -68,7 +68,7 @@ class UploadDeviceInfoFragment : Fragment() {
             uploadNoLocationTextView.visibility = View.GONE
 
             if (Geocoder.isPresent()) {
-                val geocoder = Geocoder(context!!)
+                val geocoder = Geocoder(requireContext())
                 var addresses: List<Address>? = emptyList()
                 try {
                     addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
