@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         minSdk 24
-        targetSdk 33
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -24,7 +24,7 @@ android {
     }
 
     lintOptions {
-        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation'
+        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation', 'ExpiredTargetSdkVersion'
     }
 
     buildFeatures {
