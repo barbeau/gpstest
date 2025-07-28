@@ -142,7 +142,7 @@ class SharedSensorManager constructor(
                 )
             } else if (SatelliteUtils.isOrientationSensorSupported(context)) {
                 // Use the legacy orientation sensors
-                val sensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
+                val sensor: Sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION)
                 if (sensor != null) {
                     sensorManager.registerListener(
                         callback,
