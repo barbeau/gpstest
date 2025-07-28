@@ -217,7 +217,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         changePreferenceSummary(getString(R.string.pref_key_language))
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (key.equals(
                 getString(R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
@@ -278,7 +278,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
      *
      * @param prefKey preference key that triggers a change in summary
      */
-    private fun changePreferenceSummary(prefKey: String) {
+    private fun changePreferenceSummary(prefKey: String?) {
         if (prefKey.equals(
                 getString(R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
