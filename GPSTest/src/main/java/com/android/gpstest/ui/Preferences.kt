@@ -217,7 +217,12 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         changePreferenceSummary(getString(R.string.pref_key_language))
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences,
+                                           key: String?) {
+        // A null key is passed when SharedPreferences are cleared, so we exit.
+        if (key == null) {
+            return;
+        }
         if (key.equals(
                 getString(R.string.pref_key_preferred_distance_units_v2),
                 ignoreCase = true
