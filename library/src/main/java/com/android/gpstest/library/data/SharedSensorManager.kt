@@ -149,10 +149,10 @@ class SharedSensorManager constructor(
                         sensor,
                         ROT_VECTOR_SENSOR_DELAY_MICROS
                 )
-            } else {
-                // No sensors to observe
+                } else {
+                    // No sensors to observe
                     Log.e(TAG, "Device doesn't support sensor TYPE_ROTATION_VECTOR or TYPE_ORIENTATION")
-                close()
+                    close()
                 }
             }
         } catch (e: Exception) {
