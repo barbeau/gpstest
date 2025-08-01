@@ -23,9 +23,6 @@ android {
         }
     }
 
-    lintOptions {
-        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation', 'ExpiredTargetSdkVersion'
-    }
 
     buildFeatures {
         dataBinding true
@@ -42,6 +39,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
+    }
+    lint {
+        disable 'JvmStaticProvidesInObjectDetector', 'FieldSiteTargetOnQualifierAnnotation', 'ModuleCompanionObjects', 'ModuleCompanionObjectsNotInModuleParent', 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation', 'ExpiredTargetSdkVersion'
     }
 }
 

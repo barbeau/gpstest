@@ -40,25 +40,13 @@ android {
             applicationId "com.android.gpstest.osmdroid"
         }
     }
-
     packagingOptions {
-        // http://stackoverflow.com/questions/20673625/gradle-0-7-0-duplicate-files-during-packaging-of-apk
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
-        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
-        // for JNA and JNA-platform
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        // for byte-buddy
-        exclude "META-INF/licenses/ASM"
-        pickFirst "win32-x86-64/attach_hotspot_windows.dll"
-        pickFirst "win32-x86/attach_hotspot_windows.dll"
+        resources {
+            excludes += ['META-INF/LICENSE', 'META-INF/NOTICE', 'META-INF/AL2.0', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
+            pickFirsts += ['win32-x86-64/attach_hotspot_windows.dll', 'win32-x86/attach_hotspot_windows.dll']
+        }
     }
 
-    lintOptions {
-        sarifReport true
-        disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
-    }
 
     if (project.hasProperty("secure.properties")
             && new File(project.property("secure.properties")).exists()) {
@@ -142,6 +130,10 @@ android {
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
     namespace 'com.android.gpstest'
+    lint {
+        disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
+        sarifReport true
+    }
 }
 
 dependencies {
