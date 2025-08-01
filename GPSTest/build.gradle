@@ -10,7 +10,7 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 34
-        multiDexEnabled true
+        multiDexEnabled = true
         // versionCode scheme - first two digits are minSdkVersion, last three digits are build number
         versionCode 24099
         versionName "3.10.5"
@@ -22,7 +22,7 @@ android {
 
     buildFeatures {
         // Enables Jetpack Compose for this module
-        compose true
+        compose = true
     }
 
     flavorDimensions "map"
@@ -81,9 +81,9 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.release
         }
         // Append the version name to the end of aligned APKs
         android.applicationVariants.all { variant ->
@@ -108,16 +108,16 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
-        unitTests.includeAndroidResources true
+        unitTests.includeAndroidResources = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.0'
+        kotlinCompilerExtensionVersion = '1.4.0'
     }
 
     buildFeatures {
-        dataBinding true
-        viewBinding true
+        dataBinding = true
+        viewBinding = true
     }
 
     buildFeatures {
@@ -129,10 +129,10 @@ android {
 
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-    namespace 'com.android.gpstest'
+    namespace = 'com.android.gpstest'
     lint {
         disable 'MissingTranslation', 'ExtraTranslation', 'StringFormatInvalid'
-        sarifReport true
+        sarifReport = true
     }
 }
 

@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    namespace 'com.android.gpstest.library'
-    compileSdk 33
+    namespace = 'com.android.gpstest.library'
+    compileSdk = 33
 
     defaultConfig {
-        minSdk 24
-        targetSdk 32
+        minSdk = 24
+        targetSdk = 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -25,8 +25,8 @@ android {
 
 
     buildFeatures {
-        dataBinding true
-        viewBinding true
+        dataBinding = true
+        viewBinding = true
     }
 
     dataBinding {
