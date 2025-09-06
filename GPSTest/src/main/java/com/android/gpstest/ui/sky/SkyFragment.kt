@@ -314,7 +314,9 @@ class SkyFragment : Fragment() {
             legend.skyLegendShapeLine15a,
             legend.skyLegendShapeLine15b,
             legend.skyLegendShapeLine16a,
-            legend.skyLegendShapeLine16b
+            legend.skyLegendShapeLine16b,
+            legend.skyLegendShapeLine17a,
+            legend.skyLegendShapeLine17b
         )
 
         // Shape Legend shapes
@@ -331,7 +333,8 @@ class SkyFragment : Fragment() {
             legend.skyLegendDiamond4,
             legend.skyLegendDiamond5,
             legend.skyLegendDiamond6,
-            legend.skyLegendDiamond7
+            legend.skyLegendDiamond7,
+            legend.skyLegendDiamond8
         )
     }
 
