@@ -597,6 +597,16 @@ object LibUIUtils {
     }
 
     /**
+     * Converts the provide value in meters per second to the corresponding value in knots (nautical miles per hour)
+     * @param metersPerSecond value in meters per second to convert to knots
+     * @return the provided meters per second value converted to knots
+     */
+    @JvmStatic
+    fun toKnots(metersPerSecond: Float): Float {
+        return toKilometersPerHour(metersPerSecond) / 1.852f
+    }
+
+    /**
      * Sets the vertical bias for a provided view that is within a ConstraintLayout
      * @param view view within a ConstraintLayout
      * @param bias vertical bias to be used
