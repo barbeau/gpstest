@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    namespace 'com.android.gpstest.library'
-    compileSdk 33
+    namespace = 'com.android.gpstest.library'
+    compileSdk = 33
 
     defaultConfig {
-        minSdk 24
-        targetSdk 32
+        minSdk = 24
+        targetSdk = 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -23,13 +23,10 @@ android {
         }
     }
 
-    lintOptions {
-        disable "JvmStaticProvidesInObjectDetector", "FieldSiteTargetOnQualifierAnnotation", "ModuleCompanionObjects", "ModuleCompanionObjectsNotInModuleParent", 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation', 'ExpiredTargetSdkVersion'
-    }
 
     buildFeatures {
-        dataBinding true
-        viewBinding true
+        dataBinding = true
+        viewBinding = true
     }
 
     dataBinding {
@@ -42,6 +39,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17
+    }
+    lint {
+        disable 'JvmStaticProvidesInObjectDetector', 'FieldSiteTargetOnQualifierAnnotation', 'ModuleCompanionObjects', 'ModuleCompanionObjectsNotInModuleParent', 'StringFormatInvalid', 'MissingTranslation', 'ExtraTranslation', 'ExpiredTargetSdkVersion'
     }
 }
 
