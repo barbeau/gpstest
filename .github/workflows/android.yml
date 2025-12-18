@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew check
 
       - name: Upload SARIF report
-        uses: github/codeql-action/upload-sarif@cf1bb45a277cb3c205638b2cd5c984db1c46a412 # v3.29.5
+        uses: github/codeql-action/upload-sarif@1b168cd39490f61582a9beae412bb7057a6b2c4e # v3.29.5
         if: success() || failure()
         with:
           sarif_file: GPSTest/build/reports/lint-results-googleDebug.sarif
@@ -78,7 +78,7 @@ jobs:
         run: ./gradlew assembleDebug --stacktrace
 
       - name: Upload APKs
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: apks
           path: |
@@ -121,7 +121,7 @@ jobs:
           cache-read-only: true
 
       - name: Configure AVD cache
-        uses: actions/cache@a7833574556fa59680c1b7cb190c1735db73ebf0 # v5.0.0
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         id: avd-cache
         with:
           path: |
