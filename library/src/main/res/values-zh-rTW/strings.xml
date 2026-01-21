@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* //device/apps/common/assets/res/any/strings.xml
+**
+** Copyright 2008-2021 The Android Open Source Project, Sean J. Barbeau
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     https://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources>
+    <!-- Fragments -->
+    <string name="gps_status_title">狀態</string>
+    <string name="gps_map_title">地圖</string>
+    <string name="gps_sky_title">天空圖</string>
+    <string name="gps_accuracy_title">精確度</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navdrawer_separator_assist_data">修改輔助資料</string>
+    <string name="force_psds_injection">插入 PSDS 資料</string>
+    <string name="force_time_injection">插入時間資料</string>
+    <string name="delete_aiding_data">清除輔助資料</string>
+    <string name="navdrawer_item_settings">設定</string>
+    <string name="navdrawer_item_help">說明</string>
+    <string name="navdrawer_item_send_feedback">傳送意見回饋</string>
+    <string name="navdrawer_item_open_source">造訪我們的 GitHub</string>
+
+    <string name="navigation_drawer_open">開啟導覽抽屜</string>
+    <string name="navigation_drawer_close">關閉導覽抽屜</string>
+
+    <!-- GPS functionality -->
+    <string name="gps_start">開始</string>
+    <string name="gps_pause">暫停</string>
+
+    <string name="delete_aiding_data_success">已提交刪除輔助資料的請求。</string>
+    <string name="delete_aiding_data_failure">裝置不支援刪除輔助資料。</string>
+    <string name="gps_switch">關閉/開啟</string>
+    <string name="gps_switch_content_description">GNSS 關閉/開啟</string>
+    <string name="share">分享</string>
+    <string name="copied_to_clipboard">位置已複製到剪貼簿</string>
+    <string name="send_log">傳送記錄…</string>
+    <string name="log">記錄</string>
+    <string name="file_name">檔案名稱</string>
+    <string name="location">位置</string>
+    <string name="log_instructions">在設定中啟用 NMEA、原始測量資料、導航訊息等的記錄功能</string>
+    <string name="log_error">檔案記錄出現問題。您是否已允許檔案/儲存權限？請嘗試在設定中重新啟用檔案記錄選項，並在提示時點選「允許」。</string>
+    <string name="no_location">請在取得 GNSS 定位後再嘗試分享您的位置…</string>
+    <string name="include_altitude">包含高度</string>
+    <string name="set_fix_frequency">設定定位頻率</string>
+    <string name="force_time_injection_success">已提交時間插入請求。</string>
+    <string name="force_time_injection_failure">裝置不支援插入時間資料。</string>
+
+    <string name="force_psds_injection_success">已提交 PSDS 插入請求。</string>
+    <string name="force_psds_injection_failure">裝置不支援插入 PSDS 資料。</string>
+
+    <string name="device">裝置</string>
+    <string name="upload_details">上傳您的裝置功能（例如：裝置製造商和型號、支援的 GNSS、支援的 SBAS、雙頻支援）到公開的 GPSTest 裝置資料庫 (https://bit.ly/gpstest-device-database)。\n\n不會分享您裝置的任何私人資訊。</string>
+    <string name="upload_no_location">請切換到狀態畫面，等待 GNSS 定位，然後返回此畫面上傳裝置功能。</string>
+    <string name="upload_success">成功上傳裝置功能！</string>
+    <string name="upload_failure">裝置功能上傳失敗。請再試一次。</string>
+    <string name="upload_nothing_changed">自上次上傳後沒有變更。請稍後再試。</string>
+
+    <string name="zoom_in">放大</string>
+    <string name="zoom_out">縮小</string>
+    <string name="mode_map">地圖</string>
+    <string name="mode_satellite">衛星</string>
+
+    <string name="latitude_label">緯度：</string>
+    <string name="longitude_label">經度：</string>
+    <string name="fix_time_label">時間：</string>
+    <string name="ttff_label">首次定位時間：</string>
+    <string name="altitude_label">高度：</string>
+    <string name="altitude_msl_label">高度 (MSL)：</string>
+    <string name="accuracy_label">水平精確度：</string>
+    <string name="hor_and_vert_accuracy_label">水平/垂直精確度：</string>
+    <string name="speed_label">速度：</string>
+    <string name="speed_acc_label">速度精確度：</string>
+    <string name="bearing_label">方位：</string>
+    <string name="bearing_acc_label">方位精確度：</string>
+    <string name="num_sats_label">衛星數：</string>
+    <string name="pdop_label">PDOP：</string>
+    <string name="hvdop_label">水平/垂直 DOP：</string>
+
+    <string name="id_column_label">ID</string>
+    <string name="gnss_flag_image_label">GNSS</string>
+    <string name="sbas_flag_image_label">SBAS</string>
+    <string name="cf_column_label">CF</string>
+    <string name="gps_cn0_column_label">C/N0</string>
+    <string name="avg_cn0_label">平均</string>
+    <string name="elevation_column_label">仰角</string>
+    <string name="azimuth_column_label">方位角</string>
+    <string name="flags_aeu_column_label">旗標</string>
+    <string name="gps_not_supported">請檢查系統設定 - 裝置似乎不支援 GNSS/GPS。</string>
+    <string name="install">安裝</string>
+    <string name="no_thanks">不用了，謝謝</string>
+    <string name="please_install_google_maps">地圖分頁需要 Google 地圖</string>
+    <string name="enable_gps_message">GPS/GNSS 已停用。現在啟用嗎？</string>
+    <string name="enable_gps_positive_button">啟用 GPS/GNSS</string>
+    <string name="enable_gps_negative_button">否</string>
+    <string name="gnss_running">GNSS 正在執行，間隔 = %1$s 秒，最小距離 = %2$s 公尺</string>
+    <string name="clear_assist_warning_title">刪除輔助資料？</string>
+    <string name="clear_assist_warning">某些裝置可能需要 24 小時來自動重新整理輔助資料。如果您的裝置不支援手動插入，GNSS 可能在自動重新整理完成之前無法在任何應用程式中運作。您確定嗎？</string>
+    <string name="never_ask_again">不再詢問</string>
+    <string name="qr_code_instructions_title">掃描 QR 碼</string>
+    <string name="qr_code_instructions_text">使用 Geo URI 格式的 QR 碼（geo:28.0587,-82.4139）匯入真實位置。您可以在 https://zxing.appspot.com/generator/ 建立自己的 QR 碼。</string>
+    <string name="qr_code_cannot_read_code">無法從 QR 碼讀取 Geo URI</string>
+    <string name="never_show_again">不再顯示</string>
+    <string name="not_now">現在不要</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="gnss_not_available">全球導航衛星系統 (GNSS) 衛星無法使用</string>
+    <string name="sbas_not_available">衛星導航增強系統 (SBAS) 衛星無法使用</string>
+    <string name="menu_option_sort_by">排序方式</string>
+    <string name="menu_option_sort_by_content_description">訊號排序方式</string>
+    <string name="menu_option_filter">篩選</string>
+    <string name="menu_option_filter_content_description">篩選訊號</string>
+    <string name="filter_dialog_title">只顯示這些 GNSS</string>
+    <string name="filter_signal_text">顯示 %2$d 個訊號中的 %1$d 個</string>
+    <string name="filter_showall">（顯示全部）</string>
+    <string name="error_time_title">您的 GNSS 時間有誤</string>
+    <string name="error_time_message">裝置 GNSS 時間：\n\n%1$s\n\n…與您的系統時鐘相差超過 %2$d 天。這可能是由 GPS 週數回捲問題引起的 - 請詢問您的裝置製造商以取得詳細資訊。更多資訊請參見 https://bit.ly/gps-week-rollover。</string>
+    <string name="unknown">未知</string>
+    <string name="cancel">取消</string>
+    <string name="notification_title">%1$d/%2$d 顆衛星 | %3$d/%4$d 個訊號</string>
+
+    <string name="gps_content_description">GPS</string>
+    <string name="glonass_content_description">GLONASS</string>
+    <string name="galileo_content_description">Galileo</string>
+    <string name="qzss_content_description">QZSS</string>
+    <string name="beidou_content_description">北斗</string>
+    <string name="irnss_content_description">IRNSS</string>
+
+    <string name="waas_content_description">WAAS</string>
+    <string name="egnos_content_description">EGNOS</string>
+    <string name="gagan_content_description">GAGAN</string>
+    <string name="msas_content_description">MSAS</string>
+    <string name="sdcm_content_description">SDCM</string>
+    <string name="snas_content_description">SNAS</string>
+    <string name="saccsa_content_description">SACCSA</string>
+    <string name="southpan_content_description">SouthPAN</string>
+
+    <!-- Map view -->
+    <string name="ground_truth_latitude">您的緯度</string>
+    <string name="ground_truth_longitude">您的經度</string>
+    <string name="ground_truth_altitude">WGS84 橢球體以上的公尺數（選填）</string>
+    <string name="set_ground_truth_title">測量精確度</string>
+    <string name="set_ground_truth_subtitle">點選地圖或輸入您的實際位置</string>
+    <string name="save">儲存</string>
+    <string name="edit">編輯</string>
+    <string name="ground_truth_marker_title">您的實際位置</string>
+    <string name="ground_truth_invalid_location_title">無效的位置</string>
+    <string name="ground_truth_invalid_lat">緯度必須是介於 -90 到 90 之間的十進位度數</string>
+    <string name="ground_truth_invalid_long">經度必須是介於 -180 到 180 之間的十進位度數</string>
+    <string name="ground_truth_invalid_alt">高度必須是 WGS84 的公尺數</string>
+
+    <string name="horizontal_error_title">水平誤差</string>
+    <string name="vertical_error_title">垂直誤差</string>
+    <string name="horizontal_error_label">誤差</string>
+    <string name="measured_error_graph_label">測量誤差</string>
+    <string name="estimated_accuracy_graph_label">硬體估計的精確度</string>
+    <string name="horizontal_vertical_error_label">水平/垂直誤差</string>
+    <string name="avg_error_label">平均 %1$d 次定位</string>
+    <string name="fix_number">定位 #</string>
+    <string name="show_radar_valid_location">已匯入真實位置！</string>
+    <string name="show_radar_invalid_location">匯入的真實位置無效</string>
+
+    <!-- Sky view -->
+    <string name="sky_legend_title">圖例</string>
+    <string name="sky_legend_shape_gnss_title">全球導航衛星系統 (GNSS)</string>
+    <string name="sky_legend_shape_navstar">NAVSTAR GPS（美國）</string>
+    <string name="sky_legend_shape_glonass">GLONASS（俄羅斯）</string>
+    <string name="sky_legend_shape_galileo">Galileo（歐盟）</string>
+    <string name="sky_legend_shape_qzss">QZSS（日本）</string>
+    <string name="sky_legend_shape_beidou">北斗/COMPASS（中國）</string>
+    <string name="sky_legend_shape_irnss">IRNSS/NavIC（印度）</string>
+
+    <string name="sky_legend_shape_sbas_title">衛星導航增強系統 (SBAS)</string>
+    <string name="sky_legend_shape_waas">WAAS（美國）</string>
+    <string name="sky_legend_shape_egnos">EGNOS（歐盟）</string>
+    <string name="sky_legend_shape_gagan">GAGAN（印度）</string>
+    <string name="sky_legend_shape_msas">MSAS（日本）</string>
+    <string name="sky_legend_shape_sdcm">SDCM（俄羅斯）</string>
+    <string name="sky_legend_shape_snas">BDSBAS/SNAS（中國）</string>
+    <string name="sky_legend_shape_saccsa">SACCSA（ICAO）</string>
+    <string name="sky_legend_shape_southpan">SouthPAN（澳洲 / 紐西蘭）</string>
+
+    <string name="sky_legend_shape_availability_title">訊號可用性</string>
+    <string name="sky_legend_shape_not_in_view">裝置視線外</string>
+    <string name="sky_legend_shape_in_view">視線內</string>
+    <string name="sky_legend_shape_used_in_fix">用於定位</string>
+
+    <!-- Content descriptions -->
+    <string name="lock">鎖定</string>
+    <string name="usa_flag">美國國旗</string>
+    <string name="russia_flag">俄羅斯國旗</string>
+    <string name="eu_flag">歐盟旗幟</string>
+    <string name="china_flag">中國國旗</string>
+    <string name="japan_flag">日本國旗</string>
+    <string name="india_flag">印度國旗</string>
+    <string name="icao_flag">ICAO 旗幟</string>
+    <string name="southpan_flag">SouthPAN 旗幟</string>
+
+    <string name="circle">圓形</string>
+    <string name="square">方形</string>
+    <string name="triangle">三角形</string>
+    <string name="pentagon">五邊形</string>
+    <string name="hexagon">六邊形</string>
+    <string name="oval">橢圓形</string>
+    <string name="diamond">菱形</string>
+    <string name="empty_shape">空心形狀</string>
+    <string name="filled_shape_no_border">填充無邊框形狀</string>
+    <string name="filled_shape_with_border">填充有邊框形狀</string>
+
+    <string name="copy">複製</string>
+    <string name="open_in_geohack">在 GeoHack 中開啟</string>
+    <string name="open_in_map_app">在地圖應用程式中開啟</string>
+    <string name="browse_folder">瀏覽資料夾</string>
+    <string name="upload">上傳</string>
+
+    <!-- GNSS Status callbacks -->
+    <string name="gnss_nav_msg_status_loc_disabled">GNSS 提供者或位置服務已停用，在啟用之前不會有更新</string>
+    <string name="gnss_nav_msg_status_not_supported">裝置不支援追蹤 GNSS 導航訊息</string>
+    <string name="gnss_nav_msg_status_ready">GNSS 導航訊息正在成功追蹤中</string>
+
+    <string name="gnss_measurement_status_loc_disabled">GNSS 提供者或位置服務已停用，在啟用之前不會有更新</string>
+    <string name="gnss_measurement_status_not_supported">裝置不支援追蹤 GNSS 測量資料</string>
+    <string name="gnss_measurement_status_ready">GNSS 測量資料正在成功追蹤中</string>
+
+    <string name="gnss_status_unknown">未知的狀態回撥</string>
+
+    <!-- Permissions -->
+    <string name="title_location_permission">需要位置權限</string>
+    <string name="text_location_permission">GPSTest 需要存取您的「精確」位置來顯示 GNSS 資料。如果您重複選擇「約略位置」或「不允許」，您將需要重新安裝應用程式或透過系統設定啟用權限。</string>
+    <string name="ok">確定</string>
+    <string name="exit">離開</string>
+
+    <!-- Send feedback -->
+    <string name="feedback_subject">GPSTest：意見回饋</string>
+    <string name="feedback_body">歡迎提供抱怨、讚美或錯誤回報！\n\n\n</string>
+    <string name="feedback_error">無法傳送意見回饋：找不到合適的應用程式。</string>
+    <string name="device_properties_upload_success">成功上傳裝置屬性。謝謝！</string>
+
+    <!-- What's New -->
+    <string name="main_help_whatsnew_title">新功能</string>
+    <string name="main_help_whatsnew">&#8226;\u0020
+        <b>背景執行</b>
+        - 現在您可以在做其他事情時在裝置上記錄資料！\n&#8226;\u0020
+        <b>GNSS 狀態通知</b>
+        - 在方便的通知中顯示視線內和使用中的訊號與衛星數量。\n&#8226;\u0020
+        <b>篩選天空圖</b>
+        - 篩選功能現在可以在狀態和天空圖畫面使用！\n&#8226;\u0020
+        <b>支援主題圖示（Android 13 及以上）</b>
+        - 不再破壞您原本完美配色的主畫面 :)。\n&#8226;\u0020
+        <b>記錄檔案可在「下載/GPSTest」目錄中取得（Android 11 及以上）</b>
+        - 為符合新的 Android 權限要求。\n&#8226;\u0020
+        <b>支援 SouthPAN SBAS</b>
+        - 感謝 Dave Collett！\n&#8226;\u0020
+        <b>錯誤修復</b>
+        - 詳見 https://bit.ly/gpstest-releases
+    </string>
+    <string name="main_help_close">關閉</string>
+
+    <!-- Preferences -->
+    <string name="pref_title">設定</string>
+    <string name="pref_map_category_title">地圖</string>
+    <string name="pref_map_type_title">地圖類型</string>
+    <string name="pref_map_type_summary">設定顯示的地圖圖磚類型</string>
+    <string name="pref_map_type_dialog_title">選擇地圖類型</string>
+
+    <string name="pref_rotate_map_with_compass_title">使用羅盤旋轉地圖</string>
+    <string name="pref_rotate_map_with_compass_summary">根據您的方向改變地圖方向</string>
+
+    <string name="pref_tilt_map_with_sensors_title">隨裝置傾斜地圖</string>
+    <string name="pref_tilt_map_with_sensors_summary">當您舉起裝置時切換到第一人稱地圖視角</string>
+
+    <string name="pref_gps_category_title">GNSS</string>
+
+    <string name="pref_force_full_gnss_measurements_title">強制完整 GNSS 測量</string>
+    <string name="pref_force_full_gnss_measurements_summary">適用於 Android 12 及以上版本。如果勾選，GNSS 晶片組會關閉工作週期，以避免預期的時鐘不連續，並且在支援時，載波相位應在良好訊號條件下保持連續。如果未勾選，GNSS 晶片組會透過工作週期、星座和頻率限制等方式來最佳化功耗。</string>
+
+    <string name="pref_auto_start_gps_title">自動啟動 GNSS</string>
+    <string name="pref_auto_start_gps_summary">應用程式啟動時開始 GNSS</string>
+
+    <string name="pref_gnss_background_title">在背景執行 GNSS</string>
+    <string name="pref_gnss_background_summary">如果勾選，當您離開應用程式時，會出現一個通知，讓 GNSS 在背景持續執行，直到您從該通知停止它。當您啟用資料記錄到檔案時，此設定會自動啟用，以允許在背景進行記錄。</string>
+
+    <string name="pref_gps_min_time_title">間隔</string>
+    <string name="pref_gps_min_time_summary">GNSS 定位之間的時間間隔，以秒為單位</string>
+    <string name="pref_gps_min_time_dialog_title">輸入間隔，以秒為單位</string>
+    <string name="pref_gps_min_time_invalid_entry">間隔必須是數字</string>
+
+    <string name="pref_gps_min_distance_title">最小距離</string>
+    <string name="pref_gps_min_distance_summary">GNSS 定位之間的最小距離，以公尺為單位</string>
+    <string name="pref_gps_min_distance_dialog_title">輸入最小距離，以公尺為單位</string>
+    <string name="pref_gps_min_distance_invalid_entry">最小距離必須是數字</string>
+
+    <string name="pref_display_category_title">顯示</string>
+    <string name="pref_keep_screen_on_title">保持螢幕開啟</string>
+    <string name="pref_keep_screen_on_summary">防止螢幕關閉</string>
+    <string name="pref_true_north_title">羅盤指向真北</string>
+    <string name="pref_true_north_summary">羅盤將指向真北而非磁北</string>
+
+    <!-- Output category -->
+    <string name="pref_output_category_title">記錄和輸出</string>
+    <string name="pref_output_category_summary">將 NMEA、原始測量資料或導航訊息記錄到檔案或 Android Studio</string>
+
+    <!-- Android Monitor Output -->
+    <string name="pref_as_output_category_title">Android Monitor 輸出</string>
+    <string name="pref_nmea_output_title">NMEA</string>
+    <string name="pref_as_nmea_output_summary">將 NMEA 語句記錄到 Android Studio</string>
+    <string name="pref_nmea_timestamp_output_title">NMEA 時間戳記</string>
+    <string name="pref_nmea_timestamp_output_summary">在輸出中包含 NMEA 時間戳記</string>
+    <string name="pref_measurement_output_title">測量資料</string>
+    <string name="pref_as_measurement_output_summary">將 GNSS 測量資料記錄到 Android Studio（Android 7.0 及以上版本）</string>
+    <string name="pref_navigation_message_output_title">導航訊息</string>
+    <string name="pref_as_navigation_message_output_summary">將 GNSS 導航訊息記錄到 Android Studio（Android 7.0 及以上版本，且只在某些裝置上可用）</string>
+
+    <!-- File Output -->
+    <string name="pref_inject_assist_data_when_logging_category_title">自動插入輔助資料</string>
+    <string name="pref_inject_time_when_logging_title">自動插入時間</string>
+    <string name="pref_inject_time_when_logging_summary">當檔案記錄開始時，自動從網路時間協定伺服器插入時間資料</string>
+
+    <string name="pref_inject_psds_when_logging_title">自動插入 PSDS</string>
+    <string name="pref_inject_psds_when_logging_summary">當檔案記錄開始時，自動插入預測衛星資料服務（例如 XTRA）資料</string>
+
+    <string name="pref_file_output_category_title">檔案輸出</string>
+    <string name="pref_file_nmea_output_summary">將 NMEA 語句記錄到 CSV 檔案</string>
+    <string name="pref_file_measurement_output_summary">將 GNSS 測量資料記錄到 CSV 檔案（Android 7.0 及以上版本）</string>
+    <string name="pref_file_navigation_message_output_summary">將 GNSS 導航訊息記錄到 CSV 檔案（Android 7.0 及以上版本，且只在某些裝置上可用）</string>
+    <string name="pref_file_location_output_title">位置</string>
+    <string name="pref_file_location_output_summary">將位置定位詳細資訊記錄到 CSV 檔案</string>
+    <string name="pref_file_antenna_output_csv_title">天線資訊 (CSV)</string>
+    <string name="pref_file_antenna_output_csv_summary">將 GNSS 天線詳細資訊記錄到 CSV 檔案（Android 11 及以上版本，且只在某些裝置上可用）</string>
+    <string name="pref_file_antenna_output_json_title">天線資訊 (JSON)</string>
+    <string name="pref_file_antenna_output_json_summary">將 GNSS 天線詳細資訊記錄到 JSON 檔案（Android 11 及以上版本，且只在某些裝置上可用）</string>
+    <string name="pref_file_gnss_status_output_title">GnssStatus</string>
+    <string name="pref_file_gnss_status_output_summary">將每個訊號的 GnssStatus 資料記錄到 CSV 檔案</string>
+    <string name="pref_file_orientation_output_title">方向</string>
+    <string name="pref_file_orientation_output_summary">將方向感測器資料記錄到 CSV 檔案</string>
+    <string name="logging_to_new_file">正在記錄到新檔案：%1$s</string>
+    <string name="unable_to_close_all_file_streams">無法關閉所有檔案串流。</string>
+    <string name="could_not_initialize_file">無法初始化檔案：%1$s</string>
+    <string name="error_writing_file">寫入檔案時發生問題。</string>
+    <string name="unable_to_open_json_generator">無法開啟 JSON 產生器</string>
+
+    <string name="pref_about_category_title">關於</string>
+    <string name="pref_show_tutorial_title">顯示教學</string>
+    <string name="pref_show_tutorial_summary">顯示應用程式使用說明</string>
+
+    <string name="pref_dark_theme_title">使用深色主題</string>
+    <string name="pref_dark_theme_summary">將背景設為深色，文字設為淺色</string>
+
+    <string name="pref_coordinate_format_title">座標格式</string>
+    <string name="pref_coordinate_format_summary">以十進位度、度分秒或度分顯示</string>
+    <string name="preferences_coordinate_format_dd">十進位度</string>
+    <string name="preferences_coordinate_format_dms">度分秒</string>
+    <string name="preferences_coordinate_format_ddm">度分</string>
+
+    <string name="preferences_preferred_distance_units_title">偏好的距離單位</string>
+    <string name="preferences_preferred_distance_units_option_meters">公尺</string>
+    <string name="preferences_preferred_distance_units_option_feet">英尺</string>
+
+    <string name="preferences_preferred_speed_units_title">偏好的速度單位</string>
+    <string name="preferences_preferred_speed_units_option_meters_per_second">公尺/秒</string>
+    <string name="preferences_preferred_speed_units_option_kilometers_per_hour">公里/小時</string>
+    <string name="preferences_preferred_speed_units_option_miles_per_hour">英里/小時</string>
+
+    <string name="pref_language_title">語言</string>
+    <string name="pref_language_summary">手動設定應用程式顯示的語言</string>
+    <string name="pref_language_dialog_title">選擇語言</string>
+
+    <!-- Service -->
+    <string name="stop">停止</string>
+    <string name="open">開啟</string>
+    <string name="no_location_text">無目前位置</string>
+
+    <!-- Help -->
+    <string name="title_help">說明</string>
+
+    <string name="help_text">
+        <b>常見問題 (FAQ)</b>
+        - https://github.com/barbeau/gpstest/blob/master/FAQ.md\n\n
+
+        <b>*** 狀態檢視 ***</b>\n\n&#8226;\u0020
+        <b>緯度</b>
+        - 以十進位度表示（WGS 84）\n&#8226;\u0020
+        <b>經度</b>
+        - 以十進位度表示（WGS 84）\n&#8226;\u0020
+        <b>高度</b>
+        - 相對於 WGS 84 橢球體的公尺數，也稱為 h\n&#8226;\u0020
+        <b>高度 (MSL)</b>
+        - 相對於平均海平面的公尺數，也稱為正高或 H。H = h - N，其中 N 是大地水準面相對於 WGS84 橢球體的高度。從內部 NMEA 串流解析，因此只在您的裝置支援此 API 時可用。由於這些資料來自晶片組，確切的大地水準面模型未知，但根據 https://issuetracker.google.com/issues/191674805#comment16 的說明，高通裝置似乎使用 EGM84。\n&#8226;\u0020
+        <b>水平精確度</b>
+        - 位置的估計水平精確度（68% 置信度的半徑，以公尺為單位）。換句話說，如果您以此位置的緯度和經度為中心畫一個圓，半徑等於精確度，則真實位置有 68% 的機率在圓內。詳細資訊請參考 https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389。\n&#8226;\u0020
+        <b>水平/垂直精確度</b>
+        - 位置的估計水平和垂直精確度，均為 68% 置信度。水平精確度的定義與上面的精確度欄位相同。垂直精確度在 Android 8.0 Oreo 及更新的版本上可用。垂直精確度範例 - 如果高度是 150，垂直精確度是 20，則真實高度有 68% 的機率在 130 到 170 公尺之間。詳細資訊請參考 https://medium.com/@sjbarbeau/measuring-gnss-accuracy-on-android-devices-6824492a1389。\n&#8226;\u0020
+        <b>速度</b>
+        - 地面速度，以公尺/秒為單位\n&#8226;\u0020
+        <b>速度精確度</b>
+        - 此位置的估計速度精確度，68% 置信度，以公尺/秒為單位。例如，如果速度是 5，速度精確度是 1，則真實速度有 68% 的機率在 4 到 6 公尺/秒之間。\n&#8226;\u0020
+        <b>方位</b>
+        - 裝置的水平移動方向（以度數 0-360 表示），與裝置方向無關。\n&#8226;\u0020
+        <b>方位精確度</b>
+        - 此位置的估計方位精確度，68% 置信度，以度數表示。例如，如果方位是 60，方位精確度是 10，則真實方位有 68% 的機率在 50 到 70 度之間。\n&#8226;\u0020
+        <b>衛星數</b>
+        - 用於定位的衛星數 / 視線內的衛星數（具有有效訊號強度值）/ 裝置已知的衛星數。在雙頻裝置上，如果至少使用了該衛星的一個頻率，則顯示為已使用；如果至少一個訊號具有有效的訊號強度值，則顯示為視線內；如果有關該衛星至少一個訊號的資訊，則顯示為裝置已知。\n&#8226;\u0020
+        <b>PDOP</b>
+        - 位置（3D）精度因子。從內部 NMEA 串流解析，因此只在您的裝置支援此 API 時可用。\n&#8226;\u0020
+        <b>水平/垂直 DOP</b>
+        - 水平/垂直精度因子。從內部 NMEA 串流解析，因此只在您的裝置支援此 API 時可用。\n&#8226;\u0020
+        <b>首次定位時間</b>
+        - 首次定位所需時間\n&#8226;\u0020
+        <b>ID 或 PRN</b>
+        - 此衛星的識別碼（GPS 的偽隨機雜訊碼）\n&#8226;\u0020
+        <b>CF</b>
+        - 正在追蹤的訊號載波頻率的標籤（例如，「L1」）。如果是未知頻率，則顯示原始頻率（以 MHz 為單位）（在 Android 8.0+ 上可用，但並非所有裝置都支援）。GLONASS 的新 L1 CDMA 訊號顯示為「L1-C」。\n&#8226;\u0020
+        <b>SNR</b>
+        - 訊噪比（Android M 及更舊的版本）(https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>C/N0</b>
+        - 載波雜訊密度比（Android N 及更新的版本）(https://bit.ly/SNR-CN0)\n&#8226;\u0020
+        <b>旗標</b>
+        - (E) 如果裝置有該衛星的星曆資料，(A) 如果裝置有該衛星的曆書資料，(U) 如果衛星用於最近的位置定位計算。對於 SBAS，Android 規格未指定 (U) 是指來自衛星的偽距被用於位置解算，還是指源自該衛星的修正資訊被使用。\n\n
+
+        <b>插入 PSDS 資料</b>
+        - 請求裝置更新其預測衛星資料服務（例如 XTRA 資料），如果裝置使用 PSDS 資料。\n\n
+
+        <b>*** 天空圖 ***</b>\n\n&#8226;\u0020
+        <b>GPS（美國 Navstar）</b>
+        - 圓形\n&#8226;\u0020
+        <b>GLONASS（俄羅斯）</b>
+        - 方形\n&#8226;\u0020
+        <b>Galileo（歐盟）</b>
+        - 三角形\n&#8226;\u0020
+        <b>QZSS（日本）</b>
+        - 六邊形\n&#8226;\u0020
+        <b>北斗/COMPASS（中國）</b>
+        - 五邊形\n&#8226;\u0020
+        <b>IRNSS/NavIC（印度）</b>
+        - 橢圓形\n&#8226;\u0020
+        <b>SBAS（WAAS、EGNOS、GAGAN、MSAS、SDCM、BDSBAS/SNAS、SACCSA、SouthPAN）</b>
+        - 菱形\n\n
+
+        &#8226;\u0020 透明衛星 - 不在視線內\n
+        &#8226;\u0020 細輪廓 - 在視線內但未用於定位\n
+        &#8226;\u0020 粗輪廓 - 用於定位\n\n
+
+        &#8226;\u0020 在 Android 7.0 以下版本，預期的 SNR 範圍是 0 dB（紅色）到 30 dB（綠色）。\n
+        &#8226;\u0020 在 Android 7.0 及更新的版本，預期的 SNR 範圍是 10 dB（紅色）到 45 dB（綠色）。\n
+        &#8226;\u0020 在 Android 7.0 及更新的版本，預期的 C/N0 範圍是 10 dB-Hz（紅色）到 45 dB-Hz（綠色）。\n
+        &#8226;\u0020 如果衛星沒有 SNR 或 C/N0 值（即不在裝置的視線內），它將呈現透明淺灰色。\n\n
+
+        <b>*** 精確度檢視 ***</b>\n\n
+
+        詳細資訊請參考 https://barbeau.medium.com/measuring-gnss-accuracy-on-android-devices-6824492a1389。\n\n
+
+        &#8226;\u0020 <b>垂直誤差</b>
+        - 垂直誤差測量與水平誤差不同，可以是正值或負值。在精確度檢視中顯示時，垂直誤差和平均垂直誤差都使用誤差測量的絕對值計算。\n\n
+
+        &#8226;\u0020使用 QR 碼快速設定您的真實位置。詳細資訊請參考 https://bit.ly/gpstest-qr-codes。\n\n
+
+        <b>*** 檔案記錄 ***</b>\n\n
+        &#8226;\u0020在設定中啟用檔案記錄，可記錄 NMEA、原始測量資料、導航訊息和位置定位。詳細資訊請參考 https://bit.ly/gpstest-file。\n\n
+
+        <b>*** 致謝 ***</b>\n\n
+        &#8226;\u0020 <b>Mike Lockwood</b> - v1.x 的原始開發者\n
+        &#8226;\u0020 <b>Sean Barbeau</b> - v2.x 及更新的版本的開發者\n
+        &#8226;\u0020 GPSTest 啟動器圖示源自 Android Material Design 的「衛星」圖示，由 Google 根據 Apache v2.0 授權。其他 Google 材料設計圖示也根據 Apache v2.0 使用。QR 碼圖示由 Austin Andrews 提供，來自 https://materialdesignicons.com/icon/qrcode。\n
+        &#8226;\u0020 紐西蘭國土資訊局已批准在 GPSTest 開源應用程式中使用 SouthPAN 標誌。如需更多資訊，請聯絡 southpan@linz.govt.nz \n
+        &#8226;\u0020 中文翻譯由 wangkf、liuyunli、SakuraSa233 和 Skimige 提供\n
+        &#8226;\u0020 德文翻譯由 SIRSteiner 提供\n
+        &#8226;\u0020 荷蘭文翻譯由 Dennis Dolman、Meteor0id 提供\n
+        &#8226;\u0020 希臘文翻譯由 Jimmy Golfi 提供\n
+        &#8226;\u0020 日文翻譯由 SakuraSa233 提供\n
+        &#8226;\u0020 捷克文翻譯由 llzn.cz 提供\n
+        &#8226;\u0020 義大利文翻譯由 Giolly90 提供\n
+        &#8226;\u0020 西班牙文翻譯由 Sergi Pellicer 提供\n
+        &#8226;\u0020 印尼文翻譯由 Adiitya Andre90 提供\n
+        &#8226;\u0020 波蘭文翻譯由 Adam Wandelt 提供\n
+        &#8226;\u0020 法文翻譯由 Olivier Merlin 和 Jérémy Belloir 提供\n
+        &#8226;\u0020 波斯文翻譯由 Iman (imni) 提供\n
+        &#8226;\u0020 烏克蘭文翻譯由 Serhii Osmalchuk 提供\n
+        &#8226;\u0020 韓文翻譯由 snotree 提供\n
+        &#8226;\u0020 巴斯克文翻譯由 Alexander Gabilondo 提供\n
+        &#8226;\u0020 芬蘭文翻譯由 Ari Nygard 提供\n
+        &#8226;\u0020 丹麥文翻譯由 Claus Østergaard 提供\n
+    </string>
+</resources>
