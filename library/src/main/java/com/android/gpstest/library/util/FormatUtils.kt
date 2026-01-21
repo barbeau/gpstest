@@ -120,6 +120,13 @@ object FormatUtils {
                         LibUIUtils.toKilometersPerHour(location.speed)
                     )
                 }
+                PreferenceUtil.speedUnits(context, prefs)
+                    .equals(PreferenceUtil.KNOTS, ignoreCase = true) -> {
+                    context.getString(
+                        R.string.gps_speed_value_knots,
+                        LibUIUtils.toKnots(location.speed)
+                    )
+                }
                 else -> {
                     // Miles per hour
                     context.getString(
@@ -225,6 +232,13 @@ object FormatUtils {
                     return context.getString(
                         R.string.gps_speed_acc_value_km_hour,
                         LibUIUtils.toKilometersPerHour(location.speedAccuracyMetersPerSecond)
+                    )
+                }
+                PreferenceUtil.speedUnits(context, prefs)
+                    .equals(PreferenceUtil.KNOTS, ignoreCase = true) -> {
+                    return context.getString(
+                        R.string.gps_speed_acc_value_knots,
+                        LibUIUtils.toKnots(location.speedAccuracyMetersPerSecond)
                     )
                 }
                 else -> {
