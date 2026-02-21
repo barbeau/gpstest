@@ -19,6 +19,7 @@ Users have contributed translations in the following languages:
 * Basque
 * Finnish
 * Danish
+* Traditional Chinese
 
 We would love help improving the existing translations, or adding a new translation.
 
