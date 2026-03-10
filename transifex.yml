@@ -2,22 +2,22 @@ git:
   filters:
     - filter_type: file
       file_format: ANDROID
-      resource_slug: strings-xml
-      source_file: GPSTest/src/main/res/values/strings.xml
-      source_language: en
+      resource: 'gpstest.strings-xml'
+      source_file: 'GPSTest/src/main/res/values/strings.xml'
+      source_language: 'en'
       translation_files_expression: 'GPSTest/src/main/res/values-<lang>/strings.xml'
 
     - filter_type: file
       file_format: ANDROID
-      resource_slug: arrays-xml
-      source_file: GPSTest/src/main/res/values/arrays.xml
-      source_language: en
+      resource: 'gpstest.arrays-xml'
+      source_file: 'GPSTest/src/main/res/values/arrays.xml'
+      source_language: 'en'
       translation_files_expression: 'GPSTest/src/main/res/values-<lang>/arrays.xml'
 
   settings:
     language_mapping:
-      de_DE: de-rDE
-      zh-Hans: zh-rCN
-      cs_CZ: cs-rCZ
-      id: in
-      ko_KR: ko-rKR
+      'de_DE': 'de-rDE'
+      'zh-Hans': 'zh-rCN'
+      'cs_CZ': 'cs-rCZ'
+      'id': 'in'
+      'ko_KR': 'ko-rKR'
