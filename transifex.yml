@@ -2,14 +2,12 @@ git:
   filters:
     - filter_type: file
       file_format: ANDROID
-      slug: 'strings-xml'
       source_file: 'GPSTest/src/main/res/values/strings.xml'
       source_language: 'en'
       translation_files_expression: 'GPSTest/src/main/res/values-<lang>/strings.xml'
 
     - filter_type: file
       file_format: ANDROID
-      slug: 'arrays-xml'
       source_file: 'GPSTest/src/main/res/values/arrays.xml'
       source_language: 'en'
       translation_files_expression: 'GPSTest/src/main/res/values-<lang>/arrays.xml'
