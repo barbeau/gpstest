@@ -25,8 +25,8 @@
         <item>Сила сигналу</item>
         <item>Використано у фіксації</item>
         <item>Сузір\'я, Частота-носій</item>
-        <item>Група, Сила сигналу</item>
-        <item>Група, Використано у фіксації</item>
+        <item>Сузір\'я, Сила сигналу</item>
+        <item>Сузір\'я, Використано у фіксації</item>
     </string-array>
 
     <!-- Let the user choose between map views -->
