@@ -20,7 +20,7 @@
 <resources>
     <!-- Status -->
     <string-array name="sort_sats">
-        <item>Група</item>
+        <item>Сузір\'я</item>
         <item>Частота-носій</item>
         <item>Сила сигналу</item>
         <item>Використано у фіксації</item>
