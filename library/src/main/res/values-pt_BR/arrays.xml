@@ -33,6 +33,7 @@
     <string-array name="map_type_entries">
         <item>Visualização de mapa</item>
         <item>Visualização híbrida</item>
+        <item>Visualização de satélite</item>
     </string-array>
 
     </resources>
