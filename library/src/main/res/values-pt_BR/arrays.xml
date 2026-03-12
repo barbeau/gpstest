@@ -29,4 +29,9 @@
         <item>Constelação, utilizado na fixação</item>
     </string-array>
 
+    <!-- Let the user choose between map views -->
+    <string-array name="map_type_entries">
+        <item>Visualização de mapa</item>
+    </string-array>
+
     </resources>
