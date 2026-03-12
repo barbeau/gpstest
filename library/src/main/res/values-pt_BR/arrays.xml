@@ -21,6 +21,7 @@
     <!-- Status -->
     <string-array name="sort_sats">
         <item>Constelação</item>
+        <item>Frequência da portadora</item>
     </string-array>
 
     </resources>
