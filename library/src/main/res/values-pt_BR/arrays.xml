@@ -34,6 +34,7 @@
         <item>Visualização de mapa</item>
         <item>Visualização híbrida</item>
         <item>Visualização de satélite</item>
+        <item>Visualização de terreno</item>
     </string-array>
 
     </resources>
