@@ -32,6 +32,7 @@
     <!-- Let the user choose between map views -->
     <string-array name="map_type_entries">
         <item>Visualização de mapa</item>
+        <item>Visualização híbrida</item>
     </string-array>
 
     </resources>
