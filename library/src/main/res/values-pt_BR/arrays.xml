@@ -37,4 +37,9 @@
         <item>Visualização de terreno</item>
     </string-array>
 
-    </resources>
+    <!-- Help -->
+    <string-array name="main_help_options">
+        <item>O que há de novo\?</item>
+        <item>Sobre</item>
+    </string-array>
+</resources>
