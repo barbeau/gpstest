@@ -26,6 +26,7 @@
         <item>Utilizado na fixação</item>
         <item>Constelação, frequência da portadora</item>
         <item>Constelação, intensidade do sinal</item>
+        <item>Constelação, utilizado na fixação</item>
     </string-array>
 
     </resources>
