@@ -31,7 +31,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+        uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
         with:
           gradle-version: wrapper
 
@@ -69,7 +69,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
       
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+        uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
         with:
           gradle-version: wrapper
           cache-read-only: true
@@ -115,7 +115,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+        uses: gradle/actions/setup-gradle@0f4528296b4bc09e8ae0fc7be30185a4ab435545 # v6.0.0
         with:
           gradle-version: wrapper
           cache-read-only: true
