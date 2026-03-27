@@ -603,7 +603,7 @@ object LibUIUtils {
      */
     @JvmStatic
     fun toKnots(metersPerSecond: Float): Float {
-        return toKilometersPerHour(metersPerSecond) / 1.852f
+        return metersPerSecond * 3600f / 1852f
     }
 
     /**
