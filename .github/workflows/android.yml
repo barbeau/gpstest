@@ -31,7 +31,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
           gradle-version: wrapper
 
@@ -64,12 +64,12 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@651bceb6f9ca583f16b8d75b62c36ded2ae6fc9c # v4.0.0
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
         with:
           log-accepted-android-sdk-licenses: false
       
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
           gradle-version: wrapper
           cache-read-only: true
@@ -115,7 +115,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6.0.1
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
           gradle-version: wrapper
           cache-read-only: true
