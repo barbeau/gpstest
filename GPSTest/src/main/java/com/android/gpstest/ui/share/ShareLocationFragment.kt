@@ -69,8 +69,6 @@ class ShareLocationFragment : Fragment() {
 
         // Returns the location as a plain coordinate string in the currently selected
         // coordinate format, with altitude appended when the "include altitude" checkbox is on.
-        // Moved into a function so the per-chip listeners don't each need their own
-        // copy of the three-way branch
         fun coordinatesOnly(): String {
             if (location == null) return ""
             return when {
