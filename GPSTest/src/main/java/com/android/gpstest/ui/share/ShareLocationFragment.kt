@@ -75,13 +75,13 @@ class ShareLocationFragment : Fragment() {
             if (location == null) return ""
             return when {
                 chipDMS.isChecked -> IOUtils.createLocationShare(
-                    LibUIUtils.getDMSFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                    LibUIUtils.getDMSFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                    LibUIUtils.getDMSFromLocation(app, location.latitude, CoordinateType.LATITUDE),
+                    LibUIUtils.getDMSFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
                     if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null
                 )
                 chipDegreesDecimalMin.isChecked -> IOUtils.createLocationShare(
-                    LibUIUtils.getDDMFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                    LibUIUtils.getDDMFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
+                    LibUIUtils.getDDMFromLocation(app, location.latitude, CoordinateType.LATITUDE),
+                    LibUIUtils.getDDMFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
                     if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null
                 )
                 else -> IOUtils.createLocationShare(location, includeAltitude.isChecked)
