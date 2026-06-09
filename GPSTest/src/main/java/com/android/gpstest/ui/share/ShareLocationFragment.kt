@@ -89,9 +89,7 @@ class ShareLocationFragment : Fragment() {
         // Single entry point that rewrites the locationValue TextView.
         // Combines the coordinate string from coordinatesOnly() with an optional timestamp
         // line when the "include timestamp" checkbox is selected.
-        // Every UI event (altitude/timestamp toggles, chip selection, initial display)
-        // funnels through this function, so the timestamp suffix logic lives
-        // in one place rather than being duplicated across each listener.
+        // Every UI event funnels through this function.
         fun refreshLocationText() {
             if (location == null) return
             val base = coordinatesOnly()
