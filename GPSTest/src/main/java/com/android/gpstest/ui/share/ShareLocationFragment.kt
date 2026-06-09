@@ -97,8 +97,8 @@ class ShareLocationFragment : Fragment() {
         fun refreshLocationText() {
             if (location == null) return
             val base = coordinatesOnly()
-            locationValue.text = if (includeTimestamp.isChecked) {
-                base + "\n" + IOUtils.formatLocationTimestamp(location.time)
+            locationValue.text = if (includeTimestamp.isChecked && location.time > 0) {
+                "$base\n${IOUtils.formatLocationTimestamp(location.time)}"
             } else {
                 base
             }
