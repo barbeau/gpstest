@@ -31,7 +31,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+        uses: gradle/actions/setup-gradle@5e2ebd065dc2488b7a6ad670704656cbbe1e8f60 # v6.1.1
         with:
           gradle-version: wrapper
 
@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew check
 
       - name: Upload SARIF report
-        uses: github/codeql-action/upload-sarif@87557b9c84dde89fdd9b10e88954ac2f4248e463 # v3.29.5
+        uses: github/codeql-action/upload-sarif@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v3.29.5
         if: success() || failure()
         with:
           sarif_file: GPSTest/build/reports/lint-results-googleDebug.sarif
@@ -69,7 +69,7 @@ jobs:
           log-accepted-android-sdk-licenses: false
       
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+        uses: gradle/actions/setup-gradle@5e2ebd065dc2488b7a6ad670704656cbbe1e8f60 # v6.1.1
         with:
           gradle-version: wrapper
           cache-read-only: true
@@ -115,7 +115,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle and cache
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+        uses: gradle/actions/setup-gradle@5e2ebd065dc2488b7a6ad670704656cbbe1e8f60 # v6.1.1
         with:
           gradle-version: wrapper
           cache-read-only: true
