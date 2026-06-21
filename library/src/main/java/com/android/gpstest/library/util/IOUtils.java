@@ -45,8 +45,12 @@ import java.io.File;
 import java.io.FileFilter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class IOUtils {
 
@@ -267,6 +271,18 @@ public class IOUtils {
             locationString += "," + altitude;
         }
         return locationString;
+    }
+
+    /**
+     * Returns the provided epoch-millisecond timestamp formatted as
+     * "YYYY-MM-DD HH:MM:SS &lt;time zone&gt;",
+     * in the device's default time zone.
+     */
+    public static String formatLocationTimestamp(long timeMillis) {
+        // Use an ISO timestamp for the output, plus time zone
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z", Locale.US);
+        format.setTimeZone(TimeZone.getDefault());
+        return format.format(new Date(timeMillis));
     }
 
     /**
