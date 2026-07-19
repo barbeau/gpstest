@@ -53,7 +53,7 @@ I welcome contributions to the project!  Please see the [Contributing Guide](.gi
 
 - Beta testing: Get early access to new GPSTest versions, and help us squash bugs! See the [Testing Guide](BETA_TESTING.md) for details.
 
-- Translating: Want to improve existing translations, or add a new translation?  Translate on [Transifex](https://www.transifex.com/sean-barbeau/gpstest-android/dashboard/) or see the [Translations](/TRANSLATIONS.md) documentation.
+- Translating: Want to improve existing translations, or add a new translation?  Translate on [Transifex](https://app.transifex.com/sean-barbeau/gpstest-android/dashboard/) or see the [Translations](/TRANSLATIONS.md) documentation.
 
 ## FAQ
 
