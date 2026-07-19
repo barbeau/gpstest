@@ -20,12 +20,12 @@ Users have contributed translations in the following languages:
 * Finnish
 * Danish
 
-We would love help improving the existing translations, or adding a new translation.
+I would love help improving the existing translations, or adding a new translation.
 
 ## Transifex
 
-We use Transifex, which is free for open-source projects:
-* [GPSTest Dashboard](https://www.transifex.com/sean-barbeau/gpstest-android/dashboard/)
+I use Transifex, which is free for open-source projects:
+* [GPSTest Dashboard](https://app.transifex.com/sean-barbeau/gpstest-android/dashboard/)
 
 [Here](https://docs.transifex.com/getting-started-1/translators) are some instructions for getting started with Transifex.  Please note that if you contribute a translation, you will be expected to keep it up-to-date as the app changes.
 
