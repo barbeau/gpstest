@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.android.gpstest.library'
-    compileSdk 33
+    compileSdk 36
 
     defaultConfig {
         minSdk 24
