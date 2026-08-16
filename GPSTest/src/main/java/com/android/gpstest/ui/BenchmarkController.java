@@ -38,6 +38,19 @@ interface BenchmarkController {
     boolean onBackPressed();
 
     /**
+     * Returns true if the controller will handle the back button (e.g., if a sliding panel is open),
+     * or false if it will not
+     * @return true if the controller will handle the back button, or false if it will not
+     */
+    boolean isBackIntercepting();
+
+    interface BackInterceptListener {
+        void onBackInterceptChanged(boolean isIntercepting);
+    }
+
+    void setBackInterceptListener(BackInterceptListener listener);
+
+    /**
      * Called from the hosting Activity when it is resumed (e.g., to refresh settings)
      */
     void onResume();

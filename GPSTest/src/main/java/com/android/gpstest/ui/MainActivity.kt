@@ -36,6 +36,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
@@ -190,6 +192,32 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupNavigationDrawer()
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
+
+        val backPressedCallback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                if (binding.navDrawerLeftPane.isDrawerVisible(GravityCompat.START)) {
+                    binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
+                } else if (benchmarkController?.onBackPressed() == true) {
+                    // Handled by benchmark controller
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
+
+        val updateBackCallback = {
+            backPressedCallback.isEnabled = binding.navDrawerLeftPane.isDrawerVisible(GravityCompat.START) ||
+                    benchmarkController?.isBackIntercepting == true
+        }
+
+        binding.navDrawerLeftPane.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) { updateBackCallback() }
+            override fun onDrawerOpened(drawerView: View) { updateBackCallback() }
+            override fun onDrawerClosed(drawerView: View) { updateBackCallback() }
+            override fun onDrawerStateChanged(newState: Int) { updateBackCallback() }
+        })
+
+        benchmarkController?.setBackInterceptListener { updateBackCallback() }
+        updateBackCallback()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -705,20 +733,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 gpsStart()
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
-            // Close navigation drawer
-            binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
-            return
-        } else if (benchmarkController != null) {
-            // Close sliding drawer
-            if (benchmarkController!!.onBackPressed()) {
-                return
-            }
-        }
-        super.onBackPressed()
     }
 
     @ExperimentalCoroutinesApi
