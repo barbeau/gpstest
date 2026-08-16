@@ -554,6 +554,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     private BackInterceptListener mBackInterceptListener;
+    private boolean mIsBackIntercepting = false;
 
     /**
      * Returns true if the controller will handle the back button (e.g., if a sliding panel is open),
@@ -562,11 +563,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
      */
     @Override
     public boolean isBackIntercepting() {
-        if (mSlidingPanel != null) {
-            return mSlidingPanel.getPanelState() == PanelState.EXPANDED
-                    || mSlidingPanel.getPanelState() == PanelState.ANCHORED;
-        }
-        return false;
+        return mIsBackIntercepting;
     }
 
     @Override
@@ -786,8 +783,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                         onPanelHidden(panel);
                         break;
                 }
+                mIsBackIntercepting = (newState == PanelState.EXPANDED || newState == PanelState.ANCHORED);
                 if (mBackInterceptListener != null) {
-                    mBackInterceptListener.onBackInterceptChanged(isBackIntercepting());
+                    mBackInterceptListener.onBackInterceptChanged(mIsBackIntercepting);
                 }
             }
 

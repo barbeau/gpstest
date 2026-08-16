@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
 
         val backPressedCallback = object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
+                if (binding.navDrawerLeftPane.isDrawerVisible(GravityCompat.START)) {
                     binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
                 } else if (benchmarkController?.onBackPressed() == true) {
                     // Handled by benchmark controller
@@ -205,15 +205,15 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         onBackPressedDispatcher.addCallback(this, backPressedCallback)
 
         val updateBackCallback = {
-            backPressedCallback.isEnabled = binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START) ||
+            backPressedCallback.isEnabled = binding.navDrawerLeftPane.isDrawerVisible(GravityCompat.START) ||
                     benchmarkController?.isBackIntercepting == true
         }
 
         binding.navDrawerLeftPane.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) { updateBackCallback() }
             override fun onDrawerOpened(drawerView: View) { updateBackCallback() }
             override fun onDrawerClosed(drawerView: View) { updateBackCallback() }
-            override fun onDrawerStateChanged(newState: Int) {}
+            override fun onDrawerStateChanged(newState: Int) { updateBackCallback() }
         })
 
         benchmarkController?.setBackInterceptListener { updateBackCallback() }
