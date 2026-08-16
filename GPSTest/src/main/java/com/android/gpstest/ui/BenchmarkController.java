@@ -44,6 +44,12 @@ interface BenchmarkController {
      */
     boolean isBackIntercepting();
 
+    interface BackInterceptListener {
+        void onBackInterceptChanged(boolean isIntercepting);
+    }
+
+    void setBackInterceptListener(BackInterceptListener listener);
+
     /**
      * Called from the hosting Activity when it is resumed (e.g., to refresh settings)
      */

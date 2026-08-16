@@ -45,6 +45,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuItemCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.flowWithLifecycle
@@ -192,19 +193,31 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+        val backPressedCallback = object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
                 if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
                     binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
                 } else if (benchmarkController?.onBackPressed() == true) {
                     // Handled by benchmark controller
-                } else {
-                    isEnabled = false
-                    onBackPressedDispatcher.onBackPressed()
-                    isEnabled = true
                 }
             }
+        }
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
+
+        val updateBackCallback = {
+            backPressedCallback.isEnabled = binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START) ||
+                    benchmarkController?.isBackIntercepting == true
+        }
+
+        binding.navDrawerLeftPane.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerOpened(drawerView: View) { updateBackCallback() }
+            override fun onDrawerClosed(drawerView: View) { updateBackCallback() }
+            override fun onDrawerStateChanged(newState: Int) {}
         })
+
+        benchmarkController?.setBackInterceptListener { updateBackCallback() }
+        updateBackCallback()
     }
 
     override fun onNewIntent(intent: Intent) {

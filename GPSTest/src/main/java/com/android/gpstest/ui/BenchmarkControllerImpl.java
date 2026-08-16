@@ -26,6 +26,8 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
@@ -33,12 +35,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
+import androidx.constraintlayout.motion.widget.MotionLayout.TransitionListener;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -56,7 +60,9 @@ import com.android.gpstest.util.UIUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -66,6 +72,8 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 /**
  * This class encapsulates logic used for the benchmarking feature that compares a user-entered
@@ -100,7 +108,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
 
     SlidingUpPanelLayout mSlidingPanel;
 
-    SlidingUpPanelLayout.PanelState mLastPanelState;
+    PanelState mLastPanelState;
 
     ViewGroup mSlidingPanelHeader;
 
@@ -135,22 +143,22 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 }
 
                 // Collapse card - we have to set height on card manually because card doesn't auto-collapse right when views are within card container
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+                LayoutParams lp = (LayoutParams) mGroundTruthCardView.getLayoutParams();
                 mMotionLayout.transitionToEnd();
                 lp.height = (int) Application.Companion.getApp().getResources().getDimension(R.dimen.ground_truth_cardview_height_collapsed);
                 mGroundTruthCardView.setLayoutParams(lp);
 
                 // Show sliding panel if we're showing the Accuracy fragment and the sliding panel isn't visible
-                if (mGroundTruthCardView.getVisibility() == VISIBLE && mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                if (mGroundTruthCardView.getVisibility() == VISIBLE && mSlidingPanel.getPanelState() == PanelState.HIDDEN) {
+                    mSlidingPanel.setPanelState(PanelState.COLLAPSED);
                 } else if (mGroundTruthCardView.getVisibility() == GONE) {
                     // A test was started using a saved ground truth, but the user started the app at another fragment other than Accuracy.  Set the last
                     // sliding panel state to COLLAPSED so it becomes visible when the user switches to the Accuracy fragment
-                    mLastPanelState = SlidingUpPanelLayout.PanelState.COLLAPSED;
+                    mLastPanelState = PanelState.COLLAPSED;
                 }
             } else {
                 // Edits are allowed
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) mGroundTruthCardView.getLayoutParams();
+                LayoutParams lp = (LayoutParams) mGroundTruthCardView.getLayoutParams();
                 // Expand card to allow editing ground truth
                 mMotionLayout.transitionToStart();
                 // We have to set height on card manually because it doesn't auto-expand right when views are within card container
@@ -158,8 +166,8 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 mGroundTruthCardView.setLayoutParams(lp);
 
                 // Collapse sliding panel if it's anchored so there is room
-                if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
-                    mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                if (mSlidingPanel.getPanelState() == PanelState.ANCHORED) {
+                    mSlidingPanel.setPanelState(PanelState.COLLAPSED);
                 }
             }
         }
@@ -279,7 +287,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         mLatText = v.findViewById(R.id.ground_truth_lat);
         mLongText = v.findViewById(R.id.ground_truth_long);
         mAltText = v.findViewById(R.id.ground_truth_alt);
-        mMotionLayout.setTransitionListener(new MotionLayout.TransitionListener() {
+        mMotionLayout.setTransitionListener(new TransitionListener() {
             @Override
             public void onTransitionTrigger(MotionLayout motionLayout, int i, boolean b, float v) {
             }
@@ -470,7 +478,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         xAxis.setDrawGridLines(false);
         xAxis.setAvoidFirstLastClipping(true);
         xAxis.setEnabled(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
 
         YAxis leftAxis = errorChart.getAxisLeft();
@@ -536,14 +544,16 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         // Collapse the panel when the user presses the back button
         if (mSlidingPanel != null) {
             // Collapse the sliding panel if its anchored or expanded
-            if (mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
-                    || mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
-                mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            if (mSlidingPanel.getPanelState() == PanelState.EXPANDED
+                    || mSlidingPanel.getPanelState() == PanelState.ANCHORED) {
+                mSlidingPanel.setPanelState(PanelState.COLLAPSED);
                 return true;
             }
         }
         return false;
     }
+
+    private BackInterceptListener mBackInterceptListener;
 
     /**
      * Returns true if the controller will handle the back button (e.g., if a sliding panel is open),
@@ -553,10 +563,15 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     @Override
     public boolean isBackIntercepting() {
         if (mSlidingPanel != null) {
-            return mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
-                    || mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED;
+            return mSlidingPanel.getPanelState() == PanelState.EXPANDED
+                    || mSlidingPanel.getPanelState() == PanelState.ANCHORED;
         }
         return false;
+    }
+
+    @Override
+    public void setBackInterceptListener(BackInterceptListener listener) {
+        mBackInterceptListener = listener;
     }
 
     @Override
@@ -584,11 +599,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
             mMotionLayout.setVisibility(GONE);
         }
         if (mSlidingPanel != null) {
-            if (mSlidingPanel.getPanelState() != SlidingUpPanelLayout.PanelState.HIDDEN) {
+            if (mSlidingPanel.getPanelState() != PanelState.HIDDEN) {
                 // Save the last visible panel state
                 mLastPanelState = mSlidingPanel.getPanelState();
             }
-            mSlidingPanel.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+            mSlidingPanel.setPanelState(PanelState.HIDDEN);
         }
     }
 
@@ -624,7 +639,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                 // Feet
                 vertError = LibUIUtils.toFeet(Math.abs(error.getVertError()));
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (VERSION.SDK_INT >= VERSION_CODES.O) {
                 if (mPrefDistanceUnits.equalsIgnoreCase(METERS)) {
                     vertAccuracy = location.getVerticalAccuracyMeters();
                 } else {
@@ -690,7 +705,7 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         }
 
         LineDataSet set = new LineDataSet(null, label);
-        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setAxisDependency(AxisDependency.LEFT);
         if (setType == ERROR_SET) {
             set.setColor(Color.RED);
         } else {
@@ -749,11 +764,11 @@ public class BenchmarkControllerImpl implements BenchmarkController {
     }
 
     private void setupSlidingPanel() {
-        mSlidingPanel.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+        mSlidingPanel.addPanelSlideListener(new PanelSlideListener() {
 
             @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (previousState == SlidingUpPanelLayout.PanelState.HIDDEN) {
+            public void onPanelStateChanged(View panel, PanelState previousState, PanelState newState) {
+                if (previousState == PanelState.HIDDEN) {
                     return;
                 }
 
@@ -770,6 +785,9 @@ public class BenchmarkControllerImpl implements BenchmarkController {
                     case HIDDEN:
                         onPanelHidden(panel);
                         break;
+                }
+                if (mBackInterceptListener != null) {
+                    mBackInterceptListener.onBackInterceptChanged(isBackIntercepting());
                 }
             }
 
