@@ -545,6 +545,20 @@ public class BenchmarkControllerImpl implements BenchmarkController {
         return false;
     }
 
+    /**
+     * Returns true if the controller will handle the back button (e.g., if a sliding panel is open),
+     * or false if it will not
+     * @return true if the controller will handle the back button, or false if it will not
+     */
+    @Override
+    public boolean isBackIntercepting() {
+        if (mSlidingPanel != null) {
+            return mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
+                    || mSlidingPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED;
+        }
+        return false;
+    }
+
     @Override
     public void onResume() {
         setupUnitPreferences();

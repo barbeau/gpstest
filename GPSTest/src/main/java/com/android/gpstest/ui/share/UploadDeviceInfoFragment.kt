@@ -78,7 +78,7 @@ class UploadDeviceInfoFragment : Fragment() {
                     Log.e(TAG, "Invalid lat/lon when getting address from location via geocoder: " + iae)
                 }
                 if (!addresses.isNullOrEmpty()) {
-                    userCountry = addresses.get(0).countryCode
+                    userCountry = addresses.get(0).countryCode ?: ""
                 }
             }
         }
@@ -88,7 +88,7 @@ class UploadDeviceInfoFragment : Fragment() {
             var versionCode = ""
             try {
                 val info: PackageInfo = Application.app.packageManager.getPackageInfo(Application.app.packageName, 0)
-                versionName = info.versionName
+                versionName = info.versionName ?: ""
                 versionCode = info.versionCode.toString()
             } catch (e: PackageManager.NameNotFoundException) {
                 e.printStackTrace()
@@ -150,7 +150,7 @@ class UploadDeviceInfoFragment : Fragment() {
             val antennaCfs: String
             if (gnssAntennaInfo.equals(Application.app.getString(R.string.capability_value_supported))) {
                 numAntennas = PreferenceUtils.getInt(Application.app.getString(R.string.capability_key_num_antenna), -1, prefs).toString()
-                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf), prefs)
+                antennaCfs = PreferenceUtils.getString(Application.app.getString(R.string.capability_key_antenna_cf), prefs) ?: ""
             } else {
                 numAntennas = ""
                 antennaCfs = ""

@@ -36,6 +36,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -190,6 +191,20 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         setupNavigationDrawer()
         val serviceIntent = Intent(this, ForegroundOnlyLocationService::class.java)
         bindService(serviceIntent, foregroundOnlyServiceConnection, BIND_AUTO_CREATE)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
+                    binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
+                } else if (benchmarkController?.onBackPressed() == true) {
+                    // Handled by benchmark controller
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -705,20 +720,6 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
                 gpsStart()
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if (binding.navDrawerLeftPane.isDrawerOpen(GravityCompat.START)) {
-            // Close navigation drawer
-            binding.navDrawerLeftPane.closeDrawer(GravityCompat.START)
-            return
-        } else if (benchmarkController != null) {
-            // Close sliding drawer
-            if (benchmarkController!!.onBackPressed()) {
-                return
-            }
-        }
-        super.onBackPressed()
     }
 
     @ExperimentalCoroutinesApi
