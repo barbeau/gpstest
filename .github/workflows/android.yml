@@ -87,7 +87,7 @@ jobs:
   
   instrumentation-test:
     name: Run instrumented tests
-    runs-on: macos-13
+    runs-on: macos-14
     strategy:
       matrix:
         api-level: [24, 29, 33]
@@ -133,7 +133,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
-          arch: x86_64
+          arch: aarch64
           profile: Nexus 6
 
       - name: Run instrumentation tests
@@ -147,11 +147,15 @@ jobs:
           script: |
             adb wait-for-device
             terminate_crashpad_handler() {
+              echo "Try stopping crashpad_handler…"
               pkill -f -SIGTERM crashpad_handler || true
-              sleep 2
-              pkill -f -SIGKILL crashpad_handler || true
+              sleep 5
+              if pgrep -f crashpad_handler >/dev/null; then
+                echo "crashpad_handler still not terminated, try killing ☠️…"
+                pkill -f -SIGKILL crashpad_handler || true
+              fi
             }
             trap terminate_crashpad_handler EXIT
             ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
-          arch: x86_64
+          arch: aarch64
           profile: Nexus 6
