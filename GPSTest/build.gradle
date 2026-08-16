@@ -38,6 +38,10 @@ android {
             // F-Droid release using osmdroid for maps
             dimension "map"
             applicationId "com.android.gpstest.osmdroid"
+            dependenciesInfo {
+                includeInApk = false
+                includeInBundle = false
+            }
         }
     }
 
