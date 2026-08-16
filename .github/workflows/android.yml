@@ -133,7 +133,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -no-metrics
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
-          arch: aarch64
+          arch: arm64-v8a
           profile: Nexus 6
 
       - name: Run instrumentation tests
@@ -157,5 +157,5 @@ jobs:
             }
             trap terminate_crashpad_handler EXIT
             ./gradlew ${{ matrix.tasks }} -x lint --stacktrace
-          arch: aarch64
+          arch: arm64-v8a
           profile: Nexus 6
