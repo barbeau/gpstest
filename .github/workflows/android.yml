@@ -87,7 +87,7 @@ jobs:
   
   instrumentation-test:
     name: Run instrumented tests
-    runs-on: macos-13
+    runs-on: macos-15-intel
     strategy:
       matrix:
         api-level: [24, 29, 33]
