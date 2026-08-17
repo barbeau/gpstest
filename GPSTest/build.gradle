@@ -231,11 +231,12 @@ dependencies {
     //
     testImplementation 'junit:junit:4.13.2'
     // Core library
-    androidTestImplementation 'androidx.test:core:1.4.0'
+    androidTestImplementation 'androidx.test:core:1.7.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.7.0'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
 
     // Assertions
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
