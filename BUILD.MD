@@ -43,9 +43,13 @@ key.keypassword=yourKeyPassword
 
 Note that the paths in these files always use the Unix path separator  `/`, even on Windows. If you use the Windows path separator `\` you will get the error `No value has been specified for property 'signingConfig.keyAlias'.`
 
-To build the release build, run:
+To build the release build on Linux, run:
 
 `JAVA_HOME=$(/usr/libexec/java_home -v 21) ./gradlew assembleRelease`
+
+On Windows PowerShell, run:
+
+`$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.12.1"; .\gradlew assembleRelease`
 
 We also need to add the changelog in a new file for the F-Droid release in [fastlane/metadata/android/en-US/changelogs](fastlane/metadata/android/en-US/changelogs), where the file name is the `version_code` (see [#559](https://github.com/barbeau/gpstest/issues/559)).
 
