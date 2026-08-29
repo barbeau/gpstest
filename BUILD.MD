@@ -45,7 +45,7 @@ Note that the paths in these files always use the Unix path separator  `/`, even
 
 To build the release build, run:
 
-`gradlew assembleRelease`
+`JAVA_HOME=$(/usr/libexec/java_home -v 21) ./gradlew assembleRelease`
 
 We also need to add the changelog in a new file for the F-Droid release in [fastlane/metadata/android/en-US/changelogs](fastlane/metadata/android/en-US/changelogs), where the file name is the `version_code` (see [#559](https://github.com/barbeau/gpstest/issues/559)).
 
