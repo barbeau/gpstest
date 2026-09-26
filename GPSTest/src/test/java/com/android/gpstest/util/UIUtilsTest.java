@@ -93,4 +93,18 @@ public class UIUtilsTest {
 
         assertEquals(134.21617f, LibUIUtils.toMilesPerHour(metersPerSecond));
     }
+
+    /**
+     * Tests converting from meters per second to knots
+     */
+    @Test
+    public void testToKnots() {
+        float metersPerSecond = 1.0f;
+
+        assertEquals(1.9438444f, LibUIUtils.toKnots(metersPerSecond));
+
+        metersPerSecond = 60.0f;
+
+        assertEquals(116.63067f, LibUIUtils.toKnots(metersPerSecond));
+    }
 }
