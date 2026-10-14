@@ -405,6 +405,7 @@
     <string name="preferences_preferred_speed_units_option_meters_per_second">Meters per second</string>
     <string name="preferences_preferred_speed_units_option_kilometers_per_hour">Kilometers per hour</string>
     <string name="preferences_preferred_speed_units_option_miles_per_hour">Miles per hour</string>
+    <string name="preferences_preferred_speed_units_option_knots">Knots</string>
 
     <string name="pref_language_title">Language</string>
     <string name="pref_language_summary">Manually sets the language shown in the app</string>
