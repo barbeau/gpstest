@@ -33,6 +33,7 @@ class ShareLocationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val locationValue = view.findViewById<TextView>(R.id.location_value)
         val includeAltitude = view.findViewById<CheckBox>(R.id.include_altitude)
+        val includeTimestamp = view.findViewById<CheckBox>(R.id.include_timestamp)
         val noLocation = view.findViewById<TextView>(R.id.no_location)
         val locationCopy: MaterialButton = view.findViewById(R.id.location_copy)
         val locationGeohack: MaterialButton = view.findViewById(R.id.location_geohack)
@@ -49,6 +50,7 @@ class ShareLocationFragment : Fragment() {
             // No location - Hide the location info
             locationValue.visibility = View.GONE
             includeAltitude.visibility = View.GONE
+            includeTimestamp.visibility = View.GONE
             chipGroup.visibility = View.GONE
             locationCopy.visibility = View.GONE
             locationGeohack.visibility = View.GONE
@@ -59,77 +61,90 @@ class ShareLocationFragment : Fragment() {
             noLocation.visibility = View.GONE
         }
 
-        // Set default state of include altitude view
+        // Set default state of include altitude / include timestamp views
         val includeAltitudePref = Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), false)
         includeAltitude.isChecked = includeAltitudePref
+        val includeTimestampPref = Application.prefs.getBoolean(Application.app.getString(R.string.pref_key_share_include_timestamp), false)
+        includeTimestamp.isChecked = includeTimestampPref
 
-        // Check selected coordinate format and show in UI
+        // Returns the location as a plain coordinate string in the currently selected
+        // coordinate format, with altitude appended when the "include altitude" checkbox is on.
+        fun coordinatesOnly(): String {
+            if (location == null) return ""
+            return when {
+                chipDMS.isChecked -> IOUtils.createLocationShare(
+                    LibUIUtils.getDMSFromLocation(app, location.latitude, CoordinateType.LATITUDE),
+                    LibUIUtils.getDMSFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
+                    if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null
+                )
+                chipDegreesDecimalMin.isChecked -> IOUtils.createLocationShare(
+                    LibUIUtils.getDDMFromLocation(app, location.latitude, CoordinateType.LATITUDE),
+                    LibUIUtils.getDDMFromLocation(app, location.longitude, CoordinateType.LONGITUDE),
+                    if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null
+                )
+                else -> IOUtils.createLocationShare(location, includeAltitude.isChecked)
+            }
+        }
+
+        // Single entry point that rewrites the locationValue TextView.
+        // Combines the coordinate string from coordinatesOnly() with an optional timestamp
+        // line when the "include timestamp" checkbox is selected.
+        // Every UI event funnels through this function.
+        fun refreshLocationText() {
+            if (location == null) return
+            val base = coordinatesOnly()
+            locationValue.text = if (includeTimestamp.isChecked && location.time > 0) {
+                "$base\n${IOUtils.formatLocationTimestamp(location.time)}"
+            } else {
+                base
+            }
+        }
+
+        // Check selected coordinate format and show in UI.
+        // The TextView argument to formatLocationForDisplay() is passed as null:
+        // We no longer let that helper write the location string directly,
+        // instead refreshLocationText() owns that logic and the timestamp
+        // suffix is applied consistently.
+        // formatLocationForDisplay() is still called for its side effect of
+        // selecting the correct chip based on the saved coordinate format preference.
         val coordinateFormat = Application.prefs.getString(Application.app.getString(R.string.pref_key_coordinate_format), Application.app.getString(R.string.preferences_coordinate_format_dd_key))
         if (location != null) {
             LibUIUtils.formatLocationForDisplay(
                 app,
                 location,
-                locationValue,
+                null,
                 includeAltitude.isChecked,
                 chipDecimalDegrees,
                 chipDMS,
                 chipDegreesDecimalMin,
                 coordinateFormat
             )
+            refreshLocationText()
         }
 
-        // Change the location text when the user toggles the altitude checkbox
+        // All five listeners below previously contained their own coordinate-formatting branches.
+        // They are now one-liners that delegate to refreshLocationText(), which
+        // centralises both the coordinate formatting (via coordinatesOnly()) and the
+        // optional timestamp suffix. The altitude / timestamp listeners additionally
+        // persist their checked state to SharedPreferences.
         includeAltitude.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            var format = "dd"
-            if (chipDecimalDegrees.isChecked) {
-                format = "dd"
-            } else if (chipDMS.isChecked) {
-                format = "dms"
-            } else if (chipDegreesDecimalMin.isChecked) {
-                format = "ddm"
-            }
-            if (location != null) {
-                LibUIUtils.formatLocationForDisplay(
-                    app,
-                    location,
-                    locationValue,
-                    isChecked,
-                    chipDecimalDegrees,
-                    chipDMS,
-                    chipDegreesDecimalMin,
-                    format
-                )
-            }
+            refreshLocationText()
             PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_altitude), isChecked, prefs)
         }
 
+        includeTimestamp.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            refreshLocationText()
+            PreferenceUtils.saveBoolean(Application.app.getString(R.string.pref_key_share_include_timestamp), isChecked, prefs)
+        }
+
         chipDecimalDegrees.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) {
-                if (location != null) {
-                    locationValue.text =
-                        IOUtils.createLocationShare(location, includeAltitude.isChecked)
-                }
-            }
+            if (isChecked) refreshLocationText()
         }
         chipDMS.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) {
-                if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(
-                        LibUIUtils.getDMSFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                            LibUIUtils.getDMSFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
-                            if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
-                }
-            }
+            if (isChecked) refreshLocationText()
         }
         chipDegreesDecimalMin.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) {
-                if (location != null) {
-                    locationValue.text = IOUtils.createLocationShare(
-                        LibUIUtils.getDDMFromLocation(Application.app, location.latitude, CoordinateType.LATITUDE),
-                            LibUIUtils.getDDMFromLocation(Application.app, location.longitude, CoordinateType.LONGITUDE),
-                            if (location.hasAltitude() && includeAltitude.isChecked) location.altitude.toString() else null)
-                }
-            }
+            if (isChecked) refreshLocationText()
         }
 
         locationCopy.setOnClickListener { _: View? ->
@@ -162,11 +177,12 @@ class ShareLocationFragment : Fragment() {
             }
         }
         locationShare.setOnClickListener { _: View? ->
-            // Send the location as a Geo URI (e.g., in an email) if the user has decimal degrees
-            // selected, otherwise send plain text version
+            // Send the location as a Geo URI (e.g., in an email) when decimal degrees are selected
+            // and no timestamp is requested; otherwise send the plain text version so the timestamp
+            // (which has no place in a geo: URI) is preserved.
             if (location != null) {
                 val intent = Intent(Intent.ACTION_SEND)
-                val text: String = if (chipDecimalDegrees.isChecked) {
+                val text: String = if (chipDecimalDegrees.isChecked && !includeTimestamp.isChecked) {
                     IOUtils.createGeoUri(app, location, includeAltitude.isChecked)
                 } else {
                     locationValue.text.toString()
