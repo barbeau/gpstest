@@ -54,8 +54,17 @@ import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
 import com.android.gpstest.library.osnma.SatelliteAuthStatus
 
+// Chip backgrounds (white text on top)
 private val Green = Color(0xFF2E7D32)
 private val Amber = Color(0xFFB26A00)
+
+/** Green for text, readable on light and dark cards */
+private val greenText: Color
+    @Composable get() = if (MaterialTheme.colors.isLight) Green else Color(0xFF81C784)
+
+/** Amber for text, readable on light and dark cards */
+private val amberText: Color
+    @Composable get() = if (MaterialTheme.colors.isLight) Amber else Color(0xFFFFB74D)
 private val Gray = Color(0xFF757575)
 
 /**
@@ -223,7 +232,7 @@ private fun Details(status: OsnmaStatus) {
         DetailRow(
             R.string.osnma_label_authenticated,
             authenticated.joinToString(" ") { "E%02d".format(it.svn) },
-            color = Green
+            color = greenText
         )
     }
     val failed = recentFailures(status)
@@ -264,8 +273,8 @@ private fun Expanded(state: OsnmaUiState) {
             status.events.takeLast(MAX_EVENTS_SHOWN).reversed().forEach { e ->
                 val color = when (e.type) {
                     OsnmaEvent.Type.ERROR -> MaterialTheme.colors.error
-                    OsnmaEvent.Type.WARNING -> Amber
-                    OsnmaEvent.Type.SUCCESS -> Green
+                    OsnmaEvent.Type.WARNING -> amberText
+                    OsnmaEvent.Type.SUCCESS -> greenText
                     OsnmaEvent.Type.INFO -> MaterialTheme.colors.onSurface
                 }
                 Text(
