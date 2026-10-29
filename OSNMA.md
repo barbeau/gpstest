@@ -12,6 +12,10 @@ that Android delivers to apps. The result is shown on the **Status** screen.
 
 *Mockup of the card. The numbers in the left screen come from a real receiver recording.*
 
+![Status screen with the Galileo OSNMA card in the dark theme (mockup)](docs/osnma-status-screen.png)
+
+*The card in place on the Status screen (dark theme, mockup based on a store screenshot).*
+
 ## Requirements
 
 - A device that provides Galileo navigation messages to apps (`GnssNavigationMessage` of type
