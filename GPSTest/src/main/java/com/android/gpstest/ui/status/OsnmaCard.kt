@@ -195,6 +195,7 @@ private fun Details(status: OsnmaStatus) {
                 KeySource.SIGNAL -> stringResource(R.string.osnma_key_source_signal)
                 KeySource.MERKLE_FILE -> stringResource(R.string.osnma_key_source_merkle_file)
                 KeySource.IMPORTED -> stringResource(R.string.osnma_key_source_imported)
+                KeySource.BUILT_IN -> stringResource(R.string.osnma_key_source_built_in)
             }
             stringResource(R.string.osnma_public_key_value, key.pkid, key.curveName, source)
         } else {

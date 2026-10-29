@@ -127,6 +127,17 @@ class OsnmaCryptoTest {
     }
 
     @Test
+    fun builtInGalileoKey_verifiedByMerkleRoot() {
+        val keys = GalileoKeys.builtInKeys(hex(GalileoKeys.MERKLE_ROOT))
+        val key = keys.single()
+        assertEquals(2, key.pkid)
+        assertEquals(KeySource.BUILT_IN, key.source)
+        assertEquals(OsnmaCrypto.Curve.P256, key.curve)
+        // Another root (here the test vectors') doesn't authenticate it
+        assertTrue(GalileoKeys.builtInKeys(hex(TestVectors.MERKLE_ROOT_1)).isEmpty())
+    }
+
+    @Test
     fun gst_arithmetic() {
         val g = Gst(1251, Gst.SECS_IN_WEEK - 10)
         assertEquals(Gst(1252, 20), g.addSeconds(30))

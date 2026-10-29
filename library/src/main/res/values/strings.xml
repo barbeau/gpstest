@@ -561,6 +561,7 @@
     <string name="osnma_key_source_signal">from signal</string>
     <string name="osnma_key_source_merkle_file">Merkle tree file</string>
     <string name="osnma_key_source_imported">imported</string>
+    <string name="osnma_key_source_built_in">built in</string>
     <string name="osnma_public_key_value">PKID %1$d (%2$s, %3$s)</string>
     <string name="osnma_public_key_none">Not available yet</string>
     <string name="osnma_chain_value">ID %1$d, %2$s, %3$d-bit tags, key at %4$s</string>
@@ -574,9 +575,9 @@
     <string name="pref_osnma_enabled_title">Authenticate Galileo navigation data</string>
     <string name="pref_osnma_enabled_summary">Verify Galileo Open Service Navigation Message Authentication (OSNMA) from the I/NAV navigation messages and show the result on the Status screen</string>
     <string name="pref_osnma_import_title">Import OSNMA public key or Merkle tree</string>
-    <string name="pref_osnma_import_summary">Optional, to start authenticating without waiting for the public key broadcast. Use the files from the European GNSS Service Centre (OSNMA_MerkleTree_*.xml or OSNMA_PublicKey_*.crt/.xml/.pem)</string>
+    <string name="pref_osnma_import_summary">Optional. Only needed if the Galileo Merkle tree changes or after an alert message. Use the files from the European GNSS Service Centre (OSNMA_MerkleTree_*.xml or OSNMA_PublicKey_*.crt/.xml/.pem)</string>
     <string name="pref_osnma_clear_title">Forget OSNMA keys</string>
-    <string name="pref_osnma_clear_summary">Delete the stored public keys and any imported Merkle tree</string>
+    <string name="pref_osnma_clear_summary">Delete the stored public keys and any imported Merkle tree. The built-in key stays.</string>
     <string name="osnma_import_success">Imported: %1$s</string>
     <string name="osnma_import_merkle_root">Merkle tree root</string>
     <string name="osnma_import_public_key">public key PKID %1$d</string>

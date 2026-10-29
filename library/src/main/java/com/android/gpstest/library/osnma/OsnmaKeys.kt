@@ -28,7 +28,9 @@ enum class KeySource {
     /** Taken from an imported GSC Merkle tree file and verified against its root */
     MERKLE_FILE,
     /** Imported by the user from a certificate, PEM or XML file */
-    IMPORTED
+    IMPORTED,
+    /** Shipped with the app and verified against the Merkle tree root, see [GalileoKeys] */
+    BUILT_IN
 }
 
 /** An OSNMA ECDSA public key with its public key ID */

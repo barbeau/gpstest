@@ -18,6 +18,7 @@ package com.android.gpstest.library.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.android.gpstest.library.R
+import com.android.gpstest.library.osnma.GalileoKeys
 import com.android.gpstest.library.osnma.ImportedKeyMaterial
 import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.OsnmaKeyFiles
@@ -31,12 +32,10 @@ import com.android.gpstest.library.osnma.OsnmaPublicKey
 object OsnmaKeyStore {
 
     /**
-     * Root of the Galileo OSNMA Merkle tree, which authenticates the ECDSA public keys broadcast
-     * in the signal (DSM-PKR, every 6 hours). From the GSC file
-     * OSNMA_MerkleTree_20251210100000_newPKID_2.xml (unchanged since the January 2024 tree).
-     * https://www.gsc-europa.eu/gsc-products/OSNMA/MT
+     * Root of the Galileo OSNMA Merkle tree, which authenticates the ECDSA public keys built into
+     * the app or broadcast in the signal (DSM-PKR, every 6 hours)
      */
-    const val GALILEO_MERKLE_ROOT = "832E15EDE55655EAC6E399A539477B7C034CCE24C3C93FFC904ACD9BF842F04E"
+    const val GALILEO_MERKLE_ROOT = GalileoKeys.MERKLE_ROOT
 
     /**
      * The Merkle tree root in use: an imported one, or the built-in one. Null if an OSNMA Alert
@@ -54,7 +53,18 @@ object OsnmaKeyStore {
         merkleRoot(context, prefs) == null &&
                 prefs.getStringSet(context.getString(R.string.pref_key_osnma_public_keys), null).isNullOrEmpty()
 
+    /**
+     * Public keys to use: the ones stored (received from the signal or imported), plus the
+     * built-in ones that the Merkle tree root in use authenticates
+     */
     fun publicKeys(context: Context, prefs: SharedPreferences): List<OsnmaPublicKey> {
+        val stored = storedPublicKeys(context, prefs)
+        val builtIn = merkleRoot(context, prefs)?.let { GalileoKeys.builtInKeys(it) } ?: emptyList()
+        val storedPkids = stored.map { it.pkid }.toSet()
+        return (stored + builtIn.filter { it.pkid !in storedPkids }).sortedBy { it.pkid }
+    }
+
+    private fun storedPublicKeys(context: Context, prefs: SharedPreferences): List<OsnmaPublicKey> {
         val stored = prefs.getStringSet(context.getString(R.string.pref_key_osnma_public_keys), emptySet())
             ?: emptySet()
         return stored.mapNotNull { entry ->

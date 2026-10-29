@@ -27,7 +27,7 @@ that Android delivers to apps. The result is shown on the **Status** screen.
 | --- | --- |
 | Status chip | **AUTHENTICATED** (green): navigation data is being verified. **IN PROGRESS** (amber): waiting for the public key, the TESLA root key or the first tags. **NO DATA** (gray): no OSNMA data yet. **DON'T USE**, **ALERT**, **TIME NOT VERIFIED** and **FAILED TAGS** (red): see below. |
 | NMA status | Operational, Test or Don't use, as broadcast by Galileo. A ✓ means it was confirmed by a verified signature. |
-| Public key | The ECDSA public key ID (PKID), its curve and where it came from: *from signal*, *Merkle tree file* or *imported*. |
+| Public key | The ECDSA public key ID (PKID), its curve and where it came from: *built in*, *from signal*, *Merkle tree file* or *imported*. |
 | TESLA chain | Chain ID, MAC function, tag size and time of the latest verified TESLA key. |
 | Authenticated | Satellites whose current ephemeris, clock and health data is authenticated. That means at least 40 bits of MAC tags were verified on the data the satellite is broadcasting right now. |
 | Failed tags | Satellites with a tag that failed verification in the last 10 minutes, with the count. |
@@ -50,15 +50,18 @@ Galileo time and the latest events.
 
 ## Keys
 
-OSNMA needs the Galileo ECDSA public key to verify the TESLA root key. GPSTest gets it in one of
-two ways:
+OSNMA needs the Galileo ECDSA public key to verify the TESLA root key. Nothing has to be set up:
 
-1. **From the signal (default).** Galileo broadcasts the public key every 6 hours, at 00, 06, 12
-   and 18 h Galileo time. GPSTest verifies it against the built-in Merkle tree root and stores
-   it, so this is only needed once per key.
-2. **Imported.** To start right away, download the files from the
+1. **Built in.** GPSTest ships with the current Galileo public key (PKID 2) and the Merkle tree
+   root. The key is only used after its Merkle tree path is checked against the root, so
+   authentication starts within minutes of the first fix.
+2. **From the signal.** When Galileo introduces a new key, it broadcasts it every 6 hours (at 00,
+   06, 12 and 18 h Galileo time). GPSTest verifies it against the Merkle tree root and stores it,
+   so new keys are picked up without an app update.
+3. **Imported (optional).** Only needed if the Merkle tree itself changes, or after an alert
+   message. Download the files from the
    [European GNSS Service Centre](https://www.gsc-europa.eu/gsc-products/OSNMA/PKI) (free
-   registration). Import one under **Settings > Galileo OSNMA > Import OSNMA public key or
+   registration) and import one under **Settings > Galileo OSNMA > Import OSNMA public key or
    Merkle tree**. Supported files:
    - `OSNMA_MerkleTree_*.xml`: replaces the Merkle tree root. The public key it contains is
      verified against that root before use.
@@ -66,7 +69,8 @@ two ways:
    - `OSNMA_PublicKey_*.crt` or a PEM public key. The PKID is taken from the file name
      (`…PKID_2…`).
 
-**Forget OSNMA keys** deletes the stored public keys and any imported Merkle tree.
+**Forget OSNMA keys** deletes the stored public keys and any imported Merkle tree. The built-in key
+stays.
 **Authenticate Galileo navigation data** turns the feature off.
 
 ## What is verified

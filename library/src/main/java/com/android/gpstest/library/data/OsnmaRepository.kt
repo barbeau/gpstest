@@ -23,6 +23,7 @@ import android.util.Log
 import com.android.gpstest.library.R
 import com.android.gpstest.library.osnma.InavPage
 import com.android.gpstest.library.osnma.InavTimeTracker
+import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.OsnmaEngine
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaPublicKey
@@ -88,10 +89,11 @@ class OsnmaRepository @Inject constructor(
     private var crcChecked = 0
     private var trustPlatformParity = false
     private var clockOffsetSeconds: Long? = null
+    private var engineKeys: Set<String> = emptySet()
 
     private val listener = object : OsnmaEngine.Listener {
         override fun onPublicKeyAuthenticated(key: OsnmaPublicKey) {
-            OsnmaKeyStore.savePublicKey(context, prefs, key)
+            if (key.source != KeySource.BUILT_IN) OsnmaKeyStore.savePublicKey(context, prefs, key)
         }
 
         override fun onAlertMessage() {
@@ -173,23 +175,32 @@ class OsnmaRepository @Inject constructor(
         publish(force = false)
     }
 
-    private fun newEngine(): OsnmaEngine = OsnmaEngine(
-        merkleRoot = OsnmaKeyStore.merkleRoot(context, prefs),
-        initialKeys = OsnmaKeyStore.publicKeys(context, prefs),
-        listener = listener
-    )
+    private fun newEngine(): OsnmaEngine {
+        val keys = OsnmaKeyStore.publicKeys(context, prefs)
+        engineKeys = keys.map { it.fingerprint() }.toSet()
+        return OsnmaEngine(
+            merkleRoot = OsnmaKeyStore.merkleRoot(context, prefs),
+            initialKeys = keys,
+            listener = listener
+        )
+    }
+
+    private fun OsnmaPublicKey.fingerprint(): String =
+        "$pkid:" + sec1.joinToString("") { "%02X".format(it.toInt() and 0xFF) }
 
     private fun applyStoredKeys() {
         val e = engine ?: return
         val root = OsnmaKeyStore.merkleRoot(context, prefs)
         val keys = OsnmaKeyStore.publicKeys(context, prefs)
-        if (keys.isEmpty() || root == null) {
-            // Keys were cleared or revoked: start over without them. Pages keep coming, so the
+        val fingerprints = keys.map { it.fingerprint() }.toSet()
+        if (root == null || !fingerprints.containsAll(engineKeys)) {
+            // Keys were removed or revoked: start over without them. Pages keep coming, so the
             // engine is recreated with the current material on the next one.
             resetEngine()
         } else {
             e.setMerkleRoot(root)
             keys.forEach { e.addPublicKey(it) }
+            engineKeys = fingerprints
         }
     }
 

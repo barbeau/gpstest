@@ -62,7 +62,7 @@ For more information on dual-frequency GNSS in general, see the EU GSA article [
 
 Yes, on devices that provide Galileo I/NAV navigation messages to apps (the "Navigation Messages" capability, see "What GNSS features does my device support?"). [OSNMA](https://www.gsc-europa.eu/galileo/services/galileo-open-service-navigation-message-authentication-osnma) lets a receiver verify that the ephemeris, clock and health data broadcast by Galileo satellites is genuine and hasn't been spoofed. When those messages are available, a "Galileo OSNMA" card appears on the "Status" screen and lists the satellites whose navigation data has been authenticated. Tap it for details.
 
-GPSTest verifies everything on the phone: it checks the TESLA root key's ECDSA signature, follows the TESLA key chain and verifies the MAC tags of the navigation data. It needs the OSNMA public key, which Galileo broadcasts every 6 hours (at 00, 06, 12 and 18 h Galileo time) and GPSTest checks against the built-in Merkle tree root. To start right away, download the public key or Merkle tree file from the [European GNSS Service Centre](https://www.gsc-europa.eu/gsc-products/OSNMA/PKI) (free registration) and import it under Settings > Galileo OSNMA.
+GPSTest verifies everything on the phone: it checks the TESLA root key's ECDSA signature, follows the TESLA key chain and verifies the MAC tags of the navigation data. The current Galileo public key is built in, so nothing needs to be set up. New keys are received from the signal and checked against the built-in Merkle tree root.
 
 For details, see the [Galileo OSNMA](OSNMA.md) page.
 
