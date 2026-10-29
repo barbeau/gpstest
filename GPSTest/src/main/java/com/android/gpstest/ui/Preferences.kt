@@ -19,6 +19,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -26,6 +27,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.pm.PackageManager
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -36,6 +38,7 @@ import android.preference.Preference
 import android.preference.Preference.OnPreferenceChangeListener
 import android.preference.PreferenceActivity
 import android.preference.PreferenceCategory
+import android.provider.OpenableColumns
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -51,6 +54,7 @@ import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.BuildConfig
 import com.android.gpstest.R
+import com.android.gpstest.library.data.OsnmaKeyStore
 import com.android.gpstest.library.util.LibUIUtils.resetActivityTitle
 import com.android.gpstest.library.util.PermissionUtils
 import com.android.gpstest.library.util.PreferenceUtil
@@ -58,6 +62,7 @@ import com.android.gpstest.library.util.PreferenceUtil.enableMeasurementsPref
 import com.android.gpstest.library.util.PreferenceUtil.enableNavMessagesPref
 import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtils
+import java.io.IOException
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -206,8 +211,61 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         chkAsNavMessages?.isEnabled = enableNavMessagesPref(app, prefs)
 
         initNotificationPermissionDialog()
+        initOsnmaPreferences()
 
         prefs.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    /**
+     * Galileo OSNMA: importing the public key or Merkle tree files from the European GNSS Service
+     * Centre, and forgetting stored keys
+     */
+    private fun initOsnmaPreferences() {
+        findPreference(getString(R.string.pref_key_osnma_import))?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "*/*"
+                }
+                try {
+                    startActivityForResult(intent, OSNMA_IMPORT_REQUEST)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(this, getString(R.string.osnma_import_failed, e.message), Toast.LENGTH_LONG).show()
+                }
+                true
+            }
+        findPreference(getString(R.string.pref_key_osnma_clear))?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                OsnmaKeyStore.clear(this, prefs)
+                Toast.makeText(this, R.string.osnma_keys_cleared, Toast.LENGTH_SHORT).show()
+                true
+            }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == OSNMA_IMPORT_REQUEST && resultCode == RESULT_OK) {
+            data?.data?.let { importOsnmaFile(it) }
+        }
+    }
+
+    private fun importOsnmaFile(uri: Uri) {
+        val message = try {
+            val name = contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                ?.use { c -> if (c.moveToFirst()) c.getString(0) else null }
+            val bytes = contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                ?: throw IOException("Can't read $uri")
+            if (bytes.size > OSNMA_MAX_FILE_BYTES) throw IOException("File too large")
+            val material = OsnmaKeyStore.import(this, prefs, bytes, name)
+            val imported = mutableListOf<String>()
+            if (material.merkleRoot != null) imported.add(getString(R.string.osnma_import_merkle_root))
+            material.publicKeys.forEach { imported.add(getString(R.string.osnma_import_public_key, it.pkid)) }
+            getString(R.string.osnma_import_success, imported.joinToString(", "))
+        } catch (e: Exception) {
+            getString(R.string.osnma_import_failed, e.message ?: e.javaClass.simpleName)
+        }
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onResume() {
@@ -497,5 +555,10 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
             startActivity(mainIntent)
             Runtime.getRuntime().exit(0)
         }, 200, TimeUnit.MILLISECONDS)
+    }
+
+    companion object {
+        private const val OSNMA_IMPORT_REQUEST = 3101
+        private const val OSNMA_MAX_FILE_BYTES = 1024 * 1024
     }
 }

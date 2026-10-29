@@ -526,4 +526,60 @@
         &#8226;\u0020 Finnish translation provided by Ari Nygard\n
         &#8226;\u0020 Danish translation provided by Claus Østergaard\n
     </string>
+
+    <!-- Galileo OSNMA -->
+    <string name="osnma_title">Galileo OSNMA</string>
+    <string name="osnma_chip_authenticated">AUTHENTICATED</string>
+    <string name="osnma_chip_waiting">IN PROGRESS</string>
+    <string name="osnma_chip_no_data">NO DATA</string>
+    <string name="osnma_chip_dont_use">DON\'T USE</string>
+    <string name="osnma_chip_alert">ALERT</string>
+    <string name="osnma_chip_failures">FAILED TAGS</string>
+    <string name="osnma_chip_time">TIME NOT VERIFIED</string>
+    <string name="osnma_clock_offset_warning">The device clock differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 30 s: check the date and time settings.</string>
+    <string name="osnma_phase_no_data">Waiting for Galileo I/NAV navigation messages. Not all devices provide them.</string>
+    <string name="osnma_phase_syncing">Receiving Galileo navigation messages, synchronizing with Galileo System Time…</string>
+    <string name="osnma_phase_no_osnma">Galileo navigation messages received, but no OSNMA data yet.</string>
+    <string name="osnma_phase_waiting_public_key">Waiting for the OSNMA public key. It\'s broadcast every 6 hours (00, 06, 12 and 18 h GST), or you can import it in Settings.</string>
+    <string name="osnma_phase_waiting_kroot">Verifying the signature of the TESLA root key…</string>
+    <string name="osnma_phase_waiting_tags">TESLA key chain verified, waiting for navigation data tags…</string>
+    <string name="osnma_phase_authenticating">Navigation data of %1$d Galileo satellites authenticated.</string>
+    <string name="osnma_phase_dont_use">The Galileo OSNMA status is \"don\'t use\": navigation data can\'t be authenticated right now.</string>
+    <string name="osnma_phase_alert">An OSNMA alert message was received and all keys were erased. Authentication is suspended until new keys are imported.</string>
+    <string name="osnma_label_status">NMA status</string>
+    <string name="osnma_label_public_key">Public key</string>
+    <string name="osnma_label_chain">TESLA chain</string>
+    <string name="osnma_label_authenticated">Authenticated</string>
+    <string name="osnma_label_failed">Failed tags</string>
+    <string name="osnma_label_tags">Tags verified</string>
+    <string name="osnma_label_pages">Pages</string>
+    <string name="osnma_label_gst">Galileo time</string>
+    <string name="osnma_nmas_operational">Operational</string>
+    <string name="osnma_nmas_test">Test</string>
+    <string name="osnma_nmas_dont_use">Don\'t use</string>
+    <string name="osnma_nmas_reserved">Reserved</string>
+    <string name="osnma_key_source_signal">from signal</string>
+    <string name="osnma_key_source_merkle_file">Merkle tree file</string>
+    <string name="osnma_key_source_imported">imported</string>
+    <string name="osnma_public_key_value">PKID %1$d (%2$s, %3$s)</string>
+    <string name="osnma_public_key_none">Not available yet</string>
+    <string name="osnma_chain_value">ID %1$d, %2$s, %3$d-bit tags, key at %4$s</string>
+    <string name="osnma_tags_value">%1$d (CED %2$d, timing %3$d, slow MAC %4$d), failed %5$d</string>
+    <string name="osnma_pages_value">%1$d I/NAV, %2$d with OSNMA, %3$d CRC errors</string>
+    <string name="osnma_trusting_parity">The device doesn\'t seem to provide I/NAV CRC bits, so its parity check is used instead.</string>
+    <string name="osnma_explanation">OSNMA lets receivers check that Galileo ephemeris, clock and health data really come from Galileo. A satellite is authenticated once at least 40 bits of MAC tags have been verified on the data it currently broadcasts. Failed tags can come from corrupted data or wrong timing, but also from spoofing.</string>
+
+    <!-- Galileo OSNMA settings -->
+    <string name="pref_osnma_category_title">Galileo OSNMA</string>
+    <string name="pref_osnma_enabled_title">Authenticate Galileo navigation data</string>
+    <string name="pref_osnma_enabled_summary">Verify Galileo Open Service Navigation Message Authentication (OSNMA) from the I/NAV navigation messages and show the result on the Status screen</string>
+    <string name="pref_osnma_import_title">Import OSNMA public key or Merkle tree</string>
+    <string name="pref_osnma_import_summary">Optional, to start authenticating without waiting for the public key broadcast. Use the files from the European GNSS Service Centre (OSNMA_MerkleTree_*.xml or OSNMA_PublicKey_*.crt/.xml/.pem)</string>
+    <string name="pref_osnma_clear_title">Forget OSNMA keys</string>
+    <string name="pref_osnma_clear_summary">Delete the stored public keys and any imported Merkle tree</string>
+    <string name="osnma_import_success">Imported: %1$s</string>
+    <string name="osnma_import_merkle_root">Merkle tree root</string>
+    <string name="osnma_import_public_key">public key PKID %1$d</string>
+    <string name="osnma_import_failed">Couldn\'t import OSNMA file: %1$s</string>
+    <string name="osnma_keys_cleared">OSNMA keys deleted</string>
 </resources>

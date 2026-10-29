@@ -282,6 +282,15 @@
     <string name="preferences_coordinate_format_dms_key">dms</string>
     <string name="preferences_coordinate_format_ddm_key">ddm</string>
 
+    <!-- Galileo OSNMA -->
+    <string name="pref_key_osnma_category">osnma_category</string>
+    <string name="pref_key_osnma_enabled">osnma_enabled</string>
+    <string name="pref_key_osnma_import">osnma_import</string>
+    <string name="pref_key_osnma_clear">osnma_clear</string>
+    <string name="pref_key_osnma_public_keys">osnma_public_keys</string>
+    <string name="pref_key_osnma_merkle_root">osnma_merkle_root</string>
+    <string name="pref_key_osnma_revoked_merkle_root">osnma_revoked_merkle_root</string>
+
     <!-- Google Sheets URL for device properties -->
     <string name="device_properties_upload_url">https://script.google.com/macros/s/AKfycbx2yxZwWTIUpC2q6xfRNwuRNjJQ6yfKSTCjYaSDWkBrJWe2ViA/exec</string>
 </resources>

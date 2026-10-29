@@ -1,0 +1,234 @@
+/*
+ * Copyright (C) 2026 The GPSTest contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.android.gpstest.library.data
+
+import android.content.Context
+import android.content.SharedPreferences
+import android.location.GnssNavigationMessage
+import android.os.SystemClock
+import android.util.Log
+import com.android.gpstest.library.R
+import com.android.gpstest.library.osnma.InavPage
+import com.android.gpstest.library.osnma.InavTimeTracker
+import com.android.gpstest.library.osnma.OsnmaEngine
+import com.android.gpstest.library.osnma.OsnmaEvent
+import com.android.gpstest.library.osnma.OsnmaPublicKey
+import com.android.gpstest.library.osnma.OsnmaStatus
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import java.util.concurrent.Executors
+import javax.inject.Inject
+import javax.inject.Singleton
+
+private const val TAG = "OsnmaRepository"
+
+/**
+ * State of Galileo OSNMA authentication for the UI
+ */
+data class OsnmaUiState(
+    val enabled: Boolean = true,
+    /** Null until the first Galileo I/NAV page has been processed */
+    val status: OsnmaStatus? = null,
+    /** Galileo I/NAV pages received from the platform, including ones not yet time-tagged */
+    val inavPagesReceived: Long = 0,
+    /** CRC errors were frequent, so the platform's parity flag is trusted instead */
+    val trustingPlatformParity: Boolean = false,
+    /** An OSNMA Alert Message revoked the key material; new keys must be imported */
+    val keysRevoked: Boolean = false,
+    /**
+     * Difference between the device clock and the Galileo System Time read from the signal, in
+     * seconds, or null if unknown. OSNMA is only meaningful if the receiver knows the time
+     * independently of the signal it authenticates (OSNMA Receiver Guidelines section 3.1).
+     */
+    val clockOffsetSeconds: Long? = null
+) {
+    val clockOffsetTooLarge: Boolean
+        get() = clockOffsetSeconds != null && kotlin.math.abs(clockOffsetSeconds) > MAX_CLOCK_OFFSET_SECONDS
+
+    companion object {
+        /** TESLA keys are disclosed 30 s after their tags, so time must be known better than that */
+        const val MAX_CLOCK_OFFSET_SECONDS = 30L
+    }
+}
+
+/**
+ * Feeds the Galileo I/NAV navigation messages received from the platform into an
+ * [OsnmaEngine] and publishes its status. Processing happens on a dedicated thread.
+ */
+@Singleton
+class OsnmaRepository @Inject constructor(
+    private val context: Context,
+    private val prefs: SharedPreferences
+) {
+    private val executor = Executors.newSingleThreadExecutor { r -> Thread(r, "OSNMA") }
+
+    private val _state = MutableStateFlow(OsnmaUiState(enabled = isEnabled()))
+    val state: StateFlow<OsnmaUiState> = _state
+
+    // Only accessed from the executor thread
+    private var engine: OsnmaEngine? = null
+    private val timeTracker = InavTimeTracker()
+    private var lastArrivalMillis = 0L
+    private var lastPublishMillis = 0L
+    private var inavPages = 0L
+    private var crcFailures = 0
+    private var crcChecked = 0
+    private var trustPlatformParity = false
+    private var clockOffsetSeconds: Long? = null
+
+    private val listener = object : OsnmaEngine.Listener {
+        override fun onPublicKeyAuthenticated(key: OsnmaPublicKey) {
+            OsnmaKeyStore.savePublicKey(context, prefs, key)
+        }
+
+        override fun onAlertMessage() {
+            // All cryptographic material must be considered compromised (OSNMA SIS ICD 5.6)
+            OsnmaKeyStore.revokeAll(context, prefs)
+        }
+
+        override fun onEvent(event: OsnmaEvent) {
+            Log.d(TAG, event.toString())
+        }
+    }
+
+    private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        when (key) {
+            context.getString(R.string.pref_key_osnma_enabled) -> executor.execute {
+                if (!isEnabled()) resetEngine()
+                publish(force = true)
+            }
+            context.getString(R.string.pref_key_osnma_public_keys),
+            context.getString(R.string.pref_key_osnma_merkle_root) -> executor.execute {
+                applyStoredKeys()
+                publish(force = true)
+            }
+        }
+    }
+
+    init {
+        prefs.registerOnSharedPreferenceChangeListener(prefListener)
+    }
+
+    private fun isEnabled(): Boolean =
+        prefs.getBoolean(context.getString(R.string.pref_key_osnma_enabled), true)
+
+    /**
+     * Called for every navigation message received from the platform. Only Galileo E1-B I/NAV
+     * pages are used.
+     */
+    fun onNavigationMessage(message: GnssNavigationMessage) {
+        if (message.type != GnssNavigationMessage.TYPE_GAL_I) return
+        val arrival = SystemClock.elapsedRealtime()
+        val wallClock = System.currentTimeMillis()
+        val svid = message.svid
+        val data = message.data ?: return
+        val parityPassed = (message.status and GnssNavigationMessage.STATUS_PARITY_PASSED) != 0
+        executor.execute { process(svid, data, parityPassed, arrival, wallClock) }
+    }
+
+    private fun process(svid: Int, data: ByteArray, parityPassed: Boolean, arrival: Long, wallClock: Long) {
+        if (!isEnabled()) return
+        val page = InavPage.fromAndroid(data) ?: return
+
+        // After a long gap (tracking stopped), start over: TESLA keys can only be followed for
+        // about a day and the time anchors are stale
+        if (lastArrivalMillis != 0L && arrival - lastArrivalMillis > RESET_GAP_MILLIS) {
+            resetEngine()
+        }
+        lastArrivalMillis = arrival
+        inavPages++
+
+        // Some platforms might not fill in the CRC. If it's always wrong while the platform says
+        // the parity passed, rely on the platform instead.
+        if (!trustPlatformParity && page.isNominal) {
+            crcChecked++
+            if (!page.crcOk) crcFailures++
+            if (crcChecked >= 100 && crcFailures > crcChecked * 9 / 10 && parityPassed) {
+                trustPlatformParity = true
+                Log.w(TAG, "I/NAV CRC failing on most pages; trusting platform parity status")
+            }
+        }
+        if (trustPlatformParity && !parityPassed) return
+
+        val gst = timeTracker.gstFor(svid, page, arrival)
+        if (gst != null) {
+            // The page ended about 2 s after its start time, plus decoding latency
+            clockOffsetSeconds = deviceGstSeconds(wallClock) - 2 - gst.totalSeconds
+            val e = engine ?: newEngine().also { engine = it }
+            e.feedPage(svid, gst, page, checkCrc = !trustPlatformParity)
+        }
+        publish(force = false)
+    }
+
+    private fun newEngine(): OsnmaEngine = OsnmaEngine(
+        merkleRoot = OsnmaKeyStore.merkleRoot(context, prefs),
+        initialKeys = OsnmaKeyStore.publicKeys(context, prefs),
+        listener = listener
+    )
+
+    private fun applyStoredKeys() {
+        val e = engine ?: return
+        val root = OsnmaKeyStore.merkleRoot(context, prefs)
+        val keys = OsnmaKeyStore.publicKeys(context, prefs)
+        if (keys.isEmpty() || root == null) {
+            // Keys were cleared or revoked: start over without them. Pages keep coming, so the
+            // engine is recreated with the current material on the next one.
+            resetEngine()
+        } else {
+            e.setMerkleRoot(root)
+            keys.forEach { e.addPublicKey(it) }
+        }
+    }
+
+    private fun resetEngine() {
+        engine = null
+        timeTracker.reset()
+        inavPages = 0
+        crcChecked = 0
+        crcFailures = 0
+        trustPlatformParity = false
+        clockOffsetSeconds = null
+    }
+
+    private fun publish(force: Boolean) {
+        val now = SystemClock.elapsedRealtime()
+        if (!force && now - lastPublishMillis < PUBLISH_INTERVAL_MILLIS) return
+        lastPublishMillis = now
+        _state.value = OsnmaUiState(
+            enabled = isEnabled(),
+            status = engine?.status(),
+            inavPagesReceived = inavPages,
+            trustingPlatformParity = trustPlatformParity,
+            keysRevoked = OsnmaKeyStore.isRevoked(context, prefs),
+            clockOffsetSeconds = clockOffsetSeconds
+        )
+    }
+
+    companion object {
+        private const val PUBLISH_INTERVAL_MILLIS = 1000L
+        private const val RESET_GAP_MILLIS = 10 * 60 * 1000L
+
+        /** GPS time - UTC, in seconds (leap seconds since 1980, unchanged since 2017) */
+        private const val GPS_UTC_LEAP_SECONDS = 18L
+
+        /** GST from a UTC time in milliseconds since the Unix epoch */
+        fun deviceGstSeconds(utcMillis: Long): Long {
+            val gpsSeconds = utcMillis / 1000 - 315_964_800L + GPS_UTC_LEAP_SECONDS
+            // The GST week 0 starts at GPS week 1024 (22 August 1999)
+            return gpsSeconds - 1024L * 7 * 24 * 3600
+        }
+    }
+}

@@ -58,6 +58,14 @@ Another reference chart is [here](https://gssc.esa.int/navipedia/images/c/cf/GNS
 
 For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
+## Does GPSTest support Galileo OSNMA (navigation message authentication)?
+
+Yes, on devices that provide Galileo I/NAV navigation messages to apps (the "Navigation Messages" capability, see "What GNSS features does my device support?"). [OSNMA](https://www.gsc-europa.eu/galileo/services/galileo-open-service-navigation-message-authentication-osnma) lets a receiver verify that the ephemeris, clock and health data broadcast by Galileo satellites is genuine and hasn't been spoofed. When those messages are available, a "Galileo OSNMA" card appears on the "Status" screen and lists the satellites whose navigation data has been authenticated. Tap it for details.
+
+GPSTest verifies everything on the phone: it checks the TESLA root key's ECDSA signature, follows the TESLA key chain and verifies the MAC tags of the navigation data. It needs the OSNMA public key, which Galileo broadcasts every 6 hours (at 00, 06, 12 and 18 h Galileo time) and GPSTest checks against the built-in Merkle tree root. To start right away, download the public key or Merkle tree file from the [European GNSS Service Centre](https://www.gsc-europa.eu/gsc-products/OSNMA/PKI) (free registration) and import it under Settings > Galileo OSNMA.
+
+Note that GPSTest only authenticates the navigation data it receives through Android. It can't tell whether the device's own position fix used it, and it doesn't check the timing of the signals, which full OSNMA receivers also require (Receiver Guidelines section 3.1).
+
 ## What does the "U" flag mean for SBAS satellites?
 
 For SBAS, the Android spec does not specify if the "U" ("Used") flag refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.
