@@ -64,6 +64,8 @@ Yes, on devices that provide Galileo I/NAV navigation messages to apps (the "Nav
 
 GPSTest verifies everything on the phone: it checks the TESLA root key's ECDSA signature, follows the TESLA key chain and verifies the MAC tags of the navigation data. It needs the OSNMA public key, which Galileo broadcasts every 6 hours (at 00, 06, 12 and 18 h Galileo time) and GPSTest checks against the built-in Merkle tree root. To start right away, download the public key or Merkle tree file from the [European GNSS Service Centre](https://www.gsc-europa.eu/gsc-products/OSNMA/PKI) (free registration) and import it under Settings > Galileo OSNMA.
 
+For details, see the [Galileo OSNMA](OSNMA.md) page.
+
 Note that GPSTest only authenticates the navigation data it receives through Android. It can't tell whether the device's own position fix used it, and it doesn't check the timing of the signals, which full OSNMA receivers also require (Receiver Guidelines section 3.1).
 
 ## What does the "U" flag mean for SBAS satellites?
