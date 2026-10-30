@@ -28,9 +28,11 @@ import com.android.gpstest.library.osnma.OsnmaEngine
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaPublicKey
 import com.android.gpstest.library.osnma.OsnmaStatus
+import com.android.gpstest.library.util.PreferenceUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -54,14 +56,27 @@ data class OsnmaUiState(
      * seconds, or null if unknown. OSNMA is only meaningful if the receiver knows the time
      * independently of the signal it authenticates (OSNMA Receiver Guidelines section 3.1).
      */
-    val clockOffsetSeconds: Long? = null
+    val clockOffsetSeconds: Long? = null,
+    /** Galileo pages were being received but stopped arriving while tracking continued */
+    val pagesStalled: Boolean = false
 ) {
+    /**
+     * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
+     * Usually caused by the chipset saving power (duty cycling) or tracking the E1 pilot.
+     */
+    val poorReception: Boolean
+        get() = pagesStalled ||
+                (status?.statistics?.subframeCompleteness?.let { it < MIN_SUBFRAME_COMPLETENESS } == true)
+
     val clockOffsetTooLarge: Boolean
         get() = clockOffsetSeconds != null && kotlin.math.abs(clockOffsetSeconds) > MAX_CLOCK_OFFSET_SECONDS
 
     companion object {
         /** TESLA keys are disclosed 30 s after their tags, so time must be known better than that */
         const val MAX_CLOCK_OFFSET_SECONDS = 30L
+
+        /** Below this share of complete subframes, authentication becomes slow or impossible */
+        const val MIN_SUBFRAME_COMPLETENESS = 0.5
     }
 }
 
@@ -74,7 +89,7 @@ class OsnmaRepository @Inject constructor(
     private val context: Context,
     private val prefs: SharedPreferences
 ) {
-    private val executor = Executors.newSingleThreadExecutor { r -> Thread(r, "OSNMA") }
+    private val executor = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "OSNMA") }
 
     private val _state = MutableStateFlow(OsnmaUiState(enabled = isEnabled()))
     val state: StateFlow<OsnmaUiState> = _state
@@ -122,7 +137,16 @@ class OsnmaRepository @Inject constructor(
 
     init {
         prefs.registerOnSharedPreferenceChangeListener(prefListener)
+        // Republish regularly so that the UI notices when pages stop arriving
+        executor.scheduleWithFixedDelay(
+            { if (inavPages > 0) publish(force = true) },
+            STALL_CHECK_MILLIS, STALL_CHECK_MILLIS, TimeUnit.MILLISECONDS
+        )
     }
+
+    private fun pagesStalled(): Boolean =
+        inavPages > 0 && PreferenceUtils.isTrackingStarted(prefs) &&
+                SystemClock.elapsedRealtime() - lastArrivalMillis > STALL_MILLIS
 
     private fun isEnabled(): Boolean =
         prefs.getBoolean(context.getString(R.string.pref_key_osnma_enabled), true)
@@ -224,13 +248,16 @@ class OsnmaRepository @Inject constructor(
             inavPagesReceived = inavPages,
             trustingPlatformParity = trustPlatformParity,
             keysRevoked = OsnmaKeyStore.isRevoked(context, prefs),
-            clockOffsetSeconds = clockOffsetSeconds
+            clockOffsetSeconds = clockOffsetSeconds,
+            pagesStalled = pagesStalled()
         )
     }
 
     companion object {
         private const val PUBLISH_INTERVAL_MILLIS = 1000L
         private const val RESET_GAP_MILLIS = 10 * 60 * 1000L
+        private const val STALL_MILLIS = 30 * 1000L
+        private const val STALL_CHECK_MILLIS = 5 * 1000L
 
         /** GPS time - UTC, in seconds (leap seconds since 1980, unchanged since 2017) */
         private const val GPS_UTC_LEAP_SECONDS = 18L

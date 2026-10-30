@@ -26,7 +26,20 @@ internal class SubframeCollector {
     private val hkroot = Array(NUM_SVNS) { ByteArray(HKROOT_BYTES) }
     private val mack = Array(NUM_SVNS) { ByteArray(MACK_BYTES) }
     private val numValid = IntArray(NUM_SVNS)
+    private val seen = BooleanArray(NUM_SVNS)
     private var current: Gst? = null
+    private var first: Gst? = null
+
+    /**
+     * Number of (satellite, subframe) pairs for which OSNMA data was received, not counting the
+     * first subframe, which reception usually starts in the middle of
+     */
+    var started = 0L
+        private set
+
+    /** Subframes completed within the first subframe (excluded from [started]) */
+    var firstCompleted = 0L
+        private set
 
     class Completed(val hkroot: ByteArray, val mack: ByteArray, val gstSubframe: Gst)
 
@@ -35,8 +48,14 @@ internal class SubframeCollector {
         if (subframe != current) {
             current = subframe
             numValid.fill(0)
+            seen.fill(false)
         }
         val idx = svn - 1
+        if (first == null) first = subframe
+        if (!seen[idx]) {
+            seen[idx] = true
+            if (subframe != first) started++
+        }
         val wordNum = (gst.tow / 2) % WORDS_PER_SUBFRAME
         if (wordNum != numValid[idx]) {
             // A page is missing; this subframe can't be completed for this satellite
@@ -46,6 +65,7 @@ internal class SubframeCollector {
         System.arraycopy(osnma, 1, mack[idx], wordNum * 4, 4)
         numValid[idx]++
         return if (numValid[idx] == WORDS_PER_SUBFRAME) {
+            if (subframe == first) firstCompleted++
             Completed(hkroot[idx].copyOf(), mack[idx].copyOf(), subframe)
         } else null
     }

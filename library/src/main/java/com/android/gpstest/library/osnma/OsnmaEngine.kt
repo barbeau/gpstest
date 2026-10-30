@@ -557,7 +557,11 @@ class OsnmaEngine(
         listener?.onEvent(e)
     }
 
-    val statistics: OsnmaStatistics get() = stats.copy()
+    val statistics: OsnmaStatistics
+        get() = stats.copy(
+            subframesStarted = subframes.started,
+            subframesCompletedCounted = stats.subframes - subframes.firstCompleted
+        )
 
     fun status(): OsnmaStatus {
         val now = latestGst
@@ -591,7 +595,7 @@ class OsnmaEngine(
             alertMessage = alertReceived,
             satellites = sats,
             events = events.toList(),
-            statistics = stats.copy()
+            statistics = statistics
         )
     }
 
@@ -616,6 +620,13 @@ data class OsnmaStatistics(
     var crcErrors: Long = 0,
     var osnmaPages: Long = 0,
     var subframes: Long = 0,
+    /**
+     * (Satellite, subframe) pairs with OSNMA data. [subframes] counts the ones received completely
+     * (all 15 pages); a low ratio means pages are missing.
+     */
+    var subframesStarted: Long = 0,
+    /** Completed subframes counted against [subframesStarted] */
+    var subframesCompletedCounted: Long = 0,
     var krootVerified: Int = 0,
     var krootFailed: Int = 0,
     var pkrVerified: Int = 0,
@@ -630,7 +641,17 @@ data class OsnmaStatistics(
     var tagsOkAdkd12: Int = 0,
     var dummyTagsOk: Int = 0,
     var dummyTagsFailed: Int = 0
-)
+) {
+    /** Share of subframes received completely, or null if there isn't enough data yet */
+    val subframeCompleteness: Double?
+        get() = if (subframesStarted >= MIN_SUBFRAMES_FOR_RATIO) {
+            subframesCompletedCounted.toDouble() / subframesStarted
+        } else null
+
+    companion object {
+        const val MIN_SUBFRAMES_FOR_RATIO = 20L
+    }
+}
 
 data class TeslaKeyInfo(val chain: TeslaChain, val gstSubframe: Gst)
 

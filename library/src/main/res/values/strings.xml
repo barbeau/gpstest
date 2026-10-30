@@ -567,6 +567,11 @@
     <string name="osnma_chain_value">ID %1$d, %2$s, %3$d-bit tags, key at %4$s</string>
     <string name="osnma_tags_value">%1$d (CED %2$d, timing %3$d, slow MAC %4$d), failed %5$d</string>
     <string name="osnma_pages_value">%1$d I/NAV, %2$d with OSNMA, %3$d CRC errors</string>
+    <string name="osnma_reception_stalled">Galileo navigation pages stopped arriving.</string>
+    <string name="osnma_reception_incomplete">Only %1$d%% of the Galileo navigation subframes are complete, so few tags can be checked.</string>
+    <string name="osnma_reception_advice">The GNSS chip may be saving power: keep \"Force full GNSS measurements\" on in Settings, keep the screen on, and give it a clear view of the sky.</string>
+    <string name="osnma_label_subframes">Subframes</string>
+    <string name="osnma_subframes_value">%1$d of %2$d complete (%3$d%%)</string>
     <string name="osnma_trusting_parity">The device doesn\'t seem to provide I/NAV CRC bits, so its parity check is used instead.</string>
     <string name="osnma_explanation">OSNMA lets receivers check that Galileo ephemeris, clock and health data really come from Galileo. A satellite is authenticated once at least 40 bits of MAC tags have been verified on the data it currently broadcasts. Failed tags can come from corrupted data or wrong timing, but also from spoofing.</string>
 

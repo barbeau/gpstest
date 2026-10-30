@@ -53,6 +53,7 @@ import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
 import com.android.gpstest.library.osnma.SatelliteAuthStatus
+import kotlin.math.roundToInt
 
 // Chip backgrounds (white text on top)
 private val Green = Color(0xFF2E7D32)
@@ -106,6 +107,14 @@ fun OsnmaCard(state: OsnmaUiState) {
                     text = stringResource(R.string.osnma_clock_offset_warning, state.clockOffsetSeconds ?: 0L),
                     fontSize = 13.sp,
                     color = MaterialTheme.colors.error,
+                    modifier = Modifier.padding(bottom = 2.dp)
+                )
+            }
+            if (state.poorReception) {
+                Text(
+                    text = receptionHint(state),
+                    fontSize = 13.sp,
+                    color = amberText,
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
             }
@@ -266,6 +275,17 @@ private fun Expanded(state: OsnmaUiState) {
                 R.string.osnma_label_pages,
                 stringResource(R.string.osnma_pages_value, s.pages, s.osnmaPages, s.crcErrors)
             )
+            s.subframeCompleteness?.let {
+                DetailRow(
+                    R.string.osnma_label_subframes,
+                    stringResource(
+                        R.string.osnma_subframes_value,
+                        s.subframesCompletedCounted,
+                        s.subframesStarted,
+                        (it * 100).roundToInt()
+                    )
+                )
+            }
             status.gst?.let { DetailRow(R.string.osnma_label_gst, formatGst(it)) }
             if (state.trustingPlatformParity) {
                 SmallText(stringResource(R.string.osnma_trusting_parity), FontStyle.Italic)
@@ -287,6 +307,17 @@ private fun Expanded(state: OsnmaUiState) {
         }
         SmallText(stringResource(R.string.osnma_explanation), FontStyle.Italic)
     }
+}
+
+@Composable
+private fun receptionHint(state: OsnmaUiState): String {
+    val cause = if (state.pagesStalled) {
+        stringResource(R.string.osnma_reception_stalled)
+    } else {
+        val percent = ((state.status?.statistics?.subframeCompleteness ?: 0.0) * 100).roundToInt()
+        stringResource(R.string.osnma_reception_incomplete, percent)
+    }
+    return cause + " " + stringResource(R.string.osnma_reception_advice)
 }
 
 @Composable

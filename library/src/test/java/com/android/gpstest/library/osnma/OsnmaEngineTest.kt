@@ -145,6 +145,25 @@ class OsnmaEngineTest {
         return tampered
     }
 
+    /** Missing pages (power saving, weak signal) show up as a low subframe completeness */
+    @Test
+    fun missingPages_lowerSubframeCompleteness() {
+        val full = newEngine()
+        TestVectors.configuration1().forEach { full.feedPage(it.svn, it.gst, it.page) }
+        val complete = full.statistics.subframeCompleteness!!
+        assertTrue("completeness $complete", complete > 0.9)
+
+        // Drop 1 page in 10, like a receiver decoding 90 % of the pages
+        val random = Random(7)
+        val lossy = newEngine()
+        TestVectors.configuration1().forEach {
+            if (random.nextInt(10) != 0) lossy.feedPage(it.svn, it.gst, it.page)
+        }
+        val partial = lossy.statistics.subframeCompleteness!!
+        assertTrue("completeness $partial", partial < 0.5)
+        assertEquals(0, lossy.statistics.tagsFailed)
+    }
+
     @Test
     fun corruptedPage_isRejectedByCrc() {
         val p = TestVectors.configuration1().first()

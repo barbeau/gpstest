@@ -49,6 +49,12 @@ Galileo time and the latest events.
   so check the date and time settings.
 - **DON'T USE**: Galileo has set the OSNMA status to "don't use". Nothing is authenticated
   until that changes.
+- **Amber reception hint**: Galileo pages arrive, but fewer than half of the 30-second subframes
+  are complete, or the pages stopped while tracking. Each satellite's authentication data needs
+  all 15 pages of a subframe, so authentication becomes slow or stops. This is usually the chip
+  saving power (duty cycling) or tracking only the E1 pilot signal, which carries no data. Keep
+  **Force full GNSS measurements** on (Android 12 and later), keep the screen on, and give the
+  phone a clear view of the sky. The share of complete subframes is shown in the details.
 - **ALERT**: an authenticated OSNMA Alert Message was received. All keys, including the built-in
   Merkle tree root, are no longer trusted. Import new key material from the GSC to resume.
 
