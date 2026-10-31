@@ -71,7 +71,9 @@ data class OsnmaUiState(
     /** Pages with a wrong CRC that the platform marked as parity passed */
     val crcFailedButParityPassed: Long = 0,
     /** Pages dropped because of a wrong CRC (or failed platform parity, when trusted) */
-    val pagesCorrupted: Long = 0
+    val pagesCorrupted: Long = 0,
+    /** This device has delivered Galileo I/NAV pages before (in this or an earlier session) */
+    val inavSeenBefore: Boolean = false
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -104,7 +106,10 @@ class OsnmaRepository @Inject constructor(
 ) {
     private val executor = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "OSNMA") }
 
-    private val _state = MutableStateFlow(OsnmaUiState(enabled = isEnabled()))
+    // Remembered so that the card can be shown right away on devices known to deliver I/NAV
+    private var inavSeen = prefs.getBoolean(context.getString(R.string.pref_key_osnma_inav_seen), false)
+
+    private val _state = MutableStateFlow(OsnmaUiState(enabled = isEnabled(), inavSeenBefore = inavSeen))
     val state: StateFlow<OsnmaUiState> = _state
 
     // Only accessed from the executor thread
@@ -209,6 +214,10 @@ class OsnmaRepository @Inject constructor(
         }
         lastArrivalMillis = arrival
         inavPages++
+        if (!inavSeen) {
+            inavSeen = true
+            prefs.edit().putBoolean(context.getString(R.string.pref_key_osnma_inav_seen), true).apply()
+        }
         if (parityPassed) pagesParityPassed++
 
         // Some platforms might not fill in the CRC. If it's always wrong while the platform says
@@ -312,7 +321,8 @@ class OsnmaRepository @Inject constructor(
             pagesWrongSize = pagesWrongSize,
             pagesParityPassed = pagesParityPassed,
             crcFailedButParityPassed = crcFailedButParityPassed,
-            pagesCorrupted = pagesCorrupted
+            pagesCorrupted = pagesCorrupted,
+            inavSeenBefore = inavSeen
         )
     }
 

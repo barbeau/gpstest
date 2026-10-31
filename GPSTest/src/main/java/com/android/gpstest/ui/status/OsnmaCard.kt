@@ -72,12 +72,13 @@ private val Gray = Color(0xFF757575)
  * Shows the state of Galileo OSNMA (Open Service Navigation Message Authentication): whether
  * the navigation data broadcast by each Galileo satellite has been cryptographically
  * authenticated. Collapsed, it's a single line with the status; tap to expand it with all the
- * details. Hidden until Galileo I/NAV pages are received.
+ * details. Hidden on devices that have never delivered Galileo I/NAV pages.
  */
 @Composable
 fun OsnmaCard(state: OsnmaUiState) {
-    // Only show the card on devices that provide Galileo I/NAV navigation messages
-    if (!state.enabled || (state.inavPagesReceived == 0L && state.status == null && !state.keysRevoked)) return
+    // Only show the card on devices that provide (or have provided) Galileo I/NAV messages
+    val known = state.inavSeenBefore || state.inavPagesReceived > 0 || state.status != null || state.keysRevoked
+    if (!state.enabled || !known) return
     var expanded by remember { mutableStateOf(osnmaCardExpanded) }
     val status = state.status
 

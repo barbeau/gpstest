@@ -20,7 +20,7 @@ that Android delivers to apps. The result is shown on the **Status** screen.
 
 - A device that provides Galileo navigation messages to apps (`GnssNavigationMessage` of type
   `TYPE_GAL_I`). Many don't. Check "Navigation Messages" under *What GNSS features does my
-  device support?* in the [FAQ](FAQ.md). The OSNMA card only appears once such messages arrive.
+  device support?* in the [FAQ](FAQ.md). The OSNMA card appears once such messages arrive, and right away on later starts.
 - Galileo satellites in view, ideally with a clear sky. Authentication starts after a few
   minutes of continuous reception.
 - A correct device clock (within 30 seconds). See [Limitations](#limitations).

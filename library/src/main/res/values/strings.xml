@@ -539,7 +539,7 @@
     <string name="osnma_summary_satellites">%1$d sats</string>
     <string name="osnma_summary_poor_reception">poor reception</string>
     <string name="osnma_clock_offset_warning">The device clock differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 30 s: check the date and time settings.</string>
-    <string name="osnma_phase_no_data">Waiting for Galileo I/NAV navigation messages. Not all devices provide them.</string>
+    <string name="osnma_phase_no_data">Waiting for Galileo navigation messages… This takes a few seconds after tracking starts.</string>
     <string name="osnma_phase_syncing">Receiving Galileo navigation messages, synchronizing with Galileo System Time…</string>
     <string name="osnma_phase_no_osnma">Galileo navigation messages received, but no OSNMA data yet.</string>
     <string name="osnma_phase_waiting_public_key">Waiting for the OSNMA public key. It\'s broadcast every 6 hours (00, 06, 12 and 18 h GST), or you can import it in Settings.</string>
