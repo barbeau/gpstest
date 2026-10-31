@@ -287,6 +287,16 @@ private fun Expanded(state: OsnmaUiState) {
                 )
             }
             status.gst?.let { DetailRow(R.string.osnma_label_gst, formatGst(it)) }
+            DetailRow(
+                R.string.osnma_label_timing,
+                stringResource(
+                    if (state.timingUsesSubframeNumbers) R.string.osnma_timing_subframe_numbers else R.string.osnma_timing_word_types,
+                    state.timingCorrections
+                )
+            )
+            state.clockOffsetSeconds?.let {
+                DetailRow(R.string.osnma_label_clock_offset, stringResource(R.string.osnma_clock_offset_value, it))
+            }
             if (state.trustingPlatformParity) {
                 SmallText(stringResource(R.string.osnma_trusting_parity), FontStyle.Italic)
             }

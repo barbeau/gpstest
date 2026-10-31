@@ -164,6 +164,49 @@ class OsnmaEngineTest {
         assertEquals(0, lossy.statistics.tagsFailed)
     }
 
+    private fun runWithTimeTracker(
+        jitterMillis: Int,
+        useSubframeNumbers: Boolean,
+        duplicates: Boolean
+    ): Pair<OsnmaStatistics, Int> {
+        val random = Random(99)
+        val tracker = InavTimeTracker()
+        val engine = newEngine()
+        var wrong = 0
+        TestVectors.configuration1().forEach { p ->
+            val arrival = (p.gst.totalSeconds - 756_000_000L) * 1000 + 2000 + 80 +
+                    random.nextInt(-jitterMillis, jitterMillis + 1)
+            val android = InavPage.fromAndroid(p.page.toByteArray())!!
+            val subframeNumber = if (useSubframeNumbers) InavTimeTracker.subframeOf(p.gst.totalSeconds) + 1 else -1
+            repeat(if (duplicates) 2 else 1) {
+                val gst = tracker.gstFor(p.svn, android, arrival, subframeNumber) ?: return@repeat
+                // Dummy pages (word type 63) carry nothing and are ignored by the engine
+                if (gst != p.gst && android.wordType != 63) wrong++
+                engine.feedPage(p.svn, gst, android)
+            }
+        }
+        return engine.statistics to wrong
+    }
+
+    /** Delivery jitter of several seconds is absorbed by snapping to the word type's page slot */
+    @Test
+    fun timeTracker_largeJitter_wordTypeSlots() {
+        val (stats, wrong) = runWithTimeTracker(jitterMillis = 6000, useSubframeNumbers = false, duplicates = false)
+        // Word type 16 occupies two slots 14 s apart, so a few can be off at this jitter
+        assertTrue("wrong $wrong", wrong < TestVectors.configuration1().size / 100)
+        assertEquals(0, stats.tagsFailed)
+        assertTrue(stats.tagsOk > 1000)
+    }
+
+    /** With the platform's subframe numbers and pages delivered twice, timing stays right */
+    @Test
+    fun timeTracker_subframeNumbersAndDuplicates() {
+        val (stats, wrong) = runWithTimeTracker(jitterMillis = 3000, useSubframeNumbers = true, duplicates = true)
+        assertTrue("wrong $wrong", wrong < TestVectors.configuration1().size / 100)
+        assertEquals(0, stats.tagsFailed)
+        assertTrue(stats.tagsOk > 1100)
+    }
+
     @Test
     fun corruptedPage_isRejectedByCrc() {
         val p = TestVectors.configuration1().first()

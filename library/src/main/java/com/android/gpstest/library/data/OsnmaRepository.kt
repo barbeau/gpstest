@@ -58,7 +58,10 @@ data class OsnmaUiState(
      */
     val clockOffsetSeconds: Long? = null,
     /** Galileo pages were being received but stopped arriving while tracking continued */
-    val pagesStalled: Boolean = false
+    val pagesStalled: Boolean = false,
+    /** Page timing diagnostics, see [InavTimeTracker] */
+    val timingUsesSubframeNumbers: Boolean = false,
+    val timingCorrections: Int = 0
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -162,10 +165,19 @@ class OsnmaRepository @Inject constructor(
         val svid = message.svid
         val data = message.data ?: return
         val parityPassed = (message.status and GnssNavigationMessage.STATUS_PARITY_PASSED) != 0
-        executor.execute { process(svid, data, parityPassed, arrival, wallClock) }
+        // For Galileo I/NAV: subframe number in the frame (1-24)
+        val subframeNumber = message.messageId
+        executor.execute { process(svid, data, parityPassed, arrival, wallClock, subframeNumber) }
     }
 
-    private fun process(svid: Int, data: ByteArray, parityPassed: Boolean, arrival: Long, wallClock: Long) {
+    private fun process(
+        svid: Int,
+        data: ByteArray,
+        parityPassed: Boolean,
+        arrival: Long,
+        wallClock: Long,
+        subframeNumber: Int
+    ) {
         if (!isEnabled()) return
         val page = InavPage.fromAndroid(data) ?: return
 
@@ -189,10 +201,13 @@ class OsnmaRepository @Inject constructor(
         }
         if (trustPlatformParity && !parityPassed) return
 
-        val gst = timeTracker.gstFor(svid, page, arrival)
+        val gst = timeTracker.gstFor(svid, page, arrival, subframeNumber)
         if (gst != null) {
-            // The page ended about 2 s after its start time, plus decoding latency
-            clockOffsetSeconds = deviceGstSeconds(wallClock) - 2 - gst.totalSeconds
+            if (timeTracker.lastWasExact) {
+                // Only pages with their own time stamp: the page ended about 2 s after its
+                // start, plus decoding and delivery latency
+                clockOffsetSeconds = deviceGstSeconds(wallClock) - 2 - gst.totalSeconds
+            }
             val e = engine ?: newEngine().also { engine = it }
             e.feedPage(svid, gst, page, checkCrc = !trustPlatformParity)
         }
@@ -249,7 +264,9 @@ class OsnmaRepository @Inject constructor(
             trustingPlatformParity = trustPlatformParity,
             keysRevoked = OsnmaKeyStore.isRevoked(context, prefs),
             clockOffsetSeconds = clockOffsetSeconds,
-            pagesStalled = pagesStalled()
+            pagesStalled = pagesStalled(),
+            timingUsesSubframeNumbers = timeTracker.usingSubframeNumbers,
+            timingCorrections = timeTracker.corrections
         )
     }
 
