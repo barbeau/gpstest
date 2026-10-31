@@ -71,20 +71,24 @@ private val Gray = Color(0xFF757575)
 /**
  * Shows the state of Galileo OSNMA (Open Service Navigation Message Authentication): whether
  * the navigation data broadcast by each Galileo satellite has been cryptographically
- * authenticated. Tap to show details. Hidden until Galileo I/NAV pages are received.
+ * authenticated. Collapsed, it's a single line with the status; tap to expand it with all the
+ * details. Hidden until Galileo I/NAV pages are received.
  */
 @Composable
 fun OsnmaCard(state: OsnmaUiState) {
     // Only show the card on devices that provide Galileo I/NAV navigation messages
     if (!state.enabled || (state.inavPagesReceived == 0L && state.status == null && !state.keysRevoked)) return
-    var expanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(osnmaCardExpanded) }
     val status = state.status
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .clickable { expanded = !expanded },
+            .clickable {
+                expanded = !expanded
+                osnmaCardExpanded = expanded
+            },
         elevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)) {
@@ -96,35 +100,56 @@ fun OsnmaCard(state: OsnmaUiState) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 PhaseChip(state)
-            }
-            Text(
-                text = phaseDescription(state),
-                fontSize = 13.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
-            )
-            if (state.clockOffsetTooLarge) {
+                Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = stringResource(R.string.osnma_clock_offset_warning, state.clockOffsetSeconds ?: 0L),
+                    text = collapsedSummary(state) + if (expanded) "  \u25B4" else "  \u25BE",
                     fontSize = 13.sp,
-                    color = MaterialTheme.colors.error,
-                    modifier = Modifier.padding(bottom = 2.dp)
+                    maxLines = 1
                 )
-            }
-            if (state.poorReception) {
-                Text(
-                    text = receptionHint(state),
-                    fontSize = 13.sp,
-                    color = amberText,
-                    modifier = Modifier.padding(bottom = 2.dp)
-                )
-            }
-            if (status != null && status.statistics.osnmaPages > 0) {
-                Details(status)
             }
             if (expanded) {
+                Text(
+                    text = phaseDescription(state),
+                    fontSize = 13.sp,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
+                )
+                if (state.clockOffsetTooLarge) {
+                    Text(
+                        text = stringResource(R.string.osnma_clock_offset_warning, state.clockOffsetSeconds ?: 0L),
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colors.error,
+                        modifier = Modifier.padding(bottom = 2.dp)
+                    )
+                }
+                if (state.poorReception) {
+                    Text(
+                        text = receptionHint(state),
+                        fontSize = 13.sp,
+                        color = amberText,
+                        modifier = Modifier.padding(bottom = 2.dp)
+                    )
+                }
+                if (status != null && status.statistics.osnmaPages > 0) {
+                    Details(status)
+                }
                 Expanded(state)
             }
         }
+    }
+}
+
+/** Remembers whether the card is expanded while the app runs (e.g. when switching screens) */
+private var osnmaCardExpanded = false
+
+/** Short status for the collapsed card, e.g. "12 sats" */
+@Composable
+private fun collapsedSummary(state: OsnmaUiState): String {
+    val status = state.status ?: return ""
+    return when {
+        status.phase == Phase.AUTHENTICATING ->
+            stringResource(R.string.osnma_summary_satellites, status.authenticatedSatellites.size)
+        state.poorReception -> stringResource(R.string.osnma_summary_poor_reception)
+        else -> ""
     }
 }
 

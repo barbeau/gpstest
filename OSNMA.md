@@ -36,8 +36,10 @@ that Android delivers to apps. The result is shown on the **Status** screen.
 | Authenticated | Satellites whose current ephemeris, clock and health data is authenticated. That means at least 40 bits of MAC tags were verified on the data the satellite is broadcasting right now. |
 | Failed tags | Satellites with a tag that failed verification in the last 10 minutes, with the count. |
 
-Tap the card for details: tag counts by type (CED, timing, slow MAC), page and CRC counters,
-Galileo time and the latest events.
+The card is a single line by default: the status chip and, while authenticating, the number of
+authenticated satellites. Tap it to expand: the fields above, tag counts by type (CED, timing,
+slow MAC), page counters (received, used, without time, not nominal, CRC errors), device parity,
+subframe completeness, page timing, clock offset and the latest events.
 
 ### Red states
 

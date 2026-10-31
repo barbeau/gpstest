@@ -536,6 +536,8 @@
     <string name="osnma_chip_alert">ALERT</string>
     <string name="osnma_chip_failures">FAILED TAGS</string>
     <string name="osnma_chip_time">TIME NOT VERIFIED</string>
+    <string name="osnma_summary_satellites">%1$d sats</string>
+    <string name="osnma_summary_poor_reception">poor reception</string>
     <string name="osnma_clock_offset_warning">The device clock differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 30 s: check the date and time settings.</string>
     <string name="osnma_phase_no_data">Waiting for Galileo I/NAV navigation messages. Not all devices provide them.</string>
     <string name="osnma_phase_syncing">Receiving Galileo navigation messages, synchronizing with Galileo System Time…</string>
