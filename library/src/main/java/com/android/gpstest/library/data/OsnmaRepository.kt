@@ -61,7 +61,11 @@ data class OsnmaUiState(
     val pagesStalled: Boolean = false,
     /** Page timing diagnostics, see [InavTimeTracker] */
     val timingUsesSubframeNumbers: Boolean = false,
-    val timingCorrections: Int = 0
+    val timingCorrections: Int = 0,
+    /** Pages skipped because their Galileo time wasn't known yet */
+    val pagesWithoutTime: Long = 0,
+    /** Pages whose data had a wrong size */
+    val pagesWrongSize: Long = 0
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -108,6 +112,8 @@ class OsnmaRepository @Inject constructor(
     private var trustPlatformParity = false
     private var clockOffsetSeconds: Long? = null
     private var engineKeys: Set<String> = emptySet()
+    private var pagesWithoutTime = 0L
+    private var pagesWrongSize = 0L
 
     private val listener = object : OsnmaEngine.Listener {
         override fun onPublicKeyAuthenticated(key: OsnmaPublicKey) {
@@ -179,7 +185,13 @@ class OsnmaRepository @Inject constructor(
         subframeNumber: Int
     ) {
         if (!isEnabled()) return
-        val page = InavPage.fromAndroid(data) ?: return
+        val page = InavPage.fromAndroid(data)
+        if (page == null) {
+            pagesWrongSize++
+            Log.w(TAG, "Galileo I/NAV message with ${data.size} bytes instead of ${InavPage.SIZE_BYTES}")
+            publish(force = false)
+            return
+        }
 
         // After a long gap (tracking stopped), start over: TESLA keys can only be followed for
         // about a day and the time anchors are stale
@@ -210,6 +222,8 @@ class OsnmaRepository @Inject constructor(
             }
             val e = engine ?: newEngine().also { engine = it }
             e.feedPage(svid, gst, page, checkCrc = !trustPlatformParity)
+        } else {
+            pagesWithoutTime++
         }
         publish(force = false)
     }
@@ -251,6 +265,8 @@ class OsnmaRepository @Inject constructor(
         crcFailures = 0
         trustPlatformParity = false
         clockOffsetSeconds = null
+        pagesWithoutTime = 0
+        pagesWrongSize = 0
     }
 
     private fun publish(force: Boolean) {
@@ -266,7 +282,9 @@ class OsnmaRepository @Inject constructor(
             clockOffsetSeconds = clockOffsetSeconds,
             pagesStalled = pagesStalled(),
             timingUsesSubframeNumbers = timeTracker.usingSubframeNumbers,
-            timingCorrections = timeTracker.corrections
+            timingCorrections = timeTracker.corrections,
+            pagesWithoutTime = pagesWithoutTime,
+            pagesWrongSize = pagesWrongSize
         )
     }
 

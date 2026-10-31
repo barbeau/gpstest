@@ -273,7 +273,15 @@ private fun Expanded(state: OsnmaUiState) {
             )
             DetailRow(
                 R.string.osnma_label_pages,
-                stringResource(R.string.osnma_pages_value, s.pages, s.osnmaPages, s.crcErrors)
+                stringResource(
+                    R.string.osnma_pages_value,
+                    state.inavPagesReceived,
+                    s.pages,
+                    s.osnmaPages,
+                    state.pagesWithoutTime,
+                    s.pagesRejected + state.pagesWrongSize,
+                    s.crcErrors
+                )
             )
             s.subframeCompleteness?.let {
                 DetailRow(
