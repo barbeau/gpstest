@@ -58,6 +58,16 @@ Another reference chart is [here](https://gssc.esa.int/navipedia/images/c/cf/GNS
 
 For more information on dual-frequency GNSS in general, see the EU GSA article ["Dual-frequency Q&As"](https://www.gsa.europa.eu/system/files/documents/dual_frequencies_qa.pdf).
 
+## Does GPSTest support Galileo OSNMA (navigation message authentication)?
+
+Yes, on devices that provide Galileo I/NAV navigation messages to apps (the "Navigation Messages" capability, see "What GNSS features does my device support?"). [OSNMA](https://www.gsc-europa.eu/galileo/services/galileo-open-service-navigation-message-authentication-osnma) lets a receiver verify that the ephemeris, clock and health data broadcast by Galileo satellites is genuine and hasn't been spoofed. When those messages are available, a "Galileo OSNMA" card appears on the "Status" screen and lists the satellites whose navigation data has been authenticated. Tap it for details.
+
+GPSTest verifies everything on the phone: it checks the TESLA root key's ECDSA signature, follows the TESLA key chain and verifies the MAC tags of the navigation data. The current Galileo public key is built in, so nothing needs to be set up. New keys are received from the signal and checked against the built-in Merkle tree root.
+
+For details, see the [Galileo OSNMA](OSNMA.md) page.
+
+Note that GPSTest only authenticates the navigation data it receives through Android. It can't tell whether the device's own position fix used it, and it doesn't check the timing of the signals, which full OSNMA receivers also require (Receiver Guidelines section 3.1).
+
 ## What does the "U" flag mean for SBAS satellites?
 
 For SBAS, the Android spec does not specify if the "U" ("Used") flag refers to pseudoranges from the satellite being used in the position solution or to correction information originating from that satellite being used.

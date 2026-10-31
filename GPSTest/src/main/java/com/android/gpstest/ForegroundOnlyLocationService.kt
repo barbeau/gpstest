@@ -47,6 +47,7 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.library.data.LocationRepository
+import com.android.gpstest.library.data.OsnmaRepository
 import com.android.gpstest.library.model.SatelliteGroup
 import com.android.gpstest.library.model.SatelliteMetadata
 import com.android.gpstest.library.util.FormatUtils.toNotificationTitle
@@ -119,6 +120,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
     // Repository of location data that the service will observe, injected via Hilt
     @Inject
     lateinit var repository: LocationRepository
+
+    // Galileo OSNMA authentication of the navigation messages, injected via Hilt
+    @Inject
+    lateinit var osnmaRepository: OsnmaRepository
 
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
@@ -389,6 +394,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service nav message: $it")
+                // Hand Galileo I/NAV pages to OSNMA right away: it uses the arrival time to work
+                // out the Galileo System Time of each page
+                osnmaRepository.onNavigationMessage(it)
                 GlobalScope.launch(Dispatchers.IO) {
                     if (writeNavMessageToLogcat(app, prefs)) {
                         writeNavMessageToAndroidStudio(it)

@@ -39,6 +39,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -60,6 +61,7 @@ import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.R
 import com.android.gpstest.library.data.FixState
+import com.android.gpstest.library.data.OsnmaUiState
 import com.android.gpstest.library.model.DilutionOfPrecision
 import com.android.gpstest.library.model.GnssType
 import com.android.gpstest.library.model.SatelliteMetadata
@@ -70,9 +72,10 @@ import com.android.gpstest.library.util.CarrierFreqUtils
 import com.android.gpstest.library.util.MathUtils
 import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.PreferenceUtils.gnssFilter
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun StatusScreen(viewModel: SignalInfoViewModel) {
+fun StatusScreen(viewModel: SignalInfoViewModel, osnmaState: StateFlow<OsnmaUiState>) {
     //
     // Observe LiveData from ViewModel
     //
@@ -87,6 +90,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
     val gnssStatuses: List<SatelliteStatus> by viewModel.filteredGnssStatuses.observeAsState(emptyList())
     val sbasStatuses: List<SatelliteStatus> by viewModel.filteredSbasStatuses.observeAsState(emptyList())
     val allStatuses: List<SatelliteStatus> by viewModel.allStatuses.observeAsState(emptyList())
+    val osnma: OsnmaUiState by osnmaState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -101,6 +105,7 @@ fun StatusScreen(viewModel: SignalInfoViewModel) {
                 dop,
                 satelliteMetadata,
                 fixState)
+            OsnmaCard(osnma)
             if (gnssFilter(app, prefs).isNotEmpty()) {
                 Filter(allStatuses.size, satelliteMetadata) { PreferenceUtils.clearGnssFilter(app, prefs) }
             }
