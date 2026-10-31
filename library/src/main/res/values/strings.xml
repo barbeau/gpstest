@@ -571,6 +571,8 @@
     <string name="osnma_reception_incomplete">Only %1$d%% of the Galileo navigation subframes are complete, so few tags can be checked.</string>
     <string name="osnma_reception_advice">The GNSS chip may be saving power: keep \"Force full GNSS measurements\" on in Settings, keep the screen on, and give it a clear view of the sky.</string>
     <string name="osnma_label_subframes">Subframes</string>
+    <string name="osnma_label_device_parity">Device parity</string>
+    <string name="osnma_device_parity_value">%1$d of %2$d passed, %3$d passed with a wrong CRC</string>
     <string name="osnma_label_timing">Page timing</string>
     <string name="osnma_timing_subframe_numbers">From word types and device subframe numbers, %1$d corrections</string>
     <string name="osnma_timing_word_types">From arrival time and word types, %1$d corrections</string>

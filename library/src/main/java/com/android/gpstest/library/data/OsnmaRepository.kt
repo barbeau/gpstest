@@ -65,7 +65,13 @@ data class OsnmaUiState(
     /** Pages skipped because their Galileo time wasn't known yet */
     val pagesWithoutTime: Long = 0,
     /** Pages whose data had a wrong size */
-    val pagesWrongSize: Long = 0
+    val pagesWrongSize: Long = 0,
+    /** Pages the platform marked as parity passed */
+    val pagesParityPassed: Long = 0,
+    /** Pages with a wrong CRC that the platform marked as parity passed */
+    val crcFailedButParityPassed: Long = 0,
+    /** Pages dropped because of a wrong CRC (or failed platform parity, when trusted) */
+    val pagesCorrupted: Long = 0
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -114,6 +120,9 @@ class OsnmaRepository @Inject constructor(
     private var engineKeys: Set<String> = emptySet()
     private var pagesWithoutTime = 0L
     private var pagesWrongSize = 0L
+    private var pagesParityPassed = 0L
+    private var pagesCorrupted = 0L
+    private var crcFailedButParityPassed = 0L
 
     private val listener = object : OsnmaEngine.Listener {
         override fun onPublicKeyAuthenticated(key: OsnmaPublicKey) {
@@ -200,18 +209,31 @@ class OsnmaRepository @Inject constructor(
         }
         lastArrivalMillis = arrival
         inavPages++
+        if (parityPassed) pagesParityPassed++
 
         // Some platforms might not fill in the CRC. If it's always wrong while the platform says
         // the parity passed, rely on the platform instead.
         if (!trustPlatformParity && page.isNominal) {
             crcChecked++
-            if (!page.crcOk) crcFailures++
-            if (crcChecked >= 100 && crcFailures > crcChecked * 9 / 10 && parityPassed) {
+            if (!page.crcOk) {
+                crcFailures++
+                if (parityPassed) crcFailedButParityPassed++
+            }
+            // Only if the platform says those pages are fine: otherwise they're just bit errors
+            if (crcChecked >= 100 && crcFailures > crcChecked * 9 / 10 &&
+                crcFailedButParityPassed > crcFailures * 9 / 10
+            ) {
                 trustPlatformParity = true
                 Log.w(TAG, "I/NAV CRC failing on most pages; trusting platform parity status")
             }
         }
-        if (trustPlatformParity && !parityPassed) return
+        // Corrupted pages must not reach the time tracker (wrong time stamps) or the engine
+        val valid = if (trustPlatformParity) parityPassed else page.crcOk
+        if (!valid) {
+            pagesCorrupted++
+            publish(force = false)
+            return
+        }
 
         val gst = timeTracker.gstFor(svid, page, arrival, subframeNumber)
         if (gst != null) {
@@ -267,6 +289,9 @@ class OsnmaRepository @Inject constructor(
         clockOffsetSeconds = null
         pagesWithoutTime = 0
         pagesWrongSize = 0
+        pagesParityPassed = 0
+        crcFailedButParityPassed = 0
+        pagesCorrupted = 0
     }
 
     private fun publish(force: Boolean) {
@@ -284,7 +309,10 @@ class OsnmaRepository @Inject constructor(
             timingUsesSubframeNumbers = timeTracker.usingSubframeNumbers,
             timingCorrections = timeTracker.corrections,
             pagesWithoutTime = pagesWithoutTime,
-            pagesWrongSize = pagesWrongSize
+            pagesWrongSize = pagesWrongSize,
+            pagesParityPassed = pagesParityPassed,
+            crcFailedButParityPassed = crcFailedButParityPassed,
+            pagesCorrupted = pagesCorrupted
         )
     }
 

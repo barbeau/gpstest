@@ -280,7 +280,16 @@ private fun Expanded(state: OsnmaUiState) {
                     s.osnmaPages,
                     state.pagesWithoutTime,
                     s.pagesRejected + state.pagesWrongSize,
-                    s.crcErrors
+                    state.pagesCorrupted + s.crcErrors
+                )
+            )
+            DetailRow(
+                R.string.osnma_label_device_parity,
+                stringResource(
+                    R.string.osnma_device_parity_value,
+                    state.pagesParityPassed,
+                    state.inavPagesReceived,
+                    state.crcFailedButParityPassed
                 )
             )
             s.subframeCompleteness?.let {
