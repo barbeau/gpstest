@@ -207,6 +207,46 @@ class OsnmaEngineTest {
         assertTrue(stats.tagsOk > 1100)
     }
 
+    /**
+     * Some chipsets pair the odd half of page n-1 with the even half of page n. Those pages must
+     * be rejoined, and then authenticate like the original ones.
+     */
+    @Test
+    fun swappedPageHalves_areRejoined() {
+        val pages = TestVectors.configuration1()
+        val previous = HashMap<Int, TestVectors.Page>()
+        val assembler = InavPageAssembler()
+        val tracker = InavTimeTracker()
+        val engine = newEngine()
+        var wrongTime = 0
+        pages.forEach { p ->
+            val original = p.page.toByteArray()
+            // Half of the satellites deliver swapped halves: odd part of page n-1 + even part of
+            // page n, received when the even part ends (1 s into page n)
+            val swappedSat = p.svn % 2 == 0
+            val message = if (swappedSat) {
+                val prev = previous.put(p.svn, p) ?: return@forEach
+                val swapped = ByteArray(InavPage.SIZE_BYTES)
+                Bits.copy(prev.page.toByteArray(), 114, swapped, 0, 114)
+                Bits.copy(original, 0, swapped, 114, 114)
+                swapped
+            } else original
+            val arrival = (p.gst.totalSeconds - 756_000_000L) * 1000 + 2080 - (if (swappedSat) 1000 else 0)
+            val assembled = assembler.assemble(p.svn, InavPage.fromAndroid(message)!!, arrival) ?: return@forEach
+            assertTrue(assembled.page.isNominal)
+            assertTrue(assembled.page.crcOk)
+            // A rejoined page is the one before the message's even part
+            val expectedGst = if (swappedSat) p.gst.addSeconds(-2) else p.gst
+            val gst = tracker.gstFor(p.svn, assembled.page, assembled.arrivalMillis) ?: return@forEach
+            if (gst != expectedGst && assembled.page.wordType != 63) wrongTime++
+            engine.feedPage(p.svn, gst, assembled.page)
+        }
+        assertTrue(assembler.repaired > 1000)
+        assertTrue("wrong time $wrongTime", wrongTime < pages.size / 100)
+        assertEquals(0, engine.statistics.tagsFailed)
+        assertTrue(engine.statistics.tagsOk > 1000)
+    }
+
     @Test
     fun corruptedPage_isRejectedByCrc() {
         val p = TestVectors.configuration1().first()

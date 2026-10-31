@@ -22,6 +22,7 @@ import android.os.SystemClock
 import android.util.Log
 import com.android.gpstest.library.R
 import com.android.gpstest.library.osnma.InavPage
+import com.android.gpstest.library.osnma.InavPageAssembler
 import com.android.gpstest.library.osnma.InavTimeTracker
 import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.OsnmaEngine
@@ -73,7 +74,9 @@ data class OsnmaUiState(
     /** Pages dropped because of a wrong CRC (or failed platform parity, when trusted) */
     val pagesCorrupted: Long = 0,
     /** This device has delivered Galileo I/NAV pages before (in this or an earlier session) */
-    val inavSeenBefore: Boolean = false
+    val inavSeenBefore: Boolean = false,
+    /** Pages restored from two messages whose halves were paired the wrong way round */
+    val pagesRepaired: Long = 0
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -115,6 +118,7 @@ class OsnmaRepository @Inject constructor(
     // Only accessed from the executor thread
     private var engine: OsnmaEngine? = null
     private val timeTracker = InavTimeTracker()
+    private val assembler = InavPageAssembler()
     private var lastArrivalMillis = 0L
     private var lastPublishMillis = 0L
     private var inavPages = 0L
@@ -199,8 +203,8 @@ class OsnmaRepository @Inject constructor(
         subframeNumber: Int
     ) {
         if (!isEnabled()) return
-        val page = InavPage.fromAndroid(data)
-        if (page == null) {
+        val received = InavPage.fromAndroid(data)
+        if (received == null) {
             pagesWrongSize++
             Log.w(TAG, "Galileo I/NAV message with ${data.size} bytes instead of ${InavPage.SIZE_BYTES}")
             publish(force = false)
@@ -220,8 +224,19 @@ class OsnmaRepository @Inject constructor(
         }
         if (parityPassed) pagesParityPassed++
 
-        // Some platforms might not fill in the CRC. If it's always wrong while the platform says
-        // the parity passed, rely on the platform instead.
+        // Rejoin pages whose halves the platform paired the wrong way round
+        val assembled = assembler.assemble(svid, received, arrival)
+        if (assembled == null) {
+            publish(force = false)
+            return
+        }
+        val page = assembled.page
+        val pageArrival = assembled.arrivalMillis
+        val pageWallClock = wallClock - (arrival - pageArrival)
+
+        // Some platforms might not fill in the CRC. If it fails on practically every page while
+        // the platform says the parity passed, rely on the platform instead. Pages that pass the
+        // CRC prove that it's filled in, so then the platform's flag isn't used.
         if (!trustPlatformParity && page.isNominal) {
             crcChecked++
             if (!page.crcOk) {
@@ -229,7 +244,7 @@ class OsnmaRepository @Inject constructor(
                 if (parityPassed) crcFailedButParityPassed++
             }
             // Only if the platform says those pages are fine: otherwise they're just bit errors
-            if (crcChecked >= 100 && crcFailures > crcChecked * 9 / 10 &&
+            if (crcChecked >= 100 && crcFailures >= crcChecked * 99 / 100 &&
                 crcFailedButParityPassed > crcFailures * 9 / 10
             ) {
                 trustPlatformParity = true
@@ -244,12 +259,12 @@ class OsnmaRepository @Inject constructor(
             return
         }
 
-        val gst = timeTracker.gstFor(svid, page, arrival, subframeNumber)
+        val gst = timeTracker.gstFor(svid, page, pageArrival, subframeNumber)
         if (gst != null) {
             if (timeTracker.lastWasExact) {
                 // Only pages with their own time stamp: the page ended about 2 s after its
                 // start, plus decoding and delivery latency
-                clockOffsetSeconds = deviceGstSeconds(wallClock) - 2 - gst.totalSeconds
+                clockOffsetSeconds = deviceGstSeconds(pageWallClock) - 2 - gst.totalSeconds
             }
             val e = engine ?: newEngine().also { engine = it }
             e.feedPage(svid, gst, page, checkCrc = !trustPlatformParity)
@@ -291,6 +306,7 @@ class OsnmaRepository @Inject constructor(
     private fun resetEngine() {
         engine = null
         timeTracker.reset()
+        assembler.reset()
         inavPages = 0
         crcChecked = 0
         crcFailures = 0
@@ -322,7 +338,8 @@ class OsnmaRepository @Inject constructor(
             pagesParityPassed = pagesParityPassed,
             crcFailedButParityPassed = crcFailedButParityPassed,
             pagesCorrupted = pagesCorrupted,
-            inavSeenBefore = inavSeen
+            inavSeenBefore = inavSeen,
+            pagesRepaired = assembler.repaired
         )
     }
 

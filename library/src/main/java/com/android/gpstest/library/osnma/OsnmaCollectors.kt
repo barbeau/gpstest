@@ -19,15 +19,15 @@ package com.android.gpstest.library.osnma
  * Collects the 15 OSNMA fields that each satellite transmits during a subframe into the 120-bit
  * HKROOT message and the 480-bit MACK message (ICD section 2).
  *
- * Pages must be fed in chronological order. A page from a new subframe discards the partial data
- * of the previous one.
+ * Each satellite's pages must be fed in chronological order. A page from a new subframe discards
+ * that satellite's partial data of the previous one. Satellites are independent, so pages of
+ * different satellites may arrive slightly out of order (e.g. rejoined pages lag by 2 s).
  */
 internal class SubframeCollector {
     private val hkroot = Array(NUM_SVNS) { ByteArray(HKROOT_BYTES) }
     private val mack = Array(NUM_SVNS) { ByteArray(MACK_BYTES) }
     private val numValid = IntArray(NUM_SVNS)
-    private val seen = BooleanArray(NUM_SVNS)
-    private var current: Gst? = null
+    private val current = arrayOfNulls<Gst>(NUM_SVNS)
     private var first: Gst? = null
 
     /**
@@ -45,15 +45,16 @@ internal class SubframeCollector {
 
     fun feed(osnma: ByteArray, svn: Int, gst: Gst): Completed? {
         val subframe = gst.subframe()
-        if (subframe != current) {
-            current = subframe
-            numValid.fill(0)
-            seen.fill(false)
-        }
         val idx = svn - 1
         if (first == null) first = subframe
-        if (!seen[idx]) {
-            seen[idx] = true
+        val currentSubframe = current[idx]
+        if (currentSubframe != null && subframe < currentSubframe) {
+            // Older than what this satellite is collecting: ignore
+            return null
+        }
+        if (subframe != currentSubframe) {
+            current[idx] = subframe
+            numValid[idx] = 0
             if (subframe != first) started++
         }
         val wordNum = (gst.tow / 2) % WORDS_PER_SUBFRAME

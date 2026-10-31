@@ -306,7 +306,8 @@ private fun Expanded(state: OsnmaUiState) {
                     s.osnmaPages,
                     state.pagesWithoutTime,
                     s.pagesRejected + state.pagesWrongSize,
-                    state.pagesCorrupted + s.crcErrors
+                    state.pagesCorrupted + s.crcErrors,
+                    state.pagesRepaired
                 )
             )
             DetailRow(
