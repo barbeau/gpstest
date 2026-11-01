@@ -73,6 +73,7 @@
         <activity
             android:name=".ui.HelpActivity"
             android:label="@string/title_help"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
