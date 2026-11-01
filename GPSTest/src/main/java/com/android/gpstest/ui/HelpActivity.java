@@ -20,14 +20,22 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.android.gpstest.Application;
 import com.android.gpstest.BuildConfig;
 import com.android.gpstest.R;
 import com.android.gpstest.library.util.IOUtils;
+import com.android.gpstest.library.util.LibUIUtils;
+import com.android.gpstest.library.util.PreferenceUtil;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -35,12 +43,39 @@ public class HelpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Set theme
+        if (PreferenceUtil.INSTANCE.darkTheme(this, Application.Companion.getPrefs())) {
+            setTheme(R.style.AppTheme_Dark_NoActionBar);
+        }
         super.onCreate(savedInstanceState);
+        LibUIUtils.resetActivityTitle(this);
         setContentView(R.layout.activity_help);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView versionView = (TextView) findViewById(R.id.app_version);
-        TextView helpView = (TextView) findViewById(R.id.help_text);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        ScrollView scrollView = findViewById(R.id.help_scroll_view);
+        int initialPaddingLeft = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+        int initialPaddingRight = getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+        int initialPaddingTop = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
+        int initialPaddingBottom = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
+
+        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(
+                    initialPaddingLeft + insets.left,
+                    initialPaddingTop,
+                    initialPaddingRight + insets.right,
+                    initialPaddingBottom + insets.bottom
+            );
+            return windowInsets;
+        });
+
+        TextView versionView = findViewById(R.id.app_version);
+        TextView helpView = findViewById(R.id.help_text);
 
         String versionString = "";
         int versionCode = 0;
@@ -71,6 +106,15 @@ public class HelpActivity extends AppCompatActivity {
         versionView.setText(version.toString());
 
         helpView.setText(R.string.help_text);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
