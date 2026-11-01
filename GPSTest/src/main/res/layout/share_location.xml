@@ -80,9 +80,16 @@
         android:id="@+id/include_altitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/button_margin"
         android:text="@string/include_altitude"
         app:layout_constraintTop_toBottomOf="@id/scroll_coordinate_format"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/include_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/include_timestamp"
+        app:layout_constraintTop_toBottomOf="@id/include_altitude"
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -90,7 +97,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="include_altitude" />
+        app:barrierMargin="@dimen/button_margin"
+        app:constraint_referenced_ids="include_altitude,include_timestamp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/location_button_layout"
