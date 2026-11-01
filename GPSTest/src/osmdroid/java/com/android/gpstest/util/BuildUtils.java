@@ -15,10 +15,7 @@
  */
 package com.android.gpstest.util;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-
-import com.android.gpstest.Application;
+import androidx.annotation.Nullable;
 
 /**
  * Utility class that abstracts calls specific to a build flavor - for example, for Google Play
@@ -30,6 +27,7 @@ public class BuildUtils {
      * Returns null, as Google Play Services isn't available on the osmdroid build flavor
      * @return null, as Google Play Services isn't available on the osmdroid build flavor
      */
+    @Nullable
     public static String getPlayServicesVersion() {
         return null;
     }
