@@ -275,8 +275,11 @@ public class IOUtils {
 
     /**
      * Returns the provided epoch-millisecond timestamp formatted as
-     * "YYYY-MM-DD HH:MM:SS &lt;time zone&gt;",
+     * "yyyy-MM-dd HH:mm:ss &lt;time zone&gt;",
      * in the device's default time zone.
+     *
+     * @param timeMillis the epoch-millisecond timestamp to format
+     * @return the formatted timestamp string
      */
     public static String formatLocationTimestamp(long timeMillis) {
         // Use an ISO timestamp for the output, plus time zone
