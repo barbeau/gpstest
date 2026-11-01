@@ -211,7 +211,7 @@ object LibUIUtils {
         email: String,
         location: String?,
         signalInfoViewModel: SignalInfoViewModel,
-        playServicesVersion: String,
+        playServicesVersion: String?,
         prefs: SharedPreferences,
         buildFlavor: String,
     ) {

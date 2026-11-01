@@ -18,6 +18,8 @@ package com.android.gpstest.util;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import androidx.annotation.NonNull;
+
 import com.android.gpstest.Application;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -31,6 +33,7 @@ public class BuildUtils {
      * Returns the Google Play Services app version as well as the Google Play Services library version
      * @return the Google Play Services app version as well as the Google Play Services library version
      */
+    @NonNull
     public static String getPlayServicesVersion() {
         PackageManager pm = Application.Companion.getApp().getPackageManager();
         StringBuilder builder = new StringBuilder();
