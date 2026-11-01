@@ -37,10 +37,20 @@ import com.android.gpstest.library.util.IOUtils;
 import com.android.gpstest.library.util.LibUIUtils;
 import com.android.gpstest.library.util.PreferenceUtil;
 
+/**
+ * Activity for displaying application version information and help/documentation text.
+ */
 public class HelpActivity extends AppCompatActivity {
 
     public static final String TAG = "HelpActivity";
 
+    /**
+     * Initializes the activity, sets up the toolbar and theme, applies system bar and cutout insets,
+     * and populates version and help information.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down
+     *                           then this Bundle contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Set theme
@@ -63,8 +73,35 @@ public class HelpActivity extends AppCompatActivity {
         int initialPaddingTop = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
         int initialPaddingBottom = getResources().getDimensionPixelSize(R.dimen.activity_vertical_margin);
 
+        int initialToolbarPaddingLeft = toolbar.getPaddingLeft();
+        int initialToolbarPaddingRight = toolbar.getPaddingRight();
+        int initialToolbarPaddingTop = toolbar.getPaddingTop();
+        int initialToolbarPaddingBottom = toolbar.getPaddingBottom();
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+            v.setPadding(
+                    initialToolbarPaddingLeft + insets.left,
+                    initialToolbarPaddingTop,
+                    initialToolbarPaddingRight + insets.right,
+                    initialToolbarPaddingBottom
+            );
+            return windowInsets;
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(scrollView, (v, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+            );
+            // Ensure toolbar horizontal insets are also updated in case AppBarLayout did not dispatch insets to its children
+            toolbar.setPadding(
+                    initialToolbarPaddingLeft + insets.left,
+                    initialToolbarPaddingTop,
+                    initialToolbarPaddingRight + insets.right,
+                    initialToolbarPaddingBottom
+            );
             v.setPadding(
                     initialPaddingLeft + insets.left,
                     initialPaddingTop,
@@ -108,6 +145,12 @@ public class HelpActivity extends AppCompatActivity {
         helpView.setText(R.string.help_text);
     }
 
+    /**
+     * Handles action bar item selections, such as navigating up via the home button.
+     *
+     * @param item The menu item that was selected.
+     * @return true if the item was handled, false otherwise.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -117,6 +160,11 @@ public class HelpActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Attaches the base context with the user's selected locale applied.
+     *
+     * @param base The base context.
+     */
     @Override
     protected void attachBaseContext(Context base) {
         // For dynamically changing the locale
