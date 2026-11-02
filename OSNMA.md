@@ -208,8 +208,8 @@ OSNMA messages page by page instead of waiting for complete 30 s subframes:
   key, and the same rules as for the warm start drop it. The details then show "(built-in root
   key)". When the chain changes, the app simply falls back to the signal until the built-in
   message is updated. Each root key GPSTest verifies is written to Logcat ("Verified
-  DSM-KROOT") and, with OSNMA file logging on, to the CSV file, so it can be built into a
-  later version (`GalileoKeys.kt`).
+  DSM-KROOT") and, with OSNMA file logging on, to the CSV file (see [LOGGING.md](LOGGING.md)),
+  so it can be built into a later version (`GalileoKeys.kt`).
 - **Root key parts kept between sessions.** The parts of the TESLA root key (DSM-KROOT) and of
   public key messages received so far are saved every minute and when tracking stops. The next
   session continues collecting where the last one stopped, which matters on phones that miss
@@ -290,20 +290,5 @@ time read from the signal is still compared with the reference time (see [Time c
 
 ## Logging
 
-With **Settings > Logging and Output > File Output > Galileo OSNMA** turned on (off by default), GPSTest
-writes the OSNMA result to the CSV log file every 30 seconds, one record per satellite that
-sends OSNMA data:
-
-```
-OSNMA,UnixTimeMillis,GstWeek,GstTimeOfWeekSeconds,Phase,NmaStatus,ChainId,PublicKeyId,Svid,CedAuthenticated,CedAuthBits,TimingAuthenticated,TimingAuthBits,TagsOk,TagsFailed
-```
-
-A record is also written each time a root key is verified:
-
-```
-OSNMA_KROOT,UnixTimeMillis,NmaHeaderAndDsmKrootHex
-```
-
-`Phase` is the overall state (for example `WAITING_FOR_KROOT` or `AUTHENTICATING`). Before any
-satellite sends OSNMA data, a single record with empty satellite fields is written. To record
-the raw pages too, turn on **Navigation messages** in the same category.
+GPSTest can write the OSNMA result to its CSV log file (off by default). The format is described
+in [LOGGING.md](LOGGING.md).

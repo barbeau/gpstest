@@ -75,18 +75,6 @@ class OsnmaCsvLog {
 
     companion object {
         private const val SATELLITE_FIELDS = 7
-
-        /**
-         * Format line of the record written when a DSM-KROOT is verified: the NMA header and the
-         * DSM-KROOT in hex
-         */
-        const val KROOT_FORMAT = "OSNMA_KROOT,UnixTimeMillis,NmaHeaderAndDsmKrootHex"
-
-        /** Format line for the CSV file header */
-        const val FORMAT =
-            "OSNMA,UnixTimeMillis,GstWeek,GstTimeOfWeekSeconds,Phase,NmaStatus,ChainId," +
-                "PublicKeyId,Svid,CedAuthenticated,CedAuthBits,TimingAuthenticated," +
-                "TimingAuthBits,TagsOk,TagsFailed"
     }
 }
 

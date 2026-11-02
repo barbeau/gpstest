@@ -17,6 +17,17 @@ package com.android.gpstest.library.osnma
 
 import java.security.MessageDigest
 
+/*
+ * TESLA (Timed Efficient Stream Loss-tolerant Authentication) is the protocol OSNMA uses to
+ * authenticate the navigation data (OSNMA SIS ICD section 6). Galileo signs one key of a long
+ * one-way hash chain with ECDSA (the TESLA root key, broadcast in the DSM-KROOT). Each 30 s
+ * subframe, satellites broadcast MAC tags computed over their navigation data with a secret key
+ * of the chain, and disclose that key 30 s later. A receiver checks a disclosed key by hashing it
+ * back to a key it already trusts, then uses it to verify the earlier tags. Because keys are
+ * disclosed only after the tags, a receiver that knows the time well enough knows that nobody
+ * could have computed the tags without the key.
+ */
+
 /** Parameters of a TESLA chain, taken from an authenticated DSM-KROOT */
 data class TeslaChain(
     val chainId: Int,

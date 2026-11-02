@@ -15,7 +15,6 @@
  */
 package com.android.gpstest.library.osnma
 
-import java.util.zip.GZIPInputStream
 
 /**
  * Loads the OSNMA test vectors published by the European GNSS Service Centre
@@ -41,10 +40,10 @@ object TestVectors {
      */
     fun configuration1(): List<Page> {
         val start = Gst(1251, 277201)
-        val text = GZIPInputStream(
-            TestVectors::class.java
-                .getResourceAsStream("/osnma/16_AUG_2023_GST_05_00_01_8min.csv.gz")!!
-        ).bufferedReader().use { it.readText() }
+        val text = TestVectors::class.java
+            .getResourceAsStream("/osnma/16_AUG_2023_GST_05_00_01_8min.csv")!!
+            .bufferedReader()
+            .use { it.readText() }
         val perSatellite = text.lines().drop(1).filter { it.isNotBlank() }.map { line ->
             val fields = line.split(',')
             val svn = fields[0].toInt()

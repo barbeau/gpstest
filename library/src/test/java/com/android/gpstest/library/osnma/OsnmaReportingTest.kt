@@ -36,7 +36,8 @@ class OsnmaReportingTest {
         val records = log.records(status, 1_700_000_000_000L)
         val withOsnma = status.satellites.count { it.transmitsOsnma }
         assertEquals(withOsnma, records.size)
-        val fields = OsnmaCsvLog.FORMAT.split(",").size
+        // Fields of the OSNMA format line in the CSV file header (see LOGGING.md)
+        val fields = 15
         records.forEach { assertEquals(fields, it.split(",").size) }
         assertTrue(records.all { it.startsWith("OSNMA,1700000000000,") })
         assertTrue(records.any { it.split(",")[9] == "1" })

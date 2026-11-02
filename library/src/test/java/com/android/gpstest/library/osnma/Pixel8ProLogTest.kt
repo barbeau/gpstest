@@ -18,24 +18,25 @@ package com.android.gpstest.library.osnma
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import java.util.zip.GZIPInputStream
 
 /**
  * Regression test with Galileo I/NAV messages recorded on a Pixel 8 Pro, which packs the page
  * 4 bits later than documented and delivers only a fraction of the pages (see OSNMA.md)
  */
-class PixelLogTest {
+class Pixel8ProLogTest {
 
     private class Message(val svid: Int, val messageId: Int, val data: ByteArray)
 
+    /** The `Nav` lines of the GPSTest log: Nav,Svid,Type,Status,MessageId,Sub-messageId,Data */
     private fun messages(): List<Message> {
-        val stream =
-            PixelLogTest::class.java.getResourceAsStream("/osnma/pixel8pro_gal_inav.csv.gz")!!
-        val text = GZIPInputStream(stream).use { String(it.readBytes()) }
-        return text.lines().filter { it.isNotBlank() }.map { line ->
+        val text = Pixel8ProLogTest::class.java
+            .getResourceAsStream("/osnma/pixel8pro_gal_inav.txt")!!
+            .bufferedReader()
+            .use { it.readText() }
+        return text.lines().filter { it.startsWith("Nav,") }.map { line ->
             val f = line.split(',')
-            val data = ByteArray(f.size - 3) { f[3 + it].toInt().toByte() }
-            Message(f[0].toInt(), f[1].toInt(), data)
+            val data = ByteArray(f.size - 6) { f[6 + it].toInt().toByte() }
+            Message(f[1].toInt(), f[4].toInt(), data)
         }
     }
 

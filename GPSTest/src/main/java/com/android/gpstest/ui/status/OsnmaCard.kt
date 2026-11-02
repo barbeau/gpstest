@@ -172,6 +172,10 @@ private fun collapsedSummary(state: OsnmaUiState): String {
     }
 }
 
+/**
+ * The status chip(s) in the card header: the overall state (e.g. AUTHENTICATED, IN PROGRESS), and
+ * FAILED TAGS next to it when a satellite's tag failed recently
+ */
 @Composable
 private fun PhaseChip(state: OsnmaUiState) {
     val status = state.status
@@ -197,6 +201,7 @@ private fun PhaseChip(state: OsnmaUiState) {
     }
 }
 
+/** A small rounded label with white bold text on [color] */
 @Composable
 private fun Chip(text: String, color: Color) {
     Text(
@@ -211,6 +216,7 @@ private fun Chip(text: String, color: Color) {
     )
 }
 
+/** One sentence explaining the current state, shown at the top of the expanded card */
 @Composable
 private fun phaseDescription(state: OsnmaUiState): String {
     val status = state.status
@@ -334,6 +340,11 @@ private fun Details(status: OsnmaStatus?) {
     }
 }
 
+/**
+ * The diagnostic part of the expanded card, below [Details]: tag and page counters, data layout,
+ * device parity, subframe completeness, Galileo time, page timing, clock offset, the latest
+ * events and a short explanation of OSNMA
+ */
 @Composable
 private fun Expanded(state: OsnmaUiState) {
     val status = state.status
@@ -457,6 +468,7 @@ private fun receiverClockReason(status: ReceiverClockStatus): String? = when (st
     ReceiverClockStatus.INVALID -> stringResource(R.string.osnma_receiver_clock_invalid)
 }
 
+/** Hint shown when too many Galileo pages are missing or they stopped arriving */
 @Composable
 private fun receptionHint(state: OsnmaUiState): String {
     val cause = if (state.pagesStalled) {
@@ -468,6 +480,7 @@ private fun receptionHint(state: OsnmaUiState): String {
     return cause + " " + stringResource(R.string.osnma_reception_advice)
 }
 
+/** A row of the card: bold [label] on the left, [value] on the right */
 @Composable
 private fun DetailRow(@StringRes label: Int, value: String, color: Color = Color.Unspecified) {
     Row(modifier = Modifier.padding(top = 2.dp)) {
@@ -481,6 +494,7 @@ private fun DetailRow(@StringRes label: Int, value: String, color: Color = Color
     }
 }
 
+/** Small text, e.g. for the explanation at the bottom of the card */
 @Composable
 private fun SmallText(text: String, fontStyle: FontStyle = FontStyle.Normal) {
     Text(
