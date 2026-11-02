@@ -245,7 +245,12 @@ class ForegroundOnlyLocationService : LifecycleService() {
         // Binding to this service doesn't actually trigger onStartCommand(). That is needed to
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
         // be officially started (which we do here).
-        startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
+        try {
+            startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
+        } catch (e: IllegalStateException) {
+            // Catch BackgroundServiceStartNotAllowedException (API 31+)
+            Log.e(TAG, "Failed to start service", e)
+        }
     }
 
     fun unsubscribeToLocationUpdates() {
