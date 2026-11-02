@@ -100,7 +100,9 @@ data class OsnmaUiState(
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
-     * Usually caused by the chipset saving power (duty cycling) or tracking the E1 pilot.
+     * Usually caused by the chipset saving power (duty cycling) or tracking the E1 pilot. On a
+     * Pixel 8 Pro this happens even with full tracking requested, reported as
+     * https://issuetracker.google.com/issues/580885286.
      */
     val poorReception: Boolean
         get() = pagesStalled ||

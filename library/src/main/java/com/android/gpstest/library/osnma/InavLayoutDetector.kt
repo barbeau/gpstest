@@ -19,9 +19,10 @@ package com.android.gpstest.library.osnma
  * Works out where the 228 I/NAV page bits sit in the 29 bytes Android delivers.
  *
  * The Android documentation puts them at the start, with the 4 unused bits at the end. Some
- * devices (a Pixel 8 Pro, Android 17) put the 4 unused bits at the start instead. Each message is
- * checked with both layouts; a layout is adopted once several pages pass the CRC with it and none
- * with the other. Until then, the layout under which a page passes the CRC is used for that page.
+ * devices (a Pixel 8 Pro, Android 17) put the 4 unused bits at the start instead, reported as
+ * https://issuetracker.google.com/issues/580675649. Each message is checked with both layouts;
+ * a layout is adopted once several pages pass the CRC with it and none with the other. Until
+ * then, the layout under which a page passes the CRC is used for that page.
  */
 class InavLayoutDetector {
 

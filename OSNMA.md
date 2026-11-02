@@ -274,7 +274,8 @@ A Pixel 8 Pro (Android 17) puts the 4 unused bits at the start instead, so the w
 shifted by 4 bits. Read the documented way, almost every field is garbage: the CRC fails, most
 pages look "not nominal", and the word type and time stamps decode to nonsense (for example a
 week number of 2904 instead of 1418). Read with the 4-bit offset, every page in a recorded log
-was nominal and passed the CRC.
+was nominal and passed the CRC. Reported to Google as
+[issue 580675649](https://issuetracker.google.com/issues/580675649).
 
 `InavLayoutDetector` checks each message with both layouts and uses the one under which the
 page passes the CRC. Once a few pages pass with one layout and none with the other, that layout
@@ -293,14 +294,15 @@ consecutive messages from the same satellite, and keeps the result only if the C
 
 ### Missing pages
 
-Phones often deliver only part of the pages: the chip saves power (duty cycling) or tracks the
-E1 pilot signal, which carries no data. The Pixel 8 Pro log contained only 7 to 32 % of each
-Galileo satellite's pages. With complete subframes only, authentication couldn't complete at
-such rates; with the page-by-page processing above it can, but it takes longer, mostly until all
-parts of the TESLA root key have been received once. The **Subframes** row shows how many subframes were
-complete, and the card shows a hint when fewer than half are. Turning on **Force full GNSS
-measurements**, both in GPSTest's settings and in Android's developer options, and keeping the
-screen on can help.
+Phones often deliver only part of the pages: the chip saves power (duty cycling) or tracks the E1
+pilot signal, which carries no data. The Pixel 8 Pro log contained only 6 to 29 % of each Galileo
+satellite's pages, even with full tracking requested (reported to Google as [issue
+580885286](https://issuetracker.google.com/issues/580885286)). With complete subframes only,
+authentication couldn't complete at such rates; with the page-by-page processing above it can, but
+it takes longer, mostly until all parts of the TESLA root key have been received once. The
+**Subframes** row shows how many subframes were complete, and the card shows a hint when fewer than
+half are. Turning on **Force full GNSS measurements**, both in GPSTest's settings and in Android's
+developer options, and keeping the screen on can help.
 
 ### Time of each page
 
