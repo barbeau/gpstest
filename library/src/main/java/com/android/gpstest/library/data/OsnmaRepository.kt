@@ -30,6 +30,7 @@ import com.android.gpstest.library.osnma.InavPage
 import com.android.gpstest.library.osnma.InavPageAssembler
 import com.android.gpstest.library.osnma.InavTimeTracker
 import com.android.gpstest.library.osnma.KeySource
+import com.android.gpstest.library.osnma.OsnmaCardState
 import com.android.gpstest.library.osnma.OsnmaEngine
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaPublicKey
@@ -108,6 +109,16 @@ data class OsnmaUiState(
         get() = pagesStalled ||
                 (status?.statistics?.subframeCompleteness
                         ?.let { it < MIN_SUBFRAME_COMPLETENESS } == true)
+
+    /** Main state and warnings shown by the OSNMA card */
+    val cardState: OsnmaCardState
+        get() = OsnmaCardState.of(
+            status,
+            inavPagesReceived,
+            keysRevoked,
+            clockOffsetSeconds,
+            poorReception
+        )
 
     /** Tags that may be used, given [clockOffsetSeconds] */
     val timeSync: TimeSync

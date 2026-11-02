@@ -538,9 +538,14 @@
     <string name="osnma_chip_alert">ALERT</string>
     <string name="osnma_chip_failures">FAILED TAGS</string>
     <string name="osnma_chip_time">TIME NOT VERIFIED</string>
-    <string name="osnma_summary_satellites">%1$d sats</string>
-    <string name="osnma_summary_slow_mac">(slow MAC)</string>
-    <string name="osnma_summary_poor_reception">Poor reception</string>
+    <string name="osnma_count_authenticated">%1$d Galileo satellites authenticated</string>
+    <string name="osnma_count_failed">%1$d Galileo satellites with failed tags</string>
+    <string name="osnma_chip_poor_reception">POOR RECEPTION</string>
+    <string name="osnma_chip_slow_mac">SLOW MAC ONLY</string>
+    <string name="osnma_expand">Show OSNMA details</string>
+    <string name="osnma_collapse">Hide OSNMA details</string>
+    <string name="osnma_in_progress">Authentication in progress</string>
+    <string name="osnma_waiting_time">This usually takes a few minutes, longer with weak reception.</string>
     <string name="osnma_clock_offset_warning">The time differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 165 s, so it isn\'t used: check the date and time settings.</string>
     <string name="osnma_clock_offset_slow_mac">The time differs from the Galileo time in the signal by %1$d s, more than the 15 s needed for all tags. Only slow MAC tags are used, which are checked with a key sent 5 minutes later.</string>
     <string name="osnma_phase_no_data">Waiting for Galileo navigation messages… This takes a few seconds after tracking starts.</string>

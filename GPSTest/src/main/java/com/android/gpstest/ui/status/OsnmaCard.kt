@@ -24,9 +24,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -37,8 +40,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,10 +57,14 @@ import com.android.gpstest.library.osnma.Gst
 import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.MacFunction
 import com.android.gpstest.library.osnma.NmaStatus
+import com.android.gpstest.library.osnma.OsnmaCardState
 import com.android.gpstest.library.osnma.OsnmaEvent
+import com.android.gpstest.library.osnma.OsnmaMainState
+import com.android.gpstest.library.osnma.OsnmaMark
 import com.android.gpstest.library.osnma.OsnmaStatistics
 import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
+import com.android.gpstest.library.osnma.OsnmaWarning
 import com.android.gpstest.library.osnma.TimeSync
 import kotlin.math.roundToInt
 
@@ -96,24 +107,17 @@ fun OsnmaCard(state: OsnmaUiState) {
         elevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.osnma_title),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                PhaseChip(state)
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = collapsedSummary(state) + if (expanded) "  \u25B4" else "  \u25BE",
-                    fontSize = 13.sp,
-                    maxLines = 1
-                )
-            }
+            val cardState = state.cardState
+            Header(state, cardState, expanded)
+            if (cardState.warnings.isNotEmpty()) WarningChips(cardState.warnings)
             if (expanded) {
+                val description = phaseDescription(state)
                 Text(
-                    text = phaseDescription(state),
+                    text = if (cardState.main == OsnmaMainState.IN_PROGRESS) {
+                        description + " " + stringResource(R.string.osnma_waiting_time)
+                    } else {
+                        description
+                    },
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
                 )
@@ -151,53 +155,110 @@ fun OsnmaCard(state: OsnmaUiState) {
 /** Remembers whether the card is expanded while the app runs (e.g. when switching screens) */
 private var osnmaCardExpanded = false
 
-/** Short status for the collapsed card, e.g. "12 sats" */
+/**
+ * The header row: title, main state chip, the number of authenticated (green seal) and failing
+ * (red seal) satellites, a progress indicator while authentication is in progress, and the
+ * expand/collapse chevron
+ */
 @Composable
-private fun collapsedSummary(state: OsnmaUiState): String {
-    val status = state.status ?: return ""
-    return when {
-        status.phase == Phase.AUTHENTICATING -> {
-            val sats = stringResource(
-                R.string.osnma_summary_satellites,
-                status.authenticatedSatellites.size
+private fun Header(state: OsnmaUiState, cardState: OsnmaCardState, expanded: Boolean) {
+    val status = state.status
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = stringResource(R.string.osnma_title),
+            fontWeight = FontWeight.Bold,
+            fontSize = 13.sp,
+            maxLines = 1
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        MainStateChip(cardState.main)
+        Spacer(modifier = Modifier.weight(1f))
+        val authenticated = status?.authenticatedSatellites?.size ?: 0
+        val failed = status?.recentFailures()?.size ?: 0
+        if (authenticated > 0) SatelliteCount(OsnmaMark.AUTHENTICATED, authenticated)
+        if (failed > 0) SatelliteCount(OsnmaMark.FAILED, failed)
+        if (cardState.main == OsnmaMainState.IN_PROGRESS && !state.pagesStalled) {
+            val progressDescription = stringResource(R.string.osnma_in_progress)
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .size(16.dp)
+                    .semantics { contentDescription = progressDescription },
+                strokeWidth = 2.dp
             )
-            if (status.timeSync == TimeSync.SLOW_MAC_ONLY) {
-                sats + " " + stringResource(R.string.osnma_summary_slow_mac)
-            } else {
-                sats
-            }
         }
-        state.poorReception -> stringResource(R.string.osnma_summary_poor_reception)
-        else -> ""
+        Icon(
+            painter = painterResource(R.drawable.ic_osnma_expand_more),
+            contentDescription = stringResource(
+                if (expanded) R.string.osnma_collapse else R.string.osnma_expand
+            ),
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .size(24.dp)
+                .rotate(if (expanded) 180f else 0f)
+        )
     }
 }
 
 /**
- * The status chip(s) in the card header: the overall state (e.g. AUTHENTICATED, IN PROGRESS), and
- * FAILED TAGS next to it when a satellite's tag failed recently
+ * A seal followed by a number of satellites, e.g. "✔ 7". Only the number is shown, so that the
+ * header fits on narrow screens next to the chip; screen readers get the full sentence.
  */
 @Composable
-private fun PhaseChip(state: OsnmaUiState) {
-    val status = state.status
-    val phase = if (state.keysRevoked) Phase.ALERT else status?.phase ?: Phase.NO_DATA
-    val failures = status != null && status.recentFailures().isNotEmpty()
-    // The time is known but too far off for OSNMA to be used
-    val timeRejected = state.clockOffsetSeconds != null && state.timeSync == TimeSync.NONE
-    val (color, textId) = when (phase) {
-        Phase.WAITING_FOR_TAGS, Phase.AUTHENTICATING -> when {
-            timeRejected -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_time)
-            phase == Phase.AUTHENTICATING -> Pair(Green, R.string.osnma_chip_authenticated)
-            else -> Pair(Amber, R.string.osnma_chip_waiting)
-        }
-        Phase.ALERT -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_alert)
-        Phase.DONT_USE -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_dont_use)
-        Phase.NO_DATA, Phase.NO_OSNMA -> Pair(Gray, R.string.osnma_chip_no_data)
-        else -> Pair(Amber, R.string.osnma_chip_waiting)
+private fun SatelliteCount(mark: OsnmaMark, count: Int) {
+    val description = stringResource(
+        if (mark == OsnmaMark.AUTHENTICATED) {
+            R.string.osnma_count_authenticated
+        } else {
+            R.string.osnma_count_failed
+        },
+        count
+    )
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(start = 8.dp)
+            .semantics(mergeDescendants = true) { contentDescription = description }
+    ) {
+        OsnmaMarkIcon(mark)
+        Text(
+            text = count.toString(),
+            fontSize = 13.sp,
+            maxLines = 1,
+            modifier = Modifier.padding(start = 2.dp)
+        )
+    }
+}
+
+/** The main state chip (see [OsnmaMainState]) */
+@Composable
+private fun MainStateChip(main: OsnmaMainState) {
+    val (color, textId) = when (main) {
+        OsnmaMainState.NO_DATA -> Pair(Gray, R.string.osnma_chip_no_data)
+        OsnmaMainState.IN_PROGRESS -> Pair(Amber, R.string.osnma_chip_waiting)
+        OsnmaMainState.AUTHENTICATED -> Pair(Green, R.string.osnma_chip_authenticated)
+        OsnmaMainState.DONT_USE -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_dont_use)
+        OsnmaMainState.ALERT -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_alert)
+        OsnmaMainState.TIME_NOT_VERIFIED ->
+            Pair(MaterialTheme.colors.error, R.string.osnma_chip_time)
     }
     Chip(stringResource(textId), color)
-    if (failures) {
-        Spacer(modifier = Modifier.width(4.dp))
-        Chip(stringResource(R.string.osnma_chip_failures), MaterialTheme.colors.error)
+}
+
+/** One chip per warning (see [OsnmaWarning]), in a row below the header */
+@Composable
+private fun WarningChips(warnings: Set<OsnmaWarning>) {
+    Row(modifier = Modifier.padding(top = 4.dp)) {
+        warnings.forEachIndexed { i, warning ->
+            if (i > 0) Spacer(modifier = Modifier.width(4.dp))
+            val (color, textId) = when (warning) {
+                OsnmaWarning.FAILED_TAGS ->
+                    Pair(MaterialTheme.colors.error, R.string.osnma_chip_failures)
+                OsnmaWarning.POOR_RECEPTION -> Pair(Amber, R.string.osnma_chip_poor_reception)
+                OsnmaWarning.SLOW_MAC_ONLY -> Pair(Amber, R.string.osnma_chip_slow_mac)
+            }
+            Chip(stringResource(textId), color)
+        }
     }
 }
 

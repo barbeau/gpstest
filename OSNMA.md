@@ -20,8 +20,9 @@ expanded while the root key is still being collected, and the collapsed one-line
 
 ![Status screen with the collapsed Galileo OSNMA card and sealed satellites (mockup)](docs/osnma-screen-dark.png)
 
-*Mockup of the Status screen: the collapsed card, and seals next to the Galileo satellites in the
-list (green: authenticated, red: a tag failed in the last 10 minutes).*
+*Mockup of the Status screen: the collapsed card with the number of authenticated and failing
+satellites, and seals next to the Galileo satellites in the list (green: authenticated, red: a
+tag failed in the last 10 minutes).*
 
 ## Requirements
 
@@ -38,19 +39,45 @@ list (green: authenticated, red: a tag failed in the last 10 minutes).*
 
 | Field | Meaning |
 | --- | --- |
-| Status chip | **AUTHENTICATED** (green): navigation data is being verified. **IN PROGRESS** (amber): waiting for the public key, the TESLA root key or the first tags. **NO DATA** (gray): no OSNMA data yet. **DON'T USE**, **ALERT**, **TIME NOT VERIFIED** and **FAILED TAGS** (red): see below. |
 | NMA status | Operational, Test or Don't use, as broadcast by Galileo. A ✓ means it was confirmed by a verified signature. |
 | Public key | The ECDSA public key ID (PKID), its curve and where it came from: *built in*, *from signal*, *Merkle tree file* or *imported*. |
 | TESLA chain | Chain ID, MAC function, tag size and time of the latest verified TESLA key. |
 | Authenticated | Satellites whose current ephemeris, clock and health data is authenticated. That means at least 40 bits of MAC tags were verified on the data the satellite is broadcasting right now. |
 | Failed tags | Satellites with a tag that failed verification in the last 10 minutes, with the count. |
 
-The card is a single line by default: the status chip and, while authenticating, the number of
-authenticated satellites. Tap it to expand: the fields above, tag counts by type (CED, timing,
+The card is a single line by default (plus a line of warning chips, if any): the main state
+chip, the number of authenticated satellites (green seal) and of satellites with failed tags
+(red seal), a spinner while authentication is in progress, and a chevron. Tap it to expand: a
+sentence on the current state (with how long it usually takes while in progress), the fields
+above, tag counts by type (CED, timing,
 slow MAC), page counters (received, used, without time, not nominal, CRC errors), device parity,
 subframe completeness, page timing, clock offset and the latest events. All fields are shown
 from the start, with "Not known yet", "None yet" or the root key progress until they're filled
 in, so the layout doesn't jump while authentication progresses.
+
+### States
+
+The card shows exactly one **main state** chip:
+
+| Main state | Meaning |
+| --- | --- |
+| **NO DATA** (gray) | No Galileo pages yet, or no OSNMA data in them. |
+| **IN PROGRESS** (amber) | Synchronizing with Galileo time, waiting for the public key, the TESLA root key or the first tags. A spinner shows that pages are arriving. |
+| **AUTHENTICATED** (green) | At least one satellite's navigation data is authenticated. |
+| **TIME NOT VERIFIED** (red) | The time is more than 165 s off; see below. |
+| **DON'T USE** (red) | Galileo set the OSNMA status to "don't use". |
+| **ALERT** (red) | An OSNMA alert message revoked all keys. |
+
+Below the header, a chip is added for each **warning** that applies. They can occur in any
+combination, and together with any main state:
+
+| Warning | Meaning |
+| --- | --- |
+| **FAILED TAGS** (red) | A satellite's tag failed in the last 10 minutes. |
+| **POOR RECEPTION** (amber) | Too many pages are missing, or they stopped arriving. |
+| **SLOW MAC ONLY** (amber) | The time is 15 to 165 s off, so only slow MAC tags are used. |
+
+In the code, these are `OsnmaMainState` and `OsnmaWarning` (`OsnmaCardState.kt`).
 
 ### Satellite list and sky view
 
@@ -70,7 +97,7 @@ satellites, at most once every 10 minutes. It has its own notification channel, 
 warnings*, so it can be turned off in Android's notification settings without affecting the
 tracking notification.
 
-### Red states
+### Red and amber states
 
 - **FAILED TAGS**: a MAC tag didn't match the received navigation data. This can be caused by
   corrupted data or timing problems, but also by spoofing. Treat data from those satellites as
@@ -78,11 +105,11 @@ tracking notification.
 - **TIME NOT VERIFIED**: the time differs from the Galileo time in the signal by more than
   165 s. OSNMA can't detect replayed or delayed signals without an independent time source, so
   no tags are used until that's fixed. Check the date and time settings. Between 15 and 165 s,
-  only slow MAC tags are used: the chip stays green and the summary says "(slow MAC)", with an
-  amber note in the details. See [Time check](#time-check).
+  only slow MAC tags are used: the main chip stays green, a **SLOW MAC ONLY** chip is added, and
+  the details have an amber note. See [Time check](#time-check).
 - **DON'T USE**: Galileo has set the OSNMA status to "don't use". Nothing is authenticated
   until that changes.
-- **Amber reception hint**: Galileo pages arrive, but fewer than half of the 30-second subframes
+- **POOR RECEPTION** (amber chip and hint in the details): Galileo pages arrive, but fewer than half of the 30-second subframes
   are complete, or the pages stopped while tracking. Each satellite's authentication data needs
   all 15 pages of a subframe, so authentication becomes slow or stops. This is usually the chip
   saving power (duty cycling) or tracking only the E1 pilot signal, which carries no data. Keep
