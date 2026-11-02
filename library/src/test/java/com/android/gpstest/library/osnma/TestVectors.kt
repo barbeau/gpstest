@@ -15,7 +15,6 @@
  */
 package com.android.gpstest.library.osnma
 
-
 /**
  * Loads the OSNMA test vectors published by the European GNSS Service Centre
  * (https://www.gsc-europa.eu/support-to-developers/osnma-test-vectors), see
