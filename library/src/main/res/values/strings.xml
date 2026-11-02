@@ -616,6 +616,7 @@
     <string name="osnma_failure_notification_title">Galileo authentication failed</string>
     <string name="osnma_failure_notification_text">Navigation data of %1$s didn\'t match its OSNMA tag. This can be caused by corrupted data, but also by spoofing: don\'t trust these satellites.</string>
     <string name="osnma_label_clock_offset">Clock offset</string>
+    <string name="osnma_clock_offset_trusted">%1$d s (Google TrustedTime)</string>
     <string name="osnma_clock_offset_network">%1$d s (network time)</string>
     <string name="osnma_clock_offset_device">%1$d s (device clock, which may be set from GNSS)</string>
     <string name="osnma_subframes_value">%1$d of %2$d complete (%3$d%%)</string>

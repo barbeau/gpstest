@@ -32,8 +32,8 @@ tag failed in the last 10 minutes).*
 - Galileo satellites in view, ideally with a clear sky. Authentication starts after a few
   minutes of continuous reception.
 - The correct time: within 15 seconds for all tags, within 165 seconds for slow MAC tags only.
-  GPSTest uses Android's network time where available (Android 13 and later), otherwise the
-  device clock. See [Time check](#time-check).
+  GPSTest uses Google TrustedTime (Google Play build) or Android's network time (Android 13 and
+  later) where available, otherwise the device clock. See [Time check](#time-check).
 
 ## The Status card
 
@@ -81,7 +81,7 @@ In the code, these are `OsnmaMainState` and `OsnmaWarning` (`OsnmaCardState.kt`)
 
 ### Satellite list and sky view
 
-Galileo satellites are marked in the satellite list on the Status screen (next to the ID) and in
+Galileo satellites are marked in the satellite list on the Status screen (next to the flag) and in
 the sky view (at the upper right of the triangle):
 
 - **Green seal with a check mark**: the satellite's ephemeris, clock and health data is
@@ -149,8 +149,11 @@ TESLA keys are published 30 s after the tags they protect, so a spoofer that can
 signal could forge tags if the receiver relied only on the signal for the time. OSNMA therefore
 requires the receiver to know Galileo time on its own (OSNMA Receiver Guidelines, sections 2.1
 and 5.3.1). Each time a page carries its own time stamp, GPSTest compares it with a reference
-time:
+time, the first available of:
 
+- **Google TrustedTime** (Google Play build only): Google Play services' time, synchronized with
+  Google's time servers and independent of GNSS. The **Clock offset** row says "(Google
+  TrustedTime)".
 - **Network time** (Android 13 and later, when the phone has synchronized with a time server).
   It's independent of GNSS.
 - Otherwise the **device clock**. Some phones set it from GNSS, so it isn't fully independent:

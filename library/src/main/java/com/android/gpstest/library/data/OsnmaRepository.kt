@@ -62,17 +62,14 @@ data class OsnmaUiState(
     /** An OSNMA Alert Message revoked the key material; new keys must be imported */
     val keysRevoked: Boolean = false,
     /**
-     * Difference between the reference time ([timeSourceNetwork]) and the Galileo System Time
+     * Difference between the reference time ([timeSource]) and the Galileo System Time
      * read from the signal, in seconds, or null if unknown. OSNMA is only meaningful if the
      * receiver knows the time independently of the signal it authenticates (OSNMA Receiver
      * Guidelines sections 2.1 and 5.3.1); see TimeSync.
      */
     val clockOffsetSeconds: Long? = null,
-    /**
-     * The reference time is Android's network time (NTP, Android 13 and later). Otherwise it's
-     * the device clock, which some devices set from GNSS and so isn't independent of the signal.
-     */
-    val timeSourceNetwork: Boolean = false,
+    /** Where the reference time for [clockOffsetSeconds] comes from */
+    val timeSource: TimeSource = TimeSource.DEVICE_CLOCK,
     /** Galileo pages were being received but stopped arriving while tracking continued */
     val pagesStalled: Boolean = false,
     /** Page timing diagnostics, see [InavTimeTracker] */
@@ -134,6 +131,27 @@ data class OsnmaUiState(
     }
 }
 
+/**
+ * A source of the current time that's independent of GNSS, e.g. Google's TrustedTime API in the
+ * google build flavor (see [OsnmaRepository.trustedTimeSource])
+ */
+fun interface TrustedTimeSource {
+    /** The current UTC time in ms since the Unix epoch, or null if not available right now */
+    fun currentUtcMillis(): Long?
+}
+
+/** Reference time used to check the Galileo time in the signal, in order of preference */
+enum class TimeSource {
+    /** A [TrustedTimeSource], e.g. Google's TrustedTime API (google build flavor) */
+    TRUSTED_TIME,
+
+    /** Android's network time (NTP), Android 13 and later */
+    NETWORK_TIME,
+
+    /** The device clock, which some devices set from GNSS: not independent of the signal */
+    DEVICE_CLOCK
+}
+
 /** Whether the receiver clock (GnssClock) can be used to time Galileo pages, and if not, why */
 enum class ReceiverClockStatus {
     OK,
@@ -188,7 +206,15 @@ class OsnmaRepository @Inject constructor(
     private var crcChecked = 0
     private var trustPlatformParity = false
     private var clockOffsetSeconds: Long? = null
-    private var timeSourceNetwork = false
+    private var timeSource = TimeSource.DEVICE_CLOCK
+
+    /**
+     * Independent time source to check the Galileo time against, set by the app when one is
+     * available (e.g. TrustedTime in the google build flavor). Network time and then the device
+     * clock are used otherwise.
+     */
+    @Volatile
+    var trustedTimeSource: TrustedTimeSource? = null
     @Volatile
     private var receiverClockStatus = ReceiverClockStatus.NO_MEASUREMENTS
 
@@ -363,9 +389,14 @@ class OsnmaRepository @Inject constructor(
             if (timeTracker.lastWasExact) {
                 // Only pages with their own time stamp: the page ended about 2 s after its
                 // start, plus decoding and delivery latency
-                val networkUtc = networkTimeAt(pageArrival)
-                timeSourceNetwork = networkUtc != null
-                val referenceUtc = networkUtc ?: pageWallClock
+                val trustedUtc = trustedTimeAt(pageArrival)
+                val networkUtc = if (trustedUtc == null) networkTimeAt(pageArrival) else null
+                timeSource = when {
+                    trustedUtc != null -> TimeSource.TRUSTED_TIME
+                    networkUtc != null -> TimeSource.NETWORK_TIME
+                    else -> TimeSource.DEVICE_CLOCK
+                }
+                val referenceUtc = trustedUtc ?: networkUtc ?: pageWallClock
                 clockOffsetSeconds = deviceGstSeconds(referenceUtc) - 2 - gst.totalSeconds
             }
             val e = engine ?: newEngine().also { engine = it }
@@ -433,6 +464,16 @@ class OsnmaRepository @Inject constructor(
         val elapsedMillis = clock.elapsedRealtimeNanos / 1_000_000
         if (elapsedMillis <= 0 || gstMillis <= 0) return ReceiverClockStatus.INVALID to null
         return ReceiverClockStatus.OK to Pair(elapsedMillis, gstMillis)
+    }
+
+    /** The [trustedTimeSource]'s time at the local monotonic time [elapsedMillis], or null */
+    private fun trustedTimeAt(elapsedMillis: Long): Long? {
+        val now = try {
+            trustedTimeSource?.currentUtcMillis()
+        } catch (e: Exception) {
+            null
+        } ?: return null
+        return now - (SystemClock.elapsedRealtime() - elapsedMillis)
     }
 
     /**
@@ -515,7 +556,7 @@ class OsnmaRepository @Inject constructor(
             trustingPlatformParity = trustPlatformParity,
             keysRevoked = OsnmaKeyStore.isRevoked(context, prefs),
             clockOffsetSeconds = clockOffsetSeconds,
-            timeSourceNetwork = timeSourceNetwork,
+            timeSource = timeSource,
             pagesStalled = pagesStalled(),
             timingUsesSubframeNumbers = timeTracker.usingSubframeNumbers,
             timingCorrections = timeTracker.corrections,

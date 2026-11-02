@@ -229,8 +229,8 @@ fun StatusRow(satelliteStatus: SatelliteStatus, osnmaMark: OsnmaMark? = null) {
         val medium = Modifier.defaultMinSize(minWidth = dimensionResource(R.dimen.min_column_width_medium))
         val large = Modifier.defaultMinSize(minWidth = 50.dp)
 
-        Svid(satelliteStatus, osnmaMark, small)
-        Flag(satelliteStatus, large)
+        Svid(satelliteStatus, small)
+        FlagWithOsnmaMark(satelliteStatus, osnmaMark, large)
         CarrierFrequency(satelliteStatus, small)
         Cn0(satelliteStatus, medium)
         AEU(satelliteStatus, medium)
@@ -240,16 +240,30 @@ fun StatusRow(satelliteStatus: SatelliteStatus, osnmaMark: OsnmaMark? = null) {
 }
 
 @Composable
-fun Svid(satelliteStatus: SatelliteStatus, osnmaMark: OsnmaMark?, modifier: Modifier) {
+fun Svid(satelliteStatus: SatelliteStatus, modifier: Modifier) {
+    StatusValue(satelliteStatus.svid.toString(), modifier = modifier)
+}
+
+/**
+ * The flag, followed by the Galileo OSNMA seal if there is one. The flag (24 dp plus padding)
+ * leaves room for the 12 dp seal within the column's minimum width, so the seal doesn't widen
+ * the column or push the other columns to the right.
+ */
+@Composable
+fun FlagWithOsnmaMark(
+    satelliteStatus: SatelliteStatus,
+    osnmaMark: OsnmaMark?,
+    modifier: Modifier
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        StatusValue(satelliteStatus.svid.toString())
+        Flag(satelliteStatus, Modifier)
         OsnmaMarkIcon(osnmaMark)
     }
 }
 
 /**
- * Seal next to the ID of Galileo satellites: green with a check mark if authenticated, red with an
- * exclamation mark if tags failed
+ * Seal for Galileo satellites: green with a check mark if authenticated, red with an exclamation
+ * mark if tags failed
  */
 @Composable
 fun OsnmaMarkIcon(mark: OsnmaMark?) {

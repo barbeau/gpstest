@@ -70,7 +70,11 @@ class OsnmaCardStateTest {
         val state = OsnmaCardState.of(failed, 1, false, 60, true)
         assertEquals(OsnmaMainState.AUTHENTICATED, state.main)
         assertEquals(
-            listOf(OsnmaWarning.FAILED_TAGS, OsnmaWarning.POOR_RECEPTION, OsnmaWarning.SLOW_MAC_ONLY),
+            listOf(
+                OsnmaWarning.FAILED_TAGS,
+                OsnmaWarning.POOR_RECEPTION,
+                OsnmaWarning.SLOW_MAC_ONLY
+            ),
             state.warnings.toList()
         )
     }

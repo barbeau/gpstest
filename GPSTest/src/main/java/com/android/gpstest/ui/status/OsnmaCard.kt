@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
 import com.android.gpstest.library.data.OsnmaUiState
 import com.android.gpstest.library.data.ReceiverClockStatus
+import com.android.gpstest.library.data.TimeSource
 import com.android.gpstest.library.osnma.Gst
 import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.MacFunction
@@ -486,10 +487,10 @@ private fun Expanded(state: OsnmaUiState) {
             R.string.osnma_label_clock_offset,
             state.clockOffsetSeconds?.let {
                 stringResource(
-                    if (state.timeSourceNetwork) {
-                        R.string.osnma_clock_offset_network
-                    } else {
-                        R.string.osnma_clock_offset_device
+                    when (state.timeSource) {
+                        TimeSource.TRUSTED_TIME -> R.string.osnma_clock_offset_trusted
+                        TimeSource.NETWORK_TIME -> R.string.osnma_clock_offset_network
+                        TimeSource.DEVICE_CLOCK -> R.string.osnma_clock_offset_device
                     },
                     it
                 )

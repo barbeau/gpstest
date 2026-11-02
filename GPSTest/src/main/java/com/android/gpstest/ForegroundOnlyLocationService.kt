@@ -80,6 +80,7 @@ import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteGroup
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
+import com.android.gpstest.osnma.OsnmaTimeSources
 import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -154,6 +155,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
         super.onCreate()
         Log.d(TAG, "onCreate()")
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // An independent time source for the Galileo OSNMA time check, if the build flavor has one
+        OsnmaTimeSources.install(applicationContext, osnmaRepository)
 
         csvFileLogger = CsvFileLogger(applicationContext)
         jsonFileLogger = JsonFileLogger(applicationContext)
