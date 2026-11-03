@@ -129,6 +129,10 @@ object OsnmaKeyStore {
     /**
      * Handles an authenticated OSNMA Alert Message (OSNMA SIS ICD section 5.6): the Merkle tree and
      * all keys must no longer be trusted, until a new Merkle tree is imported.
+     *
+     * An imported Merkle tree root is kept, so that [merkleRoot] keeps matching the revoked root
+     * and stays null. Removing it would make [merkleRoot] fall back to the built-in root and
+     * trust the built-in keys again.
      */
     fun revokeAll(context: Context, prefs: SharedPreferences) {
         val current = prefs.getString(context.getString(R.string.pref_key_osnma_merkle_root), null)
@@ -138,7 +142,6 @@ object OsnmaKeyStore {
             .remove(context.getString(R.string.pref_key_osnma_public_keys))
             .remove(context.getString(R.string.pref_key_osnma_tesla_key))
             .remove(context.getString(R.string.pref_key_osnma_dsm))
-            .remove(context.getString(R.string.pref_key_osnma_merkle_root))
             .apply()
     }
 
