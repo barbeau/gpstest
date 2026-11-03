@@ -288,9 +288,25 @@ class OsnmaRepository @Inject constructor(
         prefs.registerOnSharedPreferenceChangeListener(prefListener)
         // Republish regularly so that the UI notices when pages stop arriving
         executor.scheduleWithFixedDelay(
-            { if (inavPages > 0) publish(force = true) },
+            { checkStalled() },
             STALL_CHECK_MILLIS, STALL_CHECK_MILLIS, TimeUnit.MILLISECONDS
         )
+    }
+
+    /**
+     * Republishes while pages are expected, and starts over once none have arrived for
+     * [RESET_GAP_MILLIS], e.g. after tracking stopped. Otherwise the card, the satellite seals and
+     * logs would keep showing the old session's results until the next page arrives.
+     */
+    private fun checkStalled() {
+        if (inavPages == 0L) return
+        if (lastArrivalMillis != 0L &&
+            SystemClock.elapsedRealtime() - lastArrivalMillis > RESET_GAP_MILLIS
+        ) {
+            resetEngine()
+            lastArrivalMillis = 0L
+        }
+        publish(force = true)
     }
 
     private fun pagesStalled(): Boolean =
