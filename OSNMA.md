@@ -45,8 +45,8 @@ tag failed in the last 10 minutes).*
 | Authenticated | Satellites whose current ephemeris, clock and health data is authenticated. That means at least 40 bits of MAC tags were verified on the data the satellite is broadcasting right now. |
 | Failed tags | Satellites with a tag that failed verification in the last 10 minutes, with the count. |
 
-The card is a single line by default (plus a line of warning chips, if any): the main state
-chip, the number of authenticated satellites (green seal) and of satellites with failed tags
+The card is a single line by default: the main state chip and any warning chips next to it
+(on narrow screens, chips that don't fit continue on a second line), the number of authenticated satellites (green seal) and of satellites with failed tags
 (red seal), a spinner while authentication is in progress, and a chevron. Tap it to expand: a
 sentence on the current state (with how long it usually takes while in progress), the fields
 above, tag counts by type (CED, timing,
@@ -68,7 +68,7 @@ The card shows exactly one **main state** chip:
 | **DON'T USE** (red) | Galileo set the OSNMA status to "don't use". |
 | **ALERT** (red) | An OSNMA alert message revoked all keys. |
 
-Below the header, a chip is added for each **warning** that applies. They can occur in any
+Next to the main state chip, a chip is added for each **warning** that applies. They can occur in any
 combination, and together with any main state:
 
 | Warning | Meaning |

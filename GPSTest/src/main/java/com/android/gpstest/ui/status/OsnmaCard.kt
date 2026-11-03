@@ -42,6 +42,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -110,7 +113,6 @@ fun OsnmaCard(state: OsnmaUiState) {
         Column(modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 8.dp)) {
             val cardState = state.cardState
             Header(state, cardState, expanded)
-            if (cardState.warnings.isNotEmpty()) WarningChips(cardState.warnings)
             if (expanded) {
                 val description = phaseDescription(state)
                 Text(
@@ -165,15 +167,17 @@ private var osnmaCardExpanded = false
 private fun Header(state: OsnmaUiState, cardState: OsnmaCardState, expanded: Boolean) {
     val status = state.status
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = stringResource(R.string.osnma_title),
-            fontWeight = FontWeight.Bold,
-            fontSize = 13.sp,
-            maxLines = 1
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        MainStateChip(cardState.main)
-        Spacer(modifier = Modifier.weight(1f))
+        // Title and chips on one line; chips that don't fit continue on the next line
+        ChipFlow(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.osnma_title),
+                fontWeight = FontWeight.Bold,
+                fontSize = 13.sp,
+                maxLines = 1
+            )
+            MainStateChip(cardState.main)
+            cardState.warnings.forEach { WarningChip(it) }
+        }
         val authenticated = status?.authenticatedSatellites?.size ?: 0
         val failed = status?.recentFailures()?.size ?: 0
         if (authenticated > 0) SatelliteCount(OsnmaMark.AUTHENTICATED, authenticated)
@@ -246,19 +250,57 @@ private fun MainStateChip(main: OsnmaMainState) {
     Chip(stringResource(textId), color)
 }
 
-/** One chip per warning (see [OsnmaWarning]), in a row below the header */
+/** The chip of a warning (see [OsnmaWarning]), shown next to the main state chip */
 @Composable
-private fun WarningChips(warnings: Set<OsnmaWarning>) {
-    Row(modifier = Modifier.padding(top = 4.dp)) {
-        warnings.forEachIndexed { i, warning ->
-            if (i > 0) Spacer(modifier = Modifier.width(4.dp))
-            val (color, textId) = when (warning) {
-                OsnmaWarning.FAILED_TAGS ->
-                    Pair(MaterialTheme.colors.error, R.string.osnma_chip_failures)
-                OsnmaWarning.POOR_RECEPTION -> Pair(Amber, R.string.osnma_chip_poor_reception)
-                OsnmaWarning.SLOW_MAC_ONLY -> Pair(Amber, R.string.osnma_chip_slow_mac)
+private fun WarningChip(warning: OsnmaWarning) {
+    val (color, textId) = when (warning) {
+        OsnmaWarning.FAILED_TAGS -> Pair(MaterialTheme.colors.error, R.string.osnma_chip_failures)
+        OsnmaWarning.POOR_RECEPTION -> Pair(Amber, R.string.osnma_chip_poor_reception)
+        OsnmaWarning.SLOW_MAC_ONLY -> Pair(Amber, R.string.osnma_chip_slow_mac)
+    }
+    Chip(stringResource(textId), color)
+}
+
+/**
+ * Places its children side by side, vertically centered, and continues on the next line when
+ * the width runs out (like FlowRow, which this Compose version doesn't have)
+ */
+@Composable
+private fun ChipFlow(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+    val gapPx = with(LocalDensity.current) { 6.dp.roundToPx() }
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints.copy(minWidth = 0)) }
+        // Split into lines that fit the available width
+        val lines = mutableListOf<MutableList<Placeable>>()
+        var lineWidth = 0
+        placeables.forEach { p ->
+            val line = lines.lastOrNull()
+            if (line == null || lineWidth + gapPx + p.width > constraints.maxWidth) {
+                lines.add(mutableListOf(p))
+                lineWidth = p.width
+            } else {
+                line.add(p)
+                lineWidth += gapPx + p.width
             }
-            Chip(stringResource(textId), color)
+        }
+        val lineHeights = lines.map { line -> line.maxOf { it.height } }
+        val height = lineHeights.sum() + gapPx / 2 * (lines.size - 1).coerceAtLeast(0)
+        val contentWidth = lines.maxOfOrNull { line ->
+            line.sumOf { it.width } + gapPx * (line.size - 1)
+        } ?: 0
+        layout(
+            contentWidth.coerceIn(constraints.minWidth, constraints.maxWidth),
+            height.coerceIn(constraints.minHeight, constraints.maxHeight)
+        ) {
+            var y = 0
+            lines.forEachIndexed { i, line ->
+                var x = 0
+                line.forEach { p ->
+                    p.placeRelative(x, y + (lineHeights[i] - p.height) / 2)
+                    x += p.width + gapPx
+                }
+                y += lineHeights[i] + gapPx / 2
+            }
         }
     }
 }
