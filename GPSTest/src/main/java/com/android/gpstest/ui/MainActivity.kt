@@ -395,10 +395,12 @@ class MainActivity : AppCompatActivity(), NavigationDrawerCallbacks {
         val provider = locationManager.getProvider(LocationManager.GPS_PROVIDER)
         if (provider == null) {
             Log.e(TAG, "Unable to get GPS_PROVIDER")
-            Toast.makeText(
-                this, getString(R.string.gps_not_supported),
-                Toast.LENGTH_SHORT
-            ).show()
+            AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setMessage(R.string.gps_not_supported)
+                .setPositiveButton(R.string.ok) { _, _ -> }
+                .setCancelable(false)
+                .show()
         }
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             LibUIUtils.promptEnableGps(app,this)

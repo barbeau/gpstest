@@ -128,6 +128,16 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("MissingPermission")
     @Synchronized
     private fun gpsStart() {
+        val locationManager = getSystemService(LOCATION_SERVICE) as android.location.LocationManager
+        val provider = locationManager.getProvider(android.location.LocationManager.GPS_PROVIDER)
+        if (provider == null) {
+            Log.e(TAG, "Unable to get GPS_PROVIDER")
+            android.widget.Toast.makeText(
+                this, getString(com.android.gpstest.library.R.string.gps_not_supported),
+                android.widget.Toast.LENGTH_LONG
+            ).show()
+        }
+
         PreferenceUtils.saveTrackingStarted(true, prefs)
 
         // Observe flows

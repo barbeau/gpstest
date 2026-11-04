@@ -128,7 +128,7 @@ class SharedGnssMeasurementManager constructor(
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in location flow: $e")
-            close(e) // in case of exception, close the Flow
+            close() // in case of exception, close the Flow
         }
 
         awaitClose {

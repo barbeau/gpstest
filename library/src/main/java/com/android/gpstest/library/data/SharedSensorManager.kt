@@ -159,7 +159,7 @@ class SharedSensorManager constructor(
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in sensor flow: $e")
-            close(e) // in case of exception, close the Flow
+            close() // in case of exception, close the Flow
         }
 
         awaitClose {
