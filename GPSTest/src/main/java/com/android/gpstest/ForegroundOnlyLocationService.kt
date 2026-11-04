@@ -246,9 +246,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
         // ensure this Service can be promoted to a foreground service, i.e., the service needs to
         // be officially started (which we do here).
         try {
-            startService(Intent(applicationContext, ForegroundOnlyLocationService::class.java))
-        } catch (e: IllegalStateException) {
-            // Catch BackgroundServiceStartNotAllowedException (API 31+)
+            ContextCompat.startForegroundService(applicationContext, Intent(applicationContext, ForegroundOnlyLocationService::class.java))
+        } catch (e: Exception) {
+            // Catch BackgroundServiceStartNotAllowedException/ForegroundServiceStartNotAllowedException (API 31+) and any other exceptions
             Log.e(TAG, "Failed to start service", e)
         }
     }
