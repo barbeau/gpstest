@@ -250,4 +250,17 @@ class FormatUtilsTest {
             )
         )
     }
+
+    @Test
+    fun testFloatAndDoubleToLog() {
+        assertEquals("", Float.NaN.toLog())
+        assertEquals("", Float.POSITIVE_INFINITY.toLog())
+        assertEquals("", Float.NEGATIVE_INFINITY.toLog())
+        assertEquals("1.23", 1.23f.toLog())
+
+        assertEquals("", Double.NaN.toLog())
+        assertEquals("", Double.POSITIVE_INFINITY.toLog())
+        assertEquals("", Double.NEGATIVE_INFINITY.toLog())
+        assertEquals("1.23", 1.23.toLog())
+    }
 }
