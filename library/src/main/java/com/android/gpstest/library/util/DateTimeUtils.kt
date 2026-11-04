@@ -17,6 +17,7 @@
 package com.android.gpstest.library.util
 
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import java.time.Duration
 import java.time.Instant
@@ -36,11 +37,18 @@ class DateTimeUtils {
          */
         fun isTimeValid(time: Long): Boolean {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // If the GPS time is less than five days different than system clock time, consider it valid
-                Duration.between(Instant.ofEpochMilli(time), Instant.now()).toDays() < NUM_DAYS_TIME_VALID
+                isTimeValidJavaTime(time)
             } else {
                 isTimeValidLegacy(time)
             }
+        }
+
+        @VisibleForTesting
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun isTimeValidJavaTime(time: Long): Boolean {
+            // If the GPS time is less than five days different than system clock time (in the past
+            // or in the future), consider it valid
+            return Duration.between(Instant.ofEpochMilli(time), Instant.now()).abs().toDays() < NUM_DAYS_TIME_VALID
         }
 
         @VisibleForTesting

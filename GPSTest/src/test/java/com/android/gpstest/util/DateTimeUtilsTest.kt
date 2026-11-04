@@ -37,6 +37,18 @@ class DateTimeUtilsTest {
     }
 
     @Test
+    fun isTimeValidJavaTime() {
+        // Valid times within 5 days of now
+        assertTrue(DateTimeUtils.isTimeValidJavaTime(Instant.now().toEpochMilli()))
+        assertTrue(DateTimeUtils.isTimeValidJavaTime(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(4)))
+        assertTrue(DateTimeUtils.isTimeValidJavaTime(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(4)))
+
+        // Invalid times more than 5 days from now (past or future)
+        assertFalse(DateTimeUtils.isTimeValidJavaTime(Instant.now().toEpochMilli() + TimeUnit.DAYS.toMillis(6)))
+        assertFalse(DateTimeUtils.isTimeValidJavaTime(Instant.now().toEpochMilli() - TimeUnit.DAYS.toMillis(6)))
+    }
+
+    @Test
     fun isTimeValidLegacy() {
         // Valid times within 5 days of now
         assertTrue(DateTimeUtils.isTimeValidLegacy(Instant.now().toEpochMilli()))
