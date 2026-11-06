@@ -28,6 +28,8 @@ Here are the details of file logging:
     * `GnssAntennaInfo` - [Antenna characteristics](https://developer.android.com/reference/android/location/GnssAntennaInfo) for the device model. Available on supported devices (e.g., Pixel 5) with Android 11 and higher.
     * `Status` - [GnssStatus](https://developer.android.com/reference/android/location/GnssStatus) per signal
     * `OrientationDeg` - [Orientation sensor](https://developer.android.com/reference/android/hardware/SensorEvent#values) data
+    * `OSNMA` - [Galileo OSNMA](OSNMA.md) authentication result per satellite, every 30 seconds (off by default)
+    * `OSNMA_KROOT` - Galileo OSNMA TESLA root key (DSM-KROOT), each time one is verified (off by default)
 
 The header of the CSV file explains the format for each data type:
 
@@ -51,6 +53,10 @@ The header of the CSV file explains the format for each data type:
 #   Status,UnixTimeMillis,SignalCount,SignalIndex,ConstellationType,Svid,CarrierFrequencyHz,Cn0DbHz,AzimuthDegrees,ElevationDegrees,UsedInFix,HasAlmanacData,HasEphemerisData,BasebandCn0DbHz
 # Orientation sensor format (https://developer.android.com/reference/android/hardware/SensorEvent#values):
 #   OrientationDeg,utcTimeMillis,elapsedRealtimeNanos,yawDeg,rollDeg,pitchDeg
+#
+# Galileo OSNMA format (https://github.com/barbeau/gpstest/blob/master/OSNMA.md), one record per satellite every 30 s:
+#   OSNMA,UnixTimeMillis,GstWeek,GstTimeOfWeekSeconds,Phase,NmaStatus,ChainId,PublicKeyId,Svid,CedAuthenticated,CedAuthBits,TimingAuthenticated,TimingAuthBits,TagsOk,TagsFailed
+#   OSNMA_KROOT,UnixTimeMillis,NmaHeaderAndDsmKrootHex
 ~~~
 
 Sample data looks like:
@@ -143,6 +149,26 @@ Here are a few more additional pieces of information on the following formats, w
 * yawDeg - If the screen is in portrait mode, this value equals the Azimuth degree (modulus to 0° and 360°). If the screen is in landscape mode, it equals the sum (modulus to 0° and 360°) of the screen rotation angle (either 90° or 270°) and the Azimuth degree. Azimuth, refers to the angle of rotation about the -z axis. This value represents the angle between the device's y axis and the magnetic north pole.
 * rollDeg - Roll, angle of rotation about the y axis. This value represents the angle between a plane perpendicular to the device's screen and a plane perpendicular to the ground.
 * pitchDeg - Pitch, angle of rotation about the x axis. This value represents the angle between a plane parallel to the device's screen and a plane parallel to the ground.
+
+`OSNMA` - The [Galileo OSNMA](OSNMA.md) authentication result, written every 30 seconds with one row per Galileo satellite that sends OSNMA data. Turn it on under **Settings > Logging and Output > File Output > Galileo OSNMA** (off by default). Before any satellite sends OSNMA data, a single row with empty satellite fields is written. To record the raw Galileo pages too, turn on **Navigation messages** in the same category.
+* UnixTimeMillis - Milliseconds since UTC epoch (1970/1/1) when the row was written.
+* GstWeek - Galileo System Time week number.
+* GstTimeOfWeekSeconds - Galileo System Time of week, in seconds, of the latest page received.
+* Phase - The overall state: `NO_DATA`, `NO_OSNMA`, `WAITING_FOR_PUBLIC_KEY`, `WAITING_FOR_KROOT`, `WAITING_FOR_TAGS`, `AUTHENTICATING`, `DONT_USE` or `ALERT`.
+* NmaStatus - The NMA status broadcast by Galileo (`OPERATIONAL`, `TEST` or `DONT_USE`), empty if not received yet.
+* ChainId - The TESLA chain in force, empty if not known yet.
+* PublicKeyId - The ID (PKID) of the ECDSA public key in use, empty if none yet.
+* Svid - The Galileo satellite ID.
+* CedAuthenticated - Whether the satellite's ephemeris, clock and health data is authenticated (`0` or `1`).
+* CedAuthBits - MAC tag bits verified on that data (at least 40 are needed).
+* TimingAuthenticated - Whether the satellite's timing parameters are authenticated (`0` or `1`).
+* TimingAuthBits - MAC tag bits verified on the timing parameters.
+* TagsOk - MAC tags of this satellite verified so far.
+* TagsFailed - MAC tags of this satellite that failed verification so far.
+
+`OSNMA_KROOT` - Written each time GPSTest verifies a TESLA root key (DSM-KROOT) from the signal, when Galileo OSNMA logging is on. It can be built into a later GPSTest version so that the first session starts faster (`GalileoKeys.kt`).
+* UnixTimeMillis - Milliseconds since UTC epoch (1970/1/1) when the row was written.
+* NmaHeaderAndDsmKrootHex - The NMA header byte followed by the DSM-KROOT message, in hexadecimal.
 
 #### Data output - JSON
 
