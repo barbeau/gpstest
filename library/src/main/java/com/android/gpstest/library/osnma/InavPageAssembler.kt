@@ -26,7 +26,8 @@ package com.android.gpstest.library.osnma
  *
  * It also drops pages that the platform delivers twice: some chipsets (e.g. in the Pixel 11 Pro)
  * report many pages twice in a row. A repeated page would be taken for the next page of the
- * satellite and put in the wrong place in the subframe.
+ * satellite and put in the wrong place in the subframe. See
+ * https://issuetracker.google.com/issues/583449761
  */
 class InavPageAssembler {
 

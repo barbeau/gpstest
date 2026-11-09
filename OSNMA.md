@@ -314,8 +314,8 @@ The Pixel 11 Pro delivers many Galileo pages twice in a row, with the same bits:
 pages in slots 0, 3, 6, 9 and 12 of a subframe (every third page), and at times the others too
 (54 % of the pages in the test log). A page with the same bits as the satellite's previous one,
 less than 2 s (one page) after it, is dropped. A new page can't arrive that soon and always
-differs in its time, word type or OSNMA bits. The
-**repeated** count in the page counters shows how many were dropped.
+differs in its time, word type or OSNMA bits. The **repeated** count in the page counters shows
+how many were dropped. Reported to Google as [issue 583449761](https://issuetracker.google.com/issues/583449761).
 
 ### Missing pages
 
@@ -349,8 +349,9 @@ time read from the signal is still compared with the reference time (see [Time c
 uses it once it agrees with the time stamps in the data, which settles pages whose word type
 fits several slots. The Pixel 11 Pro numbers each page by the subframe it *ends* in, so the
 last page of a subframe (slot 14) carries the next subframe's number; GPSTest also considers
-the previous subframe for that slot. The Pixel 10 Pro XL reports numbers from 1 to 30 that
-don't match the subframes, so they're not used there.
+the previous subframe for that slot (reported to Google as [issue 583431466](https://issuetracker.google.com/issues/583431466)). The Pixel
+10 Pro XL reports numbers from 1 to 30 that don't match the subframes, so they're not used there
+(reported as [issue 583449762](https://issuetracker.google.com/issues/583449762)).
 
 ## Logging
 

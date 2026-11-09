@@ -24,7 +24,9 @@ import org.junit.Test
  * Regression test with Galileo I/NAV messages recorded with GnssLogger on a Pixel 11 Pro
  * (MediaTek chipset). The page layout is the documented one and the message ID is the subframe
  * number, but many pages are delivered twice in a row, and the last page of each subframe carries
- * the number of the next subframe (see OSNMA.md).
+ * the number of the next subframe (see OSNMA.md, and
+ * https://issuetracker.google.com/issues/583449761 and
+ * https://issuetracker.google.com/issues/583431466).
  */
 class Pixel11ProLogTest {
 

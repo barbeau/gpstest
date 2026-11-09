@@ -145,7 +145,10 @@ class InavTimeTracker(
     private fun checkSubframeNumber(exact: Gst, subframeNumber: Int) {
         if (subframeNumber in 1..SUBFRAMES_PER_FRAME) {
             // The last page of a subframe ends on the boundary, so some platforms (e.g. the Pixel
-            // 11 Pro) give it the number of the next subframe
+            // 11 Pro, https://issuetracker.google.com/issues/583431466) give it the number of the
+            // next subframe. Others (Pixel 10 Pro XL,
+            // https://issuetracker.google.com/issues/583449762) report numbers that aren't
+            // subframes at all: they disagree and aren't used.
             if (subframeOf(exact.totalSeconds) == subframeNumber - 1 ||
                 subframeOf(exact.totalSeconds + 2) == subframeNumber - 1
             ) {

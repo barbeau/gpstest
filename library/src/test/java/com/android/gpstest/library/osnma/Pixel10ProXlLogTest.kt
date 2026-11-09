@@ -23,7 +23,8 @@ import org.junit.Test
 /**
  * Regression test with Galileo I/NAV messages recorded with GnssLogger on a Pixel 10 Pro XL
  * (Samsung chipset). The page layout is the documented one and the pages arrive once, but the
- * message ID isn't the subframe number, so it must not be used for page timing (see OSNMA.md).
+ * message ID isn't the subframe number, so it must not be used for page timing (see OSNMA.md and
+ * https://issuetracker.google.com/issues/583449762).
  */
 class Pixel10ProXlLogTest {
 
