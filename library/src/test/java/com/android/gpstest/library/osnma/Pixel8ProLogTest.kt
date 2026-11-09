@@ -25,88 +25,28 @@ import org.junit.Test
  */
 class Pixel8ProLogTest {
 
-    private class Message(val svid: Int, val messageId: Int, val data: ByteArray)
-
-    /** The `Nav` lines of the GPSTest log: Nav,Svid,Type,Status,MessageId,Sub-messageId,Data */
-    private fun messages(): List<Message> {
-        val text = Pixel8ProLogTest::class.java
-            .getResourceAsStream("/osnma/pixel8pro_gal_inav.txt")!!
-            .bufferedReader()
-            .use { it.readText() }
-        return text.lines().filter { it.startsWith("Nav,") }.map { line ->
-            val f = line.split(',')
-            val data = ByteArray(f.size - 6) { f[6 + it].toInt().toByte() }
-            Message(f[1].toInt(), f[4].toInt(), data)
-        }
-    }
-
-    /**
-     * The log has no arrival times. They're reconstructed from the pages that carry their own
-     * time, interpolated over the order of the messages.
-     */
-    private fun arrivalTimes(messages: List<Message>): LongArray {
-        val anchors = sortedMapOf<Int, Long>()
-        var wn: Int? = null
-        messages.forEachIndexed { i, m ->
-            val page = InavPage.fromAndroid(m.data, 4) ?: return@forEachIndexed
-            if (!page.crcOk) return@forEachIndexed
-            val gst = page.gstFromWord(wn) ?: return@forEachIndexed
-            if (page.wordType != 6) wn = gst.wn
-            // Delivered at the end of the page
-            anchors[i] = (gst.totalSeconds + 2) * 1000
-        }
-        val keys = anchors.keys.toList()
-        return LongArray(messages.size) { i ->
-            val lo = keys.lastOrNull { it <= i } ?: keys.first()
-            val hi = keys.firstOrNull { it >= i } ?: keys.last()
-            val t = if (lo == hi) anchors[lo]!! else
-                anchors[lo]!! + (anchors[hi]!! - anchors[lo]!!) * (i - lo) / (hi - lo)
-            t + 80
-        }
-    }
+    private val log = "/osnma/pixel8pro_gal_inav.txt"
 
     @Test
     fun shiftedLayout_detected() {
-        val layout = InavLayoutDetector()
-        var crcFailures = 0
-        messages().forEach { m ->
-            val page = layout.read(m.data)!!
-            if (layout.offsetBits != null && !page.crcOk) crcFailures++
-        }
+        val (layout, crcFailures) = NavLogReplay.crcFailures(log)
         assertEquals(4, layout.offsetBits)
         assertEquals(0, crcFailures)
     }
 
     @Test
     fun replay_noFalseResults() {
-        val messages = messages()
-        val arrival = arrivalTimes(messages)
-        val root = Bits.fromHex(GalileoKeys.MERKLE_ROOT)
-        val engine = OsnmaEngine(root, GalileoKeys.builtInKeys(root))
-        val layout = InavLayoutDetector()
-        val assembler = InavPageAssembler()
-        val tracker = InavTimeTracker()
-        var used = 0
-        var stamped = 0
-        messages.forEachIndexed { i, m ->
-            val page = layout.read(m.data) ?: return@forEachIndexed
-            val assembled = assembler.assemble(m.svid, page, arrival[i]) ?: return@forEachIndexed
-            if (!assembled.page.crcOk) return@forEachIndexed
-            val gst = tracker.gstFor(m.svid, assembled.page, assembled.arrivalMillis, m.messageId)
-                ?: return@forEachIndexed
-            if (tracker.lastWasExact) stamped++
-            engine.feedPage(m.svid, gst, assembled.page, timeCertain = tracker.lastTimeCertain)
-            used++
-        }
-        val status = engine.status()
-        val stats = engine.statistics
-        assertTrue("used $used of ${messages.size}", used > messages.size * 9 / 10)
+        val r = NavLogReplay.replay(log, offsetBits = 4)
+        val status = r.engine.status()
+        val stats = r.engine.statistics
+        assertTrue("used ${r.used} of ${r.messages}", r.used > r.messages * 9 / 10)
         // Time stamps that disagreed with the estimate from the other pages
         assertTrue(
-            "corrections ${tracker.corrections} of $stamped",
-            tracker.corrections * 20 < stamped
+            "corrections ${r.tracker.corrections} of ${r.stamped}",
+            r.tracker.corrections * 20 < r.stamped
         )
-        assertEquals(0, assembler.repaired)
+        assertEquals(0, r.assembler.repaired)
+        assertEquals(0, r.assembler.repeated)
         assertEquals(0L, stats.crcErrors)
         // Operational OSNMA with the built-in key, TESLA root key still being collected
         assertEquals(NmaStatus.OPERATIONAL, status.nmaHeader?.nmaStatus)
@@ -121,8 +61,9 @@ class Pixel8ProLogTest {
         assertEquals(0, stats.tagsFailed)
 
         // The DSM bytes collected are kept for the next session
-        val saved = engine.exportDsm()
+        val saved = r.engine.exportDsm()
         assertTrue(saved.isNotEmpty())
+        val root = Bits.fromHex(GalileoKeys.MERKLE_ROOT)
         val next = OsnmaEngine(root, GalileoKeys.builtInKeys(root), storedDsm = saved)
         assertEquals(saved, next.exportDsm())
     }

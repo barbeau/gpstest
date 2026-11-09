@@ -23,15 +23,24 @@ package com.android.gpstest.library.osnma
  * starts with an odd part. Rejoining the even part at the end of one such message with the odd
  * part at the start of the next one (2 s later, same satellite) restores page n. The CRC of the
  * restored page tells whether the repair was right.
+ *
+ * It also drops pages that the platform delivers twice: some chipsets (e.g. in the Pixel 11 Pro)
+ * report every page twice in a row. A repeated page would be taken for the next page of the
+ * satellite and put in the wrong place in the subframe.
  */
 class InavPageAssembler {
 
     private class Pending(val data: ByteArray, val arrivalMillis: Long)
 
     private val pending = HashMap<Int, Pending>()
+    private val last = HashMap<Int, Pending>()
 
     /** Pages restored from two swapped messages */
     var repaired = 0L
+        private set
+
+    /** Pages dropped because they repeated the satellite's previous page */
+    var repeated = 0L
         private set
 
     /** Result of [assemble]: the page to use and the arrival time of its last part */
@@ -39,10 +48,21 @@ class InavPageAssembler {
 
     /**
      * @return the page to process (as given, or restored from the previous message), or null if
-     * the message is a swapped one waiting for its partner
+     * the message is a swapped one waiting for its partner, or a repeat of the previous one
      */
     fun assemble(svn: Int, page: InavPage, arrivalMillis: Long): Assembled? {
         val bits = page.toByteArray()
+        // A new page arrives a page period (2 s) later and differs at least in its time, word
+        // type or OSNMA bits, so the same bits sooner are the same page again
+        val previousPage = last.put(svn, Pending(bits, arrivalMillis))
+        if (previousPage != null && previousPage.data.contentEquals(bits) &&
+            arrivalMillis - previousPage.arrivalMillis in 0 until PAGE_MILLIS
+        ) {
+            // Keep the time of the first copy, so that a third copy is dropped too
+            last[svn] = previousPage
+            repeated++
+            return null
+        }
         val swapped = Bits.get(bits, 0) == 1 && Bits.get(bits, HALF) == 0
         if (!swapped) {
             pending.remove(svn)
@@ -63,12 +83,15 @@ class InavPageAssembler {
 
     fun reset() {
         pending.clear()
+        last.clear()
         repaired = 0
+        repeated = 0
     }
 
     companion object {
         private const val HALF = 114
         private const val MIN_GAP_MILLIS = 1000L
         private const val MAX_GAP_MILLIS = 3500L
+        private const val PAGE_MILLIS = 2000L
     }
 }

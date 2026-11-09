@@ -144,7 +144,11 @@ class InavTimeTracker(
 
     private fun checkSubframeNumber(exact: Gst, subframeNumber: Int) {
         if (subframeNumber in 1..SUBFRAMES_PER_FRAME) {
-            if (subframeOf(exact.totalSeconds) == subframeNumber - 1) {
+            // The last page of a subframe ends on the boundary, so some platforms (e.g. the Pixel
+            // 11 Pro) give it the number of the next subframe
+            if (subframeOf(exact.totalSeconds) == subframeNumber - 1 ||
+                subframeOf(exact.totalSeconds + 2) == subframeNumber - 1
+            ) {
                 subframeNumberAgree++
             } else {
                 subframeNumberDisagree++
@@ -184,7 +188,14 @@ class InavTimeTracker(
             slots == null -> emptyList()
             useSubframe -> slots.flatMap {
                 val position = (subframeNumber - 1) * PAGES_PER_SUBFRAME + it
-                nearestCandidates(rough, position, FRAME_SECONDS)
+                // The last page may carry the number of the subframe it ends in, the next one
+                // (see checkSubframeNumber)
+                val positions = if (it == PAGES_PER_SUBFRAME - 1) {
+                    listOf(position, position - PAGES_PER_SUBFRAME)
+                } else {
+                    listOf(position)
+                }
+                positions.flatMap { p -> nearestCandidates(rough, p, FRAME_SECONDS) }
             }
             else -> slots.flatMap { nearestCandidates(rough, it, SUBFRAME_SECONDS) }
         }.distinct().sortedBy { abs(it - rough) }

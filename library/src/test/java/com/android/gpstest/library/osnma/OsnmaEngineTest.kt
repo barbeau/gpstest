@@ -167,7 +167,8 @@ class OsnmaEngineTest {
     private fun runWithTimeTracker(
         jitterMillis: Int,
         useSubframeNumbers: Boolean,
-        duplicates: Boolean
+        duplicates: Boolean,
+        subframeOfPageEnd: Boolean = false
     ): Pair<OsnmaStatistics, Int> {
         val random = Random(99)
         val tracker = InavTimeTracker()
@@ -177,8 +178,11 @@ class OsnmaEngineTest {
             val arrival = (p.gst.totalSeconds - 756_000_000L) * 1000 + 2000 + 80 +
                     random.nextInt(-jitterMillis, jitterMillis + 1)
             val android = InavPage.fromAndroid(p.page.toByteArray())!!
+            // Numbered by the subframe the page starts in, or the one it ends in (the last page
+            // of a subframe then gets the next number)
+            val numberedAt = p.gst.totalSeconds + if (subframeOfPageEnd) 2 else 0
             val subframeNumber =
-                if (useSubframeNumbers) InavTimeTracker.subframeOf(p.gst.totalSeconds) + 1 else -1
+                if (useSubframeNumbers) InavTimeTracker.subframeOf(numberedAt) + 1 else -1
             repeat(if (duplicates) 2 else 1) {
                 val gst = tracker.gstFor(p.svn, android, arrival, subframeNumber) ?: return@repeat
                 // Dummy pages (word type 63) carry nothing and are ignored by the engine
@@ -208,6 +212,49 @@ class OsnmaEngineTest {
         assertTrue("wrong $wrong", wrong < TestVectors.configuration1().size / 100)
         assertEquals(0, stats.tagsFailed)
         assertTrue(stats.tagsOk > 1100)
+    }
+
+    /**
+     * Some platforms (a Pixel 11 Pro) number each page by the subframe it ends in, so the last page
+     * of a subframe carries the next subframe's number. It must still be placed in its own
+     * subframe.
+     */
+    @Test
+    fun timeTracker_subframeNumberOfPageEnd() {
+        val (stats, wrong) = runWithTimeTracker(
+            jitterMillis = 3000,
+            useSubframeNumbers = true,
+            duplicates = false,
+            subframeOfPageEnd = true
+        )
+        assertTrue("wrong $wrong", wrong < TestVectors.configuration1().size / 100)
+        assertEquals(0, stats.tagsFailed)
+        assertTrue(stats.tagsOk > 1100)
+    }
+
+    /** Pages delivered twice in a row (Pixel 11 Pro) are dropped by the assembler */
+    @Test
+    fun repeatedPages_areDropped() {
+        val pages = TestVectors.configuration1()
+        val assembler = InavPageAssembler()
+        val tracker = InavTimeTracker()
+        val engine = newEngine()
+        pages.forEach { p ->
+            val android = InavPage.fromAndroid(p.page.toByteArray())!!
+            val arrival = (p.gst.totalSeconds - 756_000_000L) * 1000 + 2080
+            // The copy arrives together with the page or shortly after it
+            listOf(0L, 0L, 300L).forEach { delay ->
+                val assembled = assembler.assemble(p.svn, android, arrival + delay)
+                    ?: return@forEach
+                assertEquals(0L, delay)
+                val gst = tracker.gstFor(p.svn, assembled.page, assembled.arrivalMillis)
+                    ?: return@forEach
+                engine.feedPage(p.svn, gst, assembled.page, timeCertain = tracker.lastTimeCertain)
+            }
+        }
+        assertEquals(pages.size * 2L, assembler.repeated)
+        assertEquals(0, engine.statistics.tagsFailed)
+        assertTrue(engine.statistics.tagsOk > 1100)
     }
 
     /**

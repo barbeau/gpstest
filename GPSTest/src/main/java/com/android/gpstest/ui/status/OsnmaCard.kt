@@ -476,7 +476,8 @@ private fun Expanded(state: OsnmaUiState) {
                 state.pagesWithoutTime,
                 s.pagesRejected + state.pagesWrongSize,
                 state.pagesCorrupted + s.crcErrors,
-                state.pagesRepaired
+                state.pagesRepaired,
+                state.pagesRepeated
             )
         )
         DetailRow(

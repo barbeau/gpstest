@@ -89,6 +89,8 @@ data class OsnmaUiState(
     val inavSeenBefore: Boolean = false,
     /** Pages restored from two messages whose halves were paired the wrong way round */
     val pagesRepaired: Long = 0,
+    /** Pages dropped because the platform delivered them twice */
+    val pagesRepeated: Long = 0,
     /** Bit offset of the page in the platform's data (0 as documented, 4 on some devices) */
     val layoutOffsetBits: Int? = null,
     /** Page times are estimated with the receiver's GNSS clock (GnssClock) */
@@ -367,7 +369,8 @@ class OsnmaRepository @Inject constructor(
         }
         if (parityPassed) pagesParityPassed++
 
-        // Rejoin pages whose halves the platform paired the wrong way round
+        // Rejoin pages whose halves the platform paired the wrong way round, and drop pages
+        // delivered twice
         val assembled = assembler.assemble(svid, received, arrival)
         if (assembled == null) {
             publish(force = false)
@@ -585,6 +588,7 @@ class OsnmaRepository @Inject constructor(
             pagesCorrupted = pagesCorrupted,
             inavSeenBefore = inavSeen,
             pagesRepaired = assembler.repaired,
+            pagesRepeated = assembler.repeated,
             layoutOffsetBits = layout.offsetBits,
             timingUsesReceiverClock = timeTracker.usingReceiverClock,
             receiverClockStatus = receiverClockStatus,

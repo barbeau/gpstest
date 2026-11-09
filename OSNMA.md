@@ -189,7 +189,8 @@ same results as galileo-osnma, tag for tag, on all
 [GSC OSNMA test vector](https://www.gsc-europa.eu/support-to-developers/osnma-test-vectors)
 scenarios and on a real receiver recording. The unit tests in
 `library/src/test/java/com/android/gpstest/library/osnma` run on a trimmed test vector and on
-18 minutes of Galileo messages recorded on a Pixel 8 Pro (see *Device quirks*):
+Galileo messages recorded on a Pixel 8 Pro, a Pixel 10 Pro XL and a Pixel 11 Pro (see *Device
+quirks*):
 
 ```
 ./gradlew :library:testDebugUnitTest --tests "com.android.gpstest.library.osnma.*"
@@ -258,6 +259,19 @@ Real phones don't always deliver Galileo I/NAV pages the way the Android documen
 describes. GPSTest detects and works around these differences. Each one is shown in the
 expanded card.
 
+The unit tests replay logs from three phones (Galileo I/NAV messages only):
+
+| | Pixel 8 Pro | Pixel 10 Pro XL | Pixel 11 Pro |
+| --- | --- | --- | --- |
+| GNSS chip | GNSS hardware year 2020 | Samsung (S.LSI SPOTNAV) | MediaTek (MNL) |
+| Log | 18 min, GPSTest | 88 min, GnssLogger | 31 min, GnssLogger |
+| Bit layout | Shifted by 4 bits | As documented | As documented |
+| Message ID | Subframe number, -1 for a third of the pages | 1 to 30, not the subframe number | Subframe number, by the page's end |
+| Pages delivered twice | No | No | Every page |
+| Result | TESLA root key still incomplete, nothing fails | Root key from the signal, 5 satellites authenticated | 4 satellites authenticated with the built-in root key |
+
+In all three logs, no tag fails and every page passes the CRC.
+
 ### Bit layout of `TYPE_GAL_I` data
 
 The
@@ -282,8 +296,10 @@ page passes the CRC. Once a few pages pass with one layout and none with the oth
 is adopted. The **Data layout** row in the details shows the result ("As documented" or
 "Shifted by 4 bits").
 
-On that device, `getMessageId()` was mostly -1 and `getSubmessageId()` held the word type,
-which matches the documentation for `submessage_id` ("the word type").
+On that device, `getMessageId()` was the subframe number, or -1 for about a third of the pages,
+and `getSubmessageId()` held the word type, which matches the documentation for
+`submessage_id` ("the word type"). The Pixel 10 Pro XL and Pixel 11 Pro also put the word type
+there.
 
 ### Page halves paired the wrong way
 
@@ -291,6 +307,13 @@ A nominal page is an even page part followed by an odd page part. If a device re
 part of one page together with the even part of the next, GPSTest rejoins the halves of two
 consecutive messages from the same satellite, and keeps the result only if the CRC passes. The
 **rejoined** count in the page counters shows how often this happened.
+
+### Pages delivered twice
+
+The Pixel 11 Pro delivers every Galileo page twice in a row, with the same bits. A page with the
+same bits as the satellite's previous one, less than 2 s (one page) after it, is dropped. A new
+page can't arrive that soon and always differs in its time, word type or OSNMA bits. The
+**repeated** count in the page counters shows how many were dropped.
 
 ### Missing pages
 
@@ -319,6 +342,13 @@ to settle on the exact slot. **Page timing** then says "From the receiver clock"
 it says why the receiver clock isn't used, for example "the chip doesn't report the GNSS time"
 (no `FullBiasNanos`) or "the chip's GNSS time is still uncertain" (more than 1 ms). The Galileo
 time read from the signal is still compared with the reference time (see [Time check](#time-check)).
+
+`getMessageId()` should be the subframe number (1 to 24) of a Galileo I/NAV page. GPSTest only
+uses it once it agrees with the time stamps in the data, which settles pages whose word type
+fits several slots. The Pixel 11 Pro numbers each page by the subframe it *ends* in, so the
+last page of a subframe (slot 14) carries the next subframe's number; GPSTest also considers
+the previous subframe for that slot. The Pixel 10 Pro XL reports numbers from 1 to 30 that
+don't match the subframes, so they're not used there.
 
 ## Logging
 
