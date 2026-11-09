@@ -281,7 +281,7 @@ into 29 bytes, MSB first, with the 4 unused bits at the end ("skip B229-B232"):
 
 ```
 documented:  [ 228 page bits ............................. ][ 4 unused ]
-seen:        [ 4 unused ][ 228 page bits ............................. ]
+Pixel 8 Pro: [ 4 unused ][ 228 page bits ............................. ]
 ```
 
 A Pixel 8 Pro (Android 17) puts the 4 unused bits at the start instead, so the whole page is

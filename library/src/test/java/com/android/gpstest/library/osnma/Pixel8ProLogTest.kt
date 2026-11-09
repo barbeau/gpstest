@@ -21,7 +21,9 @@ import org.junit.Test
 
 /**
  * Regression test with Galileo I/NAV messages recorded on a Pixel 8 Pro, which packs the page
- * 4 bits later than documented and delivers only a fraction of the pages (see OSNMA.md)
+ * 4 bits later than documented and delivers only a fraction of the pages (see OSNMA.md, and
+ * https://issuetracker.google.com/issues/580675649 and
+ * https://issuetracker.google.com/issues/580885286)
  */
 class Pixel8ProLogTest {
 
