@@ -267,7 +267,7 @@ The unit tests replay logs from three phones (Galileo I/NAV messages only):
 | Log | 18 min, GPSTest | 88 min, GnssLogger | 31 min, GnssLogger |
 | Bit layout | Shifted by 4 bits | As documented | As documented |
 | Message ID | Subframe number, -1 for a third of the pages | 1 to 30, not the subframe number | Subframe number, by the page's end |
-| Pages delivered twice | No | No | Every page |
+| Pages delivered twice | No | No | Every third page, others at times |
 | Result | TESLA root key still incomplete, nothing fails | Root key from the signal, 5 satellites authenticated | 4 satellites authenticated with the built-in root key |
 
 In all three logs, no tag fails and every page passes the CRC.
@@ -310,9 +310,11 @@ consecutive messages from the same satellite, and keeps the result only if the C
 
 ### Pages delivered twice
 
-The Pixel 11 Pro delivers every Galileo page twice in a row, with the same bits. A page with the
-same bits as the satellite's previous one, less than 2 s (one page) after it, is dropped. A new
-page can't arrive that soon and always differs in its time, word type or OSNMA bits. The
+The Pixel 11 Pro delivers many Galileo pages twice in a row, with the same bits: always the
+pages in slots 0, 3, 6, 9 and 12 of a subframe (every third page), and at times the others too
+(54 % of the pages in the test log). A page with the same bits as the satellite's previous one,
+less than 2 s (one page) after it, is dropped. A new page can't arrive that soon and always
+differs in its time, word type or OSNMA bits. The
 **repeated** count in the page counters shows how many were dropped.
 
 ### Missing pages

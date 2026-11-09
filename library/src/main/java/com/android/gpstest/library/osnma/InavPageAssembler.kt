@@ -25,7 +25,7 @@ package com.android.gpstest.library.osnma
  * restored page tells whether the repair was right.
  *
  * It also drops pages that the platform delivers twice: some chipsets (e.g. in the Pixel 11 Pro)
- * report every page twice in a row. A repeated page would be taken for the next page of the
+ * report many pages twice in a row. A repeated page would be taken for the next page of the
  * satellite and put in the wrong place in the subframe.
  */
 class InavPageAssembler {
