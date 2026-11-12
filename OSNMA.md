@@ -253,7 +253,9 @@ OSNMA messages page by page instead of waiting for complete 30 s subframes:
 - **Warm start.** The last verified TESLA key is saved. On the next start, new keys are verified
   by hashing back to it, so authentication can start within about a minute, without waiting for
   the root key. This works for up to a year after the saved key, as long as the same chain is in
-  force (hashing back that far takes a few seconds, so it's tried at most every 2.5 minutes).
+  force. Hashing back to a key that old takes up to a second or two on a phone, so for a key
+  more than a day old it's done right away for the first new key, but after a failed attempt
+  (for example a key with a wrong bit) only retried once a minute.
   The saved key is dropped as soon as the signal shows a different chain in force, a revoked
   chain or key, an alert message, or a "don't use" status, and when keys are forgotten in the
   settings. The details then show the TESLA chain as "(from the previous session)". If the

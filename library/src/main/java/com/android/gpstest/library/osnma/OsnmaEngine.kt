@@ -665,7 +665,8 @@ class OsnmaEngine(
             if (warmStart) TeslaKey.MAX_DERIVATIONS_STORED else TeslaKey.MAX_DERIVATIONS
         val steps = newKey.gstSubframe.subframesSince(current.gstSubframe)
         if (warmStart && steps > TeslaKey.MAX_DERIVATIONS) {
-            // Hashing back to an old key is costly: try that once every few minutes at most
+            // Hashing back to a key over a day old is costly (up to a second or two on a phone for
+            // a year): the first try is immediate, a retry after a failure waits a minute
             val last = lastLongDerivation
             val sinceLast = last?.let { newKey.gstSubframe.subframesSince(it) }
             if (sinceLast != null && sinceLast < LONG_DERIVATION_SUBFRAMES) return
@@ -963,7 +964,7 @@ class OsnmaEngine(
         private const val DUMMY_WORD_TYPE = 63
         private const val MAX_KEY_ATTEMPTS = 3
         private const val MAX_WARM_START_FAILURES = 3
-        private const val LONG_DERIVATION_SUBFRAMES = 5
+        private const val LONG_DERIVATION_SUBFRAMES = 2
         private const val PageStoreDepth = 13
     }
 }
