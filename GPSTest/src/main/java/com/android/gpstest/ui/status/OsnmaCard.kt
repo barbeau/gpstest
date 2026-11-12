@@ -79,6 +79,7 @@ import com.android.gpstest.library.osnma.OsnmaStatistics
 import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
 import com.android.gpstest.library.osnma.OsnmaWarning
+import com.android.gpstest.library.osnma.SatelliteAuthStatus
 import com.android.gpstest.library.osnma.SubframePageView
 import com.android.gpstest.library.osnma.TimeSync
 import kotlin.math.ceil
@@ -486,7 +487,7 @@ private fun Details(status: OsnmaStatus?, estimate: OsnmaEstimate?) {
     if (authenticated.isNotEmpty()) {
         DetailRow(
             R.string.osnma_label_authenticated,
-            authenticated.joinToString(" ") { "E%02d".format(it.svn) },
+            authenticated.joinToString(" ") { authenticatedText(it) },
             color = greenText
         )
     } else {
@@ -668,6 +669,23 @@ private fun DetailRow(@StringRes label: Int, value: String, color: Color = Color
     }
 }
 
+/**
+ * A satellite in the Authenticated row, with the satellites whose tags authenticated it if they
+ * include others (cross-authentication): "E06 (by E31)", "E23 (also by E05)", or just "E31"
+ */
+@Composable
+private fun authenticatedText(sat: SatelliteAuthStatus): String {
+    val name = "E%02d".format(sat.svn)
+    val others = sat.cedAuthenticatedBy.filter { it != sat.svn }
+    if (others.isEmpty()) return name
+    val list = others.joinToString(", ") { "E%02d".format(it) }
+    return if (sat.svn in sat.cedAuthenticatedBy) {
+        stringResource(R.string.osnma_authenticated_also_by, name, list)
+    } else {
+        stringResource(R.string.osnma_authenticated_by, name, list)
+    }
+}
+
 // Colors of the root key bar and the page grid
 private val partGreen: Color
     @Composable get() = if (MaterialTheme.colors.isLight) Color(0xFF2E7D32) else Color(0xFF43A047)
@@ -753,8 +771,9 @@ private fun RootKeyRow(status: OsnmaStatus?) {
 
 /**
  * The pages of the current subframe, one line per satellite sending OSNMA: received (filled),
- * missing (red outline), before the satellite was received at all (dot, e.g. when it rose in the
- * middle of the subframe) and still to come (grey). Pages are placed by their time, so the
+ * missing, i.e. not delivered (red outline), arrived but unusable (red, filled), before the
+ * satellite was received at all (dot, e.g. when it rose in the middle of the subframe) and still
+ * to come (grey). Pages are placed by their time, so the
  * columns are the same two seconds for every satellite.
  */
 @Composable
@@ -789,8 +808,9 @@ private fun PageGrid(view: SubframePageView?) {
                         PageCell(
                             when {
                                 page > view.currentPage -> PageState.FUTURE
-                                page < sat.trackedFrom -> PageState.BEFORE_TRACKING
                                 sat.received(page) -> PageState.RECEIVED
+                                sat.unusable(page) -> PageState.UNUSABLE
+                                page < sat.trackedFrom -> PageState.BEFORE_TRACKING
                                 else -> PageState.MISSING
                             }
                         )
@@ -807,6 +827,10 @@ private fun PageGrid(view: SubframePageView?) {
             ChipFlow(modifier = Modifier.padding(top = 2.dp)) {
                 LegendItem(PageState.RECEIVED, R.string.osnma_pages_legend_received)
                 LegendItem(PageState.MISSING, R.string.osnma_pages_legend_missing)
+                // Only when there are any, so the legend stays short on most phones
+                if (view?.satellites.orEmpty().any { it.unusableMask != 0 }) {
+                    LegendItem(PageState.UNUSABLE, R.string.osnma_pages_legend_unusable)
+                }
                 LegendItem(PageState.BEFORE_TRACKING, R.string.osnma_pages_legend_before)
                 LegendItem(PageState.FUTURE, R.string.osnma_pages_legend_future)
             }
@@ -814,7 +838,11 @@ private fun PageGrid(view: SubframePageView?) {
     }
 }
 
-private enum class PageState { RECEIVED, MISSING, BEFORE_TRACKING, FUTURE }
+/**
+ * MISSING: the platform didn't deliver the page; UNUSABLE: it arrived, but failed the CRC or had
+ * no certain time, so it couldn't be used
+ */
+private enum class PageState { RECEIVED, MISSING, UNUSABLE, BEFORE_TRACKING, FUTURE }
 
 private const val PAGES_PER_SUBFRAME = 15
 
@@ -826,6 +854,7 @@ private fun PageCell(state: PageState) {
     when (state) {
         PageState.RECEIVED -> Box(modifier.clip(shape).background(pageReceived))
         PageState.MISSING -> Box(modifier.border(1.5.dp, pageMissing, shape))
+        PageState.UNUSABLE -> Box(modifier.clip(shape).background(pageMissing.copy(alpha = 0.5f)))
         PageState.FUTURE -> Box(modifier.clip(shape).background(placeholder))
         PageState.BEFORE_TRACKING -> Box(modifier, contentAlignment = Alignment.Center) {
             Box(

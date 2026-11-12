@@ -405,6 +405,8 @@ class OsnmaRepository @Inject constructor(
         val valid = if (trustPlatformParity) parityPassed else page.crcOk
         if (!valid) {
             pagesCorrupted++
+            // Shown in the page grid as arrived but unusable, placed by its arrival time
+            timeTracker.roughGst(pageArrival)?.let { engine?.notePageUnusable(svid, it) }
             publish(force = false)
             return
         }

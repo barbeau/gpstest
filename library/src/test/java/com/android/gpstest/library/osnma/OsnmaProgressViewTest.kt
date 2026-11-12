@@ -84,4 +84,44 @@ class OsnmaProgressViewTest {
         // The log starts in the middle of a subframe
         assertTrue(sawBeforeTracking)
     }
+
+    /** Pixel 10 Pro XL: every authenticated satellite says whose tags authenticated it */
+    @Test
+    fun authenticatedBy() {
+        val r = NavLogReplay.replay("/osnma/pixel10proxl_gal_inav.txt", offsetBits = 0)
+        val authenticated = r.engine.status().authenticatedSatellites
+        assertTrue(authenticated.isNotEmpty())
+        authenticated.forEach {
+            assertTrue("E${it.svn} has no sender", it.cedAuthenticatedBy.isNotEmpty())
+            assertEquals(it.cedAuthenticatedBy.sorted(), it.cedAuthenticatedBy)
+        }
+    }
+
+    /** A page reported as unusable shows as such, unless the same page was also received */
+    @Test
+    fun unusablePages() {
+        val root = Bits.fromHex(GalileoKeys.MERKLE_ROOT)
+        val engine = OsnmaEngine(root, GalileoKeys.builtInKeys(root))
+        val pages = TestVectors.configuration1().take(200)
+        pages.forEach { engine.feedPage(it.svn, it.gst, it.page) }
+        val now = pages.last().gst
+        val page = SubframeLayout.pageOf(now)
+        val svn = pages.last().svn
+        // A satellite that sent nothing in the test data
+        val silent = (1..36).first { s -> pages.none { it.svn == s } }
+        engine.notePageUnusable(svn, now)
+        engine.notePageUnusable(silent, now)
+        engine.notePageUnusable(40, now)
+        val view = engine.status().pages!!
+        // Received and reported unusable: received wins
+        val sat = view.satellites.first { it.svn == svn }
+        assertTrue(sat.received(page))
+        assertFalse(sat.unusable(page))
+        // A satellite with only an unusable page is listed, tracked from that page
+        val other = view.satellites.first { it.svn == silent }
+        assertTrue(other.unusable(page))
+        assertEquals(page, other.trackedFrom)
+        // Out of range satellites are ignored
+        assertTrue(view.satellites.none { it.svn == 40 })
+    }
 }

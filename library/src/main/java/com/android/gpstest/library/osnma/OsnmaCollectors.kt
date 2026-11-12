@@ -45,6 +45,9 @@ internal class PageStore(private val depthSubframes: Int = 13) {
 
     private val bySubframe = LinkedHashMap<Gst, HashMap<Int, SubframePages>>()
 
+    /** Pages that arrived but couldn't be used, per subframe and satellite (bit per page) */
+    private val unusable = HashMap<Gst, HashMap<Int, Int>>()
+
     /** NMA header (HKROOT byte 0) per subframe; the same for all satellites */
     private val headers = HashMap<Gst, Int>()
 
@@ -63,6 +66,12 @@ internal class PageStore(private val depthSubframes: Int = 13) {
         private set
 
     class Stored(val pages: SubframePages, val page: Int, val newlyComplete: Boolean)
+
+    /** A page of [svn] arrived around [gst] but couldn't be used (see [view]) */
+    fun markUnusable(svn: Int, gst: Gst) {
+        val map = unusable.getOrPut(gst.subframe()) { HashMap() }
+        map[svn] = (map[svn] ?: 0) or (1 shl SubframeLayout.pageOf(gst))
+    }
 
     fun store(svn: Int, gst: Gst, osnma: ByteArray): Stored {
         val subframe = gst.subframe()
@@ -97,6 +106,7 @@ internal class PageStore(private val depthSubframes: Int = 13) {
                 headers.remove(k)
             }
         }
+        unusable.keys.removeAll { it < oldest }
     }
 
     fun get(svn: Int, gstSubframe: Gst): SubframePages? = bySubframe[gstSubframe]?.get(svn)
@@ -111,7 +121,9 @@ internal class PageStore(private val depthSubframes: Int = 13) {
         val subframe = now.subframe()
         val current = bySubframe[subframe]
         val previous = bySubframe[subframe.addSubframes(-1)]
-        val svns = ((current?.keys ?: emptySet()) + (previous?.keys ?: emptySet())).sorted()
+        val currentUnusable = unusable[subframe]
+        val svns = ((current?.keys ?: emptySet()) + (previous?.keys ?: emptySet()) +
+                (currentUnusable?.keys ?: emptySet())).sorted()
         return SubframePageView(
             subframe = subframe,
             currentPage = SubframeLayout.pageOf(now),
@@ -122,7 +134,14 @@ internal class PageStore(private val depthSubframes: Int = 13) {
                     mask == 0 -> SubframeLayout.PAGES
                     else -> Integer.numberOfTrailingZeros(mask)
                 }
-                SatellitePageView(svn, mask, trackedFrom)
+                // A page that arrived, even unusable, means the satellite was being received
+                val unusableMask = currentUnusable?.get(svn) ?: 0
+                val from = if (unusableMask != 0) {
+                    minOf(trackedFrom, Integer.numberOfTrailingZeros(unusableMask))
+                } else {
+                    trackedFrom
+                }
+                SatellitePageView(svn, mask, from, unusableMask)
             }
         )
     }
@@ -143,6 +162,7 @@ internal class PageStore(private val depthSubframes: Int = 13) {
     fun clear() {
         bySubframe.clear()
         headers.clear()
+        unusable.clear()
     }
 }
 

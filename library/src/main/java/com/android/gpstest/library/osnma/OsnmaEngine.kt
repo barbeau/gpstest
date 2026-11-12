@@ -129,7 +129,10 @@ class OsnmaEngine(
     private val events = ArrayDeque<OsnmaEvent>()
     private val stats = OsnmaStatistics()
 
-    private class AuthRecord(val data: ByteArray, var bits: Int, var lastGst: Gst)
+    /** Verified tag bits for one version of a satellite's data, and who sent the tags */
+    private class AuthRecord(val data: ByteArray, var bits: Int, var lastGst: Gst) {
+        val by = sortedSetOf<Int>()
+    }
 
     private class SatTracking {
         var lastPageGst: Gst? = null
@@ -224,6 +227,7 @@ class OsnmaEngine(
         }
         if (checkCrc && !page.crcOk) {
             stats.crcErrors++
+            pageStore.markUnusable(svn, gst)
             return false
         }
         stats.pages++
@@ -240,11 +244,23 @@ class OsnmaEngine(
         if (page.osnmaEmpty) return true
         stats.osnmaPages++
         // With pages used one by one, a page in the wrong slot would corrupt the MACK bits
-        if (!timeCertain) return true
+        if (!timeCertain) {
+            pageStore.markUnusable(svn, gst)
+            return true
+        }
         sat.transmitsOsnma = true
         sat.lastOsnmaGst = gst
         processOsnmaField(svn, gst, page.osnma)
         return true
+    }
+
+    /**
+     * A page of satellite [svn] arrived around [gst] but couldn't be used, e.g. because it failed
+     * the CRC before it reached the engine. Shown in the page grid, so that pages the platform
+     * didn't deliver can be told apart from pages that arrived corrupted.
+     */
+    fun notePageUnusable(svn: Int, gst: Gst) {
+        if (svn in 1..36) pageStore.markUnusable(svn, gst)
     }
 
     /** Adds a public key from outside the signal (e.g. imported by the user) */
@@ -847,9 +863,10 @@ class OsnmaEngine(
                 val rec = if (isTiming) sat.timing else sat.ced
                 if (rec != null && rec.data.contentEquals(nav.bits)) {
                     rec.bits += tagLength
+                    rec.by += prna
                     if (gstTag > rec.lastGst) rec.lastGst = gstTag
                 } else {
-                    val fresh = AuthRecord(nav.bits, tagLength, gstTag)
+                    val fresh = AuthRecord(nav.bits, tagLength, gstTag).also { it.by += prna }
                     if (isTiming) sat.timing = fresh else sat.ced = fresh
                 }
             }
@@ -904,6 +921,7 @@ class OsnmaEngine(
                 cedAuthGst = s.ced?.lastGst,
                 cedCurrent = s.ced != null && latestCed != null &&
                     s.ced!!.data.contentEquals(latestCed.bits),
+                cedAuthenticatedBy = s.ced?.by?.toList().orEmpty(),
                 timingAuthBits = s.timing?.bits ?: 0,
                 timingAuthGst = s.timing?.lastGst,
                 tagsOk = s.tagsOk,
@@ -1011,8 +1029,15 @@ data class SubframePageView(
  * @param trackedFrom pages before this one were before the satellite was received at all, so
  * they aren't missing
  */
-data class SatellitePageView(val svn: Int, val receivedMask: Int, val trackedFrom: Int) {
+data class SatellitePageView(
+    val svn: Int,
+    val receivedMask: Int,
+    val trackedFrom: Int,
+    /** Bit n set if page n arrived but couldn't be used (failed CRC or no certain time) */
+    val unusableMask: Int = 0
+) {
     fun received(page: Int) = receivedMask and (1 shl page) != 0
+    fun unusable(page: Int) = !received(page) && unusableMask and (1 shl page) != 0
 }
 
 data class TeslaKeyInfo(val chain: TeslaChain, val gstSubframe: Gst)
@@ -1024,6 +1049,11 @@ data class SatelliteAuthStatus(
     /** Accumulated tag bits authenticating the last authenticated CED and status (ADKD 0/12) */
     val cedAuthBits: Int,
     val cedAuthGst: Gst?,
+    /**
+     * Satellites whose tags authenticated the current ephemeris, clock and health data: the
+     * satellite itself and/or others (cross-authentication), in ascending order
+     */
+    val cedAuthenticatedBy: List<Int> = emptyList(),
     /** The authenticated CED is the one the satellite is currently broadcasting */
     val cedCurrent: Boolean,
     val timingAuthBits: Int,

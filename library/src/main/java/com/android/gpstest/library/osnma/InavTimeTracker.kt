@@ -162,12 +162,12 @@ class InavTimeTracker(
     private fun subframeNumbersTrusted() =
         subframeNumberAgree >= 3 && subframeNumberDisagree * 10 <= subframeNumberAgree
 
-    private fun estimate(svn: Int, page: InavPage, arrivalMillis: Long, subframeNumber: Int): Gst? {
-        while (samples.isNotEmpty() &&
-            arrivalMillis - samples.first().arrivalMillis > maxSampleAgeMillis
-        ) {
-            samples.removeFirst()
-        }
+    /**
+     * Rough start (GST seconds) of a page that arrived at [arrivalMillis], from the arrival time
+     * alone: with the receiver clock if available, else from the recent offsets between arrival
+     * and page times. Null before any is known.
+     */
+    private fun roughSeconds(arrivalMillis: Long): Long? {
         val receiver = receiverOffset(arrivalMillis)
         val roughMillis = if (receiver != null) {
             // Page start = delivery time in GST - delivery delay - 2 s page duration
@@ -183,7 +183,23 @@ class InavTimeTracker(
             arrivalMillis - sorted[sorted.size / 2]
         }
         // Nearest page start (odd second)
-        val rough = 2 * floor((roughMillis - 1000) / 2000.0 + 0.5).toLong() + 1
+        return 2 * floor((roughMillis - 1000) / 2000.0 + 0.5).toLong() + 1
+    }
+
+    /**
+     * The rough time of a page that can't be placed by its content (e.g. one that failed the
+     * CRC), from its arrival time alone, or null if not known yet
+     */
+    fun roughGst(arrivalMillis: Long): Gst? =
+        roughSeconds(arrivalMillis)?.takeIf { it >= 0 }?.let { Gst.fromTotalSeconds(it) }
+
+    private fun estimate(svn: Int, page: InavPage, arrivalMillis: Long, subframeNumber: Int): Gst? {
+        while (samples.isNotEmpty() &&
+            arrivalMillis - samples.first().arrivalMillis > maxSampleAgeMillis
+        ) {
+            samples.removeFirst()
+        }
+        val rough = roughSeconds(arrivalMillis) ?: return null
 
         val slots = WORD_TYPE_SLOTS[page.wordType]
         val useSubframe = subframeNumber in 1..SUBFRAMES_PER_FRAME && subframeNumbersTrusted()

@@ -92,10 +92,17 @@ The expanded card always shows two small graphics, from the first page on:
   session, or the signal.
 - **Pages of the current subframe**, under **Subframes**: one line per satellite sending OSNMA,
   with the 15 pages of the current 30 s subframe, placed by time (the same two seconds in each
-  column for every satellite). Filled: received; red outline: missing; dot: before the satellite
-  was received at all (it rose or came into view during the subframe), which doesn't count as
-  missing; gray: still to come. Only pages with OSNMA data and a certain time are shown as
-  received, as only those are used.
+  column for every satellite). Filled: received; red outline: missing, i.e. the phone didn't
+  deliver it; red, filled: it arrived but couldn't be used, because it failed the CRC or its time
+  wasn't certain (only listed in the legend when it happens); dot: before the satellite was
+  received at all (it rose or came into view during the subframe), which doesn't count as
+  missing; gray: still to come. Only pages with OSNMA data are shown, as only those are used.
+
+The **Authenticated** row also says when other satellites vouched for one
+(cross-authentication): each satellite's OSNMA data carries tags for its own navigation data and
+for other satellites'. "E06 (by E31)" means E06 was authenticated only by tags that E31 sent,
+"E23 (also by E05)" by its own and E05's. So a satellite can be authenticated without any
+OSNMA data of its own, and without a line in the page grid.
 
 ### Satellite list and sky view
 
