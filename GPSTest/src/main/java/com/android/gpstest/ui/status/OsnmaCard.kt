@@ -825,17 +825,13 @@ private fun PageGrid(view: SubframePageView?) {
                 )
             }
         }
-        if (!view?.satellites.isNullOrEmpty()) {
-            ChipFlow(modifier = Modifier.padding(top = 2.dp)) {
-                LegendItem(PageState.RECEIVED, R.string.osnma_pages_legend_received)
-                LegendItem(PageState.MISSING, R.string.osnma_pages_legend_missing)
-                // Only when there are any, so the legend stays short on most phones
-                if (view?.satellites.orEmpty().any { it.unusableMask != 0 }) {
-                    LegendItem(PageState.UNUSABLE, R.string.osnma_pages_legend_unusable)
-                }
-                LegendItem(PageState.BEFORE_TRACKING, R.string.osnma_pages_legend_before)
-                LegendItem(PageState.FUTURE, R.string.osnma_pages_legend_future)
-            }
+        // Always the full legend, so the card keeps its layout
+        ChipFlow(modifier = Modifier.padding(top = 2.dp)) {
+            LegendItem(PageState.RECEIVED, R.string.osnma_pages_legend_received)
+            LegendItem(PageState.MISSING, R.string.osnma_pages_legend_missing)
+            LegendItem(PageState.UNUSABLE, R.string.osnma_pages_legend_unusable)
+            LegendItem(PageState.BEFORE_TRACKING, R.string.osnma_pages_legend_before)
+            LegendItem(PageState.FUTURE, R.string.osnma_pages_legend_future)
         }
     }
 }

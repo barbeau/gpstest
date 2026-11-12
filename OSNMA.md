@@ -94,7 +94,7 @@ The expanded card always shows two small graphics, from the first page on:
   with the 15 pages of the current 30 s subframe, placed by time (the same two seconds in each
   column for every satellite). Filled: received; red outline: missing, i.e. the phone didn't
   deliver it; red, filled: it arrived but couldn't be used, because it failed the CRC or its time
-  wasn't certain (only listed in the legend when it happens); dot: before the satellite was
+  wasn't certain; dot: before the satellite was
   received at all (it rose or came into view during the subframe), which doesn't count as
   missing; gray: still to come. Only pages with OSNMA data are shown, as only those are used.
 
