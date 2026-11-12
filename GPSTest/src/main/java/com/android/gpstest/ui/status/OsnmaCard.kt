@@ -62,6 +62,7 @@ import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.MacFunction
 import com.android.gpstest.library.osnma.NmaStatus
 import com.android.gpstest.library.osnma.OsnmaCardState
+import com.android.gpstest.library.osnma.OsnmaEstimate
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaMainState
 import com.android.gpstest.library.osnma.OsnmaMark
@@ -70,6 +71,7 @@ import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
 import com.android.gpstest.library.osnma.OsnmaWarning
 import com.android.gpstest.library.osnma.TimeSync
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 // Chip backgrounds (white text on top)
@@ -115,8 +117,10 @@ fun OsnmaCard(state: OsnmaUiState) {
             Header(state, cardState, expanded)
             if (expanded) {
                 val description = phaseDescription(state)
+                val inProgress = cardState.main == OsnmaMainState.IN_PROGRESS
                 Text(
-                    text = if (cardState.main == OsnmaMainState.IN_PROGRESS) {
+                    // Without an estimate (see the Expected row), the usual time
+                    text = if (inProgress && state.estimate == null) {
                         description + " " + stringResource(R.string.osnma_waiting_time)
                     } else {
                         description
@@ -148,7 +152,7 @@ fun OsnmaCard(state: OsnmaUiState) {
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
-                Details(status)
+                Details(status, state.estimate.takeIf { cardState.main == OsnmaMainState.IN_PROGRESS })
                 Expanded(state)
             }
         }
@@ -183,6 +187,15 @@ private fun Header(state: OsnmaUiState, cardState: OsnmaCardState, expanded: Boo
         if (authenticated > 0) SatelliteCount(OsnmaMark.AUTHENTICATED, authenticated)
         if (failed > 0) SatelliteCount(OsnmaMark.FAILED, failed)
         if (cardState.main == OsnmaMainState.IN_PROGRESS && !state.pagesStalled) {
+            // The expected time in short, e.g. "~3 min"; the Expected row has the details
+            state.estimate?.seconds?.let {
+                Text(
+                    text = shortEstimate(it),
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
             val progressDescription = stringResource(R.string.osnma_in_progress)
             CircularProgressIndicator(
                 modifier = Modifier
@@ -203,6 +216,38 @@ private fun Header(state: OsnmaUiState, cardState: OsnmaCardState, expanded: Boo
                 .rotate(if (expanded) 180f else 0f)
         )
     }
+}
+
+/** The expected time in short, for the header: "<1 min" or "~3 min" */
+@Composable
+private fun shortEstimate(seconds: Long): String =
+    if (seconds < 60) stringResource(R.string.osnma_eta_short_under_minute)
+    else stringResource(R.string.osnma_eta_short_minutes, ceil(seconds / 60.0).toInt())
+
+/**
+ * When authentication is expected and what it's waiting for, e.g. "In about 3 min: waiting for the
+ * TESLA root key (5 of 8 parts)"
+ */
+@Composable
+private fun estimateText(e: OsnmaEstimate): String {
+    val reason = when (e.waitingFor) {
+        OsnmaEstimate.WaitingFor.PUBLIC_KEY ->
+            return stringResource(R.string.osnma_eta_public_key)
+        OsnmaEstimate.WaitingFor.KROOT -> {
+            val (have, total) = e.parts ?: (0 to 0)
+            if (total > 0) stringResource(R.string.osnma_eta_kroot, have, total)
+            else stringResource(R.string.osnma_eta_kroot_unknown_total, have)
+        }
+        OsnmaEstimate.WaitingFor.TAGS -> stringResource(R.string.osnma_eta_tags)
+    }
+    val seconds = e.seconds
+    val time = when {
+        e.overdue -> stringResource(R.string.osnma_eta_overdue)
+        seconds == null -> stringResource(R.string.osnma_eta_few_minutes)
+        seconds < 60 -> stringResource(R.string.osnma_eta_under_minute)
+        else -> stringResource(R.string.osnma_eta_minutes, ceil(seconds / 60.0).toInt())
+    }
+    return stringResource(R.string.osnma_eta_value, time, reason)
 }
 
 /**
@@ -356,7 +401,8 @@ private fun phaseDescription(state: OsnmaUiState): String {
  * keeps its layout while authentication progresses.
  */
 @Composable
-private fun Details(status: OsnmaStatus?) {
+private fun Details(status: OsnmaStatus?, estimate: OsnmaEstimate?) {
+    if (estimate != null) DetailRow(R.string.osnma_label_expected, estimateText(estimate))
     val header = status?.nmaHeader
     DetailRow(
         R.string.osnma_label_status,
@@ -497,16 +543,24 @@ private fun Expanded(state: OsnmaUiState) {
                 state.crcFailedButParityPassed
             )
         )
+        // How many subframes arrive completely: a measure of reception. Authentication works
+        // page by page and doesn't need complete subframes. The share is shown once there are
+        // enough subframes for it to be meaningful, the counts right away.
+        val completed = s.subframesCompletedCounted.coerceAtLeast(0)
         DetailRow(
             R.string.osnma_label_subframes,
             s.subframeCompleteness?.let {
                 stringResource(
                     R.string.osnma_subframes_value,
-                    s.subframesCompletedCounted,
+                    completed,
                     s.subframesStarted,
                     (it * 100).roundToInt()
                 )
-            } ?: unknown
+            } ?: if (s.subframesStarted > 0) {
+                stringResource(R.string.osnma_subframes_value_early, completed, s.subframesStarted)
+            } else {
+                unknown
+            }
         )
         DetailRow(R.string.osnma_label_gst, status?.gst?.let { formatGst(it) } ?: unknown)
         val timing = stringResource(

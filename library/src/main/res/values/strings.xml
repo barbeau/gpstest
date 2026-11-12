@@ -546,6 +546,18 @@
     <string name="osnma_collapse">Hide OSNMA details</string>
     <string name="osnma_in_progress">Authentication in progress</string>
     <string name="osnma_waiting_time">This usually takes a few minutes, longer with weak reception.</string>
+    <string name="osnma_label_expected">Expected</string>
+    <string name="osnma_eta_value">%1$s: %2$s</string>
+    <string name="osnma_eta_minutes">In about %1$d min</string>
+    <string name="osnma_eta_under_minute">In less than a minute</string>
+    <string name="osnma_eta_few_minutes">In a few minutes</string>
+    <string name="osnma_eta_overdue">Taking longer than usual</string>
+    <string name="osnma_eta_kroot">waiting for the TESLA root key (%1$d of %2$d parts)</string>
+    <string name="osnma_eta_kroot_unknown_total">waiting for the TESLA root key (%1$d parts so far)</string>
+    <string name="osnma_eta_tags">waiting for the first tags</string>
+    <string name="osnma_eta_public_key">When the public key is next broadcast (every 6 hours)</string>
+    <string name="osnma_eta_short_minutes">~%1$d min</string>
+    <string name="osnma_eta_short_under_minute">&lt;1 min</string>
     <string name="osnma_clock_offset_warning">The time differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 165 s, so it isn\'t used: check the date and time settings.</string>
     <string name="osnma_clock_offset_slow_mac">The time differs from the Galileo time in the signal by %1$d s, more than the 15 s needed for all tags. Only slow MAC tags are used, which are checked with a key sent 5 minutes later.</string>
     <string name="osnma_phase_no_data">Waiting for Galileo navigation messages… This takes a few seconds after tracking starts.</string>
@@ -620,6 +632,7 @@
     <string name="osnma_clock_offset_network">%1$d s (network time)</string>
     <string name="osnma_clock_offset_device">%1$d s (device clock, which may be set from GNSS)</string>
     <string name="osnma_subframes_value">%1$d of %2$d complete (%3$d%%)</string>
+    <string name="osnma_subframes_value_early">%1$d of %2$d complete so far</string>
     <string name="osnma_trusting_parity">The device doesn\'t seem to provide I/NAV CRC bits, so its parity check is used instead.</string>
     <string name="osnma_explanation">OSNMA lets receivers check that Galileo ephemeris, clock and health data really come from Galileo. A satellite is authenticated once at least 40 bits of MAC tags have been verified on the data it currently broadcasts. In the satellite list and the sky view, a green seal with a check mark next to a Galileo satellite means its data is authenticated, a red seal with an exclamation mark that one of its tags failed in the last 10 minutes. Failed tags can come from corrupted data or wrong timing, but also from spoofing.</string>
 

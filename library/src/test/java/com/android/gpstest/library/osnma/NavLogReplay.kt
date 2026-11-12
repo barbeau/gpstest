@@ -90,7 +90,8 @@ object NavLogReplay {
     fun replay(
         resource: String,
         offsetBits: Int,
-        builtInKroots: List<BuiltInKroot> = emptyList()
+        builtInKroots: List<BuiltInKroot> = emptyList(),
+        onPage: (OsnmaEngine) -> Unit = {}
     ): Result {
         val messages = messages(resource)
         val arrival = arrivalTimes(messages, offsetBits)
@@ -110,6 +111,7 @@ object NavLogReplay {
             if (tracker.lastWasExact) stamped++
             engine.feedPage(m.svid, gst, assembled.page, timeCertain = tracker.lastTimeCertain)
             used++
+            onPage(engine)
         }
         return Result(messages.size, used, stamped, layout, assembler, tracker, engine)
     }

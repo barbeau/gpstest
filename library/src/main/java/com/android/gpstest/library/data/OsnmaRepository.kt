@@ -32,6 +32,8 @@ import com.android.gpstest.library.osnma.InavTimeTracker
 import com.android.gpstest.library.osnma.KeySource
 import com.android.gpstest.library.osnma.OsnmaCardState
 import com.android.gpstest.library.osnma.OsnmaEngine
+import com.android.gpstest.library.osnma.OsnmaEstimate
+import com.android.gpstest.library.osnma.OsnmaEstimator
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaPublicKey
 import com.android.gpstest.library.osnma.OsnmaStatus
@@ -98,7 +100,9 @@ data class OsnmaUiState(
     /** Why the receiver clock is or isn't used for page timing */
     val receiverClockStatus: ReceiverClockStatus = ReceiverClockStatus.NO_MEASUREMENTS,
     /** The last DSM-KROOT verified from the signal (hex, see BuiltInKroot), for logging */
-    val lastVerifiedKroot: String? = null
+    val lastVerifiedKroot: String? = null,
+    /** What authentication is waiting for and how long it may take, or null if it isn't waiting */
+    val estimate: OsnmaEstimate? = null
 ) {
     /**
      * Pages arrive, but too many are missing to complete the OSNMA subframes, or they stopped.
@@ -549,9 +553,13 @@ class OsnmaRepository @Inject constructor(
         }
     }
 
+    /** Estimates when the first satellite will be authenticated, from the published status */
+    private val estimator = OsnmaEstimator()
+
     private fun resetEngine() {
         engine?.let { saveDsm(it, force = true) }
         engine = null
+        estimator.reset()
         timeTracker.reset()
         assembler.reset()
         inavPages = 0
@@ -570,9 +578,10 @@ class OsnmaRepository @Inject constructor(
         val now = SystemClock.elapsedRealtime()
         if (!force && now - lastPublishMillis < PUBLISH_INTERVAL_MILLIS) return
         lastPublishMillis = now
+        val status = engine?.status()
         _state.value = OsnmaUiState(
             enabled = isEnabled(),
-            status = engine?.status(),
+            status = status,
             inavPagesReceived = inavPages,
             trustingPlatformParity = trustPlatformParity,
             keysRevoked = OsnmaKeyStore.isRevoked(context, prefs),
@@ -592,7 +601,8 @@ class OsnmaRepository @Inject constructor(
             layoutOffsetBits = layout.offsetBits,
             timingUsesReceiverClock = timeTracker.usingReceiverClock,
             receiverClockStatus = receiverClockStatus,
-            lastVerifiedKroot = lastVerifiedKroot
+            lastVerifiedKroot = lastVerifiedKroot,
+            estimate = estimator.update(status, status?.statistics?.subframeCompleteness)
         )
     }
 

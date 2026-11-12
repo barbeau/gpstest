@@ -63,7 +63,7 @@ The card shows exactly one **main state** chip:
 | Main state | Meaning |
 | --- | --- |
 | **NO DATA** (gray) | No Galileo pages yet, or no OSNMA data in them. |
-| **IN PROGRESS** (amber) | Synchronizing with Galileo time, waiting for the public key, the TESLA root key or the first tags. A spinner shows that pages are arriving. |
+| **IN PROGRESS** (amber) | Synchronizing with Galileo time, waiting for the public key, the TESLA root key or the first tags. A spinner shows that pages are arriving, with the expected time next to it (e.g. "~3 min"); the **Expected** row says what it's waiting for (see [Expected time](#expected-time)). |
 | **AUTHENTICATED** (green) | At least one satellite's navigation data is authenticated. |
 | **TIME NOT VERIFIED** (red) | The time is more than 165 s off; see below. |
 | **DON'T USE** (red) | Galileo set the OSNMA status to "don't use". |
@@ -254,6 +254,22 @@ are missing (24 satellites at 30 % loss, 17 satellites at 70 % loss), where comp
 practically never occur. Pages whose timing is ambiguous aren't used for OSNMA data, so a page
 in the wrong slot can't make a tag fail.
 
+## Expected time
+
+While authentication is in progress, the card estimates when the first satellite will be
+authenticated, from what it's waiting for and how fast the data arrives (measured in Galileo time):
+
+| Waiting for | Estimate |
+| --- | --- |
+| Public key | No time: a new one is only broadcast every 6 hours. Normally the built-in key makes this instant. |
+| TESLA root key | The missing parts divided by the rate at which parts arrived so far, measured up to now (so it grows while none arrive), plus about 30 s for the first tags, as the tags collected meanwhile are checked right away. Until the root key says how many parts it has, the current 8 are assumed. "In a few minutes" until two parts have arrived. |
+| First tags | About 90 s with all pages (a tag can only be checked with the key sent in the next subframe), longer with missing pages, counting down. |
+
+When it takes much longer than that (no new part for four times the usual interval, no measurable
+rate after 10 minutes, or the tags' time has passed), the card says "Taking longer than usual"
+instead of a time; usually the **POOR RECEPTION** chip explains why. With the logs in the unit tests,
+the Pixel 10 Pro XL was predicted to authenticate within about a minute of when it did.
+
 ## Device quirks
 
 Real phones don't always deliver Galileo I/NAV pages the way the Android documentation
@@ -326,8 +342,9 @@ satellite's pages, even with full tracking requested (reported to Google as [iss
 580885286](https://issuetracker.google.com/issues/580885286)). With complete subframes only,
 authentication couldn't complete at such rates; with the page-by-page processing above it can, but
 it takes longer, mostly until all parts of the TESLA root key have been received once. The
-**Subframes** row shows how many subframes were complete, and the card shows a hint when fewer than
-half are. Turning on **Force full GNSS measurements**, both in GPSTest's settings and in Android's
+**Subframes** row shows how many subframes were complete (the share once there are 20, as fewer would
+make it jump around), and the card shows a hint when fewer than half are. Authentication doesn't
+need complete subframes, so it can succeed while that row still shows few. Turning on **Force full GNSS measurements**, both in GPSTest's settings and in Android's
 developer options, and keeping the screen on can help.
 
 ### Time of each page
