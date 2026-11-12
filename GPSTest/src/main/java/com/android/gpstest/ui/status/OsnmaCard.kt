@@ -485,9 +485,11 @@ private fun Details(status: OsnmaStatus?, estimate: OsnmaEstimate?) {
 
     val authenticated = status?.authenticatedSatellites.orEmpty()
     if (authenticated.isNotEmpty()) {
+        val byFormat = stringResource(R.string.osnma_authenticated_by)
+        val alsoByFormat = stringResource(R.string.osnma_authenticated_also_by)
         DetailRow(
             R.string.osnma_label_authenticated,
-            authenticated.joinToString(" ") { authenticatedText(it) },
+            authenticated.joinToString(" ") { authenticatedText(it, byFormat, alsoByFormat) },
             color = greenText
         )
     } else {
@@ -673,17 +675,17 @@ private fun DetailRow(@StringRes label: Int, value: String, color: Color = Color
  * A satellite in the Authenticated row, with the satellites whose tags authenticated it if they
  * include others (cross-authentication): "E06 (by E31)", "E23 (also by E05)", or just "E31"
  */
-@Composable
-private fun authenticatedText(sat: SatelliteAuthStatus): String {
+private fun authenticatedText(
+    sat: SatelliteAuthStatus,
+    byFormat: String,
+    alsoByFormat: String
+): String {
     val name = "E%02d".format(sat.svn)
     val others = sat.cedAuthenticatedBy.filter { it != sat.svn }
     if (others.isEmpty()) return name
     val list = others.joinToString(", ") { "E%02d".format(it) }
-    return if (sat.svn in sat.cedAuthenticatedBy) {
-        stringResource(R.string.osnma_authenticated_also_by, name, list)
-    } else {
-        stringResource(R.string.osnma_authenticated_by, name, list)
-    }
+    val format = if (sat.svn in sat.cedAuthenticatedBy) alsoByFormat else byFormat
+    return String.format(format, name, list)
 }
 
 // Colors of the root key bar and the page grid
