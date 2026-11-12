@@ -163,10 +163,7 @@ fun OsnmaCard(state: OsnmaUiState) {
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
-                Details(
-                    status,
-                    state.estimate.takeIf { cardState.main == OsnmaMainState.IN_PROGRESS }
-                )
+                Details(status, cardState.main, state.estimate)
                 Expanded(state)
             }
         }
@@ -415,8 +412,18 @@ private fun phaseDescription(state: OsnmaUiState): String {
  * keeps its layout while authentication progresses.
  */
 @Composable
-private fun Details(status: OsnmaStatus?, estimate: OsnmaEstimate?) {
-    if (estimate != null) DetailRow(R.string.osnma_label_expected, estimateText(estimate))
+private fun Details(status: OsnmaStatus?, main: OsnmaMainState, estimate: OsnmaEstimate?) {
+    DetailRow(
+        R.string.osnma_label_expected,
+        when (main) {
+            OsnmaMainState.AUTHENTICATED -> stringResource(R.string.osnma_eta_done)
+            OsnmaMainState.DONT_USE, OsnmaMainState.ALERT, OsnmaMainState.TIME_NOT_VERIFIED ->
+                stringResource(R.string.osnma_eta_not_possible)
+            OsnmaMainState.IN_PROGRESS, OsnmaMainState.NO_DATA ->
+                estimate?.takeIf { main == OsnmaMainState.IN_PROGRESS }?.let { estimateText(it) }
+                    ?: stringResource(R.string.osnma_value_unknown)
+        }
+    )
     RootKeyRow(status)
     val header = status?.nmaHeader
     DetailRow(

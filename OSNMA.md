@@ -296,6 +296,10 @@ rate after 10 minutes, or the tags' time has passed), the card says "Taking long
 instead of a time; usually the **POOR RECEPTION** chip explains why. With the logs in the unit tests,
 the Pixel 10 Pro XL was predicted to authenticate within about a minute of when it did.
 
+The **Expected** row is always shown: "Not known yet" before there's data for an estimate,
+"Done" once a satellite is authenticated, and "Not possible right now" when Galileo says "don't
+use", after an alert, or when the time can't be verified.
+
 ## Device quirks
 
 Real phones don't always deliver Galileo I/NAV pages the way the Android documentation

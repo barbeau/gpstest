@@ -574,6 +574,8 @@
     <string name="osnma_eta_kroot_unknown_total">waiting for the TESLA root key (%1$d parts so far)</string>
     <string name="osnma_eta_tags">waiting for the first tags</string>
     <string name="osnma_eta_public_key">When the public key is next broadcast (every 6 hours)</string>
+    <string name="osnma_eta_done">Done: navigation data is being authenticated</string>
+    <string name="osnma_eta_not_possible">Not possible right now (see above)</string>
     <string name="osnma_eta_short_minutes">~%1$d min</string>
     <string name="osnma_eta_short_under_minute">&lt;1 min</string>
     <string name="osnma_clock_offset_warning">The time differs from the Galileo time in the signal by %1$d s. OSNMA can\'t protect against replayed or delayed signals unless the time is known to within 165 s, so it isn\'t used: check the date and time settings.</string>
