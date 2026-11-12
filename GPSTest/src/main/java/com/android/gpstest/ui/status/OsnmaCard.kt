@@ -17,15 +17,22 @@ package com.android.gpstest.ui.status
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -47,6 +54,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
@@ -63,6 +71,7 @@ import com.android.gpstest.library.osnma.MacFunction
 import com.android.gpstest.library.osnma.NmaStatus
 import com.android.gpstest.library.osnma.OsnmaCardState
 import com.android.gpstest.library.osnma.OsnmaEstimate
+import com.android.gpstest.library.osnma.OsnmaEstimator
 import com.android.gpstest.library.osnma.OsnmaEvent
 import com.android.gpstest.library.osnma.OsnmaMainState
 import com.android.gpstest.library.osnma.OsnmaMark
@@ -70,6 +79,7 @@ import com.android.gpstest.library.osnma.OsnmaStatistics
 import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
 import com.android.gpstest.library.osnma.OsnmaWarning
+import com.android.gpstest.library.osnma.SubframePageView
 import com.android.gpstest.library.osnma.TimeSync
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -152,7 +162,10 @@ fun OsnmaCard(state: OsnmaUiState) {
                         modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
-                Details(status, state.estimate.takeIf { cardState.main == OsnmaMainState.IN_PROGRESS })
+                Details(
+                    status,
+                    state.estimate.takeIf { cardState.main == OsnmaMainState.IN_PROGRESS }
+                )
                 Expanded(state)
             }
         }
@@ -403,6 +416,7 @@ private fun phaseDescription(state: OsnmaUiState): String {
 @Composable
 private fun Details(status: OsnmaStatus?, estimate: OsnmaEstimate?) {
     if (estimate != null) DetailRow(R.string.osnma_label_expected, estimateText(estimate))
+    RootKeyRow(status)
     val header = status?.nmaHeader
     DetailRow(
         R.string.osnma_label_status,
@@ -562,6 +576,7 @@ private fun Expanded(state: OsnmaUiState) {
                 unknown
             }
         )
+        PageGrid(status?.pages)
         DetailRow(R.string.osnma_label_gst, status?.gst?.let { formatGst(it) } ?: unknown)
         val timing = stringResource(
             when {
@@ -650,6 +665,188 @@ private fun DetailRow(@StringRes label: Int, value: String, color: Color = Color
             modifier = Modifier.defaultMinSize(minWidth = 110.dp)
         )
         Text(text = value, fontSize = 13.sp, color = color)
+    }
+}
+
+// Colors of the root key bar and the page grid
+private val partGreen: Color
+    @Composable get() = if (MaterialTheme.colors.isLight) Color(0xFF2E7D32) else Color(0xFF43A047)
+private val pageReceived: Color
+    @Composable get() = if (MaterialTheme.colors.isLight) Color(0xFF3F51B5) else Color(0xFF7986CB)
+private val pageMissing: Color
+    @Composable get() = if (MaterialTheme.colors.isLight) Color(0xFFD32F2F) else Color(0xFFE57373)
+private val placeholder: Color
+    @Composable get() = MaterialTheme.colors.onSurface.copy(alpha = 0.15f)
+
+/** Where the values start in a [DetailRow], for content below the value */
+private val VALUE_START = 110.dp
+
+/**
+ * The TESLA root key, always shown: where it came from, or how many of its parts have been
+ * received, with a bar of numbered parts that fill where they belong. The satellites broadcast
+ * the parts in their own order, byte by byte, so parts fill in any order and can be partly
+ * received. Until part 1 says how many there are, the current number is assumed.
+ */
+@Composable
+private fun RootKeyRow(status: OsnmaStatus?) {
+    val pkid = status?.publicKey?.pkid
+    val blocks = status?.krootBlocks
+    val (text, fills) = when {
+        status?.teslaKey != null -> {
+            val source = when {
+                status.warmStartBuiltIn && pkid != null ->
+                    stringResource(R.string.osnma_kroot_built_in, pkid)
+                status.warmStart -> stringResource(R.string.osnma_kroot_previous_session)
+                pkid != null -> stringResource(R.string.osnma_kroot_signal, pkid)
+                else -> stringResource(R.string.osnma_kroot_signal_plain)
+            }
+            source to List(blocks?.first?.size ?: OsnmaEstimator.EXPECTED_KROOT_PARTS) { 1f }
+        }
+        blocks != null -> {
+            val (fill, known) = blocks
+            val full = fill.count { it >= 1f }
+            val text = if (known) {
+                stringResource(R.string.osnma_kroot_parts, full, fill.size)
+            } else {
+                stringResource(R.string.osnma_kroot_parts_assumed, full, fill.size)
+            }
+            text to fill
+        }
+        else -> stringResource(R.string.osnma_kroot_none) to
+                List(OsnmaEstimator.EXPECTED_KROOT_PARTS) { 0f }
+    }
+    DetailRow(R.string.osnma_label_kroot, text)
+    Row(
+        modifier = Modifier
+            .padding(start = VALUE_START, top = 3.dp, bottom = 3.dp)
+            .widthIn(max = 300.dp)
+            .fillMaxWidth()
+            .clearAndSetSemantics { contentDescription = text },
+        horizontalArrangement = Arrangement.spacedBy(3.dp)
+    ) {
+        fills.forEachIndexed { i, fill ->
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(14.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(placeholder)
+            ) {
+                if (fill > 0f) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(fill.coerceAtMost(1f))
+                            .background(partGreen)
+                    )
+                }
+                Text(
+                    text = (i + 1).toString(),
+                    fontSize = 9.sp,
+                    color = if (fill >= 0.5f) Color.White else MaterialTheme.colors.onSurface,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+    }
+}
+
+/**
+ * The pages of the current subframe, one line per satellite sending OSNMA: received (filled),
+ * missing (red outline), before the satellite was received at all (dot, e.g. when it rose in the
+ * middle of the subframe) and still to come (grey). Pages are placed by their time, so the
+ * columns are the same two seconds for every satellite.
+ */
+@Composable
+private fun PageGrid(view: SubframePageView?) {
+    Column(modifier = Modifier.padding(start = VALUE_START, top = 2.dp, bottom = 2.dp)) {
+        Text(
+            text = if (view == null) {
+                stringResource(R.string.osnma_pages_unknown)
+            } else {
+                stringResource(
+                    R.string.osnma_pages_current,
+                    view.currentPage + 1,
+                    PAGES_PER_SUBFRAME
+                )
+            },
+            fontSize = 11.sp
+        )
+        view?.satellites?.forEach { sat ->
+            val due = (view.currentPage + 1 - sat.trackedFrom).coerceAtLeast(0)
+            val received = (0..view.currentPage).count { sat.received(it) }
+            val name = "E%02d".format(sat.svn)
+            val description = stringResource(R.string.osnma_pages_description, name, received, due)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .clearAndSetSemantics { contentDescription = description }
+            ) {
+                Text(text = name, fontSize = 11.sp, modifier = Modifier.width(30.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                    for (page in 0 until PAGES_PER_SUBFRAME) {
+                        PageCell(
+                            when {
+                                page > view.currentPage -> PageState.FUTURE
+                                page < sat.trackedFrom -> PageState.BEFORE_TRACKING
+                                sat.received(page) -> PageState.RECEIVED
+                                else -> PageState.MISSING
+                            }
+                        )
+                    }
+                }
+                Text(
+                    text = "$received/$due",
+                    fontSize = 11.sp,
+                    modifier = Modifier.padding(start = 6.dp)
+                )
+            }
+        }
+        if (!view?.satellites.isNullOrEmpty()) {
+            ChipFlow(modifier = Modifier.padding(top = 2.dp)) {
+                LegendItem(PageState.RECEIVED, R.string.osnma_pages_legend_received)
+                LegendItem(PageState.MISSING, R.string.osnma_pages_legend_missing)
+                LegendItem(PageState.BEFORE_TRACKING, R.string.osnma_pages_legend_before)
+                LegendItem(PageState.FUTURE, R.string.osnma_pages_legend_future)
+            }
+        }
+    }
+}
+
+private enum class PageState { RECEIVED, MISSING, BEFORE_TRACKING, FUTURE }
+
+private const val PAGES_PER_SUBFRAME = 15
+
+/** One page of the grid; the states differ in shape too, not only in color */
+@Composable
+private fun PageCell(state: PageState) {
+    val shape = RoundedCornerShape(2.dp)
+    val modifier = Modifier.size(9.dp)
+    when (state) {
+        PageState.RECEIVED -> Box(modifier.clip(shape).background(pageReceived))
+        PageState.MISSING -> Box(modifier.border(1.5.dp, pageMissing, shape))
+        PageState.FUTURE -> Box(modifier.clip(shape).background(placeholder))
+        PageState.BEFORE_TRACKING -> Box(modifier, contentAlignment = Alignment.Center) {
+            Box(
+                Modifier
+                    .size(3.dp)
+                    .clip(CircleShape)
+                    .background(Gray)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LegendItem(state: PageState, @StringRes label: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        PageCell(state)
+        Text(
+            text = stringResource(label),
+            fontSize = 10.sp,
+            modifier = Modifier.padding(start = 3.dp)
+        )
     }
 }
 

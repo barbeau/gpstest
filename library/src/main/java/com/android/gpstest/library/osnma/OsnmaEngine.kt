@@ -927,6 +927,10 @@ class OsnmaEngine(
             warmStartBuiltIn = warmStart && warmStartBuiltIn && current != null,
             timeSync = timeSync,
             krootProgress = lastKrootDsmId?.let { dsmAssembler.progress(it) },
+            krootBlocks = lastKrootDsmId?.let {
+                dsmAssembler.blockFill(it, OsnmaEstimator.EXPECTED_KROOT_PARTS)
+            },
+            pages = now?.let { pageStore.view(it) },
             satellites = sats,
             events = events.toList(),
             statistics = statistics
@@ -991,6 +995,26 @@ data class OsnmaStatistics(
     }
 }
 
+/**
+ * The pages received in one subframe, per satellite sending OSNMA
+ *
+ * @param currentPage the page (0-14) of the latest page received; later ones are still to come
+ */
+data class SubframePageView(
+    val subframe: Gst,
+    val currentPage: Int,
+    val satellites: List<SatellitePageView>
+)
+
+/**
+ * @param receivedMask bit n set if page n (0-14) was received
+ * @param trackedFrom pages before this one were before the satellite was received at all, so
+ * they aren't missing
+ */
+data class SatellitePageView(val svn: Int, val receivedMask: Int, val trackedFrom: Int) {
+    fun received(page: Int) = receivedMask and (1 shl page) != 0
+}
+
 data class TeslaKeyInfo(val chain: TeslaChain, val gstSubframe: Gst)
 
 data class SatelliteAuthStatus(
@@ -1043,6 +1067,13 @@ data class OsnmaStatus(
     val timeSync: TimeSync = TimeSync.FULL,
     /** Blocks of the DSM-KROOT received so far and the number needed (0 until known) */
     val krootProgress: Pair<Int, Int>?,
+    /**
+     * How much of each DSM-KROOT block was received (0 to 1), by position, and whether the number
+     * of blocks is known yet; null before any of it was received
+     */
+    val krootBlocks: Pair<List<Float>, Boolean>? = null,
+    /** Pages received per satellite in the current subframe */
+    val pages: SubframePageView? = null,
     val satellites: List<SatelliteAuthStatus>,
     val events: List<OsnmaEvent>,
     val statistics: OsnmaStatistics

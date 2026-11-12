@@ -57,10 +57,14 @@ class OsnmaEstimateTest {
             .map { (t, e) -> t + e!!.seconds!! }
         assertTrue(predictions.isNotEmpty())
         predictions.forEach {
-            assertTrue("predicted ${it - start}, was ${authenticated - start}", abs(it - authenticated) <= 120)
+            assertTrue(
+                "predicted ${it - start}, was ${authenticated - start}",
+                abs(it - authenticated) <= 120
+            )
         }
         // While receiving the root key, the parts are reported
-        val kroot = r.estimates.mapNotNull { it.second }.first { it.waitingFor == WaitingFor.KROOT && it.parts != null }
+        val kroot = r.estimates.mapNotNull { it.second }
+            .first { it.waitingFor == WaitingFor.KROOT && it.parts != null }
         assertNotNull(kroot.parts)
         // Authenticated: no estimate
         assertNull(r.estimates.first { it.first == authenticated }.second)
@@ -88,11 +92,15 @@ class OsnmaEstimateTest {
         val estimates = r.estimates.mapNotNull { (t, e) -> e?.let { t - start to it } }
         assertTrue(estimates.all { it.second.waitingFor == WaitingFor.KROOT })
         // No number for the first 10 minutes: one part only
-        assertTrue(estimates.filter { it.first < OsnmaEstimator.MAX_UNKNOWN_SECONDS }.all { it.second.seconds == null })
+        assertTrue(
+            estimates.filter { it.first < OsnmaEstimator.MAX_UNKNOWN_SECONDS }
+                .all { it.second.seconds == null }
+        )
         // Then overdue, until more parts arrive
         val overdue = estimates.filter { it.second.overdue }
         assertTrue(overdue.isNotEmpty())
-        assertTrue(overdue.all { it.first > OsnmaEstimator.MAX_UNKNOWN_SECONDS && it.second.seconds == null })
+        val maxUnknown = OsnmaEstimator.MAX_UNKNOWN_SECONDS
+        assertTrue(overdue.all { it.first > maxUnknown && it.second.seconds == null })
         val later = estimates.filter { it.first > overdue.last().first }
         assertTrue(later.isNotEmpty())
         assertTrue(later.all { !it.second.overdue && it.second.seconds != null })

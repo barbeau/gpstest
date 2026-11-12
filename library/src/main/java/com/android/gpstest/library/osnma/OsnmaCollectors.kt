@@ -101,6 +101,32 @@ internal class PageStore(private val depthSubframes: Int = 13) {
 
     fun get(svn: Int, gstSubframe: Gst): SubframePages? = bySubframe[gstSubframe]?.get(svn)
 
+    /**
+     * The pages received in the subframe of [now], per satellite sending OSNMA in it or in the
+     * previous one (so a satellite doesn't vanish while the first pages of a subframe are still
+     * to come). For a satellite that wasn't received in the previous subframe, the pages before
+     * its first one in this subframe are before tracking, not missing.
+     */
+    fun view(now: Gst): SubframePageView {
+        val subframe = now.subframe()
+        val current = bySubframe[subframe]
+        val previous = bySubframe[subframe.addSubframes(-1)]
+        val svns = ((current?.keys ?: emptySet()) + (previous?.keys ?: emptySet())).sorted()
+        return SubframePageView(
+            subframe = subframe,
+            currentPage = SubframeLayout.pageOf(now),
+            satellites = svns.map { svn ->
+                val mask = current?.get(svn)?.mask ?: 0
+                val trackedFrom = when {
+                    previous?.containsKey(svn) == true -> 0
+                    mask == 0 -> SubframeLayout.PAGES
+                    else -> Integer.numberOfTrailingZeros(mask)
+                }
+                SatellitePageView(svn, mask, trackedFrom)
+            }
+        )
+    }
+
     fun subframe(gstSubframe: Gst): Collection<SubframePages> =
         bySubframe[gstSubframe]?.values ?: emptyList()
 
@@ -193,6 +219,20 @@ internal class DsmAssembler {
             else -> nb + 6
         }
         return full to (n ?: 0)
+    }
+
+    /**
+     * How much of each block of DSM [dsmId] was received (0 to 1), by block position, and whether
+     * the number of blocks is known (from block 0); until then [assumedBlocks] are assumed. Null
+     * if nothing of it was received.
+     */
+    fun blockFill(dsmId: Int, assumedBlocks: Int): Pair<List<Float>, Boolean>? {
+        val entry = entries[dsmId] ?: return null
+        val total = progress(dsmId)?.second?.takeIf { it > 0 }
+        val received = (0 until MAX_BLOCKS).filter { entry.masks[it] != 0 }
+        val count = total ?: maxOf(assumedBlocks, (received.maxOrNull() ?: -1) + 1)
+        val fill = (0 until count).map { Integer.bitCount(entry.masks[it]) / BLOCK_BYTES.toFloat() }
+        return fill to (total != null)
     }
 
     fun clear() = entries.clear()

@@ -80,6 +80,23 @@ combination, and together with any main state:
 
 In the code, these are `OsnmaMainState` and `OsnmaWarning` (`OsnmaCardState.kt`).
 
+### Root key and pages
+
+The expanded card always shows two small graphics, from the first page on:
+
+- **TESLA root key**: a bar with one numbered segment per part of the root key (DSM-KROOT). The
+  satellites broadcast the parts in their own order, and GPSTest collects them byte by byte across
+  satellites, so the parts fill where they belong, in any order, and can be partly received. Until
+  part 1, which tells how many parts there are, arrives, the current 8 are assumed. Once the root
+  key is known, the bar is full and the row says where it came from: built in, the previous
+  session, or the signal.
+- **Pages of the current subframe**, under **Subframes**: one line per satellite sending OSNMA,
+  with the 15 pages of the current 30 s subframe, placed by time (the same two seconds in each
+  column for every satellite). Filled: received; red outline: missing; dot: before the satellite
+  was received at all (it rose or came into view during the subframe), which doesn't count as
+  missing; gray: still to come. Only pages with OSNMA data and a certain time are shown as
+  received, as only those are used.
+
 ### Satellite list and sky view
 
 Galileo satellites are marked in the satellite list on the Status screen (next to the flag) and in
