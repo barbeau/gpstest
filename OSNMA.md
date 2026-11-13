@@ -104,6 +104,12 @@ for other satellites'. "E06 (by E31)" means E06 was authenticated only by tags t
 "E23 (also by E05)" by its own and E05's. So a satellite can be authenticated without any
 OSNMA data of its own, and without a line in the page grid.
 
+<img src="docs/osnma-pixel8pro-in-progress.webp" alt="Galileo OSNMA card on a Pixel 8 Pro, expanded, in progress: root key from the previous session, waiting for the first tags, page grid of four satellites">
+
+*In progress on a Pixel 8 Pro: the root key comes from the previous session, so all its parts
+are filled, but the first tags take longer than usual as only 2 of 10 subframes completed. In the
+grid, E02 rose during the subframe (dots), and E36 delivered only a few pages.*
+
 ### Satellite list and sky view
 
 Galileo satellites are marked in the satellite list on the Status screen (next to the flag) and in
