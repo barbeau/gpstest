@@ -49,6 +49,7 @@ import com.android.gpstest.databinding.GpsSkyLegendCardBinding
 import com.android.gpstest.databinding.GpsSkySignalMeterBinding
 import com.android.gpstest.library.data.FixState
 import com.android.gpstest.library.data.LocationRepository
+import com.android.gpstest.library.data.OsnmaRepository
 import com.android.gpstest.library.model.SatelliteMetadata
 import com.android.gpstest.library.model.SatelliteStatus
 import com.android.gpstest.library.ui.SignalInfoViewModel
@@ -96,6 +97,10 @@ class SkyFragment : Fragment() {
     @Inject
     lateinit var repository: LocationRepository
 
+    // Galileo OSNMA state, to mark authenticated satellites
+    @Inject
+    lateinit var osnmaRepository: OsnmaRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var gnssFlow: Job? = null
     private var sensorFlow: Job? = null
@@ -121,6 +126,7 @@ class SkyFragment : Fragment() {
         Application.prefs.registerOnSharedPreferenceChangeListener(trackingListener)
 
         observeLocationUpdateStates()
+        observeOsnma()
 
         return v
     }
@@ -165,6 +171,16 @@ class SkyFragment : Fragment() {
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun observeOsnma() {
+        osnmaRepository.state
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                val marks = state.status?.takeIf { state.enabled }?.marks() ?: emptyMap()
+                binding?.skyView?.setOsnmaMarks(marks)
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     @ExperimentalCoroutinesApi
@@ -316,7 +332,9 @@ class SkyFragment : Fragment() {
             legend.skyLegendShapeLine16a,
             legend.skyLegendShapeLine16b,
             legend.skyLegendShapeLine17a,
-            legend.skyLegendShapeLine17b
+            legend.skyLegendShapeLine17b,
+            legend.skyLegendShapeLineOsnmaAuthenticated,
+            legend.skyLegendShapeLineOsnmaFailed
         )
 
         // Shape Legend shapes
