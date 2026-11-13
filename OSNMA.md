@@ -110,6 +110,11 @@ OSNMA data of its own, and without a line in the page grid.
 are filled, but the first tags take longer than usual as only 2 of 10 subframes completed. In the
 grid, E02 rose during the subframe (dots), and E36 delivered only a few pages.*
 
+<img src="docs/osnma-pixel8pro-cross-auth.webp" alt="The same Galileo OSNMA card a minute later: 5 satellites authenticated, three of them only by other satellites' tags">
+
+*A minute later: 5 satellites authenticated. E11, E12 and E28 have no line in the grid, as they
+send no OSNMA data the phone delivered; they were authenticated by the tags of E04 and E10.*
+
 ### Satellite list and sky view
 
 Galileo satellites are marked in the satellite list on the Status screen (next to the flag) and in
