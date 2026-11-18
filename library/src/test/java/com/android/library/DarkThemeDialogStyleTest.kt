@@ -153,7 +153,11 @@ class DarkThemeDialogStyleTest {
         val rgb = when (raw.length) {
             3 -> raw.map { "$it$it" }.joinToString("")
             6 -> raw
-            8 -> raw.substring(2)
+            8 -> {
+                // Text color must be opaque: a translucent value would blend with the surface
+                check(raw.substring(0, 2).equals("FF", ignoreCase = true)) { "Non-opaque color $hex" }
+                raw.substring(2)
+            }
             else -> error("Bad color $hex")
         }
         return rgb.toInt(16)
