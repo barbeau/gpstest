@@ -15,6 +15,8 @@
  */
 package com.android.gpstest.ui.status
 
+import android.location.LocationManager
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,6 +53,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -78,6 +81,7 @@ import com.android.gpstest.library.osnma.OsnmaMark
 import com.android.gpstest.library.osnma.OsnmaStatistics
 import com.android.gpstest.library.osnma.OsnmaStatus
 import com.android.gpstest.library.osnma.OsnmaStatus.Phase
+import com.android.gpstest.library.util.SatelliteUtils
 import com.android.gpstest.library.osnma.OsnmaWarning
 import com.android.gpstest.library.osnma.SatelliteAuthStatus
 import com.android.gpstest.library.osnma.SubframePageView
@@ -106,9 +110,17 @@ private val Gray = Color(0xFF757575)
  */
 @Composable
 fun OsnmaCard(state: OsnmaUiState) {
-    // Only show the card on devices that provide (or have provided) Galileo I/NAV messages
-    val known = state.inavSeenBefore || state.inavPagesReceived > 0 || state.status != null ||
-            state.keysRevoked
+    // Only show the card on devices that provide (or have provided) Galileo I/NAV messages, or
+    // that say they provide navigation messages (Android 12 and up)
+    val context = LocalContext.current
+    val navMessagesSupported = remember {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                SatelliteUtils.isNavMessagesSupported(
+                    context.getSystemService(LocationManager::class.java)
+                )
+    }
+    val known = navMessagesSupported || state.inavSeenBefore || state.inavPagesReceived > 0 ||
+            state.status != null || state.keysRevoked
     if (!state.enabled || !known) return
     var expanded by remember { mutableStateOf(osnmaCardExpanded) }
     val status = state.status

@@ -29,7 +29,9 @@ tag failed in the last 10 minutes).*
 
 - A device that provides Galileo navigation messages to apps (`GnssNavigationMessage` of type
   `TYPE_GAL_I`). Many don't. Check "Navigation Messages" under *What GNSS features does my
-  device support?* in the [FAQ](FAQ.md). The OSNMA card appears once such messages arrive, and right away on later starts.
+  device support?* in the [FAQ](FAQ.md). On Android 12 and up, the OSNMA card is shown whenever
+  the device reports this capability (it then says "no data" until Galileo pages arrive). On older
+  versions it appears once such messages arrive, and right away on later starts.
 - Galileo satellites in view, ideally with a clear sky. Authentication starts after a few
   minutes of continuous reception.
 - The correct time: within 15 seconds for all tags, within 165 seconds for slow MAC tags only.
