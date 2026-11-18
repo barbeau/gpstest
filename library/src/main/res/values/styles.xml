@@ -27,6 +27,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- Text buttons tint from colorPrimary. Lighten it on dialogs only so the Toolbar stays indigo. -->
+        <item name="alertDialogTheme">@style/AppTheme.Dark.AlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/AppTheme.Dark.MaterialAlertDialog</item>
+    </style>
+    <style name="AppTheme.Dark.AlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+    </style>
+    <style name="AppTheme.Dark.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
