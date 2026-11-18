@@ -155,7 +155,7 @@ Here are a few more additional pieces of information on the following formats, w
 * GstWeek - Galileo System Time week number.
 * GstTimeOfWeekSeconds - Galileo System Time of week, in seconds, of the latest page received.
 * Phase - The overall state: `NO_DATA`, `NO_OSNMA`, `WAITING_FOR_PUBLIC_KEY`, `WAITING_FOR_KROOT`, `WAITING_FOR_TAGS`, `AUTHENTICATING`, `DONT_USE` or `ALERT`.
-* NmaStatus - The NMA status broadcast by Galileo (`OPERATIONAL`, `TEST` or `DONT_USE`), empty if not received yet.
+* NmaStatus - The NMA status broadcast by Galileo (`RESERVED`, `TEST`, `OPERATIONAL` or `DONT_USE`), empty if not received yet.
 * ChainId - The TESLA chain in force, empty if not known yet.
 * PublicKeyId - The ID (PKID) of the ECDSA public key in use, empty if none yet.
 * Svid - The Galileo satellite ID.
