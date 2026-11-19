@@ -840,6 +840,63 @@
                     android:layout_margin="5dp"
                     android:text="@string/sky_legend_shape_used_in_fix" />
             </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_osnma_authenticated"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/ic_osnma_authenticated"
+                    android:contentDescription="@string/osnma_mark_authenticated"/>
+
+                <View
+                    android:id="@+id/sky_legend_shape_line_osnma_authenticated"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <TextView
+                    android:id="@+id/sky_osnma_authenticated_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_osnma_authenticated" />
+            </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/sky_legend_osnma_failed"
+                    android:layout_width="@dimen/sky_legend_shape_size"
+                    android:layout_height="@dimen/sky_legend_shape_size"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    app:srcCompat="@drawable/ic_osnma_failed"
+                    android:contentDescription="@string/osnma_mark_failed"/>
+
+                <View
+                    android:id="@+id/sky_legend_shape_line_osnma_failed"
+                    android:layout_width="@dimen/sky_legend_shape_small_line"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/body_text_2_light" />
+
+                <TextView
+                    android:id="@+id/sky_osnma_failed_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/sky_legend_osnma_failed" />
+            </TableRow>
         </TableLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

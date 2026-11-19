@@ -47,8 +47,11 @@ import com.android.gpstest.Application.Companion.prefs
 import com.android.gpstest.io.CsvFileLogger
 import com.android.gpstest.io.JsonFileLogger
 import com.android.gpstest.library.data.LocationRepository
+import com.android.gpstest.library.data.OsnmaRepository
 import com.android.gpstest.library.model.SatelliteGroup
 import com.android.gpstest.library.model.SatelliteMetadata
+import com.android.gpstest.library.osnma.OsnmaCsvLog
+import com.android.gpstest.library.osnma.OsnmaFailureMonitor
 import com.android.gpstest.library.util.FormatUtils.toNotificationTitle
 import com.android.gpstest.library.util.IOUtils.deleteOldFiles
 import com.android.gpstest.library.util.IOUtils.forcePsdsInjection
@@ -71,11 +74,13 @@ import com.android.gpstest.library.util.PreferenceUtil.writeNmeaTimestampToLogca
 import com.android.gpstest.library.util.PreferenceUtil.writeNmeaToAndroidMonitor
 import com.android.gpstest.library.util.PreferenceUtil.writeNmeaToFile
 import com.android.gpstest.library.util.PreferenceUtil.writeOrientationToFile
+import com.android.gpstest.library.util.PreferenceUtil.writeOsnmaToFile
 import com.android.gpstest.library.util.PreferenceUtil.writeStatusToFile
 import com.android.gpstest.library.util.PreferenceUtils
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteGroup
 import com.android.gpstest.library.util.SatelliteUtil.toSatelliteStatus
 import com.android.gpstest.library.util.SatelliteUtils
+import com.android.gpstest.osnma.OsnmaTimeSources
 import com.android.gpstest.ui.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -120,6 +125,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
     @Inject
     lateinit var repository: LocationRepository
 
+    // Galileo OSNMA authentication of the navigation messages, injected via Hilt
+    @Inject
+    lateinit var osnmaRepository: OsnmaRepository
+
     // Get a reference to the Job from the Flow so we can stop it from UI events
     private var locationFlow: Job? = null
     private var nmeaFlow: Job? = null
@@ -128,6 +137,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
     private var antennaFlow: Job? = null
     private var gnssFlow: Job? = null
     private var sensorFlow: Job? = null
+    private var osnmaFlow: Job? = null
+
+    private val osnmaCsvLog = OsnmaCsvLog()
+    private val osnmaFailureMonitor = OsnmaFailureMonitor()
 
     lateinit var csvFileLogger: CsvFileLogger
     lateinit var jsonFileLogger: JsonFileLogger
@@ -142,6 +155,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
         super.onCreate()
         Log.d(TAG, "onCreate()")
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // An independent time source for the Galileo OSNMA time check, if the build flavor has one
+        OsnmaTimeSources.install(applicationContext, osnmaRepository)
 
         csvFileLogger = CsvFileLogger(applicationContext)
         jsonFileLogger = JsonFileLogger(applicationContext)
@@ -280,6 +296,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         observeNavMessageFlow()
         observeMeasurementsFlow()
         observeSensorFlow()
+        observeOsnmaFlow()
         if (SatelliteUtils.isGnssAntennaInfoSupported(getSystemService(Context.LOCATION_SERVICE) as LocationManager)) {
             observeAntennaFlow()
         }
@@ -293,6 +310,7 @@ class ForegroundOnlyLocationService : LifecycleService() {
         measurementFlow?.cancel()
         antennaFlow?.cancel()
         sensorFlow?.cancel()
+        osnmaFlow?.cancel()
     }
 
     @ExperimentalCoroutinesApi
@@ -394,6 +412,9 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service nav message: $it")
+                // Hand Galileo I/NAV pages to OSNMA right away: it uses the arrival time to work
+                // out the Galileo System Time of each page
+                osnmaRepository.onNavigationMessage(it)
                 GlobalScope.launch(Dispatchers.IO) {
                     if (writeNavMessageToLogcat(app, prefs)) {
                         writeNavMessageToAndroidStudio(it)
@@ -418,6 +439,8 @@ class ForegroundOnlyLocationService : LifecycleService() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 //Log.d(TAG, "Service measurement: $it")
+                // The receiver clock helps OSNMA time the Galileo pages
+                osnmaRepository.onMeasurements(it)
                 GlobalScope.launch(Dispatchers.IO) {
                     if (writeMeasurementToLogcat(app, prefs)) {
                         for (m in it.measurements) {
@@ -431,6 +454,74 @@ class ForegroundOnlyLocationService : LifecycleService() {
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    /**
+     * Logs Galileo OSNMA results to the CSV file (if enabled) and warns the user when navigation
+     * data fails authentication
+     */
+    private fun observeOsnmaFlow() {
+        if (osnmaFlow?.isActive == true) {
+            return
+        }
+        osnmaFlow = osnmaRepository.state
+            .onEach { state ->
+                val status = if (state.enabled) state.status else null
+                val failed = osnmaFailureMonitor.check(status, SystemClock.elapsedRealtime())
+                if (failed.isNotEmpty()) notifyOsnmaFailure(failed)
+                if (status == null) {
+                    osnmaCsvLog.reset()
+                } else if (writeOsnmaToFile(app, prefs)) {
+                    val now = System.currentTimeMillis()
+                    val records = osnmaCsvLog.records(status, now) +
+                        listOfNotNull(osnmaCsvLog.krootRecord(state.lastVerifiedKroot, now))
+                    if (records.isNotEmpty()) {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            initLogging()
+                            csvFileLogger.onOsnmaRecords(records)
+                        }
+                    }
+                }
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun notifyOsnmaFailure(svns: List<Int>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                OSNMA_NOTIFICATION_CHANNEL,
+                getString(R.string.osnma_failure_channel_name),
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply { description = getString(R.string.osnma_failure_channel_description) }
+            notificationManager.createNotificationChannel(channel)
+        }
+        val satellites = svns.joinToString(", ") { "E%02d".format(it) }
+        val text = getString(R.string.osnma_failure_notification_text, satellites)
+        val openIntent = PendingIntentCompat.getActivity(
+            applicationContext,
+            OSNMA_NOTIFICATION_ID,
+            Intent(this, MainActivity::class.java).apply { flags = FLAG_ACTIVITY_NEW_TASK },
+            0,
+            false
+        )
+        val notification =
+            NotificationCompat.Builder(applicationContext, OSNMA_NOTIFICATION_CHANNEL)
+                .setContentTitle(getString(R.string.osnma_failure_notification_title))
+                .setContentText(text)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(text))
+                .setSmallIcon(R.drawable.ic_sat_notification)
+                .setColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setPriority(NotificationCompat.PRIORITY_HIGH) // For < API 26
+                .setCategory(NotificationCompat.CATEGORY_ERROR)
+                .setAutoCancel(true)
+                .setContentIntent(openIntent)
+                .build()
+        try {
+            notificationManager.notify(OSNMA_NOTIFICATION_ID, notification)
+        } catch (e: SecurityException) {
+            // Notification permission not granted (Android 13 and later)
+            Log.w(TAG, "Can't post OSNMA warning: $e")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -680,6 +771,10 @@ class ForegroundOnlyLocationService : LifecycleService() {
         private const val NOTIFICATION_ID = 12345678
 
         private const val NOTIFICATION_CHANNEL = "gsptest_channel_01"
+
+        private const val OSNMA_NOTIFICATION_ID = 12345679
+
+        private const val OSNMA_NOTIFICATION_CHANNEL = "gpstest_osnma_warnings"
 
         private const val UNBIND_DELAY_MILLIS = 3_000L
     }
