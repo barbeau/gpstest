@@ -212,12 +212,7 @@ internal class DsmAssembler {
     private fun completed(dsmId: Int, entry: Entry): Completed? {
         if (entry.masks[0] and 1 == 0) return null
         val isPkr = dsmId >= 12
-        val nb = (entry.blocks[0]!![0].toInt() ushr 4) and 0xF
-        val n = if (isPkr) {
-            if (nb in 7..10) nb + 6 else return null
-        } else {
-            if (nb in 1..8) nb + 6 else return null
-        }
+        val n = blockCount(dsmId, entry) ?: return null
         for (b in 0 until n) if (entry.masks[b] != FULL_BLOCK) return null
         val data = ByteArray(n * BLOCK_BYTES)
         for (b in 0 until n) {
@@ -232,15 +227,18 @@ internal class DsmAssembler {
     fun progress(dsmId: Int): Pair<Int, Int>? {
         val entry = entries[dsmId] ?: return null
         val full = entry.masks.count { it == FULL_BLOCK }
-        val nb = entry.blocks[0]
-            ?.takeIf { entry.masks[0] and 1 != 0 }
-            ?.let { (it[0].toInt() ushr 4) and 0xF }
-        val n = when {
-            nb == null -> null
-            dsmId >= 12 -> nb + 6
-            else -> nb + 6
-        }
-        return full to (n ?: 0)
+        return full to (blockCount(dsmId, entry) ?: 0)
+    }
+
+    /**
+     * Number of blocks of the DSM from the NB field in block 0, or null if block 0's first byte
+     * wasn't received yet or NB is a reserved value (DSM-KROOT: 1-8, DSM-PKR: 7-10, plus 6)
+     */
+    private fun blockCount(dsmId: Int, entry: Entry): Int? {
+        if (entry.masks[0] and 1 == 0) return null
+        val nb = (entry.blocks[0]!![0].toInt() ushr 4) and 0xF
+        val valid = if (dsmId >= 12) nb in 7..10 else nb in 1..8
+        return if (valid) nb + 6 else null
     }
 
     /**

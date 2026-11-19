@@ -97,6 +97,21 @@ class OsnmaProgressViewTest {
         }
     }
 
+    /** A reserved number of DSM-KROOT blocks counts as unknown, and the parts stay in range */
+    @Test
+    fun reservedBlockCount_isUnknown() {
+        val dsm = DsmAssembler()
+        // Block 0, first byte: NB = 15 (reserved)
+        dsm.write(0, 0, 0, 0xF0.toByte())
+        assertEquals(0 to 0, dsm.progress(0))
+        val (fill, known) = dsm.blockFill(0, 8)!!
+        assertFalse(known)
+        assertEquals(8, fill.size)
+        // A valid count is used
+        dsm.write(1, 0, 0, 0x20.toByte())
+        assertEquals(0 to 8, dsm.progress(1))
+    }
+
     /** Unusable pages are only kept for the subframes the page store keeps */
     @Test
     fun unusablePages_pruned() {
