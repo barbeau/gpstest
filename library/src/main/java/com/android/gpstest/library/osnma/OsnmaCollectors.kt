@@ -69,8 +69,10 @@ internal class PageStore(private val depthSubframes: Int = 13) {
 
     /** A page of [svn] arrived around [gst] but couldn't be used (see [view]) */
     fun markUnusable(svn: Int, gst: Gst) {
-        val map = unusable.getOrPut(gst.subframe()) { HashMap() }
+        val subframe = gst.subframe()
+        val map = unusable.getOrPut(subframe) { HashMap() }
         map[svn] = (map[svn] ?: 0) or (1 shl SubframeLayout.pageOf(gst))
+        prune(subframe)
     }
 
     fun store(svn: Int, gst: Gst, osnma: ByteArray): Stored {

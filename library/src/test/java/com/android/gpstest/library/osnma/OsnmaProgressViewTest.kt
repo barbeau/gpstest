@@ -97,6 +97,17 @@ class OsnmaProgressViewTest {
         }
     }
 
+    /** Unusable pages are only kept for the subframes the page store keeps */
+    @Test
+    fun unusablePages_pruned() {
+        val store = PageStore()
+        val start = Gst(1420, 3600)
+        store.markUnusable(5, start)
+        assertTrue(store.view(start).satellites.any { it.svn == 5 })
+        store.markUnusable(6, start.addSubframes(20))
+        assertTrue(store.view(start).satellites.none { it.svn == 5 })
+    }
+
     /** A page reported as unusable shows as such, unless the same page was also received */
     @Test
     fun unusablePages() {
