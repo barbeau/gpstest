@@ -85,7 +85,10 @@ class OsnmaProgressViewTest {
         assertTrue(sawBeforeTracking)
     }
 
-    /** Pixel 10 Pro XL: every authenticated satellite says whose tags authenticated it */
+    /**
+     * Pixel 10 Pro XL: every authenticated satellite says whose tags authenticated it. E32 sends
+     * no OSNMA data the phone delivered and is only authenticated by E03's tags.
+     */
     @Test
     fun authenticatedBy() {
         val r = NavLogReplay.replay("/osnma/pixel10proxl_gal_inav.txt", offsetBits = 0)
@@ -95,6 +98,13 @@ class OsnmaProgressViewTest {
             assertTrue("E${it.svn} has no sender", it.cedAuthenticatedBy.isNotEmpty())
             assertEquals(it.cedAuthenticatedBy.sorted(), it.cedAuthenticatedBy)
         }
+        assertEquals(
+            mapOf(
+                3 to listOf(3), 25 to listOf(25), 30 to listOf(30), 32 to listOf(3),
+                36 to listOf(36)
+            ),
+            authenticated.associate { it.svn to it.cedAuthenticatedBy.toList() }
+        )
     }
 
     /** A reserved number of DSM-KROOT blocks counts as unknown, and the parts stay in range */
