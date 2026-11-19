@@ -136,9 +136,12 @@ class OsnmaEstimator {
         val latest = krootLast ?: return null
         val received = latest.second - first.second
         if (received < MIN_PARTS_FOR_RATE) return null
+        // Usual interval between parts, up to the last one: no part for much longer is a stall
+        val interval = ((latest.first - first.first).toDouble() / received)
+            .coerceAtLeast(MIN_PART_INTERVAL_SECONDS)
+        if (now - latest.first > interval * STALL_FACTOR) return OVERDUE
         // Seconds per part so far, up to now: grows while no part arrives
         val perPart = (now - first.first).toDouble() / received
-        if (now - latest.first > perPart * STALL_FACTOR) return OVERDUE
         return ((total - have) * perPart).toLong()
     }
 
@@ -180,6 +183,12 @@ class OsnmaEstimator {
 
         /** No part for this many times the usual interval: overdue */
         const val STALL_FACTOR = 4.0
+
+        /**
+         * The usual interval assumed at least, so parts arriving close together don't make a
+         * short pause overdue: a subframe, in which a block can arrive at the earliest
+         */
+        const val MIN_PART_INTERVAL_SECONDS = 30.0
 
         private const val OVERDUE = -1L
     }

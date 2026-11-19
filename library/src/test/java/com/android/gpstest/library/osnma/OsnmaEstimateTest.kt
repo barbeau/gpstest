@@ -116,6 +116,33 @@ class OsnmaEstimateTest {
         assertTrue(last.overdue)
     }
 
+    /**
+     * Two parts arrive a subframe apart, then nothing: overdue after four times that interval,
+     * although the rate measured up to now keeps growing
+     */
+    @Test
+    fun rootKeyStall_overdueAfterUsualInterval() {
+        var template: OsnmaStatus? = null
+        NavLogReplay.replay("/osnma/pixel10proxl_gal_inav.txt", 0) { engine ->
+            val status = engine.status()
+            if (template == null && status.phase == OsnmaStatus.Phase.WAITING_FOR_KROOT) {
+                template = status
+            }
+        }
+        val base = template!!
+        val start = base.gst!!
+        val estimator = OsnmaEstimator()
+        fun at(seconds: Long, parts: Int) = estimator.update(
+            base.copy(gst = start.addSeconds(seconds), krootProgress = parts to 8), 1.0
+        )!!
+        at(0, 0)
+        at(30, 1)
+        assertTrue(at(60, 2).seconds != null)
+        // Usual interval 30 s: still waiting 2 minutes later, overdue after that
+        assertTrue(!at(180, 2).overdue)
+        assertTrue(at(181, 2).overdue)
+    }
+
     @Test
     fun noStatus_noEstimate() {
         assertNull(OsnmaEstimator().update(null, null))
