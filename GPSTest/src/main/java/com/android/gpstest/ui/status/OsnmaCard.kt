@@ -23,6 +23,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -62,6 +63,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.coerceAtLeast
+import androidx.compose.ui.unit.coerceIn
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.gpstest.R
@@ -798,8 +802,16 @@ private fun RootKeyRow(status: OsnmaStatus?) {
  * columns are the same two seconds for every satellite.
  */
 @Composable
-private fun PageGrid(view: SubframePageView?) {
-    Column(modifier = Modifier.padding(start = VALUE_START, top = 2.dp, bottom = 2.dp)) {
+private fun PageGrid(view: SubframePageView?) = BoxWithConstraints(Modifier.fillMaxWidth()) {
+    // Aligned with the values where it fits; on narrow screens it moves left, and only if that's
+    // not enough the cells get smaller
+    val rowWidth = GRID_NAME_WIDTH + GRID_COUNT_WIDTH +
+            PAGE_CELL * PAGES_PER_SUBFRAME + PAGE_GAP * (PAGES_PER_SUBFRAME - 1)
+    val start = (maxWidth - rowWidth).coerceIn(0.dp, VALUE_START)
+    val cell = if (maxWidth >= rowWidth) PAGE_CELL else
+        ((maxWidth - GRID_NAME_WIDTH - GRID_COUNT_WIDTH - PAGE_GAP * (PAGES_PER_SUBFRAME - 1)) /
+                PAGES_PER_SUBFRAME).coerceAtLeast(MIN_PAGE_CELL)
+    Column(modifier = Modifier.padding(start = start, top = 2.dp, bottom = 2.dp)) {
         Text(
             text = if (view == null) {
                 stringResource(R.string.osnma_pages_unknown)
@@ -823,11 +835,12 @@ private fun PageGrid(view: SubframePageView?) {
                     .padding(top = 2.dp)
                     .clearAndSetSemantics { contentDescription = description }
             ) {
-                Text(text = name, fontSize = 11.sp, modifier = Modifier.width(30.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(text = name, fontSize = 11.sp, modifier = Modifier.width(GRID_NAME_WIDTH))
+                Row(horizontalArrangement = Arrangement.spacedBy(PAGE_GAP)) {
                     for (page in 0 until PAGES_PER_SUBFRAME) {
                         PageCell(
-                            when {
+                            size = cell,
+                            state = when {
                                 page > view.currentPage -> PageState.FUTURE
                                 sat.received(page) -> PageState.RECEIVED
                                 sat.unusable(page) -> PageState.UNUSABLE
@@ -863,11 +876,18 @@ private enum class PageState { RECEIVED, MISSING, UNUSABLE, BEFORE_TRACKING, FUT
 
 private const val PAGES_PER_SUBFRAME = 15
 
+/** Page grid: cell size and gap, and the space for the satellite name and the count */
+private val PAGE_CELL = 9.dp
+private val MIN_PAGE_CELL = 5.dp
+private val PAGE_GAP = 2.dp
+private val GRID_NAME_WIDTH = 30.dp
+private val GRID_COUNT_WIDTH = 36.dp
+
 /** One page of the grid; the states differ in shape too, not only in color */
 @Composable
-private fun PageCell(state: PageState) {
+private fun PageCell(state: PageState, size: Dp = PAGE_CELL) {
     val shape = RoundedCornerShape(2.dp)
-    val modifier = Modifier.size(9.dp)
+    val modifier = Modifier.size(size)
     when (state) {
         PageState.RECEIVED -> Box(modifier.clip(shape).background(pageReceived))
         PageState.MISSING -> Box(modifier.border(1.5.dp, pageMissing, shape))
