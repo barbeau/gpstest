@@ -49,6 +49,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.android.gpstest.Application.Companion.app
 import com.android.gpstest.Application.Companion.localeManager
 import com.android.gpstest.Application.Companion.prefs
@@ -94,7 +96,7 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
     public override fun onCreate(savedInstanceState: Bundle?) {
         // Set theme
         if (prefs.getBoolean(getString(R.string.pref_key_dark_theme), false)) {
-            setTheme(R.style.AppTheme_Dark)
+            setTheme(R.style.AppTheme_Dark_NoActionBar)
         }
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preferences)
@@ -340,6 +342,51 @@ class Preferences : PreferenceActivity(), OnSharedPreferenceChangeListener {
         actionBar!!.setNavigationOnClickListener { finish() }
         val contentWrapper = contentView.findViewById<ViewGroup>(R.id.content_wrapper)
         LayoutInflater.from(this).inflate(layoutResID, contentWrapper, true)
+
+        val toolbar = actionBar!!
+        val initialToolbarPaddingLeft = toolbar.paddingLeft
+        val initialToolbarPaddingTop = toolbar.paddingTop
+        val initialToolbarPaddingRight = toolbar.paddingRight
+        val initialToolbarPaddingBottom = toolbar.paddingBottom
+
+        val initialContentPaddingLeft = contentWrapper.paddingLeft
+        val initialContentPaddingTop = contentWrapper.paddingTop
+        val initialContentPaddingRight = contentWrapper.paddingRight
+        val initialContentPaddingBottom = contentWrapper.paddingBottom
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowInsets ->
+            val insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            v.setPadding(
+                initialToolbarPaddingLeft + insets.left,
+                initialToolbarPaddingTop,
+                initialToolbarPaddingRight + insets.right,
+                initialToolbarPaddingBottom
+            )
+            windowInsets
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentWrapper) { v, windowInsets ->
+            val insets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            // Ensure toolbar horizontal insets are also updated in case AppBarLayout did not dispatch insets to its children
+            toolbar.setPadding(
+                initialToolbarPaddingLeft + insets.left,
+                initialToolbarPaddingTop,
+                initialToolbarPaddingRight + insets.right,
+                initialToolbarPaddingBottom
+            )
+            v.setPadding(
+                initialContentPaddingLeft + insets.left,
+                initialContentPaddingTop,
+                initialContentPaddingRight + insets.right,
+                initialContentPaddingBottom + insets.bottom
+            )
+            windowInsets
+        }
+
         window.setContentView(contentView)
     }
 
