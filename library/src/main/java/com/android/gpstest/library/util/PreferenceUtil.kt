@@ -87,6 +87,10 @@ object PreferenceUtil {
         return prefs.getBoolean(context.getString(R.string.pref_key_file_orientation_output), false);
     }
 
+    fun writeOsnmaToFile(context: Context, prefs: SharedPreferences): Boolean {
+        return prefs.getBoolean(context.getString(R.string.pref_key_file_osnma_output), false)
+    }
+
     fun injectTimeWhenLogging(context: Context, prefs: SharedPreferences): Boolean {
         return prefs.getBoolean(context.getString(R.string.pref_key_inject_time_when_logging), true);
     }
@@ -100,7 +104,10 @@ object PreferenceUtil {
     }
 
     fun isCsvLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {
-        return writeNmeaToFile(context, prefs) || writeMeasurementsToFile(context, prefs) || writeNavMessageToFile(context, prefs) || writeLocationToFile(context, prefs) || writeAntennaInfoToFileCsv(context, prefs) || writeStatusToFile(context, prefs) || writeOrientationToFile(context, prefs)
+        return writeNmeaToFile(context, prefs) || writeMeasurementsToFile(context, prefs) ||
+                writeNavMessageToFile(context, prefs) || writeLocationToFile(context, prefs) ||
+                writeAntennaInfoToFileCsv(context, prefs) || writeStatusToFile(context, prefs) ||
+                writeOrientationToFile(context, prefs) || writeOsnmaToFile(context, prefs)
     }
 
     fun isJsonLoggingEnabled(context: Context, prefs: SharedPreferences): Boolean {

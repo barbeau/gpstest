@@ -186,6 +186,19 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             writer.write(COMMENT_START);
             writer.write("  OrientationDeg,utcTimeMillis,elapsedRealtimeNanos,yawDeg,rollDeg,pitchDeg");
             writer.newLine();
+            writer.write(COMMENT_START);
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("Galileo OSNMA format"
+                    + " (https://github.com/barbeau/gpstest/blob/master/OSNMA.md),"
+                    + " one record per satellite every 30 s:");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  OSNMA,UnixTimeMillis,GstWeek,GstTimeOfWeekSeconds,Phase,NmaStatus,ChainId,PublicKeyId,Svid,CedAuthenticated,CedAuthBits,TimingAuthenticated,TimingAuthBits,TagsOk,TagsFailed");
+            writer.newLine();
+            writer.write(COMMENT_START);
+            writer.write("  OSNMA_KROOT,UnixTimeMillis,NmaHeaderAndDsmKrootHex");
+            writer.newLine();
         } catch (IOException e) {
             logException(Application.Companion.getApp().getString(R.string.could_not_initialize_file, filePath), e);
             return;
@@ -313,6 +326,28 @@ public class CsvFileLogger extends BaseFileLogger implements FileLogger {
             fileWriter.newLine();
         } catch (IOException e) {
             logException("Unable to write antenna info to CSV", e);
+        }
+    }
+
+    /**
+     * Called to log Galileo OSNMA results
+     * @param records lines formatted by
+     *                {@link com.android.gpstest.library.osnma.OsnmaCsvLog}
+     */
+    public synchronized void onOsnmaRecords(List<String> records) {
+        if (fileWriter == null) {
+            return;
+        }
+        try {
+            for (String record : records) {
+                fileWriter.write(record);
+                fileWriter.newLine();
+            }
+            // Only a few records every 30 s: write them out right away, so that they're in the
+            // file even while logging continues or if the app is stopped abruptly
+            fileWriter.flush();
+        } catch (IOException e) {
+            logException(Application.Companion.getApp().getString(R.string.error_writing_file), e);
         }
     }
 
