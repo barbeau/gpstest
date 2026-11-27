@@ -276,12 +276,12 @@
     <!-- What's New -->
     <string name="main_help_whatsnew_title">What\'s New?</string>
     <string name="main_help_whatsnew">&#8226;\u0020
-        <b>Notification permissions</b>
-        - On fresh installs the GNSS status notification now needs to be enabled in Settings due to changes in how Android handles permissions.\n&#8226;\u0020
-        <b>Add support for BDS B2b and IRNSS L1</b>
-        - Thanks Narugakuruga!\n&#8226;\u0020
-        <b>Bug fixes</b>
-        - See https://bit.ly/gpstest-releases
+        <b>Galileo OSNMA authentication</b>
+        - Verify Galileo Open Service Navigation Message Authentication (OSNMA) on supported devices and view status on the Status screen. Thanks Alex!\n&#8226;\u0020
+        <b>Share timestamp &amp; knots speed unit</b>
+        - Option to include timestamp when sharing location (thanks Andreas!) and display speed in knots (thanks plusOrInfinity!).\n&#8226;\u0020
+        <b>UI &amp; stability fixes</b>
+        - Fixed edge-to-edge layout on Help and Settings screens, improved dark mode dialog contrast (thanks Matt!), and fixed several crashes. See https://bit.ly/gpstest-releases
     </string>
     <string name="main_help_close">Close</string>
 
