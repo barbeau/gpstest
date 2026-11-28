@@ -1,0 +1,3 @@
+• Galileo OSNMA authentication - Verify Galileo Open Service Navigation Message Authentication (OSNMA) on supported devices and view status on the Status screen. Thanks Alex!
+• Share timestamp & knots speed unit - Option to include timestamp when sharing location (thanks Andreas!) and display speed in knots (thanks plusOrInfinity!).
+• UI & stability fixes - Fixed edge-to-edge layouts, dark mode dialog contrast (thanks Matt!), and crashes. See https://bit.ly/gpstest-releases
